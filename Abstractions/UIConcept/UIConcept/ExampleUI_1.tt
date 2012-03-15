@@ -1,6 +1,7 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+﻿<#@ template debug="false" hostSpecific="true" language="C#" #>
 <#@ output extension=".html" #>
 <#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="Microsoft.CSharp.dll" #>
 <#@ Assembly Name="System.Xml.dll" #>
 <#@ Assembly Name="System.Xml.Linq.dll" #>
 <#@ Assembly Name="System.Windows.Forms.dll" #>
@@ -15,6 +16,7 @@
 <#@ import namespace="System.Collections.Generic" #> 
 <#@ include file="..\..\abscommon\CommonInclude\Common\CommonCodeblocks.ttinclude" #>
 <#@ include file="CaloomBase.ttinclude" #>
+<#@ include file="CommonTemplates.ttinclude" #>
 <#   
 	// Set abstraction specific type and single file specific extension
 	TransformGenerator< CaloomBaseType >(GenerateRoot, ".html");	
@@ -30,7 +32,7 @@
 	
 	void GenerateRoot()
 	{
-		GenerateAbstraction(CurrentAbstraction);
+		//GenerateAbstraction(CurrentAbstraction);
 	}
 	
 	void GenerateAbstraction(CaloomBaseType abstraction)
@@ -52,10 +54,10 @@
 #>
 <div id="serviceBegin<#= service.name #>">Service <#= service.name #> starts here</div>
 <#+ GenerateWhat(service.What);
- 	// GenerateWhere(service.Where); 
-	// GenerateWhen(service.When); 
-	// GenerateWhom(service.Whom); 
-	// GenerateWorth(service.Worth); 
+ 	GenerateWhere(service.Where); 
+	GenerateWhen(service.When); 
+	GenerateWhom(service.Whom); 
+	GenerateWorth(service.Worth); 
 #>
 
 <div id="serviceEnd<#= service.name #>">Service <#= service.name #> ends here</div>
@@ -63,12 +65,4 @@
 <#+		
 	}
 	
-	void GenerateWhat(WhatType what)
-	{
-#>
-Whaat?? MDx - non html
-
-Description: <#= what.Description.Value #>
-<#+
-	}
 #>

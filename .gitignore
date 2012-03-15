@@ -34,3 +34,5 @@ Demos/CQRS_CustomerBankAccountDemo/Apps/AndroidClient/.idea/workspace.xml
 */out/*
 *-build-*-Qt_*
 *-build-*_Qt_*
+*.pidb
+*.userprefs
