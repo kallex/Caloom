@@ -7,3 +7,6 @@
 [submodule "Abstractions/absbuilder"]
 	path = Abstractions/absbuilder
 	url = git://github.com/abstractiondev/absbuilder
+[submodule "Abstractions/UserInterfaceABS"]
+	path = Abstractions/UserInterfaceABS
+	url = git://github.com/abstractiondev/UserInterfaceABS
