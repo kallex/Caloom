@@ -10,3 +10,15 @@
 [submodule "Abstractions/UserInterfaceABS"]
 	path = Abstractions/UserInterfaceABS
 	url = git://github.com/abstractiondev/UserInterfaceABS
+[submodule "Abstractions/ServiceLayerABS"]
+	path = Abstractions/ServiceLayerABS
+	url = git://github.com/abstractiondev/ServiceLayerABS
+[submodule "Abstractions/ClassModelABS"]
+	path = Abstractions/ClassModelABS
+	url = git://github.com/abstractiondev/ClassModelABS
+[submodule "Abstractions/UserInterfaceToClassModelTRANS"]
+	path = Abstractions/UserInterfaceToClassModelTRANS
+	url = git://github.com/abstractiondev/UserInterfaceToClassModelTRANS
+[submodule "Abstractions/UserInterfaceToOperationTRANS"]
+	path = Abstractions/UserInterfaceToOperationTRANS
+	url = git://github.com/abstractiondev/UserInterfaceToOperationTRANS
