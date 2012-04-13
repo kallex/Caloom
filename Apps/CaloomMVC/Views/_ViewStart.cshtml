@@ -1,3 +1,34 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script type="text/javascript" language="javascript">
+
+    function ExampleClass() {
+        Assert.isTrue(this instanceof ExampleClass);
+        if (false === (this instanceof ExampleClass)) {
+            return new ExampleClass();
+        }
+        this.mySubProperty = new ExampleSubClass();
+    }
+
+    function ExampleSubClass() {
+        if (false === (this instanceof ExampleSubClass)) {
+            return new ExampleSubClass();
+        }
+        this.ExampleSubProperty = 123;
+    }
+
+
+    function kk() {
+        var i = 0;
+        var j = 1;
+        i = j;
+        ExampleClass.prototype.jehna = "kukkuluuruu";
+        ExampleClass.prototype.fiuuVauu = new ExampleSubClass();
+        var jep = new ExampleClass();
+        var jerTest = new ExampleClass();
+        jerTest.mySubProperty.ExampleSubProperty
+        var test = { val: 1, func: function () { return this.val; } };
+        var testA = Object.create(test); 
+    }
+</script>
