@@ -40,10 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml" />
+    <Content Include="UserInterface\In\CaloomStdUI.xml" />
     <None Include="ServiceLayer\Out\ServiceClient_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceContract_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceServer_CSharp_v1_0.designer.cs" />
-    <Content Include="absbuilder\Out\Builder.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="ServiceLayer\In\Content_v1_0\CaloomServiceLayer.xml" />
   </ItemGroup>
@@ -53,7 +54,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ClassModel\In\Content_v1_0\" />
     <Folder Include="ClassModel\Out\" />
   </ItemGroup>
   <ItemGroup>
