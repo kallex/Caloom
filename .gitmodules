@@ -22,3 +22,6 @@
 [submodule "Abstractions/UserInterfaceToOperationTRANS"]
 	path = Abstractions/UserInterfaceToOperationTRANS
 	url = git://github.com/abstractiondev/UserInterfaceToOperationTRANS
+[submodule "Abstractions/OperationABS"]
+	path = Abstractions/OperationABS
+	url = git://github.com/abstractiondev/OperationABS
