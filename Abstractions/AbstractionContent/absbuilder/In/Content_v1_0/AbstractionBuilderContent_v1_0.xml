@@ -15,9 +15,7 @@
     </Transformations>
     <BuildExecution>
       <TransformationItem nameRef="UserInterfaceToClassModelTRANS" />
-      <!--
       <AbstractionItem nameRef="ClassModelABS"/>
-      -->
     </BuildExecution>
   </Builder>
 </AbstractionBuilder>

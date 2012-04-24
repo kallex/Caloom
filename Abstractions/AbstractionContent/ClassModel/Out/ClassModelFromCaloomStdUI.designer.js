@@ -1,9 +1,3 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<script src="" type="text/javascript"></script>
-<script type="text/javascript" language="javascript">
-KEHVELI = {
     function ExampleClass() {
         Assert.isTrue(this instanceof ExampleClass);
         if (false === (this instanceof ExampleClass)) {
@@ -30,14 +24,8 @@ KEHVELI = {
         var jerTest = new ExampleClass();
         jerTest.mySubProperty.ExampleSubProperty
         var test = { val: 1, func: function () { return this.val; } };
-        var testA = Object.create(test);
+        var testA = Object.create(test); 
     }
-
-    var murmeli = new ExampleClass();
-}
-
-var juukelis = new KEHVELI.ExampleClass();
-KEHVELI.murmeli.
 
  (function(myns, $, undefined) {
     function ExampleClassXX() {
@@ -62,9 +50,23 @@ KEHVELI.murmeli.
         this.ExampleSubProperty = 123;
     }
 
- }(window.myns = window.myns || {}, jQuery);
+ }(window.myns = window.myns || {}, jQuery));
 
 
+var person = new ExampleClass();
 
+var owner = {
+    kahvi: new ExampleClass(),
+    pulla : new ExampleSubClass(),
+};
 
-</script>
+    muilu = new function() {
+        keeko : "miu",
+        mako : "piu",
+    };
+    muilu.prototype.kenuVunkkari = function() {
+        return this.keeko + this.mako;
+    };
+
+var kehvu = new muilu();
+kehvu.    	
