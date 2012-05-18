@@ -1,395 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include 'modules/head-default.phtml' ?>
+<?php include 'modules/head.txt' ?>
 <body data-spy="scroll" data-target=".subnav" data-offset="50" style="background-image:none">
-<!-- navbar-navbar-fixed-top -->
-<?php include'modules/navbar-navbar-fixed-top-default.phtml' ?>
-<!-- navbar-navbar-fixed-top -->
-<!-- subnav-fixed -->
-<?php include 'modules/subnav-fixed-default.phtml' ?>
-<!-- subnav-fixed -->
 
+<!-- navbar-navbar-fixed-top -->
+<?php include'modules/navbar-fixed-top.txt' ?><!-- /navbar-navbar-fixed-top -->
+<!-- subnav-fixed -->
+<?php include 'modules/subnav-fixed.txt' ?><!-- /subnav-fixed -->
+
+<!-- container -->	
 <div class="container">
- <div class="container-fluid">
-  <div class="row-fluid">
-   <div class="span9" style="overflow:hidden">
-    <img src="images/hml_osm.png" width="1104" height="651" alt="Hml Osm">
-   </div>
-   <div class="span3">
-    <div class="accordion" id="accordion2">
-     <div class="accordion-group">
-      <div class="accordion-heading">
-       <span><a data-toggle="modal" href="#myModal" class="btn btn-small" style="margin-top:5px;margin-right:5px;float:right"><i class="icon-edit icon-black"></i></a></span><h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Innovation Camp
-       </a></h3>
-      </div>
-      <div id="collapseOne" class="accordion-body collapse in">
-       <div class="accordion-inner">
-        <table class="table table-bordered">
-         <tbody>
-          <tr>
-           <td>Aulanko, 35.06.2012</td>
-           <td><span class="swatch" style="background-color: #ed5959;"></span></td>
-          </tr>
-          <tr>
-           <td>Linna Tapahtumat 2014</td>
-           <td><span class="swatch" style="background-color: #ed5959;"></span></td>
-          </tr>
-          <tr>
-           <td>VR green line</td>
-           <td><span class="swatch" style="background-color: #ed5959;"></span></td>
-          </tr>
-          <tr>
-           <td>Vanajavesi Cleanup</td>
-           <td><span class="swatch" style="background-color: #ed5959;"></span></td>
-          </tr>
-          <tr>
-           <td>Tori Entrepreneurs</td>
-           <td><span class="swatch" style="background-color: #ed5959;"></span></td>
-          </tr>
-         </tbody>
-        </table>
-       </div>
-      </div>
-     </div>
-     <div class="accordion-group">
-      <div class="accordion-heading">
-       <h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-        Research Stew
-       </a></h3>
-      </div>
-      <div id="collapseTwo" class="accordion-body collapse">
-       <div class="accordion-inner">
-        <table class="table table-bordered">
-         <tbody>
-          <tr>
-           <td>Aulanko, 35.06.2012</td>
-           <td><span class="swatch" style="background-color: #ffc40d;"></span></td>
-          </tr>
-          <tr>
-           <td>Linna Tapahtumat 2014</td>
-           <td><span class="swatch" style="background-color: #ffc40d;"></span></td>
-          </tr>
-          <tr>
-           <td>VR green line</td>
-           <td><span class="swatch" style="background-color: #ffc40d;"></span></td>
-          </tr>
-          <tr>
-           <td>Vanajavesi Cleanup</td>
-           <td><span class="swatch" style="background-color: #ffc40d;"></span></td>
-          </tr>
-          <tr>
-           <td>Tori Entrepreneurs</td>
-           <td><span class="swatch" style="background-color: #ffc40d;"></span></td>
-          </tr>
-         </tbody>
-        </table>
-       </div>
-      </div>
-     </div>
-     <div class="accordion-group">
-      <div class="accordion-heading">
-       <h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-        Event Drum
-       </a></h3>
-      </div>
-      <div id="collapseThree" class="accordion-body collapse">
-       <div class="accordion-inner">
-        <table class="table table-bordered">
-         <tbody>
-          <tr>
-           <td>Aulanko, 35.06.2012</td>
-           <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
-          </tr>
-          <tr>
-           <td>Linna Tapahtumat 2014</td>
-           <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
-          </tr>
-          <tr>
-           <td>VR green line</td>
-           <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
-          </tr>
-          <tr>
-           <td>Vanajavesi Cleanup</td>
-           <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
-          </tr>
-          <tr>
-           <td>Tori Entrepreneurs</td>
-           <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
-          </tr>
-         </tbody>
-        </table>
 
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<!-- container-fluid -->	
+<div class="container-fluid">
 
+<!-- row-fluid -->	
+<div class="row-fluid">
+<!-- span9 map -->	
+<?php include 'modules/map.txt' ?><!-- /span9 map -->	
+<!-- span3 result-list -->	
+<?php include 'modules/result-list.txt' ?><!-- /span3 result-list -->
+</div><!-- /row-fluid -->
 
-<!-- Modal
- ================================================== -->
- <div id="myModal" class="modal hide fade">
-  <div class="modal-header">
-   <button class="close" data-dismiss="modal">&times;</button>
-   <h3>Edit: "Innovation Camp"</h3>
-  </div>
-  <div class="modal-body">
-   <form class="well">
-    <h4>What</h4>
-    <div class="control-group">
-     <label class="control-label" for="select01">Fine tune what kind of <b>Innovation Camp</b> projects you like to follow on the map</label>
-     <div class="controls">
-      <select id="select01">
-       <option>Innovation 1</option>
-       <option>Innovation 2</option>
-       <option>Innovation 3</option>
-       <option>Innovation 4</option>
-       <option>Innovation 5</option>
-      </select>
-     </div>
-    </div>
-    <h4>When</h4>
-    <label>Change the date range?</label>
-    <div class="input">
-     <div class="inline-inputs">
-      <input data-datepicker="datepicker" class="small" type="text" value="01/05/2011" />
-      <input class="mini" type="text" value="12:00am" />
-      to
-      <input data-datepicker="datepicker" class="small" type="text" value="05/08/2011" />
-      <input class="mini" type="text" value="11:59pm" />
-      <span class="help-block">All times are shown as Eastern European Time (GMT +2:00).</span>
-     </div>
-    </div>
-    <h4>Where</h4>
-    <div class="control-group">
-     <label class="control-label" for="select01">Like to see the <b>Innovation Camp</b> projects from any of <b>Your Locations</b> ?</label>
-     <div class="controls">
-      <select id="select01">
-       <option>Helsinki</option>
-       <option>Tampere</option>
-       <option>Luxembourg</option>
-       <option>Brussels</option>
-       <option>Düsseldorf</option>
-      </select>
-     </div>
-    </div>
-   </div><!-- /clearfix -->
-  </form>
-  <div class="modal-footer">
-   <a href="#" class="btn" data-dismiss="modal" >Cancel and Close</a>
-   <a href="#" class="btn btn-primary">Update</a>
-  </div>
- </div>
-</div>
-<!--myModal --> 
+</div><!-- /container-fluid -->	
 
+<hr class="soften" id="queries">
 
-<!-- service Form --> 
-<div id="serviceForm" class="modal hide fade">
- <div class="modal-header">
-  <button class="close" data-dismiss="modal">&times;</button>
-  <h3>Add a new Innovation Camp project</h3>
- </div>
-
-<div class="modal-body">
-<form class="well">
-<!-- w5-what-default -->
-<?php include'modules/w5-what-default.phtml' ?>	
-<!-- w5-what-default -->
-<!-- w5-when-default -->
-<?php include 'modules/w5-when-default.phtml' ?>
-<!-- w5-when-default -->
-<!-- w5-where-default -->
-<?php include 'modules/w5-where-default.phtml' ?>
-<!-- w5-where-default-->
-<!-- w5-whom-default-->
-<?php include 'modules/w5-whom-default.phtml' ?>
-<!-- w5-whom-default -->
-<!-- w5-worth-default-->
-<?php include 'modules/w5-worth-default.phtml'; ?>
-<!-- w5-worth-default -->
-</div><!-- /clearfix -->
-</form>
-<div class="modal-footer">
- <a href="#" class="btn" data-dismiss="modal" >Cancel and Close</a>
- <a href="#" class="btn btn-primary">Add</a>
-</div>
-</div>
-<!-- service Form -->
-
-
-
-
-
-
-
-<!-- Masthead
- ================================================== -->
-
-<hr id="queries" class="soften" style="margin-top:50px;margin-bottom:90px">
-
-<div class="marketing">
- <h1>Check out the queries you have saved already.</h1>
- <ul class="thumbnails example-sites">
-  <li class="span3">
-   <div class="thumbnail">
-    <img src="../img/capetown.png" width="260" height="180" alt="Hml Osm">
-    <div class="caption">
-     <h5>Design Capital Capetown 2014</h5>
-     <table class="table table-bordered table-striped">
-      <tbody>
-       <tr>
-        <td class="span2">New</td>
-        <td>0</td>
-        <td class="swatch-col"><span class="swatch" style="background-color: #ed5959;"></span></td>
-       </tr>
-       <tr>
-        <td>Old</td>
-        <td>4</td>
-        <td><span class="swatch" style="background-color: #6f6f65;"></span></td>
-       </tr>
-      </tbody>
-     </table>  
-     <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-     <p><a href="#" class="btn"><i class="icon-edit icon-black"></i></a></p>
-    </div>
-   </div>
-  </li>
-  <li class="span3">
-   <div class="thumbnail">
-    <img src="../img/nairobi.png" width="260" height="180" alt="Hml Osm">
-    <div class="caption">
-     <h5>Nairobi Food stores</h5>
-     <table class="table table-bordered table-striped">
-      <tbody>
-       <tr>
-        <td class="span2">New</td>
-        <td>2</td>
-        <td class="swatch-col"><span class="swatch" style="background-color: #ed5959;"></span></td>
-       </tr>
-       <tr>
-        <td>Old</td>
-        <td>12</td>
-        <td><span class="swatch" style="background-color: #6f6f65;"></span></td>
-       </tr>
-      </tbody>
-     </table>  
-     <p>I search now for wether or not there are food stores in Nairobi</p>
-     <p><a href="#" class="btn"><i class="icon-edit icon-black"></i></a></p>
-    </div>
-   </div>
-  </li>
-  <li class="span3">
-   <div class="thumbnail">
-    <img src="../img/riodejaneiro.png" width="260" height="180" alt="Hml Osm">
-    <div class="caption">
-     <h5>Research in Rio de Janeiro</h5>
-     <table class="table table-bordered table-striped">
-      <tbody>
-       <tr>
-        <td class="span2">New</td>
-        <td>7</td>
-        <td class="swatch-col"><span class="swatch" style="background-color: #ed5959;"></span></td>
-       </tr>
-       <tr>
-        <td>Old</td>
-        <td>2</td>
-        <td><span class="swatch" style="background-color: #6f6f65;"></span></td>
-       </tr>
-      </tbody>
-     </table>  
-     <p>Donec id elit non mi porta gravida at eget metus.</p>
-     <p><a href="#" class="btn"><i class="icon-edit icon-black"></i></a></p>
-    </div>
-   </div>
-  </li>
-  <li class="span3">
-   <div class="thumbnail">
-    <img src="../img/colombo.png" width="260" height="180" alt="Hml Osm">
-    <div class="caption">
-     <h5>Water companies in Colombo</h5>
-     <table class="table table-bordered table-striped">
-      <tbody>
-       <tr>
-        <td class="span2">New</td>
-        <td>0</td>
-        <td class="swatch-col"><span class="swatch" style="background-color: #ed5959;"></span></td>
-       </tr>
-       <tr>
-        <td>Old</td>
-        <td>4</td>
-        <td><span class="swatch" style="background-color: #6f6f65;"></span></td>
-       </tr>
-      </tbody>
-     </table>  
-     <p> Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-     <p><a href="#" class="btn"><i class="icon-edit icon-black"></i></a></p>
-    </div>
-   </div>
-  </li>
- </ul>
+<!-- followed -->
+<?php include 'modules/followed.txt' ?><!-- /followed -->
 
 <hr class="soften" id="about">
 
-
-<h1>About Aalto Global Impact Applications.</h1>
-<p class="marketing-byline">Share, co-create, collaborate, plan events? Look no further.</p>
-<div class="row">
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_042_group.png">
-  <h2>Built for anybody</h2>
-  <p>Like you, we love building awesome products on the web. We love it so much, we decided to help people just like us do it easier, better, and faster. Bootstrap is built for you.</p>
- </div>
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_079_podium.png">
-  <h2>For all people</h2>
-  <p>Aalto Global Impact Applications is designed to help people of all backgrounds, locations, and what not.</p>
- </div>
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_163_iphone.png">
-  <h2>Anywhere with anything</h2>
-  <p>AGIA is built to be used anywhere, with any kind of device.</p>
- </div>
-</div><!--/row-->
-<div class="row">
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_082_roundabout.png">
-  <h2>Growing library of new Applications</h2>
-  <p>Despite we now only have 5 appilcations, anyone can add their own application and so AGIA can grow, you can grow</p>
- </div>
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_214_resize_small.png">
-  <h2>Collaborative design</h2>
-  <p>Despite all the fads, we simply collaborate with others on designing and implementing new services and projects and yes, we call this "Collaborative Design"</p>
- </div>
- <div class="span4">
-  <img class="bs-icon" src="assets/img/glyphicons/glyphicons_266_book_open.png">
-  <h2>The Guidebooks</h2>
-  <p>We have an extensive collection of guidebooks to help you get started with BoP, co-creation, co-design, not for profit stuff and whatever</p>
- </div>
-</div><!--/row-->
-<div class="row">
- <div class="span4">
- </div>
- <div class="span4">
- </div>
- <div class="span4">
- </div>
-</div><!--/row-->
-<div class="row">
-
-
-</div><!-- /.marketing -->
+<!-- explanation -->
+<?php include 'modules/explanation.txt' ?><!-- /explanation -->
 
 <!-- Footer -->
-<?php include 'modules/footer-default' ?>
-<!-- Footer -->
+<?php include 'modules/footer.txt' ?><!-- /Footer -->
+
 </div><!-- /container -->
+
+<!--Modals-->
+<?php include 'modules/modals.txt' ?><!--/Modals-->
+
 <!-- Le javascript -->
-<?php include 'modules/le-javascript-default.phtml' ?>
-<!-- Le javascript -->
+<?php include 'modules/le-javascript.txt' ?><!-- Le javascript -->
 
 </body>
 </html>

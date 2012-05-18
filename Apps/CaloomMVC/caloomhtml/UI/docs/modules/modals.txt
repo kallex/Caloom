@@ -1,0 +1,4 @@
+<!-- w5 service edit -->
+<?php include 'modules/w5-service-edit.txt' ?><!-- w5 service edit -->
+<!-- w5 service create -->
+<?php include 'modules/w5-service-create.txt' ?><!-- /w5 service create -->
