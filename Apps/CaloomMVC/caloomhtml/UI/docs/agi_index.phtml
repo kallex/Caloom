@@ -1,132 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
- <meta charset="utf-8">
- <title>Aalto Global Impact</title>
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="description" content="">
- <meta name="author" content="">
-
-<!-- Le styles -->
-<link href="assets/css/bootstrap.css" rel="stylesheet">
-<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="assets/css/docs.css" rel="stylesheet">
-<link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
-
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
- <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
- <![endif]-->
-
-<!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="assets/ico/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-</head>
-
+<?php include 'modules/head-default.phtml' ?>
 <body data-spy="scroll" data-target=".subnav" data-offset="50" style="background-image:none">
-
-
-<!-- Navbar
- ================================================== -->
- <div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-   <div class="container">
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-     <span class="icon-bar"></span>
-     <span class="icon-bar"></span>
-     <span class="icon-bar"></span>
-    </a>
-    <a class="brand" style="float:left; color:white; margin-right:60px" href="#">Aalto Global Impact</a>
-    <div class="nav-collapse">
-     <ul class="nav">
-      <li class="active dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Innovation Camp <b class="caret"></b></a>
-       <ul class="dropdown-menu">
-        <li><a href="#">Search latest projects</a></li>
-        <li><a data-toggle="modal" href="#serviceForm"><i class="icon-edit icon-black"></i> Add a new project</a></li>
-        <li><a href="#">Most popular projects</a></li>
-        <li class="divider"></li>
-        <li class="nav-header">Administration</li>
-        <li><a href="#">Manage My Projects</a></li>
-        <li><a href="#">Statistics</a></li>
-       </ul>
-      </li>
-      <li class="dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Research Stew <b class="caret"></b></a>
-       <ul class="dropdown-menu">
-        <li><a href="#">Search latest Research</a></li>
-        <li><a href="#">Add Research project</a></li>
-        <li><a href="#">Add research Paper</a></li>
-        <li class="divider"></li>
-        <li class="nav-header">Administration</li>
-        <li><a href="#">Manage My Research</a></li>
-        <li><a href="#">Statistics</a></li>
-       </ul>
-      </li>
-      <li class="dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Event Drum <b class="caret"></b></a>
-       <ul class="dropdown-menu">
-        <li><a href="#">Search Latest Event</a></li>
-        <li><a href="#">Add Eevent</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li class="nav-header">Administration</li>
-        <li><a href="#">Manage My Events</a></li>
-        <li><a href="#">Statistics</a></li>
-       </ul>
-      </li>
-     </ul>
-     <form class="navbar-search pull-left" action="">
-      <input type="text" class="search-query span2" placeholder="Search">
-     </form>
-     <ul class="nav pull-right">
-      <li><a href="#">News</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#">About</a></li>
-      <li class="dropdown">
-       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Teija <b class="caret"></b></a>
-       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-cog"></i> Preferences</a></li>
-        <li><a href="#"><i class="icon-user"></i> My friends</a></li>
-        <li><a href="#"><i class="icon-list-alt"></i> My Services</a></li>
-        <li class="divider"></li>
-        <li><a href="#"><i class="icon-off"></i> Log Out</a></li>
-       </ul>
-      </li>
-      <li class="divider-vertical"></li>
-     </ul>
-    </div><!-- /.nav-collapse -->
-   </div>
-  </div><!-- /navbar-inner -->
- </div><!-- /navbar -->
- <div class="subnav-fixed" style="width: 100%;height: 36px;background-color: #EEE;"><!--hack as .subnav creates conflict with accordion -->
-  <ul class="nav nav-pills">
-   <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Saved Queries <b class="caret"></b></a>
-    <ul class="dropdown-menu">
-     <li><a href="#queries">Design Capital Capetown 2014</a></li>
-     <li><a href="#queries">Nairobi Food stores</a></li>
-     <li><a href="#queries">Research in Rio de Janeiro</a></li>
-     <li><a href="#queries">Water companies in Colombo</a></li>
-    </ul>
-   </li>
-   <li class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Something Else <b class="caret"></b></a>
-    <ul class="dropdown-menu">
-     <li><a href="#navs">who is online</a></li>
-     <li><a href="#navbar">latest stuff</a></li>
-    </ul>
-   </li>
-   <form class="subnav-search pull-right" action="" style="margin-top:4px">
-    <input type="text" class="search-query span2" placeholder="Search the map below">
-    <input class="btn" type="submit"value="Submit">
-   </form>
-   <li><a href="#about">About</a></li>
-  </ul>
- </div><!-- end subnav subnav-fixed -->
+<!-- navbar-navbar-fixed-top -->
+<?php include'modules/navbar-navbar-fixed-top-default.phtml' ?>
+<!-- navbar-navbar-fixed-top -->
+<!-- subnav-fixed -->
+<?php include 'modules/subnav-fixed-default.phtml' ?>
+<!-- subnav-fixed -->
 
 <div class="container">
  <div class="container-fluid">
@@ -311,87 +192,24 @@
   <button class="close" data-dismiss="modal">&times;</button>
   <h3>Add a new Innovation Camp project</h3>
  </div>
- <!-- Module What -->
- <div class="modal-body">
-  <form class="well">
-   <h3>What</h3>
-   <div class="input">
-    <div class="inline-inputs">
-     <label for="whatTitle">Title of project you like to add:</label>
-     <input type="text" class="text required" name="service[whatTitle]" id="whatTitle" value="">
-    </div>
-    <div class="inline-inputs">
-     <label for="whatMeta0">Select 1 or 2 categories that best describe the project:</label>
-     <select id="whatMeta0" name="service[whatMeta][0]">
-      <option value="0">...First</option>
-      <option value="8">toys, baby room and babyitems</option><option value="74">clothes, shoes and accessoires</option><option value="44">household equipment, tools</option><option value="191">pets and pet supplies</option><option value="76">home furnishings, furniture, upholstery</option><option value="106">plants, patio and driveway paving</option><option value="75">electronics and communication</option><option value="107">computers, software and related</option><option value="98">hobby, sports and games</option><option value="111">books (study, fiction), magazines, comics, graphic novels</option><option value="42">travel, vacation, citytrips, home exchange for the hollidays</option><option value="71">building materials in and around the house, heating elements</option><option value="12">antique, art and design</option><option value="72">office- ,studio- en practice equipment</option><option value="73">other</option><option value="192">vehicle, bike, car, motor bike</option>
-     </select>
-     +
-     <select id="whatMeta1" name="service[whatMeta][1]">
-      <option value="0">...Second</option>
-      <option value="8">toys, baby room and babyitems</option><option value="74">clothes, shoes and accessoires</option><option value="44">household equipment, tools</option><option value="191">pets and pet supplies</option><option value="76">home furnishings, furniture, upholstery</option><option value="106">plants, patio and driveway paving</option><option value="75">electronics and communication</option><option value="107">computers, software and related</option><option value="98">hobby, sports and games</option><option value="111">books (study, fiction), magazines, comics, graphic novels</option><option value="42">travel, vacation, citytrips, home exchange for the hollidays</option><option value="71">building materials in and around the house, heating elements</option><option value="12">antique, art and design</option><option value="72">office- ,studio- en practice equipment</option><option value="73">other</option><option value="192">vehicle, bike, car, motor bike</option>
-     </select>
-    </div>
-    <div class="inline-inputs">
-     <label for="whatDescription">Description (140 characters max):</label>
-     <textarea name="service[whatDescription]" id="whatDescription" rows="5" cols="20"></textarea>
-    </div>
-   </div>
-   <!-- Module What -->
-   <!-- Module When -->
-   <h3>When</h3>
-   <div class="input">
-    <div class="inline-inputs">
-     <label>Change the date range?</label>
-     <input data-datepicker="datepicker" class="small" type="text" value="01/05/2011" />
-     <input class="mini" type="text" value="12:00am" />
-     to
-     <input data-datepicker="datepicker" class="small" type="text" value="05/08/2011" />
-     <input class="mini" type="text" value="11:59pm" />
-     <span class="help-block">All times are shown as Eastern European Time (GMT +2:00).</span>
-    </div>
-   </div>
-   <!-- Module When -->
-   <!-- Module Where -->
-   <h3>Where</h3>
-   <div class="input">
-    <div class="inline-inputs">
-     <label for="whereLocation">Select the location where people can see and pick up the product(s):</label>
-     <select id="whereLocation" name="service[whereLocation]">
-      <!-- Options: //-->
-      <optgroup label="User sites"><option value="17">Home</option></optgroup>
-     </select>
-    </div>
-   </div>
-   <!-- Module where-->
-   <!-- Module whom-->
-   <h3>For whom</h3>
-   <div class="input">
-    <div class="control-group">
-     <label class="control-label">Is the title and your name visible for everyone?</label>
-     <div class="controls">
-      <input type="radio" id="whomBasic_0" name="service[whomBasic]" value="0" checked="checked"> <label for="whomBasic_0">Yes</label>
-      <input type="radio" id="whomBasic_1" name="service[whomBasic]" value="1"> <label for="whomBasic_1">No</label>
-     </div>
-    </div>
-    <div class="inline-inputs">
-     <label>Who can see the details of this offer?</label>
-     <!-- Selections //-->
-     <div class="controls">
-      <input class="checkbox" type="checkbox" value="all" id="whomWhichUsers_all" name="service[whomWhichUsers][]" onchange="whichUsersControl(this);"> <label for="whomWhichUsers_all">Everyone (including unregistered users)</label><br>
-      <input class="checkbox" type="checkbox" value="organization" id="whomWhichUsers_organization" name="service[whomWhichUsers][]" onchange="whichUsersControl(this);" disabled=""> <label for="whomWhichUsers_organization">Members of my organizations</label><br>
-      <input class="checkbox" type="checkbox" value="registered" checked="checked" id="whomWhichUsers_registered" name="service[whomWhichUsers][]" onchange="whichUsersControl(this);"> <label for="whomWhichUsers_registered">All registered users</label><br>
-      <input class="checkbox" type="checkbox" value="near" id="whomWhichUsers_near" name="service[whomWhichUsers][]" onchange="whichUsersControl(this);" disabled=""> <label for="whomWhichUsers_near">Registered users near the service</label><br>
-      <script>whichUsersControl(document.getElementById('whomWhichUsers_registered'));</script>
-      <input type="hidden" value="" id="whomWhichUsers_0" name="service[whomWhichUsers][]">
-      Enter range (kilometers): <input type="text" class="text_short" value="" id="whomNearRange" name="service[whomNearRange]">
-     </div>
-    </div>
-   </div>
-   <!-- Module Whom -->
-<!-- Module Worth-->
- <?php include 'blocks/w5WorthDefault.phtml'; ?>
-<!-- Module Whorth -->
+
+<div class="modal-body">
+<form class="well">
+<!-- w5-what-default -->
+<?php include'modules/w5-what-default.phtml' ?>	
+<!-- w5-what-default -->
+<!-- w5-when-default -->
+<?php include 'modules/w5-when-default.phtml' ?>
+<!-- w5-when-default -->
+<!-- w5-where-default -->
+<?php include 'modules/w5-where-default.phtml' ?>
+<!-- w5-where-default-->
+<!-- w5-whom-default-->
+<?php include 'modules/w5-whom-default.phtml' ?>
+<!-- w5-whom-default -->
+<!-- w5-worth-default-->
+<?php include 'modules/w5-worth-default.phtml'; ?>
+<!-- w5-worth-default -->
 </div><!-- /clearfix -->
 </form>
 <div class="modal-footer">
@@ -565,66 +383,13 @@
 
 </div><!-- /.marketing -->
 
-<!-- Footer
- ================================================== -->
- <footer class="footer">
-  <p class="pull-right"><a href="#">Back to top</a></p>
-  <p>Designed and built with all the love in the world <a href="http://twitter.com/twitter" target="_blank">@twitter</a> by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
-  <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-  <p>Icons from <a href="http://glyphicons.com">Glyphicons Free</a>, licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
- </footer>
-
+<!-- Footer -->
+<?php include 'modules/footer-default' ?>
+<!-- Footer -->
 </div><!-- /container -->
-
-
-
-<!-- Le javascript
- ================================================== -->
- <!-- Placed at the end of the document so the pages load faster -->
- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
- <script src="assets/js/jquery.js"></script>
- <script src="assets/js/google-code-prettify/prettify.js"></script>
- <script src="assets/js/bootstrap-transition.js"></script>
- <script src="assets/js/bootstrap-alert.js"></script>
- <script src="assets/js/bootstrap-modal.js"></script>
- <script src="assets/js/bootstrap-dropdown.js"></script>
- <script src="assets/js/bootstrap-scrollspy.js"></script>
- <script src="assets/js/bootstrap-tab.js"></script>
- <script src="assets/js/bootstrap-tooltip.js"></script>
- <script src="assets/js/bootstrap-popover.js"></script>
- <script src="assets/js/bootstrap-button.js"></script>
- <script src="assets/js/bootstrap-collapse.js"></script>
- <script src="assets/js/bootstrap-carousel.js"></script>
- <script src="assets/js/bootstrap-typeahead.js"></script>
- <script src="assets/js/application.js"></script>
- <script src="assets/js/bootstrap-datepicker.js"></script>
-
-<script>
-/* Update datepicker plugin so that MM/DD/YYYY format is used. */
-$.extend($.fn.datepicker.defaults, {
- parse: function (string) {
-  var matches;
-  if ((matches = string.match(/^(\d{2,2})\/(\d{2,2})\/(\d{4,4})$/))) {
-   return new Date(matches[3], matches[1] - 1, matches[2]);
-  } else {
-   return null;
-  }
- },
- format: function (date) {
-  var
-  month = (date.getMonth() + 1).toString(),
-  dom = date.getDate().toString();
-  if (month.length === 1) {
-   month = "0" + month;
-  }
-  if (dom.length === 1) {
-   dom = "0" + dom;
-  }
-  return month + "/" + dom + "/" + date.getFullYear();
- }
-});  
-</script>
-
+<!-- Le javascript -->
+<?php include 'modules/le-javascript-default.phtml' ?>
+<!-- Le javascript -->
 
 </body>
 </html>
