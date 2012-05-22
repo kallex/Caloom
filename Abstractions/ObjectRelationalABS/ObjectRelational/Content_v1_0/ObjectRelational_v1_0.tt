@@ -1,0 +1,11 @@
+<#@ template language="C#" hostspecific="True" debug="True" #>
+<#@ output extension="?" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ include file="..\..\Common\XSDToIncludeGenerator.ttinclude" #>
+<#
+	System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(Host.TemplateFile));
+	dirInfo = dirInfo.Parent;
+	GenerateTTInclude(Host.TemplateFile, dirInfo.FullName);								
+	GenerateTTInclude(Host.TemplateFile, dirInfo.FullName, true);								
+#>
+								

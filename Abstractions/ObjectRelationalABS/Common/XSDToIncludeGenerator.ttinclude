@@ -1,0 +1,40 @@
+﻿<#+ 
+	void GenerateTTInclude(string templateFile, string outputDirectory, bool generateNamespace = false) {
+            string xsdExeFileName = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) +
+                                 @"\Microsoft SDKs\Windows\v7.0A\bin\xsd.exe";
+			string directory = System.IO.Path.GetDirectoryName(templateFile);
+			string xsdFile = directory + "\\" + System.IO.Path.GetFileNameWithoutExtension(templateFile) + ".xsd";
+			string outputClassFile = outputDirectory + "\\" + System.IO.Path.GetFileNameWithoutExtension(templateFile) + ".cs";
+			string namespaceFileTag = generateNamespace ? "_namespace" : "";
+			string outputttinclude = outputDirectory + "\\" + System.IO.Path.GetFileNameWithoutExtension(templateFile) + namespaceFileTag +  ".ttinclude";
+			string xsdParameters = "/c \"" + xsdFile + "\" /o:\"" + outputDirectory + "\"";
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo(xsdExeFileName, xsdParameters);
+			WriteLog("Starting xsd.exe: " + xsdParameters);
+			System.Diagnostics.Process proc = System.Diagnostics.Process.Start(processStartInfo);
+			proc.WaitForExit();
+			WriteLog("System.Diagnostics.Processing include tags...");
+			string content = System.IO.File.ReadAllText(outputClassFile);
+			string namespaceName = System.IO.Path.GetFileNameWithoutExtension(templateFile);
+			System.IO.File.Delete(outputClassFile);
+			if(generateNamespace) {
+				content = "<" + "#+" + 
+					System.Environment.NewLine + "public class " + namespaceName + " { "  + System.Environment.NewLine + 
+					content.Replace("using System.Xml.Serialization;", "") + "} " + "#" + ">";
+			} else {
+				content = "<" + "#+" + 
+					System.Environment.NewLine + 
+					content.Replace("using System.Xml.Serialization;", "") + "#" + ">";
+			}
+			WriteLog("Writing to file: " + outputttinclude);
+			System.IO.File.WriteAllText(outputttinclude, content);
+	}
+	
+		void GenerateTTInclude(string templateFile, bool generateNamespace = false) {
+			GenerateTTInclude(templateFile, System.IO.Path.GetDirectoryName(templateFile), generateNamespace);
+		}
+
+	void WriteLog(string entry) {
+		#><#= entry + System.Environment.NewLine #><#+ 
+	}
+
+#>

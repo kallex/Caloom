@@ -1,0 +1,321 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".designer.cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ include file="..\Common\CommonCodeblocks.ttinclude" #>
+<#@ include file="ObjectRelational_v1_0.ttinclude" #>
+<#   
+	string templateDirectoryName = Path.GetDirectoryName(Host.TemplateFile);
+	string directoryName = templateDirectoryName + @"\Content_v1_0";
+	string[] xmlFileNames = Directory.GetFiles(directoryName, "*.xml");
+
+	#>
+using System;
+using System.Collections.Generic;
+
+	<#
+	
+	foreach(string xmlFileName in xmlFileNames)
+	{
+		ObjectRelationalAbstraction abs = LoadXml<ObjectRelationalAbstraction>(xmlFileName);
+		foreach(var entities in abs.Entities)
+		{
+			foreach(GeneratorOutputType generatorOutput in entities.GeneratorMeta)
+			{
+				if(generatorOutput.role != GeneratorOutputTypeRole.MVCModelClasses)
+					continue;
+				CurrOutputType = generatorOutput;
+				GenerateEntities(entities);
+			}
+		}
+		/*
+		Operation_v1_0.OperationAbstractionType abstraction = LoadXml<Operation_v1_0.OperationAbstractionType>(xmlFileName);
+		Operation_v1_0.OperationsType operations = abstraction.Operations;
+		BeginNamespace(operations.codeNamespace);
+		foreach(var operation in operations.Operation)
+			GenerateOperation(operation);
+		EndBlock();
+		*/
+		//PowerPointAddIn_v1_0.PowerPointAddInAbstraction abstraction = LoadXml<PowerPointAddIn_v1_0.PowerPointAddInAbstraction>(xmlFileName);
+		//GenerateAddInBase(abstraction);
+	}
+#>
+<#+ 
+	#region Class helpers
+	
+	public enum Multiplicity
+	{
+		Item0_1,
+		Item1,
+		Item0_n,
+		Item1_n
+	}
+	
+	class AssocEnd
+	{
+		public string ClassName { get; set; }
+		public string PropertyName { get; set; }
+		public Multiplicity EndMultiplicity { get; set; }
+		public bool IsParent { get; set; }
+		
+		public bool IsOptional {
+			get {
+				return EndMultiplicity == Multiplicity.Item0_1 ||
+					EndMultiplicity == Multiplicity.Item0_n;
+			}
+		}
+		
+		public bool IsMany {
+			get {
+				return EndMultiplicity == Multiplicity.Item0_n ||
+					EndMultiplicity == Multiplicity.Item1_n;
+			}
+		}
+	}
+	
+	class AssociationItem
+	{
+		public AssocEnd End1 { get; set; }
+		public AssocEnd End2 { get; set; }
+		
+		public bool AreBothParents {
+			get { return End1.IsParent && End2.IsParent; }
+		}
+		
+		public AssocEnd ParentEnd {
+			get {
+				if(AreBothParents)
+					throw new NotSupportedException("Not single ParentEnd, because both are parents");
+				if(End1.IsParent)
+					return End1;
+				if(End2.IsParent)
+					return End2;
+				throw new NotSupportedException("One parent in AssociationItem is required");
+			}
+		}
+		
+		public AssocEnd ChildEnd {
+			get {
+				if(End1.IsParent == false)
+					return End1;
+				if(End2.IsParent == false)
+					return End2;
+				return null;
+			}
+		}
+	}
+	
+	class ChildRelationItem
+	{
+		public EntityType Parent;
+		public ChildEntityType Child;
+		
+		public static ChildRelationItem[] GetRelationItems(EntityType[] entities)
+		{
+			return entities.Where(ent => ent.ChildEntity != null)
+				.SelectMany(ent => 
+			{ 
+				return ent.ChildEntity.Select(cent => 
+					new ChildRelationItem { Parent = ent, Child = cent });
+			}).ToArray();
+		}
+		
+		public AssociationItem GetAssociationItem()
+		{
+			return GetAssociationItem(this);
+		}
+		
+		public static AssociationItem GetAssociationItem(ChildRelationItem crItem)
+		{
+			AssociationItem assocItem = new AssociationItem
+			{
+				End1 = new AssocEnd {
+					ClassName = crItem.Parent.name,
+					PropertyName = crItem.Child.name,
+					EndMultiplicity = Multiplicity.Item1,
+					IsParent = true,
+				},
+				End2 = new AssocEnd {
+					ClassName = crItem.Child.Entity.name,
+					PropertyName = "Parent" + crItem.Parent.name,
+					EndMultiplicity = (Multiplicity) Enum.Parse(typeof(Multiplicity), crItem.Child.multiplicity.ToString()),
+					IsParent = false,
+				}
+			};
+			return assocItem;
+		}
+	}
+	
+	#endregion
+	
+	#region Class Level Variable Block
+	
+	GeneratorOutputType CurrOutputType;
+	
+	void GenerateEntities(EntitiesType entities)
+	{
+		BeginNamespace(CurrOutputType.namespaceName);
+		foreach(var entity in entities.Entity)
+		{
+			GenerateEntity(entity);
+		}
+		EndBlock();
+	}
+	
+	EntityType[] GetAllEntities(EntityType[] entities)
+	{
+		return entities.SelectMany(entity => GetEntityWithChildren(entity)).ToArray();
+	}
+	
+	EntityType[] GetEntityWithChildren(EntityType entity)
+	{
+		if(entity == null)
+			throw new ArgumentNullException("entity");
+		List<EntityType> result = new List<EntityType>();
+		result.Add(entity);
+		if(entity.ChildEntity != null)
+			result.AddRange(entity.ChildEntity.SelectMany(childEntity => GetEntityWithChildren(childEntity.Entity)));
+		return result.ToArray();
+	}
+	
+	void GenerateEntityBasicFields(EntityType entity)
+	{
+		GenerateProperty("Guid", entity.name + "Id", true);
+		GenerateProperty("Guid", entity.name + "Version", true);
+		GenerateProperty("bool", entity.name + "IsDeleted", false);
+	}
+	
+	void GenerateEntity(EntityType entity)
+	{
+		string entityName = entity.name;
+		#>
+		public partial class <#= entityName #>
+		{
+		<#+
+		GenerateEntityBasicFields(entity);
+		
+		foreach(VariableType property in entity.Property ?? new VariableType[0])
+		{
+			string propertyName = entity.name + property.name;
+			string dataType = property.dataType;
+			GenerateProperty(dataType, propertyName, false);
+		}
+		//foreach(var propertyChangeValidation in entity.PropertyChangeValidations ?? new ValidationType[0])
+		//	GeneratePropertyChangeValidation(propertyChangeValidation);
+
+		//foreach(var propertyChangeValidation in entity.PropertyChangeValidations ?? new ValidationType[0])
+		//	GeneratePropertyChangeValidation(propertyChangeValidation);
+		#>
+		}
+		
+		<#+
+		foreach(var childEntity in entity.ChildEntity ?? new ChildEntityType[0])
+			GenerateChildEntity(entity, childEntity);
+	}
+	
+	string GetPrivateFieldName(string propertyName)
+	{
+		return "_" + propertyName.Substring(0, 1).ToLower() + propertyName.Substring(1);
+	}
+	
+	string GetInitializationString(string dataType)
+	{
+		if(dataType == "Guid")
+			return "Guid.NewGuid()";
+		return "new " + dataType + "()";
+	}
+	
+	void GenerateProperty(string dataType, string propertyName, bool initialize)
+	{
+		string privateFieldName = GetPrivateFieldName(propertyName);
+		string initializationString = initialize ? " = " + GetInitializationString(dataType)  : "";
+		#>
+	    private <#= dataType #> <#= privateFieldName #><#= initializationString #>;
+	    public <#= dataType #> <#= propertyName #> 
+	    {
+	        get { return <#= privateFieldName #>; }
+	        set { <#= privateFieldName #> = value; }
+	    }
+		<#+
+	}
+	
+	void GenerateProperty(VariableType property, bool initialize = false)
+	{
+		string dataType = property.dataType;
+		string name = property.name;
+		GenerateProperty(dataType, name, initialize);		
+	}
+	
+	void GenerateChildEntity(EntityType parentEntity, ChildEntityType childEntity)
+	{
+		GenerateEntity(childEntity.Entity);
+		GenerateParentToChildNavigation(parentEntity, childEntity);
+		GenerateChildToParentNavigation(parentEntity, childEntity);
+	}
+
+	void GeneratePartialClassWithProperty(string className, string propertyName, string propertyDatatype, bool initializeProperty)
+	{
+		#>
+		partial class <#= className #>
+		{
+		<#+
+			GenerateProperty(propertyDatatype, propertyName, initializeProperty);
+		#>
+		}
+		<#+
+	}
+	
+	void GenerateParentToChildNavigation(EntityType parentEntity, ChildEntityType childEntity)
+	{
+		bool isCollection = childEntity.multiplicity == ChildEntityTypeMultiplicity.Item0_n ||
+			childEntity.multiplicity == ChildEntityTypeMultiplicity.Item1_n;
+		string propertyDataType = isCollection ?
+			"List<" + childEntity.Entity.name + ">" : childEntity.name;
+
+		string childName = GetChildName(childEntity.name);
+		string className = parentEntity.name;
+		string propertyName = childName;
+		bool initializeProperty = isCollection;
+		GeneratePartialClassWithProperty(className, propertyName, propertyDataType, initializeProperty);
+	}
+
+	void GenerateChildToParentNavigation(EntityType parentEntity, ChildEntityType childEntity)
+	{
+		string parentName = GetParentName(parentEntity.name);
+		string className = childEntity.Entity.name;
+		string dataType = parentEntity.name;
+		string propertyName = parentName;
+		GeneratePartialClassWithProperty(className, propertyName, dataType, false);
+	}
+
+	string GetAssociationName(string entityName, string entityMemberName)
+	{
+		return entityName + "_" + entityMemberName;
+	}
+	
+	string GetParentName(string entityName)
+	{
+		return "Parent" + entityName;
+	}
+	
+	string GetChildName(string entityMemberName)
+	{
+		return entityMemberName;
+	}
+	
+	//CQRS_v1_0.DomainType CurrentDomain;
+	
+
+	#endregion
+#>

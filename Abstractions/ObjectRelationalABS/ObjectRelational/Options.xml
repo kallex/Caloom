@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbstractionOptions xmlns="http://tempuri.org/AbstractionOptions.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tempuri.org/AbstractionOptions.xsd ../abscommon/CommonInclude/Common/AbstractionOptions.xsd">
+	<General shareLevel="Modular"/>
+</AbstractionOptions>

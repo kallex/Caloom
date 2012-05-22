@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterfaceToOperationTRA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationABS", "Abstractions\OperationABS\OperationABS.csproj", "{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectRelationalABS", "Abstractions\ObjectRelationalABS\ObjectRelationalABS.csproj", "{8A6394CA-84ED-42E8-B8D2-479638B0CF99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,16 @@ Global
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +192,7 @@ Global
 		{D698172B-FE5D-4A42-B3F1-1616B26048D9} = {D0EF7B40-E356-470F-886A-5AB58C98950A}
 		{1D4E9FBB-C1F1-4A36-A495-178DFF11E80E} = {D0EF7B40-E356-470F-886A-5AB58C98950A}
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB} = {D0EF7B40-E356-470F-886A-5AB58C98950A}
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99} = {D0EF7B40-E356-470F-886A-5AB58C98950A}
 		{8F7E76FB-108D-4C4B-AFD7-4F51601B86DB} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 	EndGlobalSection
 EndGlobal
