@@ -8,6 +8,9 @@ body {
 }
 /* Tweak navbar brand link to be super sleek
 -------------------------------------------------- */
+.brand {
+	color: #8ac246;
+}
 /* Space out sub-sections more
 -------------------------------------------------- */
 /* Jumbotrons

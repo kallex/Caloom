@@ -6,7 +6,7 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
        </a>
-       <a class="brand" href="./index.html">Caloom</a>
+       <a class="brand" style="color:#8ac246;" href="./index.html">Caloom</a><!-- hack:color .brand was difficult to change -->
        <div class="nav-collapse collapse">
          <ul class="nav">
            <li class="">
