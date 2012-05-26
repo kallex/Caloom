@@ -1,0 +1,12 @@
+<!--w5WhereDefault -->
+<h3>Where</h3>
+<div class="input">
+ <div class="inline-inputs">
+  <label for="whereLocation">Select the location where people can see and pick up the product(s):</label>
+  <select id="whereLocation" name="service[whereLocation]">
+   <!-- Options: //-->
+   <optgroup label="User sites"><option value="17">Home</option></optgroup>
+  </select>
+ </div>
+</div>
+<!--w5WhereDefault -->

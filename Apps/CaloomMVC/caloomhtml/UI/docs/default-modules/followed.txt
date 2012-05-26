@@ -1,0 +1,9 @@
+<div class="marketing">
+<h1>Check out the queries you have saved already.</h1>
+<ul class="thumbnails example-sites">
+<?php include 'modules/followed-item-1.txt' ?>
+<?php include 'modules/followed-item-2.txt' ?>
+<?php include 'modules/followed-item-3.txt' ?>
+<?php include 'modules/followed-item-4.txt' ?>
+</ul>
+</div>
