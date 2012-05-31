@@ -1,3 +1,4 @@
+<div class="marketing">
 <h1>About Aalto Global Impact Applications.</h1>
 <p class="marketing-byline">Share, co-create, collaborate, plan events? Look no further.</p>
 <div class="row">
@@ -34,3 +35,4 @@
 		<p>We have an extensive collection of guidebooks to help you get started with BoP, co-creation, co-design, not for profit stuff and whatever</p>
 	</div>
 </div><!--/row-->
+</div><!-- marketing explanation-->
