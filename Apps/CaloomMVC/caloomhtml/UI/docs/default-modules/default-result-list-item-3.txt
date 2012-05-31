@@ -1,7 +1,7 @@
 <div class="accordion-group">
  <div class="accordion-heading">
   <h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-   Event Drum
+   Service
   </a></h3>
  </div>
  <div id="collapseThree" class="accordion-body collapse">
@@ -9,23 +9,23 @@
    <table class="table table-bordered">
     <tbody>
      <tr>
-      <td>Aulanko, 35.06.2012</td>
+      <td>Result Item</td>
       <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
      </tr>
      <tr>
-      <td>Linna Tapahtumat 2014</td>
+      <td>Result Item</td>
       <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
      </tr>
      <tr>
-      <td>VR green line</td>
+      <td>Result Item</td>
       <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
      </tr>
      <tr>
-      <td>Vanajavesi Cleanup</td>
+      <td>Result Item</td>
       <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
      </tr>
      <tr>
-      <td>Tori Entrepreneurs</td>
+      <td>Result Item</td>
       <td><span class="swatch" style="background-color: #7be1ed;"></span></td>
      </tr>
     </tbody>

@@ -14,7 +14,6 @@
 <!-- End Default Brand Navbar Element -->
 
 <div class="nav-collapse">
-
 <!-- Start Default Service Navigation Navbar Elements -->
 <ul class="nav">
 <?php include'../default-modules/default-navbar-top-fixed-service-item.txt' ?>
