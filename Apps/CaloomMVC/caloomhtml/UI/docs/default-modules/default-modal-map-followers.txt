@@ -7,14 +7,34 @@
 	<table class="table table-bordered table-striped">
 		<tbody>
 			<tr>
-				<td class="span2">New</td>
-				<td>0</td>
-				<td class="swatch-col"><span class="swatch" style="background-color: #ed5959;"></span></td>
+				<td>Worldbank</td>
+				<td><a href="http://wwww.worldbank.org/">The World Bank</a></td>
+				<td>Partner</td>
 			</tr>
 			<tr>
-				<td>Old</td>
-				<td>4</td>
-				<td><span class="swatch" style="background-color: #6f6f65;"></span></td>
+				<td>Unicef</td>
+				<td><a href="http://wwww.unicef.org/">Unicef</a></td>
+				<td>Partner</td>
+			</tr>
+			<tr>
+				<td>Heikki Alamäki</td>
+				<td><a href="http://heikki.blogger.com/">My blog</a></td>
+				<td>Student</td>
+			</tr>
+			<tr>
+				<td>Riina</td>
+				<td><a href="http://wwww.aaltoglobalimpact.org/">Aalto Global Impact</a></td>
+				<td>Administration</td>
+			</tr>
+			<tr>
+				<td>Minna Halme</td>
+				<td><a href="http://wwww.aalto.fi/">Aalto University</a></td>
+				<td>Steering Group</td>
+			</tr>
+			<tr>
+				<td>Anonymous</td>
+				<td><a href="http://wwww.noneofyourbusiness.org/">None of your business</a></td>
+				<td>visitor</td>
 			</tr>
 		</tbody>
 	</table>

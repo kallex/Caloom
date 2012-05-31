@@ -1,5 +1,5 @@
 <div class="marketing">
-<h1>Check out the queries you have saved already.</h1>
+<h1>Your saved maps.</h1>
 <p class="marketing-byline">See what is new on your maps and who is following them.</p>
 <ul class="thumbnails example-sites">
 <?php include 'default-followed-item-1.txt' ?>
