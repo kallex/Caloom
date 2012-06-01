@@ -2,6 +2,7 @@
 <UserInterfaceAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../UserInterfaceABS/UserInterface/Content_v1_0/UserInterface_v1_0.xsd">
 	<UserInterfaces>
 		<UserInterface domainName="Caloom.Web" name="HTML5">
+      <!--
       <Views>
         <View name="GeneralEventView" designDesc="View for general event info">
           <ViewLayout layoutType="FlowLayout" />
@@ -70,6 +71,14 @@
           </ViewProperty>
         </View>
       </Views>
+      -->
+      <ControllerActions>
+        <ControllerAction name="TestCaloom">
+          <ViewStructure>
+            <!-- Insert stuff here-->
+          </ViewStructure>
+        </ControllerAction>
+      </ControllerActions>
 		</UserInterface>
 	</UserInterfaces>
 </UserInterfaceAbstraction>
