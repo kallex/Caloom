@@ -79,6 +79,9 @@
             <Text minLength="5" maxLength="56" isRequired="true" name="title">
               <Label language="english"></Label>
             </Text>
+            <textAutofill minLength="5" maxLength="56" isRequired="false" name="autofill">
+              <label language="english"></label>
+            </textAutofill>
             <!-- textarea -->
             <Description minLength="10" maxLength="144" isRequired="true" name="description">
               <Label language="English"></Label>
@@ -87,11 +90,17 @@
             <Checkbox value="1">
               <Label language"English"></Label>
             </Checkbox>
+            <!-- inline checkbox - that is a series of check boxes on the same line followed by a label -->
+            <InlineCheckbox>
+              <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
+              </label>
+            </InlineCheckbox>
             <!-- radiobutton -->
             <RadioButton>
               <Label language"English"></Label>
             </RadioButton>
-            <!-- dropdown but the word is used from the bootstrap -->
+            <!-- dropdown but the word SelectList is used by bootstrap -->
             <SelectList>
               <Label></Label>
               <Choice>
@@ -113,18 +122,37 @@
           </ViewStructure>
         </SharedView>
 		  <ControllerActions>
+		    <!-- the W5 default-what strcuture -->
         <ControllerAction name="default-what">
           <ViewStructure>
-            <!-- Insert stuff here-->
             <Display fromControl="title" name=""/>
             <Display fromControl="description" name=""/>
-            <Display fromControl="" name=""/>         
+            <Display fromControl="category" name=""/>
+            <Display fromControl="keyword" name=""/>
           </ViewStructure>
+         <ControllerAction name="default-when">
           <ViewStructure>
             <Display fromControl="title" name=""/>
           </ViewStructure>
         </ControllerAction>        
-      </ControllerActions>
+          <ControllerAction name="default-where">
+            <ViewStructure>
+              <Display fromControl="title" name=""/>
+            </ViewStructure>
+          </ControllerAction>        
+          <ControllerAction name="default-whom">
+            <ViewStructure>
+              <Display fromControl="title" name=""/>
+            </ViewStructure>
+          </ControllerAction>        
+          <ControllerAction name="default-worth">
+            <ViewStructure>
+              <Display fromControl="title" name=""/>
+            </ViewStructure>
+          </ControllerAction>        
+          
+		  
+		  </ControllerActions>
 		</UserInterface>
 	</UserInterfaces>
 </UserInterfaceAbstraction>
