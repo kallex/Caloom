@@ -76,6 +76,9 @@
         <ControllerAction name="TestCaloom">
           <ViewStructure>
             <!-- Insert stuff here-->
+            <Text minLength="10" maxLength="20" isRequired="false" name="What">
+              <Label language="English">what label</Label>
+            </Text>
           </ViewStructure>
         </ControllerAction>
       </ControllerActions>
