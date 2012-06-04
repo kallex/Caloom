@@ -72,41 +72,58 @@
         </View>
       </Views>
       -->
-      <ControllerActions>
+      <SharedViews>
+        <SharedView name="w5">
+          <ViewStructure>
+            <!-- label and text input -->
+            <Text minLength="5" maxLength="56" isRequired="true" name="title">
+              <Label language="english"></Label>
+            </Text>
+            <!-- textarea -->
+            <Description minLength="10" maxLength="144" isRequired="true" name="description">
+              <Label language="English"></Label>
+            </Description>
+            <!-- checkbox -->
+            <Checkbox value="1">
+              <Label language"English"></Label>
+            </Checkbox>
+            <!-- radiobutton -->
+            <RadioButton>
+              <Label language"English"></Label>
+            </RadioButton>
+            <!-- dropdown but the word is used from the bootstrap -->
+            <SelectList>
+              <Label></Label>
+              <Choice>
+                <Label language="english">item 1</Label>
+              </Choice>
+            </SelectList>
+            <!-- multicolon select list -->
+            <MultiChoiseList name="category">
+              <Label language="English"></Label>
+              <Choice value="dynamically loaded">
+                <Label language="english">item 1</Label>
+              </Choice>         
+            </MultiChoiseList>
+            <!-- datepicker -->
+            <DatePicker>
+              <input data-datepicker="datepicker" class="small" type="text" value="01/05/2011" />
+              <input class="mini" type="text" value="12:00am" />
+            </DatePicker>
+          </ViewStructure>
+        </SharedView>
+		  <ControllerActions>
         <ControllerAction name="default-what">
           <ViewStructure>
             <!-- Insert stuff here-->
-            <Text minLength="10" maxLength="20" isRequired="true" name="what-title">
-              <Label language="English">Title</Label>
-            </Text>
-            <Description minLength="10" maxLength="144" isRequired="true" name="what-description">
-              <Label language="English">Describe What</Label>
-            </Description>
-            <MultiChoiseList name="what-category"><!-- make this MultiChoiceList -->
-              <!-- The content here is dynamically loaded from the pre-defined categories.
-                These categories depend on what service is used,
-                "work" service has a different category listing than e.g. "event" service -->
-              <Label language="English">Select What category</Label>
-              <Choice value="dynamically loaded">
-                <Label language="english">item 1</Label>
-                <Label language="english">item 2</Label>
-                <Label language="english">item 3</Label>
-                <Label language="english">item 4</Label>
-                <Label language="english">item 5</Label>
-              </Choice>         
-            </MultiChoiseList>  
+            <Display fromControl="title" name=""/>
+            <Display fromControl="description" name=""/>
+            <Display fromControl="" name=""/>         
           </ViewStructure>
-        </ControllerAction>
-        <ControllerAction name="default-when">
           <ViewStructure>
-            <!-- Insert stuff here-->
-            <Text minLength="10" maxLength="20" isRequired="true" name="title">
-              <Label language="English">when Title</Label>
-            </Text>
-            <datepicker ></datepicker>
+            <Display fromControl="title" name=""/>
           </ViewStructure>
-        </ControllerAction>
-        
+        </ControllerAction>        
       </ControllerActions>
 		</UserInterface>
 	</UserInterfaces>
