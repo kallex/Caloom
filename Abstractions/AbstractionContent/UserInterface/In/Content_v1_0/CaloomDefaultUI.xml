@@ -75,7 +75,7 @@
       <SharedViews>
         <SharedView name="w5">
           <ViewStructure>
-            <!-- label and text input -->
+            <!-- Text input -->
             <Text minLength="5" maxLength="56" isRequired="true" name="title">
               <Label language="english"></Label>
             </Text>
