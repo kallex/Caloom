@@ -77,7 +77,7 @@
           <ViewStructure>
             <!-- Insert stuff here-->
             <Text minLength="10" maxLength="20" isRequired="true" name="what-title">
-              <Label language="English">what Title</Label>
+              <Label language="English">Title</Label>
             </Text>
             <Description minLength="10" maxLength="144" isRequired="true" name="what-description">
               <Label language="English">Describe What</Label>
@@ -93,12 +93,20 @@
                 <Label language="english">item 3</Label>
                 <Label language="english">item 4</Label>
                 <Label language="english">item 5</Label>
-              </Choice>
-              
-            </MultiChoiseList>
-            
+              </Choice>         
+            </MultiChoiseList>  
           </ViewStructure>
         </ControllerAction>
+        <ControllerAction name="default-when">
+          <ViewStructure>
+            <!-- Insert stuff here-->
+            <Text minLength="10" maxLength="20" isRequired="true" name="title">
+              <Label language="English">when Title</Label>
+            </Text>
+            <datepicker ></datepicker>
+          </ViewStructure>
+        </ControllerAction>
+        
       </ControllerActions>
 		</UserInterface>
 	</UserInterfaces>
