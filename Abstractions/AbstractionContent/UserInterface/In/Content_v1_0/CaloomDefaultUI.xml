@@ -73,12 +73,30 @@
       </Views>
       -->
       <ControllerActions>
-        <ControllerAction name="TestCaloom">
+        <ControllerAction name="default-what">
           <ViewStructure>
             <!-- Insert stuff here-->
-            <Text minLength="10" maxLength="20" isRequired="false" name="What">
-              <Label language="English">what label</Label>
+            <Text minLength="10" maxLength="20" isRequired="true" name="what-title">
+              <Label language="English">what Title</Label>
             </Text>
+            <Description minLength="10" maxLength="144" isRequired="true" name="what-description">
+              <Label language="English">Describe What</Label>
+            </Description>
+            <MultiChoiseList name="what-category"><!-- make this MultiChoiceList -->
+              <!-- The content here is dynamically loaded from the pre-defined categories.
+                These categories depend on what service is used,
+                "work" service has a different category listing than e.g. "event" service -->
+              <Label language="English">Select What category</Label>
+              <Choice value="dynamically loaded">
+                <Label language="english">item 1</Label>
+                <Label language="english">item 2</Label>
+                <Label language="english">item 3</Label>
+                <Label language="english">item 4</Label>
+                <Label language="english">item 5</Label>
+              </Choice>
+              
+            </MultiChoiseList>
+            
           </ViewStructure>
         </ControllerAction>
       </ControllerActions>
