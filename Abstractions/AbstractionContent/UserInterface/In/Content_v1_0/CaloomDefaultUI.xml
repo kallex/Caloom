@@ -74,28 +74,19 @@
       -->
       <SharedViews>
         <SharedView name="w5">
-          <ViewStructure>
+          <ViewStructure><!--these are the formControl used in the ControllerAction -->
             <!-- Text input -->
             <Text minLength="5" maxLength="56" isRequired="true" name="title">
               <Label language="english"></Label>
             </Text>
-            <textAutofill minLength="5" maxLength="56" isRequired="false" name="autofill">
-              <label language="english"></label>
-            </textAutofill>
-            <!-- textarea -->
+             <!-- textarea -->
             <Description minLength="10" maxLength="144" isRequired="true" name="description">
               <Label language="English"></Label>
             </Description>
             <!-- checkbox -->
-            <Checkbox value="1">
+            <Checkbox type="checkbox" value="1" isRequired="False" name="checkbox">
               <Label language"English"></Label>
             </Checkbox>
-            <!-- inline checkbox - that is a series of check boxes on the same line followed by a label -->
-            <InlineCheckbox>
-              <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-              </label>
-            </InlineCheckbox>
             <!-- radiobutton -->
             <RadioButton>
               <Label language"English"></Label>
@@ -119,10 +110,15 @@
               <input data-datepicker="datepicker" class="small" type="text" value="01/05/2011" />
               <input class="mini" type="text" value="12:00am" />
             </DatePicker>
+            <!-- http://www.filamentgroup.com/examples/slider_v2/index3.php -->
+            <Slider valueA="" ValueB="">
+              <Label language="english"></Label>
+            </Slider>
           </ViewStructure>
         </SharedView>
+      </SharedViews>
 		  <ControllerActions>
-		    <!-- the W5 default-what strcuture -->
+		    <!-- the W5 default-what structure -->
         <ControllerAction name="default-what">
           <ViewStructure>
             <Display fromControl="title" name=""/>
@@ -130,28 +126,34 @@
             <Display fromControl="category" name=""/>
             <Display fromControl="keyword" name=""/>
           </ViewStructure>
-         <ControllerAction name="default-when">
+        </ControllerAction>
+          <!-- the W5 default-when structure -->
+        <ControllerAction name="default-when">
           <ViewStructure>
-            <Display fromControl="title" name=""/>
+            <Display fromControl="title" name="Title"/>
+            <Display fromControl="Slider" name="Date"/><!-- here we should have a start date and end date -->
+            <Display fromControl="Slider" name="Time"/><!-- here we should have a start time and end time -->
+            <Display fromControl="SelectList" name="Repeat"/><!-- here is going to be a repeat list - items are once (default setting), weekly, monthly -->
           </ViewStructure>
         </ControllerAction>        
-          <ControllerAction name="default-where">
+          <!-- the W5 default-where structure -->
+        <ControllerAction name="default-where">
+            <ViewStructure>
+              <Display fromControl="title" name=""/>
+            </ViewStructure>
+         </ControllerAction>        
+          <!-- the W5 default-whom structure -->
+          <ControllerAction name="default-whom"><!-- whom is about who can get this information and who is this information about, in the case of an event with speakers and such -->
             <ViewStructure>
               <Display fromControl="title" name=""/>
             </ViewStructure>
           </ControllerAction>        
-          <ControllerAction name="default-whom">
-            <ViewStructure>
-              <Display fromControl="title" name=""/>
-            </ViewStructure>
-          </ControllerAction>        
+          <!-- the W5 default-worth structure -->
           <ControllerAction name="default-worth">
             <ViewStructure>
               <Display fromControl="title" name=""/>
             </ViewStructure>
           </ControllerAction>        
-          
-		  
 		  </ControllerActions>
 		</UserInterface>
 	</UserInterfaces>
