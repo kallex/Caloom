@@ -73,23 +73,36 @@
       </Views>
       -->
       <SharedViews>
+        <SharedView name="Title">
+          <ViewStructure>
+            <!-- Text input -->
+            <Text minLength="5" maxLength="56" isRequired="true" name="Title">
+              <Label language="English">Title</Label>
+              <Label language="Finnish">Aihe</Label>
+            </Text>
+          </ViewStructure>
+        </SharedView>
+        <SharedView name="Description">
+          <ViewStructure>
+            <Description minLength="10" maxLength="144" isRequired="true" name="Description">
+              <Label language="English">Description</Label>
+              <Label language="Finnish">Kuvaus</Label>
+            </Description>
+          </ViewStructure>
+        </SharedView>
         <SharedView name="w5">
           <ViewStructure><!--these are the formControl used in the ControllerAction -->
-            <!-- Text input -->
-            <Text minLength="5" maxLength="56" isRequired="true" name="title">
-              <Label language="english"></Label>
-            </Text>
              <!-- textarea -->
             <Description minLength="10" maxLength="144" isRequired="true" name="description">
               <Label language="English"></Label>
             </Description>
             <!-- checkbox -->
             <Checkbox type="checkbox" value="1" isRequired="False" name="checkbox">
-              <Label language"English"></Label>
+              <Label language="English"></Label>
             </Checkbox>
             <!-- radiobutton -->
             <RadioButton>
-              <Label language"English"></Label>
+              <Label language="English"></Label>
             </RadioButton>
             <!-- dropdown but the word SelectList is used by bootstrap -->
             <SelectList>
@@ -119,10 +132,10 @@
       </SharedViews>
 		  <ControllerActions>
 		    <!-- the W5 default-what structure -->
-        <ControllerAction name="default-what">
+        <ControllerAction name="default-what" designDesc="W5 - What">
           <ViewStructure>
-            <Display fromControl="title" name=""/>
-            <Display fromControl="description" name=""/>
+            <Display fromControl="" name="Title"/>
+            <Display fromControl="" name="Description"/>
             <Display fromControl="category" name=""/>
             <Display fromControl="keyword" name=""/>
           </ViewStructure>
@@ -130,7 +143,7 @@
           <!-- the W5 default-when structure -->
         <ControllerAction name="default-when">
           <ViewStructure>
-            <Display fromControl="title" name="Title"/>
+            <Display fromControl="" name="Title"/>
             <Display fromControl="Slider" name="Date"/><!-- here we should have a start date and end date -->
             <Display fromControl="Slider" name="Time"/><!-- here we should have a start time and end time -->
             <Display fromControl="SelectList" name="Repeat"/><!-- here is going to be a repeat list - items are once (default setting), weekly, monthly -->
@@ -139,19 +152,19 @@
           <!-- the W5 default-where structure -->
         <ControllerAction name="default-where">
             <ViewStructure>
-              <Display fromControl="title" name=""/>
+              <Display fromControl="" name="Title"/>
             </ViewStructure>
          </ControllerAction>        
           <!-- the W5 default-whom structure -->
           <ControllerAction name="default-whom"><!-- whom is about who can get this information and who is this information about, in the case of an event with speakers and such -->
             <ViewStructure>
-              <Display fromControl="title" name=""/>
+              <Display fromControl="" name="Title"/>
             </ViewStructure>
           </ControllerAction>        
           <!-- the W5 default-worth structure -->
           <ControllerAction name="default-worth">
             <ViewStructure>
-              <Display fromControl="title" name=""/>
+              <Display fromControl="" name="Title"/>
             </ViewStructure>
           </ControllerAction>        
 		  </ControllerActions>
