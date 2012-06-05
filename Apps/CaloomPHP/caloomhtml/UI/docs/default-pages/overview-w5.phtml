@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- default-head.txt -->
+<?php include '../default-layouts/default-head.txt' ?><!-- default-head.txt -->
+
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+
+<!-- default-navbar.txt -->
+<?php include '../default-layouts/default-navbar.txt' ?><!-- default-navbar.txt -->
+
+
+<div class="container"><!--the container class sets the width of the container and centers it -->
+
+<section id="forms">
+  <div class="page-header">
+    <h1>W5 Forms</h1>
+  </div>
+
+  <h2>Default W5 forms <small>these forms are for adding a product to the system</small></h2>
+  <div class="row">
+    <div class="span6">
+		<form class="form-horizontal well">
+			<fieldset id="what#Product#">
+				<legend>What</legend>
+				<div class="control-group">
+					<?php include'../default-modules/default-w5-what.txt' ?>
+				</div>
+			</fieldset>
+			<fieldset id="what#Where#">
+				<legend>Where</legend>
+				<div class="control-group">
+					<?php include'../default-modules/default-w5-where.txt' ?>
+				</div>
+			</fieldset>
+			<fieldset id="what#When#">
+				<legend>When</legend>
+				<div class="control-group">
+					<?php include'../default-modules/default-w5-when.txt' ?>
+				</div>
+			</fieldset>
+			<fieldset id="what#Whom#">
+				<legend>Whom</legend>
+				<?php include'../default-modules/default-w5-whom.txt' ?>
+				<div class="control-group">
+				</div>
+			</fieldset>
+			<fieldset id="what#Worth#">
+				<legend>Worth</legend>
+				<div class="control-group">
+					<?php include'../default-modules/default-w5-worth.txt' ?>
+				</div>
+			</fieldset>
+			</form>
+	</div><!-- span6 -->
+  </div><!-- row -->
+</section>
+
+
+<!-- default-footer.txt -->
+<?php include '../default-layouts/default-footer.txt' ?><!-- default-footer.txt-->
+</div><!-- /container -->
+
+<!-- Le javascript -->
+<?php include '../default-modules/default-le-javascript.txt' ?><!-- Le javascript -->
+
+</body>
+</html>

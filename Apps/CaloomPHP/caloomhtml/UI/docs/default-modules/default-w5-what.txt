@@ -1,0 +1,74 @@
+<!--w5WhatDefault -->
+
+<div class="control-group">
+	<label class="control-label" for="input01">Title of your Product</label>	
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="Write a good title for your product so others can find it easily" data-original-title="Title of Your Product">
+			<input type="text" class="input-xlarge" id="input01" value="20 characters max"></a>		
+		</div>
+	</div>
+
+<div class="control-group">
+<label class="control-label" for="textarea">Describe your product in 104 characters max</label>
+<div class="controls">
+	<a href="#"  rel="popover" data-content="This description plus title can be used at twitter, give a good and concise description" data-original-title="Description of Your Product">
+	<textarea class="input-xlarge" id="textarea" rows="3"></textarea>
+	</a>
+</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label" for="fileInput">Upload your Image</label>
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="Choose an image that describes your product. You can upload multiple images, maximum of 3" data-original-title="Images of Your Product">
+			<input class="input-file" id="fileInput" type="file">
+		</a>
+	</div>
+	<br><!-- this is a hack, the spacing should come from the div below -->
+	<div class="widget-content">
+		<div class="shortcuts">
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 1</span>	
+			</a>
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 2</span>	
+			</a>
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 3</span>	
+			</a>
+		</div> <!-- /shortcuts -->	
+	</div><!-- /widget-content -->
+</div><!-- /control-group -->
+
+<div class="control-group">
+	<label class="control-label" for="multiSelect">Product categories</label>
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="Select 1 or more categories that suit your product" data-original-title="Select product categories">
+			<select multiple="multiple" id="multiSelect">
+			<option>Category 1</option>
+			<option>Category 2</option>
+			<option>Category 3</option>
+			<option>Category 4</option>
+			<option>Category 5</option>
+			<option>Category 5</option>
+			<option>Category 5</option>
+			<option>Category 5</option>
+			<option>Category 5</option>
+			<option>Category 5</option>
+		</select>
+		</a>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label" for="input01">Keywords for your Product</label>
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="You would like to add some keywords in addition to the categories, this is your change" data-original-title="Keywords for Your Product">
+			<input type="text" class="input-xlarge" id="input01" value="keyword,keyword,keyword,...">
+		</a>
+	</div>
+</div>
+<!--w5WhatDefault -->
