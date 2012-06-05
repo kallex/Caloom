@@ -6,62 +6,125 @@
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 
 <!-- default-navbar.txt -->
-<?php include '../default-layouts/default-navbar.txt' ?><!-- default-navbar.txt -->
+	<?php include '../default-layouts/default-navbar.txt' ?><!-- default-navbar.txt -->
 
 
 <div class="container"><!--the container class sets the width of the container and centers it -->
 
 <section id="forms">
-  <div class="page-header">
-    <h1>W5 Forms</h1>
-  </div>
+	<div class="page-header">
+		<h1>W5 Forms</h1>
+	</div>
 
-  <h2>Default W5 forms <small>these forms are for adding a product to the system</small></h2>
-  <div class="row">
-    <div class="span6">
+<h2>Default W5 forms <small>these forms are for adding a product to the system</small></h2>
+<div class="row">
+	<div class="span6">
 		<form class="form-horizontal well">
-			<fieldset id="what#Product#">
-				<legend>What</legend>
-				<div class="control-group">
-					<?php include'../default-modules/default-w5-what.txt' ?>
-				</div>
-			</fieldset>
-			<fieldset id="what#Where#">
-				<legend>Where</legend>
-				<div class="control-group">
-					<?php include'../default-modules/default-w5-where.txt' ?>
-				</div>
-			</fieldset>
-			<fieldset id="what#When#">
-				<legend>When</legend>
-				<div class="control-group">
-					<?php include'../default-modules/default-w5-when.txt' ?>
-				</div>
-			</fieldset>
-			<fieldset id="what#Whom#">
-				<legend>Whom</legend>
-				<?php include'../default-modules/default-w5-whom.txt' ?>
-				<div class="control-group">
-				</div>
-			</fieldset>
-			<fieldset id="what#Worth#">
-				<legend>Worth</legend>
-				<div class="control-group">
-					<?php include'../default-modules/default-w5-worth.txt' ?>
-				</div>
-			</fieldset>
-			</form>
-	</div><!-- span6 -->
-  </div><!-- row -->
+			<div class="accordion" id="accordion2">
+				<fieldset id="what#Product#">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<H3>
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+									What
+								</a>
+							</H3>
+						</div>
+						<div id="collapseOne" class="accordion-body collapse in">
+							<div class="accordion-inner">
+								<div class="control-group">
+									<?php include'../default-modules/default-w5-what.txt' ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="accordion" id="accordion2">
+				<fieldset id="what#Product#">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+								Where
+							</a></h3>
+						</div>
+						<div id="collapseTwo" class="accordion-body collapse">
+							<div class="accordion-inner">
+								<div class="control-group">
+									<?php include'../default-modules/default-w5-where.txt' ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="accordion" id="accordion3">
+				<fieldset id="what#Product#">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+								When
+							</a></h3>
+						</div>
+						<div id="collapseThree" class="accordion-body collapse">
+							<div class="accordion-inner">
+								<div class="control-group">
+									<?php include'../default-modules/default-w5-when.txt' ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="accordion" id="accordion4">
+				<fieldset id="what#Product#">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour">
+								Whom
+							</a></h3>
+						</div>
+						<div id="collapseFour" class="accordion-body collapse">
+							<div class="accordion-inner">
+								<div class="control-group">
+									<?php include'../default-modules/default-w5-whom.txt' ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="accordion" id="accordion5">
+				<fieldset id="what#Product#">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion5" href="#collapseFive">
+								Where
+							</a></h3>
+						</div>
+						<div id="collapseFive" class="accordion-body collapse">
+							<div class="accordion-inner">
+								<div class="control-group">
+									<?php include'../default-modules/default-w5-where.txt' ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+</div><!--/accordion-->
+</form>
+</div><!-- span6 -->
+</div><!-- row -->
 </section>
 
 
 <!-- default-footer.txt -->
-<?php include '../default-layouts/default-footer.txt' ?><!-- default-footer.txt-->
+	<?php include '../default-layouts/default-footer.txt' ?><!-- default-footer.txt-->
 </div><!-- /container -->
 
 <!-- Le javascript -->
-<?php include '../default-modules/default-le-javascript.txt' ?><!-- Le javascript -->
+	<?php include '../default-modules/default-le-javascript.txt' ?><!-- Le javascript -->
 
 </body>
 </html>
