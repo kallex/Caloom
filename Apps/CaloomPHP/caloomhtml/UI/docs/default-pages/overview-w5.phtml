@@ -6,10 +6,11 @@
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 
 <!-- default-navbar.txt -->
-	<?php include '../default-layouts/default-navbar.txt' ?><!-- default-navbar.txt -->
+<?php include '../default-layouts/default-navbar.txt' ?><!-- default-navbar.txt -->
 
 
 <div class="container"><!--the container class sets the width of the container and centers it -->
+
 
 <section id="forms">
 	<div class="page-header">
@@ -18,117 +19,103 @@
 
 <h2>Default W5 forms <small>these forms are for adding a product to the system</small></h2>
 <div class="row">
-	<div class="span6">
-		<form class="form-horizontal well">
-			
-			<div class="accordion" id="accordion1">
-				<fieldset id="what#Product#">
-					<div class="accordion-group">
-						<div class="accordion-heading">
-							<H3>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-									What
-								</a>
-							</H3>
-						</div><!--/accordion-heading-->
-						<div id="collapseOne" class="accordion-body collapse in">
-							<div class="accordion-inner">
-								<div class="control-group">
-									<?php include'../default-modules/default-w5-what.txt' ?>
-								</div><!--control-group-->
-							</div><!--/accordion-inner-->
-						</div><!--/collapseOne-->
-					</div><!--/accordion-group-->
-				</fieldset>
-			</div><!--/"accordion" id="accordion1"-->
-			
-			<div class="accordion" id="accordion2">
-				<fieldset id="where#Product#">
-					<div class="accordion-group">
-						<div class="accordion-heading">
-							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-								Where
-							</a></h3>
-						</div><!--/accordion-heading-->
-						<div id="collapseTwo" class="accordion-body collapse">
-							<div class="accordion-inner">
-								<div class="control-group">
-									<?php include'../default-modules/default-w5-where.txt' ?>
-								</div><!--control-group-->
-							</div><!--/accordion-inner-->
-						</div><!--/collapseTwo-->
-					</div><!--/accordion-group-->
-				</fieldset>			
-			</div><!--/"accordion" id="accordion2"-->
-			
-			<div class="accordion" id="accordion3">
-				<fieldset id="when#Product#">
-					<div class="accordion-group">
-						<div class="accordion-heading">
-							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-								When
-							</a></h3>
-						</div><!--/accordion-heading-->
-						<div id="collapseThree" class="accordion-body collapse">
-							<div class="accordion-inner">
-								<div class="control-group">
-									<?php include'../default-modules/default-w5-when.txt' ?>
-								</div><!--control-group-->
-							</div><!--/accordion-inner-->
-						</div><!--/collapseThree-->
-					</div><!--/accordion-group-->
-				</fieldset>
-			</div><!--/"accordion" id="accordion3"-->
-			
-			<div class="accordion" id="accordion4">
-				<fieldset id="whom#Product#">
-					<div class="accordion-group">
-						<div class="accordion-heading">
-							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour">
-								Whom
-							</a></h3>
-						</div><!--/accordion-heading-->
-						<div id="collapseFour" class="accordion-body collapse">
-							<div class="accordion-inner">
-								<div class="control-group">
-									<?php include'../default-modules/default-w5-whom.txt' ?>
-								</div><!--control-group-->
-							</div><!--/accordion-inner-->
-						</div><!--/collapseFour-->
-					</div><!--/accordion-group-->
-				</fieldset>
-			</div><!--/"accordion" id="accordion4"-->
-			
-			<div class="accordion" id="accordion5">
-				<fieldset id="worth#Product#">
-					<div class="accordion-group">
-						<div class="accordion-heading">
-							<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion5" href="#collapseFive">
-								Where
-							</a></h3>
-						</div><!--/accordion-heading-->
-						<div id="collapseFive" class="accordion-body collapse">
-							<div class="accordion-inner">
-								<div class="control-group">
-									<?php include'../default-modules/default-w5-where.txt' ?>
-								</div><!--control-group-->
-							</div><!--/accordion-inner-->
-						</div><!--/collapseFive-->
-					</div><!--/accordion-group-->
-				</fieldset>
-			</div><!--/"accordion" id="accordion5"-->
-		</form>
-	</div><!-- span6 -->
-</div><!-- row -->
-</section>
+<div class="span6">
+<form class="form-horizontal well">
+<div class="accordion" id="accordion1">
+				
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<H3>
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+				What
+			</a>
+		</H3>
+	</div><!--/accordion-heading-->
+	<div id="collapseOne" class="accordion-body collapse in">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<?php include'../default-modules/default-w5-what.txt' ?>
+			</div><!--control-group-->
+		</div><!--/accordion-inner-->
+	</div><!--/collapseOne-->
+</div><!--/accordion-group-->
+
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
+			Where
+		</a></h3>
+	</div><!--/accordion-heading-->
+	<div id="collapseTwo" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<?php include'../default-modules/default-w5-where.txt' ?>
+			</div><!--control-group-->
+		</div><!--/accordion-inner-->
+	</div><!--/collapseTwo-->
+</div><!--/accordion-group-->
+
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseThree">
+			When
+		</a></h3>
+	</div><!--/accordion-heading-->
+	<div id="collapseThree" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<?php include'../default-modules/default-w5-when.txt' ?>
+			</div><!--control-group-->
+		</div><!--/accordion-inner-->
+	</div><!--/collapseThree-->
+</div><!--/accordion-group-->
+
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseFour">
+			Whom
+		</a></h3>
+	</div><!--/accordion-heading-->
+	<div id="collapseFour" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<?php include'../default-modules/default-w5-whom.txt' ?>
+			</div><!--control-group-->
+		</div><!--/accordion-inner-->
+	</div><!--/collapseFour-->
+</div><!--/accordion-group-->
+
+<div class="accordion-group">
+	<div class="accordion-heading">
+		<h3><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseFive">
+			Where
+		</a></h3>
+	</div><!--/accordion-heading-->
+	<div id="collapseFive" class="accordion-body collapse">
+		<div class="accordion-inner">
+			<div class="control-group">
+				<?php include'../default-modules/default-w5-where.txt' ?>
+			</div><!--control-group-->
+		</div><!--/accordion-inner-->
+	</div><!--/collapseFive-->
+</div><!--/accordion-group-->
+<div class="form-actions">
+	<button type="submit" class="btn btn-primary">Save changes</button>
+	<button class="btn">Cancel</button>
+</div><!--/form-actions-->
+</div><!--/accordion-->
+</form><!--form-horizontal well-->
+</div><!--/span6 -->
+</div><!--/row -->
+</section><!--/forms-->
 
 
 <!-- default-footer.txt -->
-	<?php include '../default-layouts/default-footer.txt' ?><!-- default-footer.txt-->
+<?php include '../default-layouts/default-footer.txt' ?><!-- default-footer.txt-->
 </div><!-- /container -->
 
 <!-- Le javascript -->
-	<?php include '../default-modules/default-le-javascript.txt' ?><!-- Le javascript -->
+<?php include '../default-modules/default-le-javascript.txt' ?><!-- Le javascript -->
 
 </body>
 </html>
