@@ -1,0 +1,25 @@
+<div class="control-group">
+	<label class="control-label" for="fileInput">Upload your Image</label>
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="Choose an image that describes your ##. You can upload multiple images, maximum of 3" data-original-title="Images of Your ##">
+			<input class="input-file" id="fileInput" type="file">
+		</a>
+	</div>
+	<br><!-- this is a hack, the spacing should come from the div below -->
+	<div class="widget-content">
+		<div class="shortcuts">
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 1</span>	
+			</a>
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 2</span>	
+			</a>
+			<a href="javascript:;" class="shortcut" style="outline:#DDD solid thin;">
+				<i class="shortcut-icon icon-picture"></i>
+				<span class="shortcut-label">Image 3</span>	
+			</a>
+		</div> <!-- /shortcuts -->	
+	</div><!-- /widget-content -->
+</div><!-- /control-group -->

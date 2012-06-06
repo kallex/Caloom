@@ -1,0 +1,8 @@
+<div class="control-group">
+	<label class="control-label" for="input01">Keywords for your ##</label>
+	<div class="controls">
+		<a href="#"  rel="popover" data-content="You would like to add some keywords in addition to the categories, this is your change" data-original-title="Keywords for Your ##">
+			<input type="text" class="input-xlarge" id="input01" value="keyword,keyword,keyword,...">
+		</a>
+	</div>
+</div>
