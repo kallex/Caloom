@@ -1,8 +1,9 @@
+<!--default-ui-atom-describe-->
 <div class="control-group">
 <label class="control-label" for="textarea">Describe your ## in 104 characters max</label>
 <div class="controls">
-	<a href="#"  rel="popover" data-content="This description plus title can be used at twitter, give a good and concise description" data-original-title="Description of Your ##">
 	<textarea class="input-xlarge" id="textarea" rows="3"></textarea>
-	</a>
 </div>
 </div>
+<!--/default-ui-atom-describe-->
+

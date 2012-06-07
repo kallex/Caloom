@@ -1,9 +1,11 @@
+<!--default-ui-atom-add-location-link-->
 <div class="control-group">
 	<label class="control-label" for="appendedInputButton">Add an other</label>
 	<div class="controls">
 		<div class="input-append">
-			<a href="#"  rel="popover" data-content="Here you can add an other location in addition to those you already have." data-original-title="Add an other location">
 			<button class="btn" type="button">Location</button>
 		</div>
 	</div>
 </div>
+<!--/default-ui-atom-add-location-link-->
+

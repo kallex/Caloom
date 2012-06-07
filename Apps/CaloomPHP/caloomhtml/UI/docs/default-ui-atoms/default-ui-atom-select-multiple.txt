@@ -1,13 +1,14 @@
+<!--default-ui-atom-select-multiple-->
 <div class="control-group">
 	<label class="control-label" for="multiSelect">Select ##</label>
 	<div class="controls">
-		<a href="#"  rel="popover" data-content="Select 1 or more categories that suit your ##" data-original-title="Select ## categories">
 			<select multiple="multiple" id="multiSelect">
 			<option>ABC</option>
 			<option>DEF</option>
 			<option>GHI</option>
 			<option>JKL</option>
 		</select>
-		</a>
 	</div>
 </div>
+<!--/default-ui-atom-select-multiple-->
+
