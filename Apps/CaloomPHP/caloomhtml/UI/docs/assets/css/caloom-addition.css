@@ -79,3 +79,14 @@ body {
   /* Inline-block quick links for more spacing */
 /* LARGE DESKTOP SCREENS */
   /* Update subnav container */
+/*additions to dahsboard stylsheet*/
+.maps .map { 
+    width: 40%;
+    display: inline-block;
+    padding: 12px 0;
+    margin: 0 .9% 1em;
+    vertical-align: top;    
+    text-decoration: none;
+    background: #F3F3F3;  
+    border-radius: 5px;
+}
