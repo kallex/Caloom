@@ -24,6 +24,5 @@
 <!--Modals-->
 <?php include '../default-modules/default-modal-map-whom.txt' ?>
 <!--/Modals-->
-I am going to make a change
 <!--/default-w5-whom-->
 
