@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by Kalle Launiala (Citrus Solutions Oy) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="CaloomBase" type="CaloomBaseType">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="DescriptionType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attributeGroup ref="ActivityAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:attributeGroup name="ActivityAttributes">
+		<xs:attribute name="activeInInfo" type="xs:boolean" use="required"/>
+		<xs:attribute name="activeInSearch" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:complexType name="HowType">
+		<xs:sequence>
+			<xs:element name="Free" type="xs:string"/>
+			<xs:element name="Other" type="xs:string"/>
+			<xs:element name="Sell" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImagesType">
+		<xs:sequence>
+			<xs:element name="Image" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="ActivityAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="InfoType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attributeGroup ref="ActivityAttributes"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="KeywordsType">
+		<xs:sequence>
+			<xs:element name="Keyword" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="ActivityAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="WhatType">
+		<xs:sequence>
+			<xs:element name="Description" type="DescriptionType"/>
+			<xs:element name="How" type="HowType"/>
+			<xs:element name="Images" type="ImagesType"/>
+			<xs:element name="Info" type="InfoType"/>
+			<xs:element name="Keywords" type="KeywordsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServiceType">
+		<xs:sequence>
+			<xs:element name="What" type="WhatType"/>
+			<xs:element name="Where"/>
+			<xs:element name="When"/>
+			<xs:element name="Whom"/>
+			<xs:element name="Worth"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ServicesType">
+		<xs:sequence>
+			<xs:element name="Service" type="ServiceType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CaloomBaseType">
+		<xs:sequence>
+			<xs:element name="Services" type="ServicesType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
