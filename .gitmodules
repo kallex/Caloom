@@ -25,3 +25,6 @@
 [submodule "Abstractions/OperationABS"]
 	path = Abstractions/OperationABS
 	url = git://github.com/abstractiondev/OperationABS
+[submodule "Abstractions/ObjectRelationalABS"]
+	path = Abstractions/ObjectRelationalABS
+	url = git@github.com:abstractiondev/ObjectRelationalABS
