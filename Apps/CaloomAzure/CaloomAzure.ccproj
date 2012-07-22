@@ -45,6 +45,14 @@
       <RoleName>CaloomMvcWebRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\CaloomWorkerRole\CaloomWorkerRole.csproj">
+      <Name>CaloomWorkerRole</Name>
+      <Project>{27c6e2f3-6016-4e1d-81a0-01171a14870c}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>CaloomWorkerRole</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
