@@ -41,17 +41,39 @@ namespace CaloomMvcWebRole
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             ConfigureQueue();
-            SendStartupMessage();
+            ConfigureTableStorage();
+            string tmpStore = StoreExampleData();
+            SendStartupMessage(tmpStore);
         }
 
-        private void SendStartupMessage()
+        private string StoreExampleData()
         {
-            CloudQueueMessage message = new CloudQueueMessage("Kukkaruukku!");
+            TmpTestEntity testEntity = new TmpTestEntity("Heippa!");
+            TableServiceContext ctx = CurrTable.GetDataServiceContext();
+            ctx.AddObject(TmpTableName, testEntity);
+            var response = ctx.SaveChangesWithRetries();
+            return testEntity.PartitionKey;
+        }
+
+        private void ConfigureTableStorage()
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            tableClient.CreateTableIfNotExist(TmpTableName);
+            CurrTable = tableClient;
+        }
+
+        private void SendStartupMessage(string tmpStore)
+        {
+            CloudQueueMessage message = new CloudQueueMessage(tmpStore);
             CurrQueue.AddMessage(message);
         }
 
         private CloudQueueClient Client;
         private CloudQueue CurrQueue;
+        private string TmpTableName = "tmptable";
+        private CloudTableClient CurrTable;
         private const string QueueName = "immediatequeue";
 
         private void ConfigureQueue()
@@ -71,5 +93,18 @@ namespace CaloomMvcWebRole
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
         }
+    }
+
+    public class TmpTestEntity : TableServiceEntity
+    {
+        public TmpTestEntity(string msgData)
+        {
+            string key = Guid.NewGuid().ToString();
+            this.PartitionKey = key;
+            this.RowKey = key;
+            MessageData = msgData;
+        }
+
+        public string MessageData { get; set; }
     }
 }
