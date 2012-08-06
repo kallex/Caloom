@@ -28,3 +28,6 @@
 [submodule "Abstractions/ObjectRelationalABS"]
 	path = Abstractions/ObjectRelationalABS
 	url = git@github.com:abstractiondev/ObjectRelationalABS
+[submodule "Apps/WorkerTemplate/CaloomUI"]
+	path = Apps/WorkerTemplate/CaloomUI
+	url = git://github.com/kallex/CaloomUI.git
