@@ -37,6 +37,14 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TestAspNetWebRole1\TestAspNetWebRole1.csproj">
+      <Name>TestAspNetWebRole1</Name>
+      <Project>{278087a3-f89a-424e-9970-0a4a5475cf8a}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>TestAspNetWebRole1</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\CaloomMvcWebRole\CaloomMvcWebRole.csproj">
       <Name>CaloomMvcWebRole</Name>
       <Project>{80e53045-b0c9-4d46-b600-1894588cf63d}</Project>

@@ -25,6 +25,8 @@ namespace CaloomWorkerRole
         private CloudQueue CurrQueue;
         private string TmpTableName = "tmptable";
         private CloudTableClient CurrTable;
+        private LocalResource LocalStorageResource;
+        private CloudBlobContainer AnonWebContainer;
 
         public override void Run()
         {
@@ -33,10 +35,10 @@ namespace CaloomWorkerRole
                 try
                 {
                     // Receive the message
+                    //AnonWebContainer.GetBlobReference(""). 
                     CloudQueueMessage receivedMessage = null;
-                    receivedMessage = CurrQueue.GetMessage();
+                    //receivedMessage = CurrQueue.GetMessage();
                         //Client.Receive();)
-
                     if (receivedMessage != null)
                     {
                         // Process the message
@@ -78,8 +80,28 @@ namespace CaloomWorkerRole
 
             ConfigureQueue();
             ConfigureTableStorage();
+            ConfigureAnonWebBlobStorage();
             IsStopped = false;
+            SetupLocalStorage();
             return base.OnStart();
+        }
+
+        private void ConfigureAnonWebBlobStorage()
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            AnonWebContainer = blobClient.GetContainerReference("anon-webcontainer");
+            BlobRequestOptions options = new BlobRequestOptions();
+            AnonWebContainer.CreateIfNotExist();
+            BlobContainerPermissions permissions = new BlobContainerPermissions();
+            permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+            AnonWebContainer.SetPermissions(permissions);
+        }
+
+        private void SetupLocalStorage()
+        {
+            LocalStorageResource = RoleEnvironment.GetLocalResource("LocalST");
         }
 
         private void ConfigureTableStorage()
