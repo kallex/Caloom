@@ -13,8 +13,8 @@ namespace TheBallTool
         static void Main(string[] args)
         {
             string[] phtmlFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
-            var fixedContent = phtmlFiles.Where(fileName => fileName.EndsWith(".txt") == false).
-                Select(fileName =>
+            var fixedContent = phtmlFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
+                .Select(fileName =>
                        new
                            {
                                FileName
@@ -28,7 +28,8 @@ namespace TheBallTool
                            })
                 .ToArray();
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            //var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
             {
                 if (content.TextContent != null)
@@ -36,6 +37,8 @@ namespace TheBallTool
                 else
                     container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
         }
 
         private static byte[] GetBinaryContent(string fileName)
@@ -66,12 +69,20 @@ namespace TheBallTool
                                             if (File.Exists(incFile))
                                                 fileContent = File.ReadAllText(incFile);
                                             else
+                                            {
                                                 fileContent = "MISSING FILE MISSING FILE MISSING FILE: " + incFile;
+                                                ReportProblem(fileContent);
+                                            }
                                             if (fileContent.Contains("<?php"))
                                                 fileContent = FixContent(incFile);
                                             return fileContent;
                                         });
             return content;
+        }
+
+        private static void ReportProblem(string fileContent)
+        {
+            Console.WriteLine(fileContent);
         }
 
         private static string replaceEvaluator(Match match)

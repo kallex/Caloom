@@ -10,12 +10,22 @@ namespace TheBall
 {
     public static class AzureSupport
     {
+        public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
+        {
+            return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-webtemplates", BlobContainerPublicAccessType.Off);
+        }
+
         public static CloudBlobContainer ConfigureAnonWebBlobStorage(string connString, bool deleteBlobs)
+        {
+            return ConfigureBlobStorageContainer(connString, deleteBlobs, "anon-webcontainer", BlobContainerPublicAccessType.Blob);
+        }
+
+
+        public static CloudBlobContainer ConfigureBlobStorageContainer(string connString, bool deleteBlobs, string containerName, BlobContainerPublicAccessType containerAccessType)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            var anonWebContainer = blobClient.GetContainerReference("anon-webcontainer");
-            BlobRequestOptions options = new BlobRequestOptions();
+            var anonWebContainer = blobClient.GetContainerReference(containerName);
             anonWebContainer.CreateIfNotExist();
             if (deleteBlobs)
             {
@@ -32,7 +42,7 @@ namespace TheBall
                 }
             }
             BlobContainerPermissions permissions = new BlobContainerPermissions();
-            permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+            permissions.PublicAccess = containerAccessType;
             anonWebContainer.SetPermissions(permissions);
             return anonWebContainer;
         }
