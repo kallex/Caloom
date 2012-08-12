@@ -32,6 +32,7 @@ namespace TheBallTool
             var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
             {
+                Console.WriteLine("Uploading: " + content.FileName);
                 if (content.TextContent != null)
                     container.UploadBlobText(content.FileName.Replace(".phtml", ".html"), content.TextContent);
                 else
@@ -80,9 +81,14 @@ namespace TheBallTool
             return content;
         }
 
-        private static void ReportProblem(string fileContent)
+        private static void ReportInfo(string text)
         {
-            Console.WriteLine(fileContent);
+            Console.WriteLine(text);
+        }
+
+        private static void ReportProblem(string text)
+        {
+            Console.WriteLine(text);
         }
 
         private static string replaceEvaluator(Match match)

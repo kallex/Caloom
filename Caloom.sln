@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallTool", "Tools\TheBal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallCoreABS", "..\..\tmp\TheBallCoreABS\TheBallCoreABS.csproj", "{ADFE0244-B352-4B21-AB0F-040805535C71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallCoreABS", "Abstractions\TheBallCoreABS\TheBallCoreABS.csproj", "{ADFE0244-B352-4B21-AB0F-040805535C71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
