@@ -2,7 +2,7 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
 	<InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
 		<InformationModel>
-			<InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
+			<InformationObject name="Subscription" isCollection="true" designDesc="The Ball Core Structure: Subscription content">
 				<InformationItems>
 					<InformationItem name="Priority" logicalDataType="Number_Integer"/>
           <InformationItem name="TargetItemPartitionKey" logicalDataType="Text_Normal"/>

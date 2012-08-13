@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using AaltoGlobalImpact.OIP;
 using TheBall;
 
 namespace TheBallTool
@@ -12,6 +13,9 @@ namespace TheBallTool
     {
         static void Main(string[] args)
         {
+            string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
+            doTest(connStr);
+            return;
             string[] phtmlFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             var fixedContent = phtmlFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
@@ -27,7 +31,6 @@ namespace TheBallTool
 
                            })
                 .ToArray();
-            string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
@@ -40,6 +43,18 @@ namespace TheBallTool
             }
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
+        }
+
+        private static void doTest(string connStr)
+        {
+            AzureSupport.InitializeWithConnectionString(connStr);
+            AboutAGIApplications target = new AboutAGIApplications()
+                                              {
+                                                  PartitionKey = "TargetPKey1",
+                                                  RowKey = "TargetRKey1",
+                                              };
+            AboutAGIApplications subscriber = new AboutAGIApplications();
+            SubscribeSupport.AddSubscriptionToObject(target, subscriber, "TestOperation1");
         }
 
         private static byte[] GetBinaryContent(string fileName)

@@ -10,6 +10,26 @@ namespace TheBall
 {
     public static class AzureSupport
     {
+        public const string SubscriptionContainer = "subscription";
+
+        public static CloudTableClient CurrTableClient { get; private set; }
+        public static CloudStorageAccount CurrStorageAccount { get; private set; }
+        public static CloudBlobContainer CurrSubscriberContainer { get; private set; }
+
+        public static void InitializeWithConnectionString(string connStr)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
+            CurrStorageAccount = storageAccount;
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            CurrTableClient = tableClient;
+
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            var subscriberContainer = blobClient.GetContainerReference(SubscriptionContainer);
+            subscriberContainer.CreateIfNotExist();
+            CurrSubscriberContainer = subscriberContainer;
+        }
+
+
         public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
         {
             return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-webtemplates", BlobContainerPublicAccessType.Off);
