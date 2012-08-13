@@ -34,3 +34,6 @@
 [submodule "Abstractions/TheBallCoreABS"]
 	path = Abstractions/TheBallCoreABS
 	url = git://github.com/abstractiondev/TheBallCoreABS
+[submodule "Abstractions/TheBallCoreToOperationTRANS"]
+	path = Abstractions/TheBallCoreToOperationTRANS
+	url = git://github.com/abstractiondev/TheBallCoreToOperationTRANS
