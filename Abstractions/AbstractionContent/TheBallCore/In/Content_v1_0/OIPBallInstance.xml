@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+	<InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
+		<InformationModel>
+			<InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
+				<InformationItems>
+					<InformationItem name="Priority" logicalDataType="Number_Integer"/>
+          <InformationItem name="TargetItemPartitionKey" logicalDataType="Text_Normal"/>
+          <InformationItem name="TargetItemRowKey" logicalDataType="Text_Normal"/>
+          <InformationItem name="TargetItemObjectName" logicalDataType="Text_Normal" />
+          <InformationItem name="TargetItemFieldName" logicalDataType="Text_Normal" />
+          <InformationItem name="SubscriberPartitionKey" logicalDataType="Text_Normal"/>
+          <InformationItem name="SubscriberRowKey" logicalDataType="Text_Normal"/>
+          <InformationItem name="OperationActionName" logicalDataType="Text_Normal"/>
+        </InformationItems>
+			</InformationObject>
+      <InformationObject name="Monitor" designDesc="The Ball Core Structure: Monitoring content">
+        <InformationItems>
+          <InformationItem name="TargetItemObjectName" logicalDataType="Text_Normal" />
+          <InformationItem name="TargetItemFieldName" logicalDataType="Text_Normal" />
+          <InformationItem name="MonitoringUtcTimeStampToStart" logicalDataType="Time_DateTime"/>
+          <InformationItem name="MonitoringCycleFrequencyUnit" logicalDataType="Text_Normal" />
+          <InformationItem name="MonitoringCycleEveryXthOfUnit" logicalDataType="Number_Integer"/>
+          <InformationItem name="CustomMonitoringCycleOperationName" logicalDataType="Text_Normal"/>
+          <InformationItem name="OperationActionName" logicalDataType="Text_Normal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AboutAGIApplications" designDesc="About Aalto AGI Applications Info Set">
+        <InformationItems>
+          <InformationItem name="BuiltForAnybodyTitle" logicalDataType="Text_Normal"/>
+          <InformationItem name="BuiltForAnybodyTextarea" logicalDataType="Text_Normal"/>
+          <InformationItem name="ForAllPeopleTitle" logicalDataType="Text_Normal"/>
+          <InformationItem name="ForAllPeopleTextarea" logicalDataType="Text_Normal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AboutAGIApplicationsBuiltForAnybodyIcon" designDesc="Built for anybody icon image">
+        <InformationObjectContent fileExtension=".png" originalFileName="AboutAGIApplicationsBuiltForAnybodyIcon.png"/>
+      </InformationObject>
+      <InformationObject name="AboutAGIApplicationsForAllPeopleIcon" designDesc="For all people icon image">
+        <InformationObjectContent fileExtension=".png" originalFileName="AboutAGIApplicationsBuiltForAnybodyIcon.png"/>
+      </InformationObject>
+    </InformationModel>
+		<Operations>
+			<Operation name="UpdatePageContent">
+				<OperationSpec>
+					<Description/>
+				</OperationSpec>
+        <Parameters>
+          <Parameter dataType="string" name="changedInformation" designDesc="Test" state="underDesign"/>
+        </Parameters>
+				<Execution>
+					<SequentialExecution>
+						<MethodExecute name="UpdatePage" designDesc="Do the update page" state="underDesign"/>
+					</SequentialExecution>
+				</Execution>
+			</Operation>
+		</Operations>
+		<Subscriptions>
+			<Subscription triggeredOperationName="UpdatePageContent">
+				<TriggeringInformationItem itemName="BuiltForAnybodyTitle" objectName="AboutAGIApplications"/>
+				<OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="BuiltForAnybodyTitle"/>
+			</Subscription>
+		</Subscriptions>
+		<Monitoring>
+			<Monitor monitoringOperationName="UpdatePageContent">
+				<MonitoredInformationItem objectName="AboutAGIApplications" itemName="ForAllPeopleTitle"/>
+				<MonitoringFrequency utcTimeStampToStart="2012-08-13T14:00:00.123456789+02:00">
+					<RegularMonitoringCycle frequencyUnit="Minute" monitorEveryXthOfUnit="15"/>
+				</MonitoringFrequency>
+				<OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="ForAllPeopleTitle"/>
+			</Monitor>
+		</Monitoring>
+	</InstanceOfTheBall>
+</TheBallCoreAbstraction>

@@ -28,8 +28,8 @@ namespace TheBallTool
                            })
                 .ToArray();
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            //var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
-            var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
+            var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            //var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
             {
                 Console.WriteLine("Uploading: " + content.FileName);

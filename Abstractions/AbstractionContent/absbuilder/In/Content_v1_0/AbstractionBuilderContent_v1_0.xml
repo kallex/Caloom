@@ -1,21 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<AbstractionBuilder xmlns="http://tempuri.org/absbuilder_v1_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tempuri.org/absbuilder_v1_0.xsd ../../../../absbuilder/AbstractionBuilder/absbuilder/Content_v1_0/absbuilder_v1_0.xsd">
+<AbstractionBuilder xmlns="http://tempuri.org/absbuilder_v1_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tempuri.org/absbuilder_v1_0.xsd ../../../../absbuilder/AbstractionBuilder/absbuilder/Schema/absbuilder.xsd">
   <Builder>
     <Abstractions>
-      <Abstraction name="ClassModelABS">
-        <Generator name="CSharpClassGenerator_v1_0"/>
-        <Generator name="JavaScriptClassGenerator_v1_0"/>
+      <Abstraction name="TheBallCoreABS">
+        <Generator name="AzureCSharpClassGenerator_v1_0"/>
+      </Abstraction>
+      <Abstraction name="OperationABS">
+        <Generator name="CSharpCode_v1_0"/>
       </Abstraction>
     </Abstractions>
     <Transformations>
-      <Transformation name="UserInterfaceToClassModelTRANS"
-                      sourceAbstraction="UserInterface"
-                      targetAbstraction="ClassModel"
+      <Transformation name="TheBallCoreToOperationTRANS"
+                      sourceAbstraction="TheBallCore"
+                      targetAbstraction="Operation"
                       />
     </Transformations>
     <BuildExecution>
-      <TransformationItem nameRef="UserInterfaceToClassModelTRANS" />
-      <AbstractionItem nameRef="ClassModelABS"/>
+      <!--
+      <TransformationItem nameRef="TheBallCoreToOperationTRANS" />
+      -->
+      <AbstractionItem nameRef="OperationABS"/>
+      <AbstractionItem nameRef="TheBallCoreABS"/>
     </BuildExecution>
   </Builder>
 </AbstractionBuilder>

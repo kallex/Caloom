@@ -40,12 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TheBallCore\Out\OIPBallInstance.designer.cs" />
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ObjectRelational\In\Content_v1_0\CaloomDatabase_v1_0.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml" />
     <Content Include="UserInterface\In\Content_v1_0\CaloomStdUI.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -62,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClassModel\Out\" />
+    <Folder Include="Operation\In\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
