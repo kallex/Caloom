@@ -48,9 +48,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml" />
-    <Content Include="UserInterface\In\Content_v1_0\CaloomStdUI.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="ServiceLayer\Out\ServiceClient_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceContract_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceServer_CSharp_v1_0.designer.cs" />
@@ -65,6 +62,7 @@
   <ItemGroup>
     <Folder Include="ClassModel\Out\" />
     <Folder Include="Operation\In\" />
+    <Folder Include="Operation\Out\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

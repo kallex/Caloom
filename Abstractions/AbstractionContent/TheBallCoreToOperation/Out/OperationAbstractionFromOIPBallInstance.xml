@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="AaltoGlobalImpact.OIP">
+    <Operation name="UpdatePageContent">
+      <OperationSpec>
+        <Description />
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="changedInformation" dataType="string" designDesc="Test" state="underDesign" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="UpdatePage" designDesc="Do the update page" state="underDesign" />
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

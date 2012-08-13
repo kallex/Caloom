@@ -16,9 +16,7 @@
                       />
     </Transformations>
     <BuildExecution>
-      <!--
       <TransformationItem nameRef="TheBallCoreToOperationTRANS" />
-      -->
       <AbstractionItem nameRef="OperationABS"/>
       <AbstractionItem nameRef="TheBallCoreABS"/>
     </BuildExecution>
