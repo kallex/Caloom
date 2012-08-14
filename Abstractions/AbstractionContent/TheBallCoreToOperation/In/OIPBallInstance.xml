@@ -46,7 +46,7 @@
       <InformationObject name="Event5WCollection" designDesc="Collection of events">
         <CollectionFor contentInformationObjectName="Event5W"/>
       </InformationObject>
-      <InformationObject name="SubscriptionCollection" designDesc="Collection for Subscription objects">
+      <InformationObject name="SubscriptionCollection" designDesc="Collection for Subscription objects - relatively linked to target of subscriptions">
         <CollectionFor contentInformationObjectName="Subscription"/>
       </InformationObject>
 			<InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
@@ -55,10 +55,33 @@
           <InformationItem name="TargetItemID" logicalDataType="Text_Normal"/>
           <InformationItem name="TargetObjectName" logicalDataType="Text_Normal" />
           <InformationItem name="TargetItemName" logicalDataType="Text_Normal" />
+          <InformationItem name="TargetRelativeLocation" logicalDataType="Text_Normal"/>
           <InformationItem name="SubscriberID" logicalDataType="Text_Normal"/>
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Normal"/>
           <InformationItem name="OperationActionName" logicalDataType="Text_Normal"/>
         </InformationItems>
 			</InformationObject>
+      <InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items">
+        <InformationItems>
+          <InformationItem name="SubscriberUpdateOperation" logicalDataType="InformationObject" informationObjectName="SubscriberUpdateOperation"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SubscriberInput" designDesc="Parameter for queued operation">
+        <InformationItems>
+          <InformationItem name="InputRelativeLocation" logicalDataType="Text_Normal"/>
+          <InformationItem name="InformationObjectName" logicalDataType="Text_Normal"/>
+          <InformationItem name="InformationItemName" logicalDataType="Text_Normal"/>
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Normal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SubscriberUpdateOperation" designDesc="Subscriber update operation call">
+        <InformationItems>
+          <InformationItem name="TargetOwnerID" logicalDataType="Text_Normal"/>
+          <InformationItem name="SubscriberOwnerID" logicalDataType="Text_Normal"/>
+          <InformationItem name="OperationParameters" logicalDataType="InformationObject" informationObjectName="SubscriberInput"/>
+          <InformationItem name="OperationName" logicalDataType="Text_Normal"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="Monitor" designDesc="The Ball Core Structure: Monitoring content">
         <InformationItems>
           <InformationItem name="TargetObjectName" logicalDataType="Text_Normal" />
@@ -85,6 +108,12 @@
       </InformationObject>
       <InformationObject name="Icon" designDesc="Icon image">
         <InformationObjectContent fileExtension=".png" originalFileName="Icon.png"/>
+      </InformationObject>
+      <InformationObject name="WebPageTemplate" designDesc="Web Page Template Content">
+        <InformationObjectContent fileExtension=".html" originalFileName="WebPageTemplate.html"/>
+      </InformationObject>
+      <InformationObject name="WebPage" designDesc="Web Page Content">
+        <InformationObjectContent fileExtension=".html" originalFileName="WebPage.html" />
       </InformationObject>
     </InformationModel>
 		<Operations>

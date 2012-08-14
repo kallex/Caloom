@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
 {
-    public static class AzureSupport
+    public static class StorageSupport
     {
         public const string SubscriptionContainer = "subscription";
 
@@ -34,8 +35,8 @@ namespace TheBall
             var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
+            QueueSupport.InitializeAfterStorage();
         }
-
 
         public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
         {
@@ -686,29 +687,45 @@ namespace TheBall
         }
 
 
-        public static void StoreInformation(IInformationObject informationObject, string etag)
+        public static void StoreInformation(IInformationObject informationObject)
         {
             DataContractSerializer ser = new DataContractSerializer(informationObject.GetType());
             MemoryStream memoryStream = new MemoryStream();
-            ser.WriteObject(memoryStream, informationObject);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(informationObject.RelativeLocation);
+            byte[] dataContent;
+            using(XmlTextWriter writer = new XmlTextWriter(memoryStream, Encoding.UTF8) { Formatting = Formatting.Indented})
+            {
+                ser.WriteObject(writer, informationObject);
+                writer.Flush();
+                dataContent = memoryStream.ToArray();
+            }
+            //memoryStream.Seek(0, SeekOrigin.Begin);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(informationObject.RelativeLocation);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            string etag = informationObject.ETag;
+            bool isNewBlob = etag == null;
             if (etag != null)
                 options.AccessCondition = AccessCondition.IfMatch(etag);
             else
                 options.AccessCondition = AccessCondition.IfNoneMatch("*");
-            blob.UploadFromStream(memoryStream, options );
+            //blob.Attributes.Metadata.Add("RelativeLocation", informationObject.RelativeLocation);
+            blob.UploadByteArray(dataContent, options);
+            informationObject.ETag = blob.Properties.ETag;
+            if (isNewBlob)
+                informationObject.InitializeDefaultSubscribers();
+            //blob.UploadFromStream(memoryStream, options );
+            SubscribeSupport.NotifySubscribers(informationObject);
         }
 
         public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve)
         {
-            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(relativeLocation);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
+            string blobEtag = null;
             try
             {
                 blob.DownloadToStream(memoryStream);
+                blobEtag = blob.Properties.ETag;
             }
             catch (StorageClientException stEx)
             {
@@ -721,6 +738,8 @@ namespace TheBall
             memoryStream.Seek(0, SeekOrigin.Begin);
             DataContractSerializer serializer = new DataContractSerializer(typeToRetrieve);
             IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
+            informationObject.ETag = blobEtag;
+            //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
             return informationObject;
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.IO;
 using System.Runtime.Serialization;
 using AaltoGlobalImpact.OIP;
@@ -19,7 +20,7 @@ namespace TheBall
                 subscriptionCollection.SetRelativeLocationTo(target);
             }
             subscriptionCollection.CollectionContent.Add(sub);
-            AzureSupport.StoreInformation(subscriptionCollection, null);
+            StorageSupport.StoreInformation(subscriptionCollection);
         }
 
         public static void AddSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
@@ -49,9 +50,38 @@ namespace TheBall
         public static SubscriptionCollection GetSubscriptions(IInformationObject target)
         {
             string blobPath = SubscriptionCollection.GetRelativeLocationTo(target);
-            var result = AzureSupport.RetrieveInformation(blobPath, typeof(SubscriptionCollection));
+            var result = StorageSupport.RetrieveInformation(blobPath, typeof(SubscriptionCollection));
             return (SubscriptionCollection) result;
         }
 
+        public static void NotifySubscribers(IInformationObject informationObject)
+        {
+            SubscriptionCollection subscriptionCollection = GetSubscriptions(informationObject);
+            if (subscriptionCollection == null)
+                return;
+            foreach(var subsciption in subscriptionCollection.CollectionContent)
+            {
+                QueueEnvelope envelope =
+                    new QueueEnvelope
+                        {
+                            SubscriberUpdateOperation =
+                                new SubscriberUpdateOperation
+                                    {
+                                        OperationName = subsciption.OperationActionName,
+                                        SubscriberOwnerID = StorageSupport.ActiveOwnerID.ToString(),
+                                        TargetOwnerID = StorageSupport.ActiveOwnerID.ToString(),
+                                        OperationParameters =
+                                            new SubscriberInput
+                                                {
+                                                    InformationObjectName = subsciption.TargetObjectName,
+                                                    InformationItemName = subsciption.TargetItemName,
+                                                    InputRelativeLocation = subsciption.TargetRelativeLocation,
+                                                    SubscriberRelativeLocation = subsciption.SubscriberRelativeLocation,
+                                                }
+                                    }
+                        };
+                QueueSupport.PutToDefaultQueue(envelope);
+            }
+        }
     }
 }

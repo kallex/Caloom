@@ -52,7 +52,8 @@
     </Compile>
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
-    <Compile Include="AzureSupport.cs" />
+    <Compile Include="QueueSupport.cs" />
+    <Compile Include="StorageSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscribeSupport.cs" />
   </ItemGroup>

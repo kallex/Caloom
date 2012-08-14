@@ -31,8 +31,8 @@ namespace TheBallTool
 
                            })
                 .ToArray();
-            var container = AzureSupport.ConfigureAnonWebBlobStorage(connStr, true);
-            //var container = AzureSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
+            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
             {
                 Console.WriteLine("Uploading: " + content.FileName);
@@ -47,37 +47,43 @@ namespace TheBallTool
 
         private static void doTest(string connStr)
         {
-            AzureSupport.InitializeWithConnectionString(connStr);
-            AboutAGIApplications target = new AboutAGIApplications()
+            StorageSupport.InitializeWithConnectionString(connStr);
+/*            AboutAGIApplications target = new AboutAGIApplications()
                                               {
                                                   ID = "TargetID1",
-                                                  RelativeLocation = "RelativeNew2",
+                                                  RelativeLocation = "RelativeNew7",
                                                   ForAllPeople = new IconTitleDescription
                                                                      {
-                                                                         Description = "KukkanenX",
+                                                                         Description = "KukkanenZ",
                                                                          Title = "OtsikkoX"
                                                                      }
                                               };
+            StorageSupport.StoreInformation(target);*/
+            AboutAGIApplications target = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew5");
+            //target = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew2");
             try
             {
-                AzureSupport.StoreInformation(target, null);
+                //StorageSupport.StoreInformation(target);
             } catch(Exception ex)
             {
                 
             }
-            AboutAGIApplications subscriber = new AboutAGIApplications()
-                                                  {
-                                                      ID = "Subscriber1",
-                                                      RelativeLocation = "SubscriberFixed1"
-                                                  };
+            //AboutAGIApplications subscriber = new AboutAGIApplications()
+            //                                      {
+            //                                          ID = "Subscriber1",
+            //                                          RelativeLocation = "SubscriberFixed1"
+            //                                      };
+            AboutAGIApplications subscriber = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew1");
             try
             {
-                AzureSupport.StoreInformation(subscriber, "0x8CF48368EBCA193");
+                StorageSupport.StoreInformation(subscriber);
             }
             catch (Exception ex)
             {
             }
-            SubscribeSupport.AddSubscriptionToObject(target, subscriber, "TestOperation1");
+            SubscribeSupport.AddSubscriptionToObject(target, subscriber, "UpdateSubscriberBasedOnObject");
+            SubscribeSupport.AddSubscriptionToItem(target, "ForAllPeople.Title", subscriber, "UpdateSubscriberBasedOnItem");
+            StorageSupport.StoreInformation(target);
         }
 
         private static byte[] GetBinaryContent(string fileName)
