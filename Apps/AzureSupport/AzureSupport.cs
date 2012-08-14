@@ -695,7 +695,10 @@ namespace TheBall
             CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(informationObject.RelativeLocation);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-            options.AccessCondition = AccessCondition.IfMatch(etag);
+            if (etag != null)
+                options.AccessCondition = AccessCondition.IfMatch(etag);
+            else
+                options.AccessCondition = AccessCondition.IfNoneMatch("*");
             blob.UploadFromStream(memoryStream, options );
         }
 

@@ -51,16 +51,16 @@ namespace TheBallTool
             AboutAGIApplications target = new AboutAGIApplications()
                                               {
                                                   ID = "TargetID1",
-                                                  RelativeLocation = "RelativeFixed1",
+                                                  RelativeLocation = "RelativeNew2",
                                                   ForAllPeople = new IconTitleDescription
                                                                      {
-                                                                         Description = "Kukkanen3",
-                                                                         Title = "Otsikko3"
+                                                                         Description = "KukkanenX",
+                                                                         Title = "OtsikkoX"
                                                                      }
                                               };
             try
             {
-                AzureSupport.StoreInformation(target, "0x8CF48368EBCA193");
+                AzureSupport.StoreInformation(target, null);
             } catch(Exception ex)
             {
                 
