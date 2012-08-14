@@ -19,12 +19,7 @@ namespace TheBall
                 subscriptionCollection.SetRelativeLocationTo(target);
             }
             subscriptionCollection.CollectionContent.Add(sub);
-            DataContractSerializer ser = new DataContractSerializer(typeof(SubscriptionCollection));
-            MemoryStream memoryStream = new MemoryStream();
-            ser.WriteObject(memoryStream, subscriptionCollection);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(subscriptionCollection.RelativeLocation);
-            blob.UploadFromStream(memoryStream);
+            AzureSupport.StoreInformation(subscriptionCollection, null);
         }
 
         public static void AddSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
@@ -40,7 +35,7 @@ namespace TheBall
                               TargetItemID = target.ID,
                               SubscriberID = subscriber.ID,
                               OperationActionName = operationName
-                                   };
+                          };
             return sub;
         }
 
@@ -54,23 +49,9 @@ namespace TheBall
         public static SubscriptionCollection GetSubscriptions(IInformationObject target)
         {
             string blobPath = SubscriptionCollection.GetRelativeLocationTo(target);
-            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(blobPath);
-            MemoryStream memoryStream = new MemoryStream();
-            try
-            {
-                blob.DownloadToStream(memoryStream);
-            } catch(StorageClientException stEx)
-            {
-                if (stEx.ErrorCode == StorageErrorCode.BlobNotFound)
-                    return null;
-                throw;
-            }
-            //if (memoryStream.Length == 0)
-            //    return null;
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
-            SubscriptionCollection subscriptionCollection = (SubscriptionCollection) serializer.ReadObject(memoryStream);
-            return subscriptionCollection;
+            var result = AzureSupport.RetrieveInformation(blobPath, typeof(SubscriptionCollection));
+            return (SubscriptionCollection) result;
         }
+
     }
 }

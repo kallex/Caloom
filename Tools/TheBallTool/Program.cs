@@ -51,8 +51,32 @@ namespace TheBallTool
             AboutAGIApplications target = new AboutAGIApplications()
                                               {
                                                   ID = "TargetID1",
+                                                  RelativeLocation = "RelativeFixed1",
+                                                  ForAllPeople = new IconTitleDescription
+                                                                     {
+                                                                         Description = "Kukkanen3",
+                                                                         Title = "Otsikko3"
+                                                                     }
                                               };
-            AboutAGIApplications subscriber = new AboutAGIApplications();
+            try
+            {
+                AzureSupport.StoreInformation(target, "0x8CF48368EBCA193");
+            } catch(Exception ex)
+            {
+                
+            }
+            AboutAGIApplications subscriber = new AboutAGIApplications()
+                                                  {
+                                                      ID = "Subscriber1",
+                                                      RelativeLocation = "SubscriberFixed1"
+                                                  };
+            try
+            {
+                AzureSupport.StoreInformation(subscriber, "0x8CF48368EBCA193");
+            }
+            catch (Exception ex)
+            {
+            }
             SubscribeSupport.AddSubscriptionToObject(target, subscriber, "TestOperation1");
         }
 

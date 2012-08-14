@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 
@@ -681,8 +683,42 @@ namespace TheBall
                     // if you have logging, log: "No mime type is registered for extension: " + extension); 
                     return "application/octet-stream";
             }
-        } 
+        }
 
 
+        public static void StoreInformation(IInformationObject informationObject, string etag)
+        {
+            DataContractSerializer ser = new DataContractSerializer(informationObject.GetType());
+            MemoryStream memoryStream = new MemoryStream();
+            ser.WriteObject(memoryStream, informationObject);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(informationObject.RelativeLocation);
+            BlobRequestOptions options = new BlobRequestOptions();
+            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            options.AccessCondition = AccessCondition.IfMatch(etag);
+            blob.UploadFromStream(memoryStream, options );
+        }
+
+        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve)
+        {
+            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(relativeLocation);
+            MemoryStream memoryStream = new MemoryStream();
+            try
+            {
+                blob.DownloadToStream(memoryStream);
+            }
+            catch (StorageClientException stEx)
+            {
+                if (stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                    return null;
+                throw;
+            }
+            //if (memoryStream.Length == 0)
+            //    return null;
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            DataContractSerializer serializer = new DataContractSerializer(typeToRetrieve);
+            IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
+            return informationObject;
+        }
     }
 }
