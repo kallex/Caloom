@@ -50,8 +50,7 @@ namespace TheBallTool
             AzureSupport.InitializeWithConnectionString(connStr);
             AboutAGIApplications target = new AboutAGIApplications()
                                               {
-                                                  PartitionKey = "TargetPKey1",
-                                                  RowKey = "TargetRKey1",
+                                                  ID = "TargetID1",
                                               };
             AboutAGIApplications subscriber = new AboutAGIApplications();
             SubscribeSupport.AddSubscriptionToObject(target, subscriber, "TestOperation1");

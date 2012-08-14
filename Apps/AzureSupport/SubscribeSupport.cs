@@ -9,15 +9,14 @@ namespace TheBall
 {
     public static class SubscribeSupport
     {
-        public static void AddSubscriptionToObject(TableServiceEntity target, TableServiceEntity subscriber, string operationName)
+        public static void AddSubscriptionToObject(IInformationObject target, IInformationObject subscriber, string operationName)
         {
             var sub = GetSubscriptionToObject(target, subscriber, operationName);
             SubscriptionCollection subscriptionCollection = GetSubscriptions(target);
             if(subscriptionCollection == null)
             {
                 subscriptionCollection = new SubscriptionCollection();
-                subscriptionCollection.PartitionKey = target.PartitionKey;
-                subscriptionCollection.RowKey = target.RowKey;
+                subscriptionCollection.ID = target.ID;
             }
             subscriptionCollection.CollectionContent.Add(sub);
             DataContractSerializer ser = new DataContractSerializer(typeof(SubscriptionCollection));
@@ -28,35 +27,33 @@ namespace TheBall
             blob.UploadFromStream(memoryStream);
         }
 
-        public static void AddSubscriptionToItem(TableServiceEntity target, string itemName, TableServiceEntity subscriber, string operationName)
+        public static void AddSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
         {
             var sub = GetSubscriptionToItem(target, itemName, subscriber, operationName);
         }
 
-        public static Subscription GetSubscriptionToObject(TableServiceEntity target, TableServiceEntity subscriber, string operationName)
+        public static Subscription GetSubscriptionToObject(IInformationObject target, IInformationObject subscriber, string operationName)
         {
             var sub = new Subscription
-                                   {
-                                       TargetItemObjectName = target.GetType().Name,
-                                       TargetItemPartitionKey = target.PartitionKey,
-                                       TargetItemRowKey = target.RowKey,
-                                       SubscriberPartitionKey = subscriber.PartitionKey,
-                                       SubscriberRowKey = subscriber.RowKey,
-                                       OperationActionName = operationName
+                          {
+                              TargetObjectName = target.Name,
+                              TargetItemID = target.ID,
+                              SubscriberID = subscriber.ID,
+                              OperationActionName = operationName
                                    };
             return sub;
         }
 
-        public static Subscription GetSubscriptionToItem(TableServiceEntity target, string itemName, TableServiceEntity subscriber, string operationName)
+        public static Subscription GetSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
         {
             Subscription sub = GetSubscriptionToObject(target, subscriber, operationName);
-            sub.TargetItemFieldName = itemName;
+            sub.TargetItemName = itemName;
             return sub;
         }
 
-        public static SubscriptionCollection GetSubscriptions(TableServiceEntity target)
+        public static SubscriptionCollection GetSubscriptions(IInformationObject target)
         {
-            string blobPath = SubscriptionCollection.GetBlobPath(target.PartitionKey, target.RowKey);
+            string blobPath = SubscriptionCollection.GetBlobPath(target.ID);
             CloudBlob blob = AzureSupport.CurrSubscriberContainer.GetBlobReference(blobPath);
             MemoryStream memoryStream = new MemoryStream();
             try
