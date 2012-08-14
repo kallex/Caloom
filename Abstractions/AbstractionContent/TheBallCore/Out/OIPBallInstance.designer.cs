@@ -2,14 +2,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall;
 
 namespace AaltoGlobalImpact.OIP { 
 		    public interface IInformationObject
     {
+        Guid OwnerID { get; set; }
         string ID { get; set; }
-		string Name { get; }
+        string RelativeLocation { get; set; }
+        string SemanticDomainName { get; set; }
+        string Name { get; set; }
     }
 
 			[DataContract]
@@ -17,27 +22,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Longitude()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Longitude" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Longitude";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Longitude", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Longitude"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -49,27 +63,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Latitude()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Latitude" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Latitude";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Latitude", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Latitude"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -81,27 +104,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Location()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Location" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Location";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Location", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Location"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -115,27 +147,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public What()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.What" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "What";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "What", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "What"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "What", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -149,27 +190,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public When()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.When" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "When";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "When", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "When"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "When", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -183,27 +233,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Where()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Where" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Where";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Where", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Where"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Where", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -217,27 +276,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Event5W()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Event5W" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Event5W";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Event5W", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Event5W"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -253,27 +321,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Event5WCollection()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Event5WCollection" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Event5WCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Event5WCollection"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 
@@ -286,27 +363,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public SubscriptionCollection()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.SubscriptionCollection" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SubscriptionCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "SubscriptionCollection"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 
@@ -319,27 +405,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Subscription()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Subscription" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Subscription";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Subscription", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Subscription"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -361,27 +456,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Monitor()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Monitor" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Monitor";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Monitor", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Monitor"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -405,27 +509,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public IconTitleDescription()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.IconTitleDescription" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "IconTitleDescription";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "IconTitleDescription"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -441,27 +554,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public AboutAGIApplications()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.AboutAGIApplications" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AboutAGIApplications";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "AboutAGIApplications"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 			[DataMember]
@@ -475,27 +597,36 @@ namespace AaltoGlobalImpact.OIP {
 			{
 				public Icon()
 				{
-					this.ID = "AaltoGlobalImpact.OIP.Icon" + "." + Guid.NewGuid().ToString();
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = AzureSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Icon";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Icon", ID).Replace("\\", "/");
 				}
 
 				[DataMember]
 				public string ID { get; set; }
 
-                [IgnoreDataMember]
-				public string Name
-			    {
-                    get { return "Icon"; }
-			    }
+                [DataMember]
+                public Guid OwnerID { get; set; }
 
+                [DataMember]
+                public string RelativeLocation { get; set; }
 
-				public string GetBlobPath()
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return GetBlobPath(this.ID);
+					RelativeLocation = GetRelativeLocationTo(masterObject);
 				}
 
-				public static string GetBlobPath(string id)
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return id;
+					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 		// Properties to map to handle the file: Icon.png..png

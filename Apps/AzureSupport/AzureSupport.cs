@@ -14,7 +14,12 @@ namespace TheBall
 
         public static CloudTableClient CurrTableClient { get; private set; }
         public static CloudStorageAccount CurrStorageAccount { get; private set; }
-        public static CloudBlobContainer CurrSubscriberContainer { get; private set; }
+        public static CloudBlobContainer CurrActiveContainer { get; private set; }
+
+        public static Guid ActiveOwnerID
+        {
+            get { return Guid.Empty; }
+        }
 
         public static void InitializeWithConnectionString(string connStr)
         {
@@ -24,9 +29,9 @@ namespace TheBall
             CurrTableClient = tableClient;
 
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            var subscriberContainer = blobClient.GetContainerReference(SubscriptionContainer);
-            subscriberContainer.CreateIfNotExist();
-            CurrSubscriberContainer = subscriberContainer;
+            var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
+            activeContainer.CreateIfNotExist();
+            CurrActiveContainer = activeContainer;
         }
 
 

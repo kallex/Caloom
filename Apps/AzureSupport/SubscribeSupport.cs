@@ -16,14 +16,14 @@ namespace TheBall
             if(subscriptionCollection == null)
             {
                 subscriptionCollection = new SubscriptionCollection();
-                subscriptionCollection.ID = target.ID;
+                subscriptionCollection.SetRelativeLocationTo(target);
             }
             subscriptionCollection.CollectionContent.Add(sub);
             DataContractSerializer ser = new DataContractSerializer(typeof(SubscriptionCollection));
             MemoryStream memoryStream = new MemoryStream();
             ser.WriteObject(memoryStream, subscriptionCollection);
             memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlob blob = AzureSupport.CurrSubscriberContainer.GetBlobReference(subscriptionCollection.GetBlobPath());
+            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(subscriptionCollection.RelativeLocation);
             blob.UploadFromStream(memoryStream);
         }
 
@@ -53,8 +53,8 @@ namespace TheBall
 
         public static SubscriptionCollection GetSubscriptions(IInformationObject target)
         {
-            string blobPath = SubscriptionCollection.GetBlobPath(target.ID);
-            CloudBlob blob = AzureSupport.CurrSubscriberContainer.GetBlobReference(blobPath);
+            string blobPath = SubscriptionCollection.GetRelativeLocationTo(target);
+            CloudBlob blob = AzureSupport.CurrActiveContainer.GetBlobReference(blobPath);
             MemoryStream memoryStream = new MemoryStream();
             try
             {
