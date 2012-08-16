@@ -23,7 +23,7 @@ namespace WebInterface
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             if(Request.Path.ToLower().StartsWith("/theball") == false)
-                Response.Redirect("~/theballanon/default-landing-page.html", true);
+                Response.Redirect("/theballanon/oip-layouts/oip-edit-default-layout-jeroen.html", true);
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

@@ -2,6 +2,8 @@
 using System.Web;
 using System.Web.Security;
 using DotNetOpenAuth.OpenId.RelyingParty;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace WebInterface
 {
@@ -21,7 +23,7 @@ namespace WebInterface
             get { return true; }
         }
 
-        public void ProcessRequest(HttpContext context)
+        public void ProcessRequest2(HttpContext context)
         {
             //OpenIdRelyingParty openid = new OpenIdRelyingParty();
             //var authenticationResponse = openid.GetResponse();
@@ -35,12 +37,76 @@ namespace WebInterface
             Response.Write("<html>");
             Response.Write("<body>");
             Response.Write("<h1>Hello from a synchronous custom HTTP handler 2.</h1>");
-            if(String.IsNullOrEmpty(null) == false)
+            if(String.IsNullOrEmpty(user) == false)
                 Response.Write("<p>According to the request, you are a OpenAuth user called: " + user + "</p>");
             Response.Write("<p><a href=\"/theballanon/anonlink.txt\">Some anon data link</a></p>");
             Response.Write("<p><a href=\"/theballauth/authlink.txt\">Some auth data link</a></p>");
             Response.Write("</body>");
             Response.Write("</html>");
+        }
+
+
+        public void ProcessRequest(HttpContext context)
+        {
+            string user = context.User.Identity.Name;
+            bool isAuthenticated = String.IsNullOrEmpty(user) == false;
+            HttpRequest request = context.Request;
+            if(request.RequestType != "GET")
+            {
+                string reqType = request.RequestType;
+            }
+            HttpResponse response = context.Response;
+            if(request.Path.StartsWith("/theballanon/"))
+            {
+                ProcessAnonymousRequest(request, response);
+                return;
+            }
+            
+            // Get the file name.
+
+            string fileName = context.Request.Path.Replace("/blobproxy/", string.Empty);
+
+            // Get the blob from blob storage.
+            var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
+            var blobStorage = storageAccount.CreateCloudBlobClient();
+            string blobContainerName = "";
+            string blobAddress = blobContainerName + "/" + fileName;
+            CloudBlob blob = blobStorage.GetBlobReference(blobAddress);
+
+            // Read blob content to response.
+            context.Response.Clear();
+            try
+            {
+                blob.FetchAttributes();
+
+                context.Response.ContentType = blob.Properties.ContentType;
+                blob.DownloadToStream(context.Response.OutputStream);
+            }
+            catch (Exception ex)
+            {
+                context.Response.Write(ex.ToString());
+            }
+            context.Response.End();
+        }
+
+        private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
+        {
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string blobPath = request.Path.Replace("/theballanon/", "anon-webcontainer/");
+            CloudBlob blob = publicClient.GetBlobReference(blobPath);
+            response.Clear();
+            try
+            {
+                blob.FetchAttributes();
+                response.ContentType = blob.Properties.ContentType;
+                blob.DownloadToStream(response.OutputStream);
+            } catch(StorageClientException scEx)
+            {
+                response.Write(scEx.ToString());
+            } finally
+            {
+                response.End();
+            }
         }
 
         #endregion

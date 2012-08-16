@@ -14,8 +14,8 @@ namespace TheBallTool
         static void Main(string[] args)
         {
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            doTest(connStr);
-            return;
+            //doTest(connStr);
+            //return;
             string[] phtmlFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             var fixedContent = phtmlFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
@@ -35,6 +35,8 @@ namespace TheBallTool
             //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             foreach (var content in fixedContent)
             {
+                //if (content.FileName.Contains("glyph"))
+                //    continue;
                 Console.WriteLine("Uploading: " + content.FileName);
                 if (content.TextContent != null)
                     container.UploadBlobText(content.FileName.Replace(".phtml", ".html"), content.TextContent);
