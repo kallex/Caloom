@@ -35,13 +35,12 @@ namespace WebInterface
             Response.Write("<html>");
             Response.Write("<body>");
             Response.Write("<h1>Hello from a synchronous custom HTTP handler 2.</h1>");
-            if(user != null) 
+            if(String.IsNullOrEmpty(null) == false)
                 Response.Write("<p>According to the request, you are a OpenAuth user called: " + user + "</p>");
             Response.Write("<p><a href=\"/theballanon/anonlink.txt\">Some anon data link</a></p>");
             Response.Write("<p><a href=\"/theballauth/authlink.txt\">Some auth data link</a></p>");
             Response.Write("</body>");
             Response.Write("</html>");
-
         }
 
         #endregion

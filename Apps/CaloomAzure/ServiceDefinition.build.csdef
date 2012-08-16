@@ -9,24 +9,6 @@
   **********************************************************************************************
 -->
 <ServiceDefinition name="CaloomAzure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-05.1.7">
-  <WebRole name="CaloomMvcWebRole" vmsize="ExtraSmall">
-    <Sites>
-      <Site name="Web">
-        <Bindings>
-          <Binding name="Endpoint1" endpointName="Endpoint1" />
-        </Bindings>
-      </Site>
-    </Sites>
-    <Endpoints>
-      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
-    </Endpoints>
-    <Imports>
-      <Import moduleName="Diagnostics" />
-    </Imports>
-    <ConfigurationSettings>
-      <Setting name="StorageConnectionString" />
-    </ConfigurationSettings>
-  </WebRole>
   <WorkerRole name="CaloomWorkerRole" vmsize="ExtraSmall">
     <Imports>
       <Import moduleName="Diagnostics" />
@@ -38,19 +20,4 @@
       <LocalStorage name="LocalST" cleanOnRoleRecycle="true" />
     </LocalResources>
   </WorkerRole>
-  <WebRole name="TestAspNetWebRole1" vmsize="ExtraSmall">
-    <Sites>
-      <Site name="Web">
-        <Bindings>
-          <Binding name="Endpoint1" endpointName="Endpoint1" />
-        </Bindings>
-      </Site>
-    </Sites>
-    <Endpoints>
-      <InputEndpoint name="Endpoint1" protocol="http" port="8080" />
-    </Endpoints>
-    <Imports>
-      <Import moduleName="Diagnostics" />
-    </Imports>
-  </WebRole>
 </ServiceDefinition>

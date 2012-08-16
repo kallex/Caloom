@@ -4,12 +4,12 @@
 		<InformationModel>
       <InformationObject name="Longitude" designDesc="Longitude">
         <InformationItems>
-          <InformationItem name="TextValue" logicalDataType="Text_Normal" />
+          <InformationItem name="TextValue" logicalDataType="Text_Short" />
         </InformationItems>
       </InformationObject>
       <InformationObject name="Latitude" designDesc="Latitude">
         <InformationItems>
-          <InformationItem name="TextValue" logicalDataType="Text_Normal" />
+          <InformationItem name="TextValue" logicalDataType="Text_Short" />
         </InformationItems>
       </InformationObject>
       <InformationObject name="Location" designDesc="Location (Longitude, Latitude)">
@@ -20,19 +20,19 @@
       </InformationObject>
       <InformationObject name="What" designDesc="What from 5W core">
         <InformationItems>
-          <InformationItem name="Title" logicalDataType="Text_Normal" />
-          <InformationItem name="Description" logicalDataType="Text_Huge"/>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="When" designDesc="When from 5W core">
         <InformationItems>
-          <InformationItem name="Title" logicalDataType="Text_Normal" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Time" logicalDataType="Time_DateTime" />
         </InformationItems>
       </InformationObject>
       <InformationObject name="Where" designDesc="Where from 5W core">
         <InformationItems>
-          <InformationItem name="Title" logicalDataType="Text_Normal" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location"/>
         </InformationItems>
       </InformationObject>
@@ -52,13 +52,13 @@
 			<InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
 				<InformationItems>
 					<InformationItem name="Priority" logicalDataType="Number_Integer"/>
-          <InformationItem name="TargetItemID" logicalDataType="Text_Normal"/>
-          <InformationItem name="TargetObjectName" logicalDataType="Text_Normal" />
-          <InformationItem name="TargetItemName" logicalDataType="Text_Normal" />
-          <InformationItem name="TargetRelativeLocation" logicalDataType="Text_Normal"/>
-          <InformationItem name="SubscriberID" logicalDataType="Text_Normal"/>
-          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Normal"/>
-          <InformationItem name="OperationActionName" logicalDataType="Text_Normal"/>
+          <InformationItem name="TargetItemID" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short" />
+          <InformationItem name="TargetItemName" logicalDataType="Text_Short" />
+          <InformationItem name="TargetRelativeLocation" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriberID" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short"/>
+          <InformationItem name="OperationActionName" logicalDataType="Text_Short"/>
         </InformationItems>
 			</InformationObject>
       <InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items">
@@ -68,36 +68,36 @@
       </InformationObject>
       <InformationObject name="SubscriberInput" designDesc="Parameter for queued operation">
         <InformationItems>
-          <InformationItem name="InputRelativeLocation" logicalDataType="Text_Normal"/>
-          <InformationItem name="InformationObjectName" logicalDataType="Text_Normal"/>
-          <InformationItem name="InformationItemName" logicalDataType="Text_Normal"/>
-          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Normal"/>
+          <InformationItem name="InputRelativeLocation" logicalDataType="Text_Short"/>
+          <InformationItem name="InformationObjectName" logicalDataType="Text_Short"/>
+          <InformationItem name="InformationItemName" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="SubscriberUpdateOperation" designDesc="Subscriber update operation call">
         <InformationItems>
-          <InformationItem name="TargetOwnerID" logicalDataType="Text_Normal"/>
-          <InformationItem name="SubscriberOwnerID" logicalDataType="Text_Normal"/>
+          <InformationItem name="TargetOwnerID" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriberOwnerID" logicalDataType="Text_Short"/>
           <InformationItem name="OperationParameters" logicalDataType="InformationObject" informationObjectName="SubscriberInput"/>
-          <InformationItem name="OperationName" logicalDataType="Text_Normal"/>
+          <InformationItem name="OperationName" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="Monitor" designDesc="The Ball Core Structure: Monitoring content">
         <InformationItems>
-          <InformationItem name="TargetObjectName" logicalDataType="Text_Normal" />
-          <InformationItem name="TargetItemName" logicalDataType="Text_Normal" />
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short" />
+          <InformationItem name="TargetItemName" logicalDataType="Text_Short" />
           <InformationItem name="MonitoringUtcTimeStampToStart" logicalDataType="Time_DateTime"/>
-          <InformationItem name="MonitoringCycleFrequencyUnit" logicalDataType="Text_Normal" />
+          <InformationItem name="MonitoringCycleFrequencyUnit" logicalDataType="Text_Short" />
           <InformationItem name="MonitoringCycleEveryXthOfUnit" logicalDataType="Number_Integer"/>
-          <InformationItem name="CustomMonitoringCycleOperationName" logicalDataType="Text_Normal"/>
-          <InformationItem name="OperationActionName" logicalDataType="Text_Normal"/>
+          <InformationItem name="CustomMonitoringCycleOperationName" logicalDataType="Text_Short"/>
+          <InformationItem name="OperationActionName" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="IconTitleDescription" designDesc="Generic icon, title, description object">
         <InformationItems>
           <InformationItem name="Icon" logicalDataType="Data_Binary" informationObjectName="Icon"/>
-          <InformationItem name="Title" logicalDataType="Text_Normal"/>
-          <InformationItem name="Description" logicalDataType="Text_Normal"/>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="AboutAGIApplications" designDesc="About Aalto AGI Applications Info Set">
