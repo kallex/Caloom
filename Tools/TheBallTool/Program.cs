@@ -16,8 +16,9 @@ namespace TheBallTool
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             //doTest(connStr);
             //return;
-            string[] phtmlFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
-            var fixedContent = phtmlFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
+            string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
+            ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
+            var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
                        new
                            {
@@ -32,11 +33,15 @@ namespace TheBallTool
                            })
                 .ToArray();
             var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
+            MoveUnusedTxtFiles(ProcessedDict);
             foreach (var content in fixedContent)
             {
                 //if (content.FileName.Contains("glyph"))
                 //    continue;
+                if (content.FileName.EndsWith(".txt"))
+                    continue;
                 Console.WriteLine("Uploading: " + content.FileName);
                 if (content.TextContent != null)
                     container.UploadBlobText(content.FileName.Replace(".phtml", ".html"), content.TextContent);
@@ -45,6 +50,25 @@ namespace TheBallTool
             }
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
+        }
+
+        private static void MoveUnusedTxtFiles(Dictionary<string, bool> processedDict)
+        {
+            string[] filesToMove = processedDict.Keys.ToArray();
+            foreach(string fileToMove in filesToMove)
+            {
+                if (fileToMove.Contains("oip-") == false)
+                {
+                    Console.WriteLine("Ignoring unused: " + fileToMove);
+                    continue;
+                }
+                string destinationFile = fileToMove.Replace(@"caloomhtml\UI\docs\", @"caloomhtml\UI\notusedtxt\");
+                Console.WriteLine("Moving unused file to: " + destinationFile);
+                string destDir = Path.GetDirectoryName(destinationFile);
+                if (Directory.Exists(destDir) == false)
+                    Directory.CreateDirectory(destDir);
+                File.Move(fileToMove, destinationFile);
+            }
         }
 
         private static void doTest(string connStr)
@@ -101,27 +125,63 @@ namespace TheBallTool
             return FixContent(fileName);
         }
 
+        private static Dictionary<string, bool> ProcessedDict = new Dictionary<string, bool>();
+
         private static string FixContent(string fileName)
         {
             string content = File.ReadAllText(fileName);
-            string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'\s*\?>";
+            //string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'.*\?>";
+            //string pattern = @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>";
+            string pattern =
+                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!-- UseInformationObject:(?<bindingobject>[^-]*)-->|<!-- UseInformationObjectAsCollection:(?<bindingcollection>[^-]*)-->|)";
             content = Regex.Replace(content,
                                     pattern,
                                     match =>
                                         {
                                             string incFile = match.Groups["incfile"].Value;
+                                            string bindObject = match.Groups["bindingobject"].Value;
+                                            string bindCollection = match.Groups["bindingcollection"].Value;
                                             string currPath = Path.GetDirectoryName(fileName);
                                             incFile = Path.Combine(currPath, incFile);
                                             string fileContent;
                                             if (File.Exists(incFile))
+                                            {
                                                 fileContent = File.ReadAllText(incFile);
+                                                string dictKey = Path.GetFullPath(incFile);
+                                                //ProcessedDict[incFile] = true;)
+                                                if (ProcessedDict.ContainsKey(dictKey))
+                                                    ProcessedDict.Remove(dictKey);
+                                                if (fileContent.Contains("<?php"))
+                                                    fileContent = FixContent(incFile);
+                                                if(String.IsNullOrEmpty(bindObject) == false)
+                                                {
+                                                    // DO Binding Object
+                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:" + bindObject +
+                                                                  " -->" + Environment.NewLine
+                                                                  + fileContent + Environment.NewLine +
+                                                                  "<!-- THEBALL-CONTEXT-OBJECT-END:" + bindObject +
+                                                                  " -->" + Environment.NewLine;
+                                                }
+                                                if(String.IsNullOrEmpty(bindCollection) == false)
+                                                {
+                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:" + bindCollection +
+                                                                  " -->" + Environment.NewLine
+                                                                  + fileContent + Environment.NewLine +
+                                                                  "<!-- THEBALL-CONTEXT-COLLECTION-END:" + bindCollection +
+                                                                  " -->" + Environment.NewLine;
+                                                }
+                                                if(fileContent.StartsWith("<!--"))
+                                                {
+                                                    fileContent = Environment.NewLine + "<!-- ========== Begin: " + incFile + " ========== -->" + Environment.NewLine
+                                                                  + fileContent + Environment.NewLine + 
+                                                                  "<!-- ========== End: " + incFile + " ========== -->" + Environment.NewLine;
+                                                }
+                                            }
                                             else
                                             {
                                                 fileContent = "MISSING FILE MISSING FILE MISSING FILE: " + incFile;
                                                 ReportProblem(fileContent);
                                             }
-                                            if (fileContent.Contains("<?php"))
-                                                fileContent = FixContent(incFile);
                                             return fileContent;
                                         });
             return content;

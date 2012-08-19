@@ -20,6 +20,592 @@ namespace AaltoGlobalImpact.OIP {
     }
 
 			[DataContract]
+			public partial class BlogContainer : IInformationObject
+			{
+				public BlogContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "BlogContainer";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", ID).Replace("\\", "/");
+				}
+
+                public static BlogContainer RetrieveBlogContainer(string relativeLocation)
+                {
+                    var result = (BlogContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogContainer));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string BlogCollectionHeader { get; set; }
+			[DataMember]
+			public Blog FeaturedBlog { get; set; }
+			[DataMember]
+			public BlogCollection BlogCollection { get; set; }
+			[DataMember]
+			public BlogIndexCollections BlogIndexCollections { get; set; }
+			
+			}
+			[DataContract]
+			public partial class BlogCollection : IInformationObject
+			{
+				public BlogCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "BlogCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", ID).Replace("\\", "/");
+				}
+
+                public static BlogCollection RetrieveBlogCollection(string relativeLocation)
+                {
+                    var result = (BlogCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogCollection));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
+
+			
+			}
+			[DataContract]
+			public partial class Blog : IInformationObject
+			{
+				public Blog()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Blog";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Blog", ID).Replace("\\", "/");
+				}
+
+                public static Blog RetrieveBlog(string relativeLocation)
+                {
+                    var result = (Blog) StorageSupport.RetrieveInformation(relativeLocation, typeof(Blog));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string SubTitle { get; set; }
+			[DataMember]
+			public DateTime Published { get; set; }
+			[DataMember]
+			public string Author { get; set; }
+			[DataMember]
+			public ImageGroup ImageGroup { get; set; }
+			[DataMember]
+			public string Body { get; set; }
+			[DataMember]
+			public string Excerpt { get; set; }
+			[DataMember]
+			public Location Location { get; set; }
+			
+			}
+			[DataContract]
+			public partial class BlogIndexCollections : IInformationObject
+			{
+				public BlogIndexCollections()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "BlogIndexCollections";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollections", ID).Replace("\\", "/");
+				}
+
+                public static BlogIndexCollections RetrieveBlogIndexCollections(string relativeLocation)
+                {
+                    var result = (BlogIndexCollections) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogIndexCollections));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollections", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public BlogCollection BlogsByDate { get; set; }
+			[DataMember]
+			public BlogCollection BlogsByLocation { get; set; }
+			[DataMember]
+			public BlogCollection BlogsByAuthor { get; set; }
+			
+			}
+			[DataContract]
+			public partial class Image : IInformationObject
+			{
+				public Image()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Image";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Image", ID).Replace("\\", "/");
+				}
+
+                public static Image RetrieveImage(string relativeLocation)
+                {
+                    var result = (Image) StorageSupport.RetrieveInformation(relativeLocation, typeof(Image));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public byte[] ImageData { get; set; }
+			[DataMember]
+			public string Caption { get; set; }
+			[DataMember]
+			public string ImageAlt { get; set; }
+			[DataMember]
+			public Tooltip Tooltip { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ImageGroup : IInformationObject
+			{
+				public ImageGroup()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ImageGroup";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", ID).Replace("\\", "/");
+				}
+
+                public static ImageGroup RetrieveImageGroup(string relativeLocation)
+                {
+                    var result = (ImageGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageGroup));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string Description { get; set; }
+			[DataMember]
+			public ImagesCollection ImagesCollection { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ImagesCollection : IInformationObject
+			{
+				public ImagesCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ImagesCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", ID).Replace("\\", "/");
+				}
+
+                public static ImagesCollection RetrieveImagesCollection(string relativeLocation)
+                {
+                    var result = (ImagesCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImagesCollection));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				[DataMember] public List<Image> CollectionContent = new List<Image>();
+
+			
+			}
+			[DataContract]
+			public partial class Tooltip : IInformationObject
+			{
+				public Tooltip()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Tooltip";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", ID).Replace("\\", "/");
+				}
+
+                public static Tooltip RetrieveTooltip(string relativeLocation)
+                {
+                    var result = (Tooltip) StorageSupport.RetrieveInformation(relativeLocation, typeof(Tooltip));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string Text { get; set; }
+			
+			}
+			[DataContract]
+			public partial class SocialPanel : IInformationObject
+			{
+				public SocialPanel()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SocialPanel";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", ID).Replace("\\", "/");
+				}
+
+                public static SocialPanel RetrieveSocialPanel(string relativeLocation)
+                {
+                    var result = (SocialPanel) StorageSupport.RetrieveInformation(relativeLocation, typeof(SocialPanel));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string SocialFilter { get; set; }
+			
+			}
+			[DataContract]
+			public partial class Collaborator : IInformationObject
+			{
+				public Collaborator()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Collaborator";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", ID).Replace("\\", "/");
+				}
+
+                public static Collaborator RetrieveCollaborator(string relativeLocation)
+                {
+                    var result = (Collaborator) StorageSupport.RetrieveInformation(relativeLocation, typeof(Collaborator));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+			[DataMember]
+			public string EmailAddress { get; set; }
+			
+			}
+			[DataContract]
 			public partial class Longitude : IInformationObject
 			{
 				public Longitude()

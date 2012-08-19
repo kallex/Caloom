@@ -50,6 +50,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="EmailSupport.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="QueueSupport.cs" />

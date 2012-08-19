@@ -40,6 +40,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallCoreToOperationTRANS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebInterface", "Apps\WebInterface\WebInterface.csproj", "{639EF079-5944-480A-BF5B-691B3F133507}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "Apps\WorkerTemplate\CaloomUI\caloomhtml\UI\", "{44F66C2E-D452-4D91-80E2-43474B757EFC}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/UI"
+		Debug.AspNetCompiler.PhysicalPath = "Apps\WorkerTemplate\CaloomUI\caloomhtml\UI\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\UI\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/UI"
+		Release.AspNetCompiler.PhysicalPath = "Apps\WorkerTemplate\CaloomUI\caloomhtml\UI\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\UI\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "60212"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -527,6 +547,36 @@ Global
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|PHP 5.2.ActiveCfg = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|x86.ActiveCfg = Release|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|Any CPU.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Local|x86.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|Any CPU.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Production|x86.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Release|x86.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

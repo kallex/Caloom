@@ -34,22 +34,12 @@ namespace CaloomWorkerRole
             {
                 try
                 {
-                    // Receive the message
-                    //AnonWebContainer.GetBlobReference(""). 
+                    Thread.Sleep(10000);
                     CloudQueueMessage receivedMessage = null;
                     //receivedMessage = CurrQueue.GetMessage();
                         //Client.Receive();)
                     if (receivedMessage != null)
                     {
-                        // Process the message
-                        Trace.WriteLine("Processing", receivedMessage.Id.ToString());
-                        string key = receivedMessage.AsString;
-                        CurrQueue.DeleteMessage(receivedMessage);
-                        TableServiceContext ctx = CurrTable.GetDataServiceContext();
-                        TmpTestEntity entity =
-                            ctx.CreateQuery<TmpTestEntity>(TmpTableName).Where(
-                                tt => tt.PartitionKey == key && tt.RowKey == key).FirstOrDefault();
-
                     }
                 }
                 catch (MessagingException e)
@@ -77,55 +67,13 @@ namespace CaloomWorkerRole
         {
             // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;
-
-            ConfigureQueue();
-            ConfigureTableStorage();
-            ConfigureAnonWebBlobStorage();
             IsStopped = false;
-            SetupLocalStorage();
             return base.OnStart();
-        }
-
-        private void ConfigureAnonWebBlobStorage()
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            AnonWebContainer = blobClient.GetContainerReference("anon-webcontainer");
-            BlobRequestOptions options = new BlobRequestOptions();
-            AnonWebContainer.CreateIfNotExist();
-            BlobContainerPermissions permissions = new BlobContainerPermissions();
-            permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
-            AnonWebContainer.SetPermissions(permissions);
         }
 
         private void SetupLocalStorage()
         {
             LocalStorageResource = RoleEnvironment.GetLocalResource("LocalST");
-        }
-
-        private void ConfigureTableStorage()
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            tableClient.CreateTableIfNotExist(TmpTableName);
-            CurrTable = tableClient;
-        }
-
-        private void ConfigureQueue()
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
-
-            // Create the queue client
-            Client = storageAccount.CreateCloudQueueClient();
-
-            // Retrieve a reference to a queue
-            CloudQueue queue = Client.GetQueueReference(QueueName);
-            CurrQueue = queue;
-            // Create the queue if it doesn't already exist
-            queue.CreateIfNotExist();
         }
 
         public override void OnStop()
@@ -135,19 +83,4 @@ namespace CaloomWorkerRole
             base.OnStop();
         }
     }
-    public class TmpTestEntity : TableServiceEntity
-    {
-        public TmpTestEntity()
-        {}
-
-        public TmpTestEntity(string msgData)
-        {
-            string key = Guid.NewGuid().ToString();
-            this.PartitionKey = key;
-            this.RowKey = key;
-        }
-
-        public string MessageData { get; set; }
-    }
-
 }

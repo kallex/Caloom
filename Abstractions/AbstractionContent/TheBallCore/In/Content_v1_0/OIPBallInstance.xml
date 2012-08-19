@@ -2,6 +2,88 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
 	<InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
 		<InformationModel>
+      <!-- Blog part -->
+      <InformationObject name="BlogContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="BlogCollectionHeader" logicalDataType="Text_Short"/>
+          <InformationItem name="FeaturedBlog" informationObjectName="Blog" logicalDataType="InformationObject"/>
+          <InformationItem name="BlogCollection" informationObjectName="BlogCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="BlogIndexCollections" informationObjectName="BlogIndexCollections" logicalDataType="InformationObject"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="BlogCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Blog" />
+      </InformationObject>
+      <InformationObject name="Blog" designDesc="Individual Blog">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <!--I can't imagine this is correct -->
+          <InformationItem name="SubTitle" logicalDataType="Text_Short"/>
+          <InformationItem name="Published" logicalDataType="Time_DateTime"/>
+          <InformationItem name="Author" logicalDataType="Text_Short"/>
+          <InformationItem name="ImageGroup" informationObjectName="ImageGroup" logicalDataType="InformationObject" />
+          <InformationItem name="Body" logicalDataType="Text_Long"/>
+          <InformationItem name="Excerpt" logicalDataType="Text_Long"/>
+          <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location"/>
+          <!-- needed is, category, servicetype description, keywords -->
+          <!--
+          <InformationItem name="SocialPanel" informationObjectName="SocialPanelCollection" logicalDataType="InformationObject" />
+          -->
+        </InformationItems>
+      </InformationObject>
+      <!-- should this be a Collection? -->
+      <InformationObject name="BlogIndexCollections" designDesc="Index of Blogs by Date, Location, Author">
+        <InformationItems>
+          <InformationItem name="BlogsByDate" logicalDataType="InformationObject" informationObjectName="BlogCollection"/>
+          <InformationItem name="BlogsByLocation" logicalDataType="InformationObject" informationObjectName="BlogCollection"/>
+          <InformationItem name="BlogsByAuthor" logicalDataType="InformationObject" informationObjectName="BlogCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <!-- should this be a Collection? -->
+      <!-- end Blog -->
+      <InformationObject name="Image" designDesc="Image and attributes">
+        <InformationItems>
+          <InformationItem name="ImageData" logicalDataType="Data_Binary" />
+          <InformationItem name="Caption" logicalDataType="Text_Short"/>
+          <InformationItem name="ImageAlt" logicalDataType="Text_Short"/>
+          <InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImageGroup" designDesc="Group of Images">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Short"/>
+          <InformationItem name="ImagesCollection" informationObjectName="ImagesCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImagesCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Image" />
+      </InformationObject>
+      <InformationObject name="Tooltip" designDesc="Tooltip">
+        <InformationItems>
+          <InformationItem name="Text" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SocialPanel" designDesc="SocialPanel">
+        <InformationItems>
+          <InformationItem name="SocialFilter" informationObjectName="Filter" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <!-- Collaboration model -->
+      <InformationObject name="Collaborator" designDesc="User of the system">
+        <InformationItems>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <!--
+      <InformationObject name="CollaborationGroup" designDesc="Group for collaborating over something">
+        <InformationItems>
+          <InformationItem name="NameOfTheGroup"/>
+        </InformationItems>
+      </InformationObject>
+      -->
       <InformationObject name="Longitude" designDesc="Longitude">
         <InformationItems>
           <InformationItem name="TextValue" logicalDataType="Text_Short" />
