@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Amazon;
+using Amazon.SimpleEmail;
+using Amazon.SimpleEmail.Model;
 
 namespace TheBall
 {
     public static class EmailSupport
     {
-/*        public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
+        public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
             if (Text != null && HTML != null)
             {
@@ -44,7 +47,10 @@ namespace TheBall
                 message.WithBody(body);
                 message.WithSubject(subject);
 
-                AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
+                string awsAccessKey = null;
+                string awsSecretKey = null;
+                //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
+                AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(awsAccessKey, awsSecretKey);
 
                 SendEmailRequest request = new SendEmailRequest();
                 request.WithDestination(destination);
@@ -91,7 +97,5 @@ namespace TheBall
 
             return false;
         }
- * */
-
     }
 }

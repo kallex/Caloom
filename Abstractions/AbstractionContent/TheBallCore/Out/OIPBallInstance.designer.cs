@@ -41,7 +41,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -70,14 +69,86 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static BlogContainer CreateDefault()
+				{
+					var result = new BlogContainer();
+					result.BlogContainerHeader = BlogContainerHeader.CreateDefault();
+					result.FeaturedBlog = Blog.CreateDefault();
+					result.BlogCollection = BlogCollection.CreateDefault();
+					result.BlogIndexCollection = BlogIndexCollections.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
-			public string BlogCollectionHeader { get; set; }
+			public BlogContainerHeader BlogContainerHeader { get; set; }
 			[DataMember]
 			public Blog FeaturedBlog { get; set; }
 			[DataMember]
 			public BlogCollection BlogCollection { get; set; }
 			[DataMember]
-			public BlogIndexCollections BlogIndexCollections { get; set; }
+			public BlogIndexCollections BlogIndexCollection { get; set; }
+			
+			}
+			[DataContract]
+			public partial class BlogContainerHeader : IInformationObject
+			{
+				public BlogContainerHeader()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "BlogContainerHeader";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogContainerHeader", ID).Replace("\\", "/");
+				}
+
+                public static BlogContainerHeader RetrieveBlogContainerHeader(string relativeLocation)
+                {
+                    var result = (BlogContainerHeader) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogContainerHeader));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainerHeader", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static BlogContainerHeader CreateDefault()
+				{
+					var result = new BlogContainerHeader();
+				
+					return result;
+				}
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string SubTitle { get; set; }
 			
 			}
 			[DataContract]
@@ -101,7 +172,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -132,6 +202,11 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+				public static BlogCollection CreateDefault()
+				{
+					return new BlogCollection();
+				}
+
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
 
 			
@@ -157,7 +232,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -187,6 +261,14 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Blog CreateDefault()
+				{
+					var result = new Blog();
+					result.ImageGroup = ImageGroup.CreateDefault();
+					result.Location = Location.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -227,7 +309,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -256,6 +337,15 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollections", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static BlogIndexCollections CreateDefault()
+				{
+					var result = new BlogIndexCollections();
+					result.BlogsByDate = BlogCollection.CreateDefault();
+					result.BlogsByLocation = BlogCollection.CreateDefault();
+					result.BlogsByAuthor = BlogCollection.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public BlogCollection BlogsByDate { get; set; }
 			[DataMember]
@@ -286,7 +376,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -315,6 +404,13 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Image CreateDefault()
+				{
+					var result = new Image();
+					result.Tooltip = Tooltip.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public byte[] ImageData { get; set; }
 			[DataMember]
@@ -347,7 +443,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -376,6 +471,13 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static ImageGroup CreateDefault()
+				{
+					var result = new ImageGroup();
+					result.ImagesCollection = ImagesCollection.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -406,7 +508,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -436,6 +537,11 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+				public static ImagesCollection CreateDefault()
+				{
+					return new ImagesCollection();
+				}
+
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
 
 			
@@ -461,7 +567,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -491,6 +596,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Tooltip CreateDefault()
+				{
+					var result = new Tooltip();
+				
+					return result;
+				}
 			[DataMember]
 			public string Text { get; set; }
 			
@@ -516,7 +627,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -546,6 +656,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static SocialPanel CreateDefault()
+				{
+					var result = new SocialPanel();
+				
+					return result;
+				}
 			[DataMember]
 			public string SocialFilter { get; set; }
 			
@@ -571,7 +687,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -601,6 +716,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Collaborator CreateDefault()
+				{
+					var result = new Collaborator();
+				
+					return result;
+				}
 			[DataMember]
 			public string EmailAddress { get; set; }
 			
@@ -626,7 +747,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -656,6 +776,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Longitude CreateDefault()
+				{
+					var result = new Longitude();
+				
+					return result;
+				}
 			[DataMember]
 			public string TextValue { get; set; }
 			
@@ -681,7 +807,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -711,6 +836,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Latitude CreateDefault()
+				{
+					var result = new Latitude();
+				
+					return result;
+				}
 			[DataMember]
 			public string TextValue { get; set; }
 			
@@ -736,7 +867,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -766,6 +896,14 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Location CreateDefault()
+				{
+					var result = new Location();
+					result.Longitude = Longitude.CreateDefault();
+					result.Latitude = Latitude.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public Longitude Longitude { get; set; }
 			[DataMember]
@@ -793,7 +931,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -823,6 +960,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "What", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static What CreateDefault()
+				{
+					var result = new What();
+				
+					return result;
+				}
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -850,7 +993,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -880,6 +1022,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "When", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static When CreateDefault()
+				{
+					var result = new When();
+				
+					return result;
+				}
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -907,7 +1055,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -937,6 +1084,13 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Where", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Where CreateDefault()
+				{
+					var result = new Where();
+					result.Location = Location.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -964,7 +1118,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -994,6 +1147,15 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Event5W CreateDefault()
+				{
+					var result = new Event5W();
+					result.What = What.CreateDefault();
+					result.When = When.CreateDefault();
+					result.Where = Where.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public What What { get; set; }
 			[DataMember]
@@ -1024,7 +1186,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1054,6 +1215,11 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+				public static Event5WCollection CreateDefault()
+				{
+					return new Event5WCollection();
+				}
+
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
 
 			
@@ -1079,7 +1245,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1110,6 +1275,11 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+				public static SubscriptionCollection CreateDefault()
+				{
+					return new SubscriptionCollection();
+				}
+
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
 
 			
@@ -1135,7 +1305,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1165,6 +1334,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Subscription CreateDefault()
+				{
+					var result = new Subscription();
+				
+					return result;
+				}
 			[DataMember]
 			public long Priority { get; set; }
 			[DataMember]
@@ -1205,7 +1380,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1234,6 +1408,13 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static QueueEnvelope CreateDefault()
+				{
+					var result = new QueueEnvelope();
+					result.SubscriberUpdateOperation = SubscriberUpdateOperation.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public SubscriberUpdateOperation SubscriberUpdateOperation { get; set; }
 			
@@ -1259,7 +1440,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1289,6 +1469,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static SubscriberInput CreateDefault()
+				{
+					var result = new SubscriberInput();
+				
+					return result;
+				}
 			[DataMember]
 			public string InputRelativeLocation { get; set; }
 			[DataMember]
@@ -1321,7 +1507,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1350,6 +1535,13 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static SubscriberUpdateOperation CreateDefault()
+				{
+					var result = new SubscriberUpdateOperation();
+					result.OperationParameters = SubscriberInput.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public string TargetOwnerID { get; set; }
 			[DataMember]
@@ -1382,7 +1574,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1411,6 +1602,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static Monitor CreateDefault()
+				{
+					var result = new Monitor();
+				
+					return result;
+				}
 			[DataMember]
 			public string TargetObjectName { get; set; }
 			[DataMember]
@@ -1449,7 +1646,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1478,6 +1674,12 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static IconTitleDescription CreateDefault()
+				{
+					var result = new IconTitleDescription();
+				
+					return result;
+				}
 			[DataMember]
 			public byte[] Icon { get; set; }
 			[DataMember]
@@ -1508,7 +1710,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1537,6 +1738,14 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public static AboutAGIApplications CreateDefault()
+				{
+					var result = new AboutAGIApplications();
+					result.BuiltForAnybody = IconTitleDescription.CreateDefault();
+					result.ForAllPeople = IconTitleDescription.CreateDefault();
+				
+					return result;
+				}
 			[DataMember]
 			public IconTitleDescription BuiltForAnybody { get; set; }
 			[DataMember]
@@ -1564,7 +1773,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1620,7 +1828,6 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
-
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1674,7 +1881,6 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
-
 
 				[DataMember]
 				public string ID { get; set; }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
 namespace TheBallTool
@@ -14,8 +15,8 @@ namespace TheBallTool
         static void Main(string[] args)
         {
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            //doTest(connStr);
-            //return;
+            doTest2(connStr);
+            return;
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
             var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
@@ -69,6 +70,20 @@ namespace TheBallTool
                     Directory.CreateDirectory(destDir);
                 File.Move(fileToMove, destinationFile);
             }
+        }
+
+        private static void doTest2(string connStr)
+        {
+            StorageSupport.InitializeWithConnectionString(connStr);
+
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string blobPath = "anon-webcontainer/oip-layouts/oip-layout-default-edit.html";
+            CloudBlob blob = publicClient.GetBlobReference(blobPath);
+            string webTemplate = blob.DownloadText();
+            BlogContainer container = BlogContainer.CreateDefault();
+            container.BlogContainerHeader.Title = "Titteli";
+            container.BlogContainerHeader.SubTitle = "Aliotsikko";
+            string renderedPage = RenderWebSupport.RenderTemplateWithContent(webTemplate, container);
         }
 
         private static void doTest(string connStr)
@@ -133,7 +148,7 @@ namespace TheBallTool
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'.*\?>";
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>";
             string pattern =
-                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!-- UseInformationObject:(?<bindingobject>[^-]*)-->|<!-- UseInformationObjectAsCollection:(?<bindingcollection>[^-]*)-->|)";
+                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!--\s*UseInformationObject:(?<bindingobject>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsCollection:(?<bindingcollection>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsRoot:(?<bindingroot>[^\s]*)\s*-->|)";
             content = Regex.Replace(content,
                                     pattern,
                                     match =>
@@ -141,6 +156,7 @@ namespace TheBallTool
                                             string incFile = match.Groups["incfile"].Value;
                                             string bindObject = match.Groups["bindingobject"].Value;
                                             string bindCollection = match.Groups["bindingcollection"].Value;
+                                            string bindRoot = match.Groups["bindingroot"].Value;
                                             string currPath = Path.GetDirectoryName(fileName);
                                             incFile = Path.Combine(currPath, incFile);
                                             string fileContent;
@@ -159,7 +175,7 @@ namespace TheBallTool
                                                     fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:" + bindObject +
                                                                   " -->" + Environment.NewLine
                                                                   + fileContent + Environment.NewLine +
-                                                                  "<!-- THEBALL-CONTEXT-OBJECT-END:" + bindObject +
+                                                                  "<!-- THEBALL-CONTEXT-END:" + bindObject +
                                                                   " -->" + Environment.NewLine;
                                                 }
                                                 if(String.IsNullOrEmpty(bindCollection) == false)
@@ -167,8 +183,17 @@ namespace TheBallTool
                                                     fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:" + bindCollection +
                                                                   " -->" + Environment.NewLine
                                                                   + fileContent + Environment.NewLine +
-                                                                  "<!-- THEBALL-CONTEXT-COLLECTION-END:" + bindCollection +
+                                                                  "<!-- THEBALL-CONTEXT-END:" + bindCollection +
                                                                   " -->" + Environment.NewLine;
+                                                }
+                                                if(String.IsNullOrEmpty(bindRoot) == false)
+                                                {
+                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-ROOT-BEGIN:" + bindRoot +
+                                                                  " -->" + Environment.NewLine
+                                                                  + fileContent + Environment.NewLine +
+                                                                  "<!-- THEBALL-CONTEXT-END:" + bindRoot +
+                                                                  " -->" + Environment.NewLine;
+                                                    
                                                 }
                                                 if(fileContent.StartsWith("<!--"))
                                                 {

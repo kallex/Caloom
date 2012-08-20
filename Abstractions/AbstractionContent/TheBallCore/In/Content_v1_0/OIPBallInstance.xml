@@ -5,10 +5,17 @@
       <!-- Blog part -->
       <InformationObject name="BlogContainer" designDesc="">
         <InformationItems>
-          <InformationItem name="BlogCollectionHeader" logicalDataType="Text_Short"/>
+          <InformationItem name="BlogContainerHeader" informationObjectName="BlogContainerHeader" logicalDataType="InformationObject"/>
           <InformationItem name="FeaturedBlog" informationObjectName="Blog" logicalDataType="InformationObject"/>
           <InformationItem name="BlogCollection" informationObjectName="BlogCollection" logicalDataType="InformationObject"/>
-          <InformationItem name="BlogIndexCollections" informationObjectName="BlogIndexCollections" logicalDataType="InformationObject"/>
+          <InformationItem name="BlogIndexCollection" informationObjectName="BlogIndexCollections" logicalDataType="InformationObject"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="BlogContainerHeader" designDesc="">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <!--I can't imagine this is correct -->
+          <InformationItem name="SubTitle" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="BlogCollection" designDesc="">
