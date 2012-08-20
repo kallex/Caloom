@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
@@ -17,6 +18,7 @@ namespace AaltoGlobalImpact.OIP {
         string SemanticDomainName { get; set; }
         string Name { get; set; }
 		void InitializeDefaultSubscribers();
+		void SetValuesToObjects(NameValueCollection form);
     }
 
 			[DataContract]
@@ -40,6 +42,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -109,6 +136,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -172,6 +224,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -243,6 +320,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -305,6 +407,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -364,6 +491,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -441,6 +593,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -507,6 +684,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -575,6 +777,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -640,6 +867,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -699,6 +951,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -760,6 +1037,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -819,6 +1121,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -880,6 +1207,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -940,6 +1292,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -999,6 +1376,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1064,6 +1466,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1125,6 +1552,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1188,6 +1640,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1250,6 +1727,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1318,6 +1820,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1378,6 +1905,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1437,6 +1989,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1512,6 +2089,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1572,6 +2174,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1639,6 +2266,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1705,6 +2357,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1778,6 +2455,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1841,6 +2543,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1906,6 +2633,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -1960,6 +2712,31 @@ namespace AaltoGlobalImpact.OIP {
 			    {
 			    }
 
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
+
 				[DataMember]
 				public string ID { get; set; }
 
@@ -2013,6 +2790,31 @@ namespace AaltoGlobalImpact.OIP {
 			    public void InitializeDefaultSubscribers()
 			    {
 			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    private object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return null;
+			    }
+
 
 				[DataMember]
 				public string ID { get; set; }

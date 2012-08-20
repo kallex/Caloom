@@ -15,8 +15,6 @@ namespace TheBallTool
         static void Main(string[] args)
         {
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            doDataTest(connStr);
-            return;
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
             var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
@@ -51,6 +49,7 @@ namespace TheBallTool
                 else
                     container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
+            doDataTest(connStr);
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
         }

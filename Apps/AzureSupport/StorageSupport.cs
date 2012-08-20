@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
@@ -716,6 +717,12 @@ namespace TheBall
                 informationObject.InitializeDefaultSubscribers();
             //blob.UploadFromStream(memoryStream, options );
             SubscribeSupport.NotifySubscribers(informationObject);
+        }
+
+        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName)
+        {
+            Type type = Assembly.GetExecutingAssembly().GetType(typeName);
+            return RetrieveInformation(relativeLocation, type);
         }
 
         public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve)

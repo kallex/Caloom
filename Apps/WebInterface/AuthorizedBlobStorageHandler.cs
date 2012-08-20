@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Web;
 using System.Web.Security;
+using AaltoGlobalImpact.OIP;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall;
 
 namespace WebInterface
 {
@@ -53,7 +55,7 @@ namespace WebInterface
             HttpRequest request = context.Request;
             if(request.RequestType != "GET")
             {
-                string reqType = request.RequestType;
+                ProcessPost(context);
             }
             HttpResponse response = context.Response;
             if(request.Path.StartsWith("/theballanon/"))
@@ -87,6 +89,27 @@ namespace WebInterface
                 context.Response.Write(ex.ToString());
             }
             context.Response.End();
+        }
+
+        private void ProcessPost(HttpContext context)
+        {
+            var request = context.Request;
+            string reqType = request.RequestType;
+            var form = request.Form;
+            string objectTypeName = form["RootObjectType"];
+            string objectRelativeLocation = form["RootObjectRelativeLocation"];
+            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName);
+            rootObject.SetValuesToObjects(form);
+            StorageSupport.StoreInformation(rootObject);
+
+            // Hard coded for demo:
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string templatePath = "anon-webcontainer/theball-reference/example1-layout-default.html";
+            CloudBlob blob = publicClient.GetBlobReference(templatePath);
+            string templateContent = blob.DownloadText();
+            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, rootObject);
+            string finalPath = "theball-reference/example1-rendered.html";
+            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
         }
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
