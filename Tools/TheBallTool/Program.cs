@@ -15,7 +15,7 @@ namespace TheBallTool
         static void Main(string[] args)
         {
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            doTest2(connStr);
+            doDataTest(connStr);
             return;
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
@@ -33,7 +33,7 @@ namespace TheBallTool
 
                            })
                 .ToArray();
-            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, false);
             //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             MoveUnusedTxtFiles(ProcessedDict);
@@ -41,6 +41,8 @@ namespace TheBallTool
             {
                 //if (content.FileName.Contains("glyph"))
                 //    continue;
+                if (content.FileName.Contains("theball-reference") == false)
+                    continue;
                 if (content.FileName.EndsWith(".txt"))
                     continue;
                 Console.WriteLine("Uploading: " + content.FileName);
@@ -71,6 +73,40 @@ namespace TheBallTool
                 File.Move(fileToMove, destinationFile);
             }
         }
+
+        private static void doDataTest(string connStr)
+        {
+            StorageSupport.InitializeWithConnectionString(connStr);
+            TBReferenceEvent dummyData = null;
+            try
+            {
+                dummyData = TBReferenceEvent.RetrieveTBReferenceEvent("EventTestRelativeLoc134");
+            } catch(StorageException sEx)
+            {
+                
+            }
+            if(dummyData == null)
+            {
+                dummyData = TBReferenceEvent.CreateDefault();
+                dummyData.ID = "EventTestID134";
+                dummyData.RelativeLocation = "EventTestRelativeLoc134";
+                dummyData.Title = "Otsikko";
+                dummyData.Description = "Kuvaus";
+                dummyData.EnoughToAttend = false;
+                dummyData.AttendeeCount = 12;
+                dummyData.DueTime = DateTime.Today;
+                StorageSupport.StoreInformation(dummyData);
+            } 
+
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string templatePath = "anon-webcontainer/theball-reference/example1-layout-default.html";
+            CloudBlob blob = publicClient.GetBlobReference(templatePath);
+            string templateContent = blob.DownloadText();
+            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, dummyData);
+            string finalPath = "theball-reference/example1-rendered.html";
+            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
+        }
+
 
         private static void doTest2(string connStr)
         {

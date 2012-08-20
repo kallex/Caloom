@@ -16,6 +16,7 @@ namespace TheBall
         public static CloudTableClient CurrTableClient { get; private set; }
         public static CloudStorageAccount CurrStorageAccount { get; private set; }
         public static CloudBlobContainer CurrActiveContainer { get; private set; }
+        public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
 
         public static Guid ActiveOwnerID
         {
@@ -33,6 +34,8 @@ namespace TheBall
             var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
+            var activeAnonPublicContainer = blobClient.GetContainerReference("anon-webcontainer");
+            CurrAnonPublicContainer = activeAnonPublicContainer;
             QueueSupport.InitializeAfterStorage();
         }
 

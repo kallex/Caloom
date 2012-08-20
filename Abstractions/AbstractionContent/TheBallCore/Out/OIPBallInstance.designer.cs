@@ -20,6 +20,138 @@ namespace AaltoGlobalImpact.OIP {
     }
 
 			[DataContract]
+			public partial class TBReferenceEvent : IInformationObject
+			{
+				public TBReferenceEvent()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBReferenceEvent";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "TBReferenceEvent", ID).Replace("\\", "/");
+				}
+
+                public static TBReferenceEvent RetrieveTBReferenceEvent(string relativeLocation)
+                {
+                    var result = (TBReferenceEvent) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBReferenceEvent));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBReferenceEvent", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBReferenceEvent CreateDefault()
+				{
+					var result = new TBReferenceEvent();
+				
+					return result;
+				}
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string Description { get; set; }
+			[DataMember]
+			public long AttendeeCount { get; set; }
+			[DataMember]
+			public bool EnoughToAttend { get; set; }
+			[DataMember]
+			public DateTime DueTime { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBEventReminder : IInformationObject
+			{
+				public TBEventReminder()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBEventReminder";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "TBEventReminder", ID).Replace("\\", "/");
+				}
+
+                public static TBEventReminder RetrieveTBEventReminder(string relativeLocation)
+                {
+                    var result = (TBEventReminder) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEventReminder));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEventReminder", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBEventReminder CreateDefault()
+				{
+					var result = new TBEventReminder();
+				
+					return result;
+				}
+			[DataMember]
+			public string EventTitle { get; set; }
+			[DataMember]
+			public string TitleColor { get; set; }
+			[DataMember]
+			public string DueInfo { get; set; }
+			
+			}
+			[DataContract]
 			public partial class BlogContainer : IInformationObject
 			{
 				public BlogContainer()
