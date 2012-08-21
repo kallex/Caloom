@@ -719,20 +719,24 @@ namespace TheBall
             SubscribeSupport.NotifySubscribers(informationObject);
         }
 
-        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName)
+        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null)
         {
             Type type = Assembly.GetExecutingAssembly().GetType(typeName);
-            return RetrieveInformation(relativeLocation, type);
+            return RetrieveInformation(relativeLocation, type, eTag);
         }
 
-        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve)
+        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null)
         {
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
             {
-                blob.DownloadToStream(memoryStream);
+                BlobRequestOptions options = new BlobRequestOptions();
+                options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+                if (eTag != null)
+                    options.AccessCondition = AccessCondition.IfMatch(eTag);
+                blob.DownloadToStream(memoryStream, options);
                 blobEtag = blob.Properties.ETag;
             }
             catch (StorageClientException stEx)

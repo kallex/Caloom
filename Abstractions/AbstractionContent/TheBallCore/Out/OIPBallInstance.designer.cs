@@ -60,11 +60,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -102,6 +102,34 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
+						case "AttendeeCount":
+							AttendeeCount = long.Parse(value);
+							break;
+						case "EnoughToAttend":
+							EnoughToAttend = bool.Parse(value);
+							break;
+						case "DueTime":
+							DueTime = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -153,11 +181,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -195,6 +223,28 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "EventTitle":
+							EventTitle = value;
+							break;
+						case "TitleColor":
+							TitleColor = value;
+							break;
+						case "DueInfo":
+							DueInfo = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string EventTitle { get; set; }
 			[DataMember]
@@ -242,11 +292,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -288,6 +338,43 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = BlogContainerHeader;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = FeaturedBlog;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = BlogCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = BlogIndexCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public BlogContainerHeader BlogContainerHeader { get; set; }
 			[DataMember]
@@ -337,11 +424,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -379,6 +466,25 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "SubTitle":
+							SubTitle = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -424,11 +530,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -467,6 +573,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
 
 			
 			}
@@ -509,11 +627,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -553,6 +671,49 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = ImageGroup;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Location;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "SubTitle":
+							SubTitle = value;
+							break;
+						case "Published":
+							Published = DateTime.Parse(value);
+							break;
+						case "Author":
+							Author = value;
+							break;
+						case "Body":
+							Body = value;
+							break;
+						case "Excerpt":
+							Excerpt = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -610,11 +771,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -655,6 +816,37 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = BlogsByDate;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = BlogsByLocation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = BlogsByAuthor;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public BlogCollection BlogsByDate { get; set; }
 			[DataMember]
@@ -702,11 +894,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -745,6 +937,31 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Tooltip;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Caption":
+							Caption = value;
+							break;
+						case "ImageAlt":
+							ImageAlt = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public byte[] ImageData { get; set; }
 			[DataMember]
@@ -794,11 +1011,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -837,6 +1054,31 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = ImagesCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -884,11 +1126,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -927,6 +1169,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
 
 			
 			}
@@ -969,11 +1223,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1011,6 +1265,22 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Text":
+							Text = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Text { get; set; }
 			
@@ -1054,11 +1324,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1096,6 +1366,22 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SocialFilter":
+							SocialFilter = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string SocialFilter { get; set; }
 			
@@ -1139,11 +1425,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1181,6 +1467,22 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "EmailAddress":
+							EmailAddress = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string EmailAddress { get; set; }
 			
@@ -1224,11 +1526,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1266,6 +1568,22 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "TextValue":
+							TextValue = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string TextValue { get; set; }
 			
@@ -1309,11 +1627,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1351,6 +1669,22 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "TextValue":
+							TextValue = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string TextValue { get; set; }
 			
@@ -1394,11 +1728,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1438,6 +1772,31 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Longitude;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Latitude;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public Longitude Longitude { get; set; }
 			[DataMember]
@@ -1483,11 +1842,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1525,6 +1884,25 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -1570,11 +1948,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1612,6 +1990,25 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Time":
+							Time = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -1657,11 +2054,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1700,6 +2097,28 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Location;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -1745,11 +2164,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1790,6 +2209,37 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = What;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = When;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Where;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public What What { get; set; }
 			[DataMember]
@@ -1837,11 +2287,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1880,6 +2330,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
 
 			
 			}
@@ -1922,11 +2384,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -1965,6 +2427,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
 
 			
 			}
@@ -2007,11 +2481,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2049,6 +2523,43 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Priority":
+							Priority = long.Parse(value);
+							break;
+						case "TargetItemID":
+							TargetItemID = value;
+							break;
+						case "TargetObjectName":
+							TargetObjectName = value;
+							break;
+						case "TargetItemName":
+							TargetItemName = value;
+							break;
+						case "TargetRelativeLocation":
+							TargetRelativeLocation = value;
+							break;
+						case "SubscriberID":
+							SubscriberID = value;
+							break;
+						case "SubscriberRelativeLocation":
+							SubscriberRelativeLocation = value;
+							break;
+						case "OperationActionName":
+							OperationActionName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public long Priority { get; set; }
 			[DataMember]
@@ -2106,11 +2617,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2149,6 +2660,25 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = SubscriberUpdateOperation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public SubscriberUpdateOperation SubscriberUpdateOperation { get; set; }
 			
@@ -2192,11 +2722,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2234,6 +2764,31 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "InputRelativeLocation":
+							InputRelativeLocation = value;
+							break;
+						case "InformationObjectName":
+							InformationObjectName = value;
+							break;
+						case "InformationItemName":
+							InformationItemName = value;
+							break;
+						case "SubscriberRelativeLocation":
+							SubscriberRelativeLocation = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string InputRelativeLocation { get; set; }
 			[DataMember]
@@ -2283,11 +2838,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2326,6 +2881,34 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = OperationParameters;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "TargetOwnerID":
+							TargetOwnerID = value;
+							break;
+						case "SubscriberOwnerID":
+							SubscriberOwnerID = value;
+							break;
+						case "OperationName":
+							OperationName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string TargetOwnerID { get; set; }
 			[DataMember]
@@ -2375,11 +2958,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2417,6 +3000,40 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "TargetObjectName":
+							TargetObjectName = value;
+							break;
+						case "TargetItemName":
+							TargetItemName = value;
+							break;
+						case "MonitoringUtcTimeStampToStart":
+							MonitoringUtcTimeStampToStart = DateTime.Parse(value);
+							break;
+						case "MonitoringCycleFrequencyUnit":
+							MonitoringCycleFrequencyUnit = value;
+							break;
+						case "MonitoringCycleEveryXthOfUnit":
+							MonitoringCycleEveryXthOfUnit = long.Parse(value);
+							break;
+						case "CustomMonitoringCycleOperationName":
+							CustomMonitoringCycleOperationName = value;
+							break;
+						case "OperationActionName":
+							OperationActionName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public string TargetObjectName { get; set; }
 			[DataMember]
@@ -2472,11 +3089,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2511,11 +3128,37 @@ namespace AaltoGlobalImpact.OIP {
 				public static IconTitleDescription CreateDefault()
 				{
 					var result = new IconTitleDescription();
+					result.Icon = Icon.CreateDefault();
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Icon;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
-			public byte[] Icon { get; set; }
+			public Icon Icon { get; set; }
 			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
@@ -2561,11 +3204,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2605,6 +3248,31 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = BuiltForAnybody;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ForAllPeople;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
 			public IconTitleDescription BuiltForAnybody { get; set; }
 			[DataMember]
@@ -2650,11 +3318,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2686,8 +3354,19 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-		// Properties to map to handle the file: Icon.png..png
-		// TODO: Handle object collections
+				// Properties to map to handle the file: Icon.png..png
+				// TODO: Handle object collections
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public static Icon CreateDefault()
+				{
+					var result = new Icon();
+					return result;
+				}
+
 			
 			}
 			[DataContract]
@@ -2729,11 +3408,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2765,8 +3444,19 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-		// Properties to map to handle the file: WebPageTemplate.html..html
-		// TODO: Handle object collections
+				// Properties to map to handle the file: WebPageTemplate.html..html
+				// TODO: Handle object collections
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public static WebPageTemplate CreateDefault()
+				{
+					var result = new WebPageTemplate();
+					return result;
+				}
+
 			
 			}
 			[DataContract]
@@ -2808,11 +3498,11 @@ namespace AaltoGlobalImpact.OIP {
 			    }
 
 
-			    private object FindObjectByID(string objectId)
+			    public object FindObjectByID(string objectId)
 			    {
                     if (objectId == ID)
                         return this;
-			        return null;
+			        return FindFromObjectTree(objectId);
 			    }
 
 
@@ -2844,8 +3534,19 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-		// Properties to map to handle the file: WebPage.html..html
-		// TODO: Handle object collections
+				// Properties to map to handle the file: WebPage.html..html
+				// TODO: Handle object collections
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public static WebPage CreateDefault()
+				{
+					var result = new WebPage();
+					return result;
+				}
+
 			
 			}
  } 

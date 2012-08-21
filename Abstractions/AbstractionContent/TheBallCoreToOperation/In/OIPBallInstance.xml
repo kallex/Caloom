@@ -94,7 +94,8 @@
 
       <InformationObject name="SocialPanel" designDesc="SocialPanel">
         <InformationItems>
-          <InformationItem name="SocialFilter" informationObjectName="Filter" logicalDataType="Text_Short"/>
+          <!-- informationObjectName="Filter"  -->
+          <InformationItem name="SocialFilter" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
 
@@ -204,7 +205,7 @@
       </InformationObject>
       <InformationObject name="IconTitleDescription" designDesc="Generic icon, title, description object">
         <InformationItems>
-          <InformationItem name="Icon" logicalDataType="Data_Binary" informationObjectName="Icon"/>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Icon"/>
           <InformationItem name="Title" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long"/>
         </InformationItems>

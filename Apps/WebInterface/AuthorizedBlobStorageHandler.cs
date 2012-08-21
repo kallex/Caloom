@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -98,7 +99,12 @@ namespace WebInterface
             var form = request.Form;
             string objectTypeName = form["RootObjectType"];
             string objectRelativeLocation = form["RootObjectRelativeLocation"];
-            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName);
+            string eTag = form["RootObjectETag"];
+            if(eTag == null)
+            {
+                throw new InvalidDataException("ETag must be present in submit request for root container object");
+            }
+            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName, eTag);
             rootObject.SetValuesToObjects(form);
             StorageSupport.StoreInformation(rootObject);
 
