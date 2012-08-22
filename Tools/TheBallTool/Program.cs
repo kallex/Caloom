@@ -39,9 +39,15 @@ namespace TheBallTool
             {
                 //if (content.FileName.Contains("glyph"))
                 //    continue;
-                if (content.FileName.Contains("theball-reference") == false)
-                    continue;
+                //if (content.FileName.Contains("theball-reference") == false)
+                //    continue;
                 if (content.FileName.EndsWith(".txt"))
+                    continue;
+                if (content.FileName.EndsWith(".png"))
+                    continue;
+                if (content.FileName.Contains("oip-") == false)
+                    continue;
+                if (content.FileName.Contains(".phtml") == false)
                     continue;
                 Console.WriteLine("Uploading: " + content.FileName);
                 if (content.TextContent != null)
@@ -76,6 +82,32 @@ namespace TheBallTool
         private static void doDataTest(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);
+            BlogContainer container = null;
+            try
+            {
+                container = BlogContainer.RetrieveBlogContainer("BlogContainer123");
+            }
+            catch (StorageException sEx)
+            {
+
+            }
+            if (container == null)
+            {
+                container = BlogContainer.CreateDefault();
+                container.ID = "BC123";
+                container.RelativeLocation = "BlogContainer123";
+                StorageSupport.StoreInformation(container);
+            }
+
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string templatePath = "anon-webcontainer/oip-layouts/oip-layout-blog.html";
+            CloudBlob blob = publicClient.GetBlobReference(templatePath);
+            string templateContent = blob.DownloadText();
+            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, container);
+            string finalPath = "theball-reference/blog-rendered.html";
+            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
+
+/*            StorageSupport.InitializeWithConnectionString(connStr);
             TBReferenceEvent dummyData = null;
             try
             {
@@ -103,7 +135,7 @@ namespace TheBallTool
             string templateContent = blob.DownloadText();
             string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, dummyData);
             string finalPath = "theball-reference/example1-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
+            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);*/
         }
 
 
@@ -172,10 +204,18 @@ namespace TheBallTool
             if (fileName.EndsWith(".phtml") == false)
                 //return File.ReadAllText(fileName);
                 return null;
-            return FixContent(fileName);
+            string fixedContent = FixContent(fileName);
+            if(ErrorList.Count > 0)
+            {
+                fixedContent = RenderWebSupport.RenderErrorListAsHtml(ErrorList, "Errors - Combining Files") +
+                               fixedContent;
+                ErrorList.Clear();
+            }
+            return fixedContent;
         }
 
         private static Dictionary<string, bool> ProcessedDict = new Dictionary<string, bool>();
+        private static List<ErrorItem> ErrorList = new List<ErrorItem>();
 
         private static string FixContent(string fileName)
         {
@@ -239,6 +279,13 @@ namespace TheBallTool
                                             }
                                             else
                                             {
+                                                ErrorList.Add(new ErrorItem
+                                                                  {
+                                                                      CurrentLine = incFile,
+                                                                      CurrentContextName = fileName,
+                                                                      ErrorMessage = "File missing"
+                                                                      
+                                                                  });
                                                 fileContent = "MISSING FILE MISSING FILE MISSING FILE: " + incFile;
                                                 ReportProblem(fileContent);
                                             }
