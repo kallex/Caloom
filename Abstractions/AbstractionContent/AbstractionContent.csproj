@@ -46,7 +46,9 @@
     <Content Include="ObjectRelational\In\Content_v1_0\CaloomDatabase_v1_0.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml" />
+    <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="TheBallCore\OIPBallInstance.xml">
       <SubType>Designer</SubType>
     </Content>

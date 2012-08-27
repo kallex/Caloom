@@ -1,17 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
+using Microsoft.WindowsAzure;
 
 namespace TheBall
 {
     public static class EmailSupport
     {
+        private static string AWSAccessKey;
+        private static string AWSSecretKey;
+
+        static EmailSupport()
+        {
+
+            const string SecretFileName = @"C:\work\abs\ConnectionStringStorage\amazonses.txt";
+            string configString;
+            if (File.Exists(SecretFileName))
+                configString = File.ReadAllText(SecretFileName);
+            else
+                configString = CloudConfigurationManager.GetSetting("AmazonSESAccessInfo");
+            string[] strValues = configString.Split(';');
+            AWSAccessKey = strValues[0];
+            AWSSecretKey = strValues[1];
+        }
+
         public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
-            if (Text != null && HTML != null)
+            if (Text != null || HTML != null)
             {
                 String from = From;
 
@@ -30,25 +49,31 @@ namespace TheBall
                 subject.WithCharset("UTF-8");
                 subject.WithData(Subject);
 
-                Content html = new Content();
-                html.WithCharset("UTF-8");
-                html.WithData(HTML);
-
-                Content text = new Content();
-                text.WithCharset("UTF-8");
-                text.WithData(Text);
-
                 Body body = new Body();
 
-                body.WithHtml(html);
-                body.WithText(text);
+
+                if (HTML != null)
+                {
+                    Content html = new Content();
+                    html.WithCharset("UTF-8");
+                    html.WithData(HTML);
+                    body.WithHtml(html);
+                }
+
+                if(Text != null)
+                {
+                    Content text = new Content();
+                    text.WithCharset("UTF-8");
+                    text.WithData(Text);
+                    body.WithText(text);
+                }
 
                 Message message = new Message();
                 message.WithBody(body);
                 message.WithSubject(subject);
 
-                string awsAccessKey = null;
-                string awsSecretKey = null;
+                string awsAccessKey = AWSAccessKey;
+                string awsSecretKey = AWSSecretKey;
                 //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
                 AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(awsAccessKey, awsSecretKey);
 
@@ -88,7 +113,7 @@ namespace TheBall
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-
+                    throw;
                     return false;
                 }
             }

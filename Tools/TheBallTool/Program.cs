@@ -14,6 +14,8 @@ namespace TheBallTool
     {
         static void Main(string[] args)
         {
+            //bool result = EmailSupport.SendEmail("kalle.launiala@gmail.com", "kalle.launiala@citrus.fi", "The Ball - Says Hello!",
+            //                       "Text testing...");
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
@@ -45,13 +47,15 @@ namespace TheBallTool
                     continue;
                 if (content.FileName.EndsWith(".png"))
                     continue;
+                if (content.FileName.EndsWith(".jpg"))
+                    continue;
                 if (content.FileName.Contains("oip-") == false)
                     continue;
-                if (content.FileName.Contains(".phtml") == false)
-                    continue;
+                //if (content.FileName.Contains(".phtml") == false)
+                //    continue;
                 Console.WriteLine("Uploading: " + content.FileName);
                 if (content.TextContent != null)
-                    container.UploadBlobText(content.FileName.Replace(".phtml", ".html"), content.TextContent);
+                    container.UploadBlobText(content.FileName.Replace(".phtml", ".phtml"), content.TextContent);
                 else
                     container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
@@ -75,11 +79,51 @@ namespace TheBallTool
                 string destDir = Path.GetDirectoryName(destinationFile);
                 if (Directory.Exists(destDir) == false)
                     Directory.CreateDirectory(destDir);
+                if(File.Exists(destinationFile))
+                    File.Delete(destinationFile);
                 File.Move(fileToMove, destinationFile);
             }
         }
 
         private static void doDataTest(string connStr)
+        {
+            StorageSupport.InitializeWithConnectionString(connStr);
+            AccountContainer container = null;
+            try
+            {
+                container = AccountContainer.RetrieveAccountContainer("AcctContainer123");
+            }
+            catch (StorageException sEx)
+            {
+
+            }
+            if (container == null)
+            {
+                container = AccountContainer.CreateDefault();
+                container.ID = "AC123";
+                container.RelativeLocation = "AcctContainer123";
+                container.AccountIndex.Title = "Account demo index";
+                container.AccountIndex.Introduction = "Account introduction";
+                container.AccountIndex.Summary = "Account demo summary";
+                var memberColl = container.AccountModule.AccountRoles.MemberInGroups.CollectionContent;
+                memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi", URL = "http://www.yle.fi" });
+                memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi", URL = "http://www.aalto.fi" });
+                var moderatorColl = container.AccountModule.AccountRoles.ModeratorInGroups.CollectionContent;
+                moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi 2", URL = "http://www.yle.fi" });
+                moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi 2", URL = "http://www.aalto.fi" });
+                StorageSupport.StoreInformation(container);
+            }
+
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string templatePath = "anon-webcontainer/oip-layouts/oip-layout-account.phtml";
+            CloudBlob blob = publicClient.GetBlobReference(templatePath);
+            string templateContent = blob.DownloadText();
+            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, container);
+            string finalPath = "theball-reference/account-rendered.html";
+            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
+        }
+
+        private static void doDataTest33(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);
             BlogContainer container = null;

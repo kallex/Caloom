@@ -61,10 +61,18 @@ namespace TheBall
                     {
                         string memberName = line.Substring(collTagLen, line.Length - collTagsTotalLen).Trim();
                         StackContextItem currCtx = contextStack.Peek();
-                        Type type = GetMemberType(currCtx, memberName);
-                        object contentValue = GetPropertyValue(currCtx, memberName);
-                        StackContextItem collItem = new StackContextItem(contentValue, type, memberName, false, true);
-                        contextStack.Push(collItem);
+                        StackContextItem collItem = null;
+                        try
+                        {
+                            Type type = GetMemberType(currCtx, memberName);
+                            object contentValue = GetPropertyValue(currCtx, memberName);
+                            collItem = new StackContextItem(contentValue, type, memberName, false, true);
+                        } finally
+                        {
+                            if (collItem == null)
+                                collItem = new StackContextItem("Invalid Collection Context", typeof(string), "INVALID", false, true);
+                            contextStack.Push(collItem);
+                        }
                     }
                     else if (line.StartsWith(ObjectTagBegin))
                     {
@@ -77,10 +85,18 @@ namespace TheBall
                         }
                         else
                         {
-                            Type type = GetMemberType(currCtx, memberName);
-                            object contentValue = GetPropertyValue(currCtx, memberName);
-                            StackContextItem objItem = new StackContextItem(contentValue, type, memberName, false, false);
-                            contextStack.Push(objItem);
+                            StackContextItem objItem = null;
+                            try
+                            {
+                                Type type = GetMemberType(currCtx, memberName);
+                                object contentValue = GetPropertyValue(currCtx, memberName);
+                                objItem = new StackContextItem(contentValue, type, memberName, false, false);
+                            } finally
+                            {
+                                if(objItem == null)
+                                    objItem = new StackContextItem("Invalid Context", typeof(string), "INVALID", false, false);
+                                contextStack.Push(objItem);
+                            }
                         }
                     }
                     else if (line.StartsWith(ContextTagEnd))
@@ -90,6 +106,9 @@ namespace TheBall
                     else // ATOM line
                     {
                         StackContextItem currCtx = contextStack.Peek();
+                        bool isCollection = false;
+                        if (currCtx.IsCollection == true)
+                            isCollection = true;
                         var contentLine = Regex.Replace(line, MemberAtomPattern,
                                       match =>
                                       {

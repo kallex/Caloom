@@ -426,6 +426,7 @@ namespace TheBall
                 case ".pfm": return "application/octet-stream";
                 case ".pfx": return "application/x-pkcs12";
                 case ".pgm": return "image/x-portable-graymap";
+                case ".phtml": return "text/html";
                 case ".pic": return "image/pict";
                 case ".pict": return "image/pict";
                 case ".pkgdef": return "text/plain";
