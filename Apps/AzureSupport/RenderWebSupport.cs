@@ -10,6 +10,14 @@ namespace TheBall
 {
     public static class RenderWebSupport
     {
+        private static int RootTagLen;
+        private static int RootTagsTotalLen;
+        private static int CollTagLen;
+        private static int CollTagsTotalLen;
+        private static int ObjTagLen;
+        private static int ObjTagsTotalLen;
+        private static int AtomTagLen;
+        private static int AtomTagsTotalLen;
         private const string RootTagBegin = "<!-- THEBALL-CONTEXT-ROOT-BEGIN:";
         private const string CollectionTagBegin = "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:";
         private const string ObjectTagBegin = "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:";
@@ -19,19 +27,24 @@ namespace TheBall
         private const string AtomTagBegin = "[!ATOM]";
         private const string AtomTagEnd = "[ATOM!]";
         private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>\w*)\[ATOM!])";
+
+        static RenderWebSupport()
+        {
+            RootTagLen = RootTagBegin.Length;
+            RootTagsTotalLen = RootTagBegin.Length + CommentEnd.Length;
+            CollTagLen = CollectionTagBegin.Length;
+            CollTagsTotalLen = CollectionTagBegin.Length + CommentEnd.Length;
+            ObjTagLen = ObjectTagBegin.Length;
+            ObjTagsTotalLen = ObjectTagBegin.Length + CommentEnd.Length;
+            AtomTagLen = AtomTagBegin.Length;
+            AtomTagsTotalLen = AtomTagBegin.Length + AtomTagEnd.Length;
+        }
+
         public static string RenderTemplateWithContent(string templatePage, object content)
         {
             StringReader reader = new StringReader(templatePage);
             StringBuilder result = new StringBuilder(templatePage.Length);
             Stack<StackContextItem> contextStack = new Stack<StackContextItem>();
-            int rootTagLen = RootTagBegin.Length;
-            int rootTagsTotalLen = RootTagBegin.Length + CommentEnd.Length;
-            int collTagLen = CollectionTagBegin.Length;
-            int collTagsTotalLen = CollectionTagBegin.Length + CommentEnd.Length;
-            int objTagLen = ObjectTagBegin.Length;
-            int objTagsTotalLen = ObjectTagBegin.Length + CommentEnd.Length;
-            int atomTagLen = AtomTagBegin.Length;
-            int atomTagsTotalLen = AtomTagBegin.Length + AtomTagEnd.Length;
             List<ErrorItem> errorList = new List<ErrorItem>();
 
             for(string line = reader.ReadLine(); line != null; line = reader.ReadLine())
@@ -43,82 +56,9 @@ namespace TheBall
                         break;
                     }
 
-                    if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
-                    {
-                        result.AppendLine(line);
-                        continue;
-                    }
-                    if (line.StartsWith(RootTagBegin))
-                    {
-                        // TODO: Multiple container support; type and instance ID mapping
-                        string typeName = line.Substring(rootTagLen, line.Length - rootTagsTotalLen).Trim();
-                        StackContextItem rootItem = new StackContextItem(content, content.GetType(), null, true, false);
-                        if (contextStack.Count != 0)
-                            throw new InvalidDataException("Context stack already has a root item before: " + typeName);
-                        contextStack.Push(rootItem);
-                    }
-                    else if (line.StartsWith(CollectionTagBegin))
-                    {
-                        string memberName = line.Substring(collTagLen, line.Length - collTagsTotalLen).Trim();
-                        StackContextItem currCtx = contextStack.Peek();
-                        StackContextItem collItem = null;
-                        try
-                        {
-                            Type type = GetMemberType(currCtx, memberName);
-                            object contentValue = GetPropertyValue(currCtx, memberName);
-                            collItem = new StackContextItem(contentValue, type, memberName, false, true);
-                        } finally
-                        {
-                            if (collItem == null)
-                                collItem = new StackContextItem("Invalid Collection Context", typeof(string), "INVALID", false, true);
-                            contextStack.Push(collItem);
-                        }
-                    }
-                    else if (line.StartsWith(ObjectTagBegin))
-                    {
-                        string memberName = line.Substring(objTagLen, line.Length - objTagsTotalLen).Trim();
-                        StackContextItem currCtx = contextStack.Peek();
-                        if (memberName == "*")
-                        {
-                            // Put top item again to stack
-                            contextStack.Push(currCtx);
-                        }
-                        else
-                        {
-                            StackContextItem objItem = null;
-                            try
-                            {
-                                Type type = GetMemberType(currCtx, memberName);
-                                object contentValue = GetPropertyValue(currCtx, memberName);
-                                objItem = new StackContextItem(contentValue, type, memberName, false, false);
-                            } finally
-                            {
-                                if(objItem == null)
-                                    objItem = new StackContextItem("Invalid Context", typeof(string), "INVALID", false, false);
-                                contextStack.Push(objItem);
-                            }
-                        }
-                    }
-                    else if (line.StartsWith(ContextTagEnd))
-                    {
-                        contextStack.Pop();
-                    }
-                    else // ATOM line
-                    {
-                        StackContextItem currCtx = contextStack.Peek();
-                        bool isCollection = false;
-                        if (currCtx.IsCollection == true)
-                            isCollection = true;
-                        var contentLine = Regex.Replace(line, MemberAtomPattern,
-                                      match =>
-                                      {
-                                          string memberName = match.Groups["membername"].Value;
-                                          object value = GetPropertyValue(currCtx, memberName);
-                                          return (value ?? (currCtx.MemberName + "." + memberName + " is null")).ToString();
-                                      });
-                        result.AppendLine(contentLine);
-                    }
-                } catch(Exception ex)
+                    ProcessLine(line, result, content, contextStack);
+                }
+                catch(Exception ex)
                 {
                     StackContextItem item = contextStack.Count > 0 ? contextStack.Peek() : null;
                     ErrorItem errorItem = new ErrorItem(ex, item, line);
@@ -130,6 +70,88 @@ namespace TheBall
                 result.Insert(0, RenderErrorListAsHtml(errorList, "Errors - Databinding"));
             }
             return result.ToString();
+        }
+
+        private static void ProcessLine(string line, StringBuilder result, object content, Stack<StackContextItem> contextStack)
+        {
+            if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
+            {
+                result.AppendLine(line);
+                return;
+            }
+            if (line.StartsWith(RootTagBegin))
+            {
+                // TODO: Multiple container support; type and instance ID mapping
+                string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
+                StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
+                StackContextItem rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false);
+                if (contextStack.Count != 0)
+                    throw new InvalidDataException("Context stack already has a root item before: " + typeName);
+                contextStack.Push(rootItem);
+            }
+            else if (line.StartsWith(CollectionTagBegin))
+            {
+                string memberName = line.Substring(CollTagLen, line.Length - CollTagsTotalLen).Trim();
+                StackContextItem currCtx = contextStack.Peek();
+                StackContextItem collItem = null;
+                try
+                {
+                    Type type = GetMemberType(currCtx, memberName);
+                    object contentValue = GetPropertyValue(currCtx, memberName);
+                    StackContextItem parent = currCtx;
+                    collItem = new StackContextItem(contentValue, parent, type, memberName, false, true);
+                } finally
+                {
+                    if (collItem == null)
+                        collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", false, true);
+                    contextStack.Push(collItem);
+                }
+            }
+            else if (line.StartsWith(ObjectTagBegin))
+            {
+                string memberName = line.Substring(ObjTagLen, line.Length - ObjTagsTotalLen).Trim();
+                StackContextItem currCtx = contextStack.Peek();
+                if (memberName == "*")
+                {
+                    // Put top item again to stack
+                    contextStack.Push(currCtx);
+                }
+                else
+                {
+                    StackContextItem objItem = null;
+                    try
+                    {
+                        Type type = GetMemberType(currCtx, memberName);
+                        object contentValue = GetPropertyValue(currCtx, memberName);
+                        StackContextItem parent = currCtx;
+                        objItem = new StackContextItem(contentValue, parent, type, memberName, false, false);
+                    } finally
+                    {
+                        if(objItem == null)
+                            objItem = new StackContextItem("Invalid Context", contextStack.Peek(), typeof(string), "INVALID", false, false);
+                        contextStack.Push(objItem);
+                    }
+                }
+            }
+            else if (line.StartsWith(ContextTagEnd))
+            {
+                contextStack.Pop();
+            }
+            else // ATOM line
+            {
+                StackContextItem currCtx = contextStack.Peek();
+                bool isCollection = false;
+                if (currCtx.IsCollection == true)
+                    isCollection = true;
+                var contentLine = Regex.Replace(line, MemberAtomPattern,
+                                                match =>
+                                                    {
+                                                        string memberName = match.Groups["membername"].Value;
+                                                        object value = GetPropertyValue(currCtx, memberName);
+                                                        return (value ?? (currCtx.MemberName + "." + memberName + " is null")).ToString();
+                                                    });
+                result.AppendLine(contentLine);
+            }
         }
 
         public static string RenderErrorListAsHtml(List<ErrorItem> errorList, string errorLabel)
@@ -178,11 +200,11 @@ namespace TheBall
 
         private static object GetPropertyValue(StackContextItem currCtx, string propertyName)
         {
-            if(currCtx.Content == null)
+            if(currCtx.CurrContent == null)
                 throw new InvalidDataException("Object: " + currCtx.MemberName + " does not have content (was retrieving value: " + propertyName + ")");
             Type type = currCtx.ItemType;
             PropertyInfo pi = type.GetProperty(propertyName);
-            return pi.GetValue(currCtx.Content, null);
+            return pi.GetValue(currCtx.CurrContent, null);
         }
 
         private static Type GetMemberType(StackContextItem containingItem, string memberName)
