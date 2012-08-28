@@ -47,6 +47,16 @@ namespace TheBall
             Stack<StackContextItem> contextStack = new Stack<StackContextItem>();
             List<ErrorItem> errorList = new List<ErrorItem>();
 
+            ProcessReaderScope(reader, result, content, contextStack, errorList);
+            if(errorList.Count > 0)
+            {
+                result.Insert(0, RenderErrorListAsHtml(errorList, "Errors - Databinding"));
+            }
+            return result.ToString();
+        }
+
+        private static void ProcessReaderScope(StringReader reader, StringBuilder result, object rootContent, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
+        {
             for(string line = reader.ReadLine(); line != null; line = reader.ReadLine())
             {
                 try
@@ -56,7 +66,7 @@ namespace TheBall
                         break;
                     }
 
-                    ProcessLine(line, result, content, contextStack);
+                    ProcessLine(reader, line, result, rootContent, contextStack, errorList);
                 }
                 catch(Exception ex)
                 {
@@ -65,14 +75,9 @@ namespace TheBall
                     errorList.Add(errorItem);
                 }
             }
-            if(errorList.Count > 0)
-            {
-                result.Insert(0, RenderErrorListAsHtml(errorList, "Errors - Databinding"));
-            }
-            return result.ToString();
         }
 
-        private static void ProcessLine(string line, StringBuilder result, object content, Stack<StackContextItem> contextStack)
+        private static void ProcessLine(StringReader reader, string line, StringBuilder result, object content, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
             if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
             {
@@ -92,6 +97,7 @@ namespace TheBall
             else if (line.StartsWith(CollectionTagBegin))
             {
                 string memberName = line.Substring(CollTagLen, line.Length - CollTagsTotalLen).Trim();
+                Stack<StackContextItem> collStack = new Stack<StackContextItem>();
                 StackContextItem currCtx = contextStack.Peek();
                 StackContextItem collItem = null;
                 try
@@ -104,7 +110,13 @@ namespace TheBall
                 {
                     if (collItem == null)
                         collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", false, true);
-                    contextStack.Push(collItem);
+                    collStack.Push(collItem);
+                }
+                // TODO: Seek back to this reader position during collection loop
+                while(collItem.IsNotFullyProcessed)
+                {
+                    ProcessReaderScope(reader, result, collStack.Peek(), collStack, errorList);
+                    collItem.CurrCollectionItem++;
                 }
             }
             else if (line.StartsWith(ObjectTagBegin))
@@ -135,7 +147,9 @@ namespace TheBall
             }
             else if (line.StartsWith(ContextTagEnd))
             {
-                contextStack.Pop();
+                StackContextItem popItem = contextStack.Pop();
+                if (contextStack.Count == 0)
+                    return;
             }
             else // ATOM line
             {
