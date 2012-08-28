@@ -42,12 +42,14 @@ namespace TheBall
 
         public static string RenderTemplateWithContent(string templatePage, object content)
         {
-            StringReader reader = new StringReader(templatePage);
             StringBuilder result = new StringBuilder(templatePage.Length);
             Stack<StackContextItem> contextStack = new Stack<StackContextItem>();
             List<ErrorItem> errorList = new List<ErrorItem>();
 
-            ProcessReaderScope(reader, result, content, contextStack, errorList);
+            string[] lines = templatePage.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            int endIndexExclusive = lines.Length;
+            ProcessLinesScope(lines, 0, ref endIndexExclusive, result, content, contextStack, errorList);
             if(errorList.Count > 0)
             {
                 result.Insert(0, RenderErrorListAsHtml(errorList, "Errors - Databinding"));
@@ -55,10 +57,12 @@ namespace TheBall
             return result.ToString();
         }
 
-        private static void ProcessReaderScope(StringReader reader, StringBuilder result, object rootContent, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
+        private static void ProcessLinesScope(string[] lines, int startIndex, ref int endIndexExclusive, StringBuilder result, object rootContent, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
-            for(string line = reader.ReadLine(); line != null; line = reader.ReadLine())
+            bool hasEmptyStackToBegin = contextStack.Count == 0;
+            for (int currLineIX = startIndex; currLineIX < endIndexExclusive; currLineIX++)
             {
+                string line = lines[currLineIX];
                 try
                 {
                     if (IgnoreBindingsTillEnd(line))
@@ -66,9 +70,15 @@ namespace TheBall
                         break;
                     }
 
-                    ProcessLine(reader, line, result, rootContent, contextStack, errorList);
+                    bool hasStackContext = ProcessLine(lines, ref currLineIX, line, result, rootContent, contextStack, errorList);
+                    // If stack is empty and we had context to begin with, stop here
+                    if (hasStackContext == false && hasEmptyStackToBegin == false)
+                    {
+                        endIndexExclusive = currLineIX + 1;
+                        return;
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     StackContextItem item = contextStack.Count > 0 ? contextStack.Peek() : null;
                     ErrorItem errorItem = new ErrorItem(ex, item, line);
@@ -77,12 +87,12 @@ namespace TheBall
             }
         }
 
-        private static void ProcessLine(StringReader reader, string line, StringBuilder result, object content, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
+        private static bool ProcessLine(string[] lines, ref int currLineIx, string line, StringBuilder result, object content, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
             if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
             {
                 result.AppendLine(line);
-                return;
+                return contextStack.Count > 0;
             }
             if (line.StartsWith(RootTagBegin))
             {
@@ -106,18 +116,31 @@ namespace TheBall
                     object contentValue = GetPropertyValue(currCtx, memberName);
                     StackContextItem parent = currCtx;
                     collItem = new StackContextItem(contentValue, parent, type, memberName, false, true);
-                } finally
+                } catch(Exception ex)
                 {
                     if (collItem == null)
                         collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", false, true);
-                    collStack.Push(collItem);
                 }
-                // TODO: Seek back to this reader position during collection loop
-                while(collItem.IsNotFullyProcessed)
+                collStack.Push(collItem);
+                int scopeStartIx = currLineIx + 1;
+                int scopeEndIx = lines.Length; // Candidate, the lower call will adjust properly
+                // Get scope length
+                ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, new StringBuilder(), content, collStack,
+                                  new List<ErrorItem>());
+                bool isFirstRound = true;
+                while (collItem.IsNotFullyProcessed)
                 {
-                    ProcessReaderScope(reader, result, collStack.Peek(), collStack, errorList);
+                    var currErrorList = isFirstRound ? errorList : new List<ErrorItem>();
+                    collStack.Push(collItem);
+                    ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, result, content, collStack,
+                                        currErrorList);
+                    if(collStack.Count > 0)
+                        throw new InvalidDataException("Collection stack should be empty at this point");
+                    isFirstRound = false;
                     collItem.CurrCollectionItem++;
                 }
+                // Jump to the end tag (as the next loop will progress by one)
+                currLineIx = scopeEndIx - 1;
             }
             else if (line.StartsWith(ObjectTagBegin))
             {
@@ -149,7 +172,7 @@ namespace TheBall
             {
                 StackContextItem popItem = contextStack.Pop();
                 if (contextStack.Count == 0)
-                    return;
+                    return false;
             }
             else // ATOM line
             {
@@ -166,6 +189,7 @@ namespace TheBall
                                                     });
                 result.AppendLine(contentLine);
             }
+            return contextStack.Count > 0;
         }
 
         public static string RenderErrorListAsHtml(List<ErrorItem> errorList, string errorLabel)
@@ -216,7 +240,8 @@ namespace TheBall
         {
             if(currCtx.CurrContent == null)
                 throw new InvalidDataException("Object: " + currCtx.MemberName + " does not have content (was retrieving value: " + propertyName + ")");
-            Type type = currCtx.ItemType;
+            //Type type = currCtx.ItemType;
+            Type type = currCtx.CurrContent.GetType();
             PropertyInfo pi = type.GetProperty(propertyName);
             return pi.GetValue(currCtx.CurrContent, null);
         }
