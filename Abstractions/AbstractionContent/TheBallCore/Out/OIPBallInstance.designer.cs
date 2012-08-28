@@ -215,12 +215,114 @@ namespace AaltoGlobalImpact.OIP {
 						case "EmailAddress":
 							EmailAddress = value;
 							break;
+						case "ValidatedAt":
+							ValidatedAt = DateTime.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
 			public string EmailAddress { get; set; }
+			[DataMember]
+			public DateTime ValidatedAt { get; set; }
+			
+			}
+			[DataContract]
+			public partial class EmailCollection : IInformationObject
+			{
+				public EmailCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "EmailCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "EmailCollection", ID).Replace("\\", "/");
+				}
+
+                public static EmailCollection RetrieveEmailCollection(string relativeLocation)
+                {
+                    var result = (EmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EmailCollection));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "EmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				public static EmailCollection CreateDefault()
+				{
+					return new EmailCollection();
+				}
+
+				[DataMember] public List<Email> CollectionContent = new List<Email>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -334,6 +436,103 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
+			public partial class CollaboratorRoleCollection : IInformationObject
+			{
+				public CollaboratorRoleCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "CollaboratorRoleCollection";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRoleCollection", ID).Replace("\\", "/");
+				}
+
+                public static CollaboratorRoleCollection RetrieveCollaboratorRoleCollection(string relativeLocation)
+                {
+                    var result = (CollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratorRoleCollection));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				public static CollaboratorRoleCollection CreateDefault()
+				{
+					return new CollaboratorRoleCollection();
+				}
+
+				[DataMember] public List<CollaboratorRole> CollectionContent = new List<CollaboratorRole>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
 			public partial class Collaborator : IInformationObject
 			{
 				public Collaborator()
@@ -432,6 +631,239 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string AccountInfo { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBEmailValidationContainer : IInformationObject
+			{
+				public TBEmailValidationContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBEmailValidationContainer";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", ID).Replace("\\", "/");
+				}
+
+                public static TBEmailValidationContainer RetrieveTBEmailValidationContainer(string relativeLocation)
+                {
+                    var result = (TBEmailValidationContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailValidationContainer));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBEmailValidationContainer CreateDefault()
+				{
+					var result = new TBEmailValidationContainer();
+					result.Email = Email.CreateDefault();
+					result.AuthenticationInfo = AuthenticationInfo.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Email;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = AuthenticationInfo;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ValidUntil":
+							ValidUntil = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public Email Email { get; set; }
+			[DataMember]
+			public AuthenticationInfo AuthenticationInfo { get; set; }
+			[DataMember]
+			public DateTime ValidUntil { get; set; }
+			
+			}
+			[DataContract]
+			public partial class LoginCollaboratorRoles : IInformationObject
+			{
+				public LoginCollaboratorRoles()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "LoginCollaboratorRoles";
+                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "LoginCollaboratorRoles", ID).Replace("\\", "/");
+				}
+
+                public static LoginCollaboratorRoles RetrieveLoginCollaboratorRoles(string relativeLocation)
+                {
+                    var result = (LoginCollaboratorRoles) StorageSupport.RetrieveInformation(relativeLocation, typeof(LoginCollaboratorRoles));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "LoginCollaboratorRoles", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static LoginCollaboratorRoles CreateDefault()
+				{
+					var result = new LoginCollaboratorRoles();
+					result.AuthenticationInfo = AuthenticationInfo.CreateDefault();
+					result.CollaboratorRoleCollection = CollaboratorRoleCollection.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = AuthenticationInfo;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = CollaboratorRoleCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public AuthenticationInfo AuthenticationInfo { get; set; }
+			[DataMember]
+			public CollaboratorRoleCollection CollaboratorRoleCollection { get; set; }
 			
 			}
 			[DataContract]

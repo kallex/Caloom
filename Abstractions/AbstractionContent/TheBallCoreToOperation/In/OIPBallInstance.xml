@@ -11,7 +11,11 @@
       <InformationObject name="Email" designDesc="Email Address">
         <InformationItems>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
+          <InformationItem name="ValidatedAt" logicalDataType="Time_DateTime"/>
         </InformationItems>
+      </InformationObject>
+      <InformationObject name="EmailCollection" designDesc="Collection of emails">
+        <CollectionFor contentInformationObjectName="Email"/>
       </InformationObject>
       <InformationObject name="CollaboratorRole" designDesc="Colaborator acting in certain role">
         <InformationItems>
@@ -19,12 +23,29 @@
           <InformationItem name="Role" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="CollaboratorRoleCollection" designDesc="Collection of collaborator roles">
+        <CollectionFor contentInformationObjectName="CollaboratorRole"/>
+      </InformationObject>
       <InformationObject name="Collaborator" designDesc="Collaborator">
         <InformationItems>
           <InformationItem name="AccountInfo" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-                         
+
+      <InformationObject name="TBEmailValidationContainer" designDesc="Email validation object">
+        <InformationItems>
+          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="Email"/>
+          <InformationItem name="AuthenticationInfo" logicalDataType="InformationObject" informationObjectName="AuthenticationInfo" />
+          <InformationItem name="ValidUntil" logicalDataType="Time_DateTime" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="LoginCollaboratorRoles" designDesc="Login mapping to collaborator roles">
+        <InformationItems>
+          <InformationItem name="AuthenticationInfo" logicalDataType="InformationObject" informationObjectName="AuthenticationInfo" />
+          <InformationItem name="CollaboratorRoleCollection" logicalDataType="InformationObject" informationObjectName="CollaboratorRoleCollection" />
+        </InformationItems>
+      </InformationObject>
       
       <!-- Account/Group/Profile -->
 

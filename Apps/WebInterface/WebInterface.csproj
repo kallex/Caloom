@@ -90,6 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
+    <Compile Include="AnonymousBlobStorageHandler.cs" />
+    <Compile Include="EmailValidationHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

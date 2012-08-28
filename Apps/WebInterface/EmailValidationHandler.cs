@@ -10,7 +10,7 @@ using TheBall;
 
 namespace WebInterface
 {
-    public class AuthorizedBlobStorageHandler : IHttpHandler
+    public class EmailValidationHandler : IHttpHandler
     {
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
@@ -31,22 +31,17 @@ namespace WebInterface
             string user = context.User.Identity.Name;
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             HttpRequest request = context.Request;
-            if(request.RequestType != "GET")
-            {
-                ProcessPost(context);
-                return;
-            }
             HttpResponse response = context.Response;
             if(request.Path.StartsWith("/theballanon/") || isAuthenticated == false)
             {
                 return;
             }
-            
-            // Get the file name.
 
             context.Response.Write("<p>Not implemented</p>");
             return;
-            string fileName = context.Request.Path;
+            // Get the file name.
+
+            string fileName = context.Request.Path.Replace("/blobproxy/", string.Empty);
 
             // Get the blob from blob storage.
             var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
@@ -69,32 +64,6 @@ namespace WebInterface
                 context.Response.Write(ex.ToString());
             }
             context.Response.End();
-        }
-
-        private void ProcessPost(HttpContext context)
-        {
-            var request = context.Request;
-            string reqType = request.RequestType;
-            var form = request.Form;
-            string objectTypeName = form["RootObjectType"];
-            string objectRelativeLocation = form["RootObjectRelativeLocation"];
-            string eTag = form["RootObjectETag"];
-            if(eTag == null)
-            {
-                throw new InvalidDataException("ETag must be present in submit request for root container object");
-            }
-            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName, eTag);
-            rootObject.SetValuesToObjects(form);
-            StorageSupport.StoreInformation(rootObject);
-
-            // Hard coded for demo:
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/theball-reference/example1-layout-default.html";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, rootObject);
-            string finalPath = "theball-reference/example1-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
         }
 
         #endregion
