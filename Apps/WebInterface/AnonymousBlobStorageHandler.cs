@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -30,11 +31,61 @@ namespace WebInterface
         {
             string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
+            if(request.Path.EndsWith("proxy.cgi"))
+            {
+                ProcessProxyRequest(context);
+                return;
+            }
             HttpResponse response = context.Response;
             if(request.Path.StartsWith("/theballanon/"))
             {
                 ProcessAnonymousRequest(request, response);
                 return;
+            }
+        }
+
+        private void ProcessProxyRequest(HttpContext context)
+        {
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(context.Request["url"]);
+            request.UserAgent = context.Request.UserAgent;
+            request.ContentType = context.Request.ContentType;
+            request.Method = "POST";
+
+            Stream nstream = request.GetRequestStream();
+            byte[] trans = new byte[1024];
+            int offset = 0;
+            int offcnt = 0;
+            while (offset < context.Request.ContentLength)
+            {
+                offcnt = context.Request.InputStream.Read(trans, offset, 1024);
+                if (offcnt > 0)
+                {
+                    nstream.Write(trans, 0, offcnt);
+                    offset += offcnt;
+                }
+            }
+            nstream.Close();
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                context.Response.ContentType = response.ContentType;
+
+                using (Stream receiveStream = response.GetResponseStream())
+                {
+                    BinaryReader reader = new BinaryReader(receiveStream);
+                    BinaryWriter writer = new BinaryWriter(context.Response.OutputStream);
+                    int readBytes;
+                    do
+                    {
+                        readBytes = reader.Read(trans, 0, trans.Length);
+                        if (readBytes > 0)
+                            writer.Write(trans, 0, readBytes);
+                    } while (readBytes > 0);
+                    writer.Flush();
+                    writer.Close();
+                    reader.Close();
+                }
             }
         }
 

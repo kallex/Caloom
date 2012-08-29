@@ -45,8 +45,8 @@ namespace TheBallTool
                 //    continue;
                 if (content.FileName.EndsWith(".txt"))
                     continue;
-                if (content.FileName.EndsWith(".png"))
-                    continue;
+                //if (content.FileName.EndsWith(".png"))
+                //    continue;
                 if (content.FileName.EndsWith(".jpg"))
                     continue;
                 if (content.FileName.Contains("oip-") == false && content.FileName.Contains("theball-") == false)
@@ -75,7 +75,8 @@ namespace TheBallTool
                     continue;
                 }
                 string destinationFile = fileToMove.Replace(@"caloomhtml\UI\docs\", @"caloomhtml\UI\notusedtxt\");
-                Console.WriteLine("Moving unused file to: " + destinationFile);
+                Console.WriteLine("NOT Moving unused file to: " + destinationFile);
+                continue;
                 string destDir = Path.GetDirectoryName(destinationFile);
                 if (Directory.Exists(destDir) == false)
                     Directory.CreateDirectory(destDir);
@@ -85,7 +86,7 @@ namespace TheBallTool
             }
         }
 
-        private static void doDataTest(string connStr)
+        private static void doDataTestZZZ(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);
             TBEmailValidationContainer container = null;
@@ -117,7 +118,7 @@ namespace TheBallTool
         }
 
 
-        private static void doDataTest28082012(string connStr)
+        private static void doDataTest(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);
             AccountContainer container = null;
