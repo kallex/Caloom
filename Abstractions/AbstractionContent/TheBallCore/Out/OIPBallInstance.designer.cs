@@ -22,20 +22,37 @@ namespace AaltoGlobalImpact.OIP {
     }
 
 			[DataContract]
-			public partial class AuthenticationInfo : IInformationObject
+			public partial class TBRLoginRoot : IInformationObject
 			{
-				public AuthenticationInfo()
+				public TBRLoginRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AuthenticationInfo";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AuthenticationInfo", ID).Replace("\\", "/");
+				    this.Name = "TBRLoginRoot";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static AuthenticationInfo RetrieveAuthenticationInfo(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (AuthenticationInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AuthenticationInfo));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBRLoginRoot RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBRLoginRoot(relativeLocation);
+				}
+
+
+                public static TBRLoginRoot RetrieveTBRLoginRoot(string relativeLocation)
+                {
+                    var result = (TBRLoginRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginRoot));
                     return result;
                 }
 
@@ -93,12 +110,1004 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AuthenticationInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static AuthenticationInfo CreateDefault()
+				public static TBRLoginRoot CreateDefault()
 				{
-					var result = new AuthenticationInfo();
+					var result = new TBRLoginRoot();
+					result.Account = TBAccount.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Account;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBAccount Account { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBRAccountRoot : IInformationObject
+			{
+				public TBRAccountRoot()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBRAccountRoot";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBRAccountRoot RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBRAccountRoot(relativeLocation);
+				}
+
+
+                public static TBRAccountRoot RetrieveTBRAccountRoot(string relativeLocation)
+                {
+                    var result = (TBRAccountRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRAccountRoot));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBRAccountRoot CreateDefault()
+				{
+					var result = new TBRAccountRoot();
+					result.Account = TBAccount.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Account;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBAccount Account { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBRGroupRoot : IInformationObject
+			{
+				public TBRGroupRoot()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBRGroupRoot";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBRGroupRoot RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBRGroupRoot(relativeLocation);
+				}
+
+
+                public static TBRGroupRoot RetrieveTBRGroupRoot(string relativeLocation)
+                {
+                    var result = (TBRGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRGroupRoot));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBRGroupRoot CreateDefault()
+				{
+					var result = new TBRGroupRoot();
+					result.Group = TBCollaboratingGroup.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Group;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBCollaboratingGroup Group { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBRLoginGroupRoot : IInformationObject
+			{
+				public TBRLoginGroupRoot()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBRLoginGroupRoot";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBRLoginGroupRoot RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBRLoginGroupRoot(relativeLocation);
+				}
+
+
+                public static TBRLoginGroupRoot RetrieveTBRLoginGroupRoot(string relativeLocation)
+                {
+                    var result = (TBRLoginGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginGroupRoot));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBRLoginGroupRoot CreateDefault()
+				{
+					var result = new TBRLoginGroupRoot();
+					result.Role = TBCollaboratorRole.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Role;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupID":
+							GroupID = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBCollaboratorRole Role { get; set; }
+			[DataMember]
+			public string GroupID { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBREmailRoot : IInformationObject
+			{
+				public TBREmailRoot()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBREmailRoot";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBREmailRoot RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBREmailRoot(relativeLocation);
+				}
+
+
+                public static TBREmailRoot RetrieveTBREmailRoot(string relativeLocation)
+                {
+                    var result = (TBREmailRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBREmailRoot));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBREmailRoot CreateDefault()
+				{
+					var result = new TBREmailRoot();
+					result.Account = TBAccount.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Account;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBAccount Account { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBAccount : IInformationObject
+			{
+				public TBAccount()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBAccount";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBAccount RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBAccount(relativeLocation);
+				}
+
+
+                public static TBAccount RetrieveTBAccount(string relativeLocation)
+                {
+                    var result = (TBAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccount));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBAccount CreateDefault()
+				{
+					var result = new TBAccount();
+					result.Emails = TBEmailCollection.CreateDefault();
+					result.Logins = TBLoginInfoCollection.CreateDefault();
+					result.GroupRoleCollection = TBAccountCollaborationGroupCollection.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Emails;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Logins;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = GroupRoleCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public TBEmailCollection Emails { get; set; }
+			[DataMember]
+			public TBLoginInfoCollection Logins { get; set; }
+			[DataMember]
+			public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBAccountCollaborationGroup : IInformationObject
+			{
+				public TBAccountCollaborationGroup()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBAccountCollaborationGroup";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBAccountCollaborationGroup RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBAccountCollaborationGroup(relativeLocation);
+				}
+
+
+                public static TBAccountCollaborationGroup RetrieveTBAccountCollaborationGroup(string relativeLocation)
+                {
+                    var result = (TBAccountCollaborationGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroup));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBAccountCollaborationGroup CreateDefault()
+				{
+					var result = new TBAccountCollaborationGroup();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupID":
+							GroupID = value;
+							break;
+						case "GroupRole":
+							GroupRole = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string GroupID { get; set; }
+			[DataMember]
+			public string GroupRole { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBAccountCollaborationGroupCollection : IInformationObject
+			{
+				public TBAccountCollaborationGroupCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBAccountCollaborationGroupCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBAccountCollaborationGroupCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation);
+				}
+
+
+                public static TBAccountCollaborationGroupCollection RetrieveTBAccountCollaborationGroupCollection(string relativeLocation)
+                {
+                    var result = (TBAccountCollaborationGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroupCollection));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				public static TBAccountCollaborationGroupCollection CreateDefault()
+				{
+					return new TBAccountCollaborationGroupCollection();
+				}
+
+				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class TBLoginInfo : IInformationObject
+			{
+				public TBLoginInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBLoginInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBLoginInfo RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBLoginInfo(relativeLocation);
+				}
+
+
+                public static TBLoginInfo RetrieveTBLoginInfo(string relativeLocation)
+                {
+                    var result = (TBLoginInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfo));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBLoginInfo CreateDefault()
+				{
+					var result = new TBLoginInfo();
 				
 					return result;
 				}
@@ -123,20 +1132,37 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class Email : IInformationObject
+			public partial class TBLoginInfoCollection : IInformationObject
 			{
-				public Email()
+				public TBLoginInfoCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Email";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Email", ID).Replace("\\", "/");
+				    this.Name = "TBLoginInfoCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static Email RetrieveEmail(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (Email) StorageSupport.RetrieveInformation(relativeLocation, typeof(Email));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBLoginInfoCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBLoginInfoCollection(relativeLocation);
+				}
+
+
+                public static TBLoginInfoCollection RetrieveTBLoginInfoCollection(string relativeLocation)
+                {
+                    var result = (TBLoginInfoCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfoCollection));
                     return result;
                 }
 
@@ -194,12 +1220,126 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Email", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static Email CreateDefault()
+
+				public static TBLoginInfoCollection CreateDefault()
 				{
-					var result = new Email();
+					return new TBLoginInfoCollection();
+				}
+
+				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class TBEmail : IInformationObject
+			{
+				public TBEmail()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBEmail";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBEmail RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBEmail(relativeLocation);
+				}
+
+
+                public static TBEmail RetrieveTBEmail(string relativeLocation)
+                {
+                    var result = (TBEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmail));
+                    return result;
+                }
+
+			    public void InitializeDefaultSubscribers()
+			    {
+			    }
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static TBEmail CreateDefault()
+				{
+					var result = new TBEmail();
 				
 					return result;
 				}
@@ -229,20 +1369,37 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class EmailCollection : IInformationObject
+			public partial class TBEmailCollection : IInformationObject
 			{
-				public EmailCollection()
+				public TBEmailCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "EmailCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "EmailCollection", ID).Replace("\\", "/");
+				    this.Name = "TBEmailCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static EmailCollection RetrieveEmailCollection(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (EmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EmailCollection));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBEmailCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBEmailCollection(relativeLocation);
+				}
+
+
+                public static TBEmailCollection RetrieveTBEmailCollection(string relativeLocation)
+                {
+                    var result = (TBEmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailCollection));
                     return result;
                 }
 
@@ -300,16 +1457,16 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "EmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 
-				public static EmailCollection CreateDefault()
+				public static TBEmailCollection CreateDefault()
 				{
-					return new EmailCollection();
+					return new TBEmailCollection();
 				}
 
-				[DataMember] public List<Email> CollectionContent = new List<Email>();
+				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -326,20 +1483,37 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class CollaboratorRole : IInformationObject
+			public partial class TBCollaboratorRole : IInformationObject
 			{
-				public CollaboratorRole()
+				public TBCollaboratorRole()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratorRole";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRole", ID).Replace("\\", "/");
+				    this.Name = "TBCollaboratorRole";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static CollaboratorRole RetrieveCollaboratorRole(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (CollaboratorRole) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratorRole));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBCollaboratorRole RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBCollaboratorRole(relativeLocation);
+				}
+
+
+                public static TBCollaboratorRole RetrieveTBCollaboratorRole(string relativeLocation)
+                {
+                    var result = (TBCollaboratorRole) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRole));
                     return result;
                 }
 
@@ -397,13 +1571,13 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRole", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static CollaboratorRole CreateDefault()
+				public static TBCollaboratorRole CreateDefault()
 				{
-					var result = new CollaboratorRole();
-					result.Email = Email.CreateDefault();
+					var result = new TBCollaboratorRole();
+					result.Email = TBEmail.CreateDefault();
 				
 					return result;
 				}
@@ -430,26 +1604,43 @@ namespace AaltoGlobalImpact.OIP {
 					}
 	        }
 			[DataMember]
-			public Email Email { get; set; }
+			public TBEmail Email { get; set; }
 			[DataMember]
 			public string Role { get; set; }
 			
 			}
 			[DataContract]
-			public partial class CollaboratorRoleCollection : IInformationObject
+			public partial class TBCollaboratorRoleCollection : IInformationObject
 			{
-				public CollaboratorRoleCollection()
+				public TBCollaboratorRoleCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratorRoleCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRoleCollection", ID).Replace("\\", "/");
+				    this.Name = "TBCollaboratorRoleCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static CollaboratorRoleCollection RetrieveCollaboratorRoleCollection(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (CollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratorRoleCollection));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBCollaboratorRoleCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBCollaboratorRoleCollection(relativeLocation);
+				}
+
+
+                public static TBCollaboratorRoleCollection RetrieveTBCollaboratorRoleCollection(string relativeLocation)
+                {
+                    var result = (TBCollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRoleCollection));
                     return result;
                 }
 
@@ -507,16 +1698,16 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 
-				public static CollaboratorRoleCollection CreateDefault()
+				public static TBCollaboratorRoleCollection CreateDefault()
 				{
-					return new CollaboratorRoleCollection();
+					return new TBCollaboratorRoleCollection();
 				}
 
-				[DataMember] public List<CollaboratorRole> CollectionContent = new List<CollaboratorRole>();
+				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -533,20 +1724,37 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class Collaborator : IInformationObject
+			public partial class TBCollaboratingGroup : IInformationObject
 			{
-				public Collaborator()
+				public TBCollaboratingGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Collaborator";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", ID).Replace("\\", "/");
+				    this.Name = "TBCollaboratingGroup";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static Collaborator RetrieveCollaborator(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (Collaborator) StorageSupport.RetrieveInformation(relativeLocation, typeof(Collaborator));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBCollaboratingGroup RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBCollaboratingGroup(relativeLocation);
+				}
+
+
+                public static TBCollaboratingGroup RetrieveTBCollaboratingGroup(string relativeLocation)
+                {
+                    var result = (TBCollaboratingGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratingGroup));
                     return result;
                 }
 
@@ -604,17 +1812,24 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static Collaborator CreateDefault()
+				public static TBCollaboratingGroup CreateDefault()
 				{
-					var result = new Collaborator();
+					var result = new TBCollaboratingGroup();
+					result.Roles = TBCollaboratorRoleCollection.CreateDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = Roles;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -622,15 +1837,17 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					switch (propertyName)
 					{
-						case "AccountInfo":
-							AccountInfo = value;
+						case "Title":
+							Title = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string AccountInfo { get; set; }
+			public string Title { get; set; }
+			[DataMember]
+			public TBCollaboratorRoleCollection Roles { get; set; }
 			
 			}
 			[DataContract]
@@ -642,8 +1859,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBEmailValidationContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBEmailValidationContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBEmailValidationContainer(relativeLocation);
+				}
+
 
                 public static TBEmailValidationContainer RetrieveTBEmailValidationContainer(string relativeLocation)
                 {
@@ -711,8 +1945,8 @@ namespace AaltoGlobalImpact.OIP {
 				public static TBEmailValidationContainer CreateDefault()
 				{
 					var result = new TBEmailValidationContainer();
-					result.Email = Email.CreateDefault();
-					result.AuthenticationInfo = AuthenticationInfo.CreateDefault();
+					result.Email = TBEmail.CreateDefault();
+					result.LoginInfo = TBLoginInfo.CreateDefault();
 				
 					return result;
 				}
@@ -725,7 +1959,7 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					{
-						var item = AuthenticationInfo;
+						var item = LoginInfo;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -745,28 +1979,45 @@ namespace AaltoGlobalImpact.OIP {
 					}
 	        }
 			[DataMember]
-			public Email Email { get; set; }
+			public TBEmail Email { get; set; }
 			[DataMember]
-			public AuthenticationInfo AuthenticationInfo { get; set; }
+			public TBLoginInfo LoginInfo { get; set; }
 			[DataMember]
 			public DateTime ValidUntil { get; set; }
 			
 			}
 			[DataContract]
-			public partial class LoginCollaboratorRoles : IInformationObject
+			public partial class TBPRegisterEmail : IInformationObject
 			{
-				public LoginCollaboratorRoles()
+				public TBPRegisterEmail()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "LoginCollaboratorRoles";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "LoginCollaboratorRoles", ID).Replace("\\", "/");
+				    this.Name = "TBPRegisterEmail";
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-                public static LoginCollaboratorRoles RetrieveLoginCollaboratorRoles(string relativeLocation)
+                public static string GetRelativeLocationFromID(string id)
                 {
-                    var result = (LoginCollaboratorRoles) StorageSupport.RetrieveInformation(relativeLocation, typeof(LoginCollaboratorRoles));
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBPRegisterEmail RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBPRegisterEmail(relativeLocation);
+				}
+
+
+                public static TBPRegisterEmail RetrieveTBPRegisterEmail(string relativeLocation)
+                {
+                    var result = (TBPRegisterEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBPRegisterEmail));
                     return result;
                 }
 
@@ -824,31 +2075,17 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LoginCollaboratorRoles", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static LoginCollaboratorRoles CreateDefault()
+				public static TBPRegisterEmail CreateDefault()
 				{
-					var result = new LoginCollaboratorRoles();
-					result.AuthenticationInfo = AuthenticationInfo.CreateDefault();
-					result.CollaboratorRoleCollection = CollaboratorRoleCollection.CreateDefault();
+					var result = new TBPRegisterEmail();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = AuthenticationInfo;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = CollaboratorRoleCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -856,14 +2093,15 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					switch (propertyName)
 					{
+						case "EmailAddress":
+							EmailAddress = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public AuthenticationInfo AuthenticationInfo { get; set; }
-			[DataMember]
-			public CollaboratorRoleCollection CollaboratorRoleCollection { get; set; }
+			public string EmailAddress { get; set; }
 			
 			}
 			[DataContract]
@@ -875,8 +2113,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountContainer(relativeLocation);
+				}
+
 
                 public static AccountContainer RetrieveAccountContainer(string relativeLocation)
                 {
@@ -998,8 +2253,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountIndex";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountIndex RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountIndex(relativeLocation);
+				}
+
 
                 public static AccountIndex RetrieveAccountIndex(string relativeLocation)
                 {
@@ -1109,8 +2381,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountModule";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountModule RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountModule(relativeLocation);
+				}
+
 
                 public static AccountModule RetrieveAccountModule(string relativeLocation)
                 {
@@ -1268,8 +2557,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountStatistics";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountStatistics", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountStatistics", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountStatistics RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountStatistics(relativeLocation);
+				}
+
 
                 public static AccountStatistics RetrieveAccountStatistics(string relativeLocation)
                 {
@@ -1369,8 +2675,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountSkills";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountSkills", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSkills", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountSkills RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountSkills(relativeLocation);
+				}
+
 
                 public static AccountSkills RetrieveAccountSkills(string relativeLocation)
                 {
@@ -1470,8 +2793,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountProjects";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountProjects", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountProjects", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountProjects RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountProjects(relativeLocation);
+				}
+
 
                 public static AccountProjects RetrieveAccountProjects(string relativeLocation)
                 {
@@ -1571,8 +2911,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountLocations";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountLocations", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountLocations", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountLocations RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountLocations(relativeLocation);
+				}
+
 
                 public static AccountLocations RetrieveAccountLocations(string relativeLocation)
                 {
@@ -1672,8 +3029,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountContent";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountContent RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountContent(relativeLocation);
+				}
+
 
                 public static AccountContent RetrieveAccountContent(string relativeLocation)
                 {
@@ -1773,8 +3147,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountProfile";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountProfile RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountProfile(relativeLocation);
+				}
+
 
                 public static AccountProfile RetrieveAccountProfile(string relativeLocation)
                 {
@@ -1913,8 +3304,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountRoles";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountRoles RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountRoles(relativeLocation);
+				}
+
 
                 public static AccountRoles RetrieveAccountRoles(string relativeLocation)
                 {
@@ -2045,8 +3453,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "PersonalInfoVisibility";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static PersonalInfoVisibility RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrievePersonalInfoVisibility(relativeLocation);
+				}
+
 
                 public static PersonalInfoVisibility RetrievePersonalInfoVisibility(string relativeLocation)
                 {
@@ -2146,8 +3571,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ReferenceToInformation";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ReferenceToInformation RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveReferenceToInformation(relativeLocation);
+				}
+
 
                 public static ReferenceToInformation RetrieveReferenceToInformation(string relativeLocation)
                 {
@@ -2252,8 +3694,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ReferenceCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ReferenceCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveReferenceCollection(relativeLocation);
+				}
+
 
                 public static ReferenceCollection RetrieveReferenceCollection(string relativeLocation)
                 {
@@ -2349,8 +3808,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "BlogContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static BlogContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveBlogContainer(relativeLocation);
+				}
+
 
                 public static BlogContainer RetrieveBlogContainer(string relativeLocation)
                 {
@@ -2481,8 +3957,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapContainer(relativeLocation);
+				}
+
 
                 public static MapContainer RetrieveMapContainer(string relativeLocation)
                 {
@@ -2622,8 +4115,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CalendarContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CalendarContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCalendarContainer(relativeLocation);
+				}
+
 
                 public static CalendarContainer RetrieveCalendarContainer(string relativeLocation)
                 {
@@ -2754,8 +4264,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AboutContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AboutContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAboutContainer(relativeLocation);
+				}
+
 
                 public static AboutContainer RetrieveAboutContainer(string relativeLocation)
                 {
@@ -2886,8 +4413,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "OBSAccountContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static OBSAccountContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveOBSAccountContainer(relativeLocation);
+				}
+
 
                 public static OBSAccountContainer RetrieveOBSAccountContainer(string relativeLocation)
                 {
@@ -3018,8 +4562,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ProjectContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ProjectContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveProjectContainer(relativeLocation);
+				}
+
 
                 public static ProjectContainer RetrieveProjectContainer(string relativeLocation)
                 {
@@ -3150,8 +4711,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CourseContainer";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CourseContainer RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCourseContainer(relativeLocation);
+				}
+
 
                 public static CourseContainer RetrieveCourseContainer(string relativeLocation)
                 {
@@ -3282,8 +4860,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ContainerHeader";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ContainerHeader RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveContainerHeader(relativeLocation);
+				}
+
 
                 public static ContainerHeader RetrieveContainerHeader(string relativeLocation)
                 {
@@ -3388,8 +4983,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "IndexCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "IndexCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "IndexCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IndexCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveIndexCollection(relativeLocation);
+				}
+
 
                 public static IndexCollection RetrieveIndexCollection(string relativeLocation)
                 {
@@ -3494,8 +5106,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "BlogCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static BlogCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveBlogCollection(relativeLocation);
+				}
+
 
                 public static BlogCollection RetrieveBlogCollection(string relativeLocation)
                 {
@@ -3591,8 +5220,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Blog";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Blog", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Blog", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Blog RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveBlog(relativeLocation);
+				}
+
 
                 public static Blog RetrieveBlog(string relativeLocation)
                 {
@@ -3753,8 +5399,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "BlogIndexCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static BlogIndexCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveBlogIndexCollection(relativeLocation);
+				}
+
 
                 public static BlogIndexCollection RetrieveBlogIndexCollection(string relativeLocation)
                 {
@@ -3885,8 +5548,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CalendarIndex";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CalendarIndex RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCalendarIndex(relativeLocation);
+				}
+
 
                 public static CalendarIndex RetrieveCalendarIndex(string relativeLocation)
                 {
@@ -3986,8 +5666,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Filter";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Filter", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Filter", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Filter RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveFilter(relativeLocation);
+				}
+
 
                 public static Filter RetrieveFilter(string relativeLocation)
                 {
@@ -4087,8 +5784,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Calendar";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Calendar", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Calendar RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCalendar(relativeLocation);
+				}
+
 
                 public static Calendar RetrieveCalendar(string relativeLocation)
                 {
@@ -4188,8 +5902,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CalendarCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CalendarCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCalendarCollection(relativeLocation);
+				}
+
 
                 public static CalendarCollection RetrieveCalendarCollection(string relativeLocation)
                 {
@@ -4285,8 +6016,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Map";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Map", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Map", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Map RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMap(relativeLocation);
+				}
+
 
                 public static Map RetrieveMap(string relativeLocation)
                 {
@@ -4386,8 +6134,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapCollection(relativeLocation);
+				}
+
 
                 public static MapCollection RetrieveMapCollection(string relativeLocation)
                 {
@@ -4483,8 +6248,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapIndexCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapIndexCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapIndexCollection(relativeLocation);
+				}
+
 
                 public static MapIndexCollection RetrieveMapIndexCollection(string relativeLocation)
                 {
@@ -4615,8 +6397,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResult";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapResult", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapResult RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapResult(relativeLocation);
+				}
+
 
                 public static MapResult RetrieveMapResult(string relativeLocation)
                 {
@@ -4720,8 +6519,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResultCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapResultCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapResultCollection(relativeLocation);
+				}
+
 
                 public static MapResultCollection RetrieveMapResultCollection(string relativeLocation)
                 {
@@ -4817,8 +6633,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResultsCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapResultsCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapResultsCollection(relativeLocation);
+				}
+
 
                 public static MapResultsCollection RetrieveMapResultsCollection(string relativeLocation)
                 {
@@ -4940,8 +6773,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Image";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Image", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Image", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Image RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImage(relativeLocation);
+				}
+
 
                 public static Image RetrieveImage(string relativeLocation)
                 {
@@ -5055,8 +6905,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ImageGroup";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ImageGroup RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImageGroup(relativeLocation);
+				}
+
 
                 public static ImageGroup RetrieveImageGroup(string relativeLocation)
                 {
@@ -5170,8 +7037,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ImagesCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ImagesCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImagesCollection(relativeLocation);
+				}
+
 
                 public static ImagesCollection RetrieveImagesCollection(string relativeLocation)
                 {
@@ -5267,8 +7151,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Tooltip";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Tooltip RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTooltip(relativeLocation);
+				}
+
 
                 public static Tooltip RetrieveTooltip(string relativeLocation)
                 {
@@ -5368,8 +7269,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SocialPanelCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SocialPanelCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSocialPanelCollection(relativeLocation);
+				}
+
 
                 public static SocialPanelCollection RetrieveSocialPanelCollection(string relativeLocation)
                 {
@@ -5465,8 +7383,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SocialPanel";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SocialPanel RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSocialPanel(relativeLocation);
+				}
+
 
                 public static SocialPanel RetrieveSocialPanel(string relativeLocation)
                 {
@@ -5570,8 +7505,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "EventCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "EventCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "EventCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static EventCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveEventCollection(relativeLocation);
+				}
+
 
                 public static EventCollection RetrieveEventCollection(string relativeLocation)
                 {
@@ -5667,8 +7619,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapEventCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "MapEventCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MapEventCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MapEventCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMapEventCollection(relativeLocation);
+				}
+
 
                 public static MapEventCollection RetrieveMapEventCollection(string relativeLocation)
                 {
@@ -5772,8 +7741,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Longitude";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Longitude", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Longitude RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveLongitude(relativeLocation);
+				}
+
 
                 public static Longitude RetrieveLongitude(string relativeLocation)
                 {
@@ -5873,8 +7859,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Latitude";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Latitude", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Latitude RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveLatitude(relativeLocation);
+				}
+
 
                 public static Latitude RetrieveLatitude(string relativeLocation)
                 {
@@ -5974,8 +7977,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Location";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Location", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Location", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Location RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveLocation(relativeLocation);
+				}
+
 
                 public static Location RetrieveLocation(string relativeLocation)
                 {
@@ -6088,8 +8108,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Date";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Date", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Date", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Date RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveDate(relativeLocation);
+				}
+
 
                 public static Date RetrieveDate(string relativeLocation)
                 {
@@ -6204,8 +8241,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Sex";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Sex", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Sex", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Sex RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSex(relativeLocation);
+				}
+
 
                 public static Sex RetrieveSex(string relativeLocation)
                 {
@@ -6305,8 +8359,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Address";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Address", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Address", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Address RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAddress(relativeLocation);
+				}
+
 
                 public static Address RetrieveAddress(string relativeLocation)
                 {
@@ -6451,8 +8522,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Identity";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Identity", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Identity", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Identity RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveIdentity(relativeLocation);
+				}
+
 
                 public static Identity RetrieveIdentity(string relativeLocation)
                 {
@@ -6580,8 +8668,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ImageVideoSoundVectorRaw";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ImageVideoSoundVectorRaw RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImageVideoSoundVectorRaw(relativeLocation);
+				}
+
 
                 public static ImageVideoSoundVectorRaw RetrieveImageVideoSoundVectorRaw(string relativeLocation)
                 {
@@ -6689,8 +8794,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Category";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Category", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Category", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Category RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCategory(relativeLocation);
+				}
+
 
                 public static Category RetrieveCategory(string relativeLocation)
                 {
@@ -6790,8 +8912,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "What";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "What", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "What", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static What RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWhat(relativeLocation);
+				}
+
 
                 public static What RetrieveWhat(string relativeLocation)
                 {
@@ -6928,8 +9067,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "When";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "When", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "When", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static When RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWhen(relativeLocation);
+				}
+
 
                 public static When RetrieveWhen(string relativeLocation)
                 {
@@ -7034,8 +9190,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Where";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Where", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Where", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Where RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWhere(relativeLocation);
+				}
+
 
                 public static Where RetrieveWhere(string relativeLocation)
                 {
@@ -7158,8 +9331,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Whom";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Whom", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Whom", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Whom RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWhom(relativeLocation);
+				}
+
 
                 public static Whom RetrieveWhom(string relativeLocation)
                 {
@@ -7277,8 +9467,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Worth";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Worth", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Worth", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Worth RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWorth(relativeLocation);
+				}
+
 
                 public static Worth RetrieveWorth(string relativeLocation)
                 {
@@ -7401,8 +9608,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Event5W";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Event5W", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Event5W RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveEvent5W(relativeLocation);
+				}
+
 
                 public static Event5W RetrieveEvent5W(string relativeLocation)
                 {
@@ -7524,8 +9748,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Event5WCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Event5WCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveEvent5WCollection(relativeLocation);
+				}
+
 
                 public static Event5WCollection RetrieveEvent5WCollection(string relativeLocation)
                 {
@@ -7621,8 +9862,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionCollection";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriptionCollection RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriptionCollection(relativeLocation);
+				}
+
 
                 public static SubscriptionCollection RetrieveSubscriptionCollection(string relativeLocation)
                 {
@@ -7718,8 +9976,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Subscription";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Subscription", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Subscription RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscription(relativeLocation);
+				}
+
 
                 public static Subscription RetrieveSubscription(string relativeLocation)
                 {
@@ -7854,8 +10129,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "QueueEnvelope";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static QueueEnvelope RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveQueueEnvelope(relativeLocation);
+				}
+
 
                 public static QueueEnvelope RetrieveQueueEnvelope(string relativeLocation)
                 {
@@ -7959,8 +10251,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriberInput";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriberInput RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriberInput(relativeLocation);
+				}
+
 
                 public static SubscriberInput RetrieveSubscriberInput(string relativeLocation)
                 {
@@ -8075,8 +10384,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriberUpdateOperation";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriberUpdateOperation RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriberUpdateOperation(relativeLocation);
+				}
+
 
                 public static SubscriberUpdateOperation RetrieveSubscriberUpdateOperation(string relativeLocation)
                 {
@@ -8195,8 +10521,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Monitor";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Monitor", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Monitor RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMonitor(relativeLocation);
+				}
+
 
                 public static Monitor RetrieveMonitor(string relativeLocation)
                 {
@@ -8326,8 +10669,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "IconTitleDescription";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IconTitleDescription RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveIconTitleDescription(relativeLocation);
+				}
+
 
                 public static IconTitleDescription RetrieveIconTitleDescription(string relativeLocation)
                 {
@@ -8434,8 +10794,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AboutAGIApplications";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AboutAGIApplications RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAboutAGIApplications(relativeLocation);
+				}
+
 
                 public static AboutAGIApplications RetrieveAboutAGIApplications(string relativeLocation)
                 {
@@ -8548,8 +10925,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Icon";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "Icon", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Icon", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Icon RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveIcon(relativeLocation);
+				}
+
 
                 public static Icon RetrieveIcon(string relativeLocation)
                 {
@@ -8638,8 +11032,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "WebPageTemplate";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static WebPageTemplate RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWebPageTemplate(relativeLocation);
+				}
+
 
                 public static WebPageTemplate RetrieveWebPageTemplate(string relativeLocation)
                 {
@@ -8728,8 +11139,25 @@ namespace AaltoGlobalImpact.OIP {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "WebPage";
-                    RelativeLocation = Path.Combine("AaltoGlobalImpact.OIP", "WebPage", ID).Replace("\\", "/");
+					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static WebPage RetrieveFromDefaultLocation(string id)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveWebPage(relativeLocation);
+				}
+
 
                 public static WebPage RetrieveWebPage(string relativeLocation)
                 {

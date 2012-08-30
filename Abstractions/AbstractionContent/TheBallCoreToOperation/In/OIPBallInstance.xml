@@ -3,51 +3,100 @@
 	<InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
 		<InformationModel>
       <!-- Collaborators, Collaboration Groups, Organizations -->
-      <InformationObject name="AuthenticationInfo" designDesc="Unique identifying authentication info">
+      <!-- Storage Roots -->
+      <InformationObject name="TBRLoginRoot" designDesc="Login root for LoginID">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRAccountRoot" designDesc="Account root for AccountID">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRGroupRoot" designDesc="Root for Collaboration groups">
+        <InformationItems>
+          <InformationItem name="Group" logicalDataType="InformationObject" informationObjectName="TBCollaboratingGroup"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRLoginGroupRoot" designDesc="Login and group root">
+        <InformationItems>
+          <InformationItem name="Role" logicalDataType="InformationObject" informationObjectName="TBCollaboratorRole" />
+          <InformationItem name="GroupID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBREmailRoot" designDesc="Root for email address">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount" />
+        </InformationItems>
+      </InformationObject>
+      
+      <!-- Storage Objects-->
+      <InformationObject name="TBAccount" designDesc="Account bringing logins and emails together">
+        <InformationItems>
+          <InformationItem name="Emails" logicalDataType="InformationObject" informationObjectName="TBEmailCollection"/>
+          <InformationItem name="Logins" logicalDataType="InformationObject" informationObjectName="TBLoginInfoCollection"/>
+          <InformationItem name="GroupRoleCollection" logicalDataType="InformationObject" informationObjectName="TBAccountCollaborationGroupCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBAccountCollaborationGroup" designDesc="Account collaboration group">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short" />
+          <InformationItem name="GroupRole" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBAccountCollaborationGroupCollection" designDesc="Account collaborating group collection">
+        <CollectionFor contentInformationObjectName="TBAccountCollaborationGroup" />
+      </InformationObject>
+      <InformationObject name="TBLoginInfo" designDesc="Unique identifying authentication info">
         <InformationItems>
           <InformationItem name="OpenIDUrl" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="Email" designDesc="Email Address">
+      <InformationObject name="TBLoginInfoCollection" designDesc="Collection of login infos">
+        <CollectionFor contentInformationObjectName="TBLoginInfo"/>
+      </InformationObject>
+      <InformationObject name="TBEmail" designDesc="Email Address">
         <InformationItems>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
           <InformationItem name="ValidatedAt" logicalDataType="Time_DateTime"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="EmailCollection" designDesc="Collection of emails">
-        <CollectionFor contentInformationObjectName="Email"/>
+      <InformationObject name="TBEmailCollection" designDesc="Collection of emails">
+        <CollectionFor contentInformationObjectName="TBEmail"/>
       </InformationObject>
-      <InformationObject name="CollaboratorRole" designDesc="Colaborator acting in certain role">
+      <InformationObject name="TBCollaboratorRole" designDesc="Colaborator acting in certain role">
         <InformationItems>
-          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="Email"/>
+          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="TBEmail"/>
           <InformationItem name="Role" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="CollaboratorRoleCollection" designDesc="Collection of collaborator roles">
-        <CollectionFor contentInformationObjectName="CollaboratorRole"/>
+      <InformationObject name="TBCollaboratorRoleCollection" designDesc="Collection of collaborator roles">
+        <CollectionFor contentInformationObjectName="TBCollaboratorRole"/>
       </InformationObject>
-      <InformationObject name="Collaborator" designDesc="Collaborator">
+      <InformationObject name="TBCollaboratingGroup" designDesc="Collaborating group">
         <InformationItems>
-          <InformationItem name="AccountInfo" logicalDataType="Text_Short"/>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Roles" logicalDataType="InformationObject" informationObjectName="TBCollaboratorRoleCollection"/>
         </InformationItems>
       </InformationObject>
 
       <InformationObject name="TBEmailValidationContainer" designDesc="Email validation object">
         <InformationItems>
-          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="Email"/>
-          <InformationItem name="AuthenticationInfo" logicalDataType="InformationObject" informationObjectName="AuthenticationInfo" />
+          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="TBEmail"/>
+          <InformationItem name="LoginInfo" logicalDataType="InformationObject" informationObjectName="TBLoginInfo" />
           <InformationItem name="ValidUntil" logicalDataType="Time_DateTime" />
         </InformationItems>
       </InformationObject>
 
-      <InformationObject name="LoginCollaboratorRoles" designDesc="Login mapping to collaborator roles">
+      <!-- Process Objects -->
+      <InformationObject name="TBPRegisterEmail" designDesc="Process object for registering email">
         <InformationItems>
-          <InformationItem name="AuthenticationInfo" logicalDataType="InformationObject" informationObjectName="AuthenticationInfo" />
-          <InformationItem name="CollaboratorRoleCollection" logicalDataType="InformationObject" informationObjectName="CollaboratorRoleCollection" />
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       
-      <!-- Account/Group/Profile -->
+      <!-- Account/Group/Profile Pages -->
 
       <InformationObject name="AccountContainer" designDesc="User account, centralized point for all">
         <InformationItems>

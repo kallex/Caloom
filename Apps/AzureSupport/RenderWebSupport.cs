@@ -18,6 +18,7 @@ namespace TheBall
         private static int ObjTagsTotalLen;
         private static int AtomTagLen;
         private static int AtomTagsTotalLen;
+        private const string FormHiddenFieldTag = "<!-- THEBALL-FORM-HIDDEN-FIELDS -->";
         private const string RootTagBegin = "<!-- THEBALL-CONTEXT-ROOT-BEGIN:";
         private const string CollectionTagBegin = "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:";
         private const string ObjectTagBegin = "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:";
@@ -173,6 +174,16 @@ namespace TheBall
                 StackContextItem popItem = contextStack.Pop();
                 if (contextStack.Count == 0)
                     return false;
+            }
+            else if(line.Contains(FormHiddenFieldTag))
+            {
+                result.AppendLine(line);
+                result.AppendLine(
+                    "<input id=\"RootObjectRelativeLocation\" name=\"RootObjectRelativeLocation\" type=\"hidden\" value=\"[!ATOM]RelativeLocation[ATOM!]\" />");
+                result.AppendLine(
+                    "<input id=\"RootObjectType\" name=\"RootObjectType\" type=\"hidden\" value=\"[!ATOM]SemanticDomainName[ATOM!].[!ATOM]Name[ATOM!]\" />");
+                result.AppendLine(
+                    "<input id=\"RootObjectETag\" name=\"RootObjectETag\" type=\"hidden\" value=[!ATOM]ETag[ATOM!] />");
             }
             else // ATOM line
             {

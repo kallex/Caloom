@@ -18,6 +18,9 @@ namespace TheBall
         public static CloudStorageAccount CurrStorageAccount { get; private set; }
         public static CloudBlobContainer CurrActiveContainer { get; private set; }
         public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
+        public static CloudBlobContainer CurrTemplateContainer { get; private set; }
+        public static CloudBlobClient CurrBlobClient { get; private set; }
+
 
         public static Guid ActiveOwnerID
         {
@@ -32,17 +35,32 @@ namespace TheBall
             CurrTableClient = tableClient;
 
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CurrBlobClient = blobClient;
             var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
             var activeAnonPublicContainer = blobClient.GetContainerReference("anon-webcontainer");
             CurrAnonPublicContainer = activeAnonPublicContainer;
+            var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
+            CurrTemplateContainer = activeTemplateContainer;
             QueueSupport.InitializeAfterStorage();
         }
 
+        /*
+        public static void CreatePersonalContainer(TBAccount account)
+        {
+            CloudBlobContainer container = GetPersonalContainer(account);
+            container.CreateIfNotExist();
+        }
+
+        public static CloudBlobContainer GetPersonalContainer(TBAccount account)
+        {
+            return CurrBlobClient.GetContainerReference("acc" + account.ID);
+        }*/
+
         public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
         {
-            return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-webtemplates", BlobContainerPublicAccessType.Off);
+            return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-templates", BlobContainerPublicAccessType.Off);
         }
 
         public static CloudBlobContainer ConfigureAnonWebBlobStorage(string connString, bool deleteBlobs)
@@ -78,10 +96,19 @@ namespace TheBall
         }
 
         public static string DownloadBlobText(this CloudBlobContainer container,
-            string blobPath)
+            string blobPath, bool returnNullIfMissing = false)
         {
-            var blob = container.GetBlockBlobReference(blobPath);
-            return blob.DownloadText();
+            try
+            {
+                var blob = container.GetBlockBlobReference(blobPath);
+                return blob.DownloadText();
+            }
+            catch (StorageClientException stEx)
+            {
+                if (returnNullIfMissing && stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                    return null;
+                throw;
+            }
         }
 
         public static void UploadBlobText(this CloudBlobContainer container,
@@ -690,7 +717,7 @@ namespace TheBall
         }
 
 
-        public static void StoreInformation(IInformationObject informationObject)
+        public static void StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
         {
             DataContractSerializer ser = new DataContractSerializer(informationObject.GetType());
             MemoryStream memoryStream = new MemoryStream();
@@ -702,7 +729,10 @@ namespace TheBall
                 dataContent = memoryStream.ToArray();
             }
             //memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(informationObject.RelativeLocation);
+            string location = owner != null
+                                  ? GetBlobOwnerAddress(owner, informationObject.RelativeLocation)
+                                  : informationObject.RelativeLocation;
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(location);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
             string etag = informationObject.ETag;
@@ -720,15 +750,17 @@ namespace TheBall
             SubscribeSupport.NotifySubscribers(informationObject);
         }
 
-        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null)
+        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null, IContainerOwner owner = null)
         {
             Type type = Assembly.GetExecutingAssembly().GetType(typeName);
-            return RetrieveInformation(relativeLocation, type, eTag);
+            return RetrieveInformation(relativeLocation, type, eTag, owner);
         }
 
-        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null)
+        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
-            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(relativeLocation);
+            if (owner != null)
+                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
@@ -754,6 +786,30 @@ namespace TheBall
             informationObject.ETag = blobEtag;
             //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
             return informationObject;
+        }
+
+        public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
+        {
+            return owner.ContainerName + "/" + owner.LocationPrefix + "/" + blobAddress;
+        }
+
+        public static string DownloadOwnerBlobText(IContainerOwner owner, string blobAddress, bool returnNullIfMissing = false)
+        {
+            string downloadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            return CurrActiveContainer.DownloadBlobText(downloadAddress, returnNullIfMissing);
+        }
+
+        public static void UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content)
+        {
+            string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            CurrActiveContainer.UploadBlobText(uploadAddress, content);
+        }
+
+        public static CloudBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
+        {
+            string blobAddress = GetBlobOwnerAddress(containerOwner, contentPath);
+            CloudBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
+            return blob;
         }
     }
 }

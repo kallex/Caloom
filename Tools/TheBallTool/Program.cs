@@ -17,25 +17,35 @@ namespace TheBallTool
             //bool result = EmailSupport.SendEmail("kalle.launiala@gmail.com", "kalle.launiala@citrus.fi", "The Ball - Says Hello!",
             //                       "Text testing...");
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
+            StorageSupport.InitializeWithConnectionString(connStr);
+            UpdateTemplateContainer(connStr);
+            //doDataTest(connStr);
+            //InitLandingPages();
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
+        }
+
+        private static void UpdateTemplateContainer(string connStr)
+        {
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
             var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
-                       new
-                           {
-                               FileName
-                           =
-                           fileName,
-                               TextContent
-                           =
-                           GetFixedContent(fileName),
-                               BinaryContent = GetBinaryContent(fileName)
+                        new
+                            {
+                                FileName
+                            =
+                            fileName,
+                                TextContent
+                            =
+                            GetFixedContent(fileName),
+                                BinaryContent = GetBinaryContent(fileName)
 
-                           })
+                            })
                 .ToArray();
-            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
-            //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
+            //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
+            var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             MoveUnusedTxtFiles(ProcessedDict);
             foreach (var content in fixedContent)
             {
@@ -59,9 +69,6 @@ namespace TheBallTool
                 else
                     container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
-            doDataTest(connStr);
-            Console.WriteLine("Press enter to continue...");
-            Console.ReadLine();
         }
 
         private static void MoveUnusedTxtFiles(Dictionary<string, bool> processedDict)
@@ -86,6 +93,14 @@ namespace TheBallTool
             }
         }
 
+        private static void InitLandingPages()
+        {
+            var sourceBlob = StorageSupport.CurrTemplateContainer.GetBlobReference("oip-layouts/oip-anon-landing-page.phtml");
+            var targetBlob =
+                StorageSupport.CurrAnonPublicContainer.GetBlobReference("default/oip-anon-landing-page.phtml");
+            targetBlob.CopyFromBlob(sourceBlob);
+        }
+
         private static void doDataTestZZZ(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);
@@ -103,7 +118,7 @@ namespace TheBallTool
                 container = TBEmailValidationContainer.CreateDefault();
                 container.ID = "EM123";
                 container.RelativeLocation = "EmailValidContainer123";
-                container.AuthenticationInfo.OpenIDUrl = "exampleurl";
+                container.LoginInfo.OpenIDUrl = "exampleurl";
                 container.ValidUntil = DateTime.Today.AddDays(0.5);
                 StorageSupport.StoreInformation(container);
             }
