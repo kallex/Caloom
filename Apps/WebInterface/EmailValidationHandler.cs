@@ -28,11 +28,12 @@ namespace WebInterface
 
         public void ProcessRequest(HttpContext context)
         {
+            return;
             string user = context.User.Identity.Name;
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             HttpRequest request = context.Request;
             HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/theballanon/") || isAuthenticated == false)
+            if(request.Path.StartsWith("/anon/") || isAuthenticated == false)
             {
                 return;
             }

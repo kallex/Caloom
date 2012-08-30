@@ -33,7 +33,7 @@ namespace TheBallTool
 
                            })
                 .ToArray();
-            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, false);
+            var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
             //var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             MoveUnusedTxtFiles(ProcessedDict);
@@ -47,10 +47,10 @@ namespace TheBallTool
                     continue;
                 //if (content.FileName.EndsWith(".png"))
                 //    continue;
-                if (content.FileName.EndsWith(".jpg"))
-                    continue;
-                if (content.FileName.Contains("oip-") == false && content.FileName.Contains("theball-") == false)
-                    continue;
+                //if (content.FileName.EndsWith(".jpg"))
+                //    continue;
+                //if (content.FileName.Contains("oip-") == false && content.FileName.Contains("theball-") == false)
+                //    continue;
                 //if (content.FileName.Contains(".phtml") == false)
                 //    continue;
                 Console.WriteLine("Uploading: " + content.FileName);

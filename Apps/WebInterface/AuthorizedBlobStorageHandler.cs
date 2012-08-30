@@ -37,7 +37,7 @@ namespace WebInterface
                 return;
             }
             HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/theballanon/") || isAuthenticated == false)
+            if(request.Path.StartsWith("/anon/") || isAuthenticated == false)
             {
                 return;
             }

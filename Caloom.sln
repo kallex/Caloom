@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallCoreToOperationTRANS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebInterface", "Apps\WebInterface\WebInterface.csproj", "{639EF079-5944-480A-BF5B-691B3F133507}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "Apps\WorkerTemplate\CaloomUI\caloomhtml\UI", "{44F66C2E-D452-4D91-80E2-43474B757EFC}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "Apps\WorkerTemplate\CaloomUI\caloomhtml\UI\", "{44F66C2E-D452-4D91-80E2-43474B757EFC}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/UI"
@@ -58,6 +58,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "Apps\WorkerTemplate\C
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "55969"
+		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
 Global

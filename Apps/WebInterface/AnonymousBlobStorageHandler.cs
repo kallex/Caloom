@@ -31,13 +31,13 @@ namespace WebInterface
         {
             string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
-            if(request.Path.EndsWith("proxy.cgi"))
+            if(request.Path.EndsWith("proxy.cgi") && false)
             {
                 ProcessProxyRequest(context);
                 return;
             }
             HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/theballanon/"))
+            if(request.Path.StartsWith("/anon/"))
             {
                 ProcessAnonymousRequest(request, response);
                 return;
@@ -92,7 +92,7 @@ namespace WebInterface
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/theballanon/", "anon-webcontainer/");
+            string blobPath = request.Path.Replace("/anon/", "anon-webcontainer/");
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try

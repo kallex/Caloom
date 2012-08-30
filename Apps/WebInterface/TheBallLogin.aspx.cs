@@ -43,6 +43,29 @@ namespace WebInterface
                         this.loginFailedLabel.Visible = true;
                         break;
                 }
+            } else
+            {
+                string idprovider = Request.Params["idprovider"];
+                if (idprovider != null)
+                {
+                    switch (idprovider)
+                    {
+                        case "google":
+                            PerformGoogleLogin();
+                            return;
+                        case "yahoo":
+                            PerformYahooLogin();
+                            return;
+                        case "aol":
+                            PerformAOLLogin();
+                            return;
+                        case "wordpress":
+                            openIdBox.Text = "http://ENTER-YOUR-BLOG-NAME-HERE.wordpress.com";
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
         }
 
@@ -74,11 +97,11 @@ namespace WebInterface
                     // to include in the authentication request.                        
                     request.AddExtension(new ClaimsRequest
                                              {
-                                                 Country = DemandLevel.Request,
-                                                 Email = DemandLevel.Request,
-                                                 Gender = DemandLevel.Require,
-                                                 PostalCode = DemandLevel.Require,
-                                                 TimeZone = DemandLevel.Require,
+                                                 //Country = DemandLevel.Request,
+                                                 //Email = DemandLevel.Request,
+                                                 //Gender = DemandLevel.Require,
+                                                 //PostalCode = DemandLevel.Require,
+                                                 //TimeZone = DemandLevel.Require,
                                              }); // Send your visitor to their Provider for authentication.
                     request.RedirectToProvider();
                 }
@@ -94,7 +117,27 @@ namespace WebInterface
 
         protected void bGoogleLogin_Click(object sender, EventArgs e)
         {
+            PerformGoogleLogin();
+        }
+
+
+
+        private void PerformAOLLogin()
+        {
+            CreateOpenIDRequestAndRedirect("https://www.aol.com");
+        }
+
+
+        private void PerformGoogleLogin()
+        {
             CreateOpenIDRequestAndRedirect("https://www.google.com/accounts/o8/id");
         }
+
+        private void PerformYahooLogin()
+        {
+            CreateOpenIDRequestAndRedirect("https://me.yahoo.com");
+        }
+
+
     }
 }
