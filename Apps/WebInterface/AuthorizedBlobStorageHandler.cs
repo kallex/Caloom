@@ -89,20 +89,42 @@ namespace WebInterface
             TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID, account);
             if (emailValidation == null)
                 return;
-            if(emailValidation.ValidUntil < DateTime.Now)
+            StorageSupport.DeleteInformationObject(emailValidation, account);
+            if (emailValidation.ValidUntil < DateTime.Now)
             {
                 // TODO: Some invalidation message + UTC time
                 StorageSupport.DeleteInformationObject(emailValidation, account);
                 throw new TimeoutException("Email validation expired at: " + emailValidation.ToString());
             }
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(account.ID);
-            TBEmail email = TBEmail.CreateDefault();
-            email.EmailAddress = emailValidation.Email;
-            email.ValidatedAt = DateTime.Now;
-            account.Emails.CollectionContent.Add(email);
-            accountRoot.Account = account;
-            StorageSupport.StoreInformation(loginRoot);
-            StorageSupport.StoreInformation(accountRoot);
+            if(account.Emails.CollectionContent.Find(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == null)
+            {
+                TBEmail email = TBEmail.CreateDefault();
+                email.EmailAddress = emailValidation.Email;
+                email.ValidatedAt = DateTime.Now;
+                account.Emails.CollectionContent.Add(email);
+                StorageSupport.StoreInformation(loginRoot);
+
+                TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(account.ID);
+                accountRoot.Account = account;
+                StorageSupport.StoreInformation(accountRoot);
+
+                string emailRootID = HttpUtility.UrlEncode(email.EmailAddress);
+                TBREmailRoot emailRoot = TBREmailRoot.CreateDefault();
+                emailRoot.ID = emailRootID;
+                emailRoot.UpdateRelativeLocationFromID();
+                emailRoot.Account = account;
+                StorageSupport.StoreInformation(emailRoot);
+
+                foreach(var tbEmail in account.Emails.CollectionContent)
+                {
+                    if (tbEmail == email)
+                        continue;
+                    TBREmailRoot oldRoot = TBREmailRoot.RetrieveFromDefaultLocation(tbEmail.EmailAddress);
+                    oldRoot.Account = account;
+                    StorageSupport.StoreInformation(oldRoot);
+                }
+            }
+
             context.Response.Redirect("/auth/personal/oip-personal-landing-page.phtml", true);
         }
 
@@ -149,7 +171,7 @@ namespace WebInterface
             bool hasRegisteredEmail = account.Emails.CollectionContent.Count > 0;
             if(hasRegisteredEmail == false)
             {
-                PrepareEmailRegistrationPage(account, context);
+                PrepareEmailRegistrationPage(account, context, true);
                 context.Response.Redirect("/auth/proc/tbp-layout-registeremail.phtml", true);
                 return;
             }
@@ -158,13 +180,20 @@ namespace WebInterface
             HandleOwnerRequest(account, context, contentPath);
         }
 
-        private void PrepareEmailRegistrationPage(TBAccount account, HttpContext context)
+        private void PrepareEmailRegistrationPage(TBAccount account, HttpContext context, bool forceRecreate)
         {
             const string procRegisterEmailPage = "proc/tbp-layout-registeremail.phtml";
             string currPage = StorageSupport.DownloadOwnerBlobText(account, procRegisterEmailPage, true);
-            if(currPage == null)
+            if(currPage == null || forceRecreate)
             {
-                TBPRegisterEmail registerEmail = TBPRegisterEmail.CreateDefault();
+                string singletonID = Guid.Empty.ToString();
+                TBPRegisterEmail registerEmail = TBPRegisterEmail.RetrieveFromDefaultLocation(singletonID, account);
+                if(registerEmail == null)
+                {
+                    registerEmail = TBPRegisterEmail.CreateDefault();
+                    registerEmail.ID = singletonID;
+                    registerEmail.UpdateRelativeLocationFromID();
+                }
                 registerEmail.EmailAddress = "";
                 StorageSupport.StoreInformation(registerEmail, account);
                 string template = StorageSupport.CurrTemplateContainer.DownloadBlobText("theball-proc/tbp-layout-registeremail.phtml");
@@ -252,31 +281,6 @@ namespace WebInterface
             throw new NotSupportedException("Not supported user name prefix: " + user);
         }
 
-        private void ProcessPost(HttpContext context)
-        {
-            var request = context.Request;
-            string reqType = request.RequestType;
-            var form = request.Form;
-            string objectTypeName = form["RootObjectType"];
-            string objectRelativeLocation = form["RootObjectRelativeLocation"];
-            string eTag = form["RootObjectETag"];
-            if(eTag == null)
-            {
-                throw new InvalidDataException("ETag must be present in submit request for root container object");
-            }
-            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName, eTag);
-            rootObject.SetValuesToObjects(form);
-            StorageSupport.StoreInformation(rootObject);
-
-            // Hard coded for demo:
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/theball-reference/example1-layout-default.html";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, rootObject);
-            string finalPath = "theball-reference/example1-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
-        }
 
         #endregion
     }
