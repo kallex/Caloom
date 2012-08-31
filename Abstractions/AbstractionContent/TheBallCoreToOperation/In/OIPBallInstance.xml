@@ -81,10 +81,10 @@
         </InformationItems>
       </InformationObject>
 
-      <InformationObject name="TBEmailValidationContainer" designDesc="Email validation object">
+      <InformationObject name="TBEmailValidation" designDesc="Email validation object">
         <InformationItems>
-          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="TBEmail"/>
-          <InformationItem name="LoginInfo" logicalDataType="InformationObject" informationObjectName="TBLoginInfo" />
+          <InformationItem name="Email" logicalDataType="Text_Short" />
+          <InformationItem name="AccountID" logicalDataType="Text_Short"/>
           <InformationItem name="ValidUntil" logicalDataType="Time_DateTime" />
         </InformationItems>
       </InformationObject>

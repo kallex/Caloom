@@ -33,6 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.4.15.1, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AzureSupport\Ext\AWSSDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet">
       <HintPath>..\..\packages\DotNetOpenAuth.AspNet.4.1.0.12182\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>

@@ -101,38 +101,6 @@ namespace TheBallTool
             targetBlob.CopyFromBlob(sourceBlob);
         }
 
-        private static void doDataTestZZZ(string connStr)
-        {
-            StorageSupport.InitializeWithConnectionString(connStr);
-            TBEmailValidationContainer container = null;
-            try
-            {
-                container = TBEmailValidationContainer.RetrieveTBEmailValidationContainer("EmailValidContainer123");
-            }
-            catch (StorageException sEx)
-            {
-
-            }
-            if (container == null)
-            {
-                container = TBEmailValidationContainer.CreateDefault();
-                container.ID = "EM123";
-                container.RelativeLocation = "EmailValidContainer123";
-                container.LoginInfo.OpenIDUrl = "exampleurl";
-                container.ValidUntil = DateTime.Today.AddDays(0.5);
-                StorageSupport.StoreInformation(container);
-            }
-
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/oip-layouts/oip-layout-account.phtml";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, container);
-            string finalPath = "theball-reference/account-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
-        }
-
-
         private static void doDataTest(string connStr)
         {
             StorageSupport.InitializeWithConnectionString(connStr);

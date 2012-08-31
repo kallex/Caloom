@@ -745,8 +745,8 @@ namespace TheBall
             blob.UploadByteArray(dataContent, options);
             informationObject.ETag = blob.Properties.ETag;
             if (isNewBlob)
-                informationObject.InitializeDefaultSubscribers();
-            //blob.UploadFromStream(memoryStream, options );
+                informationObject.InitializeDefaultSubscribers(owner);
+            informationObject.PostStoringExecute(owner);
             SubscribeSupport.NotifySubscribers(informationObject);
         }
 
@@ -810,6 +810,16 @@ namespace TheBall
             string blobAddress = GetBlobOwnerAddress(containerOwner, contentPath);
             CloudBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
             return blob;
+        }
+
+        public static void DeleteInformationObject(IInformationObject informationObject, IContainerOwner owner = null)
+        {
+            string relativeLocation = informationObject.RelativeLocation;
+            if (owner != null)
+                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            blob.Delete();
+            informationObject.PostDeleteExecute(owner);
         }
     }
 }

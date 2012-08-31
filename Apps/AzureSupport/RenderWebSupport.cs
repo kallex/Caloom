@@ -178,29 +178,34 @@ namespace TheBall
             else if(line.Contains(FormHiddenFieldTag))
             {
                 result.AppendLine(line);
-                result.AppendLine(
-                    "<input id=\"RootObjectRelativeLocation\" name=\"RootObjectRelativeLocation\" type=\"hidden\" value=\"[!ATOM]RelativeLocation[ATOM!]\" />");
-                result.AppendLine(
-                    "<input id=\"RootObjectType\" name=\"RootObjectType\" type=\"hidden\" value=\"[!ATOM]SemanticDomainName[ATOM!].[!ATOM]Name[ATOM!]\" />");
-                result.AppendLine(
-                    "<input id=\"RootObjectETag\" name=\"RootObjectETag\" type=\"hidden\" value=[!ATOM]ETag[ATOM!] />");
+                ProcessATOMLine(
+                    "<input id=\"RootObjectRelativeLocation\" name=\"RootObjectRelativeLocation\" type=\"hidden\" value=\"[!ATOM]RelativeLocation[ATOM!]\" />",
+                    result, contextStack);
+                ProcessATOMLine(
+                    "<input id=\"RootObjectType\" name=\"RootObjectType\" type=\"hidden\" value=\"[!ATOM]SemanticDomainName[ATOM!].[!ATOM]Name[ATOM!]\" />",
+                    result, contextStack);
+                ProcessATOMLine(
+                    "<input id=\"RootObjectETag\" name=\"RootObjectETag\" type=\"hidden\" value=[!ATOM]ETag[ATOM!] />",
+                    result, contextStack);
             }
             else // ATOM line
             {
-                StackContextItem currCtx = contextStack.Peek();
-                bool isCollection = false;
-                if (currCtx.IsCollection == true)
-                    isCollection = true;
-                var contentLine = Regex.Replace(line, MemberAtomPattern,
-                                                match =>
-                                                    {
-                                                        string memberName = match.Groups["membername"].Value;
-                                                        object value = GetPropertyValue(currCtx, memberName);
-                                                        return (value ?? (currCtx.MemberName + "." + memberName + " is null")).ToString();
-                                                    });
-                result.AppendLine(contentLine);
+                ProcessATOMLine(line, result, contextStack);
             }
             return contextStack.Count > 0;
+        }
+
+        private static void ProcessATOMLine(string line, StringBuilder result, Stack<StackContextItem> contextStack)
+        {
+            StackContextItem currCtx = contextStack.Peek();
+            var contentLine = Regex.Replace(line, MemberAtomPattern,
+                                            match =>
+                                                {
+                                                    string memberName = match.Groups["membername"].Value;
+                                                    object value = GetPropertyValue(currCtx, memberName);
+                                                    return (value ?? (currCtx.MemberName + "." + memberName + " is null")).ToString();
+                                                });
+            result.AppendLine(contentLine);
         }
 
         public static string RenderErrorListAsHtml(List<ErrorItem> errorList, string errorLabel)

@@ -17,8 +17,10 @@ namespace AaltoGlobalImpact.OIP {
         string RelativeLocation { get; set; }
         string SemanticDomainName { get; set; }
         string Name { get; set; }
-		void InitializeDefaultSubscribers();
+		void InitializeDefaultSubscribers(IContainerOwner owner);
 		void SetValuesToObjects(NameValueCollection form);
+		void PostStoringExecute(IContainerOwner owner);
+		void PostDeleteExecute(IContainerOwner owner);
     }
 
 			[DataContract]
@@ -43,22 +45,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBRLoginRoot RetrieveFromDefaultLocation(string id)
+				public static TBRLoginRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRLoginRoot(relativeLocation);
+					return RetrieveTBRLoginRoot(relativeLocation, owner);
 				}
 
 
-                public static TBRLoginRoot RetrieveTBRLoginRoot(string relativeLocation)
+                public static TBRLoginRoot RetrieveTBRLoginRoot(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBRLoginRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginRoot));
+                    var result = (TBRLoginRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginRoot), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -165,22 +185,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBRAccountRoot RetrieveFromDefaultLocation(string id)
+				public static TBRAccountRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRAccountRoot(relativeLocation);
+					return RetrieveTBRAccountRoot(relativeLocation, owner);
 				}
 
 
-                public static TBRAccountRoot RetrieveTBRAccountRoot(string relativeLocation)
+                public static TBRAccountRoot RetrieveTBRAccountRoot(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBRAccountRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRAccountRoot));
+                    var result = (TBRAccountRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRAccountRoot), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -287,22 +325,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBRGroupRoot RetrieveFromDefaultLocation(string id)
+				public static TBRGroupRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRGroupRoot(relativeLocation);
+					return RetrieveTBRGroupRoot(relativeLocation, owner);
 				}
 
 
-                public static TBRGroupRoot RetrieveTBRGroupRoot(string relativeLocation)
+                public static TBRGroupRoot RetrieveTBRGroupRoot(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBRGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRGroupRoot));
+                    var result = (TBRGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRGroupRoot), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -409,22 +465,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBRLoginGroupRoot RetrieveFromDefaultLocation(string id)
+				public static TBRLoginGroupRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRLoginGroupRoot(relativeLocation);
+					return RetrieveTBRLoginGroupRoot(relativeLocation, owner);
 				}
 
 
-                public static TBRLoginGroupRoot RetrieveTBRLoginGroupRoot(string relativeLocation)
+                public static TBRLoginGroupRoot RetrieveTBRLoginGroupRoot(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBRLoginGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginGroupRoot));
+                    var result = (TBRLoginGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginGroupRoot), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -536,22 +610,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBREmailRoot RetrieveFromDefaultLocation(string id)
+				public static TBREmailRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBREmailRoot(relativeLocation);
+					return RetrieveTBREmailRoot(relativeLocation, owner);
 				}
 
 
-                public static TBREmailRoot RetrieveTBREmailRoot(string relativeLocation)
+                public static TBREmailRoot RetrieveTBREmailRoot(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBREmailRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBREmailRoot));
+                    var result = (TBREmailRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBREmailRoot), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -658,22 +750,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBAccount RetrieveFromDefaultLocation(string id)
+				public static TBAccount RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccount(relativeLocation);
+					return RetrieveTBAccount(relativeLocation, owner);
 				}
 
 
-                public static TBAccount RetrieveTBAccount(string relativeLocation)
+                public static TBAccount RetrieveTBAccount(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccount));
+                    var result = (TBAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccount), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -798,22 +908,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBAccountCollaborationGroup RetrieveFromDefaultLocation(string id)
+				public static TBAccountCollaborationGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccountCollaborationGroup(relativeLocation);
+					return RetrieveTBAccountCollaborationGroup(relativeLocation, owner);
 				}
 
 
-                public static TBAccountCollaborationGroup RetrieveTBAccountCollaborationGroup(string relativeLocation)
+                public static TBAccountCollaborationGroup RetrieveTBAccountCollaborationGroup(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBAccountCollaborationGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroup));
+                    var result = (TBAccountCollaborationGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroup), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -921,22 +1049,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBAccountCollaborationGroupCollection RetrieveFromDefaultLocation(string id)
+				public static TBAccountCollaborationGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation);
+					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation, owner);
 				}
 
 
-                public static TBAccountCollaborationGroupCollection RetrieveTBAccountCollaborationGroupCollection(string relativeLocation)
+                public static TBAccountCollaborationGroupCollection RetrieveTBAccountCollaborationGroupCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBAccountCollaborationGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroupCollection));
+                    var result = (TBAccountCollaborationGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroupCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1035,22 +1181,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBLoginInfo RetrieveFromDefaultLocation(string id)
+				public static TBLoginInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBLoginInfo(relativeLocation);
+					return RetrieveTBLoginInfo(relativeLocation, owner);
 				}
 
 
-                public static TBLoginInfo RetrieveTBLoginInfo(string relativeLocation)
+                public static TBLoginInfo RetrieveTBLoginInfo(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBLoginInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfo));
+                    var result = (TBLoginInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfo), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1153,22 +1317,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBLoginInfoCollection RetrieveFromDefaultLocation(string id)
+				public static TBLoginInfoCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBLoginInfoCollection(relativeLocation);
+					return RetrieveTBLoginInfoCollection(relativeLocation, owner);
 				}
 
 
-                public static TBLoginInfoCollection RetrieveTBLoginInfoCollection(string relativeLocation)
+                public static TBLoginInfoCollection RetrieveTBLoginInfoCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBLoginInfoCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfoCollection));
+                    var result = (TBLoginInfoCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfoCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1267,22 +1449,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBEmail RetrieveFromDefaultLocation(string id)
+				public static TBEmail RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmail(relativeLocation);
+					return RetrieveTBEmail(relativeLocation, owner);
 				}
 
 
-                public static TBEmail RetrieveTBEmail(string relativeLocation)
+                public static TBEmail RetrieveTBEmail(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmail));
+                    var result = (TBEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmail), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1390,22 +1590,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBEmailCollection RetrieveFromDefaultLocation(string id)
+				public static TBEmailCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmailCollection(relativeLocation);
+					return RetrieveTBEmailCollection(relativeLocation, owner);
 				}
 
 
-                public static TBEmailCollection RetrieveTBEmailCollection(string relativeLocation)
+                public static TBEmailCollection RetrieveTBEmailCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBEmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailCollection));
+                    var result = (TBEmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1504,22 +1722,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBCollaboratorRole RetrieveFromDefaultLocation(string id)
+				public static TBCollaboratorRole RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratorRole(relativeLocation);
+					return RetrieveTBCollaboratorRole(relativeLocation, owner);
 				}
 
 
-                public static TBCollaboratorRole RetrieveTBCollaboratorRole(string relativeLocation)
+                public static TBCollaboratorRole RetrieveTBCollaboratorRole(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBCollaboratorRole) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRole));
+                    var result = (TBCollaboratorRole) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRole), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1631,22 +1867,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBCollaboratorRoleCollection RetrieveFromDefaultLocation(string id)
+				public static TBCollaboratorRoleCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratorRoleCollection(relativeLocation);
+					return RetrieveTBCollaboratorRoleCollection(relativeLocation, owner);
 				}
 
 
-                public static TBCollaboratorRoleCollection RetrieveTBCollaboratorRoleCollection(string relativeLocation)
+                public static TBCollaboratorRoleCollection RetrieveTBCollaboratorRoleCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBCollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRoleCollection));
+                    var result = (TBCollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRoleCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1745,22 +1999,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBCollaboratingGroup RetrieveFromDefaultLocation(string id)
+				public static TBCollaboratingGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratingGroup(relativeLocation);
+					return RetrieveTBCollaboratingGroup(relativeLocation, owner);
 				}
 
 
-                public static TBCollaboratingGroup RetrieveTBCollaboratingGroup(string relativeLocation)
+                public static TBCollaboratingGroup RetrieveTBCollaboratingGroup(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBCollaboratingGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratingGroup));
+                    var result = (TBCollaboratingGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratingGroup), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1851,20 +2123,20 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBEmailValidationContainer : IInformationObject
+			public partial class TBEmailValidation : IInformationObject
 			{
-				public TBEmailValidationContainer()
+				public TBEmailValidation()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "TBEmailValidationContainer";
+				    this.Name = "TBEmailValidation";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -1872,22 +2144,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBEmailValidationContainer RetrieveFromDefaultLocation(string id)
+				public static TBEmailValidation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmailValidationContainer(relativeLocation);
+					return RetrieveTBEmailValidation(relativeLocation, owner);
 				}
 
 
-                public static TBEmailValidationContainer RetrieveTBEmailValidationContainer(string relativeLocation)
+                public static TBEmailValidation RetrieveTBEmailValidation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBEmailValidationContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailValidationContainer));
+                    var result = (TBEmailValidation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailValidation), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -1939,31 +2229,17 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidationContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static TBEmailValidationContainer CreateDefault()
+				public static TBEmailValidation CreateDefault()
 				{
-					var result = new TBEmailValidationContainer();
-					result.Email = TBEmail.CreateDefault();
-					result.LoginInfo = TBLoginInfo.CreateDefault();
+					var result = new TBEmailValidation();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = Email;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = LoginInfo;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -1971,6 +2247,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					switch (propertyName)
 					{
+						case "Email":
+							Email = value;
+							break;
+						case "AccountID":
+							AccountID = value;
+							break;
 						case "ValidUntil":
 							ValidUntil = DateTime.Parse(value);
 							break;
@@ -1979,9 +2261,9 @@ namespace AaltoGlobalImpact.OIP {
 					}
 	        }
 			[DataMember]
-			public TBEmail Email { get; set; }
+			public string Email { get; set; }
 			[DataMember]
-			public TBLoginInfo LoginInfo { get; set; }
+			public string AccountID { get; set; }
 			[DataMember]
 			public DateTime ValidUntil { get; set; }
 			
@@ -2008,22 +2290,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static TBPRegisterEmail RetrieveFromDefaultLocation(string id)
+				public static TBPRegisterEmail RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBPRegisterEmail(relativeLocation);
+					return RetrieveTBPRegisterEmail(relativeLocation, owner);
 				}
 
 
-                public static TBPRegisterEmail RetrieveTBPRegisterEmail(string relativeLocation)
+                public static TBPRegisterEmail RetrieveTBPRegisterEmail(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (TBPRegisterEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBPRegisterEmail));
+                    var result = (TBPRegisterEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBPRegisterEmail), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2126,22 +2426,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountContainer RetrieveFromDefaultLocation(string id)
+				public static AccountContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountContainer(relativeLocation);
+					return RetrieveAccountContainer(relativeLocation, owner);
 				}
 
 
-                public static AccountContainer RetrieveAccountContainer(string relativeLocation)
+                public static AccountContainer RetrieveAccountContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountContainer));
+                    var result = (AccountContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2266,22 +2584,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountIndex RetrieveFromDefaultLocation(string id)
+				public static AccountIndex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountIndex(relativeLocation);
+					return RetrieveAccountIndex(relativeLocation, owner);
 				}
 
 
-                public static AccountIndex RetrieveAccountIndex(string relativeLocation)
+                public static AccountIndex RetrieveAccountIndex(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountIndex));
+                    var result = (AccountIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountIndex), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2394,22 +2730,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountModule RetrieveFromDefaultLocation(string id)
+				public static AccountModule RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountModule(relativeLocation);
+					return RetrieveAccountModule(relativeLocation, owner);
 				}
 
 
-                public static AccountModule RetrieveAccountModule(string relativeLocation)
+                public static AccountModule RetrieveAccountModule(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountModule) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountModule));
+                    var result = (AccountModule) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountModule), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2570,22 +2924,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountStatistics RetrieveFromDefaultLocation(string id)
+				public static AccountStatistics RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountStatistics(relativeLocation);
+					return RetrieveAccountStatistics(relativeLocation, owner);
 				}
 
 
-                public static AccountStatistics RetrieveAccountStatistics(string relativeLocation)
+                public static AccountStatistics RetrieveAccountStatistics(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountStatistics) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountStatistics));
+                    var result = (AccountStatistics) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountStatistics), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2688,22 +3060,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountSkills RetrieveFromDefaultLocation(string id)
+				public static AccountSkills RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountSkills(relativeLocation);
+					return RetrieveAccountSkills(relativeLocation, owner);
 				}
 
 
-                public static AccountSkills RetrieveAccountSkills(string relativeLocation)
+                public static AccountSkills RetrieveAccountSkills(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountSkills) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSkills));
+                    var result = (AccountSkills) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSkills), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2806,22 +3196,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountProjects RetrieveFromDefaultLocation(string id)
+				public static AccountProjects RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountProjects(relativeLocation);
+					return RetrieveAccountProjects(relativeLocation, owner);
 				}
 
 
-                public static AccountProjects RetrieveAccountProjects(string relativeLocation)
+                public static AccountProjects RetrieveAccountProjects(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountProjects) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProjects));
+                    var result = (AccountProjects) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProjects), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -2924,22 +3332,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountLocations RetrieveFromDefaultLocation(string id)
+				public static AccountLocations RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountLocations(relativeLocation);
+					return RetrieveAccountLocations(relativeLocation, owner);
 				}
 
 
-                public static AccountLocations RetrieveAccountLocations(string relativeLocation)
+                public static AccountLocations RetrieveAccountLocations(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountLocations) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountLocations));
+                    var result = (AccountLocations) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountLocations), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3042,22 +3468,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountContent RetrieveFromDefaultLocation(string id)
+				public static AccountContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountContent(relativeLocation);
+					return RetrieveAccountContent(relativeLocation, owner);
 				}
 
 
-                public static AccountContent RetrieveAccountContent(string relativeLocation)
+                public static AccountContent RetrieveAccountContent(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountContent));
+                    var result = (AccountContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountContent), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3160,22 +3604,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountProfile RetrieveFromDefaultLocation(string id)
+				public static AccountProfile RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountProfile(relativeLocation);
+					return RetrieveAccountProfile(relativeLocation, owner);
 				}
 
 
-                public static AccountProfile RetrieveAccountProfile(string relativeLocation)
+                public static AccountProfile RetrieveAccountProfile(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountProfile) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProfile));
+                    var result = (AccountProfile) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProfile), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3317,22 +3779,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountRoles RetrieveFromDefaultLocation(string id)
+				public static AccountRoles RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountRoles(relativeLocation);
+					return RetrieveAccountRoles(relativeLocation, owner);
 				}
 
 
-                public static AccountRoles RetrieveAccountRoles(string relativeLocation)
+                public static AccountRoles RetrieveAccountRoles(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountRoles) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountRoles));
+                    var result = (AccountRoles) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountRoles), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3466,22 +3946,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static PersonalInfoVisibility RetrieveFromDefaultLocation(string id)
+				public static PersonalInfoVisibility RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrievePersonalInfoVisibility(relativeLocation);
+					return RetrievePersonalInfoVisibility(relativeLocation, owner);
 				}
 
 
-                public static PersonalInfoVisibility RetrievePersonalInfoVisibility(string relativeLocation)
+                public static PersonalInfoVisibility RetrievePersonalInfoVisibility(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (PersonalInfoVisibility) StorageSupport.RetrieveInformation(relativeLocation, typeof(PersonalInfoVisibility));
+                    var result = (PersonalInfoVisibility) StorageSupport.RetrieveInformation(relativeLocation, typeof(PersonalInfoVisibility), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3584,22 +4082,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ReferenceToInformation RetrieveFromDefaultLocation(string id)
+				public static ReferenceToInformation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceToInformation(relativeLocation);
+					return RetrieveReferenceToInformation(relativeLocation, owner);
 				}
 
 
-                public static ReferenceToInformation RetrieveReferenceToInformation(string relativeLocation)
+                public static ReferenceToInformation RetrieveReferenceToInformation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ReferenceToInformation) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceToInformation));
+                    var result = (ReferenceToInformation) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceToInformation), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3707,22 +4223,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ReferenceCollection RetrieveFromDefaultLocation(string id)
+				public static ReferenceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceCollection(relativeLocation);
+					return RetrieveReferenceCollection(relativeLocation, owner);
 				}
 
 
-                public static ReferenceCollection RetrieveReferenceCollection(string relativeLocation)
+                public static ReferenceCollection RetrieveReferenceCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ReferenceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceCollection));
+                    var result = (ReferenceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3821,22 +4355,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static BlogContainer RetrieveFromDefaultLocation(string id)
+				public static BlogContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBlogContainer(relativeLocation);
+					return RetrieveBlogContainer(relativeLocation, owner);
 				}
 
 
-                public static BlogContainer RetrieveBlogContainer(string relativeLocation)
+                public static BlogContainer RetrieveBlogContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (BlogContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogContainer));
+                    var result = (BlogContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -3970,22 +4522,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapContainer RetrieveFromDefaultLocation(string id)
+				public static MapContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapContainer(relativeLocation);
+					return RetrieveMapContainer(relativeLocation, owner);
 				}
 
 
-                public static MapContainer RetrieveMapContainer(string relativeLocation)
+                public static MapContainer RetrieveMapContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapContainer));
+                    var result = (MapContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4128,22 +4698,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static CalendarContainer RetrieveFromDefaultLocation(string id)
+				public static CalendarContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCalendarContainer(relativeLocation);
+					return RetrieveCalendarContainer(relativeLocation, owner);
 				}
 
 
-                public static CalendarContainer RetrieveCalendarContainer(string relativeLocation)
+                public static CalendarContainer RetrieveCalendarContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (CalendarContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarContainer));
+                    var result = (CalendarContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4277,22 +4865,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AboutContainer RetrieveFromDefaultLocation(string id)
+				public static AboutContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAboutContainer(relativeLocation);
+					return RetrieveAboutContainer(relativeLocation, owner);
 				}
 
 
-                public static AboutContainer RetrieveAboutContainer(string relativeLocation)
+                public static AboutContainer RetrieveAboutContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AboutContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(AboutContainer));
+                    var result = (AboutContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(AboutContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4426,22 +5032,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static OBSAccountContainer RetrieveFromDefaultLocation(string id)
+				public static OBSAccountContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveOBSAccountContainer(relativeLocation);
+					return RetrieveOBSAccountContainer(relativeLocation, owner);
 				}
 
 
-                public static OBSAccountContainer RetrieveOBSAccountContainer(string relativeLocation)
+                public static OBSAccountContainer RetrieveOBSAccountContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (OBSAccountContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(OBSAccountContainer));
+                    var result = (OBSAccountContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(OBSAccountContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4575,22 +5199,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ProjectContainer RetrieveFromDefaultLocation(string id)
+				public static ProjectContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProjectContainer(relativeLocation);
+					return RetrieveProjectContainer(relativeLocation, owner);
 				}
 
 
-                public static ProjectContainer RetrieveProjectContainer(string relativeLocation)
+                public static ProjectContainer RetrieveProjectContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ProjectContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProjectContainer));
+                    var result = (ProjectContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProjectContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4724,22 +5366,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static CourseContainer RetrieveFromDefaultLocation(string id)
+				public static CourseContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCourseContainer(relativeLocation);
+					return RetrieveCourseContainer(relativeLocation, owner);
 				}
 
 
-                public static CourseContainer RetrieveCourseContainer(string relativeLocation)
+                public static CourseContainer RetrieveCourseContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (CourseContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(CourseContainer));
+                    var result = (CourseContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(CourseContainer), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4873,22 +5533,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ContainerHeader RetrieveFromDefaultLocation(string id)
+				public static ContainerHeader RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveContainerHeader(relativeLocation);
+					return RetrieveContainerHeader(relativeLocation, owner);
 				}
 
 
-                public static ContainerHeader RetrieveContainerHeader(string relativeLocation)
+                public static ContainerHeader RetrieveContainerHeader(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ContainerHeader) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContainerHeader));
+                    var result = (ContainerHeader) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContainerHeader), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -4996,22 +5674,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static IndexCollection RetrieveFromDefaultLocation(string id)
+				public static IndexCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIndexCollection(relativeLocation);
+					return RetrieveIndexCollection(relativeLocation, owner);
 				}
 
 
-                public static IndexCollection RetrieveIndexCollection(string relativeLocation)
+                public static IndexCollection RetrieveIndexCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (IndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(IndexCollection));
+                    var result = (IndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(IndexCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5119,22 +5815,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static BlogCollection RetrieveFromDefaultLocation(string id)
+				public static BlogCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBlogCollection(relativeLocation);
+					return RetrieveBlogCollection(relativeLocation, owner);
 				}
 
 
-                public static BlogCollection RetrieveBlogCollection(string relativeLocation)
+                public static BlogCollection RetrieveBlogCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (BlogCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogCollection));
+                    var result = (BlogCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5233,22 +5947,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Blog RetrieveFromDefaultLocation(string id)
+				public static Blog RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBlog(relativeLocation);
+					return RetrieveBlog(relativeLocation, owner);
 				}
 
 
-                public static Blog RetrieveBlog(string relativeLocation)
+                public static Blog RetrieveBlog(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Blog) StorageSupport.RetrieveInformation(relativeLocation, typeof(Blog));
+                    var result = (Blog) StorageSupport.RetrieveInformation(relativeLocation, typeof(Blog), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5412,22 +6144,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static BlogIndexCollection RetrieveFromDefaultLocation(string id)
+				public static BlogIndexCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBlogIndexCollection(relativeLocation);
+					return RetrieveBlogIndexCollection(relativeLocation, owner);
 				}
 
 
-                public static BlogIndexCollection RetrieveBlogIndexCollection(string relativeLocation)
+                public static BlogIndexCollection RetrieveBlogIndexCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (BlogIndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogIndexCollection));
+                    var result = (BlogIndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogIndexCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5561,22 +6311,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static CalendarIndex RetrieveFromDefaultLocation(string id)
+				public static CalendarIndex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCalendarIndex(relativeLocation);
+					return RetrieveCalendarIndex(relativeLocation, owner);
 				}
 
 
-                public static CalendarIndex RetrieveCalendarIndex(string relativeLocation)
+                public static CalendarIndex RetrieveCalendarIndex(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (CalendarIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarIndex));
+                    var result = (CalendarIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarIndex), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5679,22 +6447,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Filter RetrieveFromDefaultLocation(string id)
+				public static Filter RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveFilter(relativeLocation);
+					return RetrieveFilter(relativeLocation, owner);
 				}
 
 
-                public static Filter RetrieveFilter(string relativeLocation)
+                public static Filter RetrieveFilter(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Filter) StorageSupport.RetrieveInformation(relativeLocation, typeof(Filter));
+                    var result = (Filter) StorageSupport.RetrieveInformation(relativeLocation, typeof(Filter), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5797,22 +6583,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Calendar RetrieveFromDefaultLocation(string id)
+				public static Calendar RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCalendar(relativeLocation);
+					return RetrieveCalendar(relativeLocation, owner);
 				}
 
 
-                public static Calendar RetrieveCalendar(string relativeLocation)
+                public static Calendar RetrieveCalendar(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Calendar) StorageSupport.RetrieveInformation(relativeLocation, typeof(Calendar));
+                    var result = (Calendar) StorageSupport.RetrieveInformation(relativeLocation, typeof(Calendar), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -5915,22 +6719,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static CalendarCollection RetrieveFromDefaultLocation(string id)
+				public static CalendarCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCalendarCollection(relativeLocation);
+					return RetrieveCalendarCollection(relativeLocation, owner);
 				}
 
 
-                public static CalendarCollection RetrieveCalendarCollection(string relativeLocation)
+                public static CalendarCollection RetrieveCalendarCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (CalendarCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarCollection));
+                    var result = (CalendarCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CalendarCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6029,22 +6851,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Map RetrieveFromDefaultLocation(string id)
+				public static Map RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMap(relativeLocation);
+					return RetrieveMap(relativeLocation, owner);
 				}
 
 
-                public static Map RetrieveMap(string relativeLocation)
+                public static Map RetrieveMap(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Map) StorageSupport.RetrieveInformation(relativeLocation, typeof(Map));
+                    var result = (Map) StorageSupport.RetrieveInformation(relativeLocation, typeof(Map), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6147,22 +6987,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapCollection RetrieveFromDefaultLocation(string id)
+				public static MapCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapCollection(relativeLocation);
+					return RetrieveMapCollection(relativeLocation, owner);
 				}
 
 
-                public static MapCollection RetrieveMapCollection(string relativeLocation)
+                public static MapCollection RetrieveMapCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapCollection));
+                    var result = (MapCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6261,22 +7119,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapIndexCollection RetrieveFromDefaultLocation(string id)
+				public static MapIndexCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapIndexCollection(relativeLocation);
+					return RetrieveMapIndexCollection(relativeLocation, owner);
 				}
 
 
-                public static MapIndexCollection RetrieveMapIndexCollection(string relativeLocation)
+                public static MapIndexCollection RetrieveMapIndexCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapIndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapIndexCollection));
+                    var result = (MapIndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapIndexCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6410,22 +7286,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapResult RetrieveFromDefaultLocation(string id)
+				public static MapResult RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResult(relativeLocation);
+					return RetrieveMapResult(relativeLocation, owner);
 				}
 
 
-                public static MapResult RetrieveMapResult(string relativeLocation)
+                public static MapResult RetrieveMapResult(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapResult) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResult));
+                    var result = (MapResult) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResult), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6532,22 +7426,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapResultCollection RetrieveFromDefaultLocation(string id)
+				public static MapResultCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResultCollection(relativeLocation);
+					return RetrieveMapResultCollection(relativeLocation, owner);
 				}
 
 
-                public static MapResultCollection RetrieveMapResultCollection(string relativeLocation)
+                public static MapResultCollection RetrieveMapResultCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapResultCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultCollection));
+                    var result = (MapResultCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6646,22 +7558,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapResultsCollection RetrieveFromDefaultLocation(string id)
+				public static MapResultsCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResultsCollection(relativeLocation);
+					return RetrieveMapResultsCollection(relativeLocation, owner);
 				}
 
 
-                public static MapResultsCollection RetrieveMapResultsCollection(string relativeLocation)
+                public static MapResultsCollection RetrieveMapResultsCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapResultsCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultsCollection));
+                    var result = (MapResultsCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultsCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6786,22 +7716,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Image RetrieveFromDefaultLocation(string id)
+				public static Image RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImage(relativeLocation);
+					return RetrieveImage(relativeLocation, owner);
 				}
 
 
-                public static Image RetrieveImage(string relativeLocation)
+                public static Image RetrieveImage(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Image) StorageSupport.RetrieveInformation(relativeLocation, typeof(Image));
+                    var result = (Image) StorageSupport.RetrieveInformation(relativeLocation, typeof(Image), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -6918,22 +7866,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ImageGroup RetrieveFromDefaultLocation(string id)
+				public static ImageGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImageGroup(relativeLocation);
+					return RetrieveImageGroup(relativeLocation, owner);
 				}
 
 
-                public static ImageGroup RetrieveImageGroup(string relativeLocation)
+                public static ImageGroup RetrieveImageGroup(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ImageGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageGroup));
+                    var result = (ImageGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageGroup), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7050,22 +8016,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ImagesCollection RetrieveFromDefaultLocation(string id)
+				public static ImagesCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImagesCollection(relativeLocation);
+					return RetrieveImagesCollection(relativeLocation, owner);
 				}
 
 
-                public static ImagesCollection RetrieveImagesCollection(string relativeLocation)
+                public static ImagesCollection RetrieveImagesCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ImagesCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImagesCollection));
+                    var result = (ImagesCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImagesCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7164,22 +8148,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Tooltip RetrieveFromDefaultLocation(string id)
+				public static Tooltip RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTooltip(relativeLocation);
+					return RetrieveTooltip(relativeLocation, owner);
 				}
 
 
-                public static Tooltip RetrieveTooltip(string relativeLocation)
+                public static Tooltip RetrieveTooltip(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Tooltip) StorageSupport.RetrieveInformation(relativeLocation, typeof(Tooltip));
+                    var result = (Tooltip) StorageSupport.RetrieveInformation(relativeLocation, typeof(Tooltip), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7282,22 +8284,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static SocialPanelCollection RetrieveFromDefaultLocation(string id)
+				public static SocialPanelCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSocialPanelCollection(relativeLocation);
+					return RetrieveSocialPanelCollection(relativeLocation, owner);
 				}
 
 
-                public static SocialPanelCollection RetrieveSocialPanelCollection(string relativeLocation)
+                public static SocialPanelCollection RetrieveSocialPanelCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (SocialPanelCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SocialPanelCollection));
+                    var result = (SocialPanelCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SocialPanelCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7396,22 +8416,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static SocialPanel RetrieveFromDefaultLocation(string id)
+				public static SocialPanel RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSocialPanel(relativeLocation);
+					return RetrieveSocialPanel(relativeLocation, owner);
 				}
 
 
-                public static SocialPanel RetrieveSocialPanel(string relativeLocation)
+                public static SocialPanel RetrieveSocialPanel(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (SocialPanel) StorageSupport.RetrieveInformation(relativeLocation, typeof(SocialPanel));
+                    var result = (SocialPanel) StorageSupport.RetrieveInformation(relativeLocation, typeof(SocialPanel), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7518,22 +8556,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static EventCollection RetrieveFromDefaultLocation(string id)
+				public static EventCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEventCollection(relativeLocation);
+					return RetrieveEventCollection(relativeLocation, owner);
 				}
 
 
-                public static EventCollection RetrieveEventCollection(string relativeLocation)
+                public static EventCollection RetrieveEventCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (EventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EventCollection));
+                    var result = (EventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EventCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7632,22 +8688,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static MapEventCollection RetrieveFromDefaultLocation(string id)
+				public static MapEventCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapEventCollection(relativeLocation);
+					return RetrieveMapEventCollection(relativeLocation, owner);
 				}
 
 
-                public static MapEventCollection RetrieveMapEventCollection(string relativeLocation)
+                public static MapEventCollection RetrieveMapEventCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (MapEventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapEventCollection));
+                    var result = (MapEventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapEventCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7754,22 +8828,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Longitude RetrieveFromDefaultLocation(string id)
+				public static Longitude RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLongitude(relativeLocation);
+					return RetrieveLongitude(relativeLocation, owner);
 				}
 
 
-                public static Longitude RetrieveLongitude(string relativeLocation)
+                public static Longitude RetrieveLongitude(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Longitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Longitude));
+                    var result = (Longitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Longitude), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7872,22 +8964,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Latitude RetrieveFromDefaultLocation(string id)
+				public static Latitude RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLatitude(relativeLocation);
+					return RetrieveLatitude(relativeLocation, owner);
 				}
 
 
-                public static Latitude RetrieveLatitude(string relativeLocation)
+                public static Latitude RetrieveLatitude(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Latitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Latitude));
+                    var result = (Latitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Latitude), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -7990,22 +9100,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Location RetrieveFromDefaultLocation(string id)
+				public static Location RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLocation(relativeLocation);
+					return RetrieveLocation(relativeLocation, owner);
 				}
 
 
-                public static Location RetrieveLocation(string relativeLocation)
+                public static Location RetrieveLocation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Location) StorageSupport.RetrieveInformation(relativeLocation, typeof(Location));
+                    var result = (Location) StorageSupport.RetrieveInformation(relativeLocation, typeof(Location), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8121,22 +9249,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Date RetrieveFromDefaultLocation(string id)
+				public static Date RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDate(relativeLocation);
+					return RetrieveDate(relativeLocation, owner);
 				}
 
 
-                public static Date RetrieveDate(string relativeLocation)
+                public static Date RetrieveDate(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Date) StorageSupport.RetrieveInformation(relativeLocation, typeof(Date));
+                    var result = (Date) StorageSupport.RetrieveInformation(relativeLocation, typeof(Date), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8254,22 +9400,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Sex RetrieveFromDefaultLocation(string id)
+				public static Sex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSex(relativeLocation);
+					return RetrieveSex(relativeLocation, owner);
 				}
 
 
-                public static Sex RetrieveSex(string relativeLocation)
+                public static Sex RetrieveSex(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Sex) StorageSupport.RetrieveInformation(relativeLocation, typeof(Sex));
+                    var result = (Sex) StorageSupport.RetrieveInformation(relativeLocation, typeof(Sex), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8372,22 +9536,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Address RetrieveFromDefaultLocation(string id)
+				public static Address RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddress(relativeLocation);
+					return RetrieveAddress(relativeLocation, owner);
 				}
 
 
-                public static Address RetrieveAddress(string relativeLocation)
+                public static Address RetrieveAddress(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Address) StorageSupport.RetrieveInformation(relativeLocation, typeof(Address));
+                    var result = (Address) StorageSupport.RetrieveInformation(relativeLocation, typeof(Address), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8535,22 +9717,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Identity RetrieveFromDefaultLocation(string id)
+				public static Identity RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIdentity(relativeLocation);
+					return RetrieveIdentity(relativeLocation, owner);
 				}
 
 
-                public static Identity RetrieveIdentity(string relativeLocation)
+                public static Identity RetrieveIdentity(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Identity) StorageSupport.RetrieveInformation(relativeLocation, typeof(Identity));
+                    var result = (Identity) StorageSupport.RetrieveInformation(relativeLocation, typeof(Identity), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8681,22 +9881,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ImageVideoSoundVectorRaw RetrieveFromDefaultLocation(string id)
+				public static ImageVideoSoundVectorRaw RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImageVideoSoundVectorRaw(relativeLocation);
+					return RetrieveImageVideoSoundVectorRaw(relativeLocation, owner);
 				}
 
 
-                public static ImageVideoSoundVectorRaw RetrieveImageVideoSoundVectorRaw(string relativeLocation)
+                public static ImageVideoSoundVectorRaw RetrieveImageVideoSoundVectorRaw(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ImageVideoSoundVectorRaw) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageVideoSoundVectorRaw));
+                    var result = (ImageVideoSoundVectorRaw) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageVideoSoundVectorRaw), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8807,22 +10025,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Category RetrieveFromDefaultLocation(string id)
+				public static Category RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategory(relativeLocation);
+					return RetrieveCategory(relativeLocation, owner);
 				}
 
 
-                public static Category RetrieveCategory(string relativeLocation)
+                public static Category RetrieveCategory(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Category) StorageSupport.RetrieveInformation(relativeLocation, typeof(Category));
+                    var result = (Category) StorageSupport.RetrieveInformation(relativeLocation, typeof(Category), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -8925,22 +10161,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static What RetrieveFromDefaultLocation(string id)
+				public static What RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhat(relativeLocation);
+					return RetrieveWhat(relativeLocation, owner);
 				}
 
 
-                public static What RetrieveWhat(string relativeLocation)
+                public static What RetrieveWhat(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (What) StorageSupport.RetrieveInformation(relativeLocation, typeof(What));
+                    var result = (What) StorageSupport.RetrieveInformation(relativeLocation, typeof(What), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9080,22 +10334,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static When RetrieveFromDefaultLocation(string id)
+				public static When RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhen(relativeLocation);
+					return RetrieveWhen(relativeLocation, owner);
 				}
 
 
-                public static When RetrieveWhen(string relativeLocation)
+                public static When RetrieveWhen(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (When) StorageSupport.RetrieveInformation(relativeLocation, typeof(When));
+                    var result = (When) StorageSupport.RetrieveInformation(relativeLocation, typeof(When), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9203,22 +10475,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Where RetrieveFromDefaultLocation(string id)
+				public static Where RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhere(relativeLocation);
+					return RetrieveWhere(relativeLocation, owner);
 				}
 
 
-                public static Where RetrieveWhere(string relativeLocation)
+                public static Where RetrieveWhere(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Where) StorageSupport.RetrieveInformation(relativeLocation, typeof(Where));
+                    var result = (Where) StorageSupport.RetrieveInformation(relativeLocation, typeof(Where), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9344,22 +10634,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Whom RetrieveFromDefaultLocation(string id)
+				public static Whom RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhom(relativeLocation);
+					return RetrieveWhom(relativeLocation, owner);
 				}
 
 
-                public static Whom RetrieveWhom(string relativeLocation)
+                public static Whom RetrieveWhom(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Whom) StorageSupport.RetrieveInformation(relativeLocation, typeof(Whom));
+                    var result = (Whom) StorageSupport.RetrieveInformation(relativeLocation, typeof(Whom), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9480,22 +10788,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Worth RetrieveFromDefaultLocation(string id)
+				public static Worth RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWorth(relativeLocation);
+					return RetrieveWorth(relativeLocation, owner);
 				}
 
 
-                public static Worth RetrieveWorth(string relativeLocation)
+                public static Worth RetrieveWorth(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Worth) StorageSupport.RetrieveInformation(relativeLocation, typeof(Worth));
+                    var result = (Worth) StorageSupport.RetrieveInformation(relativeLocation, typeof(Worth), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9621,22 +10947,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Event5W RetrieveFromDefaultLocation(string id)
+				public static Event5W RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEvent5W(relativeLocation);
+					return RetrieveEvent5W(relativeLocation, owner);
 				}
 
 
-                public static Event5W RetrieveEvent5W(string relativeLocation)
+                public static Event5W RetrieveEvent5W(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Event5W) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5W));
+                    var result = (Event5W) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5W), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9761,22 +11105,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Event5WCollection RetrieveFromDefaultLocation(string id)
+				public static Event5WCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEvent5WCollection(relativeLocation);
+					return RetrieveEvent5WCollection(relativeLocation, owner);
 				}
 
 
-                public static Event5WCollection RetrieveEvent5WCollection(string relativeLocation)
+                public static Event5WCollection RetrieveEvent5WCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Event5WCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5WCollection));
+                    var result = (Event5WCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5WCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9875,22 +11237,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static SubscriptionCollection RetrieveFromDefaultLocation(string id)
+				public static SubscriptionCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionCollection(relativeLocation);
+					return RetrieveSubscriptionCollection(relativeLocation, owner);
 				}
 
 
-                public static SubscriptionCollection RetrieveSubscriptionCollection(string relativeLocation)
+                public static SubscriptionCollection RetrieveSubscriptionCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (SubscriptionCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionCollection));
+                    var result = (SubscriptionCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionCollection), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -9989,22 +11369,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Subscription RetrieveFromDefaultLocation(string id)
+				public static Subscription RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscription(relativeLocation);
+					return RetrieveSubscription(relativeLocation, owner);
 				}
 
 
-                public static Subscription RetrieveSubscription(string relativeLocation)
+                public static Subscription RetrieveSubscription(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Subscription) StorageSupport.RetrieveInformation(relativeLocation, typeof(Subscription));
+                    var result = (Subscription) StorageSupport.RetrieveInformation(relativeLocation, typeof(Subscription), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10142,22 +11540,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static QueueEnvelope RetrieveFromDefaultLocation(string id)
+				public static QueueEnvelope RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveQueueEnvelope(relativeLocation);
+					return RetrieveQueueEnvelope(relativeLocation, owner);
 				}
 
 
-                public static QueueEnvelope RetrieveQueueEnvelope(string relativeLocation)
+                public static QueueEnvelope RetrieveQueueEnvelope(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (QueueEnvelope) StorageSupport.RetrieveInformation(relativeLocation, typeof(QueueEnvelope));
+                    var result = (QueueEnvelope) StorageSupport.RetrieveInformation(relativeLocation, typeof(QueueEnvelope), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10264,22 +11680,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static SubscriberInput RetrieveFromDefaultLocation(string id)
+				public static SubscriberInput RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriberInput(relativeLocation);
+					return RetrieveSubscriberInput(relativeLocation, owner);
 				}
 
 
-                public static SubscriberInput RetrieveSubscriberInput(string relativeLocation)
+                public static SubscriberInput RetrieveSubscriberInput(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (SubscriberInput) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberInput));
+                    var result = (SubscriberInput) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberInput), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10397,22 +11831,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static SubscriberUpdateOperation RetrieveFromDefaultLocation(string id)
+				public static SubscriberUpdateOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriberUpdateOperation(relativeLocation);
+					return RetrieveSubscriberUpdateOperation(relativeLocation, owner);
 				}
 
 
-                public static SubscriberUpdateOperation RetrieveSubscriberUpdateOperation(string relativeLocation)
+                public static SubscriberUpdateOperation RetrieveSubscriberUpdateOperation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (SubscriberUpdateOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberUpdateOperation));
+                    var result = (SubscriberUpdateOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberUpdateOperation), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10534,22 +11986,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Monitor RetrieveFromDefaultLocation(string id)
+				public static Monitor RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMonitor(relativeLocation);
+					return RetrieveMonitor(relativeLocation, owner);
 				}
 
 
-                public static Monitor RetrieveMonitor(string relativeLocation)
+                public static Monitor RetrieveMonitor(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Monitor) StorageSupport.RetrieveInformation(relativeLocation, typeof(Monitor));
+                    var result = (Monitor) StorageSupport.RetrieveInformation(relativeLocation, typeof(Monitor), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10682,22 +12152,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static IconTitleDescription RetrieveFromDefaultLocation(string id)
+				public static IconTitleDescription RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIconTitleDescription(relativeLocation);
+					return RetrieveIconTitleDescription(relativeLocation, owner);
 				}
 
 
-                public static IconTitleDescription RetrieveIconTitleDescription(string relativeLocation)
+                public static IconTitleDescription RetrieveIconTitleDescription(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (IconTitleDescription) StorageSupport.RetrieveInformation(relativeLocation, typeof(IconTitleDescription));
+                    var result = (IconTitleDescription) StorageSupport.RetrieveInformation(relativeLocation, typeof(IconTitleDescription), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10807,22 +12295,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AboutAGIApplications RetrieveFromDefaultLocation(string id)
+				public static AboutAGIApplications RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAboutAGIApplications(relativeLocation);
+					return RetrieveAboutAGIApplications(relativeLocation, owner);
 				}
 
 
-                public static AboutAGIApplications RetrieveAboutAGIApplications(string relativeLocation)
+                public static AboutAGIApplications RetrieveAboutAGIApplications(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AboutAGIApplications) StorageSupport.RetrieveInformation(relativeLocation, typeof(AboutAGIApplications));
+                    var result = (AboutAGIApplications) StorageSupport.RetrieveInformation(relativeLocation, typeof(AboutAGIApplications), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -10938,22 +12444,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Icon RetrieveFromDefaultLocation(string id)
+				public static Icon RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIcon(relativeLocation);
+					return RetrieveIcon(relativeLocation, owner);
 				}
 
 
-                public static Icon RetrieveIcon(string relativeLocation)
+                public static Icon RetrieveIcon(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Icon) StorageSupport.RetrieveInformation(relativeLocation, typeof(Icon));
+                    var result = (Icon) StorageSupport.RetrieveInformation(relativeLocation, typeof(Icon), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -11045,22 +12569,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static WebPageTemplate RetrieveFromDefaultLocation(string id)
+				public static WebPageTemplate RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWebPageTemplate(relativeLocation);
+					return RetrieveWebPageTemplate(relativeLocation, owner);
 				}
 
 
-                public static WebPageTemplate RetrieveWebPageTemplate(string relativeLocation)
+                public static WebPageTemplate RetrieveWebPageTemplate(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (WebPageTemplate) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPageTemplate));
+                    var result = (WebPageTemplate) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPageTemplate), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
@@ -11152,22 +12694,40 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static WebPage RetrieveFromDefaultLocation(string id)
+				public static WebPage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWebPage(relativeLocation);
+					return RetrieveWebPage(relativeLocation, owner);
 				}
 
 
-                public static WebPage RetrieveWebPage(string relativeLocation)
+                public static WebPage RetrieveWebPage(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (WebPage) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPage));
+                    var result = (WebPage) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPage), null, owner);
                     return result;
                 }
 
-			    public void InitializeDefaultSubscribers()
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
 			    {
+					DoInitializeDefaultSubscribers(owner);
 			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
 
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {

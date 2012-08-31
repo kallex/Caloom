@@ -140,6 +140,7 @@ Global
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Release|x86.ActiveCfg = Release|Any CPU
+		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Release|x86.Build.0 = Release|Any CPU
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{B217A0DA-332A-4394-BB83-06A995DBD1AC}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -171,6 +172,7 @@ Global
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Release|x86.ActiveCfg = Release|Any CPU
+		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Release|x86.Build.0 = Release|Any CPU
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{B898C2F7-F3ED-4D25-934C-04131CA15808}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -202,6 +204,7 @@ Global
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Release|x86.ActiveCfg = Release|Any CPU
+		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Release|x86.Build.0 = Release|Any CPU
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -233,6 +236,7 @@ Global
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Release|x86.ActiveCfg = Release|Any CPU
+		{92451B64-CB7D-4240-9982-3D7AD9823872}.Release|x86.Build.0 = Release|Any CPU
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{92451B64-CB7D-4240-9982-3D7AD9823872}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -264,6 +268,7 @@ Global
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Release|x86.Build.0 = Release|Any CPU
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{6F0F7203-A12B-4526-8123-B7F3050BDE40}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -295,6 +300,7 @@ Global
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Release|x86.Build.0 = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{C7A918BA-41E4-43A2-94F1-AECF9F9334DB}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -326,6 +332,7 @@ Global
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Release|x86.Build.0 = Release|Any CPU
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{8A6394CA-84ED-42E8-B8D2-479638B0CF99}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -357,6 +364,7 @@ Global
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Release|x86.ActiveCfg = Release|Any CPU
+		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Release|x86.Build.0 = Release|Any CPU
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -388,6 +396,7 @@ Global
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Release|x86.ActiveCfg = Release|Any CPU
+		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Release|x86.Build.0 = Release|Any CPU
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -449,6 +458,7 @@ Global
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Release|x86.ActiveCfg = Release|Any CPU
+		{33F04EB2-55DE-4539-8E67-152A6057F100}.Release|x86.Build.0 = Release|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -480,6 +490,7 @@ Global
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADFE0244-B352-4B21-AB0F-040805535C71}.Release|x86.Build.0 = Release|Any CPU
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{ADFE0244-B352-4B21-AB0F-040805535C71}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -511,6 +522,7 @@ Global
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Release|x86.ActiveCfg = Release|Any CPU
+		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Release|x86.Build.0 = Release|Any CPU
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{F356172A-77A6-4BB7-9EF7-0EFBEA011759}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -542,6 +554,7 @@ Global
 		{639EF079-5944-480A-BF5B-691B3F133507}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Release|x86.ActiveCfg = Release|Any CPU
+		{639EF079-5944-480A-BF5B-691B3F133507}.Release|x86.Build.0 = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|Any CPU.Build.0 = Release|Any CPU
 		{639EF079-5944-480A-BF5B-691B3F133507}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU

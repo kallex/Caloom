@@ -59,7 +59,7 @@ namespace TheBall
             SubscriptionCollection subscriptionCollection = GetSubscriptions(informationObject);
             if (subscriptionCollection == null)
                 return;
-            foreach(var subsciption in subscriptionCollection.CollectionContent)
+            foreach(var subscription in subscriptionCollection.CollectionContent)
             {
                 QueueEnvelope envelope =
                     new QueueEnvelope
@@ -67,16 +67,16 @@ namespace TheBall
                             SubscriberUpdateOperation =
                                 new SubscriberUpdateOperation
                                     {
-                                        OperationName = subsciption.OperationActionName,
+                                        OperationName = subscription.OperationActionName,
                                         SubscriberOwnerID = StorageSupport.ActiveOwnerID.ToString(),
                                         TargetOwnerID = StorageSupport.ActiveOwnerID.ToString(),
                                         OperationParameters =
                                             new SubscriberInput
                                                 {
-                                                    InformationObjectName = subsciption.TargetObjectName,
-                                                    InformationItemName = subsciption.TargetItemName,
-                                                    InputRelativeLocation = subsciption.TargetRelativeLocation,
-                                                    SubscriberRelativeLocation = subsciption.SubscriberRelativeLocation,
+                                                    InformationObjectName = subscription.TargetObjectName,
+                                                    InformationItemName = subscription.TargetItemName,
+                                                    InputRelativeLocation = subscription.TargetRelativeLocation,
+                                                    SubscriberRelativeLocation = subscription.SubscriberRelativeLocation,
                                                 }
                                     }
                         };

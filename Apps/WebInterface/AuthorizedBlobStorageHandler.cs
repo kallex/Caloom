@@ -31,11 +31,13 @@ namespace WebInterface
         private const string AuthAccountPrefix = "/auth/acc/";
         private const string AuthProcPrefix = "/auth/proc/";
         private const string AuthPrefix = "/auth/";
+        private const string AuthEmailValidation = "/auth/emailvalidation/";
         private int AuthGroupPrefixLen;
         private int AuthPersonalPrefixLen;
         private int AuthAccountPrefixLen;
         private int AuthProcPrefixLen;
         private int AuthPrefixLen;
+        private int AuthEmailValidationLen;
         private int GuidIDLen;
 
 
@@ -46,6 +48,7 @@ namespace WebInterface
             AuthAccountPrefixLen = AuthAccountPrefix.Length;
             AuthProcPrefixLen = AuthProcPrefix.Length;
             AuthPrefixLen = AuthPrefix.Length;
+            AuthEmailValidationLen = AuthEmailValidation.Length;
             GuidIDLen = Guid.Empty.ToString().Length;
         }
 
@@ -70,46 +73,37 @@ namespace WebInterface
             } else if(request.Path.StartsWith(AuthAccountPrefix))
             {
                 HandleAccountRequest(context);
+            } else if(request.Path.StartsWith(AuthEmailValidation))
+            {
+                HandleEmailValidation(context);
             }
             return;
-            if(request.RequestType != "GET")
-            {
-                ProcessPost(context);
+        }
+
+        private void HandleEmailValidation(HttpContext context)
+        {
+            TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
+            string requestPath = context.Request.Path;
+            string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
+            TBAccount account = loginRoot.Account;
+            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID, account);
+            if (emailValidation == null)
                 return;
-            }
-            HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/anon/") || isAuthenticated == false)
+            if(emailValidation.ValidUntil < DateTime.Now)
             {
-                return;
+                // TODO: Some invalidation message + UTC time
+                StorageSupport.DeleteInformationObject(emailValidation, account);
+                throw new TimeoutException("Email validation expired at: " + emailValidation.ToString());
             }
-            
-            // Get the file name.
-
-            context.Response.Write("<p>Not implemented</p>");
-            return;
-            string fileName = context.Request.Path;
-
-            // Get the blob from blob storage.
-            var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
-            var blobStorage = storageAccount.CreateCloudBlobClient();
-            string blobContainerName = "";
-            string blobAddress = blobContainerName + "/" + fileName;
-            CloudBlob blob = blobStorage.GetBlobReference(blobAddress);
-
-            // Read blob content to response.
-            context.Response.Clear();
-            try
-            {
-                blob.FetchAttributes();
-
-                context.Response.ContentType = blob.Properties.ContentType;
-                blob.DownloadToStream(context.Response.OutputStream);
-            }
-            catch (Exception ex)
-            {
-                context.Response.Write(ex.ToString());
-            }
-            context.Response.End();
+            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(account.ID);
+            TBEmail email = TBEmail.CreateDefault();
+            email.EmailAddress = emailValidation.Email;
+            email.ValidatedAt = DateTime.Now;
+            account.Emails.CollectionContent.Add(email);
+            accountRoot.Account = account;
+            StorageSupport.StoreInformation(loginRoot);
+            StorageSupport.StoreInformation(accountRoot);
+            context.Response.Redirect("/auth/personal/oip-personal-landing-page.phtml", true);
         }
 
         private void HandleAccountRequest(HttpContext context)
@@ -181,6 +175,30 @@ namespace WebInterface
 
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            if (context.Request.RequestType == "POST")
+                HandleOwnerPostRequest(containerOwner, context, contentPath);
+            else
+                HandleOwnerGetRequest(containerOwner, context, contentPath);
+        }
+
+        private void HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        {
+            HttpRequest request = context.Request;
+            var form = request.Form;
+            string objectTypeName = form["RootObjectType"];
+            string objectRelativeLocation = form["RootObjectRelativeLocation"];
+            string eTag = form["RootObjectETag"];
+            if (eTag == null)
+            {
+                throw new InvalidDataException("ETag must be present in submit request for root container object");
+            }
+            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName, eTag, containerOwner);
+            rootObject.SetValuesToObjects(form);
+            StorageSupport.StoreInformation(rootObject, containerOwner);
+        }
+
+        private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        {
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
 
             // Read blob content to response.
@@ -197,7 +215,6 @@ namespace WebInterface
                 context.Response.Write(ex.ToString());
             }
             context.Response.End();
-
         }
 
         private TBRLoginRoot GetOrCreateLoginRoot(HttpContext context)
@@ -222,6 +239,7 @@ namespace WebInterface
                 loginRoot.Account = accountRoot.Account;
                 StorageSupport.StoreInformation(loginRoot);
             }
+            HttpContext.Current.Items.Add("Account", loginRoot.Account);
             return loginRoot;
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AaltoGlobalImpact.OIP;
 using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
@@ -121,6 +122,24 @@ namespace TheBall
             Console.WriteLine("Specify Text and/or HTML for the email body!");
 
             return false;
+        }
+
+        public static void SendValidationEmail(TBEmailValidation emailValidation)
+        {
+            string urlLink = "https://theball.azurewebsites.net/auth/emailvalidation/" + emailValidation.ID;
+            string emailMessageFormat =
+                @"Greetings from The Open Innovation/Collaboration Platform!
+
+This email address '{0}' has been registered in the system. This message is sent to you to confirm that you did register this email. During the process you might be redirected to perform the authentication against the system.
+
+The following link will start the process:
+
+{1}
+
+Wishing you all the best from OIP team!
+";
+            string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
+            SendEmail("kalle.launiala@citrus.fi", emailValidation.Email, "OIP Email Confirmation", message);
         }
     }
 }
