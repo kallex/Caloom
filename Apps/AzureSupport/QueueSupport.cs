@@ -9,8 +9,10 @@ namespace TheBall
     public static class QueueSupport
     {
         public const string DefaultQueueName = "defaultqueue";
+        public const string ErrorQueueName = "errorqueue";
 
         public static CloudQueue CurrDefaultQueue { get; private set; }
+        public static CloudQueue CurrErrorQueue { get; private set; }
         public static CloudQueueClient CurrQueueClient { get; private set; }
 
         public static void InitializeAfterStorage()
@@ -19,14 +21,19 @@ namespace TheBall
 
             // Retrieve a reference to a queue
             CloudQueue queue = CurrQueueClient.GetQueueReference(DefaultQueueName);
-            CurrDefaultQueue = queue;
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
+            CurrDefaultQueue = queue;
+
+            queue = CurrQueueClient.GetQueueReference(ErrorQueueName);
+            // Create the queue if it doesn't already exist
+            queue.CreateIfNotExist();
+            CurrErrorQueue = queue;
         }
 
         public static void PutToDefaultQueue(QueueEnvelope queueEnvelope)
         {
-            string xmlString = SerializeToXml(queueEnvelope);
+            string xmlString = queueEnvelope.SerializeToXml();
             CloudQueueMessage message = new CloudQueueMessage(xmlString);
             CurrDefaultQueue.AddMessage(message);
         }
@@ -36,33 +43,36 @@ namespace TheBall
             message = CurrDefaultQueue.GetMessage();
             if (message == null)
                 return null;
-            QueueEnvelope queueEnvelope = DeserializeFromXml(message.AsString);
-            //CurrDefaultQueue.DeleteMessage(message);
-            return queueEnvelope;
-        }
-
-        private static string SerializeToXml(QueueEnvelope queueEnvelope)
-        {
-            DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
-            using (var output = new StringWriter())
+            try
             {
-                using (var writer = new XmlTextWriter(output) {Formatting = Formatting.Indented})
-                {
-                    serializer.WriteObject(writer, queueEnvelope);
-                }
-                return output.GetStringBuilder().ToString();
+                QueueEnvelope queueEnvelope = QueueEnvelope.DeserializeFromXml(message.AsString);
+                return queueEnvelope;
+            } catch
+            {
+                return null;
             }
         }
 
-        private static QueueEnvelope DeserializeFromXml(string xmlData)
+        public static void PutToErrorQueue(SystemError error)
         {
-            DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
-            using(StringReader reader = new StringReader(xmlData))
+            string xmlString = error.SerializeToXml();
+            CloudQueueMessage message = new CloudQueueMessage(xmlString);
+            CurrErrorQueue.AddMessage(message);
+        }
+
+        public static SystemError GetFromErrorQueue(out CloudQueueMessage message)
+        {
+            message = CurrErrorQueue.GetMessage();
+            if (message == null)
+                return null;
+            try
             {
-                using (var xmlReader = new XmlTextReader(reader))
-                    return (QueueEnvelope) serializer.ReadObject(xmlReader);
+                SystemError error = SystemError.DeserializeFromXml(message.AsString);
+                return error;
+            } catch
+            {
+                return null;
             }
-            
         }
     }
 }

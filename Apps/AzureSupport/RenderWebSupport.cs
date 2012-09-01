@@ -5,11 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using AaltoGlobalImpact.OIP;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
 {
     public static class RenderWebSupport
     {
+        private const string InformationStorageKey = "InformationStorage";
         private static int RootTagLen;
         private static int RootTagsTotalLen;
         private static int CollTagLen;
@@ -29,6 +32,8 @@ namespace TheBall
         private const string AtomTagEnd = "[ATOM!]";
         private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>\w*)\[ATOM!])";
 
+        private static Regex ContextRootRegex;
+
         static RenderWebSupport()
         {
             RootTagLen = RootTagBegin.Length;
@@ -39,9 +44,98 @@ namespace TheBall
             ObjTagsTotalLen = ObjectTagBegin.Length + CommentEnd.Length;
             AtomTagLen = AtomTagBegin.Length;
             AtomTagsTotalLen = AtomTagBegin.Length + AtomTagEnd.Length;
+            ContextRootRegex = new Regex(@"THEBALL-CONTEXT-ROOT-BEGIN:(?<rootType>[\w_\.]*)(?:\:(?<rootName>[\w_]*)|)", RegexOptions.Compiled);
+        }
+
+        public class ContentItem
+        {
+            public InformationSource Source;
+            public string RootName;
+            public string RootType;
+            public object RootObject;
+            public bool WasMissing = false;
+            public bool WasNeeded = false;
+        }
+
+        public static void RenderTemplateWithContentToBlob(CloudBlob template, CloudBlob renderTarget)
+        {
+            InformationSourceCollection sources = renderTarget.GetBlobInformationSources();
+            if(sources == null)
+            {
+                sources = CreateDefaultSources(template);
+            }
+            string templateContent = template.DownloadText();
+            List<ContentItem> existingRoots = GetExistingRoots(sources);
+            string renderResult = RenderTemplateWithContentRoots(templateContent, existingRoots);
+            UpdateMismatchedRootsToSources(sources, existingRoots, renderTarget);
+            renderTarget.SetBlobInformationSources(sources);
+            renderTarget.UploadBlobText(renderResult, StorageSupport.InformationType_GenericContentValue);
+        }
+
+        private static void UpdateMismatchedRootsToSources(InformationSourceCollection sources, List<ContentItem> existingRoots, CloudBlob renderTarget)
+        {
+            var newSources =
+                existingRoots.Where(root => root.WasMissing).Select(root => GetMissingRootAsNewSource(root, renderTarget.Name)).ToArray();
+            sources.CollectionContent.AddRange(newSources);
+            foreach (var item in existingRoots.Where(root => root.WasNeeded == false))
+                sources.CollectionContent.Remove(item.Source);
+            // Don't delete the missing blobs just now
+
+        }
+
+        private static InformationSource GetMissingRootAsNewSource(ContentItem root, string masterLocation)
+        {
+            InformationSource source = root.Source ?? InformationSource.CreateDefault();
+            IInformationObject informationObject = (IInformationObject) root.RootObject;
+            informationObject.SetLocationRelativeToRoot(masterLocation);
+            CloudBlob blob = StorageSupport.StoreInformation(informationObject);
+            source.SetBlobValuesToSource(blob);
+            source.SetInformationObjectValuesToSource(root.RootName, informationObject.GetType().FullName);
+            return source;
+        }
+
+        private static List<ContentItem> GetExistingRoots(InformationSourceCollection sources)
+        {
+            return
+                sources.CollectionContent.Where(
+                    source => source.SourceType == StorageSupport.InformationType_InformationObjectValue).Select(
+                        GetRootFromSource).ToList();
+        }
+
+        private static ContentItem GetRootFromSource(InformationSource source)
+        {
+            ContentItem contentItem = new ContentItem
+                                          {
+                                              Source = source,
+                                              RootName = source.SourceName,
+                                              RootType = source.SourceInformationObjectType,
+                                          };
+            return contentItem;
+        }
+
+        private static InformationSourceCollection CreateDefaultSources(CloudBlob template)
+        {
+            InformationSourceCollection sources = InformationSourceCollection.CreateDefault();
+            InformationSource source = InformationSource.CreateDefault();
+            source.SetBlobValuesToSource(template);
+            sources.CollectionContent.Add(source);
+            return sources;
         }
 
         public static string RenderTemplateWithContent(string templatePage, object content)
+        {
+            List<ContentItem> contentRoots = new List<ContentItem>();
+            contentRoots.Add(new ContentItem
+                                 {
+                                     RootName = "",
+                                     RootObject = content,
+                                     RootType = content.GetType().FullName,
+                                     WasMissing = false
+                                 });
+            return RenderTemplateWithContentRoots(templatePage, contentRoots);
+        }
+
+        public static string RenderTemplateWithContentRoots(string templatePage, List<ContentItem> contentRoots)
         {
             StringBuilder result = new StringBuilder(templatePage.Length);
             Stack<StackContextItem> contextStack = new Stack<StackContextItem>();
@@ -50,7 +144,7 @@ namespace TheBall
             string[] lines = templatePage.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
             int endIndexExclusive = lines.Length;
-            ProcessLinesScope(lines, 0, ref endIndexExclusive, result, content, contextStack, errorList);
+            ProcessLinesScope(lines, 0, ref endIndexExclusive, result, contentRoots, contextStack, errorList);
             if(errorList.Count > 0)
             {
                 result.Insert(0, RenderErrorListAsHtml(errorList, "Errors - Databinding"));
@@ -58,7 +152,7 @@ namespace TheBall
             return result.ToString();
         }
 
-        private static void ProcessLinesScope(string[] lines, int startIndex, ref int endIndexExclusive, StringBuilder result, object rootContent, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
+        private static void ProcessLinesScope(string[] lines, int startIndex, ref int endIndexExclusive, StringBuilder result, List<ContentItem> contentRoots, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
             bool hasEmptyStackToBegin = contextStack.Count == 0;
             for (int currLineIX = startIndex; currLineIX < endIndexExclusive; currLineIX++)
@@ -71,7 +165,7 @@ namespace TheBall
                         break;
                     }
 
-                    bool hasStackContext = ProcessLine(lines, ref currLineIX, line, result, rootContent, contextStack, errorList);
+                    bool hasStackContext = ProcessLine(lines, ref currLineIX, line, result, contentRoots, contextStack, errorList);
                     // If stack is empty and we had context to begin with, stop here
                     if (hasStackContext == false && hasEmptyStackToBegin == false)
                     {
@@ -88,7 +182,7 @@ namespace TheBall
             }
         }
 
-        private static bool ProcessLine(string[] lines, ref int currLineIx, string line, StringBuilder result, object content, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
+        private static bool ProcessLine(string[] lines, ref int currLineIx, string line, StringBuilder result, List<ContentItem> contentRoots, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
             if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
             {
@@ -97,12 +191,26 @@ namespace TheBall
             }
             if (line.StartsWith(RootTagBegin))
             {
-                // TODO: Multiple container support; type and instance ID mapping
-                string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
-                StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
-                StackContextItem rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false);
+                object content;
+                StackContextItem rootItem;
+                Match match = ContextRootRegex.Match(line);
+                string rootType = match.Groups["rootType"].Value;
+                string rootName = match.Groups["rootName"].Value;
+                try
+                {
+                    //string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
+                    content = GetOrInitiateContentObject(contentRoots, rootType, rootName);
+                    StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
+                    rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false);
+                }
+                catch
+                {
+                    content = new object();
+                    rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", false, true);
+                    errorList.Add(new ErrorItem(new Exception("Invalid stack root: " + rootType), rootItem, line));
+                }
                 if (contextStack.Count != 0)
-                    throw new InvalidDataException("Context stack already has a root item before: " + typeName);
+                    throw new InvalidDataException("Context stack already has a root item before: " + content.GetType().FullName);
                 contextStack.Push(rootItem);
             }
             else if (line.StartsWith(CollectionTagBegin))
@@ -126,14 +234,14 @@ namespace TheBall
                 int scopeStartIx = currLineIx + 1;
                 int scopeEndIx = lines.Length; // Candidate, the lower call will adjust properly
                 // Get scope length
-                ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, new StringBuilder(), content, collStack,
+                ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, new StringBuilder(), contentRoots, collStack,
                                   new List<ErrorItem>());
                 bool isFirstRound = true;
                 while (collItem.IsNotFullyProcessed)
                 {
                     var currErrorList = isFirstRound ? errorList : new List<ErrorItem>();
                     collStack.Push(collItem);
-                    ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, result, content, collStack,
+                    ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, result, contentRoots, collStack,
                                         currErrorList);
                     if(collStack.Count > 0)
                         throw new InvalidDataException("Collection stack should be empty at this point");
@@ -193,6 +301,41 @@ namespace TheBall
                 ProcessATOMLine(line, result, contextStack);
             }
             return contextStack.Count > 0;
+        }
+
+        public static object GetOrInitiateContentObject(List<ContentItem> contentRoots, string rootType, string rootName)
+        {
+            ContentItem contentItem =
+                contentRoots.FirstOrDefault(item => item.RootType == rootType && item.RootName == rootName);
+            if(contentItem == null)
+            {
+                Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
+                object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null, null);
+                contentItem = new ContentItem
+                                  {
+                                      RootName = rootName,
+                                      RootType = rootType,
+                                      RootObject = result,
+                                      WasMissing = true
+                                  };
+                contentRoots.Add(contentItem);
+            } else
+            {
+                if(contentItem.RootObject == null)
+                {
+                    contentItem.RootObject = contentItem.Source.RetrieveInformationObject();
+                    if (contentItem.RootObject == null)
+                    {
+                        contentItem.WasMissing = true;
+                        Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
+                        object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null,
+                                                                 null);
+                        contentItem.RootObject = result;
+                    }
+                }
+            }
+            contentItem.WasNeeded = true;
+            return contentItem;
         }
 
         private static void ProcessATOMLine(string line, StringBuilder result, Stack<StackContextItem> contextStack)
@@ -270,5 +413,33 @@ namespace TheBall
                 throw new InvalidDataException("Type: " + containingType.Name + " does not contain property: " + memberName);
             return pi.PropertyType;
         }
+
+        public static bool RenderingSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        {
+            // Don't delete informationobject types of target folders
+            if (operationtype == WorkerSupport.SyncOperationType.Delete)
+            {
+                if(target.GetBlobInformationType() == StorageSupport.InformationType_InformationObjectValue)
+                    return true;
+                return false;
+            }
+            if (operationtype == WorkerSupport.SyncOperationType.Copy)
+            {
+                // Custom rendering for web templates
+                if(source.GetBlobInformationType() == StorageSupport.InformationType_WebTemplateValue)
+                {
+                    RenderWebSupport.RenderTemplateWithContentToBlob(source, target);
+                    return true;
+                }
+                // Don't copy source dir information objects
+                if(source.GetBlobInformationType() == StorageSupport.InformationType_InformationObjectValue)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
     }
 }

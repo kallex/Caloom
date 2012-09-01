@@ -14,6 +14,12 @@ namespace TheBall
     public static class StorageSupport
     {
         public const string SubscriptionContainer = "subscription";
+        public static string InformationTypeKey = "InformationType";
+        public static string InformationObjectTypeKey = "InformationObjectType";
+        public static string InformationSourcesKey = "InformationSources";
+        public static string InformationType_WebTemplateValue = "WebTemplate";
+        public static string InformationType_InformationObjectValue = "InformationObject";
+        public static string InformationType_GenericContentValue = "GenericContent";
 
         public static CloudTableClient CurrTableClient { get; private set; }
         public static CloudStorageAccount CurrStorageAccount { get; private set; }
@@ -27,6 +33,46 @@ namespace TheBall
         {
             get { return Guid.Empty; }
         }
+
+        public static void SetBlobInformationType(this CloudBlob blob, string informationTypeValue)
+        {
+            blob.Attributes.Metadata[InformationTypeKey] = informationTypeValue;
+        }
+
+        public static string GetBlobInformationType(this CloudBlob blob)
+        {
+            return blob.Attributes.Metadata[InformationTypeKey];
+        }
+
+        public static void SetBlobInformationObjectType(this CloudBlob blob, string informationObjectType)
+        {
+            blob.Attributes.Metadata[InformationObjectTypeKey] = informationObjectType;
+        }
+
+        public static string GetBlobInformationObjectType(this CloudBlob blob)
+        {
+            return blob.Attributes.Metadata[InformationObjectTypeKey];
+        }
+
+        public static void SetBlobInformationSources(this CloudBlob blob, InformationSourceCollection informationSourceCollection)
+        {
+            if(informationSourceCollection == null)
+            {
+                blob.Attributes.Metadata.Remove(InformationSourcesKey);
+                return;
+            }
+            string stringValue = informationSourceCollection.SerializeToXml(noFormatting:true);
+            blob.Attributes.Metadata[InformationSourcesKey] = stringValue;
+        }
+
+        public static InformationSourceCollection GetBlobInformationSources(this CloudBlob blob)
+        {
+            string stringValue = blob.Attributes.Metadata[InformationSourcesKey];
+            if (stringValue == null)
+                return null;
+            return InformationSourceCollection.DeserializeFromXml(stringValue);
+        }
+
 
         public static void InitializeWithConnectionString(string connStr)
         {
@@ -114,18 +160,29 @@ namespace TheBall
         }
 
         public static void UploadBlobText(this CloudBlobContainer container,
-            string blobPath, string textContent)
+            string blobPath, string textContent, string blobInformationType = null)
         {
             var blob = container.GetBlockBlobReference(blobPath);
-            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            UploadBlobText(blob, textContent, blobInformationType);
+        }
+
+        public static void UploadBlobText(this CloudBlob blob, string textContent, string blobInformationType = null)
+        {
+            if (blobInformationType == null)
+                blobInformationType = InformationType_GenericContentValue;
+            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
+            blob.SetBlobInformationType(blobInformationType);
             blob.UploadText(textContent);
         }
 
         public static void UploadBlobBinary(this CloudBlobContainer container,
-    string blobPath, byte[] binaryContent)
+    string blobPath, byte[] binaryContent, string blobInformationType = null)
         {
+            if (blobInformationType == null)
+                blobInformationType = InformationType_GenericContentValue;
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            blob.SetBlobInformationType(blobInformationType);
             blob.UploadByteArray(binaryContent);
         }
 
@@ -719,9 +776,10 @@ namespace TheBall
         }
 
 
-        public static void StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
+        public static CloudBlob StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
         {
-            DataContractSerializer ser = new DataContractSerializer(informationObject.GetType());
+            Type informationObjectType = informationObject.GetType();
+            DataContractSerializer ser = new DataContractSerializer(informationObjectType);
             MemoryStream memoryStream = new MemoryStream();
             byte[] dataContent;
             using(XmlTextWriter writer = new XmlTextWriter(memoryStream, Encoding.UTF8) { Formatting = Formatting.Indented})
@@ -743,14 +801,18 @@ namespace TheBall
                 options.AccessCondition = AccessCondition.IfMatch(etag);
             else
                 options.AccessCondition = AccessCondition.IfNoneMatch("*");
-            //blob.Attributes.Metadata.Add("RelativeLocation", informationObject.RelativeLocation);
+            blob.SetBlobInformationType(InformationType_InformationObjectValue);
+            blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
             informationObject.ETag = blob.Properties.ETag;
             if (isNewBlob)
                 informationObject.InitializeDefaultSubscribers(owner);
             informationObject.PostStoringExecute(owner);
             SubscribeSupport.NotifySubscribers(informationObject);
+            return blob;
         }
+
+
 
         public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null, IContainerOwner owner = null)
         {
@@ -758,11 +820,25 @@ namespace TheBall
             return RetrieveInformation(relativeLocation, type, eTag, owner);
         }
 
+        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, string typeName, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
+        {
+            Type type = Assembly.GetExecutingAssembly().GetType(typeName);
+            return RetrieveInformationWithBlob(relativeLocation, type, out blob, eTag, owner);
+        }
+
+
         public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
+        {
+            CloudBlob blob;
+            return RetrieveInformationWithBlob(relativeLocation, typeToRetrieve, out blob, eTag, owner);
+        }
+
+
+        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
                 relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
@@ -801,10 +877,10 @@ namespace TheBall
             return CurrActiveContainer.DownloadBlobText(downloadAddress, returnNullIfMissing);
         }
 
-        public static void UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content)
+        public static void UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
         {
             string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
-            CurrActiveContainer.UploadBlobText(uploadAddress, content);
+            CurrActiveContainer.UploadBlobText(uploadAddress, content, blobInformationType);
         }
 
         public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent)

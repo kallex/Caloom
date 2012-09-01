@@ -13,7 +13,15 @@ namespace TheBall
             public CloudBlob TargetBlob;
         }
 
-        public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot)
+        public enum SyncOperationType
+        {
+            Copy,
+            Delete,
+        }
+
+        public delegate bool PerformCustomOperation(CloudBlob source, CloudBlob target, SyncOperationType operationType);
+
+        public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
         {
             //requestOptions.BlobListingDetails = BlobListingDetails.Metadata;
             string sourceSearchRoot = sourceContainerName + "/" + sourcePathRoot;
@@ -21,7 +29,8 @@ namespace TheBall
             CloudBlobContainer targetContainer = StorageSupport.CurrBlobClient.GetContainerReference(targetContainerName);
             BlobRequestOptions requestOptions = new BlobRequestOptions
                                                     {
-                                                        UseFlatBlobListing = true
+                                                        UseFlatBlobListing = true,
+                                                        BlobListingDetails = BlobListingDetails.Metadata,
                                                     };
             var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(sourceSearchRoot, requestOptions).
                 OfType<CloudBlob>().OrderBy(blob => blob.Name).ToArray();
@@ -35,7 +44,13 @@ namespace TheBall
                 out blobCopyList, out targetBlobsToDelete);
             foreach(var blobToDelete in targetBlobsToDelete)
             {
-                blobToDelete.DeleteIfExists();
+                bool handled = false;
+                if(customHandler != null)
+                {
+                    handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
+                }
+                if(handled == false)
+                    blobToDelete.DeleteIfExists();
             }
             foreach(var blobCopyItem in blobCopyList)
             {
@@ -47,7 +62,13 @@ namespace TheBall
                 }
                 else
                     targetBlob = blobCopyItem.TargetBlob;
-                targetBlob.CopyFromBlob(blobCopyItem.SourceBlob);
+                bool handled = false;
+                if(customHandler != null)
+                {
+                    handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
+                }
+                if(handled == false)
+                    targetBlob.CopyFromBlob(blobCopyItem.SourceBlob);
             }
             return targetBlobsToDelete.Count + blobCopyList.Count;
         }

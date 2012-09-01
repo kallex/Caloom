@@ -198,7 +198,7 @@ namespace WebInterface
                 StorageSupport.StoreInformation(registerEmail, account);
                 string template = StorageSupport.CurrTemplateContainer.DownloadBlobText("theball-proc/tbp-layout-registeremail.phtml");
                 string result = RenderWebSupport.RenderTemplateWithContent(template, registerEmail);
-                StorageSupport.UploadOwnerBlobText(account, procRegisterEmailPage, result);
+                StorageSupport.UploadOwnerBlobText(account, procRegisterEmailPage, result, StorageSupport.InformationType_GenericContentValue);
             }
         }
 

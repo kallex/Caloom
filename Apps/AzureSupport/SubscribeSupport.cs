@@ -17,7 +17,7 @@ namespace TheBall
             if(subscriptionCollection == null)
             {
                 subscriptionCollection = new SubscriptionCollection();
-                subscriptionCollection.SetRelativeLocationTo(target);
+                subscriptionCollection.SetRelativeLocationAsMetadataTo(target);
             }
             subscriptionCollection.CollectionContent.Add(sub);
             StorageSupport.StoreInformation(subscriptionCollection);
@@ -49,7 +49,7 @@ namespace TheBall
 
         public static SubscriptionCollection GetSubscriptions(IInformationObject target)
         {
-            string blobPath = SubscriptionCollection.GetRelativeLocationTo(target);
+            string blobPath = SubscriptionCollection.GetRelativeLocationAsMetadataTo(target);
             var result = StorageSupport.RetrieveInformation(blobPath, typeof(SubscriptionCollection));
             return (SubscriptionCollection) result;
         }

@@ -58,9 +58,11 @@
     </Compile>
     <Compile Include="EmailSupport.cs" />
     <Compile Include="ErrorItem.cs" />
+    <Compile Include="ErrorSupport.cs" />
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
+    <Compile Include="Partials\InformationSource.cs" />
     <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />
     <Compile Include="Partials\TBREmailRoot.cs" />

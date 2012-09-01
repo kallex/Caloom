@@ -38,10 +38,15 @@ namespace CaloomWorkerRole
                     QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
                     if (envelope != null)
                     {
-                        CurrQueue.DeleteMessage(message);
+                        QueueSupport.CurrDefaultQueue.DeleteMessage(message);
                         ProcessMessage(envelope);
-                    } else
+                    } else 
                     {
+                        if(message != null)
+                        {
+                            QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                            ErrorSupport.ReportMessageError(message);
+                        }
                         Thread.Sleep(1000);
                     }
                 }
@@ -62,6 +67,11 @@ namespace CaloomWorkerRole
                         Trace.WriteLine(e.Message);
                         throw;
                     }
+                } 
+                catch(Exception ex)
+                {
+                    ErrorSupport.ReportException(ex);
+                    throw;
                 }
             }
         }
@@ -78,7 +88,7 @@ namespace CaloomWorkerRole
             string sourcePathRoot = operation.SourcePathRoot;
             string targetContainerName = operation.TargetContainerName;
             string targetPathRoot = operation.TargetPathRoot;
-            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot);
+            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, RenderWebSupport.RenderingSyncHandler);
         }
 
         public override bool OnStart()

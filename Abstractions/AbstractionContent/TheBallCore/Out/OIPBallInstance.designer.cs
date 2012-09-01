@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Xml;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -21,6 +22,7 @@ namespace AaltoGlobalImpact.OIP {
 		void SetValuesToObjects(NameValueCollection form);
 		void PostStoringExecute(IContainerOwner owner);
 		void PostDeleteExecute(IContainerOwner owner);
+		void SetLocationRelativeToRoot(string rootLocation);
     }
 
 			[DataContract]
@@ -104,6 +106,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRLoginRoot));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBRLoginRoot DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRLoginRoot));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBRLoginRoot) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -123,15 +150,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRLoginRoot", ID).Replace("\\", "/");
+				}
+
 
 				public static TBRLoginRoot CreateDefault()
 				{
@@ -244,6 +277,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRAccountRoot));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBRAccountRoot DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRAccountRoot));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBRAccountRoot) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -263,15 +321,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRAccountRoot", ID).Replace("\\", "/");
+				}
+
 
 				public static TBRAccountRoot CreateDefault()
 				{
@@ -384,6 +448,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRGroupRoot));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBRGroupRoot DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRGroupRoot));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBRGroupRoot) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -403,15 +492,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRGroupRoot", ID).Replace("\\", "/");
+				}
+
 
 				public static TBRGroupRoot CreateDefault()
 				{
@@ -524,6 +619,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRLoginGroupRoot));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBRLoginGroupRoot DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBRLoginGroupRoot));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBRLoginGroupRoot) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -543,15 +663,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", ID).Replace("\\", "/");
+				}
+
 
 				public static TBRLoginGroupRoot CreateDefault()
 				{
@@ -665,6 +791,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBREmailRoot));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBREmailRoot DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBREmailRoot));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBREmailRoot) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -684,15 +835,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBREmailRoot", ID).Replace("\\", "/");
+				}
+
 
 				public static TBREmailRoot CreateDefault()
 				{
@@ -805,6 +962,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccount));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBAccount DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccount));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBAccount) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -824,15 +1006,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccount", ID).Replace("\\", "/");
+				}
+
 
 				public static TBAccount CreateDefault()
 				{
@@ -963,6 +1151,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccountCollaborationGroup));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBAccountCollaborationGroup DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccountCollaborationGroup));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBAccountCollaborationGroup) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -982,15 +1195,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", ID).Replace("\\", "/");
+				}
+
 
 				public static TBAccountCollaborationGroup CreateDefault()
 				{
@@ -1104,6 +1323,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccountCollaborationGroupCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBAccountCollaborationGroupCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBAccountCollaborationGroupCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBAccountCollaborationGroupCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1123,22 +1367,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static TBAccountCollaborationGroupCollection CreateDefault()
 				{
 					return new TBAccountCollaborationGroupCollection();
 				}
-
+		
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
 
 				private object FindFromObjectTree(string objectId)
@@ -1236,6 +1488,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBLoginInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBLoginInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBLoginInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBLoginInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1255,15 +1532,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBLoginInfo", ID).Replace("\\", "/");
+				}
+
 
 				public static TBLoginInfo CreateDefault()
 				{
@@ -1372,6 +1655,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBLoginInfoCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBLoginInfoCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBLoginInfoCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBLoginInfoCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1391,22 +1699,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBLoginInfoCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static TBLoginInfoCollection CreateDefault()
 				{
 					return new TBLoginInfoCollection();
 				}
-
+		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
 
 				private object FindFromObjectTree(string objectId)
@@ -1504,6 +1820,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmail));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBEmail DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmail));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBEmail) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1523,15 +1864,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmail", ID).Replace("\\", "/");
+				}
+
 
 				public static TBEmail CreateDefault()
 				{
@@ -1645,6 +1992,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmailCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBEmailCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmailCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBEmailCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1664,22 +2036,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmailCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static TBEmailCollection CreateDefault()
 				{
 					return new TBEmailCollection();
 				}
-
+		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
 
 				private object FindFromObjectTree(string objectId)
@@ -1777,6 +2157,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratorRole));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBCollaboratorRole DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratorRole));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBCollaboratorRole) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1796,15 +2201,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRole", ID).Replace("\\", "/");
+				}
+
 
 				public static TBCollaboratorRole CreateDefault()
 				{
@@ -1922,6 +2333,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratorRoleCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBCollaboratorRoleCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratorRoleCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBCollaboratorRoleCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -1941,22 +2377,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static TBCollaboratorRoleCollection CreateDefault()
 				{
 					return new TBCollaboratorRoleCollection();
 				}
-
+		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
 
 				private object FindFromObjectTree(string objectId)
@@ -2054,6 +2498,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratingGroup));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBCollaboratingGroup DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBCollaboratingGroup));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBCollaboratingGroup) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2073,15 +2542,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratingGroup", ID).Replace("\\", "/");
+				}
+
 
 				public static TBCollaboratingGroup CreateDefault()
 				{
@@ -2199,6 +2674,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmailValidation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBEmailValidation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBEmailValidation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBEmailValidation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2218,15 +2718,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmailValidation", ID).Replace("\\", "/");
+				}
+
 
 				public static TBEmailValidation CreateDefault()
 				{
@@ -2345,6 +2851,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBPRegisterEmail));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBPRegisterEmail DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBPRegisterEmail));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBPRegisterEmail) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2364,15 +2895,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBPRegisterEmail", ID).Replace("\\", "/");
+				}
+
 
 				public static TBPRegisterEmail CreateDefault()
 				{
@@ -2481,6 +3018,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2500,15 +3062,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountContainer CreateDefault()
 				{
@@ -2639,6 +3207,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountIndex));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountIndex DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountIndex));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountIndex) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2658,15 +3251,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountIndex", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountIndex CreateDefault()
 				{
@@ -2785,6 +3384,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountModule));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountModule DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountModule));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountModule) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2804,15 +3428,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountModule", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountModule CreateDefault()
 				{
@@ -2979,6 +3609,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountStatistics));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountStatistics DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountStatistics));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountStatistics) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -2998,15 +3653,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountStatistics", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountStatistics", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountStatistics CreateDefault()
 				{
@@ -3115,6 +3776,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSkills));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountSkills DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSkills));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountSkills) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3134,15 +3820,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSkills", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountSkills", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountSkills CreateDefault()
 				{
@@ -3251,6 +3943,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProjects));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountProjects DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProjects));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountProjects) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3270,15 +3987,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProjects", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountProjects", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountProjects CreateDefault()
 				{
@@ -3387,6 +4110,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountLocations));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountLocations DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountLocations));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountLocations) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3406,15 +4154,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountLocations", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountLocations", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountLocations CreateDefault()
 				{
@@ -3523,6 +4277,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountContent));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountContent DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountContent));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountContent) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3542,15 +4321,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountContent", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountContent CreateDefault()
 				{
@@ -3659,6 +4444,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProfile));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountProfile DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProfile));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountProfile) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3678,15 +4488,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountProfile", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountProfile CreateDefault()
 				{
@@ -3834,6 +4650,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountRoles));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountRoles DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountRoles));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountRoles) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -3853,15 +4694,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountRoles", ID).Replace("\\", "/");
+				}
+
 
 				public static AccountRoles CreateDefault()
 				{
@@ -4001,6 +4848,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(PersonalInfoVisibility));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static PersonalInfoVisibility DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(PersonalInfoVisibility));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (PersonalInfoVisibility) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4020,15 +4892,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "PersonalInfoVisibility", ID).Replace("\\", "/");
+				}
+
 
 				public static PersonalInfoVisibility CreateDefault()
 				{
@@ -4137,6 +5015,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceToInformation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ReferenceToInformation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceToInformation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ReferenceToInformation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4156,15 +5059,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ReferenceToInformation", ID).Replace("\\", "/");
+				}
+
 
 				public static ReferenceToInformation CreateDefault()
 				{
@@ -4278,6 +5187,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ReferenceCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ReferenceCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4297,22 +5231,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ReferenceCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static ReferenceCollection CreateDefault()
 				{
 					return new ReferenceCollection();
 				}
-
+		
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
 
 				private object FindFromObjectTree(string objectId)
@@ -4410,6 +5352,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static BlogContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (BlogContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4429,15 +5396,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static BlogContainer CreateDefault()
 				{
@@ -4577,6 +5550,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4596,15 +5594,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static MapContainer CreateDefault()
 				{
@@ -4753,6 +5757,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CalendarContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CalendarContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4772,15 +5801,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static CalendarContainer CreateDefault()
 				{
@@ -4920,6 +5955,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AboutContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AboutContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -4939,15 +5999,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AboutContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static AboutContainer CreateDefault()
 				{
@@ -5087,6 +6153,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OBSAccountContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static OBSAccountContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OBSAccountContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (OBSAccountContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5106,15 +6197,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "OBSAccountContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static OBSAccountContainer CreateDefault()
 				{
@@ -5254,6 +6351,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProjectContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ProjectContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProjectContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ProjectContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5273,15 +6395,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ProjectContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static ProjectContainer CreateDefault()
 				{
@@ -5421,6 +6549,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CourseContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CourseContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CourseContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CourseContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5440,15 +6593,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CourseContainer", ID).Replace("\\", "/");
+				}
+
 
 				public static CourseContainer CreateDefault()
 				{
@@ -5588,6 +6747,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ContainerHeader));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ContainerHeader DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ContainerHeader));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ContainerHeader) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5607,15 +6791,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ContainerHeader", ID).Replace("\\", "/");
+				}
+
 
 				public static ContainerHeader CreateDefault()
 				{
@@ -5729,6 +6919,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(IndexCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static IndexCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(IndexCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (IndexCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5748,15 +6963,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "IndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "IndexCollection", ID).Replace("\\", "/");
+				}
+
 
 				public static IndexCollection CreateDefault()
 				{
@@ -5870,6 +7091,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static BlogCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (BlogCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -5889,22 +7135,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static BlogCollection CreateDefault()
 				{
 					return new BlogCollection();
 				}
-
+		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
 
 				private object FindFromObjectTree(string objectId)
@@ -6002,6 +7256,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Blog));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Blog DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Blog));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Blog) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6021,15 +7300,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Blog", ID).Replace("\\", "/");
+				}
+
 
 				public static Blog CreateDefault()
 				{
@@ -6199,6 +7484,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static BlogIndexCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (BlogIndexCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6218,15 +7528,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogIndexCollection", ID).Replace("\\", "/");
+				}
+
 
 				public static BlogIndexCollection CreateDefault()
 				{
@@ -6366,6 +7682,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarIndex));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CalendarIndex DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarIndex));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CalendarIndex) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6385,15 +7726,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarIndex", ID).Replace("\\", "/");
+				}
+
 
 				public static CalendarIndex CreateDefault()
 				{
@@ -6502,6 +7849,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Filter));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Filter DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Filter));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Filter) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6521,15 +7893,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Filter", ID).Replace("\\", "/");
+				}
+
 
 				public static Filter CreateDefault()
 				{
@@ -6638,6 +8016,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Calendar));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Calendar DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Calendar));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Calendar) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6657,15 +8060,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Calendar", ID).Replace("\\", "/");
+				}
+
 
 				public static Calendar CreateDefault()
 				{
@@ -6774,6 +8183,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CalendarCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CalendarCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CalendarCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6793,22 +8227,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static CalendarCollection CreateDefault()
 				{
 					return new CalendarCollection();
 				}
-
+		
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
 
 				private object FindFromObjectTree(string objectId)
@@ -6906,6 +8348,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Map));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Map DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Map));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Map) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -6925,15 +8392,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Map", ID).Replace("\\", "/");
+				}
+
 
 				public static Map CreateDefault()
 				{
@@ -7042,6 +8515,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7061,22 +8559,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static MapCollection CreateDefault()
 				{
 					return new MapCollection();
 				}
-
+		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
 
 				private object FindFromObjectTree(string objectId)
@@ -7174,6 +8680,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapIndexCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapIndexCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapIndexCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapIndexCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7193,15 +8724,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapIndexCollection", ID).Replace("\\", "/");
+				}
+
 
 				public static MapIndexCollection CreateDefault()
 				{
@@ -7341,6 +8878,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResult));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapResult DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResult));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapResult) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7360,15 +8922,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResult", ID).Replace("\\", "/");
+				}
+
 
 				public static MapResult CreateDefault()
 				{
@@ -7481,6 +9049,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResultCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapResultCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResultCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapResultCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7500,22 +9093,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResultCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static MapResultCollection CreateDefault()
 				{
 					return new MapResultCollection();
 				}
-
+		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
 
 				private object FindFromObjectTree(string objectId)
@@ -7613,6 +9214,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResultsCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapResultsCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapResultsCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapResultsCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7632,15 +9258,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResultsCollection", ID).Replace("\\", "/");
+				}
+
 
 				public static MapResultsCollection CreateDefault()
 				{
@@ -7771,6 +9403,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Image));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Image DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Image));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Image) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7790,15 +9447,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Image", ID).Replace("\\", "/");
+				}
+
 
 				public static Image CreateDefault()
 				{
@@ -7921,6 +9584,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroup));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ImageGroup DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroup));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ImageGroup) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -7940,15 +9628,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageGroup", ID).Replace("\\", "/");
+				}
+
 
 				public static ImageGroup CreateDefault()
 				{
@@ -8071,6 +9765,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImagesCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ImagesCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImagesCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ImagesCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8090,22 +9809,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImagesCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static ImagesCollection CreateDefault()
 				{
 					return new ImagesCollection();
 				}
-
+		
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
 
 				private object FindFromObjectTree(string objectId)
@@ -8203,6 +9930,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Tooltip));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Tooltip DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Tooltip));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Tooltip) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8222,15 +9974,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Tooltip", ID).Replace("\\", "/");
+				}
+
 
 				public static Tooltip CreateDefault()
 				{
@@ -8339,6 +10097,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SocialPanelCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SocialPanelCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SocialPanelCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SocialPanelCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8358,22 +10141,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SocialPanelCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static SocialPanelCollection CreateDefault()
 				{
 					return new SocialPanelCollection();
 				}
-
+		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
 
 				private object FindFromObjectTree(string objectId)
@@ -8471,6 +10262,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SocialPanel));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SocialPanel DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SocialPanel));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SocialPanel) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8490,15 +10306,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SocialPanel", ID).Replace("\\", "/");
+				}
+
 
 				public static SocialPanel CreateDefault()
 				{
@@ -8611,6 +10433,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(EventCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static EventCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(EventCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (EventCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8630,22 +10477,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "EventCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "EventCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static EventCollection CreateDefault()
 				{
 					return new EventCollection();
 				}
-
+		
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
 
 				private object FindFromObjectTree(string objectId)
@@ -8743,6 +10598,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapEventCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MapEventCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MapEventCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MapEventCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8762,15 +10642,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapEventCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapEventCollection", ID).Replace("\\", "/");
+				}
+
 
 				public static MapEventCollection CreateDefault()
 				{
@@ -8883,6 +10769,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Longitude));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Longitude DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Longitude));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Longitude) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -8902,15 +10813,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Longitude", ID).Replace("\\", "/");
+				}
+
 
 				public static Longitude CreateDefault()
 				{
@@ -9019,6 +10936,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Latitude));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Latitude DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Latitude));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Latitude) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9038,15 +10980,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Latitude", ID).Replace("\\", "/");
+				}
+
 
 				public static Latitude CreateDefault()
 				{
@@ -9155,6 +11103,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Location));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Location DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Location));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Location) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9174,15 +11147,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Location", ID).Replace("\\", "/");
+				}
+
 
 				public static Location CreateDefault()
 				{
@@ -9304,6 +11283,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Date));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Date DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Date));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Date) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9323,15 +11327,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Date", ID).Replace("\\", "/");
+				}
+
 
 				public static Date CreateDefault()
 				{
@@ -9455,6 +11465,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Sex));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Sex DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Sex));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Sex) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9474,15 +11509,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Sex", ID).Replace("\\", "/");
+				}
+
 
 				public static Sex CreateDefault()
 				{
@@ -9591,6 +11632,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Address));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Address DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Address));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Address) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9610,15 +11676,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Address", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Address", ID).Replace("\\", "/");
+				}
+
 
 				public static Address CreateDefault()
 				{
@@ -9772,6 +11844,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Identity));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Identity DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Identity));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Identity) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9791,15 +11888,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Identity", ID).Replace("\\", "/");
+				}
+
 
 				public static Identity CreateDefault()
 				{
@@ -9936,6 +12039,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageVideoSoundVectorRaw));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ImageVideoSoundVectorRaw DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageVideoSoundVectorRaw));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ImageVideoSoundVectorRaw) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -9955,15 +12083,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", ID).Replace("\\", "/");
+				}
+
 
 				public static ImageVideoSoundVectorRaw CreateDefault()
 				{
@@ -10080,6 +12214,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Category));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Category DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Category));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Category) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10099,15 +12258,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Category", ID).Replace("\\", "/");
+				}
+
 
 				public static Category CreateDefault()
 				{
@@ -10216,6 +12381,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(What));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static What DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(What));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (What) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10235,15 +12425,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "What", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "What", ID).Replace("\\", "/");
+				}
+
 
 				public static What CreateDefault()
 				{
@@ -10389,6 +12585,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(When));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static When DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(When));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (When) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10408,15 +12629,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "When", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "When", ID).Replace("\\", "/");
+				}
+
 
 				public static When CreateDefault()
 				{
@@ -10530,6 +12757,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Where));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Where DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Where));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Where) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10549,15 +12801,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Where", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Where", ID).Replace("\\", "/");
+				}
+
 
 				public static Where CreateDefault()
 				{
@@ -10689,6 +12947,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Whom));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Whom DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Whom));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Whom) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10708,15 +12991,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Whom", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Whom", ID).Replace("\\", "/");
+				}
+
 
 				public static Whom CreateDefault()
 				{
@@ -10843,6 +13132,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Worth));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Worth DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Worth));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Worth) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -10862,15 +13176,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Worth", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Worth", ID).Replace("\\", "/");
+				}
+
 
 				public static Worth CreateDefault()
 				{
@@ -11002,6 +13322,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5W));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Event5W DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5W));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Event5W) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11021,15 +13366,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Event5W", ID).Replace("\\", "/");
+				}
+
 
 				public static Event5W CreateDefault()
 				{
@@ -11160,6 +13511,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5WCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Event5WCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5WCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Event5WCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11179,22 +13555,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Event5WCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static Event5WCollection CreateDefault()
 				{
 					return new Event5WCollection();
 				}
-
+		
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
 
 				private object FindFromObjectTree(string objectId)
@@ -11292,6 +13676,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11311,22 +13720,30 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriptionCollection", ID).Replace("\\", "/");
+				}
 
+
+
+				
+		
 				public static SubscriptionCollection CreateDefault()
 				{
 					return new SubscriptionCollection();
 				}
-
+		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
 
 				private object FindFromObjectTree(string objectId)
@@ -11424,6 +13841,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Subscription));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Subscription DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Subscription));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Subscription) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11443,15 +13885,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Subscription", ID).Replace("\\", "/");
+				}
+
 
 				public static Subscription CreateDefault()
 				{
@@ -11595,6 +14043,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static QueueEnvelope DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (QueueEnvelope) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11614,24 +14087,22 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static QueueEnvelope CreateDefault()
+				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					var result = new QueueEnvelope();
-					result.SubscriberUpdateOperation = SubscriberUpdateOperation.CreateDefault();
-					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
-				
-					return result;
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "QueueEnvelope", ID).Replace("\\", "/");
 				}
+
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -11642,6 +14113,12 @@ namespace AaltoGlobalImpact.OIP {
 					}
 					{
 						var item = UpdateWebContentOperation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ErrorContent;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11661,6 +14138,888 @@ namespace AaltoGlobalImpact.OIP {
 			public SubscriberUpdateOperation SubscriberUpdateOperation { get; set; }
 			[DataMember]
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
+			[DataMember]
+			public SystemError ErrorContent { get; set; }
+			
+			}
+			[DataContract]
+			public partial class SystemError : IInformationObject
+			{
+				public SystemError()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SystemError";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SystemError RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSystemError(relativeLocation, owner);
+				}
+
+
+                public static SystemError RetrieveSystemError(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SystemError) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemError), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemError));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SystemError DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemError));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SystemError) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemError", ID).Replace("\\", "/");
+				}
+
+
+				public static SystemError CreateDefault()
+				{
+					var result = new SystemError();
+					result.SystemErrorItems = SystemErrorItemCollection.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = SystemErrorItems;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ErrorTitle":
+							ErrorTitle = value;
+							break;
+						case "OccurredAt":
+							OccurredAt = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ErrorTitle { get; set; }
+			[DataMember]
+			public DateTime OccurredAt { get; set; }
+			[DataMember]
+			public SystemErrorItemCollection SystemErrorItems { get; set; }
+			
+			}
+			[DataContract]
+			public partial class SystemErrorItem : IInformationObject
+			{
+				public SystemErrorItem()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SystemErrorItem";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SystemErrorItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSystemErrorItem(relativeLocation, owner);
+				}
+
+
+                public static SystemErrorItem RetrieveSystemErrorItem(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SystemErrorItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemErrorItem), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItem));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SystemErrorItem DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItem));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SystemErrorItem) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemErrorItem", ID).Replace("\\", "/");
+				}
+
+
+				public static SystemErrorItem CreateDefault()
+				{
+					var result = new SystemErrorItem();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ShortDescription":
+							ShortDescription = value;
+							break;
+						case "LongDescription":
+							LongDescription = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ShortDescription { get; set; }
+			[DataMember]
+			public string LongDescription { get; set; }
+			
+			}
+			[DataContract]
+			public partial class SystemErrorItemCollection : IInformationObject
+			{
+				public SystemErrorItemCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SystemErrorItemCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SystemErrorItemCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSystemErrorItemCollection(relativeLocation, owner);
+				}
+
+
+                public static SystemErrorItemCollection RetrieveSystemErrorItemCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SystemErrorItemCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemErrorItemCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItemCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SystemErrorItemCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItemCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SystemErrorItemCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemErrorItemCollection", ID).Replace("\\", "/");
+				}
+
+
+
+				
+		
+				public static SystemErrorItemCollection CreateDefault()
+				{
+					return new SystemErrorItemCollection();
+				}
+		
+				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class InformationSource : IInformationObject
+			{
+				public InformationSource()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "InformationSource";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static InformationSource RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveInformationSource(relativeLocation, owner);
+				}
+
+
+                public static InformationSource RetrieveInformationSource(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (InformationSource) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationSource), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSource));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static InformationSource DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSource));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (InformationSource) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "InformationSource", ID).Replace("\\", "/");
+				}
+
+
+				public static InformationSource CreateDefault()
+				{
+					var result = new InformationSource();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SourceName":
+							SourceName = value;
+							break;
+						case "SourceLocation":
+							SourceLocation = value;
+							break;
+						case "SourceType":
+							SourceType = value;
+							break;
+						case "SourceInformationObjectType":
+							SourceInformationObjectType = value;
+							break;
+						case "SourceETag":
+							SourceETag = value;
+							break;
+						case "SourceMD5":
+							SourceMD5 = value;
+							break;
+						case "SourceLastModified":
+							SourceLastModified = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string SourceName { get; set; }
+			[DataMember]
+			public string SourceLocation { get; set; }
+			[DataMember]
+			public string SourceType { get; set; }
+			[DataMember]
+			public string SourceInformationObjectType { get; set; }
+			[DataMember]
+			public string SourceETag { get; set; }
+			[DataMember]
+			public string SourceMD5 { get; set; }
+			[DataMember]
+			public DateTime SourceLastModified { get; set; }
+			
+			}
+			[DataContract]
+			public partial class InformationSourceCollection : IInformationObject
+			{
+				public InformationSourceCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "InformationSourceCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static InformationSourceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveInformationSourceCollection(relativeLocation, owner);
+				}
+
+
+                public static InformationSourceCollection RetrieveInformationSourceCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (InformationSourceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationSourceCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSourceCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static InformationSourceCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSourceCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (InformationSourceCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "InformationSourceCollection", ID).Replace("\\", "/");
+				}
+
+
+
+				
+		
+				public static InformationSourceCollection CreateDefault()
+				{
+					return new InformationSourceCollection();
+				}
+		
+				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -11744,6 +15103,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentOperation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static UpdateWebContentOperation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentOperation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (UpdateWebContentOperation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11763,27 +15147,33 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentOperation", ID).Replace("\\", "/");
+				}
+
+
 				public static UpdateWebContentOperation CreateDefault()
 				{
 					var result = new UpdateWebContentOperation();
-					result.Filters = UpdateWebContentFilterCollection.CreateDefault();
+					result.Handlers = UpdateWebContentHandlerCollection.CreateDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = Filters;
+						var item = Handlers;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11820,24 +15210,24 @@ namespace AaltoGlobalImpact.OIP {
 			[DataMember]
 			public string TargetPathRoot { get; set; }
 			[DataMember]
-			public UpdateWebContentFilterCollection Filters { get; set; }
+			public UpdateWebContentHandlerCollection Handlers { get; set; }
 			
 			}
 			[DataContract]
-			public partial class UpdateWebContentFilterItem : IInformationObject
+			public partial class UpdateWebContentHandlerItem : IInformationObject
 			{
-				public UpdateWebContentFilterItem()
+				public UpdateWebContentHandlerItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "UpdateWebContentFilterItem";
+				    this.Name = "UpdateWebContentHandlerItem";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterItem", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -11845,16 +15235,16 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static UpdateWebContentFilterItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static UpdateWebContentHandlerItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUpdateWebContentFilterItem(relativeLocation, owner);
+					return RetrieveUpdateWebContentHandlerItem(relativeLocation, owner);
 				}
 
 
-                public static UpdateWebContentFilterItem RetrieveUpdateWebContentFilterItem(string relativeLocation, IContainerOwner owner = null)
+                public static UpdateWebContentHandlerItem RetrieveUpdateWebContentHandlerItem(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (UpdateWebContentFilterItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentFilterItem), null, owner);
+                    var result = (UpdateWebContentHandlerItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentHandlerItem), null, owner);
                     return result;
                 }
 
@@ -11904,6 +15294,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentHandlerItem));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static UpdateWebContentHandlerItem DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentHandlerItem));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (UpdateWebContentHandlerItem) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -11923,22 +15338,22 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterItem", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public static UpdateWebContentFilterItem CreateDefault()
+				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					var result = new UpdateWebContentFilterItem();
-				
-					return result;
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", ID).Replace("\\", "/");
 				}
+
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -11948,8 +15363,8 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					switch (propertyName)
 					{
-						case "RegexFilter":
-							RegexFilter = value;
+						case "InformationTypeName":
+							InformationTypeName = value;
 							break;
 						case "OptionName":
 							OptionName = value;
@@ -11959,26 +15374,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 	        }
 			[DataMember]
-			public string RegexFilter { get; set; }
+			public string InformationTypeName { get; set; }
 			[DataMember]
 			public string OptionName { get; set; }
 			
 			}
 			[DataContract]
-			public partial class UpdateWebContentFilterCollection : IInformationObject
+			public partial class UpdateWebContentHandlerCollection : IInformationObject
 			{
-				public UpdateWebContentFilterCollection()
+				public UpdateWebContentHandlerCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "UpdateWebContentFilterCollection";
+				    this.Name = "UpdateWebContentHandlerCollection";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterCollection", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -11986,16 +15401,16 @@ namespace AaltoGlobalImpact.OIP {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static UpdateWebContentFilterCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static UpdateWebContentHandlerCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUpdateWebContentFilterCollection(relativeLocation, owner);
+					return RetrieveUpdateWebContentHandlerCollection(relativeLocation, owner);
 				}
 
 
-                public static UpdateWebContentFilterCollection RetrieveUpdateWebContentFilterCollection(string relativeLocation, IContainerOwner owner = null)
+                public static UpdateWebContentHandlerCollection RetrieveUpdateWebContentHandlerCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (UpdateWebContentFilterCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentFilterCollection), null, owner);
+                    var result = (UpdateWebContentHandlerCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentHandlerCollection), null, owner);
                     return result;
                 }
 
@@ -12045,6 +15460,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentHandlerCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static UpdateWebContentHandlerCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UpdateWebContentHandlerCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (UpdateWebContentHandlerCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12064,23 +15504,31 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", ID).Replace("\\", "/");
 				}
 
 
-				public static UpdateWebContentFilterCollection CreateDefault()
-				{
-					return new UpdateWebContentFilterCollection();
-				}
 
-				[DataMember] public List<UpdateWebContentFilterItem> CollectionContent = new List<UpdateWebContentFilterItem>();
+				
+		
+				public static UpdateWebContentHandlerCollection CreateDefault()
+				{
+					return new UpdateWebContentHandlerCollection();
+				}
+		
+				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -12177,6 +15625,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberInput));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriberInput DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberInput));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriberInput) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12196,15 +15669,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriberInput", ID).Replace("\\", "/");
+				}
+
 
 				public static SubscriberInput CreateDefault()
 				{
@@ -12328,6 +15807,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberUpdateOperation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriberUpdateOperation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberUpdateOperation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriberUpdateOperation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12347,15 +15851,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", ID).Replace("\\", "/");
+				}
+
 
 				public static SubscriberUpdateOperation CreateDefault()
 				{
@@ -12483,6 +15993,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Monitor));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Monitor DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Monitor));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Monitor) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12502,15 +16037,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Monitor", ID).Replace("\\", "/");
+				}
+
 
 				public static Monitor CreateDefault()
 				{
@@ -12649,6 +16190,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(IconTitleDescription));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static IconTitleDescription DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(IconTitleDescription));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (IconTitleDescription) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12668,15 +16234,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "IconTitleDescription", ID).Replace("\\", "/");
+				}
+
 
 				public static IconTitleDescription CreateDefault()
 				{
@@ -12792,6 +16364,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutAGIApplications));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AboutAGIApplications DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutAGIApplications));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AboutAGIApplications) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12811,15 +16408,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AboutAGIApplications", ID).Replace("\\", "/");
+				}
+
 
 				public static AboutAGIApplications CreateDefault()
 				{
@@ -12941,6 +16544,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Icon));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Icon DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Icon));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Icon) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -12960,15 +16588,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Icon", ID).Replace("\\", "/");
+				}
+
 
 				// Properties to map to handle the file: Icon.png..png
 				// TODO: Handle object collections
@@ -12976,7 +16610,6 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
-
 				public static Icon CreateDefault()
 				{
 					var result = new Icon();
@@ -13066,6 +16699,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPageTemplate));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static WebPageTemplate DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPageTemplate));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (WebPageTemplate) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -13085,15 +16743,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "WebPageTemplate", ID).Replace("\\", "/");
+				}
+
 
 				// Properties to map to handle the file: WebPageTemplate.html..html
 				// TODO: Handle object collections
@@ -13101,7 +16765,6 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
-
 				public static WebPageTemplate CreateDefault()
 				{
 					var result = new WebPageTemplate();
@@ -13191,6 +16854,31 @@ namespace AaltoGlobalImpact.OIP {
 			        return FindFromObjectTree(objectId);
 			    }
 
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPage));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static WebPage DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPage));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (WebPage) serializer.ReadObject(xmlReader);
+					}
+            
+				}
 
 				[DataMember]
 				public string ID { get; set; }
@@ -13210,15 +16898,21 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					RelativeLocation = GetRelativeLocationTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
 				}
 
-				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "WebPage", ID).Replace("\\", "/");
+				}
+
 
 				// Properties to map to handle the file: WebPage.html..html
 				// TODO: Handle object collections
@@ -13226,7 +16920,6 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
-
 				public static WebPage CreateDefault()
 				{
 					var result = new WebPage();

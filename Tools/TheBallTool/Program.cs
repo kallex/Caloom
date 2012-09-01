@@ -19,23 +19,33 @@ namespace TheBallTool
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             StorageSupport.InitializeWithConnectionString(connStr);
             //TestDriveQueueWorker();
+            //TestDriveDynamicCreation();
+            //return;
+
             TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
             //UpdateTemplateContainer(webGroup);
-            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+            /*SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/webtemplate/",
                 StorageSupport.CurrActiveContainer.Name,
-                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", true);
+                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", false);*/
             //"grp/default/pub/", true);
             SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/",
                 StorageSupport.CurrAnonPublicContainer.Name,
-                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/pub/", true);
+                                "grp/default/pub/", true);
             //"grp/default/pub/", true);
             return;
             //doDataTest(connStr);
             //InitLandingPages();
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
+        }
+
+        private static void TestDriveDynamicCreation()
+        {
+            object test = RenderWebSupport.GetOrInitiateContentObject(new List<RenderWebSupport.ContentItem>(),
+                                                                      "AaltoGlobalImpact.OIP.InformationSource",
+                                                                      "vilperi");
         }
 
         private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
@@ -58,7 +68,7 @@ namespace TheBallTool
             }
             else
             {
-                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot);
+                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, RenderWebSupport.RenderingSyncHandler);
             }
         }
 
@@ -99,9 +109,12 @@ namespace TheBallTool
                 //    continue;
                 string webtemplatePath = Path.Combine("webtemplate", content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
+                string blobInformationType = webtemplatePath.EndsWith(".phtml")
+                                                 ? StorageSupport.InformationType_WebTemplateValue
+                                                 : StorageSupport.InformationType_GenericContentValue;
                 if (content.TextContent != null)
                 {
-                    StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent);                    
+                    StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent, blobInformationType);                    
                 }
                 else
                 {
