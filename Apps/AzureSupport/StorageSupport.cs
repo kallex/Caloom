@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -29,6 +30,7 @@ namespace TheBall
 
         public static void InitializeWithConnectionString(string connStr)
         {
+            ServicePointManager.UseNagleAlgorithm = false;
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
             CurrStorageAccount = storageAccount;
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
@@ -805,6 +807,13 @@ namespace TheBall
             CurrActiveContainer.UploadBlobText(uploadAddress, content);
         }
 
+        public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent)
+        {
+            string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent);
+        }
+
+
         public static CloudBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
         {
             string blobAddress = GetBlobOwnerAddress(containerOwner, contentPath);
@@ -821,5 +830,6 @@ namespace TheBall
             blob.Delete();
             informationObject.PostDeleteExecute(owner);
         }
+
     }
 }

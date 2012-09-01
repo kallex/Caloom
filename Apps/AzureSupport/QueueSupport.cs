@@ -31,13 +31,13 @@ namespace TheBall
             CurrDefaultQueue.AddMessage(message);
         }
 
-        public static QueueEnvelope GetFromDefaultQueue()
+        public static QueueEnvelope GetFromDefaultQueue(out CloudQueueMessage message)
         {
-            CloudQueueMessage message = CurrDefaultQueue.GetMessage();
+            message = CurrDefaultQueue.GetMessage();
             if (message == null)
                 return null;
             QueueEnvelope queueEnvelope = DeserializeFromXml(message.AsString);
-            CurrDefaultQueue.DeleteMessage(message);
+            //CurrDefaultQueue.DeleteMessage(message);
             return queueEnvelope;
         }
 

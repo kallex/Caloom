@@ -61,7 +61,9 @@
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
+    <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />
+    <Compile Include="Partials\TBREmailRoot.cs" />
     <Compile Include="QueueSupport.cs" />
     <Compile Include="RenderWebSupport.cs" />
     <Compile Include="StackContextItem.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Partials\TBAccount.cs" />
     <Compile Include="Partials\TBCollaboratingGroup.cs" />
     <Compile Include="Partials\TBRLoginGroupRoot.cs" />
+    <Compile Include="WorkerSupport.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

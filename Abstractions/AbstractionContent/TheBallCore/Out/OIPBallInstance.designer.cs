@@ -556,18 +556,11 @@ namespace AaltoGlobalImpact.OIP {
 				public static TBRLoginGroupRoot CreateDefault()
 				{
 					var result = new TBRLoginGroupRoot();
-					result.Role = TBCollaboratorRole.CreateDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = Role;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -575,6 +568,9 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					switch (propertyName)
 					{
+						case "Role":
+							Role = value;
+							break;
 						case "GroupID":
 							GroupID = value;
 							break;
@@ -583,7 +579,7 @@ namespace AaltoGlobalImpact.OIP {
 					}
 	        }
 			[DataMember]
-			public TBCollaboratorRole Role { get; set; }
+			public string Role { get; set; }
 			[DataMember]
 			public string GroupID { get; set; }
 			
@@ -11632,6 +11628,7 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					var result = new QueueEnvelope();
 					result.SubscriberUpdateOperation = SubscriberUpdateOperation.CreateDefault();
+					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
 				
 					return result;
 				}
@@ -11639,6 +11636,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = SubscriberUpdateOperation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = UpdateWebContentOperation;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11656,6 +11659,441 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public SubscriberUpdateOperation SubscriberUpdateOperation { get; set; }
+			[DataMember]
+			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
+			
+			}
+			[DataContract]
+			public partial class UpdateWebContentOperation : IInformationObject
+			{
+				public UpdateWebContentOperation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "UpdateWebContentOperation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static UpdateWebContentOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveUpdateWebContentOperation(relativeLocation, owner);
+				}
+
+
+                public static UpdateWebContentOperation RetrieveUpdateWebContentOperation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (UpdateWebContentOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentOperation), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static UpdateWebContentOperation CreateDefault()
+				{
+					var result = new UpdateWebContentOperation();
+					result.Filters = UpdateWebContentFilterCollection.CreateDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Filters;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SourceContainerName":
+							SourceContainerName = value;
+							break;
+						case "SourcePathRoot":
+							SourcePathRoot = value;
+							break;
+						case "TargetContainerName":
+							TargetContainerName = value;
+							break;
+						case "TargetPathRoot":
+							TargetPathRoot = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string SourceContainerName { get; set; }
+			[DataMember]
+			public string SourcePathRoot { get; set; }
+			[DataMember]
+			public string TargetContainerName { get; set; }
+			[DataMember]
+			public string TargetPathRoot { get; set; }
+			[DataMember]
+			public UpdateWebContentFilterCollection Filters { get; set; }
+			
+			}
+			[DataContract]
+			public partial class UpdateWebContentFilterItem : IInformationObject
+			{
+				public UpdateWebContentFilterItem()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "UpdateWebContentFilterItem";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterItem", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static UpdateWebContentFilterItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveUpdateWebContentFilterItem(relativeLocation, owner);
+				}
+
+
+                public static UpdateWebContentFilterItem RetrieveUpdateWebContentFilterItem(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (UpdateWebContentFilterItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentFilterItem), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterItem", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public static UpdateWebContentFilterItem CreateDefault()
+				{
+					var result = new UpdateWebContentFilterItem();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "RegexFilter":
+							RegexFilter = value;
+							break;
+						case "OptionName":
+							OptionName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string RegexFilter { get; set; }
+			[DataMember]
+			public string OptionName { get; set; }
+			
+			}
+			[DataContract]
+			public partial class UpdateWebContentFilterCollection : IInformationObject
+			{
+				public UpdateWebContentFilterCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "UpdateWebContentFilterCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static UpdateWebContentFilterCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveUpdateWebContentFilterCollection(relativeLocation, owner);
+				}
+
+
+                public static UpdateWebContentFilterCollection RetrieveUpdateWebContentFilterCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (UpdateWebContentFilterCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentFilterCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationTo(masterObject);
+				}
+
+				public static string GetRelativeLocationTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentFilterCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+
+				public static UpdateWebContentFilterCollection CreateDefault()
+				{
+					return new UpdateWebContentFilterCollection();
+				}
+
+				[DataMember] public List<UpdateWebContentFilterItem> CollectionContent = new List<UpdateWebContentFilterItem>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
 			
 			}
 			[DataContract]

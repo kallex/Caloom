@@ -146,8 +146,8 @@ namespace WebInterface
         {
             string requestPath = context.Request.Path;
             string groupID = GetGroupID(context.Request.Path);
-            string loginPath = GetLoginBlobName(context.User.Identity.Name);
-            string loginGroupID = "g-" + groupID + "-l-" + loginPath;
+            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(context.User.Identity.Name);
+            string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
             TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
             if(loginGroupRoot == null)
             {
@@ -249,11 +249,12 @@ namespace WebInterface
         private TBRLoginRoot GetOrCreateLoginRoot(HttpContext context)
         {
             string user = context.User.Identity.Name;
-            string loginBlobID = GetLoginBlobName(user);
-            TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginBlobID);
+            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(user);
+            TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginRootID);
             if(loginRoot == null)
             {
                 TBLoginInfo loginInfo = TBLoginInfo.CreateDefault();
+                //loginInfo.ID = loginRootID;
                 loginInfo.OpenIDUrl = user;
 
                 TBRAccountRoot accountRoot = TBRAccountRoot.CreateDefault();
@@ -263,7 +264,7 @@ namespace WebInterface
                 StorageSupport.StoreInformation(accountRoot);
 
                 loginRoot = TBRLoginRoot.CreateDefault();
-                loginRoot.ID = loginBlobID;
+                loginRoot.ID = loginRootID;
                 loginRoot.UpdateRelativeLocationFromID();
                 loginRoot.Account = accountRoot.Account;
                 StorageSupport.StoreInformation(loginRoot);
@@ -271,16 +272,6 @@ namespace WebInterface
             HttpContext.Current.Items.Add("Account", loginRoot.Account);
             return loginRoot;
         }
-
-        private string GetLoginBlobName(string user)
-        {
-            if (user.StartsWith("https://"))
-                return user.Substring(8);
-            if (user.StartsWith("http://"))
-                return user.Substring(7);
-            throw new NotSupportedException("Not supported user name prefix: " + user);
-        }
-
 
         #endregion
     }

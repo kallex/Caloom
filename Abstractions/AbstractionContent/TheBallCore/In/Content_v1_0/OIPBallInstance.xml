@@ -21,7 +21,7 @@
       </InformationObject>
       <InformationObject name="TBRLoginGroupRoot" designDesc="Login and group root">
         <InformationItems>
-          <InformationItem name="Role" logicalDataType="InformationObject" informationObjectName="TBCollaboratorRole" />
+          <InformationItem name="Role" logicalDataType="Text_Short" />
           <InformationItem name="GroupID" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
@@ -564,11 +564,31 @@
 					<InformationItem name="OperationActionName" logicalDataType="Text_Short"/>
 				</InformationItems>
 			</InformationObject>
-			<InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items">
+			<InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items" provideCreateMethod="false">
 				<InformationItems>
 					<InformationItem name="SubscriberUpdateOperation" logicalDataType="InformationObject" informationObjectName="SubscriberUpdateOperation"/>
+          <InformationItem name="UpdateWebContentOperation" logicalDataType="InformationObject" informationObjectName="UpdateWebContentOperation"/>
 				</InformationItems>
 			</InformationObject>
+
+      <InformationObject name="UpdateWebContentOperation" designDesc="Update web content operation" provideCreateMethod="true">
+        <InformationItems>
+          <InformationItem name="SourceContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="SourcePathRoot" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetPathRoot" logicalDataType="Text_Short"/>
+          <InformationItem name="Filters" logicalDataType="InformationObject" informationObjectName="UpdateWebContentFilterCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UpdateWebContentFilterItem" designDesc="Filter item" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="RegexFilter" logicalDataType="Text_Short" />
+          <InformationItem name="OptionName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UpdateWebContentFilterCollection" designDesc="Filter collection">
+        <CollectionFor contentInformationObjectName="UpdateWebContentFilterItem"/>
+      </InformationObject>
 			<InformationObject name="SubscriberInput" designDesc="Parameter for queued operation">
 				<InformationItems>
 					<InformationItem name="InputRelativeLocation" logicalDataType="Text_Short"/>

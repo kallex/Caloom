@@ -18,14 +18,51 @@ namespace TheBallTool
             //                       "Text testing...");
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             StorageSupport.InitializeWithConnectionString(connStr);
-            UpdateTemplateContainer(connStr);
+            //TestDriveQueueWorker();
+            TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
+            //UpdateTemplateContainer(webGroup);
+            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/webtemplate/",
+                StorageSupport.CurrActiveContainer.Name,
+                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", true);
+            //"grp/default/pub/", true);
+            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/",
+                StorageSupport.CurrAnonPublicContainer.Name,
+                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/pub/", true);
+            //"grp/default/pub/", true);
+            return;
             //doDataTest(connStr);
             //InitLandingPages();
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
         }
 
-        private static void UpdateTemplateContainer(string connStr)
+        private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
+        {
+            if (useQueuedWorker)
+            {
+                QueueEnvelope envelope = new QueueEnvelope
+                                             {
+                                                 UpdateWebContentOperation = new UpdateWebContentOperation
+                                                                                 {
+                                                                                     SourceContainerName =
+                                                                                         sourceContainerName,
+                                                                                     SourcePathRoot = sourcePathRoot,
+                                                                                     TargetContainerName =
+                                                                                         targetContainerName,
+                                                                                     TargetPathRoot = targetPathRoot
+                                                                                 }
+                                             };
+                QueueSupport.PutToDefaultQueue(envelope);
+            }
+            else
+            {
+                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot);
+            }
+        }
+
+        private static void UpdateTemplateContainer(IContainerOwner owner)
         {
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
@@ -43,9 +80,6 @@ namespace TheBallTool
 
                             })
                 .ToArray();
-            //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
-            //var container = StorageSupport.ConfigureAnonWebBlobStorage(connStr, true);
-            var container = StorageSupport.ConfigurePrivateTemplateBlobStorage(connStr, true);
             MoveUnusedTxtFiles(ProcessedDict);
             foreach (var content in fixedContent)
             {
@@ -63,12 +97,37 @@ namespace TheBallTool
                 //    continue;
                 //if (content.FileName.Contains(".phtml") == false)
                 //    continue;
-                Console.WriteLine("Uploading: " + content.FileName);
+                string webtemplatePath = Path.Combine("webtemplate", content.FileName).Replace("\\", "/");
+                Console.WriteLine("Uploading: " + webtemplatePath);
                 if (content.TextContent != null)
-                    container.UploadBlobText(content.FileName.Replace(".phtml", ".phtml"), content.TextContent);
+                {
+                    StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent);                    
+                }
                 else
-                    container.UploadBlobBinary(content.FileName, content.BinaryContent);
+                {
+                    StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
+                }
+                //    container.UploadBlobText(content.FileName.Replace(".phtml", ".phtml"), content.TextContent);
+                //else
+                //    container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
+        }
+
+        private const string FixedGroupID = "05DF28FD-58A7-46A7-9830-DA3F51AAF6AF";
+
+        private static TBCollaboratingGroup InitializeDefaultOIPWebGroup()
+        {
+            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(FixedGroupID);
+            if(groupRoot == null)
+            {
+                groupRoot = TBRGroupRoot.CreateDefault();
+                groupRoot.ID = FixedGroupID;
+                groupRoot.UpdateRelativeLocationFromID();
+                groupRoot.Group.JoinToGroup("kalle.launiala@citrus.fi", "moderator");
+                groupRoot.Group.JoinToGroup("jeroen@caloom.com", "moderator");
+                StorageSupport.StoreInformation(groupRoot);
+            }
+            return groupRoot.Group;
         }
 
         private static void MoveUnusedTxtFiles(Dictionary<string, bool> processedDict)
