@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -216,14 +217,27 @@ namespace WebInterface
             var form = request.Form;
             string objectTypeName = form["RootObjectType"];
             string objectRelativeLocation = form["RootObjectRelativeLocation"];
-            string eTag = form["RootObjectETag"];
-            if (eTag == null)
-            {
-                throw new InvalidDataException("ETag must be present in submit request for root container object");
-            }
-            IInformationObject rootObject = StorageSupport.RetrieveInformation(objectRelativeLocation, objectTypeName, eTag, containerOwner);
+            string sourceName = form["RootSourceName"];
+            //if (eTag == null)
+            //{
+            //    throw new InvalidDataException("ETag must be present in submit request for root container object");
+            //}
+            CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
+            InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
+            //var informationObjects = sources.FetchAllInformationObjects();
+            if (sourceName == null)
+                sourceName = "";
+            InformationSource source =
+                sources.CollectionContent.First(
+                    src => src.IsInformationObjectSource && src.SourceName == sourceName);
+            string oldETag = source.SourceETag;
+            IInformationObject rootObject = source.RetrieveInformationObject();
+            if (oldETag != rootObject.ETag)
+                throw new InvalidDataException("Information under editing was modified during display and save");
             rootObject.SetValuesToObjects(form);
             StorageSupport.StoreInformation(rootObject, containerOwner);
+            RenderWebSupport.RefreshContent(webPageBlob);
+            HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
@@ -235,7 +249,6 @@ namespace WebInterface
             try
             {
                 blob.FetchAttributes();
-
                 context.Response.ContentType = blob.Properties.ContentType;
                 blob.DownloadToStream(context.Response.OutputStream);
             }

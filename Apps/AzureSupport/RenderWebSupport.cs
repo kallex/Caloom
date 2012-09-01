@@ -335,7 +335,7 @@ namespace TheBall
                 }
             }
             contentItem.WasNeeded = true;
-            return contentItem;
+            return contentItem.RootObject;
         }
 
         private static void ProcessATOMLine(string line, StringBuilder result, Stack<StackContextItem> contextStack)
@@ -441,5 +441,13 @@ namespace TheBall
             return false;
         }
 
+        public static void RefreshContent(CloudBlob webPageBlob)
+        {
+            InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
+            InformationSource templateSource = sources.CollectionContent.First(src => src.IsWebTemplateSource);
+            CloudBlob templateBlob =
+                StorageSupport.CurrActiveContainer.GetBlockBlobReference(templateSource.SourceLocation);
+            RenderTemplateWithContentToBlob(templateBlob, webPageBlob);
+        }
     }
 }

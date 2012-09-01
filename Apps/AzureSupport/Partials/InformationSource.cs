@@ -6,6 +6,16 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class InformationSource
     {
+        public bool IsInformationObjectSource
+        {
+            get { return SourceInformationObjectType != null; }
+        }
+
+        public bool IsWebTemplateSource
+        {
+            get { return SourceType == StorageSupport.InformationType_WebTemplateValue; }
+        }
+
         public static InformationSource FromBlob(CloudBlob blob)
         {
             InformationSource source = CreateDefault();

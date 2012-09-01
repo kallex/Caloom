@@ -18,17 +18,17 @@ namespace TheBallTool
             //                       "Text testing...");
             string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
             StorageSupport.InitializeWithConnectionString(connStr);
+            //AddLoginToAccount("https://www.google.com/accounts/o8/id?id=AItOawkXb-XQERsvhNkZVlEEiCSOuP1y82uHCQc", "fbbaaded-6615-4083-8ea8-92b2aa162861");
             //TestDriveQueueWorker();
             //TestDriveDynamicCreation();
             //return;
 
             TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
-            //UpdateTemplateContainer(webGroup);
-            /*SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+            UpdateTemplateContainer(webGroup);
+            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/webtemplate/",
                 StorageSupport.CurrActiveContainer.Name,
-                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", false);*/
-            //"grp/default/pub/", true);
+                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", false);
             SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/",
                 StorageSupport.CurrAnonPublicContainer.Name,
@@ -39,6 +39,17 @@ namespace TheBallTool
             //InitLandingPages();
             Console.WriteLine("Press enter to continue...");
             Console.ReadLine();
+        }
+
+        private static void AddLoginToAccount(string loginUrlID, string accountID)
+        {
+            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+
+            TBLoginInfo loginInfo = TBLoginInfo.CreateDefault();
+            loginInfo.OpenIDUrl = loginUrlID;
+
+            accountRoot.Account.Logins.CollectionContent.Add(loginInfo);
+            accountRoot.Account.StoreAndPropagate();
         }
 
         private static void TestDriveDynamicCreation()

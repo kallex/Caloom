@@ -41,6 +41,7 @@ namespace TheBall
 
         public static string GetBlobInformationType(this CloudBlob blob)
         {
+            FetchMetadataIfMissing(blob);
             return blob.Attributes.Metadata[InformationTypeKey];
         }
 
@@ -51,6 +52,7 @@ namespace TheBall
 
         public static string GetBlobInformationObjectType(this CloudBlob blob)
         {
+            FetchMetadataIfMissing(blob);
             return blob.Attributes.Metadata[InformationObjectTypeKey];
         }
 
@@ -67,10 +69,17 @@ namespace TheBall
 
         public static InformationSourceCollection GetBlobInformationSources(this CloudBlob blob)
         {
+            FetchMetadataIfMissing(blob);
             string stringValue = blob.Attributes.Metadata[InformationSourcesKey];
             if (stringValue == null)
                 return null;
             return InformationSourceCollection.DeserializeFromXml(stringValue);
+        }
+
+        private static void FetchMetadataIfMissing(CloudBlob blob)
+        {
+            if(blob.Metadata.Count == 0)
+                blob.FetchAttributes();
         }
 
 
@@ -833,7 +842,6 @@ namespace TheBall
             return RetrieveInformationWithBlob(relativeLocation, typeToRetrieve, out blob, eTag, owner);
         }
 
-
         public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
@@ -868,6 +876,8 @@ namespace TheBall
 
         public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
         {
+            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/"))
+                return blobAddress;
             return owner.ContainerName + "/" + owner.LocationPrefix + "/" + blobAddress;
         }
 
@@ -905,6 +915,15 @@ namespace TheBall
             CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             blob.Delete();
             informationObject.PostDeleteExecute(owner);
+        }
+
+        public static CloudBlob GetBlob(this CloudBlobContainer container, string blobAddress, IContainerOwner owner = null)
+        {
+            string relativeLocation = blobAddress;
+            if (owner != null)
+                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+            CloudBlob blob = container.GetBlockBlobReference(relativeLocation);
+            return blob;
         }
 
     }

@@ -96,7 +96,33 @@
         </InformationItems>
       </InformationObject>
       
-      <!-- Account/Group/Profile Pages -->
+      <!-- Tech Page Level Stuff -->
+      <InformationObject name="JavaScriptContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="JavascriptContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="FooterContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      
+      <!-- Dummy stub containers for now -->
+      <InformationObject name="NavigationContainer" designDesc="Navigation stuff">
+        <InformationItems>
+          <InformationItem name="Dummy" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+        
+
+
+          <!-- Account/Group/Profile Pages -->
 
       <InformationObject name="AccountContainer" designDesc="User account, centralized point for all">
         <InformationItems>
