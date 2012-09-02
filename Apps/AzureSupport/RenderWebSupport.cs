@@ -310,7 +310,7 @@ namespace TheBall
             if(contentItem == null)
             {
                 Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
-                object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null, null);
+                object result = createdType.InvokeMember("CreateDemoDefault", BindingFlags.InvokeMethod, null, null, null);
                 contentItem = new ContentItem
                                   {
                                       RootName = rootName,
@@ -334,7 +334,7 @@ namespace TheBall
                     {
                         contentItem.WasMissing = true;
                         Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
-                        object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null,
+                        object result = createdType.InvokeMember("CreateDemoDefault", BindingFlags.InvokeMethod, null, null,
                                                                  null);
                         contentItem.RootObject = result;
                     }

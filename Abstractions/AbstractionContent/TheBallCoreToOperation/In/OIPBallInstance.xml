@@ -211,15 +211,15 @@
 			<!-- Containers -->
 			<InformationObject name="BlogContainer" designDesc="">
 				<InformationItems>
-					<InformationItem name="BlogContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+					<InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
 					<InformationItem name="FeaturedBlog" informationObjectName="Blog" logicalDataType="InformationObject" />
-					<InformationItem name="BlogCollection" informationObjectName="BlogCollection" logicalDataType="InformationObject" />
-					<InformationItem name="BlogIndexCollection" informationObjectName="IndexCollection" logicalDataType="InformationObject" />
+					<InformationItem name="RecentBlogCollection" informationObjectName="BlogCollection" logicalDataType="InformationObject" />
+					<InformationItem name="BlogIndexGroup" informationObjectName="BlogIndexGroup" logicalDataType="InformationObject" />
 				</InformationItems>
 			</InformationObject>
 			<InformationObject name="MapContainer" designDesc="">
 				<InformationItems>
-					<InformationItem name="MapContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+					<InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
 					<InformationItem name="MapFeatured" informationObjectName="Map" logicalDataType="InformationObject" />
 					<InformationItem name="MapCollection" informationObjectName="MapCollection" logicalDataType="InformationObject" />
 					<InformationItem name="MapResultCollection" informationObjectName="MapResultCollection" logicalDataType="InformationObject" />
@@ -246,8 +246,11 @@
 			</InformationObject>
 			<InformationObject name="AboutContainer" designDesc="">
 				<InformationItems>
-					<InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
-					<InformationItem name="AboutFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+          <InformationItem name="MainImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long"/>
+          <InformationItem name="Body" logicalDataType="Text_Long"/>
+          <InformationItem name="AboutFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
 					<InformationItem name="AboutCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
 					<InformationItem name="AboutIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
           <InformationItem name="ImageGroup" logicalDataType="InformationObject" informationObjectName="ImageGroup" />
@@ -285,29 +288,56 @@
 					<InformationItem name="SubTitle" logicalDataType="Text_Short" />
 				</InformationItems>
 			</InformationObject>
-			<InformationObject name="IndexCollection" designDesc="">
-				<InformationItems>
-					<InformationItem name="Introduction" logicalDataType="Text_Short" />
-					<InformationItem name="Summary" logicalDataType="Text_Short" />
-					<!--
-					<InformationItem name="ByDate" informationObjectName="ByDate" logicalDataType="InformationObject"/>
-					<InformationItem name="ByAuthor" informationObjectName="ByAuthor" logicalDataType="InformationObject"/>
-					<InformationItem name="ByCategory" informationObjectName="ByCategory" logicalDataType="InformationObject"/>
-					<InformationItem name="ByLocation" informationObjectName="ByLocation" logicalDataType="InformationObject"/>
-          -->
-				</InformationItems>
-			</InformationObject>
 			<!-- end Atoms and Modules -->
+
+      <InformationObject name="ActivitySummaryContainer" designDesc="Activity summary container">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="SummaryBody" logicalDataType="Text_Long"/>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="ActivityCollection" logicalDataType="InformationObject" informationObjectName="ActivityCollection" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ActivityContainer" designDesc="Group container">
+        <InformationItems>
+          <InformationItem name="Activities" logicalDataType="InformationObject" informationObjectName="ActivityCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ActivityCollection" designDesc="Group collection">
+        <CollectionFor contentInformationObjectName="Activity"/>
+      </InformationObject>
+
+      <InformationObject name="Activity" designDesc="Activity">
+        <InformationItems>
+          <InformationItem name="MainImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="ModeratorCollection"/>
+          <InformationItem name="ImageSets" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ModeratorCollection" designDesc="Collection for moderators">
+        <CollectionFor contentInformationObjectName="Moderator"/>
+      </InformationObject>
+
+      <InformationObject name="Moderator" designDesc="Moderator for anything">
+        <InformationItems>
+          <InformationItem name="ModeratorName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
 
       <InformationObject name="GroupSummaryContainer" designDesc="Group container">
         <InformationItems>
           <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
           <InformationItem name="SummaryBody" logicalDataType="Text_Long"/>
           <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
-          <InformationItem name="GroupCollection" logicalDataType="InformationObject" informationObjectName="GroupCollection" />          
+          <InformationItem name="GroupCollection" logicalDataType="InformationObject" informationObjectName="GroupCollection" />
         </InformationItems>
       </InformationObject>
-
+      
       <InformationObject name="GroupContainer" designDesc="Group container">
         <InformationItems>
           <InformationItem name="Groups" logicalDataType="InformationObject" informationObjectName="GroupCollection"/>
@@ -320,19 +350,11 @@
       
       <InformationObject name="Group" designDesc="Group">
         <InformationItems>
+          <InformationItem name="MainImage" logicalDataType="InformationObject" informationObjectName="Image"/>
           <InformationItem name="GroupName" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long"/>
-          <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="GroupModeratorCollection"/>          
-        </InformationItems>
-      </InformationObject>
-
-      <InformationObject name="GroupModeratorCollection" designDesc="Collection for moderators">
-        <CollectionFor contentInformationObjectName="GroupModerator"/>
-      </InformationObject>
-      
-      <InformationObject name="GroupModerator" designDesc="Moderator for group">
-        <InformationItems>
-          <InformationItem name="ModeratorName" logicalDataType="Text_Short"/>
+          <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="ModeratorCollection"/>
+          <InformationItem name="ImageSets" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection" />
         </InformationItems>
       </InformationObject>
 
@@ -349,13 +371,12 @@
 			<InformationObject name="Blog" designDesc="Individual Blog">
 				<InformationItems>
 					<InformationItem name="Title" logicalDataType="Text_Short" />
-					<!--I can't imagine this is correct -->
 					<InformationItem name="SubTitle" logicalDataType="Text_Short" />
 					<InformationItem name="Published" logicalDataType="Time_DateTime" />
 					<InformationItem name="Author" logicalDataType="Text_Short" />
 					<InformationItem name="ImageGroup" informationObjectName="ImageGroup" logicalDataType="InformationObject" />
-					<InformationItem name="Body" logicalDataType="Text_Short" />
-					<InformationItem name="Excerpt" logicalDataType="Text_Short" />
+					<InformationItem name="Body" logicalDataType="Text_Long" />
+					<InformationItem name="Excerpt" logicalDataType="Text_Long" />
 					<InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
 					<InformationItem name="Category" logicalDataType="InformationObject" informationObjectName="Category" />
 					<!-- needed is, category, servicetype description, keywords -->
@@ -363,13 +384,17 @@
 				</InformationItems>
 			</InformationObject>
 			<!-- should this be a Collection? -->
-			<InformationObject name="BlogIndexCollection" designDesc="Index of Blogs by Date, Location, Author">
+			<InformationObject name="BlogIndexGroup" designDesc="Index of Blogs by Date, Location, Author">
 				<InformationItems>
-					<InformationItem name="BlogByDate" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="SubTitle" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="BlogByDate" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
 					<InformationItem name="BlogByLocation" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
 					<InformationItem name="BlogByAuthor" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
 					<InformationItem name="BlogByCategory" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
-				</InformationItems>
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
 			</InformationObject>
 			<!-- should this be a Collection? -->
 			<!-- end Blog -->
@@ -448,11 +473,16 @@
 					<!--
 					<InformationItem name="ImageData" informationObjectName="ImageVideoSoundVectorRaw" logicalDataType="InformationObject" />
           -->
-					<InformationItem name="Caption" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Caption" logicalDataType="Text_Short" />
+          <!--
 					<InformationItem name="ImageAlt" logicalDataType="Text_Short" />
-					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />
+					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
 				</InformationItems>
 			</InformationObject>
+      <InformationObject name="ImageGroupCollection" designDesc="Collection of image groups">
+        <CollectionFor contentInformationObjectName="ImageGroup"/>
+      </InformationObject>
 			<InformationObject name="ImageGroup" designDesc="Group of Images">
 				<InformationItems>
 					<InformationItem name="Title" logicalDataType="Text_Short" />
@@ -668,7 +698,7 @@
 					<InformationItem name="Handlers" logicalDataType="InformationObject" informationObjectName="UpdateWebContentHandlerCollection" />
 				</InformationItems>
 			</InformationObject>
-			<InformationObject name="UpdateWebContentHandlerItem" designDesc="Filter item" provideCreateMethod="false">
+			<InformationObject name="UpdateWebContentHandlerItem" designDesc="Filter item" provideCreateMethod="true">
 				<InformationItems>
 					<InformationItem name="InformationTypeName" logicalDataType="Text_Short" />
 					<InformationItem name="OptionName" logicalDataType="Text_Short" />

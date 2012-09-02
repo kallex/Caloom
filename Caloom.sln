@@ -61,6 +61,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "Apps\WorkerTemplate\C
 		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureWorkerApp", "Apps\AzureWorkerApp\AzureWorkerApp.csproj", "{6DD14086-80B3-415E-B061-196AC43673A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -594,6 +596,36 @@ Global
 		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|Mixed Platforms.Build.0 = Debug|Any CPU
 		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|PHP 5.2.ActiveCfg = Debug|Any CPU
 		{44F66C2E-D452-4D91-80E2-43474B757EFC}.Staging|x86.ActiveCfg = Debug|Any CPU
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|PHP 5.2.ActiveCfg = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|x86.ActiveCfg = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Debug|x86.Build.0 = Debug|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|Any CPU.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|Mixed Platforms.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|Mixed Platforms.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|PHP 5.2.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|x86.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Local|x86.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|Any CPU.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|Mixed Platforms.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|Mixed Platforms.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|PHP 5.2.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|x86.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Production|x86.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|Any CPU.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|PHP 5.2.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|x86.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Release|x86.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|Any CPU.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|Mixed Platforms.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|Mixed Platforms.Build.0 = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|PHP 5.2.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|x86.ActiveCfg = Release|x86
+		{6DD14086-80B3-415E-B061-196AC43673A2}.Staging|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -612,5 +644,6 @@ Global
 		{E0D56794-EB9C-4685-82F3-50CB5CB2E379} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{27C6E2F3-6016-4E1D-81A0-01171A14870C} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{639EF079-5944-480A-BF5B-691B3F133507} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
+		{6DD14086-80B3-415E-B061-196AC43673A2} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 	EndGlobalSection
 EndGlobal

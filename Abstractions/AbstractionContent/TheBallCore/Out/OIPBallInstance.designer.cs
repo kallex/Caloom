@@ -166,10 +166,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBRLoginRoot CreateDefault()
 				{
 					var result = new TBRLoginRoot();
 					result.Account = TBAccount.CreateDefault();
+					return result;
+				}
+
+				public static TBRLoginRoot CreateDemoDefault()
+				{
+					var result = new TBRLoginRoot();
+					result.Account = TBAccount.CreateDemoDefault();
 				
 					return result;
 				}
@@ -337,10 +345,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBRAccountRoot CreateDefault()
 				{
 					var result = new TBRAccountRoot();
 					result.Account = TBAccount.CreateDefault();
+					return result;
+				}
+
+				public static TBRAccountRoot CreateDemoDefault()
+				{
+					var result = new TBRAccountRoot();
+					result.Account = TBAccount.CreateDemoDefault();
 				
 					return result;
 				}
@@ -508,10 +524,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBRGroupRoot CreateDefault()
 				{
 					var result = new TBRGroupRoot();
 					result.Group = TBCollaboratingGroup.CreateDefault();
+					return result;
+				}
+
+				public static TBRGroupRoot CreateDemoDefault()
+				{
+					var result = new TBRGroupRoot();
+					result.Group = TBCollaboratingGroup.CreateDemoDefault();
 				
 					return result;
 				}
@@ -679,7 +703,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBRLoginGroupRoot CreateDefault()
+				{
+					var result = new TBRLoginGroupRoot();
+					return result;
+				}
+
+				public static TBRLoginGroupRoot CreateDemoDefault()
 				{
 					var result = new TBRLoginGroupRoot();
 					result.Role = @"TBRLoginGroupRoot.Role";
@@ -855,10 +886,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBREmailRoot CreateDefault()
 				{
 					var result = new TBREmailRoot();
 					result.Account = TBAccount.CreateDefault();
+					return result;
+				}
+
+				public static TBREmailRoot CreateDemoDefault()
+				{
+					var result = new TBREmailRoot();
+					result.Account = TBAccount.CreateDemoDefault();
 				
 					return result;
 				}
@@ -1026,12 +1065,22 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBAccount CreateDefault()
 				{
 					var result = new TBAccount();
 					result.Emails = TBEmailCollection.CreateDefault();
 					result.Logins = TBLoginInfoCollection.CreateDefault();
 					result.GroupRoleCollection = TBAccountCollaborationGroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static TBAccount CreateDemoDefault()
+				{
+					var result = new TBAccount();
+					result.Emails = TBEmailCollection.CreateDemoDefault();
+					result.Logins = TBLoginInfoCollection.CreateDemoDefault();
+					result.GroupRoleCollection = TBAccountCollaborationGroupCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -1215,7 +1264,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBAccountCollaborationGroup CreateDefault()
+				{
+					var result = new TBAccountCollaborationGroup();
+					return result;
+				}
+
+				public static TBAccountCollaborationGroup CreateDemoDefault()
 				{
 					var result = new TBAccountCollaborationGroup();
 					result.GroupID = @"TBAccountCollaborationGroup.GroupID";
@@ -1396,8 +1452,19 @@ namespace AaltoGlobalImpact.OIP {
 		
 				public static TBAccountCollaborationGroupCollection CreateDefault()
 				{
-					return new TBAccountCollaborationGroupCollection();
+					var result = new TBAccountCollaborationGroupCollection();
+					return result;
 				}
+
+				public static TBAccountCollaborationGroupCollection CreateDemoDefault()
+				{
+					var result = new TBAccountCollaborationGroupCollection();
+					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
+					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
+					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
 
@@ -1556,7 +1623,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBLoginInfo CreateDefault()
+				{
+					var result = new TBLoginInfo();
+					return result;
+				}
+
+				public static TBLoginInfo CreateDemoDefault()
 				{
 					var result = new TBLoginInfo();
 					result.OpenIDUrl = @"TBLoginInfo.OpenIDUrl";
@@ -1730,8 +1804,19 @@ namespace AaltoGlobalImpact.OIP {
 		
 				public static TBLoginInfoCollection CreateDefault()
 				{
-					return new TBLoginInfoCollection();
+					var result = new TBLoginInfoCollection();
+					return result;
 				}
+
+				public static TBLoginInfoCollection CreateDemoDefault()
+				{
+					var result = new TBLoginInfoCollection();
+					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
+					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
+					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
 
@@ -1890,7 +1975,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBEmail CreateDefault()
+				{
+					var result = new TBEmail();
+					return result;
+				}
+
+				public static TBEmail CreateDemoDefault()
 				{
 					var result = new TBEmail();
 					result.EmailAddress = @"TBEmail.EmailAddress";
@@ -2069,8 +2161,19 @@ namespace AaltoGlobalImpact.OIP {
 		
 				public static TBEmailCollection CreateDefault()
 				{
-					return new TBEmailCollection();
+					var result = new TBEmailCollection();
+					return result;
 				}
+
+				public static TBEmailCollection CreateDemoDefault()
+				{
+					var result = new TBEmailCollection();
+					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
+					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
+					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
 
@@ -2229,10 +2332,18 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBCollaboratorRole CreateDefault()
 				{
 					var result = new TBCollaboratorRole();
 					result.Email = TBEmail.CreateDefault();
+					return result;
+				}
+
+				public static TBCollaboratorRole CreateDemoDefault()
+				{
+					var result = new TBCollaboratorRole();
+					result.Email = TBEmail.CreateDemoDefault();
 					result.Role = @"TBCollaboratorRole.Role";
 
 				
@@ -2412,8 +2523,19 @@ namespace AaltoGlobalImpact.OIP {
 		
 				public static TBCollaboratorRoleCollection CreateDefault()
 				{
-					return new TBCollaboratorRoleCollection();
+					var result = new TBCollaboratorRoleCollection();
+					return result;
 				}
+
+				public static TBCollaboratorRoleCollection CreateDemoDefault()
+				{
+					var result = new TBCollaboratorRoleCollection();
+					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
+					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
+					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
 
@@ -2572,12 +2694,20 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBCollaboratingGroup CreateDefault()
+				{
+					var result = new TBCollaboratingGroup();
+					result.Roles = TBCollaboratorRoleCollection.CreateDefault();
+					return result;
+				}
+
+				public static TBCollaboratingGroup CreateDemoDefault()
 				{
 					var result = new TBCollaboratingGroup();
 					result.Title = @"TBCollaboratingGroup.Title";
 
-					result.Roles = TBCollaboratorRoleCollection.CreateDefault();
+					result.Roles = TBCollaboratorRoleCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -2750,7 +2880,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBEmailValidation CreateDefault()
+				{
+					var result = new TBEmailValidation();
+					return result;
+				}
+
+				public static TBEmailValidation CreateDemoDefault()
 				{
 					var result = new TBEmailValidation();
 					result.Email = @"TBEmailValidation.Email";
@@ -2931,7 +3068,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static TBPRegisterEmail CreateDefault()
+				{
+					var result = new TBPRegisterEmail();
+					return result;
+				}
+
+				public static TBPRegisterEmail CreateDemoDefault()
 				{
 					var result = new TBPRegisterEmail();
 					result.EmailAddress = @"TBPRegisterEmail.EmailAddress";
@@ -3100,7 +3244,14 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
+
 				public static JavaScriptContainer CreateDefault()
+				{
+					var result = new JavaScriptContainer();
+					return result;
+				}
+
+				public static JavaScriptContainer CreateDemoDefault()
 				{
 					var result = new JavaScriptContainer();
 					result.HtmlContent = @"JavaScriptContainer.HtmlContent
@@ -3274,7 +3425,14 @@ JavaScriptContainer.HtmlContent
 				}
 
 
+
 				public static JavascriptContainer CreateDefault()
+				{
+					var result = new JavascriptContainer();
+					return result;
+				}
+
+				public static JavascriptContainer CreateDemoDefault()
 				{
 					var result = new JavascriptContainer();
 					result.HtmlContent = @"JavascriptContainer.HtmlContent
@@ -3448,7 +3606,14 @@ JavascriptContainer.HtmlContent
 				}
 
 
+
 				public static FooterContainer CreateDefault()
+				{
+					var result = new FooterContainer();
+					return result;
+				}
+
+				public static FooterContainer CreateDemoDefault()
 				{
 					var result = new FooterContainer();
 					result.HtmlContent = @"FooterContainer.HtmlContent
@@ -3622,7 +3787,14 @@ FooterContainer.HtmlContent
 				}
 
 
+
 				public static NavigationContainer CreateDefault()
+				{
+					var result = new NavigationContainer();
+					return result;
+				}
+
+				public static NavigationContainer CreateDemoDefault()
 				{
 					var result = new NavigationContainer();
 					result.Dummy = @"NavigationContainer.Dummy";
@@ -3791,12 +3963,22 @@ FooterContainer.HtmlContent
 				}
 
 
+
 				public static AccountContainer CreateDefault()
 				{
 					var result = new AccountContainer();
 					result.Header = ContainerHeader.CreateDefault();
 					result.AccountIndex = AccountIndex.CreateDefault();
 					result.AccountModule = AccountModule.CreateDefault();
+					return result;
+				}
+
+				public static AccountContainer CreateDemoDefault()
+				{
+					var result = new AccountContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
+					result.AccountIndex = AccountIndex.CreateDemoDefault();
+					result.AccountModule = AccountModule.CreateDemoDefault();
 				
 					return result;
 				}
@@ -3980,7 +4162,14 @@ FooterContainer.HtmlContent
 				}
 
 
+
 				public static AccountIndex CreateDefault()
+				{
+					var result = new AccountIndex();
+					return result;
+				}
+
+				public static AccountIndex CreateDemoDefault()
 				{
 					var result = new AccountIndex();
 					result.Title = @"AccountIndex.Title";
@@ -4173,6 +4362,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountModule CreateDefault()
 				{
 					var result = new AccountModule();
@@ -4183,6 +4373,19 @@ AccountIndex.Summary
 					result.AccountStatistics = AccountStatistics.CreateDefault();
 					result.AccountProjects = AccountProjects.CreateDefault();
 					result.AccountContent = AccountContent.CreateDefault();
+					return result;
+				}
+
+				public static AccountModule CreateDemoDefault()
+				{
+					var result = new AccountModule();
+					result.AccountIdentity = AccountProfile.CreateDemoDefault();
+					result.AccountRoles = AccountRoles.CreateDemoDefault();
+					result.AccountSkills = AccountSkills.CreateDemoDefault();
+					result.AccountLocations = AccountLocations.CreateDemoDefault();
+					result.AccountStatistics = AccountStatistics.CreateDemoDefault();
+					result.AccountProjects = AccountProjects.CreateDemoDefault();
+					result.AccountContent = AccountContent.CreateDemoDefault();
 				
 					return result;
 				}
@@ -4398,7 +4601,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountStatistics CreateDefault()
+				{
+					var result = new AccountStatistics();
+					return result;
+				}
+
+				public static AccountStatistics CreateDemoDefault()
 				{
 					var result = new AccountStatistics();
 					result.Dummy = @"AccountStatistics.Dummy";
@@ -4567,7 +4777,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountSkills CreateDefault()
+				{
+					var result = new AccountSkills();
+					return result;
+				}
+
+				public static AccountSkills CreateDemoDefault()
 				{
 					var result = new AccountSkills();
 					result.Dummy = @"AccountSkills.Dummy";
@@ -4736,7 +4953,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountProjects CreateDefault()
+				{
+					var result = new AccountProjects();
+					return result;
+				}
+
+				public static AccountProjects CreateDemoDefault()
 				{
 					var result = new AccountProjects();
 					result.Dummy = @"AccountProjects.Dummy";
@@ -4905,7 +5129,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountLocations CreateDefault()
+				{
+					var result = new AccountLocations();
+					return result;
+				}
+
+				public static AccountLocations CreateDemoDefault()
 				{
 					var result = new AccountLocations();
 					result.Dummy = @"AccountLocations.Dummy";
@@ -5074,7 +5305,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountContent CreateDefault()
+				{
+					var result = new AccountContent();
+					return result;
+				}
+
+				public static AccountContent CreateDemoDefault()
 				{
 					var result = new AccountContent();
 					result.Dummy = @"AccountContent.Dummy";
@@ -5243,7 +5481,15 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountProfile CreateDefault()
+				{
+					var result = new AccountProfile();
+					result.PersonalInfoVisibility = PersonalInfoVisibility.CreateDefault();
+					return result;
+				}
+
+				public static AccountProfile CreateDemoDefault()
 				{
 					var result = new AccountProfile();
 					result.FirstName = @"AccountProfile.FirstName";
@@ -5260,7 +5506,7 @@ AccountIndex.Summary
 
 					result.Country = @"AccountProfile.Country";
 
-					result.PersonalInfoVisibility = PersonalInfoVisibility.CreateDefault();
+					result.PersonalInfoVisibility = PersonalInfoVisibility.CreateDemoDefault();
 				
 					return result;
 				}
@@ -5463,6 +5709,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AccountRoles CreateDefault()
 				{
 					var result = new AccountRoles();
@@ -5470,6 +5717,16 @@ AccountIndex.Summary
 					result.MemberInGroups = ReferenceCollection.CreateDefault();
 					result.MemberInOrganizations = ReferenceCollection.CreateDefault();
 					result.FollowingGroups = ReferenceCollection.CreateDefault();
+					return result;
+				}
+
+				public static AccountRoles CreateDemoDefault()
+				{
+					var result = new AccountRoles();
+					result.ModeratorInGroups = ReferenceCollection.CreateDemoDefault();
+					result.MemberInGroups = ReferenceCollection.CreateDemoDefault();
+					result.MemberInOrganizations = ReferenceCollection.CreateDemoDefault();
+					result.FollowingGroups = ReferenceCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -5661,7 +5918,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static PersonalInfoVisibility CreateDefault()
+				{
+					var result = new PersonalInfoVisibility();
+					return result;
+				}
+
+				public static PersonalInfoVisibility CreateDemoDefault()
 				{
 					var result = new PersonalInfoVisibility();
 					result.NoOne_Network_All = @"PersonalInfoVisibility.NoOne_Network_All";
@@ -5830,7 +6094,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static ReferenceToInformation CreateDefault()
+				{
+					var result = new ReferenceToInformation();
+					return result;
+				}
+
+				public static ReferenceToInformation CreateDemoDefault()
 				{
 					var result = new ReferenceToInformation();
 					result.Title = @"ReferenceToInformation.Title";
@@ -6011,8 +6282,19 @@ AccountIndex.Summary
 		
 				public static ReferenceCollection CreateDefault()
 				{
-					return new ReferenceCollection();
+					var result = new ReferenceCollection();
+					return result;
 				}
+
+				public static ReferenceCollection CreateDemoDefault()
+				{
+					var result = new ReferenceCollection();
+					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
+					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
+					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
 
@@ -6171,20 +6453,31 @@ AccountIndex.Summary
 				}
 
 
+
 				public static BlogContainer CreateDefault()
 				{
 					var result = new BlogContainer();
-					result.BlogContainerHeader = ContainerHeader.CreateDefault();
+					result.Header = ContainerHeader.CreateDefault();
 					result.FeaturedBlog = Blog.CreateDefault();
-					result.BlogCollection = BlogCollection.CreateDefault();
-					result.BlogIndexCollection = IndexCollection.CreateDefault();
+					result.RecentBlogCollection = BlogCollection.CreateDefault();
+					result.BlogIndexGroup = BlogIndexGroup.CreateDefault();
+					return result;
+				}
+
+				public static BlogContainer CreateDemoDefault()
+				{
+					var result = new BlogContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
+					result.FeaturedBlog = Blog.CreateDemoDefault();
+					result.RecentBlogCollection = BlogCollection.CreateDemoDefault();
+					result.BlogIndexGroup = BlogIndexGroup.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = BlogContainerHeader;
+						var item = Header;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -6196,13 +6489,13 @@ AccountIndex.Summary
 							return result;
 					}
 					{
-						var item = BlogCollection;
+						var item = RecentBlogCollection;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
-						var item = BlogIndexCollection;
+						var item = BlogIndexGroup;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -6219,13 +6512,13 @@ AccountIndex.Summary
 					}
 	        }
 			[DataMember]
-			public ContainerHeader BlogContainerHeader { get; set; }
+			public ContainerHeader Header { get; set; }
 			[DataMember]
 			public Blog FeaturedBlog { get; set; }
 			[DataMember]
-			public BlogCollection BlogCollection { get; set; }
+			public BlogCollection RecentBlogCollection { get; set; }
 			[DataMember]
-			public IndexCollection BlogIndexCollection { get; set; }
+			public BlogIndexGroup BlogIndexGroup { get; set; }
 			
 			}
 			[DataContract]
@@ -6369,22 +6662,35 @@ AccountIndex.Summary
 				}
 
 
+
 				public static MapContainer CreateDefault()
 				{
 					var result = new MapContainer();
-					result.MapContainerHeader = ContainerHeader.CreateDefault();
+					result.Header = ContainerHeader.CreateDefault();
 					result.MapFeatured = Map.CreateDefault();
 					result.MapCollection = MapCollection.CreateDefault();
 					result.MapResultCollection = MapResultCollection.CreateDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDefault();
+					return result;
+				}
+
+				public static MapContainer CreateDemoDefault()
+				{
+					var result = new MapContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
+					result.MapFeatured = Map.CreateDemoDefault();
+					result.MapCollection = MapCollection.CreateDemoDefault();
+					result.MapResultCollection = MapResultCollection.CreateDemoDefault();
+					result.MapIndexCollection = MapIndexCollection.CreateDemoDefault();
+					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = MapContainerHeader;
+						var item = Header;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -6431,7 +6737,7 @@ AccountIndex.Summary
 					}
 	        }
 			[DataMember]
-			public ContainerHeader MapContainerHeader { get; set; }
+			public ContainerHeader Header { get; set; }
 			[DataMember]
 			public Map MapFeatured { get; set; }
 			[DataMember]
@@ -6585,12 +6891,20 @@ AccountIndex.Summary
 				}
 
 
+
 				public static MapMarker CreateDefault()
+				{
+					var result = new MapMarker();
+					result.Location = Location.CreateDefault();
+					return result;
+				}
+
+				public static MapMarker CreateDemoDefault()
 				{
 					var result = new MapMarker();
 					result.LocationText = @"MapMarker.LocationText";
 
-					result.Location = Location.CreateDefault();
+					result.Location = Location.CreateDemoDefault();
 				
 					return result;
 				}
@@ -6768,8 +7082,19 @@ AccountIndex.Summary
 		
 				public static MapMarkerCollection CreateDefault()
 				{
-					return new MapMarkerCollection();
+					var result = new MapMarkerCollection();
+					return result;
 				}
+
+				public static MapMarkerCollection CreateDemoDefault()
+				{
+					var result = new MapMarkerCollection();
+					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
+					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
+					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<MapMarker> CollectionContent = new List<MapMarker>();
 
@@ -6928,6 +7253,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static CalendarContainer CreateDefault()
 				{
 					var result = new CalendarContainer();
@@ -6935,6 +7261,16 @@ AccountIndex.Summary
 					result.CalendarFeatured = Calendar.CreateDefault();
 					result.CalendarCollection = CalendarCollection.CreateDefault();
 					result.CalendarIndexCollection = CalendarIndex.CreateDefault();
+					return result;
+				}
+
+				public static CalendarContainer CreateDemoDefault()
+				{
+					var result = new CalendarContainer();
+					result.CalendarContainerHeader = ContainerHeader.CreateDemoDefault();
+					result.CalendarFeatured = Calendar.CreateDemoDefault();
+					result.CalendarCollection = CalendarCollection.CreateDemoDefault();
+					result.CalendarIndexCollection = CalendarIndex.CreateDemoDefault();
 				
 					return result;
 				}
@@ -7126,19 +7462,53 @@ AccountIndex.Summary
 				}
 
 
+
 				public static AboutContainer CreateDefault()
 				{
 					var result = new AboutContainer();
+					result.MainImage = Image.CreateDefault();
 					result.Header = ContainerHeader.CreateDefault();
 					result.AboutFeatured = Calendar.CreateDefault();
 					result.AboutCollection = CalendarCollection.CreateDefault();
 					result.AboutIndexCollection = CalendarIndex.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
+					return result;
+				}
+
+				public static AboutContainer CreateDemoDefault()
+				{
+					var result = new AboutContainer();
+					result.MainImage = Image.CreateDemoDefault();
+					result.Header = ContainerHeader.CreateDemoDefault();
+					result.Excerpt = @"AboutContainer.Excerpt
+AboutContainer.Excerpt
+AboutContainer.Excerpt
+AboutContainer.Excerpt
+AboutContainer.Excerpt
+";
+
+					result.Body = @"AboutContainer.Body
+AboutContainer.Body
+AboutContainer.Body
+AboutContainer.Body
+AboutContainer.Body
+";
+
+					result.AboutFeatured = Calendar.CreateDemoDefault();
+					result.AboutCollection = CalendarCollection.CreateDemoDefault();
+					result.AboutIndexCollection = CalendarIndex.CreateDemoDefault();
+					result.ImageGroup = ImageGroup.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = MainImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = Header;
 						object result = item.FindObjectByID(objectId);
@@ -7176,12 +7546,24 @@ AccountIndex.Summary
 				{
 					switch (propertyName)
 					{
+						case "Excerpt":
+							Excerpt = value;
+							break;
+						case "Body":
+							Body = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
+			public Image MainImage { get; set; }
+			[DataMember]
 			public ContainerHeader Header { get; set; }
+			[DataMember]
+			public string Excerpt { get; set; }
+			[DataMember]
+			public string Body { get; set; }
 			[DataMember]
 			public Calendar AboutFeatured { get; set; }
 			[DataMember]
@@ -7333,6 +7715,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static OBSAccountContainer CreateDefault()
 				{
 					var result = new OBSAccountContainer();
@@ -7340,6 +7723,16 @@ AccountIndex.Summary
 					result.AccountFeatured = Calendar.CreateDefault();
 					result.AccountCollection = CalendarCollection.CreateDefault();
 					result.AccountIndexCollection = CalendarIndex.CreateDefault();
+					return result;
+				}
+
+				public static OBSAccountContainer CreateDemoDefault()
+				{
+					var result = new OBSAccountContainer();
+					result.AccountContainerHeader = ContainerHeader.CreateDemoDefault();
+					result.AccountFeatured = Calendar.CreateDemoDefault();
+					result.AccountCollection = CalendarCollection.CreateDemoDefault();
+					result.AccountIndexCollection = CalendarIndex.CreateDemoDefault();
 				
 					return result;
 				}
@@ -7531,6 +7924,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static ProjectContainer CreateDefault()
 				{
 					var result = new ProjectContainer();
@@ -7538,6 +7932,16 @@ AccountIndex.Summary
 					result.ProjectFeatured = Calendar.CreateDefault();
 					result.ProjectCollection = CalendarCollection.CreateDefault();
 					result.ProjectIndexCollection = CalendarIndex.CreateDefault();
+					return result;
+				}
+
+				public static ProjectContainer CreateDemoDefault()
+				{
+					var result = new ProjectContainer();
+					result.ProjectContainerHeader = ContainerHeader.CreateDemoDefault();
+					result.ProjectFeatured = Calendar.CreateDemoDefault();
+					result.ProjectCollection = CalendarCollection.CreateDemoDefault();
+					result.ProjectIndexCollection = CalendarIndex.CreateDemoDefault();
 				
 					return result;
 				}
@@ -7729,6 +8133,7 @@ AccountIndex.Summary
 				}
 
 
+
 				public static CourseContainer CreateDefault()
 				{
 					var result = new CourseContainer();
@@ -7736,6 +8141,16 @@ AccountIndex.Summary
 					result.CourseFeatured = Calendar.CreateDefault();
 					result.CourseCollection = CalendarCollection.CreateDefault();
 					result.CourseIndexCollection = CalendarIndex.CreateDefault();
+					return result;
+				}
+
+				public static CourseContainer CreateDemoDefault()
+				{
+					var result = new CourseContainer();
+					result.CourseContainerHeader = ContainerHeader.CreateDemoDefault();
+					result.CourseFeatured = Calendar.CreateDemoDefault();
+					result.CourseCollection = CalendarCollection.CreateDemoDefault();
+					result.CourseIndexCollection = CalendarIndex.CreateDemoDefault();
 				
 					return result;
 				}
@@ -7927,7 +8342,14 @@ AccountIndex.Summary
 				}
 
 
+
 				public static ContainerHeader CreateDefault()
+				{
+					var result = new ContainerHeader();
+					return result;
+				}
+
+				public static ContainerHeader CreateDemoDefault()
 				{
 					var result = new ContainerHeader();
 					result.Title = @"ContainerHeader.Title";
@@ -7963,20 +8385,20 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class IndexCollection : IInformationObject
+			public partial class ActivitySummaryContainer : IInformationObject
 			{
-				public IndexCollection()
+				public ActivitySummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "IndexCollection";
+				    this.Name = "ActivitySummaryContainer";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "IndexCollection", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -7984,16 +8406,16 @@ AccountIndex.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static IndexCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static ActivitySummaryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIndexCollection(relativeLocation, owner);
+					return RetrieveActivitySummaryContainer(relativeLocation, owner);
 				}
 
 
-                public static IndexCollection RetrieveIndexCollection(string relativeLocation, IContainerOwner owner = null)
+                public static ActivitySummaryContainer RetrieveActivitySummaryContainer(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (IndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(IndexCollection), null, owner);
+                    var result = (ActivitySummaryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ActivitySummaryContainer), null, owner);
                     return result;
                 }
 
@@ -8045,7 +8467,7 @@ AccountIndex.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(IndexCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivitySummaryContainer));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -8058,13 +8480,13 @@ AccountIndex.Summary
 					}
 				}
 
-				public static IndexCollection DeserializeFromXml(string xmlString)
+				public static ActivitySummaryContainer DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(IndexCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivitySummaryContainer));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (IndexCollection) serializer.ReadObject(xmlReader);
+							return (ActivitySummaryContainer) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -8094,21 +8516,986 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "IndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "IndexCollection", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivitySummaryContainer", ID).Replace("\\", "/");
 				}
 
 
-				public static IndexCollection CreateDefault()
-				{
-					var result = new IndexCollection();
-					result.Introduction = @"IndexCollection.Introduction";
 
-					result.Summary = @"IndexCollection.Summary";
+				public static ActivitySummaryContainer CreateDefault()
+				{
+					var result = new ActivitySummaryContainer();
+					result.Header = ContainerHeader.CreateDefault();
+					result.Introduction = Introduction.CreateDefault();
+					result.ActivityCollection = ActivityCollection.CreateDefault();
+					return result;
+				}
+
+				public static ActivitySummaryContainer CreateDemoDefault()
+				{
+					var result = new ActivitySummaryContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
+					result.SummaryBody = @"ActivitySummaryContainer.SummaryBody
+ActivitySummaryContainer.SummaryBody
+ActivitySummaryContainer.SummaryBody
+ActivitySummaryContainer.SummaryBody
+ActivitySummaryContainer.SummaryBody
+";
+
+					result.Introduction = Introduction.CreateDemoDefault();
+					result.ActivityCollection = ActivityCollection.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Header;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ActivityCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SummaryBody":
+							SummaryBody = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public ContainerHeader Header { get; set; }
+			[DataMember]
+			public string SummaryBody { get; set; }
+			[DataMember]
+			public Introduction Introduction { get; set; }
+			[DataMember]
+			public ActivityCollection ActivityCollection { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ActivityContainer : IInformationObject
+			{
+				public ActivityContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ActivityContainer";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ActivityContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveActivityContainer(relativeLocation, owner);
+				}
+
+
+                public static ActivityContainer RetrieveActivityContainer(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ActivityContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ActivityContainer), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ActivityContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ActivityContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivityContainer", ID).Replace("\\", "/");
+				}
+
+
+
+				public static ActivityContainer CreateDefault()
+				{
+					var result = new ActivityContainer();
+					result.Activities = ActivityCollection.CreateDefault();
+					return result;
+				}
+
+				public static ActivityContainer CreateDemoDefault()
+				{
+					var result = new ActivityContainer();
+					result.Activities = ActivityCollection.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Activities;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public ActivityCollection Activities { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ActivityCollection : IInformationObject
+			{
+				public ActivityCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ActivityCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ActivityCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveActivityCollection(relativeLocation, owner);
+				}
+
+
+                public static ActivityCollection RetrieveActivityCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ActivityCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ActivityCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ActivityCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ActivityCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivityCollection", ID).Replace("\\", "/");
+				}
+
+
+
+				
+		
+				public static ActivityCollection CreateDefault()
+				{
+					var result = new ActivityCollection();
+					return result;
+				}
+
+				public static ActivityCollection CreateDemoDefault()
+				{
+					var result = new ActivityCollection();
+					result.CollectionContent.Add(Activity.CreateDemoDefault());
+					result.CollectionContent.Add(Activity.CreateDemoDefault());
+					result.CollectionContent.Add(Activity.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<Activity> CollectionContent = new List<Activity>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class Activity : IInformationObject
+			{
+				public Activity()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Activity";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Activity", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Activity RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveActivity(relativeLocation, owner);
+				}
+
+
+                public static Activity RetrieveActivity(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (Activity) StorageSupport.RetrieveInformation(relativeLocation, typeof(Activity), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Activity));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Activity DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Activity));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Activity) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Activity", ID).Replace("\\", "/");
+				}
+
+
+
+				public static Activity CreateDefault()
+				{
+					var result = new Activity();
+					result.MainImage = Image.CreateDefault();
+					result.Moderators = ModeratorCollection.CreateDefault();
+					result.ImageSets = ImageGroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static Activity CreateDemoDefault()
+				{
+					var result = new Activity();
+					result.MainImage = Image.CreateDemoDefault();
+					result.ActivityName = @"Activity.ActivityName";
+
+					result.Description = @"Activity.Description
+Activity.Description
+Activity.Description
+Activity.Description
+Activity.Description
+";
+
+					result.Moderators = ModeratorCollection.CreateDemoDefault();
+					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = MainImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Moderators;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ImageSets;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ActivityName":
+							ActivityName = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public Image MainImage { get; set; }
+			[DataMember]
+			public string ActivityName { get; set; }
+			[DataMember]
+			public string Description { get; set; }
+			[DataMember]
+			public ModeratorCollection Moderators { get; set; }
+			[DataMember]
+			public ImageGroupCollection ImageSets { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ModeratorCollection : IInformationObject
+			{
+				public ModeratorCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ModeratorCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ModeratorCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveModeratorCollection(relativeLocation, owner);
+				}
+
+
+                public static ModeratorCollection RetrieveModeratorCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ModeratorCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ModeratorCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ModeratorCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ModeratorCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ModeratorCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ModeratorCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ModeratorCollection", ID).Replace("\\", "/");
+				}
+
+
+
+				
+		
+				public static ModeratorCollection CreateDefault()
+				{
+					var result = new ModeratorCollection();
+					return result;
+				}
+
+				public static ModeratorCollection CreateDemoDefault()
+				{
+					var result = new ModeratorCollection();
+					result.CollectionContent.Add(Moderator.CreateDemoDefault());
+					result.CollectionContent.Add(Moderator.CreateDemoDefault());
+					result.CollectionContent.Add(Moderator.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<Moderator> CollectionContent = new List<Moderator>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class Moderator : IInformationObject
+			{
+				public Moderator()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "Moderator";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Moderator RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveModerator(relativeLocation, owner);
+				}
+
+
+                public static Moderator RetrieveModerator(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (Moderator) StorageSupport.RetrieveInformation(relativeLocation, typeof(Moderator), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Moderator));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Moderator DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Moderator));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Moderator) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Moderator", ID).Replace("\\", "/");
+				}
+
+
+
+				public static Moderator CreateDefault()
+				{
+					var result = new Moderator();
+					return result;
+				}
+
+				public static Moderator CreateDemoDefault()
+				{
+					var result = new Moderator();
+					result.ModeratorName = @"Moderator.ModeratorName";
 
 				
 					return result;
@@ -8122,20 +9509,15 @@ AccountIndex.Summary
 				{
 					switch (propertyName)
 					{
-						case "Introduction":
-							Introduction = value;
-							break;
-						case "Summary":
-							Summary = value;
+						case "ModeratorName":
+							ModeratorName = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string Introduction { get; set; }
-			[DataMember]
-			public string Summary { get; set; }
+			public string ModeratorName { get; set; }
 			
 			}
 			[DataContract]
@@ -8279,10 +9661,20 @@ AccountIndex.Summary
 				}
 
 
+
 				public static GroupSummaryContainer CreateDefault()
 				{
 					var result = new GroupSummaryContainer();
 					result.Header = ContainerHeader.CreateDefault();
+					result.Introduction = Introduction.CreateDefault();
+					result.GroupCollection = GroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static GroupSummaryContainer CreateDemoDefault()
+				{
+					var result = new GroupSummaryContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
 					result.SummaryBody = @"GroupSummaryContainer.SummaryBody
 GroupSummaryContainer.SummaryBody
 GroupSummaryContainer.SummaryBody
@@ -8290,8 +9682,8 @@ GroupSummaryContainer.SummaryBody
 GroupSummaryContainer.SummaryBody
 ";
 
-					result.Introduction = Introduction.CreateDefault();
-					result.GroupCollection = GroupCollection.CreateDefault();
+					result.Introduction = Introduction.CreateDemoDefault();
+					result.GroupCollection = GroupCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -8480,10 +9872,18 @@ GroupSummaryContainer.SummaryBody
 				}
 
 
+
 				public static GroupContainer CreateDefault()
 				{
 					var result = new GroupContainer();
 					result.Groups = GroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static GroupContainer CreateDemoDefault()
+				{
+					var result = new GroupContainer();
+					result.Groups = GroupCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -8656,8 +10056,19 @@ GroupSummaryContainer.SummaryBody
 		
 				public static GroupCollection CreateDefault()
 				{
-					return new GroupCollection();
+					var result = new GroupCollection();
+					return result;
 				}
+
+				public static GroupCollection CreateDemoDefault()
+				{
+					var result = new GroupCollection();
+					result.CollectionContent.Add(Group.CreateDemoDefault());
+					result.CollectionContent.Add(Group.CreateDemoDefault());
+					result.CollectionContent.Add(Group.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Group> CollectionContent = new List<Group>();
 
@@ -8816,9 +10227,20 @@ GroupSummaryContainer.SummaryBody
 				}
 
 
+
 				public static Group CreateDefault()
 				{
 					var result = new Group();
+					result.MainImage = Image.CreateDefault();
+					result.Moderators = ModeratorCollection.CreateDefault();
+					result.ImageSets = ImageGroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static Group CreateDemoDefault()
+				{
+					var result = new Group();
+					result.MainImage = Image.CreateDemoDefault();
 					result.GroupName = @"Group.GroupName";
 
 					result.Description = @"Group.Description
@@ -8828,14 +10250,27 @@ Group.Description
 Group.Description
 ";
 
-					result.Moderators = GroupModeratorCollection.CreateDefault();
+					result.Moderators = ModeratorCollection.CreateDemoDefault();
+					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
+						var item = MainImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
 						var item = Moderators;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ImageSets;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -8858,345 +10293,15 @@ Group.Description
 					}
 	        }
 			[DataMember]
+			public Image MainImage { get; set; }
+			[DataMember]
 			public string GroupName { get; set; }
 			[DataMember]
 			public string Description { get; set; }
 			[DataMember]
-			public GroupModeratorCollection Moderators { get; set; }
-			
-			}
-			[DataContract]
-			public partial class GroupModeratorCollection : IInformationObject
-			{
-				public GroupModeratorCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "GroupModeratorCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupModeratorCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupModeratorCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupModeratorCollection(relativeLocation, owner);
-				}
-
-
-                public static GroupModeratorCollection RetrieveGroupModeratorCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupModeratorCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupModeratorCollection), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupModeratorCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static GroupModeratorCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupModeratorCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (GroupModeratorCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupModeratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "GroupModeratorCollection", ID).Replace("\\", "/");
-				}
-
-
-
-				
-		
-				public static GroupModeratorCollection CreateDefault()
-				{
-					return new GroupModeratorCollection();
-				}
-		
-				[DataMember] public List<GroupModerator> CollectionContent = new List<GroupModerator>();
-
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-
-			
-			}
-			[DataContract]
-			public partial class GroupModerator : IInformationObject
-			{
-				public GroupModerator()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "GroupModerator";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupModerator", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupModerator RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupModerator(relativeLocation, owner);
-				}
-
-
-                public static GroupModerator RetrieveGroupModerator(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupModerator) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupModerator), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupModerator));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static GroupModerator DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupModerator));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (GroupModerator) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupModerator", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "GroupModerator", ID).Replace("\\", "/");
-				}
-
-
-				public static GroupModerator CreateDefault()
-				{
-					var result = new GroupModerator();
-					result.ModeratorName = @"GroupModerator.ModeratorName";
-
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ModeratorName":
-							ModeratorName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
+			public ModeratorCollection Moderators { get; set; }
 			[DataMember]
-			public string ModeratorName { get; set; }
+			public ImageGroupCollection ImageSets { get; set; }
 			
 			}
 			[DataContract]
@@ -9340,7 +10445,14 @@ Group.Description
 				}
 
 
+
 				public static Introduction CreateDefault()
+				{
+					var result = new Introduction();
+					return result;
+				}
+
+				public static Introduction CreateDemoDefault()
 				{
 					var result = new Introduction();
 					result.Title = @"Introduction.Title";
@@ -9526,8 +10638,19 @@ Introduction.Body
 		
 				public static BlogCollection CreateDefault()
 				{
-					return new BlogCollection();
+					var result = new BlogCollection();
+					return result;
 				}
+
+				public static BlogCollection CreateDemoDefault()
+				{
+					var result = new BlogCollection();
+					result.CollectionContent.Add(Blog.CreateDemoDefault());
+					result.CollectionContent.Add(Blog.CreateDemoDefault());
+					result.CollectionContent.Add(Blog.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
 
@@ -9686,7 +10809,18 @@ Introduction.Body
 				}
 
 
+
 				public static Blog CreateDefault()
+				{
+					var result = new Blog();
+					result.ImageGroup = ImageGroup.CreateDefault();
+					result.Location = Location.CreateDefault();
+					result.Category = Category.CreateDefault();
+					result.SocialPanel = SocialPanelCollection.CreateDefault();
+					return result;
+				}
+
+				public static Blog CreateDemoDefault()
 				{
 					var result = new Blog();
 					result.Title = @"Blog.Title";
@@ -9695,14 +10829,24 @@ Introduction.Body
 
 					result.Author = @"Blog.Author";
 
-					result.ImageGroup = ImageGroup.CreateDefault();
-					result.Body = @"Blog.Body";
+					result.ImageGroup = ImageGroup.CreateDemoDefault();
+					result.Body = @"Blog.Body
+Blog.Body
+Blog.Body
+Blog.Body
+Blog.Body
+";
 
-					result.Excerpt = @"Blog.Excerpt";
+					result.Excerpt = @"Blog.Excerpt
+Blog.Excerpt
+Blog.Excerpt
+Blog.Excerpt
+Blog.Excerpt
+";
 
-					result.Location = Location.CreateDefault();
-					result.Category = Category.CreateDefault();
-					result.SocialPanel = SocialPanelCollection.CreateDefault();
+					result.Location = Location.CreateDemoDefault();
+					result.Category = Category.CreateDemoDefault();
+					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -9784,20 +10928,20 @@ Introduction.Body
 			
 			}
 			[DataContract]
-			public partial class BlogIndexCollection : IInformationObject
+			public partial class BlogIndexGroup : IInformationObject
 			{
-				public BlogIndexCollection()
+				public BlogIndexGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "BlogIndexCollection";
+				    this.Name = "BlogIndexGroup";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollection", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -9805,16 +10949,16 @@ Introduction.Body
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static BlogIndexCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static BlogIndexGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBlogIndexCollection(relativeLocation, owner);
+					return RetrieveBlogIndexGroup(relativeLocation, owner);
 				}
 
 
-                public static BlogIndexCollection RetrieveBlogIndexCollection(string relativeLocation, IContainerOwner owner = null)
+                public static BlogIndexGroup RetrieveBlogIndexGroup(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (BlogIndexCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogIndexCollection), null, owner);
+                    var result = (BlogIndexGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(BlogIndexGroup), null, owner);
                     return result;
                 }
 
@@ -9866,7 +11010,7 @@ Introduction.Body
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexGroup));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -9879,13 +11023,13 @@ Introduction.Body
 					}
 				}
 
-				public static BlogIndexCollection DeserializeFromXml(string xmlString)
+				public static BlogIndexGroup DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(BlogIndexGroup));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (BlogIndexCollection) serializer.ReadObject(xmlReader);
+							return (BlogIndexGroup) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -9915,22 +11059,51 @@ Introduction.Body
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogIndexCollection", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogIndexGroup", ID).Replace("\\", "/");
 				}
 
 
-				public static BlogIndexCollection CreateDefault()
+
+				public static BlogIndexGroup CreateDefault()
 				{
-					var result = new BlogIndexCollection();
+					var result = new BlogIndexGroup();
 					result.BlogByDate = BlogCollection.CreateDefault();
 					result.BlogByLocation = BlogCollection.CreateDefault();
 					result.BlogByAuthor = BlogCollection.CreateDefault();
 					result.BlogByCategory = BlogCollection.CreateDefault();
+					return result;
+				}
+
+				public static BlogIndexGroup CreateDemoDefault()
+				{
+					var result = new BlogIndexGroup();
+					result.Title = @"BlogIndexGroup.Title";
+
+					result.SubTitle = @"BlogIndexGroup.SubTitle";
+
+					result.Introduction = @"BlogIndexGroup.Introduction
+BlogIndexGroup.Introduction
+BlogIndexGroup.Introduction
+BlogIndexGroup.Introduction
+BlogIndexGroup.Introduction
+";
+
+					result.BlogByDate = BlogCollection.CreateDemoDefault();
+					result.BlogByLocation = BlogCollection.CreateDemoDefault();
+					result.BlogByAuthor = BlogCollection.CreateDemoDefault();
+					result.BlogByCategory = BlogCollection.CreateDemoDefault();
+					result.Summary = @"BlogIndexGroup.Summary
+BlogIndexGroup.Summary
+BlogIndexGroup.Summary
+BlogIndexGroup.Summary
+BlogIndexGroup.Summary
+";
+
 				
 					return result;
 				}
@@ -9967,10 +11140,28 @@ Introduction.Body
 				{
 					switch (propertyName)
 					{
+						case "Title":
+							Title = value;
+							break;
+						case "SubTitle":
+							SubTitle = value;
+							break;
+						case "Introduction":
+							Introduction = value;
+							break;
+						case "Summary":
+							Summary = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string SubTitle { get; set; }
+			[DataMember]
+			public string Introduction { get; set; }
 			[DataMember]
 			public BlogCollection BlogByDate { get; set; }
 			[DataMember]
@@ -9979,6 +11170,8 @@ Introduction.Body
 			public BlogCollection BlogByAuthor { get; set; }
 			[DataMember]
 			public BlogCollection BlogByCategory { get; set; }
+			[DataMember]
+			public string Summary { get; set; }
 			
 			}
 			[DataContract]
@@ -10122,7 +11315,14 @@ Introduction.Body
 				}
 
 
+
 				public static CalendarIndex CreateDefault()
+				{
+					var result = new CalendarIndex();
+					return result;
+				}
+
+				public static CalendarIndex CreateDemoDefault()
 				{
 					var result = new CalendarIndex();
 					result.Title = @"CalendarIndex.Title";
@@ -10291,7 +11491,14 @@ Introduction.Body
 				}
 
 
+
 				public static Filter CreateDefault()
+				{
+					var result = new Filter();
+					return result;
+				}
+
+				public static Filter CreateDemoDefault()
 				{
 					var result = new Filter();
 					result.Title = @"Filter.Title";
@@ -10460,7 +11667,14 @@ Introduction.Body
 				}
 
 
+
 				public static Calendar CreateDefault()
+				{
+					var result = new Calendar();
+					return result;
+				}
+
+				public static Calendar CreateDemoDefault()
 				{
 					var result = new Calendar();
 					result.Title = @"Calendar.Title";
@@ -10634,8 +11848,19 @@ Introduction.Body
 		
 				public static CalendarCollection CreateDefault()
 				{
-					return new CalendarCollection();
+					var result = new CalendarCollection();
+					return result;
 				}
+
+				public static CalendarCollection CreateDemoDefault()
+				{
+					var result = new CalendarCollection();
+					result.CollectionContent.Add(Calendar.CreateDemoDefault());
+					result.CollectionContent.Add(Calendar.CreateDemoDefault());
+					result.CollectionContent.Add(Calendar.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
 
@@ -10794,7 +12019,14 @@ Introduction.Body
 				}
 
 
+
 				public static Map CreateDefault()
+				{
+					var result = new Map();
+					return result;
+				}
+
+				public static Map CreateDemoDefault()
 				{
 					var result = new Map();
 					result.Title = @"Map.Title";
@@ -10968,8 +12200,19 @@ Introduction.Body
 		
 				public static MapCollection CreateDefault()
 				{
-					return new MapCollection();
+					var result = new MapCollection();
+					return result;
 				}
+
+				public static MapCollection CreateDemoDefault()
+				{
+					var result = new MapCollection();
+					result.CollectionContent.Add(Map.CreateDemoDefault());
+					result.CollectionContent.Add(Map.CreateDemoDefault());
+					result.CollectionContent.Add(Map.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
 
@@ -11128,6 +12371,7 @@ Introduction.Body
 				}
 
 
+
 				public static MapIndexCollection CreateDefault()
 				{
 					var result = new MapIndexCollection();
@@ -11135,6 +12379,16 @@ Introduction.Body
 					result.MapByLocation = MapCollection.CreateDefault();
 					result.MapByAuthor = MapCollection.CreateDefault();
 					result.MapByCategory = MapCollection.CreateDefault();
+					return result;
+				}
+
+				public static MapIndexCollection CreateDemoDefault()
+				{
+					var result = new MapIndexCollection();
+					result.MapByDate = MapCollection.CreateDemoDefault();
+					result.MapByLocation = MapCollection.CreateDemoDefault();
+					result.MapByAuthor = MapCollection.CreateDemoDefault();
+					result.MapByCategory = MapCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -11326,10 +12580,18 @@ Introduction.Body
 				}
 
 
+
 				public static MapResult CreateDefault()
 				{
 					var result = new MapResult();
 					result.Location = Location.CreateDefault();
+					return result;
+				}
+
+				public static MapResult CreateDemoDefault()
+				{
+					var result = new MapResult();
+					result.Location = Location.CreateDemoDefault();
 				
 					return result;
 				}
@@ -11502,8 +12764,19 @@ Introduction.Body
 		
 				public static MapResultCollection CreateDefault()
 				{
-					return new MapResultCollection();
+					var result = new MapResultCollection();
+					return result;
 				}
+
+				public static MapResultCollection CreateDemoDefault()
+				{
+					var result = new MapResultCollection();
+					result.CollectionContent.Add(MapResult.CreateDemoDefault());
+					result.CollectionContent.Add(MapResult.CreateDemoDefault());
+					result.CollectionContent.Add(MapResult.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
 
@@ -11662,12 +12935,22 @@ Introduction.Body
 				}
 
 
+
 				public static MapResultsCollection CreateDefault()
 				{
 					var result = new MapResultsCollection();
 					result.ResultByDate = MapResultCollection.CreateDefault();
 					result.ResultByAuthor = MapResultCollection.CreateDefault();
 					result.ResultByProximity = MapResultCollection.CreateDefault();
+					return result;
+				}
+
+				public static MapResultsCollection CreateDemoDefault()
+				{
+					var result = new MapResultsCollection();
+					result.ResultByDate = MapResultCollection.CreateDemoDefault();
+					result.ResultByAuthor = MapResultCollection.CreateDemoDefault();
+					result.ResultByProximity = MapResultCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -11851,25 +13134,25 @@ Introduction.Body
 				}
 
 
+
 				public static Image CreateDefault()
 				{
 					var result = new Image();
+					return result;
+				}
+
+				public static Image CreateDemoDefault()
+				{
+					var result = new Image();
+					result.Title = @"Image.Title";
+
 					result.Caption = @"Image.Caption";
 
-					result.ImageAlt = @"Image.ImageAlt";
-
-					result.Tooltip = Tooltip.CreateDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = Tooltip;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -11877,22 +13160,196 @@ Introduction.Body
 				{
 					switch (propertyName)
 					{
+						case "Title":
+							Title = value;
+							break;
 						case "Caption":
 							Caption = value;
-							break;
-						case "ImageAlt":
-							ImageAlt = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
 			public string Caption { get; set; }
-			[DataMember]
-			public string ImageAlt { get; set; }
-			[DataMember]
-			public Tooltip Tooltip { get; set; }
+			
+			}
+			[DataContract]
+			public partial class ImageGroupCollection : IInformationObject
+			{
+				public ImageGroupCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ImageGroupCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ImageGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImageGroupCollection(relativeLocation, owner);
+				}
+
+
+                public static ImageGroupCollection RetrieveImageGroupCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ImageGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageGroupCollection), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroupCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ImageGroupCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroupCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ImageGroupCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageGroupCollection", ID).Replace("\\", "/");
+				}
+
+
+
+				
+		
+				public static ImageGroupCollection CreateDefault()
+				{
+					var result = new ImageGroupCollection();
+					return result;
+				}
+
+				public static ImageGroupCollection CreateDemoDefault()
+				{
+					var result = new ImageGroupCollection();
+					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
+					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
+					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<ImageGroup> CollectionContent = new List<ImageGroup>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -12036,14 +13493,22 @@ Introduction.Body
 				}
 
 
+
 				public static ImageGroup CreateDefault()
+				{
+					var result = new ImageGroup();
+					result.ImagesCollection = ImagesCollection.CreateDefault();
+					return result;
+				}
+
+				public static ImageGroup CreateDemoDefault()
 				{
 					var result = new ImageGroup();
 					result.Title = @"ImageGroup.Title";
 
 					result.Description = @"ImageGroup.Description";
 
-					result.ImagesCollection = ImagesCollection.CreateDefault();
+					result.ImagesCollection = ImagesCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -12226,8 +13691,19 @@ Introduction.Body
 		
 				public static ImagesCollection CreateDefault()
 				{
-					return new ImagesCollection();
+					var result = new ImagesCollection();
+					return result;
 				}
+
+				public static ImagesCollection CreateDemoDefault()
+				{
+					var result = new ImagesCollection();
+					result.CollectionContent.Add(Image.CreateDemoDefault());
+					result.CollectionContent.Add(Image.CreateDemoDefault());
+					result.CollectionContent.Add(Image.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
 
@@ -12386,7 +13862,14 @@ Introduction.Body
 				}
 
 
+
 				public static Tooltip CreateDefault()
+				{
+					var result = new Tooltip();
+					return result;
+				}
+
+				public static Tooltip CreateDemoDefault()
 				{
 					var result = new Tooltip();
 					result.TooltipText = @"Tooltip.TooltipText";
@@ -12560,8 +14043,19 @@ Introduction.Body
 		
 				public static SocialPanelCollection CreateDefault()
 				{
-					return new SocialPanelCollection();
+					var result = new SocialPanelCollection();
+					return result;
 				}
+
+				public static SocialPanelCollection CreateDemoDefault()
+				{
+					var result = new SocialPanelCollection();
+					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
+					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
+					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
 
@@ -12720,10 +14214,18 @@ Introduction.Body
 				}
 
 
+
 				public static SocialPanel CreateDefault()
 				{
 					var result = new SocialPanel();
 					result.SocialFilter = Filter.CreateDefault();
+					return result;
+				}
+
+				public static SocialPanel CreateDemoDefault()
+				{
+					var result = new SocialPanel();
+					result.SocialFilter = Filter.CreateDemoDefault();
 				
 					return result;
 				}
@@ -12896,8 +14398,19 @@ Introduction.Body
 		
 				public static EventCollection CreateDefault()
 				{
-					return new EventCollection();
+					var result = new EventCollection();
+					return result;
 				}
+
+				public static EventCollection CreateDemoDefault()
+				{
+					var result = new EventCollection();
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
 
@@ -13056,10 +14569,18 @@ Introduction.Body
 				}
 
 
+
 				public static MapEventCollection CreateDefault()
 				{
 					var result = new MapEventCollection();
 					result.Events = EventCollection.CreateDefault();
+					return result;
+				}
+
+				public static MapEventCollection CreateDemoDefault()
+				{
+					var result = new MapEventCollection();
+					result.Events = EventCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -13227,7 +14748,14 @@ Introduction.Body
 				}
 
 
+
 				public static Longitude CreateDefault()
+				{
+					var result = new Longitude();
+					return result;
+				}
+
+				public static Longitude CreateDemoDefault()
 				{
 					var result = new Longitude();
 					result.TextValue = @"Longitude.TextValue";
@@ -13396,7 +14924,14 @@ Introduction.Body
 				}
 
 
+
 				public static Latitude CreateDefault()
+				{
+					var result = new Latitude();
+					return result;
+				}
+
+				public static Latitude CreateDemoDefault()
 				{
 					var result = new Latitude();
 					result.TextValue = @"Latitude.TextValue";
@@ -13565,11 +15100,20 @@ Introduction.Body
 				}
 
 
+
 				public static Location CreateDefault()
 				{
 					var result = new Location();
 					result.Longitude = Longitude.CreateDefault();
 					result.Latitude = Latitude.CreateDefault();
+					return result;
+				}
+
+				public static Location CreateDemoDefault()
+				{
+					var result = new Location();
+					result.Longitude = Longitude.CreateDemoDefault();
+					result.Latitude = Latitude.CreateDemoDefault();
 				
 					return result;
 				}
@@ -13745,7 +15289,14 @@ Introduction.Body
 				}
 
 
+
 				public static Date CreateDefault()
+				{
+					var result = new Date();
+					return result;
+				}
+
+				public static Date CreateDemoDefault()
 				{
 					var result = new Date();
 				
@@ -13927,7 +15478,14 @@ Introduction.Body
 				}
 
 
+
 				public static Sex CreateDefault()
+				{
+					var result = new Sex();
+					return result;
+				}
+
+				public static Sex CreateDemoDefault()
 				{
 					var result = new Sex();
 					result.SexText = @"Sex.SexText";
@@ -14096,7 +15654,14 @@ Introduction.Body
 				}
 
 
+
 				public static Address CreateDefault()
+				{
+					var result = new Address();
+					return result;
+				}
+
+				public static Address CreateDemoDefault()
 				{
 					var result = new Address();
 					result.StreetName = @"Address.StreetName";
@@ -14328,7 +15893,16 @@ Introduction.Body
 				}
 
 
+
 				public static Identity CreateDefault()
+				{
+					var result = new Identity();
+					result.Sex = Sex.CreateDefault();
+					result.Birthday = Date.CreateDefault();
+					return result;
+				}
+
+				public static Identity CreateDemoDefault()
 				{
 					var result = new Identity();
 					result.FirstName = @"Identity.FirstName";
@@ -14337,8 +15911,8 @@ Introduction.Body
 
 					result.Initials = @"Identity.Initials";
 
-					result.Sex = Sex.CreateDefault();
-					result.Birthday = Date.CreateDefault();
+					result.Sex = Sex.CreateDemoDefault();
+					result.Birthday = Date.CreateDemoDefault();
 				
 					return result;
 				}
@@ -14529,7 +16103,14 @@ Introduction.Body
 				}
 
 
+
 				public static ImageVideoSoundVectorRaw CreateDefault()
+				{
+					var result = new ImageVideoSoundVectorRaw();
+					return result;
+				}
+
+				public static ImageVideoSoundVectorRaw CreateDemoDefault()
 				{
 					var result = new ImageVideoSoundVectorRaw();
 					result.Vector = @"ImageVideoSoundVectorRaw.Vector
@@ -14711,7 +16292,14 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
+
 				public static Category CreateDefault()
+				{
+					var result = new Category();
+					return result;
+				}
+
+				public static Category CreateDemoDefault()
 				{
 					var result = new Category();
 					result.TextValue = @"Category.TextValue";
@@ -14880,7 +16468,17 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
+
 				public static What CreateDefault()
+				{
+					var result = new What();
+					result.Illustration = ImageVideoSoundVectorRaw.CreateDefault();
+					result.Category1 = Category.CreateDefault();
+					result.Category2 = Category.CreateDefault();
+					return result;
+				}
+
+				public static What CreateDemoDefault()
 				{
 					var result = new What();
 					result.ServiceName = @"What.ServiceName
@@ -14899,9 +16497,9 @@ What.Description
 What.Description
 ";
 
-					result.Illustration = ImageVideoSoundVectorRaw.CreateDefault();
-					result.Category1 = Category.CreateDefault();
-					result.Category2 = Category.CreateDefault();
+					result.Illustration = ImageVideoSoundVectorRaw.CreateDemoDefault();
+					result.Category1 = Category.CreateDemoDefault();
+					result.Category2 = Category.CreateDemoDefault();
 				
 					return result;
 				}
@@ -15100,7 +16698,14 @@ What.Description
 				}
 
 
+
 				public static When CreateDefault()
+				{
+					var result = new When();
+					return result;
+				}
+
+				public static When CreateDemoDefault()
 				{
 					var result = new When();
 					result.Title = @"When.Title";
@@ -15274,7 +16879,16 @@ What.Description
 				}
 
 
+
 				public static Where CreateDefault()
+				{
+					var result = new Where();
+					result.Location = Location.CreateDefault();
+					result.Address = Address.CreateDefault();
+					return result;
+				}
+
+				public static Where CreateDemoDefault()
 				{
 					var result = new Where();
 					result.Title = @"Where.Title";
@@ -15286,8 +16900,8 @@ Where.Description
 Where.Description
 ";
 
-					result.Location = Location.CreateDefault();
-					result.Address = Address.CreateDefault();
+					result.Location = Location.CreateDemoDefault();
+					result.Address = Address.CreateDemoDefault();
 				
 					return result;
 				}
@@ -15473,11 +17087,20 @@ Where.Description
 				}
 
 
+
 				public static Whom CreateDefault()
 				{
 					var result = new Whom();
 					result.Identity = Identity.CreateDefault();
 					result.ProfileImage = ImageVideoSoundVectorRaw.CreateDefault();
+					return result;
+				}
+
+				public static Whom CreateDemoDefault()
+				{
+					var result = new Whom();
+					result.Identity = Identity.CreateDemoDefault();
+					result.ProfileImage = ImageVideoSoundVectorRaw.CreateDemoDefault();
 				
 					return result;
 				}
@@ -15658,7 +17281,16 @@ Where.Description
 				}
 
 
+
 				public static Worth CreateDefault()
+				{
+					var result = new Worth();
+					result.Location = Location.CreateDefault();
+					result.Address = Address.CreateDefault();
+					return result;
+				}
+
+				public static Worth CreateDemoDefault()
 				{
 					var result = new Worth();
 					result.Title = @"Worth.Title";
@@ -15670,8 +17302,8 @@ Worth.Description
 Worth.Description
 ";
 
-					result.Location = Location.CreateDefault();
-					result.Address = Address.CreateDefault();
+					result.Location = Location.CreateDemoDefault();
+					result.Address = Address.CreateDemoDefault();
 				
 					return result;
 				}
@@ -15857,12 +17489,22 @@ Worth.Description
 				}
 
 
+
 				public static Event5W CreateDefault()
 				{
 					var result = new Event5W();
 					result.What = What.CreateDefault();
 					result.When = When.CreateDefault();
 					result.Where = Where.CreateDefault();
+					return result;
+				}
+
+				public static Event5W CreateDemoDefault()
+				{
+					var result = new Event5W();
+					result.What = What.CreateDemoDefault();
+					result.When = When.CreateDemoDefault();
+					result.Where = Where.CreateDemoDefault();
 				
 					return result;
 				}
@@ -16051,8 +17693,19 @@ Worth.Description
 		
 				public static Event5WCollection CreateDefault()
 				{
-					return new Event5WCollection();
+					var result = new Event5WCollection();
+					return result;
 				}
+
+				public static Event5WCollection CreateDemoDefault()
+				{
+					var result = new Event5WCollection();
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					result.CollectionContent.Add(Event5W.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
 
@@ -16216,8 +17869,19 @@ Worth.Description
 		
 				public static SubscriptionCollection CreateDefault()
 				{
-					return new SubscriptionCollection();
+					var result = new SubscriptionCollection();
+					return result;
 				}
+
+				public static SubscriptionCollection CreateDemoDefault()
+				{
+					var result = new SubscriptionCollection();
+					result.CollectionContent.Add(Subscription.CreateDemoDefault());
+					result.CollectionContent.Add(Subscription.CreateDemoDefault());
+					result.CollectionContent.Add(Subscription.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
 
@@ -16376,7 +18040,14 @@ Worth.Description
 				}
 
 
+
 				public static Subscription CreateDefault()
+				{
+					var result = new Subscription();
+					return result;
+				}
+
+				public static Subscription CreateDemoDefault()
 				{
 					var result = new Subscription();
 					result.TargetItemID = @"Subscription.TargetItemID";
@@ -16772,12 +18443,20 @@ Worth.Description
 				}
 
 
+
 				public static SystemError CreateDefault()
+				{
+					var result = new SystemError();
+					result.SystemErrorItems = SystemErrorItemCollection.CreateDefault();
+					return result;
+				}
+
+				public static SystemError CreateDemoDefault()
 				{
 					var result = new SystemError();
 					result.ErrorTitle = @"SystemError.ErrorTitle";
 
-					result.SystemErrorItems = SystemErrorItemCollection.CreateDefault();
+					result.SystemErrorItems = SystemErrorItemCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -16955,7 +18634,14 @@ Worth.Description
 				}
 
 
+
 				public static SystemErrorItem CreateDefault()
+				{
+					var result = new SystemErrorItem();
+					return result;
+				}
+
+				public static SystemErrorItem CreateDemoDefault()
 				{
 					var result = new SystemErrorItem();
 					result.ShortDescription = @"SystemErrorItem.ShortDescription";
@@ -17141,8 +18827,19 @@ SystemErrorItem.LongDescription
 		
 				public static SystemErrorItemCollection CreateDefault()
 				{
-					return new SystemErrorItemCollection();
+					var result = new SystemErrorItemCollection();
+					return result;
 				}
+
+				public static SystemErrorItemCollection CreateDemoDefault()
+				{
+					var result = new SystemErrorItemCollection();
+					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
+					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
+					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
 
@@ -17301,7 +18998,14 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static InformationSource CreateDefault()
+				{
+					var result = new InformationSource();
+					return result;
+				}
+
+				public static InformationSource CreateDemoDefault()
 				{
 					var result = new InformationSource();
 					result.SourceName = @"InformationSource.SourceName";
@@ -17515,8 +19219,19 @@ SystemErrorItem.LongDescription
 		
 				public static InformationSourceCollection CreateDefault()
 				{
-					return new InformationSourceCollection();
+					var result = new InformationSourceCollection();
+					return result;
 				}
+
+				public static InformationSourceCollection CreateDemoDefault()
+				{
+					var result = new InformationSourceCollection();
+					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
+					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
+					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
 
@@ -17675,7 +19390,15 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static UpdateWebContentOperation CreateDefault()
+				{
+					var result = new UpdateWebContentOperation();
+					result.Handlers = UpdateWebContentHandlerCollection.CreateDefault();
+					return result;
+				}
+
+				public static UpdateWebContentOperation CreateDemoDefault()
 				{
 					var result = new UpdateWebContentOperation();
 					result.SourceContainerName = @"UpdateWebContentOperation.SourceContainerName";
@@ -17686,7 +19409,7 @@ SystemErrorItem.LongDescription
 
 					result.TargetPathRoot = @"UpdateWebContentOperation.TargetPathRoot";
 
-					result.Handlers = UpdateWebContentHandlerCollection.CreateDefault();
+					result.Handlers = UpdateWebContentHandlerCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -17874,6 +19597,23 @@ SystemErrorItem.LongDescription
 				}
 
 
+
+				public static UpdateWebContentHandlerItem CreateDefault()
+				{
+					var result = new UpdateWebContentHandlerItem();
+					return result;
+				}
+
+				public static UpdateWebContentHandlerItem CreateDemoDefault()
+				{
+					var result = new UpdateWebContentHandlerItem();
+					result.InformationTypeName = @"UpdateWebContentHandlerItem.InformationTypeName";
+
+					result.OptionName = @"UpdateWebContentHandlerItem.OptionName";
+
+				
+					return result;
+				}
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -18045,8 +19785,19 @@ SystemErrorItem.LongDescription
 		
 				public static UpdateWebContentHandlerCollection CreateDefault()
 				{
-					return new UpdateWebContentHandlerCollection();
+					var result = new UpdateWebContentHandlerCollection();
+					return result;
 				}
+
+				public static UpdateWebContentHandlerCollection CreateDemoDefault()
+				{
+					var result = new UpdateWebContentHandlerCollection();
+					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
+					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
+					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
+					return result;
+				}
+
 		
 				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
 
@@ -18205,7 +19956,14 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static SubscriberInput CreateDefault()
+				{
+					var result = new SubscriberInput();
+					return result;
+				}
+
+				public static SubscriberInput CreateDemoDefault()
 				{
 					var result = new SubscriberInput();
 					result.InputRelativeLocation = @"SubscriberInput.InputRelativeLocation";
@@ -18395,14 +20153,22 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static SubscriberUpdateOperation CreateDefault()
+				{
+					var result = new SubscriberUpdateOperation();
+					result.OperationParameters = SubscriberInput.CreateDefault();
+					return result;
+				}
+
+				public static SubscriberUpdateOperation CreateDemoDefault()
 				{
 					var result = new SubscriberUpdateOperation();
 					result.TargetOwnerID = @"SubscriberUpdateOperation.TargetOwnerID";
 
 					result.SubscriberOwnerID = @"SubscriberUpdateOperation.SubscriberOwnerID";
 
-					result.OperationParameters = SubscriberInput.CreateDefault();
+					result.OperationParameters = SubscriberInput.CreateDemoDefault();
 					result.OperationName = @"SubscriberUpdateOperation.OperationName";
 
 				
@@ -18587,7 +20353,14 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static Monitor CreateDefault()
+				{
+					var result = new Monitor();
+					return result;
+				}
+
+				public static Monitor CreateDemoDefault()
 				{
 					var result = new Monitor();
 					result.TargetObjectName = @"Monitor.TargetObjectName";
@@ -18794,7 +20567,14 @@ SystemErrorItem.LongDescription
 				}
 
 
+
 				public static IconTitleDescription CreateDefault()
+				{
+					var result = new IconTitleDescription();
+					return result;
+				}
+
+				public static IconTitleDescription CreateDemoDefault()
 				{
 					var result = new IconTitleDescription();
 					result.Title = @"IconTitleDescription.Title";
@@ -18977,11 +20757,20 @@ IconTitleDescription.Description
 				}
 
 
+
 				public static AboutAGIApplications CreateDefault()
 				{
 					var result = new AboutAGIApplications();
 					result.BuiltForAnybody = IconTitleDescription.CreateDefault();
 					result.ForAllPeople = IconTitleDescription.CreateDefault();
+					return result;
+				}
+
+				public static AboutAGIApplications CreateDemoDefault()
+				{
+					var result = new AboutAGIApplications();
+					result.BuiltForAnybody = IconTitleDescription.CreateDemoDefault();
+					result.ForAllPeople = IconTitleDescription.CreateDemoDefault();
 				
 					return result;
 				}
@@ -19169,6 +20958,13 @@ IconTitleDescription.Description
 					return result;
 				}
 
+				public static Icon CreateDemoDefault()
+				{
+					var result = new Icon();
+					return result;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -19324,6 +21120,13 @@ IconTitleDescription.Description
 					return result;
 				}
 
+				public static WebPageTemplate CreateDemoDefault()
+				{
+					var result = new WebPageTemplate();
+					return result;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -19478,6 +21281,13 @@ IconTitleDescription.Description
 					var result = new WebPage();
 					return result;
 				}
+
+				public static WebPage CreateDemoDefault()
+				{
+					var result = new WebPage();
+					return result;
+				}
+
 
 			
 			}

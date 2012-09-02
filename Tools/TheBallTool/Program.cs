@@ -46,15 +46,18 @@ namespace TheBallTool
         {
             MapContainer mapContainer =
                 MapContainer.RetrieveMapContainer(
-                    "livesite/oip-layouts/oip-layout-default-view.phtml/AaltoGlobalImpact.OIP/MapContainer/0a176a15-f434-4bc6-a314-a18731fd9665",
+                    "livesite/oip-layouts/oip-layout-default-view.phtml/AaltoGlobalImpact.OIP/MapContainer/38b16ead-5851-484f-a367-bb215eb8e490",
                     owner);
             MapMarker marker1 = MapMarker.CreateDefault();
-            marker1.LocationText = "62,24";
+            marker1.LocationText = "8446198.6713314,2759433.3836466";
             MapMarker marker2 = MapMarker.CreateDefault();
-            marker2.LocationText = "10,10";
+            marker2.LocationText = "10000,10000";
+            MapMarker marker3 = MapMarker.CreateDefault();
+            marker3.LocationText = "0,0";
             //mapContainer.MapMarkers = MapMarkerCollection.CreateDefault();
             mapContainer.MapMarkers.CollectionContent.Add(marker1);
             mapContainer.MapMarkers.CollectionContent.Add(marker2);
+            mapContainer.MapMarkers.CollectionContent.Add(marker3);
             StorageSupport.StoreInformation(mapContainer, owner);
         }
 
@@ -311,20 +314,6 @@ namespace TheBallTool
             StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);*/
         }
 
-
-        private static void doTest2(string connStr)
-        {
-            StorageSupport.InitializeWithConnectionString(connStr);
-
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = "anon-webcontainer/oip-layouts/oip-layout-default-edit.html";
-            CloudBlob blob = publicClient.GetBlobReference(blobPath);
-            string webTemplate = blob.DownloadText();
-            BlogContainer container = BlogContainer.CreateDefault();
-            container.BlogContainerHeader.Title = "Titteli";
-            container.BlogContainerHeader.SubTitle = "Aliotsikko";
-            string renderedPage = RenderWebSupport.RenderTemplateWithContent(webTemplate, container);
-        }
 
         private static void doTest(string connStr)
         {
