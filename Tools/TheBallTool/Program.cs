@@ -24,6 +24,8 @@ namespace TheBallTool
                 string templateLocation = "livetemplate";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
+                //DoMapData(webGroup);
+                //return;
                 UpdateTemplateContainer(webGroup, templateLocation);
                 Console.WriteLine("Starting to sync...");
                 DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
@@ -33,10 +35,27 @@ namespace TheBallTool
                 //InitLandingPages();
                 //Console.WriteLine("Press enter to continue...");
                 //Console.ReadLine();
-            } catch(Exception ex)
+            } 
+                catch(Exception ex)
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void DoMapData(IContainerOwner owner)
+        {
+            MapContainer mapContainer =
+                MapContainer.RetrieveMapContainer(
+                    "livesite/oip-layouts/oip-layout-default-view.phtml/AaltoGlobalImpact.OIP/MapContainer/0a176a15-f434-4bc6-a314-a18731fd9665",
+                    owner);
+            MapMarker marker1 = MapMarker.CreateDefault();
+            marker1.LocationText = "62,24";
+            MapMarker marker2 = MapMarker.CreateDefault();
+            marker2.LocationText = "10,10";
+            //mapContainer.MapMarkers = MapMarkerCollection.CreateDefault();
+            mapContainer.MapMarkers.CollectionContent.Add(marker1);
+            mapContainer.MapMarkers.CollectionContent.Add(marker2);
+            StorageSupport.StoreInformation(mapContainer, owner);
         }
 
         static void DoSyncs(string templateLocation, string privateSiteLocation, string publicSiteLocation)

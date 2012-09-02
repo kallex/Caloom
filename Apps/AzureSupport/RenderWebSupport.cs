@@ -434,6 +434,10 @@ namespace TheBall
                 // Custom rendering for web templates
                 if(source.GetBlobInformationType() == StorageSupport.InformationType_WebTemplateValue)
                 {
+                    if(source.Name.Contains("map"))
+                    {
+                        bool isMap = true;
+                    }
                     RenderWebSupport.RenderTemplateWithContentToBlob(source, target);
                     return true;
                 }

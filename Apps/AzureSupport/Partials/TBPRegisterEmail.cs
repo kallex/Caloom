@@ -11,6 +11,8 @@ namespace AaltoGlobalImpact.OIP
             if (String.IsNullOrEmpty(EmailAddress))
                 return;
             HttpContext context = HttpContext.Current;
+            if (context == null)
+                return;
             TBAccount account = (TBAccount) context.Items["Account"];
             TBEmailValidation emailValidation = TBEmailValidation.CreateDefault();
             emailValidation.AccountID = account.ID;
