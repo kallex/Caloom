@@ -62,6 +62,8 @@
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
+    <Compile Include="Partials\GroupContainer.cs" />
+    <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\InformationSource.cs" />
     <Compile Include="Partials\InformationSourceCollection.cs" />
     <Compile Include="Partials\TBLoginInfo.cs" />

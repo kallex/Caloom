@@ -26,7 +26,7 @@ namespace TheBallTool
                 string publicSiteLocation = "livepubsite";
                 //DoMapData(webGroup);
                 //return;
-                UpdateTemplateContainer(webGroup, templateLocation);
+                //UpdateTemplateContainer(webGroup, templateLocation);
                 Console.WriteLine("Starting to sync...");
                 DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
                 //"grp/default/pub/", true);
@@ -67,7 +67,6 @@ namespace TheBallTool
                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", templateLocation),
                 StorageSupport.CurrActiveContainer.Name,
                                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation), false);
-            return;
             SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
                 StorageSupport.CurrAnonPublicContainer.Name,

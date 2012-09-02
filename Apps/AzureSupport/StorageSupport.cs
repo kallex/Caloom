@@ -797,6 +797,13 @@ namespace TheBall
 
         public static CloudBlob StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
         {
+            IAddOperationProvider addOperationProvider = informationObject as IAddOperationProvider;
+            if(addOperationProvider != null)
+            {
+                bool cancelOriginalStore = addOperationProvider.PerformAddOperation();
+                if (cancelOriginalStore)
+                    return null;
+            }
             Type informationObjectType = informationObject.GetType();
             DataContractSerializer ser = new DataContractSerializer(informationObjectType);
             MemoryStream memoryStream = new MemoryStream();

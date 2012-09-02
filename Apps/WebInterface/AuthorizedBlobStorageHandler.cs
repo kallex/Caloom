@@ -237,6 +237,11 @@ namespace WebInterface
             rootObject.SetValuesToObjects(form);
             StorageSupport.StoreInformation(rootObject, containerOwner);
             RenderWebSupport.RefreshContent(webPageBlob);
+            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", "livesite"),
+                StorageSupport.CurrAnonPublicContainer.Name,
+                                String.Format("grp/default/{0}/", "livepubsite"), true);
+
             HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
@@ -287,5 +292,30 @@ namespace WebInterface
         }
 
         #endregion
+        private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
+        {
+            if (useQueuedWorker)
+            {
+                QueueEnvelope envelope = new QueueEnvelope
+                {
+                    UpdateWebContentOperation = new UpdateWebContentOperation
+                    {
+                        SourceContainerName =
+                            sourceContainerName,
+                        SourcePathRoot = sourcePathRoot,
+                        TargetContainerName =
+                            targetContainerName,
+                        TargetPathRoot = targetPathRoot
+                    }
+                };
+                QueueSupport.PutToDefaultQueue(envelope);
+            }
+            else
+            {
+                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, RenderWebSupport.RenderingSyncHandler);
+            }
+        }
+
     }
+
 }
