@@ -14,31 +14,42 @@ namespace TheBallTool
     {
         static void Main(string[] args)
         {
-            //bool result = EmailSupport.SendEmail("kalle.launiala@gmail.com", "kalle.launiala@citrus.fi", "The Ball - Says Hello!",
-            //                       "Text testing...");
-            string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}", args[0]);
-            StorageSupport.InitializeWithConnectionString(connStr);
-            //AddLoginToAccount("https://www.google.com/accounts/o8/id?id=AItOawkXb-XQERsvhNkZVlEEiCSOuP1y82uHCQc", "fbbaaded-6615-4083-8ea8-92b2aa162861");
-            //TestDriveQueueWorker();
-            //TestDriveDynamicCreation();
-            //return;
+            try
+            {
+                string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
+                                               args[0]);
+                StorageSupport.InitializeWithConnectionString(connStr);
 
-            TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
-            UpdateTemplateContainer(webGroup);
+                TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
+                string templateLocation = "livetemplate";
+                string privateSiteLocation = "livesite";
+                string publicSiteLocation = "livepubsite";
+                UpdateTemplateContainer(webGroup, templateLocation);
+                Console.WriteLine("Starting to sync...");
+                DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
+                //"grp/default/pub/", true);
+                return;
+                //doDataTest(connStr);
+                //InitLandingPages();
+                //Console.WriteLine("Press enter to continue...");
+                //Console.ReadLine();
+            } catch(Exception ex)
+            {
+                Console.WriteLine("Error exit: " + ex.ToString());
+            }
+        }
+
+        static void DoSyncs(string templateLocation, string privateSiteLocation, string publicSiteLocation)
+        {
             SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
-                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/webtemplate/",
+                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", templateLocation),
                 StorageSupport.CurrActiveContainer.Name,
-                                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/", false);
-            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
-                "grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/website/",
-                StorageSupport.CurrAnonPublicContainer.Name,
-                                "grp/default/pub/", true);
-            //"grp/default/pub/", true);
+                                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation), false);
             return;
-            //doDataTest(connStr);
-            //InitLandingPages();
-            Console.WriteLine("Press enter to continue...");
-            Console.ReadLine();
+            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
+                StorageSupport.CurrAnonPublicContainer.Name,
+                                String.Format("grp/default/{0}/", publicSiteLocation), true);
         }
 
         private static void AddLoginToAccount(string loginUrlID, string accountID)
@@ -83,7 +94,7 @@ namespace TheBallTool
             }
         }
 
-        private static void UpdateTemplateContainer(IContainerOwner owner)
+        private static void UpdateTemplateContainer(IContainerOwner owner, string templateLocation)
         {
             string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
@@ -118,7 +129,7 @@ namespace TheBallTool
                 //    continue;
                 //if (content.FileName.Contains(".phtml") == false)
                 //    continue;
-                string webtemplatePath = Path.Combine("webtemplate", content.FileName).Replace("\\", "/");
+                string webtemplatePath = Path.Combine(templateLocation, content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
                 string blobInformationType = webtemplatePath.EndsWith(".phtml")
                                                  ? StorageSupport.InformationType_WebTemplateValue
@@ -455,3 +466,9 @@ namespace TheBallTool
         }
     }
 }
+//AddLoginToAccount("https://www.google.com/accounts/o8/id?id=AItOawkXb-XQERsvhNkZVlEEiCSOuP1y82uHCQc", "fbbaaded-6615-4083-8ea8-92b2aa162861");
+//TestDriveQueueWorker();
+//TestDriveDynamicCreation();
+//return;
+//bool result = EmailSupport.SendEmail("kalle.launiala@gmail.com", "kalle.launiala@citrus.fi", "The Ball - Says Hello!",
+//                       "Text testing...");

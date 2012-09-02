@@ -323,7 +323,13 @@ namespace TheBall
             {
                 if(contentItem.RootObject == null)
                 {
-                    contentItem.RootObject = contentItem.Source.RetrieveInformationObject();
+                    try
+                    {
+                        contentItem.RootObject = contentItem.Source.RetrieveInformationObject();
+                    } catch // If the rootobject fetch fails, it's due to serialization error most likely
+                    {
+                        
+                    }
                     if (contentItem.RootObject == null)
                     {
                         contentItem.WasMissing = true;

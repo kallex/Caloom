@@ -79,7 +79,17 @@ namespace TheBall
         private static void FetchMetadataIfMissing(CloudBlob blob)
         {
             if(blob.Metadata.Count == 0)
-                blob.FetchAttributes();
+            {
+                try
+                {
+                    blob.FetchAttributes();
+                } catch(StorageClientException stEx)
+                {
+                    if (stEx.ErrorCode == StorageErrorCode.BlobNotFound || stEx.ErrorCode == StorageErrorCode.ResourceNotFound)
+                        return;
+                    throw;
+                }
+            }
         }
 
 
