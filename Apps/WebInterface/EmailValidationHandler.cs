@@ -12,6 +12,10 @@ namespace WebInterface
 {
     public class EmailValidationHandler : IHttpHandler
     {
+        private const string AuthEmailValidation = "/auth/emailvalidation/";
+        private int AuthEmailValidationLen;
+
+
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
         /// web and register it with IIS before being able to use it. For more information
@@ -26,45 +30,59 @@ namespace WebInterface
             get { return true; }
         }
 
+        public EmailValidationHandler()
+        {
+            AuthEmailValidationLen = AuthEmailValidation.Length;
+        }
+
         public void ProcessRequest(HttpContext context)
         {
-            return;
-            string user = context.User.Identity.Name;
-            bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             HttpRequest request = context.Request;
-            HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/anon/") || isAuthenticated == false)
+            if(request.Path.StartsWith(AuthEmailValidation))
             {
+                HandleEmailValidation(context);
+            }        
+        }
+
+        private void HandleEmailValidation(HttpContext context)
+        {
+            string loginUrl = WebSupport.GetLoginUrl(context);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
+            string requestPath = context.Request.Path;
+            string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
+            TBAccount account = loginRoot.Account;
+            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID, account);
+            if (emailValidation == null)
+            {
+                RespondEmailValidationRecordNotExist(context);
                 return;
             }
-
-            context.Response.Write("<p>Not implemented</p>");
-            return;
-            // Get the file name.
-
-            string fileName = context.Request.Path.Replace("/blobproxy/", string.Empty);
-
-            // Get the blob from blob storage.
-            var storageAccount = CloudStorageAccount.DevelopmentStorageAccount;
-            var blobStorage = storageAccount.CreateCloudBlobClient();
-            string blobContainerName = "";
-            string blobAddress = blobContainerName + "/" + fileName;
-            CloudBlob blob = blobStorage.GetBlobReference(blobAddress);
-
-            // Read blob content to response.
-            context.Response.Clear();
-            try
+            StorageSupport.DeleteInformationObject(emailValidation, account);
+            if (emailValidation.ValidUntil < DateTime.Now)
             {
-                blob.FetchAttributes();
-
-                context.Response.ContentType = blob.Properties.ContentType;
-                blob.DownloadToStream(context.Response.OutputStream);
+                RespondEmailValidationExpired(context, emailValidation);
+                return;
             }
-            catch (Exception ex)
+            if (account.Emails.CollectionContent.Find(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == null)
             {
-                context.Response.Write(ex.ToString());
+                TBEmail email = TBEmail.CreateDefault();
+                email.EmailAddress = emailValidation.Email;
+                email.ValidatedAt = DateTime.Now;
+                account.Emails.CollectionContent.Add(email);
+                account.StoreAndPropagate();
             }
-            context.Response.End();
+
+            context.Response.Redirect("/auth/personal/oip-personal-landing-page.phtml", true);
+        }
+
+        private void RespondEmailValidationRecordNotExist(HttpContext context)
+        {
+            context.Response.Write("Error to be replaced: email validation record does not exist.");
+        }
+
+        private void RespondEmailValidationExpired(HttpContext context, TBEmailValidation emailValidation)
+        {
+            context.Response.Write("Error to be replaced: email validation expired at: " + emailValidation.ValidUntil.ToString());
         }
 
         #endregion

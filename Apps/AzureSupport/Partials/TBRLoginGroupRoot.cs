@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AaltoGlobalImpact.OIP
+﻿namespace AaltoGlobalImpact.OIP
 {
     partial class TBRLoginGroupRoot : IContainerOwner
     {

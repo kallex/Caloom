@@ -11,8 +11,7 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.RedirectPermanent("anon/default/oip-anon-landing-page.phtml", true);
-
+            Response.Redirect("anon/grp/default/livepubsite/oip-layouts/oip-layout-default-view.phtml", true);
         }
     }
 }

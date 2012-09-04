@@ -118,6 +118,7 @@
     <Compile Include="TheBallLogin.aspx.designer.cs">
       <DependentUpon>TheBallLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

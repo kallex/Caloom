@@ -32,13 +32,11 @@ namespace WebInterface
         private const string AuthAccountPrefix = "/auth/acc/";
         private const string AuthProcPrefix = "/auth/proc/";
         private const string AuthPrefix = "/auth/";
-        private const string AuthEmailValidation = "/auth/emailvalidation/";
         private int AuthGroupPrefixLen;
         private int AuthPersonalPrefixLen;
         private int AuthAccountPrefixLen;
         private int AuthProcPrefixLen;
         private int AuthPrefixLen;
-        private int AuthEmailValidationLen;
         private int GuidIDLen;
 
 
@@ -49,7 +47,6 @@ namespace WebInterface
             AuthAccountPrefixLen = AuthAccountPrefix.Length;
             AuthProcPrefixLen = AuthProcPrefix.Length;
             AuthPrefixLen = AuthPrefix.Length;
-            AuthEmailValidationLen = AuthEmailValidation.Length;
             GuidIDLen = Guid.Empty.ToString().Length;
         }
 
@@ -74,69 +71,19 @@ namespace WebInterface
             } else if(request.Path.StartsWith(AuthAccountPrefix))
             {
                 HandleAccountRequest(context);
-            } else if(request.Path.StartsWith(AuthEmailValidation))
-            {
-                HandleEmailValidation(context);
-            }
+            } 
             return;
-        }
-
-        private void HandleEmailValidation(HttpContext context)
-        {
-            TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
-            string requestPath = context.Request.Path;
-            string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
-            TBAccount account = loginRoot.Account;
-            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID, account);
-            if (emailValidation == null)
-                return;
-            StorageSupport.DeleteInformationObject(emailValidation, account);
-            if (emailValidation.ValidUntil < DateTime.Now)
-            {
-                // TODO: Some invalidation message + UTC time
-                StorageSupport.DeleteInformationObject(emailValidation, account);
-                throw new TimeoutException("Email validation expired at: " + emailValidation.ToString());
-            }
-            if(account.Emails.CollectionContent.Find(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == null)
-            {
-                TBEmail email = TBEmail.CreateDefault();
-                email.EmailAddress = emailValidation.Email;
-                email.ValidatedAt = DateTime.Now;
-                account.Emails.CollectionContent.Add(email);
-                StorageSupport.StoreInformation(loginRoot);
-
-                TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(account.ID);
-                accountRoot.Account = account;
-                StorageSupport.StoreInformation(accountRoot);
-
-                string emailRootID = HttpUtility.UrlEncode(email.EmailAddress);
-                TBREmailRoot emailRoot = TBREmailRoot.CreateDefault();
-                emailRoot.ID = emailRootID;
-                emailRoot.UpdateRelativeLocationFromID();
-                emailRoot.Account = account;
-                StorageSupport.StoreInformation(emailRoot);
-
-                foreach(var tbEmail in account.Emails.CollectionContent)
-                {
-                    if (tbEmail == email)
-                        continue;
-                    TBREmailRoot oldRoot = TBREmailRoot.RetrieveFromDefaultLocation(tbEmail.EmailAddress);
-                    oldRoot.Account = account;
-                    StorageSupport.StoreInformation(oldRoot);
-                }
-            }
-
-            context.Response.Redirect("/auth/personal/oip-personal-landing-page.phtml", true);
         }
 
         private void HandleAccountRequest(HttpContext context)
         {
-            TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
+            //TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
         }
 
         private void HandleProcRequest(HttpContext context)
         {
-            TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
+            string loginUrl = context.User.Identity.Name;
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
             TBAccount account = loginRoot.Account;
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPrefixLen);
@@ -147,7 +94,8 @@ namespace WebInterface
         {
             string requestPath = context.Request.Path;
             string groupID = GetGroupID(context.Request.Path);
-            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(context.User.Identity.Name);
+            string loginUrl = WebSupport.GetLoginUrl(context);
+            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
             TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
             if(loginGroupRoot == null)
@@ -166,7 +114,8 @@ namespace WebInterface
 
         private void HandlePersonalRequest(HttpContext context)
         {
-            TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
+            string loginUrl = WebSupport.GetLoginUrl(context);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
 
             TBAccount account = loginRoot.Account;
             bool hasRegisteredEmail = account.Emails.CollectionContent.Count > 0;
@@ -237,6 +186,7 @@ namespace WebInterface
             rootObject.SetValuesToObjects(form);
             StorageSupport.StoreInformation(rootObject, containerOwner);
             RenderWebSupport.RefreshContent(webPageBlob);
+            // Temporary live to pub sync below, to be removed
             SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", "livesite"),
                 StorageSupport.CurrAnonPublicContainer.Name,
@@ -264,32 +214,6 @@ namespace WebInterface
             context.Response.End();
         }
 
-        private TBRLoginRoot GetOrCreateLoginRoot(HttpContext context)
-        {
-            string user = context.User.Identity.Name;
-            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(user);
-            TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginRootID);
-            if(loginRoot == null)
-            {
-                TBLoginInfo loginInfo = TBLoginInfo.CreateDefault();
-                //loginInfo.ID = loginRootID;
-                loginInfo.OpenIDUrl = user;
-
-                TBRAccountRoot accountRoot = TBRAccountRoot.CreateDefault();
-                accountRoot.Account.Logins.CollectionContent.Add(loginInfo);
-                accountRoot.ID = accountRoot.Account.ID;
-                accountRoot.UpdateRelativeLocationFromID();
-                StorageSupport.StoreInformation(accountRoot);
-
-                loginRoot = TBRLoginRoot.CreateDefault();
-                loginRoot.ID = loginRootID;
-                loginRoot.UpdateRelativeLocationFromID();
-                loginRoot.Account = accountRoot.Account;
-                StorageSupport.StoreInformation(loginRoot);
-            }
-            HttpContext.Current.Items.Add("Account", loginRoot.Account);
-            return loginRoot;
-        }
 
         #endregion
         private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
@@ -317,5 +241,4 @@ namespace WebInterface
         }
 
     }
-
 }

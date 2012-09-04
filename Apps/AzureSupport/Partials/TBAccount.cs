@@ -79,4 +79,16 @@ namespace AaltoGlobalImpact.OIP
             }
         }
     }
+
+    partial class TBRAccountRoot
+    {
+        public static TBRAccountRoot CreateAndStoreNewAccount()
+        {
+            TBRAccountRoot accountRoot = TBRAccountRoot.CreateDefault();
+            accountRoot.ID = accountRoot.Account.ID;
+            accountRoot.UpdateRelativeLocationFromID();
+            StorageSupport.StoreInformation(accountRoot);
+            return accountRoot;
+        }
+    }
 }

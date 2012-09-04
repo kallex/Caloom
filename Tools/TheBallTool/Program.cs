@@ -19,14 +19,38 @@ namespace TheBallTool
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
                 StorageSupport.InitializeWithConnectionString(connStr);
-
                 TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
                 string templateLocation = "livetemplate";
+                string defaultWebTemplateLocation = "defaultweb";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
+                const string accountdir = "\\oip-account\\";
+                const string publicdir = "\\oip-public\\";
+                const string groupdir = "\\oip-group\\";
                 //DoMapData(webGroup);
                 //return;
-                //UpdateTemplateContainer(webGroup, templateLocation);
+                string directory = Directory.GetCurrentDirectory();
+                if (directory.EndsWith("\\") == false)
+                    directory = directory + "\\";
+                string[] allFiles =
+                    Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(
+                        str => str.Substring(directory.Length)).ToArray();
+                string[] groupTemplates =
+                    allFiles.Where(file => file.Contains(accountdir) == false && file.Contains(publicdir) == false).
+                        ToArray();
+                string[] publicTemplates =
+                    allFiles.Where(file => file.Contains(accountdir) == false && file.Contains(groupdir) == false).
+                        ToArray();
+                string[] accountTemplates =
+                    allFiles.Where(file => file.Contains(publicdir) == false && file.Contains(groupdir) == false).
+                        ToArray();
+                string defaultAccountTemplates = defaultWebTemplateLocation + "/account";
+                string defaultGroupTemplates = defaultWebTemplateLocation + "/group";
+                string defaultPublicTemplates = defaultWebTemplateLocation + "/public";
+//                UpdateTemplateContainer(accountTemplates, TBSystem.CurrSystem, defaultAccountTemplates);
+//                UpdateTemplateContainer(groupTemplates, TBSystem.CurrSystem, defaultGroupTemplates);
+//                UpdateTemplateContainer(publicTemplates, TBSystem.CurrSystem, defaultPublicTemplates);
+                UpdateTemplateContainer(allFiles, webGroup, templateLocation);
                 Console.WriteLine("Starting to sync...");
                 DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
                 //"grp/default/pub/", true);
@@ -40,6 +64,12 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void TestEmail()
+        {
+            EmailSupport.SendEmail("no-reply-theball@msunit.citrus.fi", "kalle.launiala@citrus.fi", "The Ball - Says Hello!",
+            "Text testing...");
         }
 
         private static void DoMapData(IContainerOwner owner)
@@ -115,9 +145,8 @@ namespace TheBallTool
             }
         }
 
-        private static void UpdateTemplateContainer(IContainerOwner owner, string templateLocation)
+        private static void UpdateTemplateContainer(string[] allFiles, IContainerOwner owner, string targetLocation)
         {
-            string[] allFiles = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
             ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
             var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
@@ -136,21 +165,9 @@ namespace TheBallTool
             MoveUnusedTxtFiles(ProcessedDict);
             foreach (var content in fixedContent)
             {
-                //if (content.FileName.Contains("glyph"))
-                //    continue;
-                //if (content.FileName.Contains("theball-reference") == false)
-                //    continue;
                 if (content.FileName.EndsWith(".txt"))
                     continue;
-                //if (content.FileName.EndsWith(".png"))
-                //    continue;
-                //if (content.FileName.EndsWith(".jpg"))
-                //    continue;
-                //if (content.FileName.Contains("oip-") == false && content.FileName.Contains("theball-") == false)
-                //    continue;
-                //if (content.FileName.Contains(".phtml") == false)
-                //    continue;
-                string webtemplatePath = Path.Combine(templateLocation, content.FileName).Replace("\\", "/");
+                string webtemplatePath = Path.Combine(targetLocation, content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
                 string blobInformationType = webtemplatePath.EndsWith(".phtml")
                                                  ? StorageSupport.InformationType_WebTemplateValue
@@ -163,9 +180,6 @@ namespace TheBallTool
                 {
                     StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
                 }
-                //    container.UploadBlobText(content.FileName.Replace(".phtml", ".phtml"), content.TextContent);
-                //else
-                //    container.UploadBlobBinary(content.FileName, content.BinaryContent);
             }
         }
 

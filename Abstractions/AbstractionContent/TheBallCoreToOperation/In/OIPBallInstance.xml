@@ -5,6 +5,13 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
 		<InformationModel>
+      <!-- System -->
+      <InformationObject name="TBSystem" designDesc="System instance information (singleton class)">
+        <InformationItems>
+          <InformationItem name="InstanceName" logicalDataType="Text_Short"/>
+          <InformationItem name="AdminGroupID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
 			<!-- Collaborators, Collaboration Groups, Organizations -->
 			<!-- Storage Roots -->
 			<InformationObject name="TBRLoginRoot" designDesc="Login root for LoginID">

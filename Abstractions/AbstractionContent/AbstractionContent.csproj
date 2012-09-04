@@ -40,15 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\OIPBallInstance.xml">
+      <Link>TheBallCore\OIPBallInstance.xml</Link>
+    </Content>
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ObjectRelational\In\Content_v1_0\CaloomDatabase_v1_0.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="TheBallCore\In\Content_v1_0\OIPBallInstance.xml" />
     <None Include="ServiceLayer\Out\ServiceClient_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceContract_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceServer_CSharp_v1_0.designer.cs" />

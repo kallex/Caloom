@@ -10,6 +10,9 @@ namespace AaltoGlobalImpact.OIP
         public bool PerformAddOperation()
         {
             AddLocationInfo addLocationInfo = AddLocationInfo;
+            if (String.IsNullOrEmpty(addLocationInfo.Latitude) ||
+                String.IsNullOrEmpty(addLocationInfo.Longitude))
+                return false;
             AddLocationInfo = OIP.AddLocationInfo.CreateDefault();
             AddLocationInfo.LocationName = "";
             AddLocationInfo.Latitude = "";
@@ -27,6 +30,7 @@ namespace AaltoGlobalImpact.OIP
 
         partial void DoPostStoringExecute(IContainerOwner owner)
         {
+            return;
             CloudBlob mainPage =
                 StorageSupport.CurrActiveContainer.GetBlob("livesite/oip-layouts/oip-layout-default-view.phtml", owner);
             InformationSourceCollection sources = mainPage.GetBlobInformationSources();
