@@ -27,6 +27,8 @@ namespace TheBall
         public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
         public static CloudBlobContainer CurrTemplateContainer { get; private set; }
         public static CloudBlobClient CurrBlobClient { get; private set; }
+        private const int AccOrGrpPlusIDPathLength = 41;
+        private const string ContentFolderName = "Content";
 
 
         public static Guid ActiveOwnerID
@@ -943,5 +945,11 @@ namespace TheBall
             return blob;
         }
 
+        public static string GetContentRootLocation(string referenceLocation)
+        {
+            if(referenceLocation.StartsWith("acc/") == false && referenceLocation.StartsWith("grp/") == false)
+                throw new InvalidDataException("Unable to determine root for reference: " + referenceLocation);
+            return referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
+        }
     }
 }

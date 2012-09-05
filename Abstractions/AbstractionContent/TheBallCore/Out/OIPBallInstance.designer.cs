@@ -22,7 +22,8 @@ namespace AaltoGlobalImpact.OIP {
 		void SetValuesToObjects(NameValueCollection form);
 		void PostStoringExecute(IContainerOwner owner);
 		void PostDeleteExecute(IContainerOwner owner);
-		void SetLocationRelativeToRoot(string rootLocation);
+		void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
+		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
     }
 
 			[DataContract]
@@ -160,10 +161,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBSystem", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBSystem", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -343,10 +354,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRLoginRoot", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBRLoginRoot", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -522,10 +543,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRAccountRoot", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBRAccountRoot", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -701,10 +732,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRGroupRoot", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBRGroupRoot", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -880,10 +921,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1063,10 +1114,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBREmailRoot", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBREmailRoot", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1242,10 +1303,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccount", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBAccount", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1441,10 +1512,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1624,10 +1705,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1800,10 +1891,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBLoginInfo", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBLoginInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -1976,10 +2077,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBLoginInfoCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBLoginInfoCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -2152,10 +2263,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmail", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBEmail", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -2333,10 +2454,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmailCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBEmailCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -2509,10 +2640,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRole", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRole", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -2695,10 +2836,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -2871,10 +3022,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBCollaboratingGroup", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBCollaboratingGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3057,10 +3218,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBEmailValidation", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBEmailValidation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3245,10 +3416,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBRegisterContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBRegisterContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3441,10 +3622,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "LoginProvider", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "LoginProvider", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3645,10 +3836,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "LoginProviderCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "LoginProviderCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3821,10 +4022,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ContactOipContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ContactOipContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -3997,10 +4208,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "TBPRegisterEmail", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBPRegisterEmail", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -4173,10 +4394,20 @@ namespace AaltoGlobalImpact.OIP {
 					return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "JavaScriptContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "JavaScriptContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -4354,10 +4585,20 @@ JavaScriptContainer.HtmlContent
 					return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "JavascriptContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "JavascriptContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -4535,10 +4776,20 @@ JavascriptContainer.HtmlContent
 					return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "FooterContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "FooterContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -4716,10 +4967,20 @@ FooterContainer.HtmlContent
 					return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "NavigationContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "NavigationContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -4892,10 +5153,20 @@ FooterContainer.HtmlContent
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -5091,10 +5362,20 @@ FooterContainer.HtmlContent
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountIndex", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountIndex", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -5291,10 +5572,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountModule", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountModule", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -5304,7 +5595,8 @@ AccountIndex.Summary
 					result.Profile = AccountProfile.CreateDefault();
 					result.Security = AccountSecurity.CreateDefault();
 					result.Roles = AccountRoles.CreateDefault();
-					result.Locations = AddressAndLocationCollection.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
+					result.AddLocationInfo = AddLocationInfo.CreateDefault();
 					return result;
 				}
 
@@ -5314,7 +5606,8 @@ AccountIndex.Summary
 					result.Profile = AccountProfile.CreateDemoDefault();
 					result.Security = AccountSecurity.CreateDemoDefault();
 					result.Roles = AccountRoles.CreateDemoDefault();
-					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
+					result.AddLocationInfo = AddLocationInfo.CreateDemoDefault();
 				
 					return result;
 				}
@@ -5339,7 +5632,13 @@ AccountIndex.Summary
 							return result;
 					}
 					{
-						var item = Locations;
+						var item = LocationCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = AddLocationInfo;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -5362,7 +5661,9 @@ AccountIndex.Summary
 			[DataMember]
 			public AccountRoles Roles { get; set; }
 			[DataMember]
-			public AddressAndLocationCollection Locations { get; set; }
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			[DataMember]
+			public AddLocationInfo AddLocationInfo { get; set; }
 			
 			}
 			[DataContract]
@@ -5500,10 +5801,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AddressAndLocationCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddressAndLocationCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -5676,10 +5987,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AddressAndLocation", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddressAndLocation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -5865,10 +6186,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "StreetAddress", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "StreetAddress", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -6062,10 +6393,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountContent", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountContent", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -6238,10 +6579,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountProfile", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountProfile", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -6441,10 +6792,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountSecurity", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountSecurity", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -6630,10 +6991,20 @@ AccountIndex.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountRoles", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountRoles", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -6831,10 +7202,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "PersonalInfoVisibility", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "PersonalInfoVisibility", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7007,10 +7388,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ReferenceToInformation", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ReferenceToInformation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7190,10 +7581,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ReferenceCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ReferenceCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7366,10 +7767,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "BlogContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7575,10 +7986,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7804,10 +8225,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapMarker", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapMarker", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -7990,10 +8421,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapMarkerCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapMarkerCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -8166,10 +8607,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CalendarContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -8375,10 +8826,20 @@ AccountRoles.OrganizationsImPartOf
 					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AboutContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AboutContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -8610,10 +9071,20 @@ AboutContainer.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "OBSAccountContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OBSAccountContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -8819,10 +9290,20 @@ AboutContainer.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ProjectContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ProjectContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9028,10 +9509,20 @@ AboutContainer.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CourseContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CourseContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9237,10 +9728,20 @@ AboutContainer.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ContainerHeader", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ContainerHeader", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9420,10 +9921,20 @@ AboutContainer.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivitySummaryContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ActivitySummaryContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9631,10 +10142,20 @@ ActivitySummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivityContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ActivityContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9810,10 +10331,20 @@ ActivitySummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ActivityCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ActivityCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -9986,10 +10517,20 @@ ActivitySummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Activity", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Activity", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -10204,10 +10745,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ModeratorCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ModeratorCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -10380,10 +10931,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Moderator", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Moderator", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -10563,10 +11124,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CollaboratorCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratorCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -10739,10 +11310,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Collaborator", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Collaborator", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -10922,10 +11503,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroup", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -11098,10 +11689,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -11274,10 +11875,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganization", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganization", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -11450,10 +12061,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -11626,10 +12247,20 @@ Activity.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "GroupSummaryContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupSummaryContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -11837,10 +12468,20 @@ GroupSummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "GroupContainer", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -12066,16 +12707,27 @@ GroupSummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "AddLocationInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AddLocationInfo", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddLocationInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
 				public static AddLocationInfo CreateDefault()
 				{
 					var result = new AddLocationInfo();
+					result.Address = StreetAddress.CreateDefault();
 					return result;
 				}
 
@@ -12084,19 +12736,22 @@ GroupSummaryContainer.SummaryBody
 					var result = new AddLocationInfo();
 					result.LocationName = @"AddLocationInfo.LocationName";
 
-					result.Town = @"AddLocationInfo.Town";
-
-					result.Country = @"AddLocationInfo.Country";
-
 					result.Longitude = @"AddLocationInfo.Longitude";
 
 					result.Latitude = @"AddLocationInfo.Latitude";
 
+					result.Address = StreetAddress.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = Address;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -12106,12 +12761,6 @@ GroupSummaryContainer.SummaryBody
 					{
 						case "LocationName":
 							LocationName = value;
-							break;
-						case "Town":
-							Town = value;
-							break;
-						case "Country":
-							Country = value;
 							break;
 						case "Longitude":
 							Longitude = value;
@@ -12126,13 +12775,11 @@ GroupSummaryContainer.SummaryBody
 			[DataMember]
 			public string LocationName { get; set; }
 			[DataMember]
-			public string Town { get; set; }
-			[DataMember]
-			public string Country { get; set; }
-			[DataMember]
 			public string Longitude { get; set; }
 			[DataMember]
 			public string Latitude { get; set; }
+			[DataMember]
+			public StreetAddress Address { get; set; }
 			
 			}
 			[DataContract]
@@ -12270,10 +12917,20 @@ GroupSummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "GroupCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -12446,10 +13103,20 @@ GroupSummaryContainer.SummaryBody
 					return Path.Combine("AaltoGlobalImpact.OIP", "Group", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Group", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Group", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -12686,10 +13353,20 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Introduction", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Introduction", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -12874,10 +13551,20 @@ Introduction.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "BlogCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -13050,10 +13737,20 @@ Introduction.Body
 					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Blog", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Blog", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -13309,10 +14006,20 @@ Blog.Excerpt
 					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "BlogIndexGroup", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "BlogIndexGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -13556,10 +14263,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarIndex", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CalendarIndex", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -13732,10 +14449,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Filter", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Filter", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -13908,10 +14635,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Calendar", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Calendar", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -14084,10 +14821,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "CalendarCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CalendarCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -14260,10 +15007,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Map", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Map", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -14436,10 +15193,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -14612,10 +15379,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapIndexCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapIndexCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -14821,10 +15598,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResult", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapResult", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15000,10 +15787,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResultCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapResultCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15176,10 +15973,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapResultsCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MapResultsCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15375,10 +16182,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Image", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Image", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15558,10 +16375,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageGroupCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ImageGroupCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15734,10 +16561,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageGroup", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ImageGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -15927,10 +16764,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImagesCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ImagesCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16103,10 +16950,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Tooltip", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Tooltip", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16279,10 +17136,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SocialPanelCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SocialPanelCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16455,10 +17322,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SocialPanel", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SocialPanel", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16634,10 +17511,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Longitude", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Longitude", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16810,10 +17697,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Latitude", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Latitude", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -16986,10 +17883,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Location", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Location", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -17182,10 +18089,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "LocationCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "LocationCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -17358,10 +18275,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Date", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Date", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -17547,10 +18474,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Sex", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Sex", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -17723,10 +18660,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "OBSAddress", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OBSAddress", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -17962,10 +18909,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Identity", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Identity", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -18172,10 +19129,20 @@ BlogIndexGroup.Summary
 					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -18361,10 +19328,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Category", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Category", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -18537,10 +19514,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriptionCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -18713,10 +19700,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Subscription", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Subscription", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -18936,10 +19933,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "QueueEnvelope", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "QueueEnvelope", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 				private object FindFromObjectTree(string objectId)
@@ -19116,10 +20123,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemError", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemError", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -19307,10 +20324,20 @@ ImageVideoSoundVectorRaw.Vector
 					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemErrorItem", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemErrorItem", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -19495,10 +20522,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SystemErrorItemCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemErrorItemCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -19671,10 +20708,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "InformationSource", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "InformationSource", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -19887,10 +20934,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "InformationSourceCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "InformationSourceCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -20063,10 +21120,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentOperation", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentOperation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -20270,10 +21337,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -20453,10 +21530,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -20629,10 +21716,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriberInput", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriberInput", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -20826,10 +21923,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -21026,10 +22133,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Monitor", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Monitor", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -21240,10 +22357,20 @@ SystemErrorItem.LongDescription
 					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "IconTitleDescription", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "IconTitleDescription", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -21430,10 +22557,20 @@ IconTitleDescription.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AboutAGIApplications", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AboutAGIApplications", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 
@@ -21619,10 +22756,20 @@ IconTitleDescription.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Icon", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Icon", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 				// Properties to map to handle the file: Icon.png..png
@@ -21781,10 +22928,20 @@ IconTitleDescription.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "WebPageTemplate", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "WebPageTemplate", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 				// Properties to map to handle the file: WebPageTemplate.html..html
@@ -21943,10 +23100,20 @@ IconTitleDescription.Description
 					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
-				public void SetLocationRelativeToRoot(string masterLocation)
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "WebPage", ID).Replace("\\", "/");
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
 				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "WebPage", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
 
 
 				// Properties to map to handle the file: WebPage.html..html

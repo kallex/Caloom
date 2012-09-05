@@ -67,28 +67,67 @@ namespace TheBall
             string templateContent = template.DownloadText();
             List<ContentItem> existingRoots = GetExistingRoots(sources);
             string renderResult = RenderTemplateWithContentRoots(templateContent, existingRoots);
-            UpdateMismatchedRootsToSources(sources, existingRoots, renderTarget);
+            bool rerenderRequired = UpdateMismatchedRootsToSources(sources, existingRoots, renderTarget);
             renderTarget.SetBlobInformationSources(sources);
             renderTarget.UploadBlobText(renderResult, StorageSupport.InformationType_GenericContentValue);
+            if(rerenderRequired)
+            {
+                RenderTemplateWithContentToBlob(template, renderTarget);
+            }
         }
 
-        private static void UpdateMismatchedRootsToSources(InformationSourceCollection sources, List<ContentItem> existingRoots, CloudBlob renderTarget)
+        /// <summary>
+        /// Updates mismatched (new and removed) roots to sources
+        /// </summary>
+        /// <param name="sources">Information sources</param>
+        /// <param name="existingRoots">Current roots</param>
+        /// <param name="renderTarget">Render target</param>
+        /// <returns>True, if existing sources were spotted and re-rendering is required</returns>
+        private static bool UpdateMismatchedRootsToSources(InformationSourceCollection sources, List<ContentItem> existingRoots, CloudBlob renderTarget)
         {
             var newSources =
-                existingRoots.Where(root => root.WasMissing).Select(root => GetMissingRootAsNewSource(root, renderTarget.Name)).ToArray();
-            sources.CollectionContent.AddRange(newSources);
+                existingRoots.Where(root => root.WasMissing).Select(root =>
+                                                                        {
+                                                                            bool foundExistingSource;
+                                                                            var source = GetMissingRootAsNewSource(
+                                                                                root, renderTarget.Name,
+                                                                                out foundExistingSource);
+                                                                            return new
+                                                                                       {
+                                                                                           Source = source,
+                                                                                           FoundExistingSource =
+                                                                                               foundExistingSource
+                                                                                       };
+                                                                        }
+                    ).ToArray();
+            sources.CollectionContent.AddRange(newSources.Select(item => item.Source));
             foreach (var item in existingRoots.Where(root => root.WasNeeded == false))
                 sources.CollectionContent.Remove(item.Source);
             // Don't delete the missing blobs just now
-
+            return newSources.Any(source => source.FoundExistingSource);
         }
 
-        private static InformationSource GetMissingRootAsNewSource(ContentItem root, string masterLocation)
+        private static InformationSource GetMissingRootAsNewSource(ContentItem root, string masterLocation, out bool foundExistingSource)
         {
             InformationSource source = root.Source ?? InformationSource.CreateDefault();
             IInformationObject informationObject = (IInformationObject) root.RootObject;
-            informationObject.SetLocationRelativeToRoot(masterLocation);
-            CloudBlob blob = StorageSupport.StoreInformation(informationObject);
+            string sourceContentLocation = informationObject.GetLocationRelativeToContentRoot(masterLocation,
+                                                                                              root.RootName);
+            CloudBlob blob;
+            IInformationObject existingObject = StorageSupport.RetrieveInformationWithBlob(sourceContentLocation,
+                                                                                           root.RootType, out blob);
+            if(existingObject == null)
+            {
+                informationObject.SetLocationRelativeToContentRoot(masterLocation, root.RootName);
+                blob = StorageSupport.StoreInformation(informationObject);
+                foundExistingSource = false;
+            }
+            else
+            {
+                informationObject = existingObject;
+                root.RootObject = existingObject;
+                foundExistingSource = true;
+            }
             source.SetBlobValuesToSource(blob);
             source.SetInformationObjectValuesToSource(root.RootName, informationObject.GetType().FullName);
             return source;

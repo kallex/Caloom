@@ -17,8 +17,8 @@ namespace AaltoGlobalImpact.OIP
             AddLocationInfo.LocationName = "";
             AddLocationInfo.Latitude = "";
             AddLocationInfo.Longitude = "";
-            AddLocationInfo.Town = "";
-            AddLocationInfo.Country = "";
+            //AddLocationInfo.Town = "";
+            //AddLocationInfo.Country = "";
             Locations.CollectionContent.RemoveAll(loc => loc.LocationName == "Location.LocationName");
             Location location = Location.CreateDefault();
             location.LocationName = addLocationInfo.LocationName;

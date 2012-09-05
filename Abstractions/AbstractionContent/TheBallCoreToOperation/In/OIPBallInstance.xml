@@ -172,11 +172,12 @@
 					<InformationItem name="Profile" logicalDataType="InformationObject" informationObjectName="AccountProfile" />
           <InformationItem name="Security" logicalDataType="InformationObject" informationObjectName="AccountSecurity"/>
 					<InformationItem name="Roles" logicalDataType="InformationObject" informationObjectName="AccountRoles" />
-					<InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection" />
+					<InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection" />
           <!--
 					<InformationItem name="AccountStatistics" logicalDataType="InformationObject" informationObjectName="AccountStatistics" />
 					<InformationItem name="AccountContent" logicalDataType="InformationObject" informationObjectName="AccountContent" />
           -->
+          <InformationItem name="AddLocationInfo" logicalDataType="InformationObject" informationObjectName="AddLocationInfo"/>
 				</InformationItems>
 			</InformationObject>
       <!--
@@ -232,7 +233,6 @@
       <InformationObject name="AccountSecurity" designDesc="Account security">
         <InformationItems>
           <InformationItem name="LoginInfoCollection" logicalDataType="InformationObject" informationObjectName="TBLoginInfoCollection" />
-          <!-- Add login info -->
           <InformationItem name="EmailCollection" logicalDataType="InformationObject" informationObjectName="TBEmailCollection" />
         </InformationItems>
       </InformationObject>
@@ -447,10 +447,9 @@
       <InformationObject name="AddLocationInfo" designDesc="Add location info">
         <InformationItems>
           <InformationItem name="LocationName" logicalDataType="Text_Short"/>
-          <InformationItem name="Town" logicalDataType="Text_Short"/>
-          <InformationItem name="Country" logicalDataType="Text_Short"/>
           <InformationItem name="Longitude" logicalDataType="Text_Short"/>
           <InformationItem name="Latitude" logicalDataType="Text_Short"/>
+          <InformationItem name="Address" logicalDataType="InformationObject" informationObjectName="StreetAddress"/>
         </InformationItems>
       </InformationObject>
 

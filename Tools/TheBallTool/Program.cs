@@ -24,9 +24,9 @@ namespace TheBallTool
                 string defaultWebTemplateLocation = "defaultweb";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
-                const string accountdir = "\\oip-account\\";
+                const string accountNamePart = "-account-";
                 const string publicdir = "\\oip-public\\";
-                const string groupdir = "\\oip-group\\";
+                const string groupNamePart = "-group-";
                 //DoMapData(webGroup);
                 //return;
                 string directory = Directory.GetCurrentDirectory();
@@ -36,21 +36,21 @@ namespace TheBallTool
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(
                         str => str.Substring(directory.Length)).ToArray();
                 string[] groupTemplates =
-                    allFiles.Where(file => file.Contains(accountdir) == false && file.Contains(publicdir) == false).
+                    allFiles.Where(file => file.Contains(accountNamePart) == false).
                         ToArray();
                 string[] publicTemplates =
-                    allFiles.Where(file => file.Contains(accountdir) == false && file.Contains(groupdir) == false).
+                    allFiles.Where(file => file.Contains(accountNamePart) == false && file.Contains(groupNamePart) == false).
                         ToArray();
                 string[] accountTemplates =
-                    allFiles.Where(file => file.Contains(publicdir) == false && file.Contains(groupdir) == false).
+                    allFiles.Where(file => file.Contains(groupNamePart) == false).
                         ToArray();
                 string defaultAccountTemplates = defaultWebTemplateLocation + "/account";
                 string defaultGroupTemplates = defaultWebTemplateLocation + "/group";
                 string defaultPublicTemplates = defaultWebTemplateLocation + "/public";
-//                UpdateTemplateContainer(accountTemplates, TBSystem.CurrSystem, defaultAccountTemplates);
-//                UpdateTemplateContainer(groupTemplates, TBSystem.CurrSystem, defaultGroupTemplates);
-//                UpdateTemplateContainer(publicTemplates, TBSystem.CurrSystem, defaultPublicTemplates);
-                UpdateTemplateContainer(allFiles, webGroup, templateLocation);
+                //UpdateTemplateContainer(accountTemplates, TBSystem.CurrSystem, defaultAccountTemplates);
+                //UpdateTemplateContainer(groupTemplates, TBSystem.CurrSystem, defaultGroupTemplates);
+                //UpdateTemplateContainer(publicTemplates, TBSystem.CurrSystem, defaultPublicTemplates);
+                UpdateTemplateContainer(groupTemplates, webGroup, templateLocation);
                 Console.WriteLine("Starting to sync...");
                 DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
                 //"grp/default/pub/", true);
@@ -60,7 +60,7 @@ namespace TheBallTool
                 //Console.WriteLine("Press enter to continue...");
                 //Console.ReadLine();
             } 
-                catch(Exception ex)
+                catch(InvalidDataException ex)
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
@@ -172,7 +172,7 @@ namespace TheBallTool
                 string blobInformationType = webtemplatePath.EndsWith(".phtml")
                                                  ? StorageSupport.InformationType_WebTemplateValue
                                                  : StorageSupport.InformationType_GenericContentValue;
-                if (webtemplatePath.EndsWith("oip-layout-register.phtml"))
+                if (webtemplatePath.EndsWith("oip-layout-register.phtml") || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
                     blobInformationType = StorageSupport.InformationType_GenericContentValue;
                 if (content.TextContent != null)
                 {
