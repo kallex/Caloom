@@ -951,5 +951,19 @@ namespace TheBall
                 throw new InvalidDataException("Unable to determine root for reference: " + referenceLocation);
             return referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
         }
+
+        public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
+        {
+            string rootAddress = CurrActiveContainer.Name + "/" + GetBlobOwnerAddress(owner, targetLocation);
+            BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true };
+            var blobs = CurrBlobClient.ListBlobsWithPrefix(rootAddress, options);
+            int deletedCount = 0;
+            foreach (CloudBlob blob in blobs)
+            {
+                blob.Delete();
+                deletedCount++;
+            }
+            return deletedCount;
+        }
     }
 }

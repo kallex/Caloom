@@ -59,6 +59,7 @@
     <Compile Include="EmailSupport.cs" />
     <Compile Include="ErrorItem.cs" />
     <Compile Include="ErrorSupport.cs" />
+    <Compile Include="FileSystemSupport.cs" />
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
@@ -69,8 +70,10 @@
     <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBLoginRoot.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />
+    <Compile Include="Partials\TBRAccountRoot.cs" />
     <Compile Include="Partials\TBRegisterContainer.cs" />
     <Compile Include="Partials\TBREmailRoot.cs" />
+    <Compile Include="Partials\TBRGroupRoot.cs" />
     <Compile Include="Partials\TBSystem.cs" />
     <Compile Include="QueueSupport.cs" />
     <Compile Include="RenderWebSupport.cs" />

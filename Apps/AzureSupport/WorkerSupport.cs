@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
@@ -63,6 +64,7 @@ namespace TheBall
                 else
                     targetBlob = blobCopyItem.TargetBlob;
                 bool handled = false;
+                Console.WriteLine("Processing sync: " + blobCopyItem.SourceBlob.Name + " => " + targetBlob.Name);
                 if(customHandler != null)
                 {
                     handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
@@ -131,5 +133,6 @@ namespace TheBall
                                          TargetBlob = null
                                      });
         }
+
     }
 }

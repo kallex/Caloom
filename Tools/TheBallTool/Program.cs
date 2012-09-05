@@ -19,9 +19,11 @@ namespace TheBallTool
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
                 StorageSupport.InitializeWithConnectionString(connStr);
+                //var test1 = TBRAccountRoot.GetAllAccountIDs();
+                //var test2 = TBRGroupRoot.GetAllGroupIDs();
+
                 TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
                 string templateLocation = "livetemplate";
-                string defaultWebTemplateLocation = "defaultweb";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
                 const string accountNamePart = "-account-";
@@ -44,15 +46,13 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.Contains(groupNamePart) == false).
                         ToArray();
-                string defaultAccountTemplates = defaultWebTemplateLocation + "/account";
-                string defaultGroupTemplates = defaultWebTemplateLocation + "/group";
-                string defaultPublicTemplates = defaultWebTemplateLocation + "/public";
-                //UpdateTemplateContainer(accountTemplates, TBSystem.CurrSystem, defaultAccountTemplates);
-                //UpdateTemplateContainer(groupTemplates, TBSystem.CurrSystem, defaultGroupTemplates);
-                //UpdateTemplateContainer(publicTemplates, TBSystem.CurrSystem, defaultPublicTemplates);
-                UpdateTemplateContainer(groupTemplates, webGroup, templateLocation);
+                FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
+                FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
+                FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
+                RenderWebSupport.RefreshAccountAndGroupTemplates(false);
+                //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
-                DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
+                //DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
                 //"grp/default/pub/", true);
                 return;
                 //doDataTest(connStr);
@@ -93,14 +93,14 @@ namespace TheBallTool
 
         static void DoSyncs(string templateLocation, string privateSiteLocation, string publicSiteLocation)
         {
-            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+           RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", templateLocation),
                 StorageSupport.CurrActiveContainer.Name,
-                                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation), false);
-            SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+                                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation), false, true);
+           RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
                 String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
                 StorageSupport.CurrAnonPublicContainer.Name,
-                                String.Format("grp/default/{0}/", publicSiteLocation), true);
+                                String.Format("grp/default/{0}/", publicSiteLocation), true, true);
         }
 
         private static void AddLoginToAccount(string loginUrlID, string accountID)
@@ -121,70 +121,6 @@ namespace TheBallTool
                                                                       "vilperi");
         }
 
-        private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
-        {
-            if (useQueuedWorker)
-            {
-                QueueEnvelope envelope = new QueueEnvelope
-                                             {
-                                                 UpdateWebContentOperation = new UpdateWebContentOperation
-                                                                                 {
-                                                                                     SourceContainerName =
-                                                                                         sourceContainerName,
-                                                                                     SourcePathRoot = sourcePathRoot,
-                                                                                     TargetContainerName =
-                                                                                         targetContainerName,
-                                                                                     TargetPathRoot = targetPathRoot
-                                                                                 }
-                                             };
-                QueueSupport.PutToDefaultQueue(envelope);
-            }
-            else
-            {
-                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, RenderWebSupport.RenderingSyncHandler);
-            }
-        }
-
-        private static void UpdateTemplateContainer(string[] allFiles, IContainerOwner owner, string targetLocation)
-        {
-            ProcessedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
-            var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
-                .Select(fileName =>
-                        new
-                            {
-                                FileName
-                            =
-                            fileName,
-                                TextContent
-                            =
-                            GetFixedContent(fileName),
-                                BinaryContent = GetBinaryContent(fileName)
-
-                            })
-                .ToArray();
-            MoveUnusedTxtFiles(ProcessedDict);
-            foreach (var content in fixedContent)
-            {
-                if (content.FileName.EndsWith(".txt"))
-                    continue;
-                string webtemplatePath = Path.Combine(targetLocation, content.FileName).Replace("\\", "/");
-                Console.WriteLine("Uploading: " + webtemplatePath);
-                string blobInformationType = webtemplatePath.EndsWith(".phtml")
-                                                 ? StorageSupport.InformationType_WebTemplateValue
-                                                 : StorageSupport.InformationType_GenericContentValue;
-                if (webtemplatePath.EndsWith("oip-layout-register.phtml") || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
-                    blobInformationType = StorageSupport.InformationType_GenericContentValue;
-                if (content.TextContent != null)
-                {
-                    StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent, blobInformationType);                    
-                }
-                else
-                {
-                    StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
-                }
-            }
-        }
-
         private const string FixedGroupID = "05DF28FD-58A7-46A7-9830-DA3F51AAF6AF";
 
         private static TBCollaboratingGroup InitializeDefaultOIPWebGroup()
@@ -200,28 +136,6 @@ namespace TheBallTool
                 StorageSupport.StoreInformation(groupRoot);
             }
             return groupRoot.Group;
-        }
-
-        private static void MoveUnusedTxtFiles(Dictionary<string, bool> processedDict)
-        {
-            string[] filesToMove = processedDict.Keys.ToArray();
-            foreach(string fileToMove in filesToMove)
-            {
-                if (fileToMove.Contains("oip-") == false)
-                {
-                    Console.WriteLine("Ignoring unused: " + fileToMove);
-                    continue;
-                }
-                string destinationFile = fileToMove.Replace(@"caloomhtml\UI\docs\", @"caloomhtml\UI\notusedtxt\");
-                Console.WriteLine("NOT Moving unused file to: " + destinationFile);
-                continue;
-                string destDir = Path.GetDirectoryName(destinationFile);
-                if (Directory.Exists(destDir) == false)
-                    Directory.CreateDirectory(destDir);
-                if(File.Exists(destinationFile))
-                    File.Delete(destinationFile);
-                File.Move(fileToMove, destinationFile);
-            }
         }
 
         private static void InitLandingPages()
@@ -371,112 +285,8 @@ namespace TheBallTool
             StorageSupport.StoreInformation(target);
         }
 
-        private static byte[] GetBinaryContent(string fileName)
-        {
-            return File.ReadAllBytes(fileName);
-        }
-
-        private static string GetFixedContent(string fileName)
-        {
-            if (fileName.EndsWith(".phtml") == false)
-                //return File.ReadAllText(fileName);
-                return null;
-            string fixedContent = FixContent(fileName);
-            if(ErrorList.Count > 0)
-            {
-                fixedContent = RenderWebSupport.RenderErrorListAsHtml(ErrorList, "Errors - Combining Files") +
-                               fixedContent;
-                ErrorList.Clear();
-            }
-            return fixedContent;
-        }
-
-        private static Dictionary<string, bool> ProcessedDict = new Dictionary<string, bool>();
-        private static List<ErrorItem> ErrorList = new List<ErrorItem>();
-
-        private static string FixContent(string fileName)
-        {
-            string content = File.ReadAllText(fileName);
-            //string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'.*\?>";
-            //string pattern = @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>";
-            string pattern =
-                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!--\s*UseInformationObject:(?<bindingobject>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsCollection:(?<bindingcollection>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsRoot:(?<bindingroot>[^\s]*)\s*-->|)";
-            content = Regex.Replace(content,
-                                    pattern,
-                                    match =>
-                                        {
-                                            string incFile = match.Groups["incfile"].Value;
-                                            string bindObject = match.Groups["bindingobject"].Value;
-                                            string bindCollection = match.Groups["bindingcollection"].Value;
-                                            string bindRoot = match.Groups["bindingroot"].Value;
-                                            string currPath = Path.GetDirectoryName(fileName);
-                                            incFile = Path.Combine(currPath, incFile);
-                                            string fileContent;
-                                            if (File.Exists(incFile))
-                                            {
-                                                fileContent = File.ReadAllText(incFile);
-                                                string dictKey = Path.GetFullPath(incFile);
-                                                //ProcessedDict[incFile] = true;)
-                                                if (ProcessedDict.ContainsKey(dictKey))
-                                                    ProcessedDict.Remove(dictKey);
-                                                if (fileContent.Contains("<?php"))
-                                                    fileContent = FixContent(incFile);
-                                                if(String.IsNullOrEmpty(bindObject) == false)
-                                                {
-                                                    // DO Binding Object
-                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:" + bindObject +
-                                                                  " -->" + Environment.NewLine
-                                                                  + fileContent + Environment.NewLine +
-                                                                  "<!-- THEBALL-CONTEXT-END:" + bindObject +
-                                                                  " -->" + Environment.NewLine;
-                                                }
-                                                if(String.IsNullOrEmpty(bindCollection) == false)
-                                                {
-                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:" + bindCollection +
-                                                                  " -->" + Environment.NewLine
-                                                                  + fileContent + Environment.NewLine +
-                                                                  "<!-- THEBALL-CONTEXT-END:" + bindCollection +
-                                                                  " -->" + Environment.NewLine;
-                                                }
-                                                if(String.IsNullOrEmpty(bindRoot) == false)
-                                                {
-                                                    fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-ROOT-BEGIN:" + bindRoot +
-                                                                  " -->" + Environment.NewLine
-                                                                  + fileContent + Environment.NewLine +
-                                                                  "<!-- THEBALL-CONTEXT-END:" + bindRoot +
-                                                                  " -->" + Environment.NewLine;
-                                                    
-                                                }
-                                                if(fileContent.StartsWith("<!--"))
-                                                {
-                                                    fileContent = Environment.NewLine + "<!-- ========== Begin: " + incFile + " ========== -->" + Environment.NewLine
-                                                                  + fileContent + Environment.NewLine + 
-                                                                  "<!-- ========== End: " + incFile + " ========== -->" + Environment.NewLine;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                ErrorList.Add(new ErrorItem
-                                                                  {
-                                                                      CurrentLine = incFile,
-                                                                      CurrentContextName = fileName,
-                                                                      ErrorMessage = "File missing"
-                                                                      
-                                                                  });
-                                                fileContent = "MISSING FILE MISSING FILE MISSING FILE: " + incFile;
-                                                ReportProblem(fileContent);
-                                            }
-                                            return fileContent;
-                                        });
-            return content;
-        }
 
         private static void ReportInfo(string text)
-        {
-            Console.WriteLine(text);
-        }
-
-        private static void ReportProblem(string text)
         {
             Console.WriteLine(text);
         }

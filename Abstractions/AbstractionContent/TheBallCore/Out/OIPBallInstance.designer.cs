@@ -21186,6 +21186,9 @@ SystemErrorItem.LongDescription
 						case "TargetPathRoot":
 							TargetPathRoot = value;
 							break;
+						case "RenderWhileSync":
+							RenderWhileSync = bool.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -21198,6 +21201,8 @@ SystemErrorItem.LongDescription
 			public string TargetContainerName { get; set; }
 			[DataMember]
 			public string TargetPathRoot { get; set; }
+			[DataMember]
+			public bool RenderWhileSync { get; set; }
 			[DataMember]
 			public UpdateWebContentHandlerCollection Handlers { get; set; }
 			

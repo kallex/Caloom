@@ -32,6 +32,15 @@ namespace TheBall
         private const string AtomTagEnd = "[ATOM!]";
         private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>\w*)\[ATOM!])";
 
+        public const string DefaultWebTemplateLocation = "webtemplate";
+        public const string DefaultWebSiteLocation = "website";
+        public const string DefaultPublicWebTemplateLocation = "publictemplate";
+        public const string DefaultPublicWebSiteLocation = "publicsite";
+        public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
+        public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
+        public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
+
+
         private static Regex ContextRootRegex;
 
         static RenderWebSupport()
@@ -459,6 +468,11 @@ namespace TheBall
             return pi.PropertyType;
         }
 
+        public static bool CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        {
+            return false;
+        }
+
         public static bool RenderingSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
         {
             // Don't delete informationobject types of target folders
@@ -497,6 +511,89 @@ namespace TheBall
             CloudBlob templateBlob =
                 StorageSupport.CurrActiveContainer.GetBlockBlobReference(templateSource.SourceLocation);
             RenderTemplateWithContentToBlob(templateBlob, webPageBlob);
+        }
+
+        public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
+        {
+            if (useQueuedWorker)
+            {
+                QueueEnvelope envelope = new QueueEnvelope
+                {
+                    UpdateWebContentOperation = new UpdateWebContentOperation
+                    {
+                        SourceContainerName =
+                            sourceContainerName,
+                        SourcePathRoot = sourcePathRoot,
+                        TargetContainerName =
+                            targetContainerName,
+                        TargetPathRoot = targetPathRoot
+                    }
+                };
+                QueueSupport.PutToDefaultQueue(envelope);
+            }
+            else
+            {
+                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+            }
+        }
+
+
+        public static void RefreshAccountAndGroupTemplates(bool useWorker)
+        {
+            refreshAccountTemplates(useWorker);
+            refreshGroupTemplates(useWorker);
+        }
+
+        private static void refreshGroupTemplates(bool useWorker)
+        {
+            string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string anonContainerName = StorageSupport.CurrAnonPublicContainer.Name;
+            string syscontentRoot = "sys/AAA/";
+            foreach (var grpID in groupIDs)
+            {
+                string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
+                string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
+                string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWebTemplateLocation;
+                string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWebSiteLocation;
+                string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
+                
+                // Sync to group local template
+                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
+                // Render local template
+                SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
+                // Sync public pages to group local template
+                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
+                // Render local template
+                SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+                // Publish group public content
+                SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
+                if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd")
+                {
+                    SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+                }
+            }
+     //       RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
+     //String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
+     //StorageSupport.CurrAnonPublicContainer.Name,
+     //                String.Format("grp/default/{0}/", publicSiteLocation), true, true);
+
+        }
+
+        private static void refreshAccountTemplates(bool useWorker)
+        {
+            string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = "sys/AAA/";
+            foreach(var acctID in accountIDs)
+            {
+                string acctTemplateLocation = "acc/" + acctID + "/" + DefaultWebTemplateLocation;
+                string acctSiteLocation = "acc/" + acctID + "/" + DefaultWebSiteLocation;
+                // Sync to account local template
+                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
+                // Render local template
+                SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
+            }
         }
     }
 }
