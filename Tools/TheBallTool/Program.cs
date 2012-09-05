@@ -252,10 +252,10 @@ namespace TheBallTool
                 container.AccountIndex.Title = "Account demo index";
                 container.AccountIndex.Introduction = "Account introduction";
                 container.AccountIndex.Summary = "Account demo summary";
-                var memberColl = container.AccountModule.AccountRoles.MemberInGroups.CollectionContent;
+                var memberColl = container.AccountModule.Roles.MemberInGroups.CollectionContent;
                 memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi", URL = "http://www.yle.fi" });
                 memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi", URL = "http://www.aalto.fi" });
-                var moderatorColl = container.AccountModule.AccountRoles.ModeratorInGroups.CollectionContent;
+                var moderatorColl = container.AccountModule.Roles.ModeratorInGroups.CollectionContent;
                 moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi 2", URL = "http://www.yle.fi" });
                 moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi 2", URL = "http://www.aalto.fi" });
                 StorageSupport.StoreInformation(container);

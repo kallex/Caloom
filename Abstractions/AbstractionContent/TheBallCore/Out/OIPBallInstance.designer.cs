@@ -5301,69 +5301,45 @@ AccountIndex.Summary
 				public static AccountModule CreateDefault()
 				{
 					var result = new AccountModule();
-					result.AccountIdentity = AccountProfile.CreateDefault();
-					result.AccountRoles = AccountRoles.CreateDefault();
-					result.AccountSkills = AccountSkills.CreateDefault();
-					result.AccountLocations = AccountLocations.CreateDefault();
-					result.AccountStatistics = AccountStatistics.CreateDefault();
-					result.AccountProjects = AccountProjects.CreateDefault();
-					result.AccountContent = AccountContent.CreateDefault();
+					result.Profile = AccountProfile.CreateDefault();
+					result.Security = AccountSecurity.CreateDefault();
+					result.Roles = AccountRoles.CreateDefault();
+					result.Locations = AddressAndLocationCollection.CreateDefault();
 					return result;
 				}
 
 				public static AccountModule CreateDemoDefault()
 				{
 					var result = new AccountModule();
-					result.AccountIdentity = AccountProfile.CreateDemoDefault();
-					result.AccountRoles = AccountRoles.CreateDemoDefault();
-					result.AccountSkills = AccountSkills.CreateDemoDefault();
-					result.AccountLocations = AccountLocations.CreateDemoDefault();
-					result.AccountStatistics = AccountStatistics.CreateDemoDefault();
-					result.AccountProjects = AccountProjects.CreateDemoDefault();
-					result.AccountContent = AccountContent.CreateDemoDefault();
+					result.Profile = AccountProfile.CreateDemoDefault();
+					result.Security = AccountSecurity.CreateDemoDefault();
+					result.Roles = AccountRoles.CreateDemoDefault();
+					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = AccountIdentity;
+						var item = Profile;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
-						var item = AccountRoles;
+						var item = Security;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
-						var item = AccountSkills;
+						var item = Roles;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
-						var item = AccountLocations;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = AccountStatistics;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = AccountProjects;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = AccountContent;
+						var item = Locations;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -5380,36 +5356,30 @@ AccountIndex.Summary
 					}
 	        }
 			[DataMember]
-			public AccountProfile AccountIdentity { get; set; }
+			public AccountProfile Profile { get; set; }
 			[DataMember]
-			public AccountRoles AccountRoles { get; set; }
+			public AccountSecurity Security { get; set; }
 			[DataMember]
-			public AccountSkills AccountSkills { get; set; }
+			public AccountRoles Roles { get; set; }
 			[DataMember]
-			public AccountLocations AccountLocations { get; set; }
-			[DataMember]
-			public AccountStatistics AccountStatistics { get; set; }
-			[DataMember]
-			public AccountProjects AccountProjects { get; set; }
-			[DataMember]
-			public AccountContent AccountContent { get; set; }
+			public AddressAndLocationCollection Locations { get; set; }
 			
 			}
 			[DataContract]
-			public partial class AccountStatistics : IInformationObject
+			public partial class AddressAndLocationCollection : IInformationObject
 			{
-				public AccountStatistics()
+				public AddressAndLocationCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AccountStatistics";
+				    this.Name = "AddressAndLocationCollection";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountStatistics", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -5417,16 +5387,16 @@ AccountIndex.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountStatistics RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static AddressAndLocationCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountStatistics(relativeLocation, owner);
+					return RetrieveAddressAndLocationCollection(relativeLocation, owner);
 				}
 
 
-                public static AccountStatistics RetrieveAccountStatistics(string relativeLocation, IContainerOwner owner = null)
+                public static AddressAndLocationCollection RetrieveAddressAndLocationCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountStatistics) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountStatistics), null, owner);
+                    var result = (AddressAndLocationCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddressAndLocationCollection), null, owner);
                     return result;
                 }
 
@@ -5478,7 +5448,7 @@ AccountIndex.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountStatistics));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddressAndLocationCollection));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -5491,13 +5461,13 @@ AccountIndex.Summary
 					}
 				}
 
-				public static AccountStatistics DeserializeFromXml(string xmlString)
+				public static AddressAndLocationCollection DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountStatistics));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddressAndLocationCollection));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (AccountStatistics) serializer.ReadObject(xmlReader);
+							return (AddressAndLocationCollection) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -5527,65 +5497,65 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountStatistics", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountStatistics", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AddressAndLocationCollection", ID).Replace("\\", "/");
 				}
 
 
-
-				public static AccountStatistics CreateDefault()
-				{
-					var result = new AccountStatistics();
-					return result;
-				}
-
-				public static AccountStatistics CreateDemoDefault()
-				{
-					var result = new AccountStatistics();
-					result.Dummy = @"AccountStatistics.Dummy";
 
 				
+		
+				public static AddressAndLocationCollection CreateDefault()
+				{
+					var result = new AddressAndLocationCollection();
 					return result;
 				}
+
+				public static AddressAndLocationCollection CreateDemoDefault()
+				{
+					var result = new AddressAndLocationCollection();
+					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
+					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
+					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<AddressAndLocation> CollectionContent = new List<AddressAndLocation>();
+
 				private object FindFromObjectTree(string objectId)
 				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Dummy":
-							Dummy = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string Dummy { get; set; }
+
 			
 			}
 			[DataContract]
-			public partial class AccountSkills : IInformationObject
+			public partial class AddressAndLocation : IInformationObject
 			{
-				public AccountSkills()
+				public AddressAndLocation()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AccountSkills";
+				    this.Name = "AddressAndLocation";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSkills", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -5593,16 +5563,16 @@ AccountIndex.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountSkills RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static AddressAndLocation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountSkills(relativeLocation, owner);
+					return RetrieveAddressAndLocation(relativeLocation, owner);
 				}
 
 
-                public static AccountSkills RetrieveAccountSkills(string relativeLocation, IContainerOwner owner = null)
+                public static AddressAndLocation RetrieveAddressAndLocation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountSkills) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSkills), null, owner);
+                    var result = (AddressAndLocation) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddressAndLocation), null, owner);
                     return result;
                 }
 
@@ -5654,7 +5624,7 @@ AccountIndex.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSkills));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddressAndLocation));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -5667,13 +5637,13 @@ AccountIndex.Summary
 					}
 				}
 
-				public static AccountSkills DeserializeFromXml(string xmlString)
+				public static AddressAndLocation DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSkills));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddressAndLocation));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (AccountSkills) serializer.ReadObject(xmlReader);
+							return (AddressAndLocation) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -5703,32 +5673,46 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSkills", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountSkills", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AddressAndLocation", ID).Replace("\\", "/");
 				}
 
 
 
-				public static AccountSkills CreateDefault()
+				public static AddressAndLocation CreateDefault()
 				{
-					var result = new AccountSkills();
+					var result = new AddressAndLocation();
+					result.Address = StreetAddress.CreateDefault();
+					result.Location = Location.CreateDefault();
 					return result;
 				}
 
-				public static AccountSkills CreateDemoDefault()
+				public static AddressAndLocation CreateDemoDefault()
 				{
-					var result = new AccountSkills();
-					result.Dummy = @"AccountSkills.Dummy";
-
+					var result = new AddressAndLocation();
+					result.Address = StreetAddress.CreateDemoDefault();
+					result.Location = Location.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = Address;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Location;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -5736,32 +5720,31 @@ AccountIndex.Summary
 				{
 					switch (propertyName)
 					{
-						case "Dummy":
-							Dummy = value;
-							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string Dummy { get; set; }
+			public StreetAddress Address { get; set; }
+			[DataMember]
+			public Location Location { get; set; }
 			
 			}
 			[DataContract]
-			public partial class AccountProjects : IInformationObject
+			public partial class StreetAddress : IInformationObject
 			{
-				public AccountProjects()
+				public StreetAddress()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AccountProjects";
+				    this.Name = "StreetAddress";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountProjects", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -5769,16 +5752,16 @@ AccountIndex.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AccountProjects RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static StreetAddress RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountProjects(relativeLocation, owner);
+					return RetrieveStreetAddress(relativeLocation, owner);
 				}
 
 
-                public static AccountProjects RetrieveAccountProjects(string relativeLocation, IContainerOwner owner = null)
+                public static StreetAddress RetrieveStreetAddress(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AccountProjects) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProjects), null, owner);
+                    var result = (StreetAddress) StorageSupport.RetrieveInformation(relativeLocation, typeof(StreetAddress), null, owner);
                     return result;
                 }
 
@@ -5830,7 +5813,7 @@ AccountIndex.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProjects));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(StreetAddress));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -5843,13 +5826,13 @@ AccountIndex.Summary
 					}
 				}
 
-				public static AccountProjects DeserializeFromXml(string xmlString)
+				public static StreetAddress DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountProjects));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(StreetAddress));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (AccountProjects) serializer.ReadObject(xmlReader);
+							return (StreetAddress) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -5879,26 +5862,32 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProjects", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountProjects", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "StreetAddress", ID).Replace("\\", "/");
 				}
 
 
 
-				public static AccountProjects CreateDefault()
+				public static StreetAddress CreateDefault()
 				{
-					var result = new AccountProjects();
+					var result = new StreetAddress();
 					return result;
 				}
 
-				public static AccountProjects CreateDemoDefault()
+				public static StreetAddress CreateDemoDefault()
 				{
-					var result = new AccountProjects();
-					result.Dummy = @"AccountProjects.Dummy";
+					var result = new StreetAddress();
+					result.Street = @"StreetAddress.Street";
+
+					result.ZipCode = @"StreetAddress.ZipCode";
+
+					result.Town = @"StreetAddress.Town";
+
+					result.Country = @"StreetAddress.Country";
 
 				
 					return result;
@@ -5912,191 +5901,30 @@ AccountIndex.Summary
 				{
 					switch (propertyName)
 					{
-						case "Dummy":
-							Dummy = value;
+						case "Street":
+							Street = value;
+							break;
+						case "ZipCode":
+							ZipCode = value;
+							break;
+						case "Town":
+							Town = value;
+							break;
+						case "Country":
+							Country = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string Dummy { get; set; }
-			
-			}
-			[DataContract]
-			public partial class AccountLocations : IInformationObject
-			{
-				public AccountLocations()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AccountLocations";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountLocations", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountLocations RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountLocations(relativeLocation, owner);
-				}
-
-
-                public static AccountLocations RetrieveAccountLocations(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountLocations) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountLocations), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountLocations));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static AccountLocations DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountLocations));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (AccountLocations) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountLocations", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountLocations", ID).Replace("\\", "/");
-				}
-
-
-
-				public static AccountLocations CreateDefault()
-				{
-					var result = new AccountLocations();
-					return result;
-				}
-
-				public static AccountLocations CreateDemoDefault()
-				{
-					var result = new AccountLocations();
-					result.Dummy = @"AccountLocations.Dummy";
-
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Dummy":
-							Dummy = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
+			public string Street { get; set; }
 			[DataMember]
-			public string Dummy { get; set; }
+			public string ZipCode { get; set; }
+			[DataMember]
+			public string Town { get; set; }
+			[DataMember]
+			public string Country { get; set; }
 			
 			}
 			[DataContract]
@@ -6420,35 +6248,33 @@ AccountIndex.Summary
 				public static AccountProfile CreateDefault()
 				{
 					var result = new AccountProfile();
-					result.PersonalInfoVisibility = PersonalInfoVisibility.CreateDefault();
+					result.ProfileImage = Image.CreateDefault();
+					result.Address = StreetAddress.CreateDefault();
 					return result;
 				}
 
 				public static AccountProfile CreateDemoDefault()
 				{
 					var result = new AccountProfile();
+					result.ProfileImage = Image.CreateDemoDefault();
 					result.FirstName = @"AccountProfile.FirstName";
 
 					result.LastName = @"AccountProfile.LastName";
 
-					result.EmailAddress = @"AccountProfile.EmailAddress";
-
-					result.Street = @"AccountProfile.Street";
-
-					result.ZipCode = @"AccountProfile.ZipCode";
-
-					result.Town = @"AccountProfile.Town";
-
-					result.Country = @"AccountProfile.Country";
-
-					result.PersonalInfoVisibility = PersonalInfoVisibility.CreateDemoDefault();
+					result.Address = StreetAddress.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = PersonalInfoVisibility;
+						var item = ProfileImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Address;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -6466,41 +6292,207 @@ AccountIndex.Summary
 						case "LastName":
 							LastName = value;
 							break;
-						case "EmailAddress":
-							EmailAddress = value;
-							break;
-						case "Street":
-							Street = value;
-							break;
-						case "ZipCode":
-							ZipCode = value;
-							break;
-						case "Town":
-							Town = value;
-							break;
-						case "Country":
-							Country = value;
-							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
+			public Image ProfileImage { get; set; }
+			[DataMember]
 			public string FirstName { get; set; }
 			[DataMember]
 			public string LastName { get; set; }
 			[DataMember]
-			public string EmailAddress { get; set; }
+			public StreetAddress Address { get; set; }
+			
+			}
+			[DataContract]
+			public partial class AccountSecurity : IInformationObject
+			{
+				public AccountSecurity()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AccountSecurity";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountSecurity RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountSecurity(relativeLocation, owner);
+				}
+
+
+                public static AccountSecurity RetrieveAccountSecurity(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AccountSecurity) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSecurity), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSecurity));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountSecurity DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSecurity));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountSecurity) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToRoot(string masterLocation)
+				{
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "AccountSecurity", ID).Replace("\\", "/");
+				}
+
+
+
+				public static AccountSecurity CreateDefault()
+				{
+					var result = new AccountSecurity();
+					result.LoginInfoCollection = TBLoginInfoCollection.CreateDefault();
+					result.EmailCollection = TBEmailCollection.CreateDefault();
+					return result;
+				}
+
+				public static AccountSecurity CreateDemoDefault()
+				{
+					var result = new AccountSecurity();
+					result.LoginInfoCollection = TBLoginInfoCollection.CreateDemoDefault();
+					result.EmailCollection = TBEmailCollection.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = LoginInfoCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = EmailCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
-			public string Street { get; set; }
+			public TBLoginInfoCollection LoginInfoCollection { get; set; }
 			[DataMember]
-			public string ZipCode { get; set; }
-			[DataMember]
-			public string Town { get; set; }
-			[DataMember]
-			public string Country { get; set; }
-			[DataMember]
-			public PersonalInfoVisibility PersonalInfoVisibility { get; set; }
+			public TBEmailCollection EmailCollection { get; set; }
 			
 			}
 			[DataContract]
@@ -6650,8 +6642,6 @@ AccountIndex.Summary
 					var result = new AccountRoles();
 					result.ModeratorInGroups = ReferenceCollection.CreateDefault();
 					result.MemberInGroups = ReferenceCollection.CreateDefault();
-					result.MemberInOrganizations = ReferenceCollection.CreateDefault();
-					result.FollowingGroups = ReferenceCollection.CreateDefault();
 					return result;
 				}
 
@@ -6660,8 +6650,13 @@ AccountIndex.Summary
 					var result = new AccountRoles();
 					result.ModeratorInGroups = ReferenceCollection.CreateDemoDefault();
 					result.MemberInGroups = ReferenceCollection.CreateDemoDefault();
-					result.MemberInOrganizations = ReferenceCollection.CreateDemoDefault();
-					result.FollowingGroups = ReferenceCollection.CreateDemoDefault();
+					result.OrganizationsImPartOf = @"AccountRoles.OrganizationsImPartOf
+AccountRoles.OrganizationsImPartOf
+AccountRoles.OrganizationsImPartOf
+AccountRoles.OrganizationsImPartOf
+AccountRoles.OrganizationsImPartOf
+";
+
 				
 					return result;
 				}
@@ -6679,18 +6674,6 @@ AccountIndex.Summary
 						if(result != null)
 							return result;
 					}
-					{
-						var item = MemberInOrganizations;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = FollowingGroups;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -6698,6 +6681,9 @@ AccountIndex.Summary
 				{
 					switch (propertyName)
 					{
+						case "OrganizationsImPartOf":
+							OrganizationsImPartOf = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -6707,9 +6693,7 @@ AccountIndex.Summary
 			[DataMember]
 			public ReferenceCollection MemberInGroups { get; set; }
 			[DataMember]
-			public ReferenceCollection MemberInOrganizations { get; set; }
-			[DataMember]
-			public ReferenceCollection FollowingGroups { get; set; }
+			public string OrganizationsImPartOf { get; set; }
 			
 			}
 			[DataContract]
@@ -11866,8 +11850,6 @@ GroupSummaryContainer.SummaryBody
 					result.Header = ContainerHeader.CreateDefault();
 					result.GroupProfile = Group.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
-					result.CollaboratingGroups = CollaboratingGroupCollection.CreateDefault();
-					result.CollaboratingOrganizations = CollaboratingOrganizationCollection.CreateDefault();
 					result.ActivityCollection = ActivityCollection.CreateDefault();
 					result.Locations = LocationCollection.CreateDefault();
 					result.AddLocationInfo = AddLocationInfo.CreateDefault();
@@ -11880,8 +11862,6 @@ GroupSummaryContainer.SummaryBody
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.GroupProfile = Group.CreateDemoDefault();
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
-					result.CollaboratingGroups = CollaboratingGroupCollection.CreateDemoDefault();
-					result.CollaboratingOrganizations = CollaboratingOrganizationCollection.CreateDemoDefault();
 					result.ActivityCollection = ActivityCollection.CreateDemoDefault();
 					result.Locations = LocationCollection.CreateDemoDefault();
 					result.AddLocationInfo = AddLocationInfo.CreateDemoDefault();
@@ -11904,18 +11884,6 @@ GroupSummaryContainer.SummaryBody
 					}
 					{
 						var item = Collaborators;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = CollaboratingGroups;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = CollaboratingOrganizations;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11955,10 +11923,6 @@ GroupSummaryContainer.SummaryBody
 			public Group GroupProfile { get; set; }
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
-			[DataMember]
-			public CollaboratingGroupCollection CollaboratingGroups { get; set; }
-			[DataMember]
-			public CollaboratingOrganizationCollection CollaboratingOrganizations { get; set; }
 			[DataMember]
 			public ActivityCollection ActivityCollection { get; set; }
 			[DataMember]
@@ -12492,7 +12456,8 @@ GroupSummaryContainer.SummaryBody
 				public static Group CreateDefault()
 				{
 					var result = new Group();
-					result.MainImage = Image.CreateDefault();
+					result.ProfileImage = Image.CreateDefault();
+					result.IconImage = Image.CreateDefault();
 					result.Moderators = ModeratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
 					return result;
@@ -12501,7 +12466,8 @@ GroupSummaryContainer.SummaryBody
 				public static Group CreateDemoDefault()
 				{
 					var result = new Group();
-					result.MainImage = Image.CreateDemoDefault();
+					result.ProfileImage = Image.CreateDemoDefault();
+					result.IconImage = Image.CreateDemoDefault();
 					result.GroupName = @"Group.GroupName";
 
 					result.Description = @"Group.Description
@@ -12509,6 +12475,13 @@ Group.Description
 Group.Description
 Group.Description
 Group.Description
+";
+
+					result.OrganizationsAndGroupsLinkedToUs = @"Group.OrganizationsAndGroupsLinkedToUs
+Group.OrganizationsAndGroupsLinkedToUs
+Group.OrganizationsAndGroupsLinkedToUs
+Group.OrganizationsAndGroupsLinkedToUs
+Group.OrganizationsAndGroupsLinkedToUs
 ";
 
 					result.Moderators = ModeratorCollection.CreateDemoDefault();
@@ -12519,7 +12492,13 @@ Group.Description
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = MainImage;
+						var item = ProfileImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = IconImage;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -12549,16 +12528,23 @@ Group.Description
 						case "Description":
 							Description = value;
 							break;
+						case "OrganizationsAndGroupsLinkedToUs":
+							OrganizationsAndGroupsLinkedToUs = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public Image MainImage { get; set; }
+			public Image ProfileImage { get; set; }
+			[DataMember]
+			public Image IconImage { get; set; }
 			[DataMember]
 			public string GroupName { get; set; }
 			[DataMember]
 			public string Description { get; set; }
+			[DataMember]
+			public string OrganizationsAndGroupsLinkedToUs { get; set; }
 			[DataMember]
 			public ModeratorCollection Moderators { get; set; }
 			[DataMember]
@@ -16514,361 +16500,6 @@ BlogIndexGroup.Summary
 			
 			}
 			[DataContract]
-			public partial class EventCollection : IInformationObject
-			{
-				public EventCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "EventCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "EventCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static EventCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEventCollection(relativeLocation, owner);
-				}
-
-
-                public static EventCollection RetrieveEventCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (EventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EventCollection), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(EventCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static EventCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(EventCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (EventCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "EventCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "EventCollection", ID).Replace("\\", "/");
-				}
-
-
-
-				
-		
-				public static EventCollection CreateDefault()
-				{
-					var result = new EventCollection();
-					return result;
-				}
-
-				public static EventCollection CreateDemoDefault()
-				{
-					var result = new EventCollection();
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					return result;
-				}
-
-		
-				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
-
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-
-			
-			}
-			[DataContract]
-			public partial class MapEventCollection : IInformationObject
-			{
-				public MapEventCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "MapEventCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapEventCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapEventCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapEventCollection(relativeLocation, owner);
-				}
-
-
-                public static MapEventCollection RetrieveMapEventCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapEventCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapEventCollection), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(MapEventCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static MapEventCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(MapEventCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (MapEventCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapEventCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "MapEventCollection", ID).Replace("\\", "/");
-				}
-
-
-
-				public static MapEventCollection CreateDefault()
-				{
-					var result = new MapEventCollection();
-					result.Events = EventCollection.CreateDefault();
-					return result;
-				}
-
-				public static MapEventCollection CreateDemoDefault()
-				{
-					var result = new MapEventCollection();
-					result.Events = EventCollection.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = Events;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public EventCollection Events { get; set; }
-			
-			}
-			[DataContract]
 			public partial class Longitude : IInformationObject
 			{
 				public Longitude()
@@ -17958,20 +17589,20 @@ BlogIndexGroup.Summary
 			
 			}
 			[DataContract]
-			public partial class Address : IInformationObject
+			public partial class OBSAddress : IInformationObject
 			{
-				public Address()
+				public OBSAddress()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Address";
+				    this.Name = "OBSAddress";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Address", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -17979,16 +17610,16 @@ BlogIndexGroup.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Address RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static OBSAddress RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddress(relativeLocation, owner);
+					return RetrieveOBSAddress(relativeLocation, owner);
 				}
 
 
-                public static Address RetrieveAddress(string relativeLocation, IContainerOwner owner = null)
+                public static OBSAddress RetrieveOBSAddress(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Address) StorageSupport.RetrieveInformation(relativeLocation, typeof(Address), null, owner);
+                    var result = (OBSAddress) StorageSupport.RetrieveInformation(relativeLocation, typeof(OBSAddress), null, owner);
                     return result;
                 }
 
@@ -18040,7 +17671,7 @@ BlogIndexGroup.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Address));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OBSAddress));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -18053,13 +17684,13 @@ BlogIndexGroup.Summary
 					}
 				}
 
-				public static Address DeserializeFromXml(string xmlString)
+				public static OBSAddress DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Address));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OBSAddress));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (Address) serializer.ReadObject(xmlReader);
+							return (OBSAddress) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -18089,44 +17720,44 @@ BlogIndexGroup.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Address", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToRoot(string masterLocation)
 				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Address", ID).Replace("\\", "/");
+					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "OBSAddress", ID).Replace("\\", "/");
 				}
 
 
 
-				public static Address CreateDefault()
+				public static OBSAddress CreateDefault()
 				{
-					var result = new Address();
+					var result = new OBSAddress();
 					return result;
 				}
 
-				public static Address CreateDemoDefault()
+				public static OBSAddress CreateDemoDefault()
 				{
-					var result = new Address();
-					result.StreetName = @"Address.StreetName";
+					var result = new OBSAddress();
+					result.StreetName = @"OBSAddress.StreetName";
 
-					result.BuildingNumber = @"Address.BuildingNumber";
+					result.BuildingNumber = @"OBSAddress.BuildingNumber";
 
-					result.PostOfficeBox = @"Address.PostOfficeBox";
+					result.PostOfficeBox = @"OBSAddress.PostOfficeBox";
 
-					result.PostalCode = @"Address.PostalCode";
+					result.PostalCode = @"OBSAddress.PostalCode";
 
-					result.Municipality = @"Address.Municipality";
+					result.Municipality = @"OBSAddress.Municipality";
 
-					result.Region = @"Address.Region";
+					result.Region = @"OBSAddress.Region";
 
-					result.Province = @"Address.Province";
+					result.Province = @"OBSAddress.Province";
 
-					result.state = @"Address.state";
+					result.state = @"OBSAddress.state";
 
-					result.Country = @"Address.Country";
+					result.Country = @"OBSAddress.Country";
 
-					result.Continent = @"Address.Continent";
+					result.Continent = @"OBSAddress.Continent";
 
 				
 					return result;
@@ -18769,1402 +18400,6 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public string TextValue { get; set; }
-			
-			}
-			[DataContract]
-			public partial class What : IInformationObject
-			{
-				public What()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "What";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "What", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static What RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhat(relativeLocation, owner);
-				}
-
-
-                public static What RetrieveWhat(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (What) StorageSupport.RetrieveInformation(relativeLocation, typeof(What), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(What));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static What DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(What));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (What) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "What", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "What", ID).Replace("\\", "/");
-				}
-
-
-
-				public static What CreateDefault()
-				{
-					var result = new What();
-					result.Illustration = ImageVideoSoundVectorRaw.CreateDefault();
-					result.Category1 = Category.CreateDefault();
-					result.Category2 = Category.CreateDefault();
-					return result;
-				}
-
-				public static What CreateDemoDefault()
-				{
-					var result = new What();
-					result.ServiceName = @"What.ServiceName
-What.ServiceName
-What.ServiceName
-What.ServiceName
-What.ServiceName
-";
-
-					result.Title = @"What.Title";
-
-					result.Description = @"What.Description
-What.Description
-What.Description
-What.Description
-What.Description
-";
-
-					result.Illustration = ImageVideoSoundVectorRaw.CreateDemoDefault();
-					result.Category1 = Category.CreateDemoDefault();
-					result.Category2 = Category.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = Illustration;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = Category1;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = Category2;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ServiceName":
-							ServiceName = value;
-							break;
-						case "Title":
-							Title = value;
-							break;
-						case "Description":
-							Description = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string ServiceName { get; set; }
-			[DataMember]
-			public string Title { get; set; }
-			[DataMember]
-			public string Description { get; set; }
-			[DataMember]
-			public ImageVideoSoundVectorRaw Illustration { get; set; }
-			[DataMember]
-			public Category Category1 { get; set; }
-			[DataMember]
-			public Category Category2 { get; set; }
-			
-			}
-			[DataContract]
-			public partial class When : IInformationObject
-			{
-				public When()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "When";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "When", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static When RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhen(relativeLocation, owner);
-				}
-
-
-                public static When RetrieveWhen(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (When) StorageSupport.RetrieveInformation(relativeLocation, typeof(When), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(When));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static When DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(When));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (When) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "When", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "When", ID).Replace("\\", "/");
-				}
-
-
-
-				public static When CreateDefault()
-				{
-					var result = new When();
-					return result;
-				}
-
-				public static When CreateDemoDefault()
-				{
-					var result = new When();
-					result.Title = @"When.Title";
-
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Title":
-							Title = value;
-							break;
-						case "Time":
-							Time = DateTime.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string Title { get; set; }
-			[DataMember]
-			public DateTime Time { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Where : IInformationObject
-			{
-				public Where()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Where";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Where", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Where RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhere(relativeLocation, owner);
-				}
-
-
-                public static Where RetrieveWhere(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Where) StorageSupport.RetrieveInformation(relativeLocation, typeof(Where), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Where));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Where DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Where));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Where) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Where", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Where", ID).Replace("\\", "/");
-				}
-
-
-
-				public static Where CreateDefault()
-				{
-					var result = new Where();
-					result.Location = Location.CreateDefault();
-					result.Address = Address.CreateDefault();
-					return result;
-				}
-
-				public static Where CreateDemoDefault()
-				{
-					var result = new Where();
-					result.Title = @"Where.Title";
-
-					result.Description = @"Where.Description
-Where.Description
-Where.Description
-Where.Description
-Where.Description
-";
-
-					result.Location = Location.CreateDemoDefault();
-					result.Address = Address.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = Address;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Title":
-							Title = value;
-							break;
-						case "Description":
-							Description = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string Title { get; set; }
-			[DataMember]
-			public string Description { get; set; }
-			[DataMember]
-			public Location Location { get; set; }
-			[DataMember]
-			public Address Address { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Whom : IInformationObject
-			{
-				public Whom()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Whom";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Whom", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Whom RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWhom(relativeLocation, owner);
-				}
-
-
-                public static Whom RetrieveWhom(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Whom) StorageSupport.RetrieveInformation(relativeLocation, typeof(Whom), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Whom));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Whom DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Whom));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Whom) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Whom", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Whom", ID).Replace("\\", "/");
-				}
-
-
-
-				public static Whom CreateDefault()
-				{
-					var result = new Whom();
-					result.Identity = Identity.CreateDefault();
-					result.ProfileImage = ImageVideoSoundVectorRaw.CreateDefault();
-					return result;
-				}
-
-				public static Whom CreateDemoDefault()
-				{
-					var result = new Whom();
-					result.Identity = Identity.CreateDemoDefault();
-					result.ProfileImage = ImageVideoSoundVectorRaw.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = Identity;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = ProfileImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "BirthDate":
-							BirthDate = DateTime.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public Identity Identity { get; set; }
-			[DataMember]
-			public ImageVideoSoundVectorRaw ProfileImage { get; set; }
-			[DataMember]
-			public DateTime BirthDate { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Worth : IInformationObject
-			{
-				public Worth()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Worth";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Worth", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Worth RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWorth(relativeLocation, owner);
-				}
-
-
-                public static Worth RetrieveWorth(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Worth) StorageSupport.RetrieveInformation(relativeLocation, typeof(Worth), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Worth));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Worth DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Worth));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Worth) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Worth", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Worth", ID).Replace("\\", "/");
-				}
-
-
-
-				public static Worth CreateDefault()
-				{
-					var result = new Worth();
-					result.Location = Location.CreateDefault();
-					result.Address = Address.CreateDefault();
-					return result;
-				}
-
-				public static Worth CreateDemoDefault()
-				{
-					var result = new Worth();
-					result.Title = @"Worth.Title";
-
-					result.Description = @"Worth.Description
-Worth.Description
-Worth.Description
-Worth.Description
-Worth.Description
-";
-
-					result.Location = Location.CreateDemoDefault();
-					result.Address = Address.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = Address;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Title":
-							Title = value;
-							break;
-						case "Description":
-							Description = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string Title { get; set; }
-			[DataMember]
-			public string Description { get; set; }
-			[DataMember]
-			public Location Location { get; set; }
-			[DataMember]
-			public Address Address { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Event5W : IInformationObject
-			{
-				public Event5W()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Event5W";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Event5W RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEvent5W(relativeLocation, owner);
-				}
-
-
-                public static Event5W RetrieveEvent5W(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Event5W) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5W), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5W));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Event5W DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5W));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Event5W) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Event5W", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Event5W", ID).Replace("\\", "/");
-				}
-
-
-
-				public static Event5W CreateDefault()
-				{
-					var result = new Event5W();
-					result.What = What.CreateDefault();
-					result.When = When.CreateDefault();
-					result.Where = Where.CreateDefault();
-					return result;
-				}
-
-				public static Event5W CreateDemoDefault()
-				{
-					var result = new Event5W();
-					result.What = What.CreateDemoDefault();
-					result.When = When.CreateDemoDefault();
-					result.Where = Where.CreateDemoDefault();
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = What;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = When;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					{
-						var item = Where;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public What What { get; set; }
-			[DataMember]
-			public When When { get; set; }
-			[DataMember]
-			public Where Where { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Event5WCollection : IInformationObject
-			{
-				public Event5WCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Event5WCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Event5WCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEvent5WCollection(relativeLocation, owner);
-				}
-
-
-                public static Event5WCollection RetrieveEvent5WCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Event5WCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(Event5WCollection), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5WCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Event5WCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Event5WCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Event5WCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Event5WCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToRoot(string masterLocation)
-				{
-					RelativeLocation = Path.Combine(masterLocation, "AaltoGlobalImpact.OIP", "Event5WCollection", ID).Replace("\\", "/");
-				}
-
-
-
-				
-		
-				public static Event5WCollection CreateDefault()
-				{
-					var result = new Event5WCollection();
-					return result;
-				}
-
-				public static Event5WCollection CreateDemoDefault()
-				{
-					var result = new Event5WCollection();
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					result.CollectionContent.Add(Event5W.CreateDemoDefault());
-					return result;
-				}
-
-		
-				[DataMember] public List<Event5W> CollectionContent = new List<Event5W>();
-
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-
 			
 			}
 			[DataContract]
