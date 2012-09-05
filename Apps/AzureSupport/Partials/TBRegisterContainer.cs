@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -16,22 +17,33 @@ namespace AaltoGlobalImpact.OIP
 
         private void addLoginProviders(string returnUrl)
         {
+            string googleRedirectUrl = getForwardingLoginUrl("https://www.google.com/accounts/o8/id", returnUrl);
             LoginProvider google = LoginProvider.CreateDefault();
             google.ProviderName = "Google";
             google.ProviderIconClass = "icon-oip-google";
             google.ProviderType = "openid";
-            google.ProviderUrl = "https://www.google.com/accounts/o8/id";
+            google.ProviderUrl = googleRedirectUrl;
             google.ReturnUrl = returnUrl;
 
+            string yahooRedirectUrl = getForwardingLoginUrl("https://me.yahoo.com", returnUrl);
             LoginProvider yahoo = LoginProvider.CreateDefault();
             yahoo.ProviderName = "Yahoo";
             yahoo.ProviderIconClass = "icon-oip-yahoo";
             yahoo.ProviderType = "openid";
-            yahoo.ProviderUrl = "https://me.yahoo.com";
+            yahoo.ProviderUrl = yahooRedirectUrl;
             yahoo.ReturnUrl = returnUrl;
 
             LoginProviderCollection.CollectionContent.Add(google);
             LoginProviderCollection.CollectionContent.Add(yahoo);
+        }
+
+        private string getForwardingLoginUrl(string openIDUrl, string returnUrl)
+        {
+            if(String.IsNullOrEmpty(returnUrl))
+                return string.Format("/TheBallLogin.aspx?idProviderUrl={0}",
+                                HttpUtility.UrlEncode(openIDUrl));
+            return string.Format("/TheBallLogin.aspx?idProviderUrl={0}&ReturnUrl={1}",
+                            HttpUtility.UrlEncode(openIDUrl), HttpUtility.UrlEncode(returnUrl));
         }
     }
 }

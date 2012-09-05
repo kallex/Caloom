@@ -27,7 +27,7 @@ namespace WebInterface
             get { return true; }
         }
 
-        private const string AuthPersonalPrefix = "/auth/personal/";
+        private const string AuthPersonalPrefix = "/auth/account/";
         private const string AuthGroupPrefix = "/auth/grp/";
         private const string AuthAccountPrefix = "/auth/acc/";
         private const string AuthProcPrefix = "/auth/proc/";
@@ -118,13 +118,13 @@ namespace WebInterface
             TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
 
             TBAccount account = loginRoot.Account;
-            bool hasRegisteredEmail = account.Emails.CollectionContent.Count > 0;
-            if(hasRegisteredEmail == false)
-            {
-                PrepareEmailRegistrationPage(account, context, true);
-                context.Response.Redirect("/auth/proc/tbp-layout-registeremail.phtml", true);
-                return;
-            }
+            //bool hasRegisteredEmail = account.Emails.CollectionContent.Count > 0;
+            //if(hasRegisteredEmail == false)
+            //{
+            //    PrepareEmailRegistrationPage(account, context, true);
+            //    context.Response.Redirect("/auth/proc/tbp-layout-registeremail.phtml", true);
+            //    return;
+            //}
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
             HandleOwnerRequest(account, context, contentPath);
