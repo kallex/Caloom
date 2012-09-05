@@ -69,6 +69,7 @@
     <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBLoginRoot.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />
+    <Compile Include="Partials\TBRegisterContainer.cs" />
     <Compile Include="Partials\TBREmailRoot.cs" />
     <Compile Include="Partials\TBSystem.cs" />
     <Compile Include="QueueSupport.cs" />

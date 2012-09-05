@@ -37,8 +37,14 @@ namespace WebInterface
                 return;
             }
             HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/anon/"))
+            if(request.Path.StartsWith("/public/"))
             {
+                if (request.Path.EndsWith("/oip-layout-register.phtml"))
+                {
+                    ProcessDynamicRegisterRequest(request, response);
+                    return;
+                }
+
                 ProcessAnonymousRequest(request, response);
                 return;
             }
@@ -92,7 +98,7 @@ namespace WebInterface
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/anon/", "anon-webcontainer/");
+            string blobPath = request.Path.Replace("/public/", "anon-webcontainer/");
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try
@@ -107,6 +113,35 @@ namespace WebInterface
             {
                 response.End();
             }
+        }
+
+        private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)
+        {
+            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            string blobPath = request.Path.Replace("/public/", "anon-webcontainer/");
+            CloudBlob blob = publicClient.GetBlobReference(blobPath);
+            response.Clear();
+            try
+            {
+                string template = blob.DownloadText();
+                string returnUrl = request.Params["ReturnUrl"];
+                TBRegisterContainer registerContainer = GetRegistrationInfo(returnUrl);
+                string responseContent = RenderWebSupport.RenderTemplateWithContent(template, registerContainer);
+                response.ContentType = blob.Properties.ContentType;
+                response.Write(responseContent);
+            } catch(StorageClientException scEx)
+            {
+                response.Write(scEx.ToString());
+            } finally
+            {
+                response.End();
+            }
+        }
+
+        private static TBRegisterContainer GetRegistrationInfo(string returnUrl)
+        {
+            TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register");
+            return registerContainer;
         }
 
         #endregion

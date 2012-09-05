@@ -172,6 +172,8 @@ namespace TheBallTool
                 string blobInformationType = webtemplatePath.EndsWith(".phtml")
                                                  ? StorageSupport.InformationType_WebTemplateValue
                                                  : StorageSupport.InformationType_GenericContentValue;
+                if (webtemplatePath.EndsWith("oip-layout-register.phtml"))
+                    blobInformationType = StorageSupport.InformationType_GenericContentValue;
                 if (content.TextContent != null)
                 {
                     StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent, blobInformationType);                    

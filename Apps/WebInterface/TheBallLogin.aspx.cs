@@ -21,6 +21,8 @@ namespace WebInterface
             var response = openid.GetResponse();
             ClaimsResponse profileFields;
             string friendlyName;
+            string idprovider = Request.Params["idprovider"];
+            string idProviderUrl = Request.Params["idProviderUrl"];
             if (response != null)
             {
                 switch (response.Status)
@@ -45,7 +47,11 @@ namespace WebInterface
                 }
             } else
             {
-                string idprovider = Request.Params["idprovider"];
+                if(String.IsNullOrEmpty(idProviderUrl) == false)
+                {
+                    CreateOpenIDRequestAndRedirect(idProviderUrl);
+                    return;
+                }
                 if (idprovider != null)
                 {
                     switch (idprovider)
