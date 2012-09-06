@@ -93,7 +93,11 @@ namespace TheBall
                 if (namesMatch)
                 {
                     // Compare blob contents
-                    if (currSourceItem.Properties.ContentMD5 != currTargetItem.Properties.ContentMD5)
+                    bool sourceIsTemplate = currSourceItem.GetBlobInformationType() ==
+                                            StorageSupport.InformationType_WebTemplateValue;
+                    bool targetIsTemplate = currTargetItem.GetBlobInformationType() ==
+                                            StorageSupport.InformationType_WebTemplateValue;
+                    if ((sourceIsTemplate && !targetIsTemplate) || currSourceItem.Properties.ContentMD5 != currTargetItem.Properties.ContentMD5)
                         blobCopyList.Add(new BlobCopyItem
                                              {
                                                  SourceBlob = currSourceItem,

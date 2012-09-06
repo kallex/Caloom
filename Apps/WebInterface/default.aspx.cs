@@ -11,7 +11,7 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("public/grp/default/website/oip-public/oip-layout-landing.phtml", true);
+            Response.Redirect("public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
         }
     }
 }
