@@ -46,10 +46,10 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.Contains(groupNamePart) == false).
                         ToArray();
-                FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
-                FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
-                FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
-                RenderWebSupport.RefreshAccountAndGroupTemplates(false);
+                //FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
+                //FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
+                //FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
+                RenderWebSupport.RefreshAccountAndGroupTemplates(true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
                 //DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);

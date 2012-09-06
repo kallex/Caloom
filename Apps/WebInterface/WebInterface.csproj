@@ -83,7 +83,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="default.aspx" />
+    <Content Include="index.aspx" />
     <Content Include="Global.asax" />
     <Content Include="TheBallLogin.aspx" />
     <Content Include="Web.config">
@@ -99,12 +99,12 @@
   <ItemGroup>
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
-    <Compile Include="default.aspx.cs">
-      <DependentUpon>default.aspx</DependentUpon>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="default.aspx.designer.cs">
-      <DependentUpon>default.aspx</DependentUpon>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="EmailValidationHandler.cs" />
     <Compile Include="Global.asax.cs">

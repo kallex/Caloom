@@ -526,7 +526,8 @@ namespace TheBall
                         SourcePathRoot = sourcePathRoot,
                         TargetContainerName =
                             targetContainerName,
-                        TargetPathRoot = targetPathRoot
+                        TargetPathRoot = targetPathRoot,
+                        RenderWhileSync = renderWhileSync
                     }
                 };
                 QueueSupport.PutToDefaultQueue(envelope);
