@@ -9,6 +9,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public bool PerformAddOperation()
         {
+            return false;
             AddLocationInfo addLocationInfo = AddLocationInfo;
             if (String.IsNullOrEmpty(addLocationInfo.Latitude) ||
                 String.IsNullOrEmpty(addLocationInfo.Longitude))

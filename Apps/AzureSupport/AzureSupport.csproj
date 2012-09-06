@@ -67,6 +67,8 @@
     <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\InformationSource.cs" />
     <Compile Include="Partials\InformationSourceCollection.cs" />
+    <Compile Include="Partials\Location.cs" />
+    <Compile Include="Partials\MapMarker.cs" />
     <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBLoginRoot.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />

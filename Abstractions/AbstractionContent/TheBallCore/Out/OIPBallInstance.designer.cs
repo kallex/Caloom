@@ -176,6 +176,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBSystem customDemoObject);
+
 
 
 				public static TBSystem CreateDefault()
@@ -186,6 +188,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBSystem CreateDemoDefault()
 				{
+					TBSystem customDemo = null;
+					TBSystem.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBSystem();
 					result.InstanceName = @"TBSystem.InstanceName";
 
@@ -369,6 +375,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBRLoginRoot customDemoObject);
+
 
 
 				public static TBRLoginRoot CreateDefault()
@@ -380,6 +388,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRLoginRoot CreateDemoDefault()
 				{
+					TBRLoginRoot customDemo = null;
+					TBRLoginRoot.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBRLoginRoot();
 					result.Account = TBAccount.CreateDemoDefault();
 				
@@ -558,6 +570,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBRAccountRoot customDemoObject);
+
 
 
 				public static TBRAccountRoot CreateDefault()
@@ -569,6 +583,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRAccountRoot CreateDemoDefault()
 				{
+					TBRAccountRoot customDemo = null;
+					TBRAccountRoot.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBRAccountRoot();
 					result.Account = TBAccount.CreateDemoDefault();
 				
@@ -747,6 +765,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBRGroupRoot customDemoObject);
+
 
 
 				public static TBRGroupRoot CreateDefault()
@@ -758,6 +778,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRGroupRoot CreateDemoDefault()
 				{
+					TBRGroupRoot customDemo = null;
+					TBRGroupRoot.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBRGroupRoot();
 					result.Group = TBCollaboratingGroup.CreateDemoDefault();
 				
@@ -936,6 +960,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBRLoginGroupRoot customDemoObject);
+
 
 
 				public static TBRLoginGroupRoot CreateDefault()
@@ -946,6 +972,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRLoginGroupRoot CreateDemoDefault()
 				{
+					TBRLoginGroupRoot customDemo = null;
+					TBRLoginGroupRoot.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBRLoginGroupRoot();
 					result.Role = @"TBRLoginGroupRoot.Role";
 
@@ -1129,6 +1159,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBREmailRoot customDemoObject);
+
 
 
 				public static TBREmailRoot CreateDefault()
@@ -1140,6 +1172,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBREmailRoot CreateDemoDefault()
 				{
+					TBREmailRoot customDemo = null;
+					TBREmailRoot.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBREmailRoot();
 					result.Account = TBAccount.CreateDemoDefault();
 				
@@ -1318,6 +1354,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBAccount customDemoObject);
+
 
 
 				public static TBAccount CreateDefault()
@@ -1331,6 +1369,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccount CreateDemoDefault()
 				{
+					TBAccount customDemo = null;
+					TBAccount.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBAccount();
 					result.Emails = TBEmailCollection.CreateDemoDefault();
 					result.Logins = TBLoginInfoCollection.CreateDemoDefault();
@@ -1527,6 +1569,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBAccountCollaborationGroup customDemoObject);
+
 
 
 				public static TBAccountCollaborationGroup CreateDefault()
@@ -1537,6 +1581,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccountCollaborationGroup CreateDemoDefault()
 				{
+					TBAccountCollaborationGroup customDemo = null;
+					TBAccountCollaborationGroup.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBAccountCollaborationGroup();
 					result.GroupID = @"TBAccountCollaborationGroup.GroupID";
 
@@ -1720,6 +1768,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBAccountCollaborationGroupCollection customDemoObject);
+
 
 
 				
@@ -1732,10 +1782,14 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccountCollaborationGroupCollection CreateDemoDefault()
 				{
+					TBAccountCollaborationGroupCollection customDemo = null;
+					TBAccountCollaborationGroupCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBAccountCollaborationGroupCollection();
 					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
-					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
-					result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
 					return result;
 				}
 
@@ -1906,6 +1960,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBLoginInfo customDemoObject);
+
 
 
 				public static TBLoginInfo CreateDefault()
@@ -1916,6 +1972,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBLoginInfo CreateDemoDefault()
 				{
+					TBLoginInfo customDemo = null;
+					TBLoginInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBLoginInfo();
 					result.OpenIDUrl = @"TBLoginInfo.OpenIDUrl";
 
@@ -2092,6 +2152,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBLoginInfoCollection customDemoObject);
+
 
 
 				
@@ -2104,10 +2166,14 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBLoginInfoCollection CreateDemoDefault()
 				{
+					TBLoginInfoCollection customDemo = null;
+					TBLoginInfoCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBLoginInfoCollection();
 					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
-					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
-					result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
+					//result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
+					//result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
 					return result;
 				}
 
@@ -2278,6 +2344,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBEmail customDemoObject);
+
 
 
 				public static TBEmail CreateDefault()
@@ -2288,6 +2356,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmail CreateDemoDefault()
 				{
+					TBEmail customDemo = null;
+					TBEmail.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBEmail();
 					result.EmailAddress = @"TBEmail.EmailAddress";
 
@@ -2469,6 +2541,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBEmailCollection customDemoObject);
+
 
 
 				
@@ -2481,10 +2555,14 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmailCollection CreateDemoDefault()
 				{
+					TBEmailCollection customDemo = null;
+					TBEmailCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBEmailCollection();
 					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
-					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
-					result.CollectionContent.Add(TBEmail.CreateDemoDefault());
+					//result.CollectionContent.Add(TBEmail.CreateDemoDefault());
+					//result.CollectionContent.Add(TBEmail.CreateDemoDefault());
 					return result;
 				}
 
@@ -2655,6 +2733,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBCollaboratorRole customDemoObject);
+
 
 
 				public static TBCollaboratorRole CreateDefault()
@@ -2666,6 +2746,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratorRole CreateDemoDefault()
 				{
+					TBCollaboratorRole customDemo = null;
+					TBCollaboratorRole.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBCollaboratorRole();
 					result.Email = TBEmail.CreateDemoDefault();
 					result.Role = @"TBCollaboratorRole.Role";
@@ -2851,6 +2935,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBCollaboratorRoleCollection customDemoObject);
+
 
 
 				
@@ -2863,10 +2949,14 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratorRoleCollection CreateDemoDefault()
 				{
+					TBCollaboratorRoleCollection customDemo = null;
+					TBCollaboratorRoleCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBCollaboratorRoleCollection();
 					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
-					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
-					result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
+					//result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
+					//result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
 					return result;
 				}
 
@@ -3037,6 +3127,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBCollaboratingGroup customDemoObject);
+
 
 
 				public static TBCollaboratingGroup CreateDefault()
@@ -3048,6 +3140,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratingGroup CreateDemoDefault()
 				{
+					TBCollaboratingGroup customDemo = null;
+					TBCollaboratingGroup.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBCollaboratingGroup();
 					result.Title = @"TBCollaboratingGroup.Title";
 
@@ -3233,6 +3329,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBEmailValidation customDemoObject);
+
 
 
 				public static TBEmailValidation CreateDefault()
@@ -3243,6 +3341,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmailValidation CreateDemoDefault()
 				{
+					TBEmailValidation customDemo = null;
+					TBEmailValidation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBEmailValidation();
 					result.Email = @"TBEmailValidation.Email";
 
@@ -3431,6 +3533,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBRegisterContainer customDemoObject);
+
 
 
 				public static TBRegisterContainer CreateDefault()
@@ -3443,6 +3547,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRegisterContainer CreateDemoDefault()
 				{
+					TBRegisterContainer customDemo = null;
+					TBRegisterContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBRegisterContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.ReturnUrl = @"TBRegisterContainer.ReturnUrl";
@@ -3637,6 +3745,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref LoginProvider customDemoObject);
+
 
 
 				public static LoginProvider CreateDefault()
@@ -3647,6 +3757,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static LoginProvider CreateDemoDefault()
 				{
+					LoginProvider customDemo = null;
+					LoginProvider.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new LoginProvider();
 					result.ProviderName = @"LoginProvider.ProviderName";
 
@@ -3851,6 +3965,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref LoginProviderCollection customDemoObject);
+
 
 
 				
@@ -3863,10 +3979,14 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static LoginProviderCollection CreateDemoDefault()
 				{
+					LoginProviderCollection customDemo = null;
+					LoginProviderCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new LoginProviderCollection();
 					result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
-					result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
-					result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
+					//result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
+					//result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
 					return result;
 				}
 
@@ -4037,6 +4157,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ContactOipContainer customDemoObject);
+
 
 
 				public static ContactOipContainer CreateDefault()
@@ -4047,6 +4169,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static ContactOipContainer CreateDemoDefault()
 				{
+					ContactOipContainer customDemo = null;
+					ContactOipContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ContactOipContainer();
 					result.OIPModeratorGroupID = @"ContactOipContainer.OIPModeratorGroupID";
 
@@ -4223,6 +4349,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref TBPRegisterEmail customDemoObject);
+
 
 
 				public static TBPRegisterEmail CreateDefault()
@@ -4233,6 +4361,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBPRegisterEmail CreateDemoDefault()
 				{
+					TBPRegisterEmail customDemo = null;
+					TBPRegisterEmail.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new TBPRegisterEmail();
 					result.EmailAddress = @"TBPRegisterEmail.EmailAddress";
 
@@ -4409,6 +4541,8 @@ namespace AaltoGlobalImpact.OIP {
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref JavaScriptContainer customDemoObject);
+
 
 
 				public static JavaScriptContainer CreateDefault()
@@ -4419,6 +4553,10 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static JavaScriptContainer CreateDemoDefault()
 				{
+					JavaScriptContainer customDemo = null;
+					JavaScriptContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new JavaScriptContainer();
 					result.HtmlContent = @"JavaScriptContainer.HtmlContent
 JavaScriptContainer.HtmlContent
@@ -4600,6 +4738,8 @@ JavaScriptContainer.HtmlContent
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref JavascriptContainer customDemoObject);
+
 
 
 				public static JavascriptContainer CreateDefault()
@@ -4610,6 +4750,10 @@ JavaScriptContainer.HtmlContent
 
 				public static JavascriptContainer CreateDemoDefault()
 				{
+					JavascriptContainer customDemo = null;
+					JavascriptContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new JavascriptContainer();
 					result.HtmlContent = @"JavascriptContainer.HtmlContent
 JavascriptContainer.HtmlContent
@@ -4791,6 +4935,8 @@ JavascriptContainer.HtmlContent
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref FooterContainer customDemoObject);
+
 
 
 				public static FooterContainer CreateDefault()
@@ -4801,6 +4947,10 @@ JavascriptContainer.HtmlContent
 
 				public static FooterContainer CreateDemoDefault()
 				{
+					FooterContainer customDemo = null;
+					FooterContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new FooterContainer();
 					result.HtmlContent = @"FooterContainer.HtmlContent
 FooterContainer.HtmlContent
@@ -4982,6 +5132,8 @@ FooterContainer.HtmlContent
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref NavigationContainer customDemoObject);
+
 
 
 				public static NavigationContainer CreateDefault()
@@ -4992,6 +5144,10 @@ FooterContainer.HtmlContent
 
 				public static NavigationContainer CreateDemoDefault()
 				{
+					NavigationContainer customDemo = null;
+					NavigationContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new NavigationContainer();
 					result.Dummy = @"NavigationContainer.Dummy";
 
@@ -5016,6 +5172,221 @@ FooterContainer.HtmlContent
 	        }
 			[DataMember]
 			public string Dummy { get; set; }
+			
+			}
+			[DataContract]
+			public partial class AccountSummary : IInformationObject
+			{
+				public AccountSummary()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AccountSummary";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AccountSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccountSummary(relativeLocation, owner);
+				}
+
+
+                public static AccountSummary RetrieveAccountSummary(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AccountSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSummary), null, owner);
+                    return result;
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("RootObject"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        object targetObject = FindObjectByID(objectID);
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSummary));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AccountSummary DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AccountSummary));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AccountSummary) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", masterObject.RelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AccountSummary", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref AccountSummary customDemoObject);
+
+
+
+				public static AccountSummary CreateDefault()
+				{
+					var result = new AccountSummary();
+					result.Introduction = Introduction.CreateDefault();
+					result.ActivitySummary = ActivitySummaryContainer.CreateDefault();
+					result.GroupSummary = GroupSummaryContainer.CreateDefault();
+					return result;
+				}
+
+				public static AccountSummary CreateDemoDefault()
+				{
+					AccountSummary customDemo = null;
+					AccountSummary.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new AccountSummary();
+					result.Introduction = Introduction.CreateDemoDefault();
+					result.ActivitySummary = ActivitySummaryContainer.CreateDemoDefault();
+					result.GroupSummary = GroupSummaryContainer.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ActivitySummary;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = GroupSummary;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public Introduction Introduction { get; set; }
+			[DataMember]
+			public ActivitySummaryContainer ActivitySummary { get; set; }
+			[DataMember]
+			public GroupSummaryContainer GroupSummary { get; set; }
 			
 			}
 			[DataContract]
@@ -5168,6 +5539,8 @@ FooterContainer.HtmlContent
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountContainer customDemoObject);
+
 
 
 				public static AccountContainer CreateDefault()
@@ -5176,15 +5549,21 @@ FooterContainer.HtmlContent
 					result.Header = ContainerHeader.CreateDefault();
 					result.AccountIndex = AccountIndex.CreateDefault();
 					result.AccountModule = AccountModule.CreateDefault();
+					result.AccountSummary = AccountSummary.CreateDefault();
 					return result;
 				}
 
 				public static AccountContainer CreateDemoDefault()
 				{
+					AccountContainer customDemo = null;
+					AccountContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.AccountIndex = AccountIndex.CreateDemoDefault();
 					result.AccountModule = AccountModule.CreateDemoDefault();
+					result.AccountSummary = AccountSummary.CreateDemoDefault();
 				
 					return result;
 				}
@@ -5208,6 +5587,12 @@ FooterContainer.HtmlContent
 						if(result != null)
 							return result;
 					}
+					{
+						var item = AccountSummary;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -5225,6 +5610,8 @@ FooterContainer.HtmlContent
 			public AccountIndex AccountIndex { get; set; }
 			[DataMember]
 			public AccountModule AccountModule { get; set; }
+			[DataMember]
+			public AccountSummary AccountSummary { get; set; }
 			
 			}
 			[DataContract]
@@ -5377,6 +5764,8 @@ FooterContainer.HtmlContent
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountIndex customDemoObject);
+
 
 
 				public static AccountIndex CreateDefault()
@@ -5387,6 +5776,10 @@ FooterContainer.HtmlContent
 
 				public static AccountIndex CreateDemoDefault()
 				{
+					AccountIndex customDemo = null;
+					AccountIndex.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountIndex();
 					result.Title = @"AccountIndex.Title";
 
@@ -5587,6 +5980,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountModule customDemoObject);
+
 
 
 				public static AccountModule CreateDefault()
@@ -5602,6 +5997,10 @@ AccountIndex.Summary
 
 				public static AccountModule CreateDemoDefault()
 				{
+					AccountModule customDemo = null;
+					AccountModule.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountModule();
 					result.Profile = AccountProfile.CreateDemoDefault();
 					result.Security = AccountSecurity.CreateDemoDefault();
@@ -5816,6 +6215,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AddressAndLocationCollection customDemoObject);
+
 
 
 				
@@ -5828,10 +6229,14 @@ AccountIndex.Summary
 
 				public static AddressAndLocationCollection CreateDemoDefault()
 				{
+					AddressAndLocationCollection customDemo = null;
+					AddressAndLocationCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AddressAndLocationCollection();
 					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
-					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
-					result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
+					//result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
+					//result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
 					return result;
 				}
 
@@ -6002,6 +6407,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AddressAndLocation customDemoObject);
+
 
 
 				public static AddressAndLocation CreateDefault()
@@ -6014,6 +6421,10 @@ AccountIndex.Summary
 
 				public static AddressAndLocation CreateDemoDefault()
 				{
+					AddressAndLocation customDemo = null;
+					AddressAndLocation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AddressAndLocation();
 					result.Address = StreetAddress.CreateDemoDefault();
 					result.Location = Location.CreateDemoDefault();
@@ -6201,6 +6612,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref StreetAddress customDemoObject);
+
 
 
 				public static StreetAddress CreateDefault()
@@ -6211,6 +6624,10 @@ AccountIndex.Summary
 
 				public static StreetAddress CreateDemoDefault()
 				{
+					StreetAddress customDemo = null;
+					StreetAddress.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new StreetAddress();
 					result.Street = @"StreetAddress.Street";
 
@@ -6408,6 +6825,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountContent customDemoObject);
+
 
 
 				public static AccountContent CreateDefault()
@@ -6418,6 +6837,10 @@ AccountIndex.Summary
 
 				public static AccountContent CreateDemoDefault()
 				{
+					AccountContent customDemo = null;
+					AccountContent.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountContent();
 					result.Dummy = @"AccountContent.Dummy";
 
@@ -6594,6 +7017,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountProfile customDemoObject);
+
 
 
 				public static AccountProfile CreateDefault()
@@ -6606,6 +7031,10 @@ AccountIndex.Summary
 
 				public static AccountProfile CreateDemoDefault()
 				{
+					AccountProfile customDemo = null;
+					AccountProfile.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountProfile();
 					result.ProfileImage = Image.CreateDemoDefault();
 					result.FirstName = @"AccountProfile.FirstName";
@@ -6807,6 +7236,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountSecurity customDemoObject);
+
 
 
 				public static AccountSecurity CreateDefault()
@@ -6819,6 +7250,10 @@ AccountIndex.Summary
 
 				public static AccountSecurity CreateDemoDefault()
 				{
+					AccountSecurity customDemo = null;
+					AccountSecurity.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountSecurity();
 					result.LoginInfoCollection = TBLoginInfoCollection.CreateDemoDefault();
 					result.EmailCollection = TBEmailCollection.CreateDemoDefault();
@@ -7006,6 +7441,8 @@ AccountIndex.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AccountRoles customDemoObject);
+
 
 
 				public static AccountRoles CreateDefault()
@@ -7018,6 +7455,10 @@ AccountIndex.Summary
 
 				public static AccountRoles CreateDemoDefault()
 				{
+					AccountRoles customDemo = null;
+					AccountRoles.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AccountRoles();
 					result.ModeratorInGroups = ReferenceCollection.CreateDemoDefault();
 					result.MemberInGroups = ReferenceCollection.CreateDemoDefault();
@@ -7217,6 +7658,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref PersonalInfoVisibility customDemoObject);
+
 
 
 				public static PersonalInfoVisibility CreateDefault()
@@ -7227,6 +7670,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static PersonalInfoVisibility CreateDemoDefault()
 				{
+					PersonalInfoVisibility customDemo = null;
+					PersonalInfoVisibility.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new PersonalInfoVisibility();
 					result.NoOne_Network_All = @"PersonalInfoVisibility.NoOne_Network_All";
 
@@ -7403,6 +7850,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ReferenceToInformation customDemoObject);
+
 
 
 				public static ReferenceToInformation CreateDefault()
@@ -7413,6 +7862,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static ReferenceToInformation CreateDemoDefault()
 				{
+					ReferenceToInformation customDemo = null;
+					ReferenceToInformation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ReferenceToInformation();
 					result.Title = @"ReferenceToInformation.Title";
 
@@ -7596,6 +8049,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ReferenceCollection customDemoObject);
+
 
 
 				
@@ -7608,10 +8063,14 @@ AccountRoles.OrganizationsImPartOf
 
 				public static ReferenceCollection CreateDemoDefault()
 				{
+					ReferenceCollection customDemo = null;
+					ReferenceCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ReferenceCollection();
 					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
-					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
-					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
+					//result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
+					//result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
 					return result;
 				}
 
@@ -7782,6 +8241,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref BlogContainer customDemoObject);
+
 
 
 				public static BlogContainer CreateDefault()
@@ -7796,6 +8257,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static BlogContainer CreateDemoDefault()
 				{
+					BlogContainer customDemo = null;
+					BlogContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new BlogContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.FeaturedBlog = Blog.CreateDemoDefault();
@@ -8001,6 +8466,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapContainer customDemoObject);
+
 
 
 				public static MapContainer CreateDefault()
@@ -8017,6 +8484,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapContainer CreateDemoDefault()
 				{
+					MapContainer customDemo = null;
+					MapContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.MapFeatured = Map.CreateDemoDefault();
@@ -8240,6 +8711,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapMarker customDemoObject);
+
 
 
 				public static MapMarker CreateDefault()
@@ -8251,6 +8724,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapMarker CreateDemoDefault()
 				{
+					MapMarker customDemo = null;
+					MapMarker.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapMarker();
 					result.LocationText = @"MapMarker.LocationText";
 
@@ -8436,6 +8913,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapMarkerCollection customDemoObject);
+
 
 
 				
@@ -8448,10 +8927,14 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapMarkerCollection CreateDemoDefault()
 				{
+					MapMarkerCollection customDemo = null;
+					MapMarkerCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapMarkerCollection();
 					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
-					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
-					result.CollectionContent.Add(MapMarker.CreateDemoDefault());
+					//result.CollectionContent.Add(MapMarker.CreateDemoDefault());
+					//result.CollectionContent.Add(MapMarker.CreateDemoDefault());
 					return result;
 				}
 
@@ -8622,6 +9105,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CalendarContainer customDemoObject);
+
 
 
 				public static CalendarContainer CreateDefault()
@@ -8636,6 +9121,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static CalendarContainer CreateDemoDefault()
 				{
+					CalendarContainer customDemo = null;
+					CalendarContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CalendarContainer();
 					result.CalendarContainerHeader = ContainerHeader.CreateDemoDefault();
 					result.CalendarFeatured = Calendar.CreateDemoDefault();
@@ -8841,6 +9330,8 @@ AccountRoles.OrganizationsImPartOf
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AboutContainer customDemoObject);
+
 
 
 				public static AboutContainer CreateDefault()
@@ -8854,6 +9345,10 @@ AccountRoles.OrganizationsImPartOf
 
 				public static AboutContainer CreateDemoDefault()
 				{
+					AboutContainer customDemo = null;
+					AboutContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AboutContainer();
 					result.MainImage = Image.CreateDemoDefault();
 					result.Header = ContainerHeader.CreateDemoDefault();
@@ -9086,6 +9581,8 @@ AboutContainer.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref OBSAccountContainer customDemoObject);
+
 
 
 				public static OBSAccountContainer CreateDefault()
@@ -9100,6 +9597,10 @@ AboutContainer.Body
 
 				public static OBSAccountContainer CreateDemoDefault()
 				{
+					OBSAccountContainer customDemo = null;
+					OBSAccountContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new OBSAccountContainer();
 					result.AccountContainerHeader = ContainerHeader.CreateDemoDefault();
 					result.AccountFeatured = Calendar.CreateDemoDefault();
@@ -9305,6 +9806,8 @@ AboutContainer.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ProjectContainer customDemoObject);
+
 
 
 				public static ProjectContainer CreateDefault()
@@ -9319,6 +9822,10 @@ AboutContainer.Body
 
 				public static ProjectContainer CreateDemoDefault()
 				{
+					ProjectContainer customDemo = null;
+					ProjectContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ProjectContainer();
 					result.ProjectContainerHeader = ContainerHeader.CreateDemoDefault();
 					result.ProjectFeatured = Calendar.CreateDemoDefault();
@@ -9524,6 +10031,8 @@ AboutContainer.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CourseContainer customDemoObject);
+
 
 
 				public static CourseContainer CreateDefault()
@@ -9538,6 +10047,10 @@ AboutContainer.Body
 
 				public static CourseContainer CreateDemoDefault()
 				{
+					CourseContainer customDemo = null;
+					CourseContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CourseContainer();
 					result.CourseContainerHeader = ContainerHeader.CreateDemoDefault();
 					result.CourseFeatured = Calendar.CreateDemoDefault();
@@ -9743,6 +10256,8 @@ AboutContainer.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ContainerHeader customDemoObject);
+
 
 
 				public static ContainerHeader CreateDefault()
@@ -9753,6 +10268,10 @@ AboutContainer.Body
 
 				public static ContainerHeader CreateDemoDefault()
 				{
+					ContainerHeader customDemo = null;
+					ContainerHeader.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ContainerHeader();
 					result.Title = @"ContainerHeader.Title";
 
@@ -9936,6 +10455,8 @@ AboutContainer.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ActivitySummaryContainer customDemoObject);
+
 
 
 				public static ActivitySummaryContainer CreateDefault()
@@ -9949,6 +10470,10 @@ AboutContainer.Body
 
 				public static ActivitySummaryContainer CreateDemoDefault()
 				{
+					ActivitySummaryContainer customDemo = null;
+					ActivitySummaryContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ActivitySummaryContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.SummaryBody = @"ActivitySummaryContainer.SummaryBody
@@ -10157,6 +10682,8 @@ ActivitySummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ActivityContainer customDemoObject);
+
 
 
 				public static ActivityContainer CreateDefault()
@@ -10168,6 +10695,10 @@ ActivitySummaryContainer.SummaryBody
 
 				public static ActivityContainer CreateDemoDefault()
 				{
+					ActivityContainer customDemo = null;
+					ActivityContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ActivityContainer();
 					result.Activities = ActivityCollection.CreateDemoDefault();
 				
@@ -10346,6 +10877,8 @@ ActivitySummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ActivityCollection customDemoObject);
+
 
 
 				
@@ -10358,10 +10891,14 @@ ActivitySummaryContainer.SummaryBody
 
 				public static ActivityCollection CreateDemoDefault()
 				{
+					ActivityCollection customDemo = null;
+					ActivityCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ActivityCollection();
 					result.CollectionContent.Add(Activity.CreateDemoDefault());
-					result.CollectionContent.Add(Activity.CreateDemoDefault());
-					result.CollectionContent.Add(Activity.CreateDemoDefault());
+					//result.CollectionContent.Add(Activity.CreateDemoDefault());
+					//result.CollectionContent.Add(Activity.CreateDemoDefault());
 					return result;
 				}
 
@@ -10532,12 +11069,16 @@ ActivitySummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Activity customDemoObject);
+
 
 
 				public static Activity CreateDefault()
 				{
 					var result = new Activity();
-					result.MainImage = Image.CreateDefault();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
+					result.ProfileImage = Image.CreateDefault();
+					result.IconImage = Image.CreateDefault();
 					result.Moderators = ModeratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
 					return result;
@@ -10545,8 +11086,14 @@ ActivitySummaryContainer.SummaryBody
 
 				public static Activity CreateDemoDefault()
 				{
+					Activity customDemo = null;
+					Activity.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Activity();
-					result.MainImage = Image.CreateDemoDefault();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
+					result.ProfileImage = Image.CreateDemoDefault();
+					result.IconImage = Image.CreateDemoDefault();
 					result.ActivityName = @"Activity.ActivityName";
 
 					result.Description = @"Activity.Description
@@ -10564,7 +11111,19 @@ Activity.Description
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = MainImage;
+						var item = ReferenceToInformation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ProfileImage;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = IconImage;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -10599,7 +11158,11 @@ Activity.Description
 					}
 	        }
 			[DataMember]
-			public Image MainImage { get; set; }
+			public ReferenceToInformation ReferenceToInformation { get; set; }
+			[DataMember]
+			public Image ProfileImage { get; set; }
+			[DataMember]
+			public Image IconImage { get; set; }
 			[DataMember]
 			public string ActivityName { get; set; }
 			[DataMember]
@@ -10760,6 +11323,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ModeratorCollection customDemoObject);
+
 
 
 				
@@ -10772,10 +11337,14 @@ Activity.Description
 
 				public static ModeratorCollection CreateDemoDefault()
 				{
+					ModeratorCollection customDemo = null;
+					ModeratorCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ModeratorCollection();
 					result.CollectionContent.Add(Moderator.CreateDemoDefault());
-					result.CollectionContent.Add(Moderator.CreateDemoDefault());
-					result.CollectionContent.Add(Moderator.CreateDemoDefault());
+					//result.CollectionContent.Add(Moderator.CreateDemoDefault());
+					//result.CollectionContent.Add(Moderator.CreateDemoDefault());
 					return result;
 				}
 
@@ -10946,6 +11515,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Moderator customDemoObject);
+
 
 
 				public static Moderator CreateDefault()
@@ -10956,6 +11527,10 @@ Activity.Description
 
 				public static Moderator CreateDemoDefault()
 				{
+					Moderator customDemo = null;
+					Moderator.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Moderator();
 					result.ModeratorName = @"Moderator.ModeratorName";
 
@@ -11139,6 +11714,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CollaboratorCollection customDemoObject);
+
 
 
 				
@@ -11151,10 +11728,14 @@ Activity.Description
 
 				public static CollaboratorCollection CreateDemoDefault()
 				{
+					CollaboratorCollection customDemo = null;
+					CollaboratorCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CollaboratorCollection();
 					result.CollectionContent.Add(Collaborator.CreateDemoDefault());
-					result.CollectionContent.Add(Collaborator.CreateDemoDefault());
-					result.CollectionContent.Add(Collaborator.CreateDemoDefault());
+					//result.CollectionContent.Add(Collaborator.CreateDemoDefault());
+					//result.CollectionContent.Add(Collaborator.CreateDemoDefault());
 					return result;
 				}
 
@@ -11325,6 +11906,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Collaborator customDemoObject);
+
 
 
 				public static Collaborator CreateDefault()
@@ -11335,6 +11918,10 @@ Activity.Description
 
 				public static Collaborator CreateDemoDefault()
 				{
+					Collaborator customDemo = null;
+					Collaborator.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Collaborator();
 					result.CollaboratorName = @"Collaborator.CollaboratorName";
 
@@ -11518,6 +12105,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CollaboratingGroup customDemoObject);
+
 
 
 				public static CollaboratingGroup CreateDefault()
@@ -11528,6 +12117,10 @@ Activity.Description
 
 				public static CollaboratingGroup CreateDemoDefault()
 				{
+					CollaboratingGroup customDemo = null;
+					CollaboratingGroup.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CollaboratingGroup();
 					result.CollaboratingGroupName = @"CollaboratingGroup.CollaboratingGroupName";
 
@@ -11704,6 +12297,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CollaboratingGroupCollection customDemoObject);
+
 
 
 				
@@ -11716,10 +12311,14 @@ Activity.Description
 
 				public static CollaboratingGroupCollection CreateDemoDefault()
 				{
+					CollaboratingGroupCollection customDemo = null;
+					CollaboratingGroupCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CollaboratingGroupCollection();
 					result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
-					result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
-					result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
 					return result;
 				}
 
@@ -11890,6 +12489,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CollaboratingOrganization customDemoObject);
+
 
 
 				public static CollaboratingOrganization CreateDefault()
@@ -11900,6 +12501,10 @@ Activity.Description
 
 				public static CollaboratingOrganization CreateDemoDefault()
 				{
+					CollaboratingOrganization customDemo = null;
+					CollaboratingOrganization.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CollaboratingOrganization();
 					result.CollaboratingOrganizationName = @"CollaboratingOrganization.CollaboratingOrganizationName";
 
@@ -12076,6 +12681,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CollaboratingOrganizationCollection customDemoObject);
+
 
 
 				
@@ -12088,10 +12695,14 @@ Activity.Description
 
 				public static CollaboratingOrganizationCollection CreateDemoDefault()
 				{
+					CollaboratingOrganizationCollection customDemo = null;
+					CollaboratingOrganizationCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CollaboratingOrganizationCollection();
 					result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
-					result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
-					result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
+					//result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
+					//result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
 					return result;
 				}
 
@@ -12262,6 +12873,8 @@ Activity.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref GroupSummaryContainer customDemoObject);
+
 
 
 				public static GroupSummaryContainer CreateDefault()
@@ -12275,6 +12888,10 @@ Activity.Description
 
 				public static GroupSummaryContainer CreateDemoDefault()
 				{
+					GroupSummaryContainer customDemo = null;
+					GroupSummaryContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new GroupSummaryContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.SummaryBody = @"GroupSummaryContainer.SummaryBody
@@ -12483,6 +13100,8 @@ GroupSummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref GroupContainer customDemoObject);
+
 
 
 				public static GroupContainer CreateDefault()
@@ -12499,6 +13118,10 @@ GroupSummaryContainer.SummaryBody
 
 				public static GroupContainer CreateDemoDefault()
 				{
+					GroupContainer customDemo = null;
+					GroupContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new GroupContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.GroupProfile = Group.CreateDemoDefault();
@@ -12722,6 +13345,8 @@ GroupSummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AddLocationInfo customDemoObject);
+
 
 
 				public static AddLocationInfo CreateDefault()
@@ -12733,6 +13358,10 @@ GroupSummaryContainer.SummaryBody
 
 				public static AddLocationInfo CreateDemoDefault()
 				{
+					AddLocationInfo customDemo = null;
+					AddLocationInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AddLocationInfo();
 					result.LocationName = @"AddLocationInfo.LocationName";
 
@@ -12932,6 +13561,8 @@ GroupSummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref GroupCollection customDemoObject);
+
 
 
 				
@@ -12944,10 +13575,14 @@ GroupSummaryContainer.SummaryBody
 
 				public static GroupCollection CreateDemoDefault()
 				{
+					GroupCollection customDemo = null;
+					GroupCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new GroupCollection();
 					result.CollectionContent.Add(Group.CreateDemoDefault());
-					result.CollectionContent.Add(Group.CreateDemoDefault());
-					result.CollectionContent.Add(Group.CreateDemoDefault());
+					//result.CollectionContent.Add(Group.CreateDemoDefault());
+					//result.CollectionContent.Add(Group.CreateDemoDefault());
 					return result;
 				}
 
@@ -13118,11 +13753,14 @@ GroupSummaryContainer.SummaryBody
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Group customDemoObject);
+
 
 
 				public static Group CreateDefault()
 				{
 					var result = new Group();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.ProfileImage = Image.CreateDefault();
 					result.IconImage = Image.CreateDefault();
 					result.Moderators = ModeratorCollection.CreateDefault();
@@ -13132,7 +13770,12 @@ GroupSummaryContainer.SummaryBody
 
 				public static Group CreateDemoDefault()
 				{
+					Group customDemo = null;
+					Group.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Group();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.ProfileImage = Image.CreateDemoDefault();
 					result.IconImage = Image.CreateDemoDefault();
 					result.GroupName = @"Group.GroupName";
@@ -13158,6 +13801,12 @@ Group.OrganizationsAndGroupsLinkedToUs
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ReferenceToInformation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = ProfileImage;
 						object result = item.FindObjectByID(objectId);
@@ -13202,6 +13851,8 @@ Group.OrganizationsAndGroupsLinkedToUs
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public ReferenceToInformation ReferenceToInformation { get; set; }
 			[DataMember]
 			public Image ProfileImage { get; set; }
 			[DataMember]
@@ -13368,6 +14019,8 @@ Group.OrganizationsAndGroupsLinkedToUs
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Introduction customDemoObject);
+
 
 
 				public static Introduction CreateDefault()
@@ -13378,6 +14031,10 @@ Group.OrganizationsAndGroupsLinkedToUs
 
 				public static Introduction CreateDemoDefault()
 				{
+					Introduction customDemo = null;
+					Introduction.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Introduction();
 					result.Title = @"Introduction.Title";
 
@@ -13566,6 +14223,8 @@ Introduction.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref BlogCollection customDemoObject);
+
 
 
 				
@@ -13578,10 +14237,14 @@ Introduction.Body
 
 				public static BlogCollection CreateDemoDefault()
 				{
+					BlogCollection customDemo = null;
+					BlogCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new BlogCollection();
 					result.CollectionContent.Add(Blog.CreateDemoDefault());
-					result.CollectionContent.Add(Blog.CreateDemoDefault());
-					result.CollectionContent.Add(Blog.CreateDemoDefault());
+					//result.CollectionContent.Add(Blog.CreateDemoDefault());
+					//result.CollectionContent.Add(Blog.CreateDemoDefault());
 					return result;
 				}
 
@@ -13752,6 +14415,8 @@ Introduction.Body
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Blog customDemoObject);
+
 
 
 				public static Blog CreateDefault()
@@ -13766,6 +14431,10 @@ Introduction.Body
 
 				public static Blog CreateDemoDefault()
 				{
+					Blog customDemo = null;
+					Blog.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Blog();
 					result.Title = @"Blog.Title";
 
@@ -14021,6 +14690,8 @@ Blog.Excerpt
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref BlogIndexGroup customDemoObject);
+
 
 
 				public static BlogIndexGroup CreateDefault()
@@ -14035,6 +14706,10 @@ Blog.Excerpt
 
 				public static BlogIndexGroup CreateDemoDefault()
 				{
+					BlogIndexGroup customDemo = null;
+					BlogIndexGroup.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new BlogIndexGroup();
 					result.Title = @"BlogIndexGroup.Title";
 
@@ -14278,6 +14953,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CalendarIndex customDemoObject);
+
 
 
 				public static CalendarIndex CreateDefault()
@@ -14288,6 +14965,10 @@ BlogIndexGroup.Summary
 
 				public static CalendarIndex CreateDemoDefault()
 				{
+					CalendarIndex customDemo = null;
+					CalendarIndex.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CalendarIndex();
 					result.Title = @"CalendarIndex.Title";
 
@@ -14464,6 +15145,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Filter customDemoObject);
+
 
 
 				public static Filter CreateDefault()
@@ -14474,6 +15157,10 @@ BlogIndexGroup.Summary
 
 				public static Filter CreateDemoDefault()
 				{
+					Filter customDemo = null;
+					Filter.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Filter();
 					result.Title = @"Filter.Title";
 
@@ -14650,6 +15337,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Calendar customDemoObject);
+
 
 
 				public static Calendar CreateDefault()
@@ -14660,6 +15349,10 @@ BlogIndexGroup.Summary
 
 				public static Calendar CreateDemoDefault()
 				{
+					Calendar customDemo = null;
+					Calendar.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Calendar();
 					result.Title = @"Calendar.Title";
 
@@ -14836,6 +15529,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref CalendarCollection customDemoObject);
+
 
 
 				
@@ -14848,10 +15543,14 @@ BlogIndexGroup.Summary
 
 				public static CalendarCollection CreateDemoDefault()
 				{
+					CalendarCollection customDemo = null;
+					CalendarCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new CalendarCollection();
 					result.CollectionContent.Add(Calendar.CreateDemoDefault());
-					result.CollectionContent.Add(Calendar.CreateDemoDefault());
-					result.CollectionContent.Add(Calendar.CreateDemoDefault());
+					//result.CollectionContent.Add(Calendar.CreateDemoDefault());
+					//result.CollectionContent.Add(Calendar.CreateDemoDefault());
 					return result;
 				}
 
@@ -15022,6 +15721,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Map customDemoObject);
+
 
 
 				public static Map CreateDefault()
@@ -15032,6 +15733,10 @@ BlogIndexGroup.Summary
 
 				public static Map CreateDemoDefault()
 				{
+					Map customDemo = null;
+					Map.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Map();
 					result.Title = @"Map.Title";
 
@@ -15208,6 +15913,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapCollection customDemoObject);
+
 
 
 				
@@ -15220,10 +15927,14 @@ BlogIndexGroup.Summary
 
 				public static MapCollection CreateDemoDefault()
 				{
+					MapCollection customDemo = null;
+					MapCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapCollection();
 					result.CollectionContent.Add(Map.CreateDemoDefault());
-					result.CollectionContent.Add(Map.CreateDemoDefault());
-					result.CollectionContent.Add(Map.CreateDemoDefault());
+					//result.CollectionContent.Add(Map.CreateDemoDefault());
+					//result.CollectionContent.Add(Map.CreateDemoDefault());
 					return result;
 				}
 
@@ -15394,6 +16105,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapIndexCollection customDemoObject);
+
 
 
 				public static MapIndexCollection CreateDefault()
@@ -15408,6 +16121,10 @@ BlogIndexGroup.Summary
 
 				public static MapIndexCollection CreateDemoDefault()
 				{
+					MapIndexCollection customDemo = null;
+					MapIndexCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapIndexCollection();
 					result.MapByDate = MapCollection.CreateDemoDefault();
 					result.MapByLocation = MapCollection.CreateDemoDefault();
@@ -15613,6 +16330,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapResult customDemoObject);
+
 
 
 				public static MapResult CreateDefault()
@@ -15624,6 +16343,10 @@ BlogIndexGroup.Summary
 
 				public static MapResult CreateDemoDefault()
 				{
+					MapResult customDemo = null;
+					MapResult.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapResult();
 					result.Location = Location.CreateDemoDefault();
 				
@@ -15802,6 +16525,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapResultCollection customDemoObject);
+
 
 
 				
@@ -15814,10 +16539,14 @@ BlogIndexGroup.Summary
 
 				public static MapResultCollection CreateDemoDefault()
 				{
+					MapResultCollection customDemo = null;
+					MapResultCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapResultCollection();
 					result.CollectionContent.Add(MapResult.CreateDemoDefault());
-					result.CollectionContent.Add(MapResult.CreateDemoDefault());
-					result.CollectionContent.Add(MapResult.CreateDemoDefault());
+					//result.CollectionContent.Add(MapResult.CreateDemoDefault());
+					//result.CollectionContent.Add(MapResult.CreateDemoDefault());
 					return result;
 				}
 
@@ -15988,6 +16717,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref MapResultsCollection customDemoObject);
+
 
 
 				public static MapResultsCollection CreateDefault()
@@ -16001,6 +16732,10 @@ BlogIndexGroup.Summary
 
 				public static MapResultsCollection CreateDemoDefault()
 				{
+					MapResultsCollection customDemo = null;
+					MapResultsCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new MapResultsCollection();
 					result.ResultByDate = MapResultCollection.CreateDemoDefault();
 					result.ResultByAuthor = MapResultCollection.CreateDemoDefault();
@@ -16197,6 +16932,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Image customDemoObject);
+
 
 
 				public static Image CreateDefault()
@@ -16207,6 +16944,10 @@ BlogIndexGroup.Summary
 
 				public static Image CreateDemoDefault()
 				{
+					Image customDemo = null;
+					Image.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Image();
 					result.Title = @"Image.Title";
 
@@ -16390,6 +17131,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ImageGroupCollection customDemoObject);
+
 
 
 				
@@ -16402,10 +17145,14 @@ BlogIndexGroup.Summary
 
 				public static ImageGroupCollection CreateDemoDefault()
 				{
+					ImageGroupCollection customDemo = null;
+					ImageGroupCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ImageGroupCollection();
 					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
-					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
-					result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
 					return result;
 				}
 
@@ -16576,6 +17323,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ImageGroup customDemoObject);
+
 
 
 				public static ImageGroup CreateDefault()
@@ -16587,6 +17336,10 @@ BlogIndexGroup.Summary
 
 				public static ImageGroup CreateDemoDefault()
 				{
+					ImageGroup customDemo = null;
+					ImageGroup.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ImageGroup();
 					result.Title = @"ImageGroup.Title";
 
@@ -16779,6 +17532,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ImagesCollection customDemoObject);
+
 
 
 				
@@ -16791,10 +17546,14 @@ BlogIndexGroup.Summary
 
 				public static ImagesCollection CreateDemoDefault()
 				{
+					ImagesCollection customDemo = null;
+					ImagesCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ImagesCollection();
 					result.CollectionContent.Add(Image.CreateDemoDefault());
-					result.CollectionContent.Add(Image.CreateDemoDefault());
-					result.CollectionContent.Add(Image.CreateDemoDefault());
+					//result.CollectionContent.Add(Image.CreateDemoDefault());
+					//result.CollectionContent.Add(Image.CreateDemoDefault());
 					return result;
 				}
 
@@ -16965,6 +17724,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Tooltip customDemoObject);
+
 
 
 				public static Tooltip CreateDefault()
@@ -16975,6 +17736,10 @@ BlogIndexGroup.Summary
 
 				public static Tooltip CreateDemoDefault()
 				{
+					Tooltip customDemo = null;
+					Tooltip.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Tooltip();
 					result.TooltipText = @"Tooltip.TooltipText";
 
@@ -17151,6 +17916,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SocialPanelCollection customDemoObject);
+
 
 
 				
@@ -17163,10 +17930,14 @@ BlogIndexGroup.Summary
 
 				public static SocialPanelCollection CreateDemoDefault()
 				{
+					SocialPanelCollection customDemo = null;
+					SocialPanelCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SocialPanelCollection();
 					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
-					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
-					result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
+					//result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
+					//result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
 					return result;
 				}
 
@@ -17337,6 +18108,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SocialPanel customDemoObject);
+
 
 
 				public static SocialPanel CreateDefault()
@@ -17348,6 +18121,10 @@ BlogIndexGroup.Summary
 
 				public static SocialPanel CreateDemoDefault()
 				{
+					SocialPanel customDemo = null;
+					SocialPanel.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SocialPanel();
 					result.SocialFilter = Filter.CreateDemoDefault();
 				
@@ -17526,6 +18303,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Longitude customDemoObject);
+
 
 
 				public static Longitude CreateDefault()
@@ -17536,6 +18315,10 @@ BlogIndexGroup.Summary
 
 				public static Longitude CreateDemoDefault()
 				{
+					Longitude customDemo = null;
+					Longitude.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Longitude();
 					result.TextValue = @"Longitude.TextValue";
 
@@ -17712,6 +18495,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Latitude customDemoObject);
+
 
 
 				public static Latitude CreateDefault()
@@ -17722,6 +18507,10 @@ BlogIndexGroup.Summary
 
 				public static Latitude CreateDemoDefault()
 				{
+					Latitude customDemo = null;
+					Latitude.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Latitude();
 					result.TextValue = @"Latitude.TextValue";
 
@@ -17898,6 +18687,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Location customDemoObject);
+
 
 
 				public static Location CreateDefault()
@@ -17910,6 +18701,10 @@ BlogIndexGroup.Summary
 
 				public static Location CreateDemoDefault()
 				{
+					Location customDemo = null;
+					Location.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Location();
 					result.LocationName = @"Location.LocationName";
 
@@ -18104,6 +18899,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref LocationCollection customDemoObject);
+
 
 
 				
@@ -18116,10 +18913,14 @@ BlogIndexGroup.Summary
 
 				public static LocationCollection CreateDemoDefault()
 				{
+					LocationCollection customDemo = null;
+					LocationCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new LocationCollection();
 					result.CollectionContent.Add(Location.CreateDemoDefault());
-					result.CollectionContent.Add(Location.CreateDemoDefault());
-					result.CollectionContent.Add(Location.CreateDemoDefault());
+					//result.CollectionContent.Add(Location.CreateDemoDefault());
+					//result.CollectionContent.Add(Location.CreateDemoDefault());
 					return result;
 				}
 
@@ -18290,6 +19091,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Date customDemoObject);
+
 
 
 				public static Date CreateDefault()
@@ -18300,6 +19103,10 @@ BlogIndexGroup.Summary
 
 				public static Date CreateDemoDefault()
 				{
+					Date customDemo = null;
+					Date.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Date();
 				
 					return result;
@@ -18489,6 +19296,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Sex customDemoObject);
+
 
 
 				public static Sex CreateDefault()
@@ -18499,6 +19308,10 @@ BlogIndexGroup.Summary
 
 				public static Sex CreateDemoDefault()
 				{
+					Sex customDemo = null;
+					Sex.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Sex();
 					result.SexText = @"Sex.SexText";
 
@@ -18675,6 +19488,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref OBSAddress customDemoObject);
+
 
 
 				public static OBSAddress CreateDefault()
@@ -18685,6 +19500,10 @@ BlogIndexGroup.Summary
 
 				public static OBSAddress CreateDemoDefault()
 				{
+					OBSAddress customDemo = null;
+					OBSAddress.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new OBSAddress();
 					result.StreetName = @"OBSAddress.StreetName";
 
@@ -18924,6 +19743,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Identity customDemoObject);
+
 
 
 				public static Identity CreateDefault()
@@ -18936,6 +19757,10 @@ BlogIndexGroup.Summary
 
 				public static Identity CreateDemoDefault()
 				{
+					Identity customDemo = null;
+					Identity.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Identity();
 					result.FirstName = @"Identity.FirstName";
 
@@ -19144,6 +19969,8 @@ BlogIndexGroup.Summary
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref ImageVideoSoundVectorRaw customDemoObject);
+
 
 
 				public static ImageVideoSoundVectorRaw CreateDefault()
@@ -19154,6 +19981,10 @@ BlogIndexGroup.Summary
 
 				public static ImageVideoSoundVectorRaw CreateDemoDefault()
 				{
+					ImageVideoSoundVectorRaw customDemo = null;
+					ImageVideoSoundVectorRaw.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new ImageVideoSoundVectorRaw();
 					result.Vector = @"ImageVideoSoundVectorRaw.Vector
 ImageVideoSoundVectorRaw.Vector
@@ -19343,6 +20174,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Category customDemoObject);
+
 
 
 				public static Category CreateDefault()
@@ -19353,6 +20186,10 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static Category CreateDemoDefault()
 				{
+					Category customDemo = null;
+					Category.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Category();
 					result.TextValue = @"Category.TextValue";
 
@@ -19529,6 +20366,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SubscriptionCollection customDemoObject);
+
 
 
 				
@@ -19541,10 +20380,14 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SubscriptionCollection CreateDemoDefault()
 				{
+					SubscriptionCollection customDemo = null;
+					SubscriptionCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SubscriptionCollection();
 					result.CollectionContent.Add(Subscription.CreateDemoDefault());
-					result.CollectionContent.Add(Subscription.CreateDemoDefault());
-					result.CollectionContent.Add(Subscription.CreateDemoDefault());
+					//result.CollectionContent.Add(Subscription.CreateDemoDefault());
+					//result.CollectionContent.Add(Subscription.CreateDemoDefault());
 					return result;
 				}
 
@@ -19715,6 +20558,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Subscription customDemoObject);
+
 
 
 				public static Subscription CreateDefault()
@@ -19725,6 +20570,10 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static Subscription CreateDemoDefault()
 				{
+					Subscription customDemo = null;
+					Subscription.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Subscription();
 					result.TargetItemID = @"Subscription.TargetItemID";
 
@@ -19948,6 +20797,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref QueueEnvelope customDemoObject);
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20138,6 +20989,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SystemError customDemoObject);
+
 
 
 				public static SystemError CreateDefault()
@@ -20149,6 +21002,10 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SystemError CreateDemoDefault()
 				{
+					SystemError customDemo = null;
+					SystemError.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SystemError();
 					result.ErrorTitle = @"SystemError.ErrorTitle";
 
@@ -20339,6 +21196,8 @@ ImageVideoSoundVectorRaw.Vector
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SystemErrorItem customDemoObject);
+
 
 
 				public static SystemErrorItem CreateDefault()
@@ -20349,6 +21208,10 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SystemErrorItem CreateDemoDefault()
 				{
+					SystemErrorItem customDemo = null;
+					SystemErrorItem.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SystemErrorItem();
 					result.ShortDescription = @"SystemErrorItem.ShortDescription";
 
@@ -20537,6 +21400,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SystemErrorItemCollection customDemoObject);
+
 
 
 				
@@ -20549,10 +21414,14 @@ SystemErrorItem.LongDescription
 
 				public static SystemErrorItemCollection CreateDemoDefault()
 				{
+					SystemErrorItemCollection customDemo = null;
+					SystemErrorItemCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SystemErrorItemCollection();
 					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
-					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
-					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
+					//result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
+					//result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
 					return result;
 				}
 
@@ -20723,6 +21592,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref InformationSource customDemoObject);
+
 
 
 				public static InformationSource CreateDefault()
@@ -20733,6 +21604,10 @@ SystemErrorItem.LongDescription
 
 				public static InformationSource CreateDemoDefault()
 				{
+					InformationSource customDemo = null;
+					InformationSource.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new InformationSource();
 					result.SourceName = @"InformationSource.SourceName";
 
@@ -20949,6 +21824,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref InformationSourceCollection customDemoObject);
+
 
 
 				
@@ -20961,10 +21838,14 @@ SystemErrorItem.LongDescription
 
 				public static InformationSourceCollection CreateDemoDefault()
 				{
+					InformationSourceCollection customDemo = null;
+					InformationSourceCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new InformationSourceCollection();
 					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
-					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
-					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
+					//result.CollectionContent.Add(InformationSource.CreateDemoDefault());
+					//result.CollectionContent.Add(InformationSource.CreateDemoDefault());
 					return result;
 				}
 
@@ -21135,6 +22016,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref UpdateWebContentOperation customDemoObject);
+
 
 
 				public static UpdateWebContentOperation CreateDefault()
@@ -21146,6 +22029,10 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentOperation CreateDemoDefault()
 				{
+					UpdateWebContentOperation customDemo = null;
+					UpdateWebContentOperation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new UpdateWebContentOperation();
 					result.SourceContainerName = @"UpdateWebContentOperation.SourceContainerName";
 
@@ -21357,6 +22244,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref UpdateWebContentHandlerItem customDemoObject);
+
 
 
 				public static UpdateWebContentHandlerItem CreateDefault()
@@ -21367,6 +22256,10 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentHandlerItem CreateDemoDefault()
 				{
+					UpdateWebContentHandlerItem customDemo = null;
+					UpdateWebContentHandlerItem.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new UpdateWebContentHandlerItem();
 					result.InformationTypeName = @"UpdateWebContentHandlerItem.InformationTypeName";
 
@@ -21550,6 +22443,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref UpdateWebContentHandlerCollection customDemoObject);
+
 
 
 				
@@ -21562,10 +22457,14 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentHandlerCollection CreateDemoDefault()
 				{
+					UpdateWebContentHandlerCollection customDemo = null;
+					UpdateWebContentHandlerCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new UpdateWebContentHandlerCollection();
 					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
-					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
-					result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
+					//result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
+					//result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
 					return result;
 				}
 
@@ -21736,6 +22635,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SubscriberInput customDemoObject);
+
 
 
 				public static SubscriberInput CreateDefault()
@@ -21746,6 +22647,10 @@ SystemErrorItem.LongDescription
 
 				public static SubscriberInput CreateDemoDefault()
 				{
+					SubscriberInput customDemo = null;
+					SubscriberInput.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SubscriberInput();
 					result.InputRelativeLocation = @"SubscriberInput.InputRelativeLocation";
 
@@ -21943,6 +22848,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref SubscriberUpdateOperation customDemoObject);
+
 
 
 				public static SubscriberUpdateOperation CreateDefault()
@@ -21954,6 +22861,10 @@ SystemErrorItem.LongDescription
 
 				public static SubscriberUpdateOperation CreateDemoDefault()
 				{
+					SubscriberUpdateOperation customDemo = null;
+					SubscriberUpdateOperation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new SubscriberUpdateOperation();
 					result.TargetOwnerID = @"SubscriberUpdateOperation.TargetOwnerID";
 
@@ -22153,6 +23064,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Monitor customDemoObject);
+
 
 
 				public static Monitor CreateDefault()
@@ -22163,6 +23076,10 @@ SystemErrorItem.LongDescription
 
 				public static Monitor CreateDemoDefault()
 				{
+					Monitor customDemo = null;
+					Monitor.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Monitor();
 					result.TargetObjectName = @"Monitor.TargetObjectName";
 
@@ -22377,6 +23294,8 @@ SystemErrorItem.LongDescription
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref IconTitleDescription customDemoObject);
+
 
 
 				public static IconTitleDescription CreateDefault()
@@ -22387,6 +23306,10 @@ SystemErrorItem.LongDescription
 
 				public static IconTitleDescription CreateDemoDefault()
 				{
+					IconTitleDescription customDemo = null;
+					IconTitleDescription.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new IconTitleDescription();
 					result.Title = @"IconTitleDescription.Title";
 
@@ -22577,6 +23500,8 @@ IconTitleDescription.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref AboutAGIApplications customDemoObject);
+
 
 
 				public static AboutAGIApplications CreateDefault()
@@ -22589,6 +23514,10 @@ IconTitleDescription.Description
 
 				public static AboutAGIApplications CreateDemoDefault()
 				{
+					AboutAGIApplications customDemo = null;
+					AboutAGIApplications.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new AboutAGIApplications();
 					result.BuiltForAnybody = IconTitleDescription.CreateDemoDefault();
 					result.ForAllPeople = IconTitleDescription.CreateDemoDefault();
@@ -22776,6 +23705,8 @@ IconTitleDescription.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref Icon customDemoObject);
+
 
 				// Properties to map to handle the file: Icon.png..png
 				// TODO: Handle object collections
@@ -22791,6 +23722,10 @@ IconTitleDescription.Description
 
 				public static Icon CreateDemoDefault()
 				{
+					Icon customDemo = null;
+					Icon.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new Icon();
 					return result;
 				}
@@ -22948,6 +23883,8 @@ IconTitleDescription.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref WebPageTemplate customDemoObject);
+
 
 				// Properties to map to handle the file: WebPageTemplate.html..html
 				// TODO: Handle object collections
@@ -22963,6 +23900,10 @@ IconTitleDescription.Description
 
 				public static WebPageTemplate CreateDemoDefault()
 				{
+					WebPageTemplate customDemo = null;
+					WebPageTemplate.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new WebPageTemplate();
 					return result;
 				}
@@ -23120,6 +24061,8 @@ IconTitleDescription.Description
                     return relativeLocation;
                 }
 
+				static partial void CreateCustomDemo(ref WebPage customDemoObject);
+
 
 				// Properties to map to handle the file: WebPage.html..html
 				// TODO: Handle object collections
@@ -23135,6 +24078,10 @@ IconTitleDescription.Description
 
 				public static WebPage CreateDemoDefault()
 				{
+					WebPage customDemo = null;
+					WebPage.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
 					var result = new WebPage();
 					return result;
 				}

@@ -41,7 +41,7 @@ namespace TheBall
                 string blobInformationType = webtemplatePath.EndsWith(".phtml")
                                                  ? StorageSupport.InformationType_WebTemplateValue
                                                  : StorageSupport.InformationType_GenericContentValue;
-                if (webtemplatePath.EndsWith("oip-layout-register.phtml") || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
+                if (webtemplatePath.EndsWith("oip-layout-register.phtml")) // || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
                     blobInformationType = StorageSupport.InformationType_GenericContentValue;
                 if (content.TextContent != null)
                 {

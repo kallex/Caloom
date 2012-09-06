@@ -49,7 +49,8 @@ namespace TheBallTool
                 //FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
                 //FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
-                RenderWebSupport.RefreshAccountAndGroupTemplates(true);
+                DeleteAllAccountAndGroupContents();
+                RenderWebSupport.RefreshAccountAndGroupTemplates(false);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
                 //DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
@@ -64,6 +65,23 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void DeleteAllAccountAndGroupContents()
+        {
+            var accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach(var accountID in accountIDs)
+            {
+                string referenceLocation = "acc/" + accountID + "/";
+                StorageSupport.DeleteContentsFromOwner(referenceLocation);
+            }
+            var groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            foreach (var groupID in groupIDs)
+            {
+                string referenceLocation = "grp/" + groupID + "/";
+                StorageSupport.DeleteContentsFromOwner(referenceLocation);
+            }
+
         }
 
         private static void TestEmail()

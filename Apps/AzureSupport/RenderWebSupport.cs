@@ -566,10 +566,10 @@ namespace TheBall
                 // Sync public pages to group local template
                 SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
                 // Render local template
-                //SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+                SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
                 // Publish group public content
-                //SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
-                if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd" && false)
+                SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
+                if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd")
                 {
                     SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
                 }

@@ -952,6 +952,29 @@ namespace TheBall
             return referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
         }
 
+        public static int DeleteContentsFromOwner(IContainerOwner owner)
+        {
+            string referenceLocation = GetBlobOwnerAddress(owner, ".");
+            return DeleteContentsFromOwner(referenceLocation);
+        }
+
+        public static int DeleteContentsFromOwner(string referenceLocation)
+        {
+            string contentRootLocation = GetContentRootLocation(referenceLocation);
+            BlobRequestOptions options = new BlobRequestOptions
+                                             {UseFlatBlobListing = true};
+            string searchRoot = CurrActiveContainer.Name + "/" + contentRootLocation;
+            var blobList = CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
+            int deleteCount = 0;
+            foreach(CloudBlob blob in blobList)
+            {
+                blob.Delete();
+                deleteCount++;
+            }
+            return deleteCount;
+        }
+
+
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
             string rootAddress = CurrActiveContainer.Name + "/" + GetBlobOwnerAddress(owner, targetLocation);

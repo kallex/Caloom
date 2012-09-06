@@ -28,8 +28,8 @@ namespace TheBall
                 bool currArrayUnProcessed = CurrArray != null && CurrArray.Length > CurrCollectionItem;
                 if (currArrayUnProcessed)
                     return true;
-                if (Parent != null)
-                    return Parent.IsNotFullyProcessed;
+                //if (Parent != null)
+                //    return Parent.IsNotFullyProcessed;
                 return false;
             }
         }
