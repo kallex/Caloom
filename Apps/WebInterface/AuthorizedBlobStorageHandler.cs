@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -144,6 +145,14 @@ namespace WebInterface
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
                 return;
+            string objectFieldID = form["ObjectFieldID"];
+            string objectFieldValue = form["Text_Short"];
+            if(objectFieldID != null)
+            {
+                form = new NameValueCollection();
+                form.Set(objectFieldID, objectFieldValue);
+            }
+
             CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
             if(sourceNamesCommaSeparated == null)
