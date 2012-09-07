@@ -12,7 +12,7 @@ namespace WebInterface
 {
     public class EmailValidationHandler : IHttpHandler
     {
-        private const string AuthEmailValidation = "/auth/emailvalidation/";
+        private const string AuthEmailValidation = "/emailvalidation/";
         private int AuthEmailValidationLen;
 
 
@@ -47,7 +47,7 @@ namespace WebInterface
         private void HandleEmailValidation(HttpContext context)
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, false);
             string requestPath = context.Request.Path;
             string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
             TBAccount account = loginRoot.Account;
@@ -72,7 +72,7 @@ namespace WebInterface
                 account.StoreAndPropagate();
             }
 
-            context.Response.Redirect("/auth/personal/oip-personal-landing-page.phtml", true);
+            context.Response.Redirect("/auth/account/website/oip-layouts/oip-layout-account-welcome.phtml", true);
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)

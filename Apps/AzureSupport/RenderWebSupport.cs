@@ -625,7 +625,7 @@ namespace TheBall
             }
         }
 
-        private static void RefreshAccountTemplates(string acctID, bool useWorker)
+        public static void RefreshAccountTemplates(string acctID, bool useWorker)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = "sys/AAA/";

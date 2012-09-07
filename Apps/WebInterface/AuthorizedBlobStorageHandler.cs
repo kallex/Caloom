@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -83,7 +84,7 @@ namespace WebInterface
         private void HandleProcRequest(HttpContext context)
         {
             string loginUrl = context.User.Identity.Name;
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, false);
             TBAccount account = loginRoot.Account;
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPrefixLen);
@@ -101,6 +102,7 @@ namespace WebInterface
             if(loginGroupRoot == null)
             {
                 // TODO: Polite invitation request
+                throw new SecurityException("No access to requested group: TODO - Polite landing page for the group");
                 return;
             }
             string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
@@ -115,41 +117,12 @@ namespace WebInterface
         private void HandlePersonalRequest(HttpContext context)
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true);
 
             TBAccount account = loginRoot.Account;
-            //bool hasRegisteredEmail = account.Emails.CollectionContent.Count > 0;
-            //if(hasRegisteredEmail == false)
-            //{
-            //    PrepareEmailRegistrationPage(account, context, true);
-            //    context.Response.Redirect("/auth/proc/tbp-layout-registeremail.phtml", true);
-            //    return;
-            //}
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
             HandleOwnerRequest(account, context, contentPath);
-        }
-
-        private void PrepareEmailRegistrationPage(TBAccount account, HttpContext context, bool forceRecreate)
-        {
-            const string procRegisterEmailPage = "proc/tbp-layout-registeremail.phtml";
-            string currPage = StorageSupport.DownloadOwnerBlobText(account, procRegisterEmailPage, true);
-            if(currPage == null || forceRecreate)
-            {
-                string singletonID = Guid.Empty.ToString();
-                TBPRegisterEmail registerEmail = TBPRegisterEmail.RetrieveFromDefaultLocation(singletonID, account);
-                if(registerEmail == null)
-                {
-                    registerEmail = TBPRegisterEmail.CreateDefault();
-                    registerEmail.ID = singletonID;
-                    registerEmail.UpdateRelativeLocationFromID();
-                }
-                registerEmail.EmailAddress = "";
-                StorageSupport.StoreInformation(registerEmail, account);
-                string template = StorageSupport.CurrTemplateContainer.DownloadBlobText("theball-proc/tbp-layout-registeremail.phtml");
-                string result = RenderWebSupport.RenderTemplateWithContent(template, registerEmail);
-                StorageSupport.UploadOwnerBlobText(account, procRegisterEmailPage, result, StorageSupport.InformationType_GenericContentValue);
-            }
         }
 
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)

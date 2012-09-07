@@ -8,6 +8,7 @@ namespace AaltoGlobalImpact.OIP
     {
         partial void DoPostStoringExecute(IContainerOwner owner)
         {
+            return;
             if (String.IsNullOrEmpty(EmailAddress))
                 return;
             HttpContext context = HttpContext.Current;

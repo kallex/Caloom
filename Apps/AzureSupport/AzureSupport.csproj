@@ -64,6 +64,7 @@
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="Partials\AccountContainer.cs" />
+    <Compile Include="Partials\AddEmailAddressInfo.cs" />
     <Compile Include="Partials\AddLocationInfo.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="Partials\GroupContainer.cs" />

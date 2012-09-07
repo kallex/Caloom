@@ -126,20 +126,18 @@ namespace TheBall
 
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
-            string urlLink = "https://theball.azurewebsites.net/auth/emailvalidation/" + emailValidation.ID;
+            string urlLink = "https://theball.azurewebsites.net/emailvalidation/" + emailValidation.ID;
             string emailMessageFormat =
-                @"Greetings from The Open Innovation/Collaboration Platform!
+                @"Welcome to The Open Innovation Platform!
 
-This email address '{0}' has been registered in the system. This message is sent to you to confirm that you did register this email. During the process you might be redirected to perform the authentication against the system.
+You have just joined the collaboration platform by Aalto Global Impact. Your email address '{0}' has been registered on the OIP system. Before you start your collaboration we simply need to confirm that you did register your email. Please follow the link below during which you might be redirected to perform the authentication on OIP.
 
-The following link will start the process:
-
+Use the following link to complete your registration (the link is valid for 30 minutes after which you need to resend the validation):
 {1}
 
-Wishing you all the best from OIP team!
-";
+Wishing you all the best from OIP team!";
             string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
-            SendEmail("kalle.launiala@citrus.fi", emailValidation.Email, "OIP Email Confirmation", message);
+            SendEmail("no-reply-theball@msunit.citrus.fi", emailValidation.Email, "Welcome to The Open Innovation Platform!", message);
         }
     }
 }

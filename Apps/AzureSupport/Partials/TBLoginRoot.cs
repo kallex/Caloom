@@ -5,7 +5,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class TBRLoginRoot
     {
-        public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl)
+        public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest)
         {
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             var loginRoot = RetrieveFromDefaultLocation(loginRootID);
@@ -24,6 +24,9 @@ namespace AaltoGlobalImpact.OIP
                 TBRAccountRoot accountRoot = TBRAccountRoot.CreateAndStoreNewAccount();
                 accountRoot.Account.Logins.CollectionContent.Add(loginInfo);
                 accountRoot.Account.StoreAndPropagate();
+                // If this request is for account, we propagate the pages immediately
+                bool useBackgroundWorker = isAccountRequest == false;
+                RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, true);
             }
             loginRoot = RetrieveFromDefaultLocation(loginRootID);
             return loginRoot;
