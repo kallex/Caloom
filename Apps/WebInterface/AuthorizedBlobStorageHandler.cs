@@ -155,36 +155,49 @@ namespace WebInterface
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             if (context.Request.RequestType == "POST")
+            {
+                // Do first post, and then get to the same URL
                 HandleOwnerPostRequest(containerOwner, context, contentPath);
-            else
-                HandleOwnerGetRequest(containerOwner, context, contentPath);
+            }
+            HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
         private void HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             HttpRequest request = context.Request;
             var form = request.Form;
-            string objectTypeName = form["RootObjectType"];
-            string objectRelativeLocation = form["RootObjectRelativeLocation"];
-            string sourceName = form["RootSourceName"];
-            //if (eTag == null)
-            //{
-            //    throw new InvalidDataException("ETag must be present in submit request for root container object");
-            //}
+
+            string sourceNamesCommaSeparated = form["RootSourceName"];
+            bool isCancelButton = form["btnCancel"] != null;
+            if (isCancelButton)
+                return;
             CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
-            //var informationObjects = sources.FetchAllInformationObjects();
-            if (sourceName == null)
-                sourceName = "";
-            InformationSource source =
-                sources.CollectionContent.First(
-                    src => src.IsInformationObjectSource && src.SourceName == sourceName);
-            string oldETag = source.SourceETag;
-            IInformationObject rootObject = source.RetrieveInformationObject();
-            if (oldETag != rootObject.ETag)
-                throw new InvalidDataException("Information under editing was modified during display and save");
-            rootObject.SetValuesToObjects(form);
-            StorageSupport.StoreInformation(rootObject, containerOwner);
+            if(sourceNamesCommaSeparated == null)
+                sourceNamesCommaSeparated = "";
+            string[] sourceNames = sourceNamesCommaSeparated.Split(',');
+            InformationSource[] sourceArray =
+                sources.CollectionContent.Where(
+                    src => src.IsInformationObjectSource && sourceNames.Contains(src.SourceName)).ToArray();
+            foreach (InformationSource source in sourceArray)
+            {
+                string oldETag = source.SourceETag;
+                IInformationObject rootObject = source.RetrieveInformationObject();
+                if (oldETag != rootObject.ETag)
+                {
+                    RenderWebSupport.RefreshContent(webPageBlob);
+                    throw new InvalidDataException("Information under editing was modified during display and save");
+                }
+                rootObject.SetValuesToObjects(form);
+                IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
+                if(addOperationProvider != null)
+                {
+                    bool storeAfterAdd = addOperationProvider.PerformAddOperation(sources);
+                    if (storeAfterAdd)
+                        StorageSupport.StoreInformation(rootObject, containerOwner);
+                } else
+                    StorageSupport.StoreInformation(rootObject, containerOwner);
+            }
             RenderWebSupport.RefreshContent(webPageBlob);
             // Temporary live to pub sync below, to be removed
             //SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
@@ -192,7 +205,6 @@ namespace WebInterface
             //    StorageSupport.CurrAnonPublicContainer.Name,
             //                    String.Format("grp/default/{0}/", "livepubsite"), true);
 
-            HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)

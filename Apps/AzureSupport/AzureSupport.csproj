@@ -63,6 +63,9 @@
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
+    <Compile Include="Partials\AccountContainer.cs" />
+    <Compile Include="Partials\AddLocationInfo.cs" />
+    <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\InformationSource.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Partials\TBREmailRoot.cs" />
     <Compile Include="Partials\TBRGroupRoot.cs" />
     <Compile Include="Partials\TBSystem.cs" />
+    <Compile Include="Partials\VirtualOwner.cs" />
     <Compile Include="QueueSupport.cs" />
     <Compile Include="RenderWebSupport.cs" />
     <Compile Include="StackContextItem.cs" />

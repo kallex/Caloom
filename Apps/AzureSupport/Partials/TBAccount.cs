@@ -43,6 +43,8 @@ namespace AaltoGlobalImpact.OIP
             TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(this.ID);
             accountRoot.Account = this;
             StorageSupport.StoreInformation(accountRoot);
+            AccountContainer accountContainer = AccountContainer.RetrieveFromOwnerContent(this, "default");
+            accountContainer.AccountModule.Security.LoginInfoCollection = this.Logins;
             foreach(var loginItem in this.Logins.CollectionContent)
             {
                 string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginItem.OpenIDUrl);
@@ -64,6 +66,7 @@ namespace AaltoGlobalImpact.OIP
                     StorageSupport.StoreInformation(loginGroupRoot);
                 }
             }
+            accountContainer.AccountModule.Security.EmailCollection = this.Emails;
             foreach(var emailItem in this.Emails.CollectionContent)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailItem.EmailAddress);
@@ -77,18 +80,32 @@ namespace AaltoGlobalImpact.OIP
                 emailRoot.Account = this;
                 StorageSupport.StoreInformation(emailRoot);
             }
-        }
-    }
-
-    partial class TBRAccountRoot
-    {
-        public static TBRAccountRoot CreateAndStoreNewAccount()
-        {
-            TBRAccountRoot accountRoot = TBRAccountRoot.CreateDefault();
-            accountRoot.ID = accountRoot.Account.ID;
-            accountRoot.UpdateRelativeLocationFromID();
-            StorageSupport.StoreInformation(accountRoot);
-            return accountRoot;
+            var roles = accountContainer.AccountModule.Roles;
+            roles.MemberInGroups.CollectionContent.Clear();
+            roles.ModeratorInGroups.CollectionContent.Clear();
+            foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent)
+            {
+                var groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupRoleItem.GroupID);
+                if (groupRoot == null)
+                    continue;
+                var grp = groupRoot.Group;
+                ReferenceToInformation reference = ReferenceToInformation.CreateDefault();
+                reference.URL = string.Format("/auth/grp/{0}/website/oip-layouts/oip-layout-groups-edit.phtml",
+                                              groupRoot.ID);
+                reference.Title = grp.Title + " - " + groupRoleItem.GroupRole;
+                switch(groupRoleItem.GroupRole)
+                {
+                    case "initiator":
+                    case "moderator":
+                        roles.ModeratorInGroups.CollectionContent.Add(reference);
+                        break;
+                    case "collaborator":
+                    case "viewer":
+                        roles.MemberInGroups.CollectionContent.Add(reference);
+                        break;
+                }
+            }
+            StorageSupport.StoreInformation(accountContainer);
         }
     }
 }

@@ -61,6 +61,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBSystem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBSystem.RetrieveTBSystem("Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -87,18 +94,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -151,14 +159,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -260,6 +268,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBRLoginRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBRLoginRoot.RetrieveTBRLoginRoot("Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -286,18 +301,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -350,14 +366,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -455,6 +471,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBRAccountRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBRAccountRoot.RetrieveTBRAccountRoot("Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -481,18 +504,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -545,14 +569,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -650,6 +674,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBRGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBRGroupRoot.RetrieveTBRGroupRoot("Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -676,18 +707,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -740,14 +772,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -845,6 +877,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBRLoginGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -871,18 +910,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -935,14 +975,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1044,6 +1084,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBREmailRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBREmailRoot.RetrieveTBREmailRoot("Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -1070,18 +1117,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -1134,14 +1182,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1239,6 +1287,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBAccount RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBAccount.RetrieveTBAccount("Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -1265,18 +1320,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -1329,14 +1385,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1454,6 +1510,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBAccountCollaborationGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -1480,18 +1543,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -1544,14 +1608,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1653,6 +1717,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBAccountCollaborationGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -1679,18 +1750,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -1743,14 +1815,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1845,6 +1917,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBLoginInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBLoginInfo.RetrieveTBLoginInfo("Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -1871,18 +1950,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -1935,14 +2015,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2037,6 +2117,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBLoginInfoCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -2063,18 +2150,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -2127,14 +2215,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2229,6 +2317,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBEmail.RetrieveTBEmail("Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -2255,18 +2350,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -2319,14 +2415,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2426,6 +2522,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBEmailCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBEmailCollection.RetrieveTBEmailCollection("Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -2452,18 +2555,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -2516,14 +2620,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2618,6 +2722,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBCollaboratorRole RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -2644,18 +2755,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -2708,14 +2820,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2820,6 +2932,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBCollaboratorRoleCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -2846,18 +2965,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -2910,14 +3030,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3012,6 +3132,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBCollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -3038,18 +3165,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -3102,14 +3230,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3214,6 +3342,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBEmailValidation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBEmailValidation.RetrieveTBEmailValidation("Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -3240,18 +3375,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -3304,14 +3440,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3418,6 +3554,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBRegisterContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBRegisterContainer.RetrieveTBRegisterContainer("Content/AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -3444,18 +3587,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -3508,14 +3652,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3630,6 +3774,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static LoginProvider RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = LoginProvider.RetrieveLoginProvider("Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -3656,18 +3807,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -3720,14 +3872,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3850,6 +4002,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static LoginProviderCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = LoginProviderCollection.RetrieveLoginProviderCollection("Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -3876,18 +4035,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -3940,14 +4100,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4042,6 +4202,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static ContactOipContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ContactOipContainer.RetrieveContactOipContainer("Content/AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -4068,18 +4235,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -4132,14 +4300,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4234,6 +4402,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static TBPRegisterEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -4260,18 +4435,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -4324,14 +4500,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4426,6 +4602,13 @@ namespace AaltoGlobalImpact.OIP {
                     return result;
                 }
 
+				public static JavaScriptContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = JavaScriptContainer.RetrieveJavaScriptContainer("Content/AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -4452,18 +4635,19 @@ namespace AaltoGlobalImpact.OIP {
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -4516,14 +4700,14 @@ namespace AaltoGlobalImpact.OIP {
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4623,6 +4807,13 @@ JavaScriptContainer.HtmlContent
                     return result;
                 }
 
+				public static JavascriptContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = JavascriptContainer.RetrieveJavascriptContainer("Content/AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -4649,18 +4840,19 @@ JavaScriptContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -4713,14 +4905,14 @@ JavaScriptContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4820,6 +5012,13 @@ JavascriptContainer.HtmlContent
                     return result;
                 }
 
+				public static FooterContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = FooterContainer.RetrieveFooterContainer("Content/AaltoGlobalImpact.OIP/FooterContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -4846,18 +5045,19 @@ JavascriptContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -4910,14 +5110,14 @@ JavascriptContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5017,6 +5217,13 @@ FooterContainer.HtmlContent
                     return result;
                 }
 
+				public static NavigationContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = NavigationContainer.RetrieveNavigationContainer("Content/AaltoGlobalImpact.OIP/NavigationContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -5043,18 +5250,19 @@ FooterContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -5107,14 +5315,14 @@ FooterContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5209,6 +5417,13 @@ FooterContainer.HtmlContent
                     return result;
                 }
 
+				public static AccountSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountSummary.RetrieveAccountSummary("Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -5235,18 +5450,19 @@ FooterContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -5299,14 +5515,14 @@ FooterContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5424,6 +5640,13 @@ FooterContainer.HtmlContent
                     return result;
                 }
 
+				public static AccountContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountContainer.RetrieveAccountContainer("Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -5450,18 +5673,19 @@ FooterContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -5514,14 +5738,14 @@ FooterContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5649,6 +5873,13 @@ FooterContainer.HtmlContent
                     return result;
                 }
 
+				public static AccountIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountIndex.RetrieveAccountIndex("Content/AaltoGlobalImpact.OIP/AccountIndex/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -5675,18 +5906,19 @@ FooterContainer.HtmlContent
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -5739,14 +5971,14 @@ FooterContainer.HtmlContent
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5865,6 +6097,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AccountModule RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountModule.RetrieveAccountModule("Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -5891,18 +6130,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -5955,14 +6195,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5991,7 +6231,6 @@ AccountIndex.Summary
 					result.Security = AccountSecurity.CreateDefault();
 					result.Roles = AccountRoles.CreateDefault();
 					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
-					result.AddLocationInfo = AddLocationInfo.CreateDefault();
 					return result;
 				}
 
@@ -6006,7 +6245,6 @@ AccountIndex.Summary
 					result.Security = AccountSecurity.CreateDemoDefault();
 					result.Roles = AccountRoles.CreateDemoDefault();
 					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
-					result.AddLocationInfo = AddLocationInfo.CreateDemoDefault();
 				
 					return result;
 				}
@@ -6036,12 +6274,6 @@ AccountIndex.Summary
 						if(result != null)
 							return result;
 					}
-					{
-						var item = AddLocationInfo;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -6061,8 +6293,6 @@ AccountIndex.Summary
 			public AccountRoles Roles { get; set; }
 			[DataMember]
 			public AddressAndLocationCollection LocationCollection { get; set; }
-			[DataMember]
-			public AddLocationInfo AddLocationInfo { get; set; }
 			
 			}
 			[DataContract]
@@ -6100,6 +6330,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AddressAndLocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -6126,18 +6363,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -6190,14 +6428,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6292,6 +6530,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AddressAndLocation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AddressAndLocation.RetrieveAddressAndLocation("Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -6318,18 +6563,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -6382,14 +6628,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6497,6 +6743,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static StreetAddress RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = StreetAddress.RetrieveStreetAddress("Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -6523,18 +6776,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -6587,14 +6841,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6710,6 +6964,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AccountContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountContent.RetrieveAccountContent("Content/AaltoGlobalImpact.OIP/AccountContent/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -6736,18 +6997,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -6800,14 +7062,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6902,6 +7164,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AccountProfile RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountProfile.RetrieveAccountProfile("Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -6928,18 +7197,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -6992,14 +7262,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7121,6 +7391,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AccountSecurity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountSecurity.RetrieveAccountSecurity("Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -7147,18 +7424,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -7211,14 +7489,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7326,6 +7604,13 @@ AccountIndex.Summary
                     return result;
                 }
 
+				public static AccountRoles RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AccountRoles.RetrieveAccountRoles("Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -7352,18 +7637,19 @@ AccountIndex.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -7416,14 +7702,14 @@ AccountIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7543,6 +7829,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static PersonalInfoVisibility RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -7569,18 +7862,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -7633,14 +7927,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7735,6 +8029,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static ReferenceToInformation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ReferenceToInformation.RetrieveReferenceToInformation("Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -7761,18 +8062,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -7825,14 +8127,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7934,6 +8236,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static ReferenceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ReferenceCollection.RetrieveReferenceCollection("Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -7960,18 +8269,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -8024,14 +8334,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8126,6 +8436,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static BlogContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = BlogContainer.RetrieveBlogContainer("Content/AaltoGlobalImpact.OIP/BlogContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -8152,18 +8469,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -8216,14 +8534,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8351,6 +8669,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static MapContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapContainer.RetrieveMapContainer("Content/AaltoGlobalImpact.OIP/MapContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -8377,18 +8702,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -8441,14 +8767,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8596,6 +8922,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static MapMarker RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapMarker.RetrieveMapMarker("Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -8622,18 +8955,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -8686,14 +9020,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8798,6 +9132,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static MapMarkerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapMarkerCollection.RetrieveMapMarkerCollection("Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -8824,18 +9165,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -8888,14 +9230,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8990,6 +9332,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static CalendarContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CalendarContainer.RetrieveCalendarContainer("Content/AaltoGlobalImpact.OIP/CalendarContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -9016,18 +9365,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -9080,14 +9430,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9215,6 +9565,13 @@ AccountRoles.OrganizationsImPartOf
                     return result;
                 }
 
+				public static AboutContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AboutContainer.RetrieveAboutContainer("Content/AaltoGlobalImpact.OIP/AboutContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -9241,18 +9598,19 @@ AccountRoles.OrganizationsImPartOf
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -9305,14 +9663,14 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9466,6 +9824,13 @@ AboutContainer.Body
                     return result;
                 }
 
+				public static OBSAccountContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = OBSAccountContainer.RetrieveOBSAccountContainer("Content/AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -9492,18 +9857,19 @@ AboutContainer.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -9556,14 +9922,14 @@ AboutContainer.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9691,6 +10057,13 @@ AboutContainer.Body
                     return result;
                 }
 
+				public static ProjectContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ProjectContainer.RetrieveProjectContainer("Content/AaltoGlobalImpact.OIP/ProjectContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -9717,18 +10090,19 @@ AboutContainer.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -9781,14 +10155,14 @@ AboutContainer.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9916,6 +10290,13 @@ AboutContainer.Body
                     return result;
                 }
 
+				public static CourseContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CourseContainer.RetrieveCourseContainer("Content/AaltoGlobalImpact.OIP/CourseContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -9942,18 +10323,19 @@ AboutContainer.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -10006,14 +10388,14 @@ AboutContainer.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10141,6 +10523,13 @@ AboutContainer.Body
                     return result;
                 }
 
+				public static ContainerHeader RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ContainerHeader.RetrieveContainerHeader("Content/AaltoGlobalImpact.OIP/ContainerHeader/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -10167,18 +10556,19 @@ AboutContainer.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -10231,14 +10621,14 @@ AboutContainer.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10340,6 +10730,13 @@ AboutContainer.Body
                     return result;
                 }
 
+				public static ActivitySummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ActivitySummaryContainer.RetrieveActivitySummaryContainer("Content/AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -10366,18 +10763,19 @@ AboutContainer.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -10430,14 +10828,14 @@ AboutContainer.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10533,6 +10931,230 @@ ActivitySummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
+			public partial class ActivityIndex : IInformationObject
+			{
+				public ActivityIndex()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ActivityIndex";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ActivityIndex", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ActivityIndex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveActivityIndex(relativeLocation, owner);
+				}
+
+
+                public static ActivityIndex RetrieveActivityIndex(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ActivityIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(ActivityIndex), null, owner);
+                    return result;
+                }
+
+				public static ActivityIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ActivityIndex.RetrieveActivityIndex("Content/AaltoGlobalImpact.OIP/ActivityIndex/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityIndex));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ActivityIndex DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ActivityIndex));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ActivityIndex) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityIndex", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ActivityIndex", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref ActivityIndex customDemoObject);
+
+
+
+				public static ActivityIndex CreateDefault()
+				{
+					var result = new ActivityIndex();
+					return result;
+				}
+
+				public static ActivityIndex CreateDemoDefault()
+				{
+					ActivityIndex customDemo = null;
+					ActivityIndex.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new ActivityIndex();
+					result.Title = @"ActivityIndex.Title";
+
+					result.Introduction = @"ActivityIndex.Introduction
+ActivityIndex.Introduction
+ActivityIndex.Introduction
+ActivityIndex.Introduction
+ActivityIndex.Introduction
+";
+
+					result.Summary = @"ActivityIndex.Summary
+ActivityIndex.Summary
+ActivityIndex.Summary
+ActivityIndex.Summary
+ActivityIndex.Summary
+";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Introduction":
+							Introduction = value;
+							break;
+						case "Summary":
+							Summary = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string Title { get; set; }
+			[DataMember]
+			public string Introduction { get; set; }
+			[DataMember]
+			public string Summary { get; set; }
+			
+			}
+			[DataContract]
 			public partial class ActivityContainer : IInformationObject
 			{
 				public ActivityContainer()
@@ -10567,6 +11189,13 @@ ActivitySummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static ActivityContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ActivityContainer.RetrieveActivityContainer("Content/AaltoGlobalImpact.OIP/ActivityContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -10593,18 +11222,19 @@ ActivitySummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -10657,14 +11287,14 @@ ActivitySummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10689,6 +11319,7 @@ ActivitySummaryContainer.SummaryBody
 				public static ActivityContainer CreateDefault()
 				{
 					var result = new ActivityContainer();
+					result.ActivityIndex = ActivityIndex.CreateDefault();
 					result.Activities = ActivityCollection.CreateDefault();
 					return result;
 				}
@@ -10700,12 +11331,19 @@ ActivitySummaryContainer.SummaryBody
 					if(customDemo != null)
 						return customDemo;
 					var result = new ActivityContainer();
+					result.ActivityIndex = ActivityIndex.CreateDemoDefault();
 					result.Activities = ActivityCollection.CreateDemoDefault();
 				
 					return result;
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ActivityIndex;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = Activities;
 						object result = item.FindObjectByID(objectId);
@@ -10723,6 +11361,8 @@ ActivitySummaryContainer.SummaryBody
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public ActivityIndex ActivityIndex { get; set; }
 			[DataMember]
 			public ActivityCollection Activities { get; set; }
 			
@@ -10762,6 +11402,13 @@ ActivitySummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static ActivityCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ActivityCollection.RetrieveActivityCollection("Content/AaltoGlobalImpact.OIP/ActivityCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -10788,18 +11435,19 @@ ActivitySummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -10852,14 +11500,14 @@ ActivitySummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10954,6 +11602,13 @@ ActivitySummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static Activity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Activity.RetrieveActivity("Content/AaltoGlobalImpact.OIP/Activity/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -10980,18 +11635,19 @@ ActivitySummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -11044,14 +11700,14 @@ ActivitySummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11208,6 +11864,13 @@ Activity.Description
                     return result;
                 }
 
+				public static ModeratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ModeratorCollection.RetrieveModeratorCollection("Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -11234,18 +11897,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -11298,14 +11962,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11400,6 +12064,13 @@ Activity.Description
                     return result;
                 }
 
+				public static Moderator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Moderator.RetrieveModerator("Content/AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -11426,18 +12097,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -11490,14 +12162,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11599,6 +12271,13 @@ Activity.Description
                     return result;
                 }
 
+				public static CollaboratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CollaboratorCollection.RetrieveCollaboratorCollection("Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -11625,18 +12304,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -11689,14 +12369,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11791,6 +12471,13 @@ Activity.Description
                     return result;
                 }
 
+				public static Collaborator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Collaborator.RetrieveCollaborator("Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -11817,18 +12504,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -11881,14 +12569,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11990,6 +12678,13 @@ Activity.Description
                     return result;
                 }
 
+				public static CollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CollaboratingGroup.RetrieveCollaboratingGroup("Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -12016,18 +12711,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -12080,14 +12776,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12182,6 +12878,13 @@ Activity.Description
                     return result;
                 }
 
+				public static CollaboratingGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -12208,18 +12911,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -12272,14 +12976,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12374,6 +13078,13 @@ Activity.Description
                     return result;
                 }
 
+				public static CollaboratingOrganization RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -12400,18 +13111,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -12464,14 +13176,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12566,6 +13278,13 @@ Activity.Description
                     return result;
                 }
 
+				public static CollaboratingOrganizationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -12592,18 +13311,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -12656,14 +13376,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12758,6 +13478,13 @@ Activity.Description
                     return result;
                 }
 
+				public static GroupSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -12784,18 +13511,19 @@ Activity.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -12848,14 +13576,14 @@ Activity.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12985,6 +13713,13 @@ GroupSummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static GroupContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = GroupContainer.RetrieveGroupContainer("Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -13011,18 +13746,19 @@ GroupSummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -13075,14 +13811,14 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13108,11 +13844,11 @@ GroupSummaryContainer.SummaryBody
 				{
 					var result = new GroupContainer();
 					result.Header = ContainerHeader.CreateDefault();
+					result.GroupIndex = GroupIndex.CreateDefault();
 					result.GroupProfile = Group.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.ActivityCollection = ActivityCollection.CreateDefault();
 					result.Locations = LocationCollection.CreateDefault();
-					result.AddLocationInfo = AddLocationInfo.CreateDefault();
 					return result;
 				}
 
@@ -13124,11 +13860,11 @@ GroupSummaryContainer.SummaryBody
 						return customDemo;
 					var result = new GroupContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
+					result.GroupIndex = GroupIndex.CreateDemoDefault();
 					result.GroupProfile = Group.CreateDemoDefault();
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ActivityCollection = ActivityCollection.CreateDemoDefault();
 					result.Locations = LocationCollection.CreateDemoDefault();
-					result.AddLocationInfo = AddLocationInfo.CreateDemoDefault();
 				
 					return result;
 				}
@@ -13136,6 +13872,12 @@ GroupSummaryContainer.SummaryBody
 				{
 					{
 						var item = Header;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = GroupIndex;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -13164,12 +13906,6 @@ GroupSummaryContainer.SummaryBody
 						if(result != null)
 							return result;
 					}
-					{
-						var item = AddLocationInfo;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
 					return null;
 				}
 
@@ -13184,6 +13920,8 @@ GroupSummaryContainer.SummaryBody
 			[DataMember]
 			public ContainerHeader Header { get; set; }
 			[DataMember]
+			public GroupIndex GroupIndex { get; set; }
+			[DataMember]
 			public Group GroupProfile { get; set; }
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
@@ -13191,8 +13929,230 @@ GroupSummaryContainer.SummaryBody
 			public ActivityCollection ActivityCollection { get; set; }
 			[DataMember]
 			public LocationCollection Locations { get; set; }
+			
+			}
+			[DataContract]
+			public partial class GroupIndex : IInformationObject
+			{
+				public GroupIndex()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "GroupIndex";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static GroupIndex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveGroupIndex(relativeLocation, owner);
+				}
+
+
+                public static GroupIndex RetrieveGroupIndex(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (GroupIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupIndex), null, owner);
+                    return result;
+                }
+
+				public static GroupIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = GroupIndex.RetrieveGroupIndex("Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupIndex));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static GroupIndex DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupIndex));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (GroupIndex) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupIndex", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref GroupIndex customDemoObject);
+
+
+
+				public static GroupIndex CreateDefault()
+				{
+					var result = new GroupIndex();
+					return result;
+				}
+
+				public static GroupIndex CreateDemoDefault()
+				{
+					GroupIndex customDemo = null;
+					GroupIndex.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new GroupIndex();
+					result.Title = @"GroupIndex.Title";
+
+					result.Introduction = @"GroupIndex.Introduction
+GroupIndex.Introduction
+GroupIndex.Introduction
+GroupIndex.Introduction
+GroupIndex.Introduction
+";
+
+					result.Summary = @"GroupIndex.Summary
+GroupIndex.Summary
+GroupIndex.Summary
+GroupIndex.Summary
+GroupIndex.Summary
+";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Title":
+							Title = value;
+							break;
+						case "Introduction":
+							Introduction = value;
+							break;
+						case "Summary":
+							Summary = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
 			[DataMember]
-			public AddLocationInfo AddLocationInfo { get; set; }
+			public string Title { get; set; }
+			[DataMember]
+			public string Introduction { get; set; }
+			[DataMember]
+			public string Summary { get; set; }
 			
 			}
 			[DataContract]
@@ -13230,6 +14190,13 @@ GroupSummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static AddLocationInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AddLocationInfo.RetrieveAddLocationInfo("Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -13256,18 +14223,19 @@ GroupSummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -13320,14 +14288,14 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddLocationInfo", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddLocationInfo", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13412,6 +14380,606 @@ GroupSummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
+			public partial class AddEmailAddressInfo : IInformationObject
+			{
+				public AddEmailAddressInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AddEmailAddressInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AddEmailAddressInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAddEmailAddressInfo(relativeLocation, owner);
+				}
+
+
+                public static AddEmailAddressInfo RetrieveAddEmailAddressInfo(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AddEmailAddressInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddEmailAddressInfo), null, owner);
+                    return result;
+                }
+
+				public static AddEmailAddressInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddEmailAddressInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AddEmailAddressInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddEmailAddressInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AddEmailAddressInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddEmailAddressInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref AddEmailAddressInfo customDemoObject);
+
+
+
+				public static AddEmailAddressInfo CreateDefault()
+				{
+					var result = new AddEmailAddressInfo();
+					return result;
+				}
+
+				public static AddEmailAddressInfo CreateDemoDefault()
+				{
+					AddEmailAddressInfo customDemo = null;
+					AddEmailAddressInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new AddEmailAddressInfo();
+					result.EmailAddress = @"AddEmailAddressInfo.EmailAddress";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "EmailAddress":
+							EmailAddress = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string EmailAddress { get; set; }
+			
+			}
+			[DataContract]
+			public partial class CreateGroupInfo : IInformationObject
+			{
+				public CreateGroupInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "CreateGroupInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CreateGroupInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCreateGroupInfo(relativeLocation, owner);
+				}
+
+
+                public static CreateGroupInfo RetrieveCreateGroupInfo(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (CreateGroupInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(CreateGroupInfo), null, owner);
+                    return result;
+                }
+
+				public static CreateGroupInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CreateGroupInfo.RetrieveCreateGroupInfo("Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CreateGroupInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CreateGroupInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CreateGroupInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CreateGroupInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CreateGroupInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref CreateGroupInfo customDemoObject);
+
+
+
+				public static CreateGroupInfo CreateDefault()
+				{
+					var result = new CreateGroupInfo();
+					return result;
+				}
+
+				public static CreateGroupInfo CreateDemoDefault()
+				{
+					CreateGroupInfo customDemo = null;
+					CreateGroupInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new CreateGroupInfo();
+					result.GroupName = @"CreateGroupInfo.GroupName";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupName":
+							GroupName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string GroupName { get; set; }
+			
+			}
+			[DataContract]
+			public partial class AddActivityInfo : IInformationObject
+			{
+				public AddActivityInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AddActivityInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AddActivityInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAddActivityInfo(relativeLocation, owner);
+				}
+
+
+                public static AddActivityInfo RetrieveAddActivityInfo(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AddActivityInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddActivityInfo), null, owner);
+                    return result;
+                }
+
+				public static AddActivityInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AddActivityInfo.RetrieveAddActivityInfo("Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddActivityInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AddActivityInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddActivityInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AddActivityInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddActivityInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref AddActivityInfo customDemoObject);
+
+
+
+				public static AddActivityInfo CreateDefault()
+				{
+					var result = new AddActivityInfo();
+					return result;
+				}
+
+				public static AddActivityInfo CreateDemoDefault()
+				{
+					AddActivityInfo customDemo = null;
+					AddActivityInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new AddActivityInfo();
+					result.ActivityName = @"AddActivityInfo.ActivityName";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ActivityName":
+							ActivityName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ActivityName { get; set; }
+			
+			}
+			[DataContract]
 			public partial class GroupCollection : IInformationObject
 			{
 				public GroupCollection()
@@ -13446,6 +15014,13 @@ GroupSummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static GroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = GroupCollection.RetrieveGroupCollection("Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -13472,18 +15047,19 @@ GroupSummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -13536,14 +15112,14 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13638,6 +15214,13 @@ GroupSummaryContainer.SummaryBody
                     return result;
                 }
 
+				public static Group RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Group.RetrieveGroup("Content/AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -13664,18 +15247,19 @@ GroupSummaryContainer.SummaryBody
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -13728,14 +15312,14 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Group", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Group", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13904,6 +15488,13 @@ Group.OrganizationsAndGroupsLinkedToUs
                     return result;
                 }
 
+				public static Introduction RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Introduction.RetrieveIntroduction("Content/AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -13930,18 +15521,19 @@ Group.OrganizationsAndGroupsLinkedToUs
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -13994,14 +15586,14 @@ Group.OrganizationsAndGroupsLinkedToUs
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14108,6 +15700,13 @@ Introduction.Body
                     return result;
                 }
 
+				public static BlogCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = BlogCollection.RetrieveBlogCollection("Content/AaltoGlobalImpact.OIP/BlogCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -14134,18 +15733,19 @@ Introduction.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -14198,14 +15798,14 @@ Introduction.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14300,6 +15900,13 @@ Introduction.Body
                     return result;
                 }
 
+				public static Blog RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Blog.RetrieveBlog("Content/AaltoGlobalImpact.OIP/Blog/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -14326,18 +15933,19 @@ Introduction.Body
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -14390,14 +15998,14 @@ Introduction.Body
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14575,6 +16183,13 @@ Blog.Excerpt
                     return result;
                 }
 
+				public static BlogIndexGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = BlogIndexGroup.RetrieveBlogIndexGroup("Content/AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -14601,18 +16216,19 @@ Blog.Excerpt
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -14665,14 +16281,14 @@ Blog.Excerpt
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14838,6 +16454,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static CalendarIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CalendarIndex.RetrieveCalendarIndex("Content/AaltoGlobalImpact.OIP/CalendarIndex/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -14864,18 +16487,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -14928,14 +16552,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15030,6 +16654,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Filter RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Filter.RetrieveFilter("Content/AaltoGlobalImpact.OIP/Filter/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -15056,18 +16687,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -15120,14 +16752,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15222,6 +16854,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Calendar RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Calendar.RetrieveCalendar("Content/AaltoGlobalImpact.OIP/Calendar/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -15248,18 +16887,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -15312,14 +16952,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15414,6 +17054,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static CalendarCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CalendarCollection.RetrieveCalendarCollection("Content/AaltoGlobalImpact.OIP/CalendarCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -15440,18 +17087,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -15504,14 +17152,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15606,6 +17254,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Map RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Map.RetrieveMap("Content/AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -15632,18 +17287,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -15696,14 +17352,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15798,6 +17454,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static MapCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapCollection.RetrieveMapCollection("Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -15824,18 +17487,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -15888,14 +17552,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15990,6 +17654,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static MapIndexCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapIndexCollection.RetrieveMapIndexCollection("Content/AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -16016,18 +17687,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -16080,14 +17752,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16215,6 +17887,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static MapResult RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapResult.RetrieveMapResult("Content/AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -16241,18 +17920,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -16305,14 +17985,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16410,6 +18090,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static MapResultCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapResultCollection.RetrieveMapResultCollection("Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -16436,18 +18123,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -16500,14 +18188,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16602,6 +18290,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static MapResultsCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = MapResultsCollection.RetrieveMapResultsCollection("Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -16628,18 +18323,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -16692,14 +18388,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16817,6 +18513,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Image RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Image.RetrieveImage("Content/AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -16843,18 +18546,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -16907,14 +18611,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17016,6 +18720,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static ImageGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ImageGroupCollection.RetrieveImageGroupCollection("Content/AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -17042,18 +18753,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -17106,14 +18818,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17208,6 +18920,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static ImageGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ImageGroup.RetrieveImageGroup("Content/AaltoGlobalImpact.OIP/ImageGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -17234,18 +18953,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -17298,14 +19018,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17417,6 +19137,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static ImagesCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ImagesCollection.RetrieveImagesCollection("Content/AaltoGlobalImpact.OIP/ImagesCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -17443,18 +19170,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -17507,14 +19235,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17609,6 +19337,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Tooltip RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Tooltip.RetrieveTooltip("Content/AaltoGlobalImpact.OIP/Tooltip/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -17635,18 +19370,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -17699,14 +19435,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17801,6 +19537,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static SocialPanelCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SocialPanelCollection.RetrieveSocialPanelCollection("Content/AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -17827,18 +19570,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -17891,14 +19635,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17993,6 +19737,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static SocialPanel RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SocialPanel.RetrieveSocialPanel("Content/AaltoGlobalImpact.OIP/SocialPanel/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -18019,18 +19770,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -18083,14 +19835,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18188,6 +19940,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Longitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Longitude.RetrieveLongitude("Content/AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -18214,18 +19973,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -18278,14 +20038,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18380,6 +20140,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Latitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Latitude.RetrieveLatitude("Content/AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -18406,18 +20173,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -18470,14 +20238,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18572,6 +20340,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Location RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Location.RetrieveLocation("Content/AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -18598,18 +20373,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -18662,14 +20438,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18784,6 +20560,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static LocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = LocationCollection.RetrieveLocationCollection("Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -18810,18 +20593,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -18874,14 +20658,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18976,6 +20760,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Date RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Date.RetrieveDate("Content/AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -19002,18 +20793,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -19066,14 +20858,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19181,6 +20973,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Sex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Sex.RetrieveSex("Content/AaltoGlobalImpact.OIP/Sex/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -19207,18 +21006,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -19271,14 +21071,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19373,6 +21173,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static OBSAddress RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = OBSAddress.RetrieveOBSAddress("Content/AaltoGlobalImpact.OIP/OBSAddress/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -19399,18 +21206,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -19463,14 +21271,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19628,6 +21436,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static Identity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Identity.RetrieveIdentity("Content/AaltoGlobalImpact.OIP/Identity/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -19654,18 +21469,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -19718,14 +21534,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19854,6 +21670,13 @@ BlogIndexGroup.Summary
                     return result;
                 }
 
+				public static ImageVideoSoundVectorRaw RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = ImageVideoSoundVectorRaw.RetrieveImageVideoSoundVectorRaw("Content/AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -19880,18 +21703,19 @@ BlogIndexGroup.Summary
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -19944,14 +21768,14 @@ BlogIndexGroup.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20059,6 +21883,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static Category RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Category.RetrieveCategory("Content/AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -20085,18 +21916,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -20149,14 +21981,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20251,6 +22083,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static SubscriptionCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SubscriptionCollection.RetrieveSubscriptionCollection("Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -20277,18 +22116,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -20341,14 +22181,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20443,6 +22283,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static Subscription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Subscription.RetrieveSubscription("Content/AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -20469,18 +22316,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -20533,14 +22381,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20575,19 +22423,11 @@ ImageVideoSoundVectorRaw.Vector
 					if(customDemo != null)
 						return customDemo;
 					var result = new Subscription();
-					result.TargetItemID = @"Subscription.TargetItemID";
-
-					result.TargetObjectName = @"Subscription.TargetObjectName";
-
-					result.TargetItemName = @"Subscription.TargetItemName";
-
 					result.TargetRelativeLocation = @"Subscription.TargetRelativeLocation";
-
-					result.SubscriberID = @"Subscription.SubscriberID";
 
 					result.SubscriberRelativeLocation = @"Subscription.SubscriberRelativeLocation";
 
-					result.OperationActionName = @"Subscription.OperationActionName";
+					result.SubscriptionType = @"Subscription.SubscriptionType";
 
 				
 					return result;
@@ -20604,26 +22444,14 @@ ImageVideoSoundVectorRaw.Vector
 						case "Priority":
 							Priority = long.Parse(value);
 							break;
-						case "TargetItemID":
-							TargetItemID = value;
-							break;
-						case "TargetObjectName":
-							TargetObjectName = value;
-							break;
-						case "TargetItemName":
-							TargetItemName = value;
-							break;
 						case "TargetRelativeLocation":
 							TargetRelativeLocation = value;
-							break;
-						case "SubscriberID":
-							SubscriberID = value;
 							break;
 						case "SubscriberRelativeLocation":
 							SubscriberRelativeLocation = value;
 							break;
-						case "OperationActionName":
-							OperationActionName = value;
+						case "SubscriptionType":
+							SubscriptionType = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -20632,19 +22460,11 @@ ImageVideoSoundVectorRaw.Vector
 			[DataMember]
 			public long Priority { get; set; }
 			[DataMember]
-			public string TargetItemID { get; set; }
-			[DataMember]
-			public string TargetObjectName { get; set; }
-			[DataMember]
-			public string TargetItemName { get; set; }
-			[DataMember]
 			public string TargetRelativeLocation { get; set; }
-			[DataMember]
-			public string SubscriberID { get; set; }
 			[DataMember]
 			public string SubscriberRelativeLocation { get; set; }
 			[DataMember]
-			public string OperationActionName { get; set; }
+			public string SubscriptionType { get; set; }
 			
 			}
 			[DataContract]
@@ -20682,6 +22502,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static QueueEnvelope RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = QueueEnvelope.RetrieveQueueEnvelope("Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -20708,18 +22535,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -20772,14 +22600,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20803,7 +22631,7 @@ ImageVideoSoundVectorRaw.Vector
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = SubscriberUpdateOperation;
+						var item = SubscriberNotification;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -20832,7 +22660,7 @@ ImageVideoSoundVectorRaw.Vector
 					}
 	        }
 			[DataMember]
-			public SubscriberUpdateOperation SubscriberUpdateOperation { get; set; }
+			public Subscription SubscriberNotification { get; set; }
 			[DataMember]
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			[DataMember]
@@ -20874,6 +22702,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static SystemError RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SystemError.RetrieveSystemError("Content/AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -20900,18 +22735,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -20964,14 +22800,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21081,6 +22917,13 @@ ImageVideoSoundVectorRaw.Vector
                     return result;
                 }
 
+				public static SystemErrorItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SystemErrorItem.RetrieveSystemErrorItem("Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -21107,18 +22950,19 @@ ImageVideoSoundVectorRaw.Vector
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -21171,14 +23015,14 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21285,6 +23129,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static SystemErrorItemCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -21311,18 +23162,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -21375,14 +23227,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21477,6 +23329,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static InformationSource RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = InformationSource.RetrieveInformationSource("Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -21503,18 +23362,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -21567,14 +23427,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21709,6 +23569,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static InformationSourceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = InformationSourceCollection.RetrieveInformationSourceCollection("Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -21735,18 +23602,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -21799,14 +23667,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21901,6 +23769,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static UpdateWebContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -21927,18 +23802,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -21991,14 +23867,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22129,6 +24005,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static UpdateWebContentHandlerItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -22155,18 +24038,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -22219,14 +24103,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22328,6 +24212,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static UpdateWebContentHandlerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -22354,18 +24245,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -22418,14 +24310,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22520,6 +24412,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static SubscriberInput RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = SubscriberInput.RetrieveSubscriberInput("Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -22546,18 +24445,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -22610,14 +24510,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22699,222 +24599,6 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class SubscriberUpdateOperation : IInformationObject
-			{
-				public SubscriberUpdateOperation()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriberUpdateOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriberUpdateOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriberUpdateOperation(relativeLocation, owner);
-				}
-
-
-                public static SubscriberUpdateOperation RetrieveSubscriberUpdateOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriberUpdateOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberUpdateOperation), null, owner);
-                    return result;
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("RootObject"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberUpdateOperation));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriberUpdateOperation DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberUpdateOperation));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriberUpdateOperation) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", masterObject.RelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriberUpdateOperation", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriberUpdateOperation customDemoObject);
-
-
-
-				public static SubscriberUpdateOperation CreateDefault()
-				{
-					var result = new SubscriberUpdateOperation();
-					result.OperationParameters = SubscriberInput.CreateDefault();
-					return result;
-				}
-
-				public static SubscriberUpdateOperation CreateDemoDefault()
-				{
-					SubscriberUpdateOperation customDemo = null;
-					SubscriberUpdateOperation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriberUpdateOperation();
-					result.TargetOwnerID = @"SubscriberUpdateOperation.TargetOwnerID";
-
-					result.SubscriberOwnerID = @"SubscriberUpdateOperation.SubscriberOwnerID";
-
-					result.OperationParameters = SubscriberInput.CreateDemoDefault();
-					result.OperationName = @"SubscriberUpdateOperation.OperationName";
-
-				
-					return result;
-				}
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = OperationParameters;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "TargetOwnerID":
-							TargetOwnerID = value;
-							break;
-						case "SubscriberOwnerID":
-							SubscriberOwnerID = value;
-							break;
-						case "OperationName":
-							OperationName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string TargetOwnerID { get; set; }
-			[DataMember]
-			public string SubscriberOwnerID { get; set; }
-			[DataMember]
-			public SubscriberInput OperationParameters { get; set; }
-			[DataMember]
-			public string OperationName { get; set; }
-			
-			}
-			[DataContract]
 			public partial class Monitor : IInformationObject
 			{
 				public Monitor()
@@ -22949,6 +24633,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static Monitor RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Monitor.RetrieveMonitor("Content/AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -22975,18 +24666,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -23039,14 +24731,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23179,6 +24871,13 @@ SystemErrorItem.LongDescription
                     return result;
                 }
 
+				public static IconTitleDescription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = IconTitleDescription.RetrieveIconTitleDescription("Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -23205,18 +24904,19 @@ SystemErrorItem.LongDescription
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -23269,14 +24969,14 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23385,6 +25085,13 @@ IconTitleDescription.Description
                     return result;
                 }
 
+				public static AboutAGIApplications RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = AboutAGIApplications.RetrieveAboutAGIApplications("Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -23411,18 +25118,19 @@ IconTitleDescription.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -23475,14 +25183,14 @@ IconTitleDescription.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23590,6 +25298,13 @@ IconTitleDescription.Description
                     return result;
                 }
 
+				public static Icon RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = Icon.RetrieveIcon("Content/AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -23616,18 +25331,19 @@ IconTitleDescription.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -23680,14 +25396,14 @@ IconTitleDescription.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23768,6 +25484,13 @@ IconTitleDescription.Description
                     return result;
                 }
 
+				public static WebPageTemplate RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = WebPageTemplate.RetrieveWebPageTemplate("Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -23794,18 +25517,19 @@ IconTitleDescription.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -23858,14 +25582,14 @@ IconTitleDescription.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23946,6 +25670,13 @@ IconTitleDescription.Description
                     return result;
                 }
 
+				public static WebPage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = WebPage.RetrieveWebPage("Content/AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
+					return result;
+				}
+
+
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
 
 			    public void InitializeDefaultSubscribers(IContainerOwner owner)
@@ -23972,18 +25703,19 @@ IconTitleDescription.Description
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
                     {
-                        if (key.StartsWith("RootObject"))
+                        if (key.StartsWith("Root"))
                             continue;
                         int indexOfUnderscore = key.IndexOf("_");
                         string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        object targetObject = FindObjectByID(objectID);
                         dynamic dyn = targetObject;
                         dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
-
 
 			    public object FindObjectByID(string objectId)
 			    {
@@ -24036,14 +25768,14 @@ IconTitleDescription.Description
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
-				public void SetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterObject);
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
 				}
 
-				public static string GetRelativeLocationAsMetadataTo(IInformationObject masterObject)
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterObject.RelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)

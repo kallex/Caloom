@@ -49,8 +49,8 @@ namespace TheBallTool
                 //FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
                 //FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
-                DeleteAllAccountAndGroupContents();
-                RenderWebSupport.RefreshAccountAndGroupTemplates(false);
+                //DeleteAllAccountAndGroupContents();
+                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
                 //DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
@@ -298,8 +298,8 @@ namespace TheBallTool
             catch (Exception ex)
             {
             }
-            SubscribeSupport.AddSubscriptionToObject(target, subscriber, "UpdateSubscriberBasedOnObject");
-            SubscribeSupport.AddSubscriptionToItem(target, "ForAllPeople.Title", subscriber, "UpdateSubscriberBasedOnItem");
+            //SubscribeSupport.AddSubscriptionToObject(target, subscriber, "UpdateSubscriberBasedOnObject");
+            //SubscribeSupport.AddSubscriptionToItem(target, "ForAllPeople.Title", subscriber, "UpdateSubscriberBasedOnItem");
             StorageSupport.StoreInformation(target);
         }
 

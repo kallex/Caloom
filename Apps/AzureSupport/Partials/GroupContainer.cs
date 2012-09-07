@@ -5,30 +5,8 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class GroupContainer : IAddOperationProvider
+    partial class GroupContainer 
     {
-        public bool PerformAddOperation()
-        {
-            return false;
-            AddLocationInfo addLocationInfo = AddLocationInfo;
-            if (String.IsNullOrEmpty(addLocationInfo.Latitude) ||
-                String.IsNullOrEmpty(addLocationInfo.Longitude))
-                return false;
-            AddLocationInfo = OIP.AddLocationInfo.CreateDefault();
-            AddLocationInfo.LocationName = "";
-            AddLocationInfo.Latitude = "";
-            AddLocationInfo.Longitude = "";
-            //AddLocationInfo.Town = "";
-            //AddLocationInfo.Country = "";
-            Locations.CollectionContent.RemoveAll(loc => loc.LocationName == "Location.LocationName");
-            Location location = Location.CreateDefault();
-            location.LocationName = addLocationInfo.LocationName;
-            location.Latitude.TextValue = addLocationInfo.Latitude;
-            location.Longitude.TextValue = addLocationInfo.Longitude;
-            Locations.CollectionContent.Add(location);
-            return false;
-        }
-
         partial void DoPostStoringExecute(IContainerOwner owner)
         {
             return;

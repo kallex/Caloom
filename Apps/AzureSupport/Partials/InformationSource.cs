@@ -56,5 +56,12 @@ namespace AaltoGlobalImpact.OIP
             SourceName = sourceName;
             SourceInformationObjectType = informationObjectType;
         }
+
+        public bool HasSourceChanged()
+        {
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(SourceLocation);
+            bool isChanged = blob.Properties.ContentMD5 != SourceMD5;
+            return isChanged;
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace TheBall
         public static CloudBlobClient CurrBlobClient { get; private set; }
         private const int AccOrGrpPlusIDPathLength = 41;
         private const string ContentFolderName = "Content";
-
+        public const int GuidLength = 36;
 
         public static Guid ActiveOwnerID
         {
@@ -799,13 +799,6 @@ namespace TheBall
 
         public static CloudBlob StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
         {
-            IAddOperationProvider addOperationProvider = informationObject as IAddOperationProvider;
-            if(addOperationProvider != null)
-            {
-                bool cancelOriginalStore = addOperationProvider.PerformAddOperation();
-                if (cancelOriginalStore)
-                    return null;
-            }
             Type informationObjectType = informationObject.GetType();
             DataContractSerializer ser = new DataContractSerializer(informationObjectType);
             MemoryStream memoryStream = new MemoryStream();
@@ -836,7 +829,7 @@ namespace TheBall
             if (isNewBlob)
                 informationObject.InitializeDefaultSubscribers(owner);
             informationObject.PostStoringExecute(owner);
-            SubscribeSupport.NotifySubscribers(informationObject);
+            SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
             return blob;
         }
 
@@ -944,6 +937,21 @@ namespace TheBall
             CloudBlob blob = container.GetBlockBlobReference(relativeLocation);
             return blob;
         }
+
+        public static string GetAccountIDFromLocation(string referenceLocation)
+        {
+            if (referenceLocation.StartsWith("acc/") == false)
+                throw new InvalidDataException("Referencelocation is not account owned: " + referenceLocation);
+            return referenceLocation.Substring(4, GuidLength);
+        }
+
+        public static string GetGroupIDFromLocation(string referenceLocation)
+        {
+            if (referenceLocation.StartsWith("grp/") == false)
+                throw new InvalidDataException("Referencelocation is not group owned: " + referenceLocation);
+            return referenceLocation.Substring(4, GuidLength);
+        }
+
 
         public static string GetContentRootLocation(string referenceLocation)
         {

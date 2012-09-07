@@ -10,53 +10,58 @@ namespace TheBall
 {
     public static class SubscribeSupport
     {
-        public static void AddSubscriptionToObject(IInformationObject target, IInformationObject subscriber, string operationName)
+        public const string SubscribeType_WebPageToSource = "webpage";
+
+        public static void AddSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType)
         {
-            var sub = GetSubscriptionToObject(target, subscriber, operationName);
-            SubscriptionCollection subscriptionCollection = GetSubscriptions(target);
+            var sub = GetSubscriptionToObject(targetLocation, subscriberLocation, subscriptionType);
+            SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             if(subscriptionCollection == null)
             {
                 subscriptionCollection = new SubscriptionCollection();
-                subscriptionCollection.SetRelativeLocationAsMetadataTo(target);
+                subscriptionCollection.SetRelativeLocationAsMetadataTo(targetLocation);
             }
+            if (subscriptionCollection.CollectionContent.Exists(existing => existing.SubscriberRelativeLocation == sub.SubscriberRelativeLocation))
+                return;
             subscriptionCollection.CollectionContent.Add(sub);
             StorageSupport.StoreInformation(subscriptionCollection);
         }
 
+        /*
         public static void AddSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
         {
             var sub = GetSubscriptionToItem(target, itemName, subscriber, operationName);
-        }
+        }*/
 
-        public static Subscription GetSubscriptionToObject(IInformationObject target, IInformationObject subscriber, string operationName)
+        public static Subscription GetSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType)
         {
             var sub = new Subscription
                           {
-                              TargetObjectName = target.Name,
-                              TargetItemID = target.ID,
-                              SubscriberID = subscriber.ID,
-                              OperationActionName = operationName
+                              TargetRelativeLocation = targetLocation,
+                              SubscriberRelativeLocation = subscriberLocation,
+                              SubscriptionType = subscriptionType
                           };
             return sub;
         }
 
+        /*
         public static Subscription GetSubscriptionToItem(IInformationObject target, string itemName, IInformationObject subscriber, string operationName)
         {
             Subscription sub = GetSubscriptionToObject(target, subscriber, operationName);
             sub.TargetItemName = itemName;
             return sub;
-        }
+        }*/
 
-        public static SubscriptionCollection GetSubscriptions(IInformationObject target)
+        public static SubscriptionCollection GetSubscriptions(string targetLocation)
         {
-            string blobPath = SubscriptionCollection.GetRelativeLocationAsMetadataTo(target);
+            string blobPath = SubscriptionCollection.GetRelativeLocationAsMetadataTo(targetLocation);
             var result = StorageSupport.RetrieveInformation(blobPath, typeof(SubscriptionCollection));
             return (SubscriptionCollection) result;
         }
 
-        public static void NotifySubscribers(IInformationObject informationObject)
+        public static void NotifySubscribers(string targetLocation)
         {
-            SubscriptionCollection subscriptionCollection = GetSubscriptions(informationObject);
+            SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             if (subscriptionCollection == null)
                 return;
             foreach(var subscription in subscriptionCollection.CollectionContent)
@@ -64,21 +69,7 @@ namespace TheBall
                 QueueEnvelope envelope =
                     new QueueEnvelope
                         {
-                            SubscriberUpdateOperation =
-                                new SubscriberUpdateOperation
-                                    {
-                                        OperationName = subscription.OperationActionName,
-                                        SubscriberOwnerID = StorageSupport.ActiveOwnerID.ToString(),
-                                        TargetOwnerID = StorageSupport.ActiveOwnerID.ToString(),
-                                        OperationParameters =
-                                            new SubscriberInput
-                                                {
-                                                    InformationObjectName = subscription.TargetObjectName,
-                                                    InformationItemName = subscription.TargetItemName,
-                                                    InputRelativeLocation = subscription.TargetRelativeLocation,
-                                                    SubscriberRelativeLocation = subscription.SubscriberRelativeLocation,
-                                                }
-                                    }
+                            SubscriberNotification = subscription
                         };
                 QueueSupport.PutToDefaultQueue(envelope);
             }

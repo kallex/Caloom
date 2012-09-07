@@ -39,7 +39,7 @@ namespace CaloomWorkerRole
                     if (envelope != null)
                     {
                         QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                        ProcessMessage(envelope);
+                        WorkerSupport.ProcessMessage(envelope);
                     } else 
                     {
                         if(message != null)
@@ -76,24 +76,6 @@ namespace CaloomWorkerRole
             }
         }
 
-        private void ProcessMessage(QueueEnvelope envelope)
-        {
-            if (envelope.UpdateWebContentOperation != null)
-                ProcessUpdateWebContent(envelope.UpdateWebContentOperation);
-        }
-
-        private void ProcessUpdateWebContent(UpdateWebContentOperation operation)
-        {
-            string sourceContainerName = operation.SourceContainerName;
-            string sourcePathRoot = operation.SourcePathRoot;
-            string targetContainerName = operation.TargetContainerName;
-            string targetPathRoot = operation.TargetPathRoot;
-            bool renderWhileSync = operation.RenderWhileSync;
-            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot,
-                                         renderWhileSync
-                                             ? (WorkerSupport.PerformCustomOperation) RenderWebSupport.RenderingSyncHandler
-                                             : (WorkerSupport.PerformCustomOperation) RenderWebSupport.CopyAsIsSyncHandler);
-        }
 
         public override bool OnStart()
         {

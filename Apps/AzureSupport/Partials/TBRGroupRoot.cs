@@ -15,5 +15,12 @@ namespace AaltoGlobalImpact.OIP
             var blobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(searchPath).OfType<CloudBlob>();
             return blobList.Select(blob => blob.Name.Substring(substringLen)).ToArray();
         }
+
+        public static TBRGroupRoot CreateNewWithGroup()
+        {
+            TBRGroupRoot groupRoot = TBRGroupRoot.CreateDefault();
+            groupRoot.Group.ID = groupRoot.ID;
+            return groupRoot;
+        }
     }
 }

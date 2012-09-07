@@ -2,6 +2,6 @@
 {
     public interface IAddOperationProvider
     {
-        bool PerformAddOperation();
+        bool PerformAddOperation(InformationSourceCollection sources);
     }
 }

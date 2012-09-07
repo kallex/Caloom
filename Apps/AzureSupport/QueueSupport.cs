@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
@@ -10,10 +11,12 @@ namespace TheBall
     {
         public const string DefaultQueueName = "defaultqueue";
         public const string ErrorQueueName = "errorqueue";
+        public const string StatisticQueueName = "statisticqueue";
 
         public static CloudQueue CurrDefaultQueue { get; private set; }
         public static CloudQueue CurrErrorQueue { get; private set; }
         public static CloudQueueClient CurrQueueClient { get; private set; }
+        public static CloudQueue CurrStatisticsQueue { get; private set; }
 
         public static void InitializeAfterStorage()
         {
@@ -29,6 +32,16 @@ namespace TheBall
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
             CurrErrorQueue = queue;
+
+            queue = CurrQueueClient.GetQueueReference(StatisticQueueName);
+            // Create the queue if it doesn't already exist
+            queue.CreateIfNotExist();
+            CurrStatisticsQueue = queue;
+        }
+
+        public static void ReportStatistics(string message)
+        {
+            CurrStatisticsQueue.AddMessage(new CloudQueueMessage(message));
         }
 
         public static void PutToDefaultQueue(QueueEnvelope queueEnvelope)

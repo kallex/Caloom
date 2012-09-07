@@ -82,6 +82,9 @@ namespace TheBall
             if(rerenderRequired)
             {
                 RenderTemplateWithContentToBlob(template, renderTarget);
+            } else
+            {
+                sources.SubscribeTargetToSourceChanges(renderTarget);
             }
         }
 
@@ -239,6 +242,7 @@ namespace TheBall
             }
             if (line.StartsWith(RootTagBegin))
             {
+                result.AppendLine(line);
                 object content;
                 StackContextItem rootItem;
                 Match match = ContextRootRegex.Match(line);
@@ -249,20 +253,22 @@ namespace TheBall
                     //string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
                     content = GetOrInitiateContentObject(contentRoots, rootType, rootName);
                     StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
-                    rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false);
+                    rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false, rootName);
                 }
                 catch
                 {
-                    content = new object();
-                    rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", false, true);
+                    rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", true, false, "");
                     errorList.Add(new ErrorItem(new Exception("Invalid stack root: " + rootType), rootItem, line));
                 }
-                if (contextStack.Count != 0)
-                    throw new InvalidDataException("Context stack already has a root item before: " + content.GetType().FullName);
+                // NOTE! We support multiple roots now, but root has to be first in stack
+                //if (contextStack.Count != 0)
+                //    throw new InvalidDataException("Context stack already has a root item before: " + content.GetType().FullName);
                 contextStack.Push(rootItem);
             }
             else if (line.StartsWith(CollectionTagBegin))
             {
+                result.AppendLine(line);
+                requireExistingContext(contextStack, line);
                 string memberName = line.Substring(CollTagLen, line.Length - CollTagsTotalLen).Trim();
                 Stack<StackContextItem> collStack = new Stack<StackContextItem>();
                 StackContextItem currCtx = contextStack.Peek();
@@ -301,6 +307,8 @@ namespace TheBall
             }
             else if (line.StartsWith(ObjectTagBegin))
             {
+                result.AppendLine(line);
+                requireExistingContext(contextStack, line);
                 string memberName = line.Substring(ObjTagLen, line.Length - ObjTagsTotalLen).Trim();
                 StackContextItem currCtx = contextStack.Peek();
                 if (memberName == "*")
@@ -327,13 +335,16 @@ namespace TheBall
             }
             else if (line.StartsWith(ContextTagEnd))
             {
+                result.AppendLine(line);
                 StackContextItem popItem = contextStack.Pop();
                 if (contextStack.Count == 0)
                     return false;
             }
             else if(line.Contains(FormHiddenFieldTag))
             {
+                requireExistingContext(contextStack, line);
                 result.AppendLine(line);
+                /*
                 ProcessATOMLine(
                     "<input id=\"RootObjectRelativeLocation\" name=\"RootObjectRelativeLocation\" type=\"hidden\" value=\"[!ATOM]RelativeLocation[ATOM!]\" />",
                     result, contextStack);
@@ -341,14 +352,26 @@ namespace TheBall
                     "<input id=\"RootObjectType\" name=\"RootObjectType\" type=\"hidden\" value=\"[!ATOM]SemanticDomainName[ATOM!].[!ATOM]Name[ATOM!]\" />",
                     result, contextStack);
                 ProcessATOMLine(
-                    "<input id=\"RootObjectETag\" name=\"RootObjectETag\" type=\"hidden\" value=[!ATOM]ETag[ATOM!] />",
-                    result, contextStack);
+                    "<input id=\"RootSourceName\" name=\"RootSourceName\" type=\"hidden\" value=[!ATOM]ETag[ATOM!] />",
+                    result, contextStack);*/
+                StackContextItem currContext = contextStack.Peek().GetContextRoot();
+                result.AppendLine(
+                    String.Format(
+                        "<input id=\"RootSourceName\" name=\"RootSourceName\" type=\"hidden\" value=\"{0}\" />",
+                        currContext.RootName));
+
             }
             else // ATOM line
             {
                 ProcessATOMLine(line, result, contextStack);
             }
             return contextStack.Count > 0;
+        }
+
+        private static void requireExistingContext(Stack<StackContextItem> contextStack, string line)
+        {
+            if (contextStack.Count == 0)
+                throw new InvalidDataException("No context (stack) available before using it: " + line);
         }
 
         public static object GetOrInitiateContentObject(List<ContentItem> contentRoots, string rootType, string rootName)
@@ -394,6 +417,7 @@ namespace TheBall
 
         private static void ProcessATOMLine(string line, StringBuilder result, Stack<StackContextItem> contextStack)
         {
+            requireExistingContext(contextStack, line);
             StackContextItem currCtx = contextStack.Peek();
             var contentLine = Regex.Replace(line, MemberAtomPattern,
                                             match =>
@@ -504,9 +528,15 @@ namespace TheBall
             return false;
         }
 
-        public static void RefreshContent(CloudBlob webPageBlob)
+        public static void RefreshContent(CloudBlob webPageBlob, bool skipIfSourcesIntact = false)
         {
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
+            if(skipIfSourcesIntact)
+            {
+                bool sourcesIntact = sources.HasAnySourceChanged() == false;
+                if (sourcesIntact)
+                    return;
+            }
             InformationSource templateSource = sources.CollectionContent.First(src => src.IsWebTemplateSource);
             CloudBlob templateBlob =
                 StorageSupport.CurrActiveContainer.GetBlockBlobReference(templateSource.SourceLocation);
@@ -539,40 +569,18 @@ namespace TheBall
         }
 
 
-        public static void RefreshAccountAndGroupTemplates(bool useWorker)
+        public static void RefreshAllAccountAndGroupTemplates(bool useWorker)
         {
-            refreshAccountTemplates(useWorker);
-            refreshGroupTemplates(useWorker);
+            refreshAllAccountTemplates(useWorker);
+            refreshAllGroupTemplates(useWorker);
         }
 
-        private static void refreshGroupTemplates(bool useWorker)
+        private static void refreshAllGroupTemplates(bool useWorker)
         {
             string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
-            string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string anonContainerName = StorageSupport.CurrAnonPublicContainer.Name;
-            string syscontentRoot = "sys/AAA/";
             foreach (var grpID in groupIDs)
             {
-                string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
-                string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
-                string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWebTemplateLocation;
-                string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWebSiteLocation;
-                string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
-                
-                // Sync to group local template
-                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
-                // Render local template
-                SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
-                // Sync public pages to group local template
-                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
-                // Render local template
-                SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
-                // Publish group public content
-                SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
-                if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd")
-                {
-                    SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
-                }
+                RefreshGroupTemplates(grpID, useWorker);
             }
      //       RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
      //String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
@@ -581,20 +589,52 @@ namespace TheBall
 
         }
 
-        private static void refreshAccountTemplates(bool useWorker)
+        public static void RefreshGroupTemplates(string grpID, bool useWorker)
+        {
+            string syscontentRoot = "sys/AAA/";
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string anonContainerName = StorageSupport.CurrAnonPublicContainer.Name;
+            string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
+            string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
+            string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWebTemplateLocation;
+            string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWebSiteLocation;
+            string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
+                
+            // Sync to group local template
+            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
+            // Render local template
+            SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
+            // Sync public pages to group local template
+            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
+            // Render local template
+            SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+            // Publish group public content
+            SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
+            if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd")
+            {
+                SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+            }
+        }
+
+        private static void refreshAllAccountTemplates(bool useWorker)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
-            string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string syscontentRoot = "sys/AAA/";
             foreach(var acctID in accountIDs)
             {
-                string acctTemplateLocation = "acc/" + acctID + "/" + DefaultWebTemplateLocation;
-                string acctSiteLocation = "acc/" + acctID + "/" + DefaultWebSiteLocation;
-                // Sync to account local template
-                SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
-                // Render local template
-                SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
+                RefreshAccountTemplates(acctID, useWorker);
             }
+        }
+
+        private static void RefreshAccountTemplates(string acctID, bool useWorker)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = "sys/AAA/";
+            string acctTemplateLocation = "acc/" + acctID + "/" + DefaultWebTemplateLocation;
+            string acctSiteLocation = "acc/" + acctID + "/" + DefaultWebSiteLocation;
+            // Sync to account local template
+            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
+            // Render local template
+            SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
         }
     }
 }

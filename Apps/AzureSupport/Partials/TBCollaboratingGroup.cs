@@ -24,7 +24,7 @@ namespace AaltoGlobalImpact.OIP
             TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
             TBAccount account = emailRoot.Account;
             account.JoinGroup(this, role);
-            emailRoot.Account.StoreAndPropagate();
+            account.StoreAndPropagate();
             TBEmail email = account.GetAccountEmail(emailAddress);
             this.Roles.CollectionContent.Add(new TBCollaboratorRole()
             {

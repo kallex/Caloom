@@ -181,30 +181,8 @@
           <InformationItem name="Security" logicalDataType="InformationObject" informationObjectName="AccountSecurity"/>
 					<InformationItem name="Roles" logicalDataType="InformationObject" informationObjectName="AccountRoles" />
 					<InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection" />
-          <!--
-					<InformationItem name="AccountStatistics" logicalDataType="InformationObject" informationObjectName="AccountStatistics" />
-					<InformationItem name="AccountContent" logicalDataType="InformationObject" informationObjectName="AccountContent" />
-          -->
-          <InformationItem name="AddLocationInfo" logicalDataType="InformationObject" informationObjectName="AddLocationInfo"/>
 				</InformationItems>
 			</InformationObject>
-      <!--
-			<InformationObject name="AccountStatistics" designDesc="Designed later">
-				<InformationItems>
-					<InformationItem name="Dummy" logicalDataType="Text_Short" />
-				</InformationItems>
-			</InformationObject>
-			<InformationObject name="AccountSkills" designDesc="Designed later">
-				<InformationItems>
-					<InformationItem name="Dummy" logicalDataType="Text_Short" />
-				</InformationItems>
-			</InformationObject>
-			<InformationObject name="AccountProjects" designDesc="Designed later">
-				<InformationItems>
-					<InformationItem name="Dummy" logicalDataType="Text_Short" />
-				</InformationItems>
-			</InformationObject>
-      -->
       <InformationObject name="AddressAndLocationCollection" designDesc="Designed later">
         <CollectionFor contentInformationObjectName="AddressAndLocation"/>
 			</InformationObject>
@@ -366,8 +344,18 @@
         </InformationItems>
       </InformationObject>
 
+      <InformationObject name="ActivityIndex" designDesc="Activity index">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
+
       <InformationObject name="ActivityContainer" designDesc="Group container">
         <InformationItems>
+          <InformationItem name="ActivityIndex" logicalDataType="InformationObject" informationObjectName="ActivityIndex" />
           <InformationItem name="Activities" logicalDataType="InformationObject" informationObjectName="ActivityCollection"/>
         </InformationItems>
       </InformationObject>
@@ -442,6 +430,7 @@
       <InformationObject name="GroupContainer" designDesc="Group container">
         <InformationItems>
           <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="GroupIndex" logicalDataType="InformationObject" informationObjectName="GroupIndex"/>
           <InformationItem name="GroupProfile" logicalDataType="InformationObject" informationObjectName="Group"/>
           <InformationItem name="Collaborators" logicalDataType="InformationObject" informationObjectName="CollaboratorCollection"/>
           <!--
@@ -450,9 +439,17 @@
           -->
           <InformationItem name="ActivityCollection" logicalDataType="InformationObject" informationObjectName="ActivityCollection"/>
           <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="LocationCollection"/>
-          <InformationItem name="AddLocationInfo" logicalDataType="InformationObject" informationObjectName="AddLocationInfo"/>
         </InformationItems>
       </InformationObject>
+
+      <InformationObject name="GroupIndex" designDesc="Group index">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
 
       <InformationObject name="AddLocationInfo" designDesc="Add location info">
         <InformationItems>
@@ -463,7 +460,25 @@
         </InformationItems>
       </InformationObject>
 
-<!--
+      <InformationObject name="AddEmailAddressInfo" designDesc="Add email address">
+        <InformationItems>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="CreateGroupInfo" designDesc="Create group">
+        <InformationItems>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AddActivityInfo" designDesc="Add activity">
+        <InformationItems>
+          <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <!--
       LocationName
       Town
       Country
@@ -782,18 +797,14 @@
 			<InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
 				<InformationItems>
 					<InformationItem name="Priority" logicalDataType="Number_Integer" />
-					<InformationItem name="TargetItemID" logicalDataType="Text_Short" />
-					<InformationItem name="TargetObjectName" logicalDataType="Text_Short" />
-					<InformationItem name="TargetItemName" logicalDataType="Text_Short" />
 					<InformationItem name="TargetRelativeLocation" logicalDataType="Text_Short" />
-					<InformationItem name="SubscriberID" logicalDataType="Text_Short" />
 					<InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short" />
-					<InformationItem name="OperationActionName" logicalDataType="Text_Short" />
+					<InformationItem name="SubscriptionType" logicalDataType="Text_Short" />
 				</InformationItems>
 			</InformationObject>
 			<InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items" provideCreateMethod="false">
 				<InformationItems>
-					<InformationItem name="SubscriberUpdateOperation" logicalDataType="InformationObject" informationObjectName="SubscriberUpdateOperation" />
+					<InformationItem name="SubscriberNotification" logicalDataType="InformationObject" informationObjectName="Subscription" />
 					<InformationItem name="UpdateWebContentOperation" logicalDataType="InformationObject" informationObjectName="UpdateWebContentOperation" />
 					<InformationItem name="ErrorContent" logicalDataType="InformationObject" informationObjectName="SystemError" />
 				</InformationItems>
@@ -855,6 +866,7 @@
 					<InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short" />
 				</InformationItems>
 			</InformationObject>
+      <!--
 			<InformationObject name="SubscriberUpdateOperation" designDesc="Subscriber update operation call">
 				<InformationItems>
 					<InformationItem name="TargetOwnerID" logicalDataType="Text_Short" />
@@ -863,6 +875,7 @@
 					<InformationItem name="OperationName" logicalDataType="Text_Short" />
 				</InformationItems>
 			</InformationObject>
+      -->
 			<InformationObject name="Monitor" designDesc="The Ball Core Structure: Monitoring content">
 				<InformationItems>
 					<InformationItem name="TargetObjectName" logicalDataType="Text_Short" />

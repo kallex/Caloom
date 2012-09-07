@@ -4,7 +4,7 @@ namespace TheBall
 {
     public class StackContextItem
     {
-        public StackContextItem(object content, StackContextItem parent, Type itemType, string memberName, bool isRoot, bool isCollection)
+        public StackContextItem(object content, StackContextItem parent, Type itemType, string memberName, bool isRoot, bool isCollection, string rootName = null)
         {
             _content = content;
             Parent = parent;
@@ -19,6 +19,7 @@ namespace TheBall
                 dynamic collContent = dyn.CollectionContent;
                 CurrArray = collContent.ToArray();
             }
+            RootName = rootName;
         }
 
         public bool IsNotFullyProcessed
@@ -44,6 +45,7 @@ namespace TheBall
             }
         }
 
+        public string RootName;
         public bool IsInvalidContext = false;
         private object _content;
         //public string TypeName;
@@ -54,5 +56,12 @@ namespace TheBall
         public int CurrCollectionItem = 0;
         public Array CurrArray = null;
         public StackContextItem Parent;
+
+        public StackContextItem GetContextRoot()
+        {
+            if (IsRoot)
+                return this;
+            return Parent.GetContextRoot();
+        }
     }
 }

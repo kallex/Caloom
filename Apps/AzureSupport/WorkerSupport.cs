@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
@@ -21,6 +22,22 @@ namespace TheBall
         }
 
         public delegate bool PerformCustomOperation(CloudBlob source, CloudBlob target, SyncOperationType operationType);
+
+        public static void ExecuteSubscription(Subscription subscription)
+        {
+            if (String.IsNullOrEmpty(subscription.SubscriptionType))
+                return;
+            if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource)
+            {
+                CloudBlob cloudBlob =
+                    StorageSupport.CurrActiveContainer.GetBlockBlobReference(subscription.SubscriberRelativeLocation);
+                RenderWebSupport.RefreshContent(cloudBlob, true);
+            }
+            else
+                throw new InvalidDataException(String.Format(
+                    "Unsupported subscription type {0} for object: {1} by {2}", subscription.SubscriptionType,
+                    subscription.TargetRelativeLocation, subscription.SubscriberRelativeLocation));
+        }
 
         public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
         {
@@ -137,6 +154,36 @@ namespace TheBall
                                          TargetBlob = null
                                      });
         }
+
+        private static int counter = 0;
+        public static void ProcessMessage(QueueEnvelope envelope)
+        {
+            if (envelope.UpdateWebContentOperation != null)
+                ProcessUpdateWebContent(envelope.UpdateWebContentOperation);
+            if (envelope.SubscriberNotification != null)
+                WorkerSupport.ExecuteSubscription(envelope.SubscriberNotification);
+            counter++;
+            if (counter >= 1000)
+            {
+                QueueSupport.ReportStatistics("Processed " + counter + " messages...");
+                counter = 0;
+            }
+
+        }
+
+        public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
+        {
+            string sourceContainerName = operation.SourceContainerName;
+            string sourcePathRoot = operation.SourcePathRoot;
+            string targetContainerName = operation.TargetContainerName;
+            string targetPathRoot = operation.TargetPathRoot;
+            bool renderWhileSync = operation.RenderWhileSync;
+            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot,
+                                         renderWhileSync
+                                             ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler
+                                             : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+        }
+
 
     }
 }
