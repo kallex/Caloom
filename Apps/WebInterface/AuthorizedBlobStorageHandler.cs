@@ -147,6 +147,8 @@ namespace WebInterface
                 return;
             string objectFieldID = form["ObjectFieldID"];
             string objectFieldValue = form["Text_Short"];
+            if (objectFieldValue == null)
+                objectFieldValue = form["Text_Long"];
             if(objectFieldID != null)
             {
                 form = new NameValueCollection();
