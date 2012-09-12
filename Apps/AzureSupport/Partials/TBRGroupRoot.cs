@@ -22,5 +22,25 @@ namespace AaltoGlobalImpact.OIP
             groupRoot.Group.ID = groupRoot.ID;
             return groupRoot;
         }
+
+        public static void DeleteEntireGroup(string groupID)
+        {
+            TBRGroupRoot groupToDelete = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            foreach(var member in groupToDelete.Group.Roles.CollectionContent)
+            {
+                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(member.Email.EmailAddress);
+                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                emailRoot.Account.GroupRoleCollection.CollectionContent.RemoveAll(
+                    candidate => candidate.GroupID == groupToDelete.Group.ID);
+                emailRoot.Account.StoreAndPropagate();
+            }
+            StorageSupport.DeleteInformationObject(groupToDelete);
+            //WorkerSupport.DeleteAllOwnerContent(groupToDelete.Group);
+            OperationRequest operationRequest = new OperationRequest();
+            operationRequest.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
+            operationRequest.DeleteEntireOwner.ContainerName = groupToDelete.Group.ContainerName;
+            operationRequest.DeleteEntireOwner.LocationPrefix = groupToDelete.Group.LocationPrefix;
+            QueueSupport.PutToOperationQueue(operationRequest);
+        }
     }
 }

@@ -982,6 +982,29 @@ namespace TheBall
             return deleteCount;
         }
 
+        public static string GetOwnerRootAddress(IContainerOwner owner)
+        {
+            string ownerRootAddress = GetBlobOwnerAddress(owner, "");
+            return ownerRootAddress;
+        }
+
+        public static int DeleteEntireOwner(IContainerOwner owner)
+        {
+            if(owner == null)
+                throw new ArgumentNullException("owner");
+            string ownerRootAddress = GetOwnerRootAddress(owner);
+            BlobRequestOptions options = new BlobRequestOptions {UseFlatBlobListing = true};
+            string storageLevelOwnerRootAddress = CurrActiveContainer.Name + "/" + ownerRootAddress;
+            var blobs = CurrBlobClient.ListBlobsWithPrefix(storageLevelOwnerRootAddress);
+            int deletedCount = 0;
+            foreach(CloudBlob blob in blobs)
+            {
+                blob.DeleteWithoutFiringSubscriptions();
+                deletedCount++;
+            }
+            return deletedCount;
+        }
+
 
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
@@ -991,10 +1014,20 @@ namespace TheBall
             int deletedCount = 0;
             foreach (CloudBlob blob in blobs)
             {
-                blob.Delete();
+                blob.DeleteWithoutFiringSubscriptions();
                 deletedCount++;
             }
             return deletedCount;
+        }
+
+        public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
+        {
+            blob.DeleteIfExists();
+        }
+
+        public static void DeleteAndFireSubscriptions(this CloudBlob blob)
+        {
+            blob.DeleteIfExists();
         }
     }
 }

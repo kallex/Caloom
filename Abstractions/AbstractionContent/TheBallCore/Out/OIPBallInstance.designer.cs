@@ -22628,16 +22628,39 @@ ImageVideoSoundVectorRaw.Vector
 				static partial void CreateCustomDemo(ref QueueEnvelope customDemoObject);
 
 
+
+				public static QueueEnvelope CreateDefault()
+				{
+					var result = new QueueEnvelope();
+					result.SingleOperation = OperationRequest.CreateDefault();
+					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDefault();
+					result.ErrorContent = SystemError.CreateDefault();
+					return result;
+				}
+
+				public static QueueEnvelope CreateDemoDefault()
+				{
+					QueueEnvelope customDemo = null;
+					QueueEnvelope.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new QueueEnvelope();
+					result.SingleOperation = OperationRequest.CreateDemoDefault();
+					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDemoDefault();
+					result.ErrorContent = SystemError.CreateDemoDefault();
+				
+					return result;
+				}
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = SubscriberNotification;
+						var item = SingleOperation;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
-						var item = UpdateWebContentOperation;
+						var item = OrderDependentOperationSequence;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -22660,11 +22683,641 @@ ImageVideoSoundVectorRaw.Vector
 					}
 	        }
 			[DataMember]
+			public OperationRequest SingleOperation { get; set; }
+			[DataMember]
+			public OperationRequestCollection OrderDependentOperationSequence { get; set; }
+			[DataMember]
+			public SystemError ErrorContent { get; set; }
+			
+			}
+			[DataContract]
+			public partial class OperationRequestCollection : IInformationObject
+			{
+				public OperationRequestCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "OperationRequestCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static OperationRequestCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveOperationRequestCollection(relativeLocation, owner);
+				}
+
+
+                public static OperationRequestCollection RetrieveOperationRequestCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (OperationRequestCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(OperationRequestCollection), null, owner);
+                    return result;
+                }
+
+				public static OperationRequestCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = OperationRequestCollection.RetrieveOperationRequestCollection("Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequestCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static OperationRequestCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequestCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (OperationRequestCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OperationRequestCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref OperationRequestCollection customDemoObject);
+
+
+
+				
+		
+				public static OperationRequestCollection CreateDefault()
+				{
+					var result = new OperationRequestCollection();
+					return result;
+				}
+
+				public static OperationRequestCollection CreateDemoDefault()
+				{
+					OperationRequestCollection customDemo = null;
+					OperationRequestCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new OperationRequestCollection();
+					result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
+					//result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
+					//result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class OperationRequest : IInformationObject
+			{
+				public OperationRequest()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "OperationRequest";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static OperationRequest RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveOperationRequest(relativeLocation, owner);
+				}
+
+
+                public static OperationRequest RetrieveOperationRequest(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (OperationRequest) StorageSupport.RetrieveInformation(relativeLocation, typeof(OperationRequest), null, owner);
+                    return result;
+                }
+
+				public static OperationRequest RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = OperationRequest.RetrieveOperationRequest("Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequest));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static OperationRequest DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequest));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (OperationRequest) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OperationRequest", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref OperationRequest customDemoObject);
+
+
+
+				public static OperationRequest CreateDefault()
+				{
+					var result = new OperationRequest();
+					result.SubscriberNotification = Subscription.CreateDefault();
+					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
+					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
+					return result;
+				}
+
+				public static OperationRequest CreateDemoDefault()
+				{
+					OperationRequest customDemo = null;
+					OperationRequest.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new OperationRequest();
+					result.SubscriberNotification = Subscription.CreateDemoDefault();
+					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDemoDefault();
+					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = SubscriberNotification;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = UpdateWebContentOperation;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = DeleteEntireOwner;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
 			public Subscription SubscriberNotification { get; set; }
 			[DataMember]
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			[DataMember]
-			public SystemError ErrorContent { get; set; }
+			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
+			
+			}
+			[DataContract]
+			public partial class DeleteEntireOwnerOperation : IInformationObject
+			{
+				public DeleteEntireOwnerOperation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "DeleteEntireOwnerOperation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static DeleteEntireOwnerOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveDeleteEntireOwnerOperation(relativeLocation, owner);
+				}
+
+
+                public static DeleteEntireOwnerOperation RetrieveDeleteEntireOwnerOperation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (DeleteEntireOwnerOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeleteEntireOwnerOperation), null, owner);
+                    return result;
+                }
+
+				public static DeleteEntireOwnerOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteEntireOwnerOperation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static DeleteEntireOwnerOperation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteEntireOwnerOperation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (DeleteEntireOwnerOperation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref DeleteEntireOwnerOperation customDemoObject);
+
+
+
+				public static DeleteEntireOwnerOperation CreateDefault()
+				{
+					var result = new DeleteEntireOwnerOperation();
+					return result;
+				}
+
+				public static DeleteEntireOwnerOperation CreateDemoDefault()
+				{
+					DeleteEntireOwnerOperation customDemo = null;
+					DeleteEntireOwnerOperation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new DeleteEntireOwnerOperation();
+					result.ContainerName = @"DeleteEntireOwnerOperation.ContainerName";
+
+					result.LocationPrefix = @"DeleteEntireOwnerOperation.LocationPrefix";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ContainerName":
+							ContainerName = value;
+							break;
+						case "LocationPrefix":
+							LocationPrefix = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ContainerName { get; set; }
+			[DataMember]
+			public string LocationPrefix { get; set; }
 			
 			}
 			[DataContract]

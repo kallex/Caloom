@@ -50,7 +50,7 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.Contains(groupNamePart) == false).
                         ToArray();
-                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
                 //DeleteAllAccountAndGroupContents();
                 RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
@@ -70,17 +70,20 @@ namespace TheBallTool
             }
         }
 
-        private static QueueEnvelope PushTestQueue()
+        private static OperationRequest PushTestQueue()
         {
-            QueueEnvelope envelope = new QueueEnvelope();
-            envelope.SubscriberNotification = new Subscription
-                                                  {
-                                                      SubscriberRelativeLocation =
-                                                          "acc/17e18f1d-c5bd-4955-af5a-a62d1092710a/website/oip-account/oip-layout-account-welcome.phtml",
-                                                          SubscriptionType = SubscribeSupport.SubscribeType_WebPageToSource
-
-                                                  };
-            return envelope;
+            OperationRequest operationRequest = new OperationRequest
+                                            {
+                                                SubscriberNotification = new Subscription
+                                                                             {
+                                                                                 SubscriberRelativeLocation =
+                                                                                     "acc/17e18f1d-c5bd-4955-af5a-a62d1092710a/website/oip-account/oip-layout-account-welcome.phtml",
+                                                                                 SubscriptionType =
+                                                                                     SubscribeSupport.
+                                                                                     SubscribeType_WebPageToSource
+                                                                             }
+                                            };
+            return operationRequest;
         }
 
         private static void RunQueueWorker(QueueEnvelope givenEnvelope)

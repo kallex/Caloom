@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
@@ -53,7 +54,7 @@ namespace TheBall
 
         public static QueueEnvelope GetFromDefaultQueue(out CloudQueueMessage message)
         {
-            message = CurrDefaultQueue.GetMessage();
+            message = CurrDefaultQueue.GetMessage(TimeSpan.FromMinutes(5));
             if (message == null)
                 return null;
             try
@@ -86,6 +87,24 @@ namespace TheBall
             {
                 return null;
             }
+        }
+
+        public static void PutToOperationQueue(params OperationRequest[] operationRequests)
+        {
+            if (operationRequests == null)
+                throw new ArgumentNullException("operationRequests");
+            if (operationRequests.Length == 0)
+                return;
+            QueueEnvelope envelope = new QueueEnvelope();
+            if (operationRequests.Length == 1)
+                envelope.SingleOperation = operationRequests[0];
+            else
+            {
+                envelope.OrderDependentOperationSequence = OperationRequestCollection.CreateDefault();
+                envelope.OrderDependentOperationSequence.CollectionContent.
+                    AddRange(operationRequests.Where(oper => oper != null));
+            }
+            PutToDefaultQueue(envelope);
         }
     }
 }

@@ -39,6 +39,7 @@ namespace TheBall
         public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
         public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
+        public const string DefaultGroupID = "f8e1d8c6-0000-467e-b487-74be4ad099cd";
 
 
         private static Regex ContextRootRegex;
@@ -550,11 +551,11 @@ namespace TheBall
             RenderTemplateWithContentToBlob(templateBlob, webPageBlob);
         }
 
-        public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
+        public static OperationRequest SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
         {
             if (useQueuedWorker)
             {
-                QueueEnvelope envelope = new QueueEnvelope
+                OperationRequest envelope = new OperationRequest
                 {
                     UpdateWebContentOperation = new UpdateWebContentOperation
                     {
@@ -567,11 +568,13 @@ namespace TheBall
                         RenderWhileSync = renderWhileSync
                     }
                 };
-                QueueSupport.PutToDefaultQueue(envelope);
+                //QueueSupport.PutToDefaultQueue(envelope);
+                return envelope;
             }
             else
             {
                 WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+                return null;
             }
         }
 
@@ -608,18 +611,24 @@ namespace TheBall
             string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
                 
             // Sync to group local template
-            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
+            var localGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
             // Render local template
-            SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
+            var renderLocalTemplates = SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
             // Sync public pages to group local template
-            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
+            var publicGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
             // Render local template
-            SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+            var renderPublicTemplates = SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
             // Publish group public content
-            SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
-            if(grpID == "f8e1d8c6-0000-467e-b487-74be4ad099cd")
+            var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
+            OperationRequest publishDefault = null;
+            if(grpID == DefaultGroupID)
             {
-                SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+                publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+            }
+            if(useWorker)
+            {
+                QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
+                QueueSupport.PutToOperationQueue(publicGroupTemplates, renderPublicTemplates, publishPublicContent, publishDefault);
             }
         }
 
@@ -639,9 +648,13 @@ namespace TheBall
             string acctTemplateLocation = "acc/" + acctID + "/" + DefaultWebTemplateLocation;
             string acctSiteLocation = "acc/" + acctID + "/" + DefaultWebSiteLocation;
             // Sync to account local template
-            SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
+            var accountLocalTemplate = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
             // Render local template
-            SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
+            var renderLocalTemplate = SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
+            if(useWorker)
+            {
+                QueueSupport.PutToOperationQueue(accountLocalTemplate, renderLocalTemplate);
+            }
         }
     }
 }

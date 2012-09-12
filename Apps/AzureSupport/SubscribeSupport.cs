@@ -66,12 +66,11 @@ namespace TheBall
                 return;
             foreach(var subscription in subscriptionCollection.CollectionContent)
             {
-                QueueEnvelope envelope =
-                    new QueueEnvelope
-                        {
-                            SubscriberNotification = subscription
-                        };
-                QueueSupport.PutToDefaultQueue(envelope);
+                OperationRequest operationRequest = new OperationRequest
+                                                        {
+                                                            SubscriberNotification = subscription
+                                                        };
+                QueueSupport.PutToOperationQueue(operationRequest);
             }
         }
     }

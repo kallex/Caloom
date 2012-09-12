@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -28,8 +30,18 @@ namespace CaloomWorkerRole
         private LocalResource LocalStorageResource;
         private CloudBlobContainer AnonWebContainer;
 
+        BlockingCollection<QueueEnvelope> BlockingQueue = new BlockingCollection<QueueEnvelope>(3);
+
         public override void Run()
         {
+            Task[] tasks = new Task[]
+                               {
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                               };
             while (!IsStopped)
             {
                 try
@@ -38,9 +50,13 @@ namespace CaloomWorkerRole
                     QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
                     if (envelope != null)
                     {
+                        Task.Factory.ContinueWhenAny(tasks, task =>
+                                                                {
+                                                                    WorkerSupport.ProcessMessage(envelope);
+                                                                });
                         QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                        WorkerSupport.ProcessMessage(envelope);
-                    } else 
+                    }
+                    else 
                     {
                         if(message != null)
                         {
@@ -50,6 +66,16 @@ namespace CaloomWorkerRole
                         Thread.Sleep(1000);
                     }
                 }
+                catch (AggregateException ae)
+                {
+                    foreach (var e in ae.Flatten().InnerExceptions)
+                    {
+                        ErrorSupport.ReportException(e);
+                    }
+                    Thread.Sleep(10000);
+                    // or ...
+                    // ae.Flatten().Handle((ex) => ex is MyCustomException);
+                }
                 catch (MessagingException e)
                 {
                     if (!e.IsTransient)
@@ -57,7 +83,6 @@ namespace CaloomWorkerRole
                         Trace.WriteLine(e.Message);
                         throw;
                     }
-
                     Thread.Sleep(10000);
                 }
                 catch (OperationCanceledException e)
@@ -74,6 +99,7 @@ namespace CaloomWorkerRole
                     throw;
                 }
             }
+            Task.WaitAll(tasks);
         }
 
 

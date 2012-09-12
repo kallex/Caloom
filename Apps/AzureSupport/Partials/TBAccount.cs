@@ -51,6 +51,7 @@ namespace AaltoGlobalImpact.OIP
                 TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginRootID);
                 loginRoot.Account = this;
                 StorageSupport.StoreInformation(loginRoot);
+                // TODO: Remove invalid group role logins at this stage
                 foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent)
                 {
                     string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupRoleItem.GroupID, loginRootID);

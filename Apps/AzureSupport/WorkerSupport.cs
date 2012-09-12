@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
 
@@ -165,10 +166,12 @@ namespace TheBall
         private static int counter = 0;
         public static void ProcessMessage(QueueEnvelope envelope)
         {
-            if (envelope.UpdateWebContentOperation != null)
-                ProcessUpdateWebContent(envelope.UpdateWebContentOperation);
-            if (envelope.SubscriberNotification != null)
-                WorkerSupport.ExecuteSubscription(envelope.SubscriberNotification);
+            if (envelope.SingleOperation != null)
+                ProcessSingleOperation(envelope.SingleOperation);
+            if(envelope.OrderDependentOperationSequence != null)
+            {
+                envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
+            }
             counter++;
             if (counter >= 1000)
             {
@@ -176,6 +179,20 @@ namespace TheBall
                 counter = 0;
             }
 
+        }
+
+        private static void ProcessSingleOperation(OperationRequest operationRequest)
+        {
+            if (operationRequest.UpdateWebContentOperation != null)
+                ProcessUpdateWebContent(operationRequest.UpdateWebContentOperation);
+            if (operationRequest.SubscriberNotification != null)
+                WorkerSupport.ExecuteSubscription(operationRequest.SubscriberNotification);
+            if (operationRequest.DeleteEntireOwner != null)
+            {
+                VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteEntireOwner.ContainerName,
+                    operationRequest.DeleteEntireOwner.LocationPrefix);
+                DeleteAllOwnerContent(virtualOwner);
+            }
         }
 
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
@@ -192,5 +209,9 @@ namespace TheBall
         }
 
 
+        public static void DeleteAllOwnerContent(IContainerOwner containerOwner)
+        {
+            StorageSupport.DeleteEntireOwner(containerOwner);
+        }
     }
 }

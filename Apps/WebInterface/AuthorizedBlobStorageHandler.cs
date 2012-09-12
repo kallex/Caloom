@@ -212,29 +212,5 @@ namespace WebInterface
 
 
         #endregion
-        private static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker)
-        {
-            if (useQueuedWorker)
-            {
-                QueueEnvelope envelope = new QueueEnvelope
-                {
-                    UpdateWebContentOperation = new UpdateWebContentOperation
-                    {
-                        SourceContainerName =
-                            sourceContainerName,
-                        SourcePathRoot = sourcePathRoot,
-                        TargetContainerName =
-                            targetContainerName,
-                        TargetPathRoot = targetPathRoot
-                    }
-                };
-                QueueSupport.PutToDefaultQueue(envelope);
-            }
-            else
-            {
-                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, RenderWebSupport.RenderingSyncHandler);
-            }
-        }
-
     }
 }
