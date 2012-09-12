@@ -9,15 +9,15 @@ namespace TheBall
 {
     public static class FileSystemSupport
     {
-        public static void UploadTemplateContent(string[] allFiles, IContainerOwner owner, string targetLocation, bool clearOldTarget)
+        public static string[] UploadTemplateContent(string[] allFiles, IContainerOwner owner, string targetLocation, bool clearOldTarget)
         {
             if (clearOldTarget)
             {
                 StorageSupport.DeleteBlobsFromOwnerTarget(owner, targetLocation);
             }
-            var processedDict = allFiles.Where(file => file.EndsWith(".txt")).ToDictionary(file => Path.GetFullPath(file), file => false);
+            var processedDict = allFiles.Where(file => file.EndsWith(".txt")).Where(File.Exists).ToDictionary(file => Path.GetFullPath(file), file => false);
             List<ErrorItem> errorList = new List<ErrorItem>();
-            var fixedContent = allFiles //.Where(fileName => fileName.EndsWith(".txt") == false)
+            var fixedContent = allFiles.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
                         new
                             {
@@ -31,7 +31,6 @@ namespace TheBall
 
                             })
                 .ToArray();
-            MoveUnusedTxtFiles(processedDict);
             foreach (var content in fixedContent)
             {
                 if (content.FileName.EndsWith(".txt"))
@@ -52,11 +51,12 @@ namespace TheBall
                     StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
                 }
             }
+            return processedDict.Keys.ToArray();
         }
 
-        private static void MoveUnusedTxtFiles(Dictionary<string, bool> processedDict)
+        public static void MoveUnusedTxtFiles(string[] filesToMove)
         {
-            string[] filesToMove = processedDict.Keys.ToArray();
+            //string[] filesToMove = processedDict.Keys.ToArray();
             foreach (string fileToMove in filesToMove)
             {
                 if (fileToMove.Contains("oip-") == false)
@@ -64,9 +64,10 @@ namespace TheBall
                     Console.WriteLine("Ignoring unused: " + fileToMove);
                     continue;
                 }
+
                 string destinationFile = fileToMove.Replace(@"caloomhtml\UI\docs\", @"caloomhtml\UI\notusedtxt\");
-                Console.WriteLine("NOT Moving unused file to: " + destinationFile);
-                continue;
+                Console.WriteLine("Moving unused file to: " + destinationFile);
+                //continue;
                 string destDir = Path.GetDirectoryName(destinationFile);
                 if (Directory.Exists(destDir) == false)
                     Directory.CreateDirectory(destDir);
@@ -116,6 +117,9 @@ namespace TheBall
                                         string fileContent;
                                         if (File.Exists(incFile))
                                         {
+                                            //bool isAccount = incFile.Contains("oip-module-account.txt");
+                                            //if (isAccount)
+                                            //    isAccount = false;
                                             fileContent = File.ReadAllText(incFile);
                                             string dictKey = Path.GetFullPath(incFile);
                                             //processedDict[incFile] = true;)

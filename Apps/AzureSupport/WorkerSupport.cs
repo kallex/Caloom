@@ -29,9 +29,16 @@ namespace TheBall
                 return;
             if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource)
             {
-                CloudBlob cloudBlob =
-                    StorageSupport.CurrActiveContainer.GetBlockBlobReference(subscription.SubscriberRelativeLocation);
-                RenderWebSupport.RefreshContent(cloudBlob, true);
+                try
+                {
+                    CloudBlob cloudBlob =
+                        StorageSupport.CurrActiveContainer.GetBlockBlobReference(subscription.SubscriberRelativeLocation);
+                    RenderWebSupport.RefreshContent(cloudBlob, true);
+                } catch(Exception ex)
+                {
+                    // TODO: Detect and remove the missing subscribers
+                    ErrorSupport.ReportException(ex);
+                }
             }
             else
                 throw new InvalidDataException(String.Format(

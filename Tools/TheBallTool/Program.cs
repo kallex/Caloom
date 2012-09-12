@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -19,6 +20,9 @@ namespace TheBallTool
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
                 StorageSupport.InitializeWithConnectionString(connStr);
+                //QueueEnvelope envelope = PushTestQueue();
+                //RunQueueWorker(envelope);
+                //return;
                 //var test1 = TBRAccountRoot.GetAllAccountIDs();
                 //var test2 = TBRGroupRoot.GetAllGroupIDs();
 
@@ -46,9 +50,8 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.Contains(groupNamePart) == false).
                         ToArray();
-                FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
-                FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
-                FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
+                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+
                 //DeleteAllAccountAndGroupContents();
                 RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
@@ -65,6 +68,52 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static QueueEnvelope PushTestQueue()
+        {
+            QueueEnvelope envelope = new QueueEnvelope();
+            envelope.SubscriberNotification = new Subscription
+                                                  {
+                                                      SubscriberRelativeLocation =
+                                                          "acc/17e18f1d-c5bd-4955-af5a-a62d1092710a/website/oip-account/oip-layout-account-welcome.phtml",
+                                                          SubscriptionType = SubscribeSupport.SubscribeType_WebPageToSource
+
+                                                  };
+            return envelope;
+        }
+
+        private static void RunQueueWorker(QueueEnvelope givenEnvelope)
+        {
+            bool loop = true;
+            while (loop)
+            {
+                loop = givenEnvelope == null; 
+                QueueEnvelope envelope;
+                if (givenEnvelope == null)
+                {
+
+                    CloudQueueMessage message = null;
+                    envelope = QueueSupport.GetFromDefaultQueue(out message);
+                    QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                }
+                else
+                {
+                    envelope = givenEnvelope;
+                }
+                WorkerSupport.ProcessMessage(envelope);
+                Thread.Sleep(5000);
+            }
+        }
+
+        private static void UploadAndMoveUnused(string[] accountTemplates, string[] groupTemplates, string[] publicTemplates)
+        {
+            string[] accountUnusedFiles = FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
+            string[] groupUnusedFiles = FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
+            string[] publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
+            string[] everyWhereUnusedFiles =
+                accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).ToArray();
+            FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
         }
 
         private static void DeleteAllAccountAndGroupContents()

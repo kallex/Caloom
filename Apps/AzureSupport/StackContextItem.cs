@@ -18,6 +18,7 @@ namespace TheBall
                 dynamic dyn = content;
                 dynamic collContent = dyn.CollectionContent;
                 CurrArray = collContent.ToArray();
+                ItemType = CurrArray.GetType().GetElementType();
             }
             RootName = rootName;
         }

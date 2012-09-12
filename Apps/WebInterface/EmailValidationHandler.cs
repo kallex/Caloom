@@ -72,7 +72,7 @@ namespace WebInterface
                 account.StoreAndPropagate();
             }
 
-            context.Response.Redirect("/auth/account/website/oip-layouts/oip-layout-account-welcome.phtml", true);
+            context.Response.Redirect("/auth/account/website/oip-account/oip-layout-account-welcome.phtml", true);
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)

@@ -228,6 +228,8 @@ namespace TheBall
                 {
                     StackContextItem item = contextStack.Count > 0 ? contextStack.Peek() : null;
                     ErrorItem errorItem = new ErrorItem(ex, item, line);
+                    if (item == null)
+                        errorItem.CurrentContextName = "No active context";
                     errorList.Add(errorItem);
                 }
             }
@@ -281,6 +283,11 @@ namespace TheBall
                     collItem = new StackContextItem(contentValue, parent, type, memberName, false, true);
                 } catch(Exception ex)
                 {
+                    StackContextItem item = contextStack.Count > 0 ? contextStack.Peek() : null;
+                    ErrorItem errorItem = new ErrorItem(ex, item, line);
+                    if (item == null)
+                        errorItem.CurrentContextName = "No active context";
+                    errorList.Add(errorItem);
                     if (collItem == null)
                         collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", false, true);
                 }

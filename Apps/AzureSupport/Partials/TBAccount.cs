@@ -90,7 +90,7 @@ namespace AaltoGlobalImpact.OIP
                     continue;
                 var grp = groupRoot.Group;
                 ReferenceToInformation reference = ReferenceToInformation.CreateDefault();
-                reference.URL = string.Format("/auth/grp/{0}/website/oip-layouts/oip-layout-groups-edit.phtml",
+                reference.URL = string.Format("/auth/grp/{0}/website/oip-group/oip-layout-groups-edit.phtml",
                                               groupRoot.ID);
                 reference.Title = grp.Title + " - " + groupRoleItem.GroupRole;
                 switch(groupRoleItem.GroupRole)
