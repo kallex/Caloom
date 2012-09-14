@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
+using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
@@ -19,9 +22,14 @@ namespace TheBallTool
             {
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
-                StorageSupport.InitializeWithConnectionString(connStr);
-                //QueueEnvelope envelope = PushTestQueue();
-                //RunQueueWorker(envelope);
+                bool debugMode = false;
+                StorageSupport.InitializeWithConnectionString(connStr, debugMode);
+                
+                //OperationRequest operationRequest = PushTestQueue();
+                //QueueEnvelope envelope = new QueueEnvelope();
+                //envelope.SingleOperation = operationRequest;
+                //RunQueueWorker(null);
+                //RunTaskedQueueWorker();
                 //return;
                 //var test1 = TBRAccountRoot.GetAllAccountIDs();
                 //var test2 = TBRGroupRoot.GetAllGroupIDs();
@@ -76,14 +84,100 @@ namespace TheBallTool
                                             {
                                                 SubscriberNotification = new Subscription
                                                                              {
+                                                                                 //SubscriberRelativeLocation =
+                                                                                 //    "acc/17e18f1d-c5bd-4955-af5a-a62d1092710a/website/oip-account/oip-layout-account-welcome.phtml",
                                                                                  SubscriberRelativeLocation =
-                                                                                     "acc/17e18f1d-c5bd-4955-af5a-a62d1092710a/website/oip-account/oip-layout-account-welcome.phtml",
+                                                                                 "grp/fd686fbd-deb5-4631-899d-5da4314c27b8/website/oip-group/oip-layout-blog-summary.phtml",
                                                                                  SubscriptionType =
                                                                                      SubscribeSupport.
                                                                                      SubscribeType_WebPageToSource
                                                                              }
                                             };
             return operationRequest;
+        }
+
+        private static void RunTaskedQueueWorker()
+        {
+            Task[] tasks = new Task[]
+                               {
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                               };
+            bool IsStopped = false;
+            int initialCount = 0;
+            while (true)
+            {
+                try
+                {
+                    Task.WaitAny(tasks);
+                    if (IsStopped)
+                    {
+                        Task.WaitAll(tasks);
+                        foreach(var task in tasks)
+                        {
+                            if(task.Exception != null)
+                                ErrorSupport.ReportException(task.Exception);
+                        }
+                        break;
+                    }
+                    int availableIx;
+                    Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
+                    CloudQueueMessage message;
+                    QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
+                    if (envelope != null)
+                    {
+                        Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessMessage(envelope));
+                        tasks[availableIx] = executing;
+                        QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                        if (availableTask.Exception != null)
+                            ErrorSupport.ReportException(availableTask.Exception);
+                    }
+                    else 
+                    {
+                        if(message != null)
+                        {
+                            QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                            ErrorSupport.ReportMessageError(message);
+                        }
+                        Thread.Sleep(1000);
+                    }
+                }
+                catch (AggregateException ae)
+                {
+                    foreach (var e in ae.Flatten().InnerExceptions)
+                    {
+                        ErrorSupport.ReportException(e);
+                    }
+                    Thread.Sleep(10000);
+                    // or ...
+                    // ae.Flatten().Handle((ex) => ex is MyCustomException);
+                }
+                catch (MessagingException e)
+                {
+                    if (!e.IsTransient)
+                    {
+                        Trace.WriteLine(e.Message);
+                        throw;
+                    }
+                    Thread.Sleep(10000);
+                }
+                catch (OperationCanceledException e)
+                {
+                    if (!IsStopped)
+                    {
+                        Trace.WriteLine(e.Message);
+                        throw;
+                    }
+                } 
+                catch(Exception ex)
+                {
+                    ErrorSupport.ReportException(ex);
+                    throw;
+                }
+            }
         }
 
         private static void RunQueueWorker(QueueEnvelope givenEnvelope)
@@ -104,8 +198,14 @@ namespace TheBallTool
                 {
                     envelope = givenEnvelope;
                 }
-                WorkerSupport.ProcessMessage(envelope);
-                Thread.Sleep(5000);
+                try
+                {
+                    WorkerSupport.ProcessMessage(envelope);
+                } catch(Exception ex)
+                {
+                    string msg = ex.Message;
+                }
+                //Thread.Sleep(5000);
             }
         }
 

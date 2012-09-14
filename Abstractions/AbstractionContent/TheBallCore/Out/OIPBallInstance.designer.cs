@@ -8568,7 +8568,7 @@ AccountRoles.OrganizationsImPartOf
 					var result = new BlogContainer();
 					result.Header = ContainerHeader.CreateDefault();
 					result.FeaturedBlog = Blog.CreateDefault();
-					result.RecentBlogCollection = BlogCollection.CreateDefault();
+					result.RecentBlogSummary = RecentBlogSummary.CreateDefault();
 					result.BlogIndexGroup = BlogIndexGroup.CreateDefault();
 					return result;
 				}
@@ -8582,7 +8582,7 @@ AccountRoles.OrganizationsImPartOf
 					var result = new BlogContainer();
 					result.Header = ContainerHeader.CreateDemoDefault();
 					result.FeaturedBlog = Blog.CreateDemoDefault();
-					result.RecentBlogCollection = BlogCollection.CreateDemoDefault();
+					result.RecentBlogSummary = RecentBlogSummary.CreateDemoDefault();
 					result.BlogIndexGroup = BlogIndexGroup.CreateDemoDefault();
 				
 					return result;
@@ -8602,7 +8602,7 @@ AccountRoles.OrganizationsImPartOf
 							return result;
 					}
 					{
-						var item = RecentBlogCollection;
+						var item = RecentBlogSummary;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -8629,9 +8629,222 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public Blog FeaturedBlog { get; set; }
 			[DataMember]
-			public BlogCollection RecentBlogCollection { get; set; }
+			public RecentBlogSummary RecentBlogSummary { get; set; }
 			[DataMember]
 			public BlogIndexGroup BlogIndexGroup { get; set; }
+			
+			}
+			[DataContract]
+			public partial class RecentBlogSummary : IInformationObject
+			{
+				public RecentBlogSummary()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "RecentBlogSummary";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "RecentBlogSummary", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static RecentBlogSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveRecentBlogSummary(relativeLocation, owner);
+				}
+
+
+                public static RecentBlogSummary RetrieveRecentBlogSummary(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (RecentBlogSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(RecentBlogSummary), null, owner);
+                    return result;
+                }
+
+				public static RecentBlogSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = RecentBlogSummary.RetrieveRecentBlogSummary("Content/AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(RecentBlogSummary));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static RecentBlogSummary DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(RecentBlogSummary));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (RecentBlogSummary) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "RecentBlogSummary", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "RecentBlogSummary", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref RecentBlogSummary customDemoObject);
+
+
+
+				public static RecentBlogSummary CreateDefault()
+				{
+					var result = new RecentBlogSummary();
+					result.Introduction = Introduction.CreateDefault();
+					result.RecentBlogCollection = BlogCollection.CreateDefault();
+					return result;
+				}
+
+				public static RecentBlogSummary CreateDemoDefault()
+				{
+					RecentBlogSummary customDemo = null;
+					RecentBlogSummary.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new RecentBlogSummary();
+					result.Introduction = Introduction.CreateDemoDefault();
+					result.RecentBlogCollection = BlogCollection.CreateDemoDefault();
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = RecentBlogCollection;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public Introduction Introduction { get; set; }
+			[DataMember]
+			public BlogCollection RecentBlogCollection { get; set; }
 			
 			}
 			[DataContract]
@@ -10862,6 +11075,7 @@ AboutContainer.Body
 					var result = new ActivitySummaryContainer();
 					result.Header = ContainerHeader.CreateDefault();
 					result.Introduction = Introduction.CreateDefault();
+					result.ActivityIndex = ActivityIndex.CreateDefault();
 					result.ActivityCollection = ActivityCollection.CreateDefault();
 					return result;
 				}
@@ -10882,6 +11096,7 @@ ActivitySummaryContainer.SummaryBody
 ";
 
 					result.Introduction = Introduction.CreateDemoDefault();
+					result.ActivityIndex = ActivityIndex.CreateDemoDefault();
 					result.ActivityCollection = ActivityCollection.CreateDemoDefault();
 				
 					return result;
@@ -10896,6 +11111,12 @@ ActivitySummaryContainer.SummaryBody
 					}
 					{
 						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = ActivityIndex;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -10926,6 +11147,8 @@ ActivitySummaryContainer.SummaryBody
 			public string SummaryBody { get; set; }
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			[DataMember]
+			public ActivityIndex ActivityIndex { get; set; }
 			[DataMember]
 			public ActivityCollection ActivityCollection { get; set; }
 			
@@ -11735,8 +11958,10 @@ ActivityIndex.Summary
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.ProfileImage = Image.CreateDefault();
 					result.IconImage = Image.CreateDefault();
+					result.Introduction = Introduction.CreateDefault();
 					result.Moderators = ModeratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
+					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -11752,6 +11977,7 @@ ActivityIndex.Summary
 					result.IconImage = Image.CreateDemoDefault();
 					result.ActivityName = @"Activity.ActivityName";
 
+					result.Introduction = Introduction.CreateDemoDefault();
 					result.Description = @"Activity.Description
 Activity.Description
 Activity.Description
@@ -11761,6 +11987,7 @@ Activity.Description
 
 					result.Moderators = ModeratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
+					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -11785,6 +12012,12 @@ Activity.Description
 							return result;
 					}
 					{
+						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
 						var item = Moderators;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
@@ -11792,6 +12025,12 @@ Activity.Description
 					}
 					{
 						var item = ImageSets;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = CategoryCollection;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11822,11 +12061,15 @@ Activity.Description
 			[DataMember]
 			public string ActivityName { get; set; }
 			[DataMember]
+			public Introduction Introduction { get; set; }
+			[DataMember]
 			public string Description { get; set; }
 			[DataMember]
 			public ModeratorCollection Moderators { get; set; }
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
+			[DataMember]
+			public CategoryCollection CategoryCollection { get; set; }
 			
 			}
 			[DataContract]
@@ -12615,6 +12858,8 @@ Activity.Description
 
 					result.Role = @"Collaborator.Role";
 
+					result.ProfileUrl = @"Collaborator.ProfileUrl";
+
 				
 					return result;
 				}
@@ -12633,6 +12878,9 @@ Activity.Description
 						case "Role":
 							Role = value;
 							break;
+						case "ProfileUrl":
+							ProfileUrl = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -12641,6 +12889,8 @@ Activity.Description
 			public string CollaboratorName { get; set; }
 			[DataMember]
 			public string Role { get; set; }
+			[DataMember]
+			public string ProfileUrl { get; set; }
 			
 			}
 			[DataContract]
@@ -13847,7 +14097,8 @@ GroupSummaryContainer.SummaryBody
 					result.GroupIndex = GroupIndex.CreateDefault();
 					result.GroupProfile = Group.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
-					result.ActivityCollection = ActivityCollection.CreateDefault();
+					result.PendingCollaborators = CollaboratorCollection.CreateDefault();
+					result.Activities = ActivityCollection.CreateDefault();
 					result.Locations = LocationCollection.CreateDefault();
 					return result;
 				}
@@ -13863,7 +14114,8 @@ GroupSummaryContainer.SummaryBody
 					result.GroupIndex = GroupIndex.CreateDemoDefault();
 					result.GroupProfile = Group.CreateDemoDefault();
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
-					result.ActivityCollection = ActivityCollection.CreateDemoDefault();
+					result.PendingCollaborators = CollaboratorCollection.CreateDemoDefault();
+					result.Activities = ActivityCollection.CreateDemoDefault();
 					result.Locations = LocationCollection.CreateDemoDefault();
 				
 					return result;
@@ -13895,7 +14147,13 @@ GroupSummaryContainer.SummaryBody
 							return result;
 					}
 					{
-						var item = ActivityCollection;
+						var item = PendingCollaborators;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Activities;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -13926,7 +14184,9 @@ GroupSummaryContainer.SummaryBody
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
 			[DataMember]
-			public ActivityCollection ActivityCollection { get; set; }
+			public CollaboratorCollection PendingCollaborators { get; set; }
+			[DataMember]
+			public ActivityCollection Activities { get; set; }
 			[DataMember]
 			public LocationCollection Locations { get; set; }
 			
@@ -15349,6 +15609,7 @@ GroupIndex.Summary
 					result.IconImage = Image.CreateDefault();
 					result.Moderators = ModeratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
+					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -15380,6 +15641,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 
 					result.Moderators = ModeratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
+					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -15411,6 +15673,12 @@ Group.OrganizationsAndGroupsLinkedToUs
 					}
 					{
 						var item = ImageSets;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = CategoryCollection;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -15451,6 +15719,8 @@ Group.OrganizationsAndGroupsLinkedToUs
 			public ModeratorCollection Moderators { get; set; }
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
+			[DataMember]
+			public CategoryCollection CategoryCollection { get; set; }
 			
 			}
 			[DataContract]
@@ -16030,6 +16300,7 @@ Introduction.Body
 				public static Blog CreateDefault()
 				{
 					var result = new Blog();
+					result.Introduction = Introduction.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
 					result.Location = Location.CreateDefault();
 					result.Category = Category.CreateDefault();
@@ -16048,6 +16319,7 @@ Introduction.Body
 
 					result.SubTitle = @"Blog.SubTitle";
 
+					result.Introduction = Introduction.CreateDemoDefault();
 					result.Author = @"Blog.Author";
 
 					result.ImageGroup = ImageGroup.CreateDemoDefault();
@@ -16073,6 +16345,12 @@ Blog.Excerpt
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = ImageGroup;
 						object result = item.FindObjectByID(objectId);
@@ -16130,6 +16408,8 @@ Blog.Excerpt
 			public string Title { get; set; }
 			[DataMember]
 			public string SubTitle { get; set; }
+			[DataMember]
+			public Introduction Introduction { get; set; }
 			[DataMember]
 			public DateTime Published { get; set; }
 			[DataMember]
@@ -22023,7 +22303,7 @@ ImageVideoSoundVectorRaw.Vector
 					if(customDemo != null)
 						return customDemo;
 					var result = new Category();
-					result.TextValue = @"Category.TextValue";
+					result.CategoryName = @"Category.CategoryName";
 
 				
 					return result;
@@ -22037,15 +22317,215 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					switch (propertyName)
 					{
-						case "TextValue":
-							TextValue = value;
+						case "CategoryName":
+							CategoryName = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string TextValue { get; set; }
+			public string CategoryName { get; set; }
+			
+			}
+			[DataContract]
+			public partial class CategoryCollection : IInformationObject
+			{
+				public CategoryCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "CategoryCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CategoryCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCategoryCollection(relativeLocation, owner);
+				}
+
+
+                public static CategoryCollection RetrieveCategoryCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (CategoryCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryCollection), null, owner);
+                    return result;
+                }
+
+				public static CategoryCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = CategoryCollection.RetrieveCategoryCollection("Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CategoryCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CategoryCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CategoryCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CategoryCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CategoryCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref CategoryCollection customDemoObject);
+
+
+
+				
+		
+				public static CategoryCollection CreateDefault()
+				{
+					var result = new CategoryCollection();
+					return result;
+				}
+
+				public static CategoryCollection CreateDemoDefault()
+				{
+					CategoryCollection customDemo = null;
+					CategoryCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new CategoryCollection();
+					result.CollectionContent.Add(Category.CreateDemoDefault());
+					//result.CollectionContent.Add(Category.CreateDemoDefault());
+					//result.CollectionContent.Add(Category.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<Category> CollectionContent = new List<Category>();
+
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+
 			
 			}
 			[DataContract]

@@ -19,30 +19,33 @@ namespace TheBall
         public static CloudQueueClient CurrQueueClient { get; private set; }
         public static CloudQueue CurrStatisticsQueue { get; private set; }
 
-        public static void InitializeAfterStorage()
+        public static void InitializeAfterStorage(bool debugMode = false)
         {
             CurrQueueClient = StorageSupport.CurrStorageAccount.CreateCloudQueueClient();
 
             // Retrieve a reference to a queue
-            CloudQueue queue = CurrQueueClient.GetQueueReference(DefaultQueueName);
+            string dbgModePrefix = debugMode ? "dbg" : "";
+            CloudQueue queue = CurrQueueClient.GetQueueReference(dbgModePrefix + DefaultQueueName);
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
             CurrDefaultQueue = queue;
 
-            queue = CurrQueueClient.GetQueueReference(ErrorQueueName);
+            queue = CurrQueueClient.GetQueueReference(dbgModePrefix + ErrorQueueName);
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
             CurrErrorQueue = queue;
 
-            queue = CurrQueueClient.GetQueueReference(StatisticQueueName);
+            queue = CurrQueueClient.GetQueueReference(dbgModePrefix + StatisticQueueName);
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
             CurrStatisticsQueue = queue;
         }
 
-        public static void ReportStatistics(string message)
+        public static void ReportStatistics(string message, TimeSpan? toLive = null)
         {
-            CurrStatisticsQueue.AddMessage(new CloudQueueMessage(message));
+            if(toLive.HasValue == false)
+                toLive = TimeSpan.FromDays(7);
+            CurrStatisticsQueue.AddMessage(new CloudQueueMessage(message), toLive.Value);
         }
 
         public static void PutToDefaultQueue(QueueEnvelope queueEnvelope)

@@ -25,15 +25,18 @@ namespace CaloomWorkerRole
         // rather than recreating it on every request
         CloudQueueClient Client;
         bool IsStopped;
+        bool GracefullyStopped;
         private CloudQueue CurrQueue;
         private CloudTableClient CurrTable;
         private LocalResource LocalStorageResource;
         private CloudBlobContainer AnonWebContainer;
 
-        BlockingCollection<QueueEnvelope> BlockingQueue = new BlockingCollection<QueueEnvelope>(3);
+
 
         public override void Run()
         {
+            GracefullyStopped = false;
+            ThreadPool.SetMinThreads(3, 3);
             Task[] tasks = new Task[]
                                {
                                    Task.Factory.StartNew(() => {}), 
@@ -42,19 +45,25 @@ namespace CaloomWorkerRole
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                };
+            QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID, TimeSpan.FromDays(1));
             while (!IsStopped)
             {
                 try
                 {
+                    Task.WaitAny(tasks);
+                    if (IsStopped)
+                        break;
+                    int availableIx;
+                    Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
                     CloudQueueMessage message;
                     QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
                     if (envelope != null)
                     {
-                        Task.Factory.ContinueWhenAny(tasks, task =>
-                                                                {
-                                                                    WorkerSupport.ProcessMessage(envelope);
-                                                                });
+                        Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessMessage(envelope));
+                        tasks[availableIx] = executing;
                         QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                        if (availableTask.Exception != null)
+                            ErrorSupport.ReportException(availableTask.Exception);
                     }
                     else 
                     {
@@ -63,6 +72,7 @@ namespace CaloomWorkerRole
                             QueueSupport.CurrDefaultQueue.DeleteMessage(message);
                             ErrorSupport.ReportMessageError(message);
                         }
+                        GC.Collect();
                         Thread.Sleep(1000);
                     }
                 }
@@ -100,12 +110,21 @@ namespace CaloomWorkerRole
                 }
             }
             Task.WaitAll(tasks);
+            foreach (var task in tasks.Where(task => task.Exception != null))
+            {
+                ErrorSupport.ReportException(task.Exception);
+            }
+            QueueSupport.ReportStatistics("Stopped: " + CurrWorkerID, TimeSpan.FromDays(1));
+            GracefullyStopped = true;
         }
+
+        protected string CurrWorkerID { get; private set; }
 
 
         public override bool OnStart()
         {
             // Set the maximum number of concurrent connections 
+            CurrWorkerID = DateTime.Now.ToString();
             ServicePointManager.DefaultConnectionLimit = 12;
             ServicePointManager.UseNagleAlgorithm = false;
             string connStr;
@@ -124,6 +143,8 @@ namespace CaloomWorkerRole
         {
             // Close the connection to Service Bus Queue
             IsStopped = true;
+            while(GracefullyStopped == false)
+                Thread.Sleep(1000);
             base.OnStop();
         }
     }

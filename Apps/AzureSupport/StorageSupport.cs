@@ -95,7 +95,7 @@ namespace TheBall
         }
 
 
-        public static void InitializeWithConnectionString(string connStr)
+        public static void InitializeWithConnectionString(string connStr, bool debugMode = false)
         {
             ServicePointManager.UseNagleAlgorithm = false;
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
@@ -112,7 +112,7 @@ namespace TheBall
             CurrAnonPublicContainer = activeAnonPublicContainer;
             var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
             CurrTemplateContainer = activeTemplateContainer;
-            QueueSupport.InitializeAfterStorage();
+            QueueSupport.InitializeAfterStorage(debugMode:debugMode);
         }
 
         /*

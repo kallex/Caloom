@@ -213,5 +213,21 @@ namespace TheBall
         {
             StorageSupport.DeleteEntireOwner(containerOwner);
         }
+
+        public static Task GetFirstCompleted(Task[] tasks, out int availableIx)
+        {
+            Task currArrayTask = null;
+            for (availableIx = 0; availableIx < tasks.Length; availableIx++)
+            {
+                currArrayTask = tasks[availableIx];
+                if (currArrayTask.IsCompleted)
+                    break;
+            }
+            if (currArrayTask == null)
+                throw new NotSupportedException("Cannot find completed task in array when there is supposed to be one");
+            return currArrayTask;
+        }
+
+
     }
 }
