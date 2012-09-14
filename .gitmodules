@@ -37,3 +37,6 @@
 [submodule "Abstractions/TheBallCoreToOperationTRANS"]
 	path = Abstractions/TheBallCoreToOperationTRANS
 	url = git://github.com/abstractiondev/TheBallCoreToOperationTRANS
+[submodule "Apps/workerroleaccelerator"]
+	path = Apps/workerroleaccelerator
+	url = git@github.com:kallex/workerroleaccelerator.git
