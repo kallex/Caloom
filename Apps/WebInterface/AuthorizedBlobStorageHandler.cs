@@ -202,6 +202,16 @@ namespace WebInterface
                 blob.FetchAttributes();
                 context.Response.ContentType = blob.Properties.ContentType;
                 blob.DownloadToStream(context.Response.OutputStream);
+            } catch(StorageClientException scEx)
+            {
+                if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound)
+                {
+                    context.Response.Write("Blob not found: " + blob.Name + " (original path: " + context.Request.Path + ")");
+                } else
+                {
+                    context.Response.Write("Error code: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    context.Response.Write(scEx.ToString());
+                }
             }
             catch (Exception ex)
             {

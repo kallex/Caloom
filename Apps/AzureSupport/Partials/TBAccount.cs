@@ -44,6 +44,11 @@ namespace AaltoGlobalImpact.OIP
             accountRoot.Account = this;
             StorageSupport.StoreInformation(accountRoot);
             AccountContainer accountContainer = AccountContainer.RetrieveFromOwnerContent(this, "default");
+            if(accountContainer == null)
+            {
+                accountContainer = AccountContainer.CreateDefault();
+                accountContainer.SetLocationAsOwnerContent(this, "default");
+            }
             accountContainer.AccountModule.Security.LoginInfoCollection = this.Logins;
             foreach(var loginItem in this.Logins.CollectionContent)
             {
