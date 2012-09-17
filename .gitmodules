@@ -40,3 +40,6 @@
 [submodule "Apps/workerroleaccelerator"]
 	path = Apps/workerroleaccelerator
 	url = git@github.com:kallex/workerroleaccelerator.git
+[submodule "Apps/wa-accelerator-webroles"]
+	path = Apps/wa-accelerator-webroles
+	url = git://github.com/kallex/wa-accelerator-webroles.git

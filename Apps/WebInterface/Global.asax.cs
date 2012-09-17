@@ -20,7 +20,7 @@ namespace WebInterface
             if(File.Exists(ConnStrFileName))
                 connStr = File.ReadAllText(ConnStrFileName);
             else
-                connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
+                connStr = CloudConfigurationManager.GetSetting("DataConnectionString");
             StorageSupport.InitializeWithConnectionString(connStr);
         }
 
