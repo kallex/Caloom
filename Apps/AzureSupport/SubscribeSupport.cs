@@ -63,13 +63,16 @@ namespace TheBall
             SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             if (subscriptionCollection == null)
                 return;
+            var ictx = InformationContext.Current;
+
             foreach(var subscription in subscriptionCollection.CollectionContent)
             {
                 OperationRequest operationRequest = new OperationRequest
                                                         {
                                                             SubscriberNotification = subscription
                                                         };
-                QueueSupport.PutToOperationQueue(operationRequest);
+                //QueueSupport.PutToOperationQueue(operationRequest);
+                ictx.AddOperationRequestToFinalizingQueue(operationRequest);
             }
         }
 

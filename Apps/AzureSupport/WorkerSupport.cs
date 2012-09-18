@@ -180,6 +180,9 @@ namespace TheBall
                 if (reportEnvelopeError)
                     ErrorSupport.ReportEnvelopeWithException(envelope, ex);
                 throw;
+            } finally
+            {
+                InformationContext.ProcessAndClearCurrent();
             }
 
             counter++;

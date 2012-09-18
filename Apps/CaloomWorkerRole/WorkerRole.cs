@@ -135,6 +135,7 @@ namespace CaloomWorkerRole
             else
                 connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
             StorageSupport.InitializeWithConnectionString(connStr);
+            InformationContext.InitializeFunctionality(3);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             IsStopped = false;
             return base.OnStart();

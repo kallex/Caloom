@@ -60,21 +60,30 @@ namespace WebInterface
             {
                 return;
             }
-            HttpRequest request = context.Request;
-            if(request.Path.StartsWith(AuthPersonalPrefix))
+            try
             {
-                HandlePersonalRequest(context);
-            } else if(request.Path.StartsWith(AuthGroupPrefix))
+                HttpRequest request = context.Request;
+                if (request.Path.StartsWith(AuthPersonalPrefix))
+                {
+                    HandlePersonalRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthGroupPrefix))
+                {
+                    HandleGroupRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthProcPrefix))
+                {
+                    HandleProcRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthAccountPrefix))
+                {
+                    HandleAccountRequest(context);
+                } 
+                
+            } finally
             {
-                HandleGroupRequest(context);
-            } else if(request.Path.StartsWith(AuthProcPrefix))
-            {
-                HandleProcRequest(context);
-            } else if(request.Path.StartsWith(AuthAccountPrefix))
-            {
-                HandleAccountRequest(context);
-            } 
-            return;
+                InformationContext.ProcessAndClearCurrent();
+            }
         }
 
         private void HandleAccountRequest(HttpContext context)

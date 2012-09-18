@@ -36,11 +36,14 @@ namespace AaltoGlobalImpact.OIP
             }
             StorageSupport.DeleteInformationObject(groupToDelete);
             //WorkerSupport.DeleteEntireOwner(groupToDelete.Group);
-            OperationRequest operationRequest = new OperationRequest();
-            operationRequest.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
+            OperationRequest operationRequest = new OperationRequest
+                                                    {
+                                                        DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault()
+                                                    };
             operationRequest.DeleteEntireOwner.ContainerName = groupToDelete.Group.ContainerName;
             operationRequest.DeleteEntireOwner.LocationPrefix = groupToDelete.Group.LocationPrefix;
-            QueueSupport.PutToOperationQueue(operationRequest);
+            //QueueSupport.PutToOperationQueue(operationRequest);
+            InformationContext.Current.AddOperationRequestToFinalizingQueue(operationRequest);
         }
     }
 }

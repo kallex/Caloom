@@ -30,6 +30,7 @@
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
+      <Setting name="AmazonSESAccessInfo" />
       <Setting name="SitesContainerName" />
       <Setting name="DirectoriesToExclude" />
       <Setting name="SyncIntervalInSeconds" />
@@ -47,6 +48,7 @@
       <Setting name="DataConnectionString" />
       <Setting name="WorkerRoleEntryPointContainerName" />
       <Setting name="StorageConnectionString" />
+      <Setting name="AmazonSESAccessInfo" />
     </ConfigurationSettings>
     <LocalResources>
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />

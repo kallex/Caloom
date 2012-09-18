@@ -39,7 +39,7 @@ namespace TheBall
         public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
         public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
-        public const string DefaultGroupID = "f8e1d8c6-0000-467e-b487-74be4ad099cd";
+        public const string DefaultGroupID = "b8875032-a1ee-4cee-a2a9-c51b2a8ec45f";
 
 
         private static Regex ContextRootRegex;

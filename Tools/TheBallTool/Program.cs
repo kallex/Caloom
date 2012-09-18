@@ -23,27 +23,28 @@ namespace TheBallTool
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
                 bool debugMode = false;
+
+                InformationContext.InitializeFunctionality(3);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
-                ProcessErrors(true);
+                ProcessErrors(false);
                 //return;
 
                 //OperationRequest operationRequest = PushTestQueue();
                 //QueueEnvelope envelope = new QueueEnvelope();
                 //envelope.SingleOperation = operationRequest;
                 //RunQueueWorker(null);
-                //RunTaskedQueueWorker();
                 //return;
                 //var test1 = TBRAccountRoot.GetAllAccountIDs();
                 //var test2 = TBRGroupRoot.GetAllGroupIDs();
 
-                TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
+                //TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
                 string templateLocation = "livetemplate";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
-                const string accountNamePart = "-account-";
-                const string publicdir = "\\oip-public\\";
-                const string groupNamePart = "-group-";
+                const string accountNamePart = "oip-account\\";
+                const string publicNamePart = "oip-public\\";
+                const string groupNamePart = "oip-group\\";
                 //DoMapData(webGroup);
                 //return;
                 string directory = Directory.GetCurrentDirectory();
@@ -51,23 +52,28 @@ namespace TheBallTool
                     directory = directory + "\\";
                 string[] allFiles =
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(
-                        str => str.Substring(directory.Length)).ToArray();
+                        str => str.Substring(directory.Length)).Where(str => str.StartsWith("theball-") == false).ToArray();
                 string[] groupTemplates =
-                    allFiles.Where(file => file.Contains(accountNamePart) == false).
+                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
                 string[] publicTemplates =
-                    allFiles.Where(file => file.Contains(accountNamePart) == false && file.Contains(groupNamePart) == false).
+                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(groupNamePart) == false).
                         ToArray();
                 string[] accountTemplates =
-                    allFiles.Where(file => file.Contains(groupNamePart) == false).
+                    allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
                 //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
-                DeleteAllAccountAndGroupContents(true);
+                //DeleteAllAccountAndGroupContents(true);
+                //RefreshAllAccounts();
 
                 // TODO: The delete above needs to go through first before the refresh one below
 
                 RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
+
+                //RunTaskedQueueWorker();
+
+
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
                 //DoSyncs(templateLocation, privateSiteLocation, publicSiteLocation);
@@ -82,6 +88,17 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void RefreshAllAccounts()
+        {
+            var accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach(var accountID in accountIDs)
+            {
+                var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+                accountRoot.Account.StoreAndPropagate();
+            }
+
         }
 
         private static void ProcessErrors(bool useWorker)
@@ -140,8 +157,8 @@ namespace TheBallTool
             Task[] tasks = new Task[]
                                {
                                    Task.Factory.StartNew(() => {}), 
-                                   //Task.Factory.StartNew(() => {}), 
-                                   //Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                };

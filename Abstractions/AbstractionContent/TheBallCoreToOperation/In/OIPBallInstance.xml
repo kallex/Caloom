@@ -434,6 +434,7 @@
           <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
           <InformationItem name="SummaryBody" logicalDataType="Text_Long"/>
           <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="GroupSummaryIndex" logicalDataType="InformationObject" informationObjectName="GroupIndex"/>
           <InformationItem name="GroupCollection" logicalDataType="InformationObject" informationObjectName="GroupCollection" />
         </InformationItems>
       </InformationObject>
@@ -465,6 +466,7 @@
 
       <InformationObject name="AddLocationInfo" designDesc="Add location info">
         <InformationItems>
+          <InformationItem name="MapMarkers" logicalDataType="InformationObject" informationObjectName="MapMarkerCollection" />
           <InformationItem name="LocationName" logicalDataType="Text_Short"/>
           <InformationItem name="Longitude" logicalDataType="Text_Short"/>
           <InformationItem name="Latitude" logicalDataType="Text_Short"/>

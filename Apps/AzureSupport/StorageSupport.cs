@@ -118,7 +118,7 @@ namespace TheBall
             var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
-            var activeAnonPublicContainer = blobClient.GetContainerReference("anon-webcontainer");
+            var activeAnonPublicContainer = blobClient.GetContainerReference("pub");
             CurrAnonPublicContainer = activeAnonPublicContainer;
             var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
             CurrTemplateContainer = activeTemplateContainer;
@@ -935,7 +935,7 @@ namespace TheBall
             if (owner != null)
                 relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
-            blob.Delete();
+            blob.DeleteAndFireSubscriptions();
             informationObject.PostDeleteExecute(owner);
         }
 
@@ -1042,9 +1042,14 @@ namespace TheBall
             return true;
         }
 
+        public static bool IsStoredInActiveContainer(this CloudBlob blob)
+        {
+            return blob.Container.Name == CurrActiveContainer.Name;
+        }
+
         public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
         {
-            if (blob.CanContainExternalMetadata())
+            if (blob.IsStoredInActiveContainer() && blob.CanContainExternalMetadata())
             {
                 SubscribeSupport.DeleteSubscriptions(blob.Name);
                 InformationSourceSupport.DeleteInformationSources(blob.Name);
@@ -1054,7 +1059,7 @@ namespace TheBall
 
         public static void DeleteAndFireSubscriptions(this CloudBlob blob)
         {
-            if (blob.CanContainExternalMetadata())
+            if (blob.IsStoredInActiveContainer() && blob.CanContainExternalMetadata())
             {
                 SubscribeSupport.DeleteAfterFiringSubscriptions(targetLocation: blob.Name);
                 InformationSourceSupport.DeleteInformationSources(targetLocation: blob.Name);

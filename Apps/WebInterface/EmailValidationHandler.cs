@@ -38,10 +38,16 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             HttpRequest request = context.Request;
-            if(request.Path.StartsWith(AuthEmailValidation))
+            try
             {
-                HandleEmailValidation(context);
-            }        
+                if (request.Path.StartsWith(AuthEmailValidation))
+                {
+                    HandleEmailValidation(context);
+                }        
+            } finally
+            {
+                InformationContext.ProcessAndClearCurrent();
+            }
         }
 
         private void HandleEmailValidation(HttpContext context)

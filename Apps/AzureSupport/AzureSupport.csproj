@@ -61,6 +61,7 @@
     <Compile Include="ErrorSupport.cs" />
     <Compile Include="FileSystemSupport.cs" />
     <Compile Include="IContainerOwner.cs" />
+    <Compile Include="InformationContext.cs" />
     <Compile Include="InformationSourceSupport.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />

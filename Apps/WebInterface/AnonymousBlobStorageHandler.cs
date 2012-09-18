@@ -98,7 +98,7 @@ namespace WebInterface
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/public/", "anon-webcontainer/");
+            string blobPath = request.Path.Replace("/public/", "pub/");
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try
@@ -118,7 +118,7 @@ namespace WebInterface
         private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/public/", "anon-webcontainer/");
+            string blobPath = request.Path.Replace("/public/", "pub/");
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try

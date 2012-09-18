@@ -63,13 +63,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBSystem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBSystem.RetrieveTBSystem("Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
+					// var result = TBSystem.RetrieveTBSystem("Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
+					var result = TBSystem.RetrieveTBSystem("AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBSystem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -274,13 +276,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRLoginRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBRLoginRoot.RetrieveTBRLoginRoot("Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
+					// var result = TBRLoginRoot.RetrieveTBRLoginRoot("Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
+					var result = TBRLoginRoot.RetrieveTBRLoginRoot("AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -481,13 +485,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRAccountRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBRAccountRoot.RetrieveTBRAccountRoot("Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
+					// var result = TBRAccountRoot.RetrieveTBRAccountRoot("Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
+					var result = TBRAccountRoot.RetrieveTBRAccountRoot("AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -688,13 +694,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBRGroupRoot.RetrieveTBRGroupRoot("Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
+					// var result = TBRGroupRoot.RetrieveTBRGroupRoot("Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
+					var result = TBRGroupRoot.RetrieveTBRGroupRoot("AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -895,13 +903,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRLoginGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
+					// var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
+					var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1106,13 +1116,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBREmailRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBREmailRoot.RetrieveTBREmailRoot("Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
+					// var result = TBREmailRoot.RetrieveTBREmailRoot("Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
+					var result = TBREmailRoot.RetrieveTBREmailRoot("AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1313,13 +1325,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccount RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBAccount.RetrieveTBAccount("Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
+					// var result = TBAccount.RetrieveTBAccount("Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
+					var result = TBAccount.RetrieveTBAccount("AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBAccount/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1540,13 +1554,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccountCollaborationGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
+					// var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
+					var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1751,13 +1767,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBAccountCollaborationGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
+					// var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
+					var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1955,13 +1973,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBLoginInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBLoginInfo.RetrieveTBLoginInfo("Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
+					// var result = TBLoginInfo.RetrieveTBLoginInfo("Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
+					var result = TBLoginInfo.RetrieveTBLoginInfo("AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2159,13 +2179,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBLoginInfoCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
+					// var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
+					var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2363,13 +2385,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBEmail.RetrieveTBEmail("Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
+					// var result = TBEmail.RetrieveTBEmail("Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
+					var result = TBEmail.RetrieveTBEmail("AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBEmail/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2572,13 +2596,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmailCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBEmailCollection.RetrieveTBEmailCollection("Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
+					// var result = TBEmailCollection.RetrieveTBEmailCollection("Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
+					var result = TBEmailCollection.RetrieveTBEmailCollection("AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2776,13 +2802,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratorRole RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
+					// var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
+					var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2990,13 +3018,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratorRoleCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
+					// var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
+					var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3194,13 +3224,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBCollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
+					// var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
+					var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3408,13 +3440,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBEmailValidation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBEmailValidation.RetrieveTBEmailValidation("Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
+					// var result = TBEmailValidation.RetrieveTBEmailValidation("Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
+					var result = TBEmailValidation.RetrieveTBEmailValidation("AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3624,13 +3658,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBRegisterContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBRegisterContainer.RetrieveTBRegisterContainer("Content/AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName, containerOwner);
+					// var result = TBRegisterContainer.RetrieveTBRegisterContainer("Content/AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName, containerOwner);
+					var result = TBRegisterContainer.RetrieveTBRegisterContainer("AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBRegisterContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3848,13 +3884,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static LoginProvider RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = LoginProvider.RetrieveLoginProvider("Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
+					// var result = LoginProvider.RetrieveLoginProvider("Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
+					var result = LoginProvider.RetrieveLoginProvider("AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/LoginProvider/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4080,13 +4118,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static LoginProviderCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = LoginProviderCollection.RetrieveLoginProviderCollection("Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
+					// var result = LoginProviderCollection.RetrieveLoginProviderCollection("Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
+					var result = LoginProviderCollection.RetrieveLoginProviderCollection("AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4284,13 +4324,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static ContactOipContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ContactOipContainer.RetrieveContactOipContainer("Content/AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName, containerOwner);
+					// var result = ContactOipContainer.RetrieveContactOipContainer("Content/AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName, containerOwner);
+					var result = ContactOipContainer.RetrieveContactOipContainer("AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ContactOipContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4488,13 +4530,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static TBPRegisterEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
+					// var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
+					var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4692,13 +4736,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static JavaScriptContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = JavaScriptContainer.RetrieveJavaScriptContainer("Content/AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName, containerOwner);
+					// var result = JavaScriptContainer.RetrieveJavaScriptContainer("Content/AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName, containerOwner);
+					var result = JavaScriptContainer.RetrieveJavaScriptContainer("AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/JavaScriptContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4901,13 +4947,15 @@ JavaScriptContainer.HtmlContent
 
 				public static JavascriptContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = JavascriptContainer.RetrieveJavascriptContainer("Content/AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName, containerOwner);
+					// var result = JavascriptContainer.RetrieveJavascriptContainer("Content/AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName, containerOwner);
+					var result = JavascriptContainer.RetrieveJavascriptContainer("AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/JavascriptContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5110,13 +5158,15 @@ JavascriptContainer.HtmlContent
 
 				public static FooterContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = FooterContainer.RetrieveFooterContainer("Content/AaltoGlobalImpact.OIP/FooterContainer/" + contentName, containerOwner);
+					// var result = FooterContainer.RetrieveFooterContainer("Content/AaltoGlobalImpact.OIP/FooterContainer/" + contentName, containerOwner);
+					var result = FooterContainer.RetrieveFooterContainer("AaltoGlobalImpact.OIP/FooterContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/FooterContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/FooterContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/FooterContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5319,13 +5369,15 @@ FooterContainer.HtmlContent
 
 				public static NavigationContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = NavigationContainer.RetrieveNavigationContainer("Content/AaltoGlobalImpact.OIP/NavigationContainer/" + contentName, containerOwner);
+					// var result = NavigationContainer.RetrieveNavigationContainer("Content/AaltoGlobalImpact.OIP/NavigationContainer/" + contentName, containerOwner);
+					var result = NavigationContainer.RetrieveNavigationContainer("AaltoGlobalImpact.OIP/NavigationContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/NavigationContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/NavigationContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/NavigationContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5523,13 +5575,15 @@ FooterContainer.HtmlContent
 
 				public static AccountSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountSummary.RetrieveAccountSummary("Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
+					// var result = AccountSummary.RetrieveAccountSummary("Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
+					var result = AccountSummary.RetrieveAccountSummary("AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountSummary/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5750,13 +5804,15 @@ FooterContainer.HtmlContent
 
 				public static AccountContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountContainer.RetrieveAccountContainer("Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
+					// var result = AccountContainer.RetrieveAccountContainer("Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
+					var result = AccountContainer.RetrieveAccountContainer("AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5987,13 +6043,15 @@ FooterContainer.HtmlContent
 
 				public static AccountIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountIndex.RetrieveAccountIndex("Content/AaltoGlobalImpact.OIP/AccountIndex/" + contentName, containerOwner);
+					// var result = AccountIndex.RetrieveAccountIndex("Content/AaltoGlobalImpact.OIP/AccountIndex/" + contentName, containerOwner);
+					var result = AccountIndex.RetrieveAccountIndex("AaltoGlobalImpact.OIP/AccountIndex/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountIndex/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountIndex/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountIndex/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6215,13 +6273,15 @@ AccountIndex.Summary
 
 				public static AccountModule RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountModule.RetrieveAccountModule("Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
+					// var result = AccountModule.RetrieveAccountModule("Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
+					var result = AccountModule.RetrieveAccountModule("AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountModule/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6452,13 +6512,15 @@ AccountIndex.Summary
 
 				public static AddressAndLocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
+					// var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
+					var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6656,13 +6718,15 @@ AccountIndex.Summary
 
 				public static AddressAndLocation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AddressAndLocation.RetrieveAddressAndLocation("Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
+					// var result = AddressAndLocation.RetrieveAddressAndLocation("Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
+					var result = AddressAndLocation.RetrieveAddressAndLocation("AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6873,13 +6937,15 @@ AccountIndex.Summary
 
 				public static StreetAddress RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = StreetAddress.RetrieveStreetAddress("Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
+					// var result = StreetAddress.RetrieveStreetAddress("Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
+					var result = StreetAddress.RetrieveStreetAddress("AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/StreetAddress/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7098,13 +7164,15 @@ AccountIndex.Summary
 
 				public static AccountContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountContent.RetrieveAccountContent("Content/AaltoGlobalImpact.OIP/AccountContent/" + contentName, containerOwner);
+					// var result = AccountContent.RetrieveAccountContent("Content/AaltoGlobalImpact.OIP/AccountContent/" + contentName, containerOwner);
+					var result = AccountContent.RetrieveAccountContent("AaltoGlobalImpact.OIP/AccountContent/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountContent/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountContent/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountContent/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7302,13 +7370,15 @@ AccountIndex.Summary
 
 				public static AccountProfile RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountProfile.RetrieveAccountProfile("Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
+					// var result = AccountProfile.RetrieveAccountProfile("Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
+					var result = AccountProfile.RetrieveAccountProfile("AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountProfile/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7533,13 +7603,15 @@ AccountIndex.Summary
 
 				public static AccountSecurity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountSecurity.RetrieveAccountSecurity("Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
+					// var result = AccountSecurity.RetrieveAccountSecurity("Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
+					var result = AccountSecurity.RetrieveAccountSecurity("AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountSecurity/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7750,13 +7822,15 @@ AccountIndex.Summary
 
 				public static AccountRoles RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AccountRoles.RetrieveAccountRoles("Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
+					// var result = AccountRoles.RetrieveAccountRoles("Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
+					var result = AccountRoles.RetrieveAccountRoles("AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AccountRoles/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7979,13 +8053,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static PersonalInfoVisibility RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
+					// var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
+					var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8183,13 +8259,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static ReferenceToInformation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ReferenceToInformation.RetrieveReferenceToInformation("Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
+					// var result = ReferenceToInformation.RetrieveReferenceToInformation("Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
+					var result = ReferenceToInformation.RetrieveReferenceToInformation("AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8394,13 +8472,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static ReferenceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ReferenceCollection.RetrieveReferenceCollection("Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
+					// var result = ReferenceCollection.RetrieveReferenceCollection("Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
+					var result = ReferenceCollection.RetrieveReferenceCollection("AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8598,13 +8678,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static BlogContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = BlogContainer.RetrieveBlogContainer("Content/AaltoGlobalImpact.OIP/BlogContainer/" + contentName, containerOwner);
+					// var result = BlogContainer.RetrieveBlogContainer("Content/AaltoGlobalImpact.OIP/BlogContainer/" + contentName, containerOwner);
+					var result = BlogContainer.RetrieveBlogContainer("AaltoGlobalImpact.OIP/BlogContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/BlogContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8835,13 +8917,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static RecentBlogSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = RecentBlogSummary.RetrieveRecentBlogSummary("Content/AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName, containerOwner);
+					// var result = RecentBlogSummary.RetrieveRecentBlogSummary("Content/AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName, containerOwner);
+					var result = RecentBlogSummary.RetrieveRecentBlogSummary("AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/RecentBlogSummary/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9052,13 +9136,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapContainer.RetrieveMapContainer("Content/AaltoGlobalImpact.OIP/MapContainer/" + contentName, containerOwner);
+					// var result = MapContainer.RetrieveMapContainer("Content/AaltoGlobalImpact.OIP/MapContainer/" + contentName, containerOwner);
+					var result = MapContainer.RetrieveMapContainer("AaltoGlobalImpact.OIP/MapContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9309,13 +9395,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapMarker RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapMarker.RetrieveMapMarker("Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
+					// var result = MapMarker.RetrieveMapMarker("Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
+					var result = MapMarker.RetrieveMapMarker("AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapMarker/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9523,13 +9611,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static MapMarkerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapMarkerCollection.RetrieveMapMarkerCollection("Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
+					// var result = MapMarkerCollection.RetrieveMapMarkerCollection("Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
+					var result = MapMarkerCollection.RetrieveMapMarkerCollection("AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9727,13 +9817,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static CalendarContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CalendarContainer.RetrieveCalendarContainer("Content/AaltoGlobalImpact.OIP/CalendarContainer/" + contentName, containerOwner);
+					// var result = CalendarContainer.RetrieveCalendarContainer("Content/AaltoGlobalImpact.OIP/CalendarContainer/" + contentName, containerOwner);
+					var result = CalendarContainer.RetrieveCalendarContainer("AaltoGlobalImpact.OIP/CalendarContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CalendarContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9964,13 +10056,15 @@ AccountRoles.OrganizationsImPartOf
 
 				public static AboutContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AboutContainer.RetrieveAboutContainer("Content/AaltoGlobalImpact.OIP/AboutContainer/" + contentName, containerOwner);
+					// var result = AboutContainer.RetrieveAboutContainer("Content/AaltoGlobalImpact.OIP/AboutContainer/" + contentName, containerOwner);
+					var result = AboutContainer.RetrieveAboutContainer("AaltoGlobalImpact.OIP/AboutContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AboutContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AboutContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AboutContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10227,13 +10321,15 @@ AboutContainer.Body
 
 				public static OBSAccountContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = OBSAccountContainer.RetrieveOBSAccountContainer("Content/AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName, containerOwner);
+					// var result = OBSAccountContainer.RetrieveOBSAccountContainer("Content/AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName, containerOwner);
+					var result = OBSAccountContainer.RetrieveOBSAccountContainer("AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/OBSAccountContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10464,13 +10560,15 @@ AboutContainer.Body
 
 				public static ProjectContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ProjectContainer.RetrieveProjectContainer("Content/AaltoGlobalImpact.OIP/ProjectContainer/" + contentName, containerOwner);
+					// var result = ProjectContainer.RetrieveProjectContainer("Content/AaltoGlobalImpact.OIP/ProjectContainer/" + contentName, containerOwner);
+					var result = ProjectContainer.RetrieveProjectContainer("AaltoGlobalImpact.OIP/ProjectContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ProjectContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ProjectContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ProjectContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10701,13 +10799,15 @@ AboutContainer.Body
 
 				public static CourseContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CourseContainer.RetrieveCourseContainer("Content/AaltoGlobalImpact.OIP/CourseContainer/" + contentName, containerOwner);
+					// var result = CourseContainer.RetrieveCourseContainer("Content/AaltoGlobalImpact.OIP/CourseContainer/" + contentName, containerOwner);
+					var result = CourseContainer.RetrieveCourseContainer("AaltoGlobalImpact.OIP/CourseContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CourseContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CourseContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CourseContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10938,13 +11038,15 @@ AboutContainer.Body
 
 				public static ContainerHeader RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ContainerHeader.RetrieveContainerHeader("Content/AaltoGlobalImpact.OIP/ContainerHeader/" + contentName, containerOwner);
+					// var result = ContainerHeader.RetrieveContainerHeader("Content/AaltoGlobalImpact.OIP/ContainerHeader/" + contentName, containerOwner);
+					var result = ContainerHeader.RetrieveContainerHeader("AaltoGlobalImpact.OIP/ContainerHeader/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ContainerHeader/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ContainerHeader/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ContainerHeader/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11149,13 +11251,15 @@ AboutContainer.Body
 
 				public static ActivitySummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ActivitySummaryContainer.RetrieveActivitySummaryContainer("Content/AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName, containerOwner);
+					// var result = ActivitySummaryContainer.RetrieveActivitySummaryContainer("Content/AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName, containerOwner);
+					var result = ActivitySummaryContainer.RetrieveActivitySummaryContainer("AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ActivitySummaryContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11398,13 +11502,15 @@ ActivitySummaryContainer.SummaryBody
 
 				public static ActivityIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ActivityIndex.RetrieveActivityIndex("Content/AaltoGlobalImpact.OIP/ActivityIndex/" + contentName, containerOwner);
+					// var result = ActivityIndex.RetrieveActivityIndex("Content/AaltoGlobalImpact.OIP/ActivityIndex/" + contentName, containerOwner);
+					var result = ActivityIndex.RetrieveActivityIndex("AaltoGlobalImpact.OIP/ActivityIndex/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityIndex/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityIndex/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ActivityIndex/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11626,13 +11732,15 @@ ActivityIndex.Summary
 
 				public static ActivityContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ActivityContainer.RetrieveActivityContainer("Content/AaltoGlobalImpact.OIP/ActivityContainer/" + contentName, containerOwner);
+					// var result = ActivityContainer.RetrieveActivityContainer("Content/AaltoGlobalImpact.OIP/ActivityContainer/" + contentName, containerOwner);
+					var result = ActivityContainer.RetrieveActivityContainer("AaltoGlobalImpact.OIP/ActivityContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ActivityContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11843,13 +11951,15 @@ ActivityIndex.Summary
 
 				public static ActivityCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ActivityCollection.RetrieveActivityCollection("Content/AaltoGlobalImpact.OIP/ActivityCollection/" + contentName, containerOwner);
+					// var result = ActivityCollection.RetrieveActivityCollection("Content/AaltoGlobalImpact.OIP/ActivityCollection/" + contentName, containerOwner);
+					var result = ActivityCollection.RetrieveActivityCollection("AaltoGlobalImpact.OIP/ActivityCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ActivityCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ActivityCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12047,13 +12157,15 @@ ActivityIndex.Summary
 
 				public static Activity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Activity.RetrieveActivity("Content/AaltoGlobalImpact.OIP/Activity/" + contentName, containerOwner);
+					// var result = Activity.RetrieveActivity("Content/AaltoGlobalImpact.OIP/Activity/" + contentName, containerOwner);
+					var result = Activity.RetrieveActivity("AaltoGlobalImpact.OIP/Activity/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Activity/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Activity/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Activity/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12333,13 +12445,15 @@ Activity.Description
 
 				public static ModeratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ModeratorCollection.RetrieveModeratorCollection("Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
+					// var result = ModeratorCollection.RetrieveModeratorCollection("Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
+					var result = ModeratorCollection.RetrieveModeratorCollection("AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12537,13 +12651,15 @@ Activity.Description
 
 				public static Moderator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Moderator.RetrieveModerator("Content/AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
+					// var result = Moderator.RetrieveModerator("Content/AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
+					var result = Moderator.RetrieveModerator("AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Moderator/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Moderator/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Moderator/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12748,13 +12864,15 @@ Activity.Description
 
 				public static CollaboratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CollaboratorCollection.RetrieveCollaboratorCollection("Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
+					// var result = CollaboratorCollection.RetrieveCollaboratorCollection("Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
+					var result = CollaboratorCollection.RetrieveCollaboratorCollection("AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12952,13 +13070,15 @@ Activity.Description
 
 				public static Collaborator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Collaborator.RetrieveCollaborator("Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
+					// var result = Collaborator.RetrieveCollaborator("Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
+					var result = Collaborator.RetrieveCollaborator("AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Collaborator/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13170,13 +13290,15 @@ Activity.Description
 
 				public static CollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CollaboratingGroup.RetrieveCollaboratingGroup("Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
+					// var result = CollaboratingGroup.RetrieveCollaboratingGroup("Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
+					var result = CollaboratingGroup.RetrieveCollaboratingGroup("AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13374,13 +13496,15 @@ Activity.Description
 
 				public static CollaboratingGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
+					// var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
+					var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13578,13 +13702,15 @@ Activity.Description
 
 				public static CollaboratingOrganization RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
+					// var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
+					var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13782,13 +13908,15 @@ Activity.Description
 
 				public static CollaboratingOrganizationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
+					// var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
+					var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13986,13 +14114,15 @@ Activity.Description
 
 				public static GroupSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
+					// var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
+					var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14120,6 +14250,7 @@ Activity.Description
 					var result = new GroupSummaryContainer();
 					result.Header = ContainerHeader.CreateDefault();
 					result.Introduction = Introduction.CreateDefault();
+					result.GroupSummaryIndex = GroupIndex.CreateDefault();
 					result.GroupCollection = GroupCollection.CreateDefault();
 					return result;
 				}
@@ -14140,6 +14271,7 @@ GroupSummaryContainer.SummaryBody
 ";
 
 					result.Introduction = Introduction.CreateDemoDefault();
+					result.GroupSummaryIndex = GroupIndex.CreateDemoDefault();
 					result.GroupCollection = GroupCollection.CreateDemoDefault();
 				
 					return result;
@@ -14154,6 +14286,12 @@ GroupSummaryContainer.SummaryBody
 					}
 					{
 						var item = Introduction;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = GroupSummaryIndex;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -14184,6 +14322,8 @@ GroupSummaryContainer.SummaryBody
 			public string SummaryBody { get; set; }
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			[DataMember]
+			public GroupIndex GroupSummaryIndex { get; set; }
 			[DataMember]
 			public GroupCollection GroupCollection { get; set; }
 			
@@ -14225,13 +14365,15 @@ GroupSummaryContainer.SummaryBody
 
 				public static GroupContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = GroupContainer.RetrieveGroupContainer("Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
+					// var result = GroupContainer.RetrieveGroupContainer("Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
+					var result = GroupContainer.RetrieveGroupContainer("AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14492,13 +14634,15 @@ GroupSummaryContainer.SummaryBody
 
 				public static GroupIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = GroupIndex.RetrieveGroupIndex("Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
+					// var result = GroupIndex.RetrieveGroupIndex("Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
+					var result = GroupIndex.RetrieveGroupIndex("AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupIndex/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14720,13 +14864,15 @@ GroupIndex.Summary
 
 				public static AddLocationInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AddLocationInfo.RetrieveAddLocationInfo("Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
+					// var result = AddLocationInfo.RetrieveAddLocationInfo("Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
+					var result = AddLocationInfo.RetrieveAddLocationInfo("AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14852,6 +14998,7 @@ GroupIndex.Summary
 				public static AddLocationInfo CreateDefault()
 				{
 					var result = new AddLocationInfo();
+					result.MapMarkers = MapMarkerCollection.CreateDefault();
 					result.Address = StreetAddress.CreateDefault();
 					return result;
 				}
@@ -14863,6 +15010,7 @@ GroupIndex.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new AddLocationInfo();
+					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
 					result.LocationName = @"AddLocationInfo.LocationName";
 
 					result.Longitude = @"AddLocationInfo.Longitude";
@@ -14875,6 +15023,12 @@ GroupIndex.Summary
 				}
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = MapMarkers;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = Address;
 						object result = item.FindObjectByID(objectId);
@@ -14901,6 +15055,8 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public MapMarkerCollection MapMarkers { get; set; }
 			[DataMember]
 			public string LocationName { get; set; }
 			[DataMember]
@@ -14948,13 +15104,15 @@ GroupIndex.Summary
 
 				public static AddEmailAddressInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
+					// var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
+					var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15152,13 +15310,15 @@ GroupIndex.Summary
 
 				public static CreateGroupInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CreateGroupInfo.RetrieveCreateGroupInfo("Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
+					// var result = CreateGroupInfo.RetrieveCreateGroupInfo("Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
+					var result = CreateGroupInfo.RetrieveCreateGroupInfo("AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15356,13 +15516,15 @@ GroupIndex.Summary
 
 				public static AddActivityInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AddActivityInfo.RetrieveAddActivityInfo("Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
+					// var result = AddActivityInfo.RetrieveAddActivityInfo("Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
+					var result = AddActivityInfo.RetrieveAddActivityInfo("AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15560,13 +15722,15 @@ GroupIndex.Summary
 
 				public static GroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = GroupCollection.RetrieveGroupCollection("Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
+					// var result = GroupCollection.RetrieveGroupCollection("Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
+					var result = GroupCollection.RetrieveGroupCollection("AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15764,13 +15928,15 @@ GroupIndex.Summary
 
 				public static Group RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Group.RetrieveGroup("Content/AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
+					// var result = Group.RetrieveGroup("Content/AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
+					var result = Group.RetrieveGroup("AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Group/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Group/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Group/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16052,13 +16218,15 @@ Group.OrganizationsAndGroupsLinkedToUs
 
 				public static Introduction RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Introduction.RetrieveIntroduction("Content/AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
+					// var result = Introduction.RetrieveIntroduction("Content/AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
+					var result = Introduction.RetrieveIntroduction("AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Introduction/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Introduction/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Introduction/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16268,13 +16436,15 @@ Introduction.Body
 
 				public static BlogCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = BlogCollection.RetrieveBlogCollection("Content/AaltoGlobalImpact.OIP/BlogCollection/" + contentName, containerOwner);
+					// var result = BlogCollection.RetrieveBlogCollection("Content/AaltoGlobalImpact.OIP/BlogCollection/" + contentName, containerOwner);
+					var result = BlogCollection.RetrieveBlogCollection("AaltoGlobalImpact.OIP/BlogCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/BlogCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16472,13 +16642,15 @@ Introduction.Body
 
 				public static Blog RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Blog.RetrieveBlog("Content/AaltoGlobalImpact.OIP/Blog/" + contentName, containerOwner);
+					// var result = Blog.RetrieveBlog("Content/AaltoGlobalImpact.OIP/Blog/" + contentName, containerOwner);
+					var result = Blog.RetrieveBlog("AaltoGlobalImpact.OIP/Blog/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Blog/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Blog/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Blog/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16769,13 +16941,15 @@ Blog.Excerpt
 
 				public static BlogIndexGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = BlogIndexGroup.RetrieveBlogIndexGroup("Content/AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName, containerOwner);
+					// var result = BlogIndexGroup.RetrieveBlogIndexGroup("Content/AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName, containerOwner);
+					var result = BlogIndexGroup.RetrieveBlogIndexGroup("AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/BlogIndexGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17044,13 +17218,15 @@ BlogIndexGroup.Summary
 
 				public static CalendarIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CalendarIndex.RetrieveCalendarIndex("Content/AaltoGlobalImpact.OIP/CalendarIndex/" + contentName, containerOwner);
+					// var result = CalendarIndex.RetrieveCalendarIndex("Content/AaltoGlobalImpact.OIP/CalendarIndex/" + contentName, containerOwner);
+					var result = CalendarIndex.RetrieveCalendarIndex("AaltoGlobalImpact.OIP/CalendarIndex/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarIndex/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarIndex/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CalendarIndex/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17248,13 +17424,15 @@ BlogIndexGroup.Summary
 
 				public static Filter RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Filter.RetrieveFilter("Content/AaltoGlobalImpact.OIP/Filter/" + contentName, containerOwner);
+					// var result = Filter.RetrieveFilter("Content/AaltoGlobalImpact.OIP/Filter/" + contentName, containerOwner);
+					var result = Filter.RetrieveFilter("AaltoGlobalImpact.OIP/Filter/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Filter/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Filter/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Filter/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17452,13 +17630,15 @@ BlogIndexGroup.Summary
 
 				public static Calendar RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Calendar.RetrieveCalendar("Content/AaltoGlobalImpact.OIP/Calendar/" + contentName, containerOwner);
+					// var result = Calendar.RetrieveCalendar("Content/AaltoGlobalImpact.OIP/Calendar/" + contentName, containerOwner);
+					var result = Calendar.RetrieveCalendar("AaltoGlobalImpact.OIP/Calendar/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Calendar/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Calendar/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Calendar/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17656,13 +17836,15 @@ BlogIndexGroup.Summary
 
 				public static CalendarCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CalendarCollection.RetrieveCalendarCollection("Content/AaltoGlobalImpact.OIP/CalendarCollection/" + contentName, containerOwner);
+					// var result = CalendarCollection.RetrieveCalendarCollection("Content/AaltoGlobalImpact.OIP/CalendarCollection/" + contentName, containerOwner);
+					var result = CalendarCollection.RetrieveCalendarCollection("AaltoGlobalImpact.OIP/CalendarCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CalendarCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CalendarCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17860,13 +18042,15 @@ BlogIndexGroup.Summary
 
 				public static Map RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Map.RetrieveMap("Content/AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
+					// var result = Map.RetrieveMap("Content/AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
+					var result = Map.RetrieveMap("AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Map/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Map/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Map/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18064,13 +18248,15 @@ BlogIndexGroup.Summary
 
 				public static MapCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapCollection.RetrieveMapCollection("Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
+					// var result = MapCollection.RetrieveMapCollection("Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
+					var result = MapCollection.RetrieveMapCollection("AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18268,13 +18454,15 @@ BlogIndexGroup.Summary
 
 				public static MapIndexCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapIndexCollection.RetrieveMapIndexCollection("Content/AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName, containerOwner);
+					// var result = MapIndexCollection.RetrieveMapIndexCollection("Content/AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName, containerOwner);
+					var result = MapIndexCollection.RetrieveMapIndexCollection("AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapIndexCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18505,13 +18693,15 @@ BlogIndexGroup.Summary
 
 				public static MapResult RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapResult.RetrieveMapResult("Content/AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
+					// var result = MapResult.RetrieveMapResult("Content/AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
+					var result = MapResult.RetrieveMapResult("AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResult/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResult/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapResult/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18712,13 +18902,15 @@ BlogIndexGroup.Summary
 
 				public static MapResultCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapResultCollection.RetrieveMapResultCollection("Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
+					// var result = MapResultCollection.RetrieveMapResultCollection("Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
+					var result = MapResultCollection.RetrieveMapResultCollection("AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapResultCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18916,13 +19108,15 @@ BlogIndexGroup.Summary
 
 				public static MapResultsCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = MapResultsCollection.RetrieveMapResultsCollection("Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
+					// var result = MapResultsCollection.RetrieveMapResultsCollection("Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
+					var result = MapResultsCollection.RetrieveMapResultsCollection("AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19143,13 +19337,15 @@ BlogIndexGroup.Summary
 
 				public static Image RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Image.RetrieveImage("Content/AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
+					// var result = Image.RetrieveImage("Content/AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
+					var result = Image.RetrieveImage("AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Image/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Image/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Image/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19354,13 +19550,15 @@ BlogIndexGroup.Summary
 
 				public static ImageGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ImageGroupCollection.RetrieveImageGroupCollection("Content/AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName, containerOwner);
+					// var result = ImageGroupCollection.RetrieveImageGroupCollection("Content/AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName, containerOwner);
+					var result = ImageGroupCollection.RetrieveImageGroupCollection("AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ImageGroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19558,13 +19756,15 @@ BlogIndexGroup.Summary
 
 				public static ImageGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ImageGroup.RetrieveImageGroup("Content/AaltoGlobalImpact.OIP/ImageGroup/" + contentName, containerOwner);
+					// var result = ImageGroup.RetrieveImageGroup("Content/AaltoGlobalImpact.OIP/ImageGroup/" + contentName, containerOwner);
+					var result = ImageGroup.RetrieveImageGroup("AaltoGlobalImpact.OIP/ImageGroup/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ImageGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19779,13 +19979,15 @@ BlogIndexGroup.Summary
 
 				public static ImagesCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ImagesCollection.RetrieveImagesCollection("Content/AaltoGlobalImpact.OIP/ImagesCollection/" + contentName, containerOwner);
+					// var result = ImagesCollection.RetrieveImagesCollection("Content/AaltoGlobalImpact.OIP/ImagesCollection/" + contentName, containerOwner);
+					var result = ImagesCollection.RetrieveImagesCollection("AaltoGlobalImpact.OIP/ImagesCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImagesCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImagesCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ImagesCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19983,13 +20185,15 @@ BlogIndexGroup.Summary
 
 				public static Tooltip RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Tooltip.RetrieveTooltip("Content/AaltoGlobalImpact.OIP/Tooltip/" + contentName, containerOwner);
+					// var result = Tooltip.RetrieveTooltip("Content/AaltoGlobalImpact.OIP/Tooltip/" + contentName, containerOwner);
+					var result = Tooltip.RetrieveTooltip("AaltoGlobalImpact.OIP/Tooltip/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Tooltip/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Tooltip/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Tooltip/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20187,13 +20391,15 @@ BlogIndexGroup.Summary
 
 				public static SocialPanelCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SocialPanelCollection.RetrieveSocialPanelCollection("Content/AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName, containerOwner);
+					// var result = SocialPanelCollection.RetrieveSocialPanelCollection("Content/AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName, containerOwner);
+					var result = SocialPanelCollection.RetrieveSocialPanelCollection("AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SocialPanelCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20391,13 +20597,15 @@ BlogIndexGroup.Summary
 
 				public static SocialPanel RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SocialPanel.RetrieveSocialPanel("Content/AaltoGlobalImpact.OIP/SocialPanel/" + contentName, containerOwner);
+					// var result = SocialPanel.RetrieveSocialPanel("Content/AaltoGlobalImpact.OIP/SocialPanel/" + contentName, containerOwner);
+					var result = SocialPanel.RetrieveSocialPanel("AaltoGlobalImpact.OIP/SocialPanel/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SocialPanel/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SocialPanel/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SocialPanel/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20598,13 +20806,15 @@ BlogIndexGroup.Summary
 
 				public static Longitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Longitude.RetrieveLongitude("Content/AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
+					// var result = Longitude.RetrieveLongitude("Content/AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
+					var result = Longitude.RetrieveLongitude("AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Longitude/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Longitude/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Longitude/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20802,13 +21012,15 @@ BlogIndexGroup.Summary
 
 				public static Latitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Latitude.RetrieveLatitude("Content/AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
+					// var result = Latitude.RetrieveLatitude("Content/AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
+					var result = Latitude.RetrieveLatitude("AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Latitude/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Latitude/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Latitude/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21006,13 +21218,15 @@ BlogIndexGroup.Summary
 
 				public static Location RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Location.RetrieveLocation("Content/AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
+					// var result = Location.RetrieveLocation("Content/AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
+					var result = Location.RetrieveLocation("AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Location/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Location/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Location/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21230,13 +21444,15 @@ BlogIndexGroup.Summary
 
 				public static LocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = LocationCollection.RetrieveLocationCollection("Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
+					// var result = LocationCollection.RetrieveLocationCollection("Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
+					var result = LocationCollection.RetrieveLocationCollection("AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/LocationCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21434,13 +21650,15 @@ BlogIndexGroup.Summary
 
 				public static Date RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Date.RetrieveDate("Content/AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
+					// var result = Date.RetrieveDate("Content/AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
+					var result = Date.RetrieveDate("AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Date/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Date/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Date/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21651,13 +21869,15 @@ BlogIndexGroup.Summary
 
 				public static Sex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Sex.RetrieveSex("Content/AaltoGlobalImpact.OIP/Sex/" + contentName, containerOwner);
+					// var result = Sex.RetrieveSex("Content/AaltoGlobalImpact.OIP/Sex/" + contentName, containerOwner);
+					var result = Sex.RetrieveSex("AaltoGlobalImpact.OIP/Sex/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Sex/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Sex/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Sex/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21855,13 +22075,15 @@ BlogIndexGroup.Summary
 
 				public static OBSAddress RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = OBSAddress.RetrieveOBSAddress("Content/AaltoGlobalImpact.OIP/OBSAddress/" + contentName, containerOwner);
+					// var result = OBSAddress.RetrieveOBSAddress("Content/AaltoGlobalImpact.OIP/OBSAddress/" + contentName, containerOwner);
+					var result = OBSAddress.RetrieveOBSAddress("AaltoGlobalImpact.OIP/OBSAddress/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OBSAddress/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OBSAddress/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/OBSAddress/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -22122,13 +22344,15 @@ BlogIndexGroup.Summary
 
 				public static Identity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Identity.RetrieveIdentity("Content/AaltoGlobalImpact.OIP/Identity/" + contentName, containerOwner);
+					// var result = Identity.RetrieveIdentity("Content/AaltoGlobalImpact.OIP/Identity/" + contentName, containerOwner);
+					var result = Identity.RetrieveIdentity("AaltoGlobalImpact.OIP/Identity/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Identity/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Identity/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Identity/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -22360,13 +22584,15 @@ BlogIndexGroup.Summary
 
 				public static ImageVideoSoundVectorRaw RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = ImageVideoSoundVectorRaw.RetrieveImageVideoSoundVectorRaw("Content/AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName, containerOwner);
+					// var result = ImageVideoSoundVectorRaw.RetrieveImageVideoSoundVectorRaw("Content/AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName, containerOwner);
+					var result = ImageVideoSoundVectorRaw.RetrieveImageVideoSoundVectorRaw("AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ImageVideoSoundVectorRaw/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -22577,13 +22803,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static Category RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Category.RetrieveCategory("Content/AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
+					// var result = Category.RetrieveCategory("Content/AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
+					var result = Category.RetrieveCategory("AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Category/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Category/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Category/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -22781,13 +23009,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static CategoryCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = CategoryCollection.RetrieveCategoryCollection("Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
+					// var result = CategoryCollection.RetrieveCategoryCollection("Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
+					var result = CategoryCollection.RetrieveCategoryCollection("AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CategoryCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -22985,13 +23215,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SubscriptionCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SubscriptionCollection.RetrieveSubscriptionCollection("Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
+					// var result = SubscriptionCollection.RetrieveSubscriptionCollection("Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
+					var result = SubscriptionCollection.RetrieveSubscriptionCollection("AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -23189,13 +23421,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static Subscription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Subscription.RetrieveSubscription("Content/AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
+					// var result = Subscription.RetrieveSubscription("Content/AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
+					var result = Subscription.RetrieveSubscription("AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Subscription/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Subscription/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Subscription/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -23412,13 +23646,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static QueueEnvelope RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = QueueEnvelope.RetrieveQueueEnvelope("Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
+					// var result = QueueEnvelope.RetrieveQueueEnvelope("Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
+					var result = QueueEnvelope.RetrieveQueueEnvelope("AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -23644,13 +23880,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static OperationRequestCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = OperationRequestCollection.RetrieveOperationRequestCollection("Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
+					// var result = OperationRequestCollection.RetrieveOperationRequestCollection("Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
+					var result = OperationRequestCollection.RetrieveOperationRequestCollection("AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -23848,13 +24086,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static OperationRequest RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = OperationRequest.RetrieveOperationRequest("Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
+					// var result = OperationRequest.RetrieveOperationRequest("Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
+					var result = OperationRequest.RetrieveOperationRequest("AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/OperationRequest/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -24085,13 +24325,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static DeleteEntireOwnerOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
+					// var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
+					var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -24296,13 +24538,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static DeleteOwnerContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
+					// var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
+					var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -24507,13 +24751,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SystemError RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SystemError.RetrieveSystemError("Content/AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
+					// var result = SystemError.RetrieveSystemError("Content/AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
+					var result = SystemError.RetrieveSystemError("AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemError/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemError/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SystemError/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -24736,13 +24982,15 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static SystemErrorItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SystemErrorItem.RetrieveSystemErrorItem("Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
+					// var result = SystemErrorItem.RetrieveSystemErrorItem("Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
+					var result = SystemErrorItem.RetrieveSystemErrorItem("AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -24952,13 +25200,15 @@ SystemErrorItem.LongDescription
 
 				public static SystemErrorItemCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
+					// var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
+					var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -25156,13 +25406,15 @@ SystemErrorItem.LongDescription
 
 				public static InformationSource RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = InformationSource.RetrieveInformationSource("Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
+					// var result = InformationSource.RetrieveInformationSource("Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
+					var result = InformationSource.RetrieveInformationSource("AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/InformationSource/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -25400,13 +25652,15 @@ SystemErrorItem.LongDescription
 
 				public static InformationSourceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = InformationSourceCollection.RetrieveInformationSourceCollection("Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
+					// var result = InformationSourceCollection.RetrieveInformationSourceCollection("Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
+					var result = InformationSourceCollection.RetrieveInformationSourceCollection("AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -25604,13 +25858,15 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
+					// var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
+					var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -25844,13 +26100,15 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentHandlerItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
+					// var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
+					var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -26055,13 +26313,15 @@ SystemErrorItem.LongDescription
 
 				public static UpdateWebContentHandlerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
+					// var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
+					var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -26259,13 +26519,15 @@ SystemErrorItem.LongDescription
 
 				public static SubscriberInput RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = SubscriberInput.RetrieveSubscriberInput("Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
+					// var result = SubscriberInput.RetrieveSubscriberInput("Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
+					var result = SubscriberInput.RetrieveSubscriberInput("AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -26484,13 +26746,15 @@ SystemErrorItem.LongDescription
 
 				public static Monitor RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Monitor.RetrieveMonitor("Content/AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
+					// var result = Monitor.RetrieveMonitor("Content/AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
+					var result = Monitor.RetrieveMonitor("AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Monitor/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Monitor/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Monitor/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -26726,13 +26990,15 @@ SystemErrorItem.LongDescription
 
 				public static IconTitleDescription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = IconTitleDescription.RetrieveIconTitleDescription("Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
+					// var result = IconTitleDescription.RetrieveIconTitleDescription("Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
+					var result = IconTitleDescription.RetrieveIconTitleDescription("AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -26944,13 +27210,15 @@ IconTitleDescription.Description
 
 				public static AboutAGIApplications RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = AboutAGIApplications.RetrieveAboutAGIApplications("Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
+					// var result = AboutAGIApplications.RetrieveAboutAGIApplications("Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
+					var result = AboutAGIApplications.RetrieveAboutAGIApplications("AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -27161,13 +27429,15 @@ IconTitleDescription.Description
 
 				public static Icon RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = Icon.RetrieveIcon("Content/AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
+					// var result = Icon.RetrieveIcon("Content/AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
+					var result = Icon.RetrieveIcon("AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Icon/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Icon/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Icon/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -27351,13 +27621,15 @@ IconTitleDescription.Description
 
 				public static WebPageTemplate RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = WebPageTemplate.RetrieveWebPageTemplate("Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
+					// var result = WebPageTemplate.RetrieveWebPageTemplate("Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
+					var result = WebPageTemplate.RetrieveWebPageTemplate("AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -27541,13 +27813,15 @@ IconTitleDescription.Description
 
 				public static WebPage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					var result = WebPage.RetrieveWebPage("Content/AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
+					// var result = WebPage.RetrieveWebPage("Content/AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
+					var result = WebPage.RetrieveWebPage("AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPage/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/WebPage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
