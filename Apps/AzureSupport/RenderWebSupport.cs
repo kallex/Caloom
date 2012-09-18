@@ -581,8 +581,8 @@ namespace TheBall
 
         public static void RefreshAllAccountAndGroupTemplates(bool useWorker)
         {
-            refreshAllAccountTemplates(useWorker);
             refreshAllGroupTemplates(useWorker);
+            refreshAllAccountTemplates(useWorker);
         }
 
         private static void refreshAllGroupTemplates(bool useWorker)
@@ -627,8 +627,8 @@ namespace TheBall
             }
             if(useWorker)
             {
-                QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
-                QueueSupport.PutToOperationQueue(publicGroupTemplates, renderPublicTemplates, publishPublicContent, publishDefault);
+                //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
+                QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates, publicGroupTemplates, renderPublicTemplates, publishPublicContent, publishDefault);
             }
         }
 

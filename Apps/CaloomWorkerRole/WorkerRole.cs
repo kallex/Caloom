@@ -40,7 +40,8 @@ namespace CaloomWorkerRole
             Task[] tasks = new Task[]
                                {
                                    Task.Factory.StartNew(() => {}), 
-                                   //Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
+                                   Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 

@@ -25,7 +25,7 @@ namespace TheBallTool
                 bool debugMode = false;
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
-                //ProcessErrors(true);
+                ProcessErrors(true);
                 //return;
 
                 //OperationRequest operationRequest = PushTestQueue();
@@ -97,6 +97,7 @@ namespace TheBallTool
                     //WorkerSupport.ProcessMessage(envelope, false);
                     //QueueSupport.CurrErrorQueue.DeleteMessage(message);
                     messages.Add(message);
+                    envelope.CurrentRetryCount++;
                     envelopes.Add(envelope);
                     envelope = ErrorSupport.RetrieveRetryableEnvelope(out message);
                 }
