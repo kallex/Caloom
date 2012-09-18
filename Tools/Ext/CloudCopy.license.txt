@@ -1,0 +1,5 @@
+For License See:
+http://cloudcopy.codeplex.com/license
+
+The tool is downloaded from:
+http://cloudcopy.codeplex.com/
