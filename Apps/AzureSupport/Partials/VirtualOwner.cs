@@ -11,10 +11,16 @@ namespace AaltoGlobalImpact.OIP
 
         public static VirtualOwner FigureOwner(IInformationObject ownedObject)
         {
-            if(ownedObject.RelativeLocation.StartsWith("acc/") || ownedObject.RelativeLocation.StartsWith("grp/"))
-                return new VirtualOwner(ownedObject.RelativeLocation.Substring(0, 3),
-                    ownedObject.RelativeLocation.Substring(4, StorageSupport.GuidLength));
-            throw new InvalidDataException("Cannot figure owner of: " + ownedObject.RelativeLocation);
+            string relativeLocation = ownedObject.RelativeLocation;
+            return FigureOwner(relativeLocation);
+        }
+
+        public static VirtualOwner FigureOwner(string relativeLocation)
+        {
+            if (relativeLocation.StartsWith("acc/") || relativeLocation.StartsWith("grp/"))
+                return new VirtualOwner(relativeLocation.Substring(0, 3),
+                    relativeLocation.Substring(4, StorageSupport.GuidLength));
+            throw new InvalidDataException("Cannot figure owner of: " + relativeLocation);
         }
 
         public VirtualOwner(string containerName, string locationPrefix)

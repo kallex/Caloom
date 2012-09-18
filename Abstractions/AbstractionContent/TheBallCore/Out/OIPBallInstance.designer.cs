@@ -23590,10 +23590,15 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					switch (propertyName)
 					{
+						case "CurrentRetryCount":
+							CurrentRetryCount = long.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public long CurrentRetryCount { get; set; }
 			[DataMember]
 			public OperationRequest SingleOperation { get; set; }
 			[DataMember]
@@ -23978,6 +23983,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.SubscriberNotification = Subscription.CreateDefault();
 					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
 					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
+					result.DeleteOwnerContent = DeleteOwnerContentOperation.CreateDefault();
 					return result;
 				}
 
@@ -23991,6 +23997,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.SubscriberNotification = Subscription.CreateDemoDefault();
 					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDemoDefault();
 					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDemoDefault();
+					result.DeleteOwnerContent = DeleteOwnerContentOperation.CreateDemoDefault();
 				
 					return result;
 				}
@@ -24014,6 +24021,12 @@ ImageVideoSoundVectorRaw.Vector
 						if(result != null)
 							return result;
 					}
+					{
+						var item = DeleteOwnerContent;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -24031,6 +24044,8 @@ ImageVideoSoundVectorRaw.Vector
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			[DataMember]
 			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
+			[DataMember]
+			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
 			
 			}
 			[DataContract]
@@ -24245,6 +24260,217 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
+			public partial class DeleteOwnerContentOperation : IInformationObject
+			{
+				public DeleteOwnerContentOperation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "DeleteOwnerContentOperation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static DeleteOwnerContentOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveDeleteOwnerContentOperation(relativeLocation, owner);
+				}
+
+
+                public static DeleteOwnerContentOperation RetrieveDeleteOwnerContentOperation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (DeleteOwnerContentOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeleteOwnerContentOperation), null, owner);
+                    return result;
+                }
+
+				public static DeleteOwnerContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteOwnerContentOperation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static DeleteOwnerContentOperation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteOwnerContentOperation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (DeleteOwnerContentOperation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref DeleteOwnerContentOperation customDemoObject);
+
+
+
+				public static DeleteOwnerContentOperation CreateDefault()
+				{
+					var result = new DeleteOwnerContentOperation();
+					return result;
+				}
+
+				public static DeleteOwnerContentOperation CreateDemoDefault()
+				{
+					DeleteOwnerContentOperation customDemo = null;
+					DeleteOwnerContentOperation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new DeleteOwnerContentOperation();
+					result.ContainerName = @"DeleteOwnerContentOperation.ContainerName";
+
+					result.LocationPrefix = @"DeleteOwnerContentOperation.LocationPrefix";
+
+				
+					return result;
+				}
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ContainerName":
+							ContainerName = value;
+							break;
+						case "LocationPrefix":
+							LocationPrefix = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ContainerName { get; set; }
+			[DataMember]
+			public string LocationPrefix { get; set; }
+			
+			}
+			[DataContract]
 			public partial class SystemError : IInformationObject
 			{
 				public SystemError()
@@ -24414,6 +24640,7 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					var result = new SystemError();
 					result.SystemErrorItems = SystemErrorItemCollection.CreateDefault();
+					result.MessageContent = QueueEnvelope.CreateDefault();
 					return result;
 				}
 
@@ -24427,6 +24654,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.ErrorTitle = @"SystemError.ErrorTitle";
 
 					result.SystemErrorItems = SystemErrorItemCollection.CreateDemoDefault();
+					result.MessageContent = QueueEnvelope.CreateDemoDefault();
 				
 					return result;
 				}
@@ -24434,6 +24662,12 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = SystemErrorItems;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = MessageContent;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -24461,6 +24695,8 @@ ImageVideoSoundVectorRaw.Vector
 			public DateTime OccurredAt { get; set; }
 			[DataMember]
 			public SystemErrorItemCollection SystemErrorItems { get; set; }
+			[DataMember]
+			public QueueEnvelope MessageContent { get; set; }
 			
 			}
 			[DataContract]

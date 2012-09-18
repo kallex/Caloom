@@ -19,6 +19,7 @@ namespace TheBall
         public static string InformationSourcesKey = "InformationSources";
         public static string InformationType_WebTemplateValue = "WebTemplate";
         public static string InformationType_InformationObjectValue = "InformationObject";
+        public static string InformationType_RenderedWebPage = "RenderedWebPage";
         public static string InformationType_GenericContentValue = "GenericContent";
 
         public static CloudTableClient CurrTableClient { get; private set; }
@@ -60,22 +61,31 @@ namespace TheBall
 
         public static void SetBlobInformationSources(this CloudBlob blob, InformationSourceCollection informationSourceCollection)
         {
-            if(informationSourceCollection == null)
-            {
-                blob.Attributes.Metadata.Remove(InformationSourcesKey);
-                return;
-            }
-            string stringValue = informationSourceCollection.SerializeToXml(noFormatting:true);
-            blob.Attributes.Metadata[InformationSourcesKey] = stringValue;
+            //if(informationSourceCollection == null)
+            //{
+            //    blob.Attributes.Metadata.Remove(InformationSourcesKey);
+            //    return;
+            //}
+            //string stringValue = informationSourceCollection.SerializeToXml(noFormatting:true);
+            //blob.Attributes.Metadata[InformationSourcesKey] = stringValue;
+            string blobInformationType = blob.GetBlobInformationType();
+            if(blobInformationType == InformationType_GenericContentValue)
+                throw new InvalidDataException("Blob type of GenericContent cannot have information sources: " + blob.Name);
+            InformationSourceSupport.SetInformationSources(blob.Name, informationSourceCollection);
         }
 
         public static InformationSourceCollection GetBlobInformationSources(this CloudBlob blob)
         {
-            FetchMetadataIfMissing(blob);
-            string stringValue = blob.Attributes.Metadata[InformationSourcesKey];
-            if (stringValue == null)
-                return null;
-            return InformationSourceCollection.DeserializeFromXml(stringValue);
+            //FetchMetadataIfMissing(blob);
+            //string stringValue = blob.Attributes.Metadata[InformationSourcesKey];
+            //if (stringValue == null)
+            //    return null;
+            //return InformationSourceCollection.DeserializeFromXml(stringValue);
+            string blobInformationType = blob.GetBlobInformationType();
+            if (blobInformationType == InformationType_GenericContentValue)
+                throw new InvalidDataException("Blob type of GenericContent cannot have information sources: " + blob.Name);
+            var result = InformationSourceSupport.GetInformationSources(blob.Name);
+            return result;
         }
 
         private static void FetchMetadataIfMissing(CloudBlob blob)
@@ -957,7 +967,9 @@ namespace TheBall
         {
             if(referenceLocation.StartsWith("acc/") == false && referenceLocation.StartsWith("grp/") == false)
                 throw new InvalidDataException("Unable to determine root for reference: " + referenceLocation);
-            return referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
+            //var contentRoot = referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
+            var contentRoot = referenceLocation.Substring(0, AccOrGrpPlusIDPathLength);
+            return contentRoot;
         }
 
         public static int DeleteContentsFromOwner(IContainerOwner owner)
@@ -976,7 +988,7 @@ namespace TheBall
             int deleteCount = 0;
             foreach(CloudBlob blob in blobList)
             {
-                blob.Delete();
+                blob.DeleteWithoutFiringSubscriptions();
                 deleteCount++;
             }
             return deleteCount;
@@ -993,9 +1005,9 @@ namespace TheBall
             if(owner == null)
                 throw new ArgumentNullException("owner");
             string ownerRootAddress = GetOwnerRootAddress(owner);
-            BlobRequestOptions options = new BlobRequestOptions {UseFlatBlobListing = true};
+            BlobRequestOptions options = new BlobRequestOptions {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             string storageLevelOwnerRootAddress = CurrActiveContainer.Name + "/" + ownerRootAddress;
-            var blobs = CurrBlobClient.ListBlobsWithPrefix(storageLevelOwnerRootAddress);
+            var blobs = CurrBlobClient.ListBlobsWithPrefix(storageLevelOwnerRootAddress, options);
             int deletedCount = 0;
             foreach(CloudBlob blob in blobs)
             {
@@ -1009,7 +1021,7 @@ namespace TheBall
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
             string rootAddress = CurrActiveContainer.Name + "/" + GetBlobOwnerAddress(owner, targetLocation);
-            BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true };
+            BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata };
             var blobs = CurrBlobClient.ListBlobsWithPrefix(rootAddress, options);
             int deletedCount = 0;
             foreach (CloudBlob blob in blobs)
@@ -1020,13 +1032,40 @@ namespace TheBall
             return deletedCount;
         }
 
+        public static bool CanContainExternalMetadata(this CloudBlob blob)
+        {
+            string blobInformationType = blob.GetBlobInformationType();
+            if (blobInformationType == null)
+                return false;
+            if (blobInformationType == InformationType_GenericContentValue)
+                return false;
+            return true;
+        }
+
         public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
         {
+            if (blob.CanContainExternalMetadata())
+            {
+                SubscribeSupport.DeleteSubscriptions(blob.Name);
+                InformationSourceSupport.DeleteInformationSources(blob.Name);
+            }
             blob.DeleteIfExists();
         }
 
         public static void DeleteAndFireSubscriptions(this CloudBlob blob)
         {
+            if (blob.CanContainExternalMetadata())
+            {
+                SubscribeSupport.DeleteAfterFiringSubscriptions(targetLocation: blob.Name);
+                InformationSourceSupport.DeleteInformationSources(targetLocation: blob.Name);
+            }
+            blob.DeleteIfExists();
+        }
+
+        public static void DeleteBlob(string blobPath)
+        {
+            Console.WriteLine("Deleting: " + blobPath);
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(blobPath);
             blob.DeleteIfExists();
         }
     }

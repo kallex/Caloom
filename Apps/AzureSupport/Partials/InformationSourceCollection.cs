@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -26,11 +27,13 @@ namespace AaltoGlobalImpact.OIP
             return CollectionContent.Any(source => source.HasSourceChanged());
         }
 
-        public void SubscribeTargetToSourceChanges(CloudBlob renderTarget)
+        public void SubscribeTargetToSourceChanges(CloudBlob subscriber)
         {
+            if(subscriber.CanContainExternalMetadata() == false)
+                throw new InvalidDataException("Subscriber candidate cannot contain metadata: " + subscriber.Name);
             foreach(var source in CollectionContent.Where(src => src.IsInformationObjectSource))
             {
-                SubscribeSupport.AddSubscriptionToObject(source.SourceLocation, renderTarget.Name,
+                SubscribeSupport.AddSubscriptionToObject(source.SourceLocation, subscriber.Name,
                                                          SubscribeSupport.SubscribeType_WebPageToSource);
             }
         }

@@ -36,12 +36,12 @@ namespace CaloomWorkerRole
         public override void Run()
         {
             GracefullyStopped = false;
-            ThreadPool.SetMinThreads(3, 3);
+            //ThreadPool.SetMinThreads(3, 3);
             Task[] tasks = new Task[]
                                {
                                    Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                };

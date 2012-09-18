@@ -35,7 +35,7 @@ namespace AaltoGlobalImpact.OIP
                 emailRoot.Account.StoreAndPropagate();
             }
             StorageSupport.DeleteInformationObject(groupToDelete);
-            //WorkerSupport.DeleteAllOwnerContent(groupToDelete.Group);
+            //WorkerSupport.DeleteEntireOwner(groupToDelete.Group);
             OperationRequest operationRequest = new OperationRequest();
             operationRequest.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
             operationRequest.DeleteEntireOwner.ContainerName = groupToDelete.Group.ContainerName;

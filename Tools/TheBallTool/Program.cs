@@ -24,7 +24,10 @@ namespace TheBallTool
                                                args[0]);
                 bool debugMode = false;
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
-                
+
+                //ProcessErrors(true);
+                //return;
+
                 //OperationRequest operationRequest = PushTestQueue();
                 //QueueEnvelope envelope = new QueueEnvelope();
                 //envelope.SingleOperation = operationRequest;
@@ -60,7 +63,10 @@ namespace TheBallTool
                         ToArray();
                 //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
-                //DeleteAllAccountAndGroupContents();
+                DeleteAllAccountAndGroupContents(true);
+
+                // TODO: The delete above needs to go through first before the refresh one below
+
                 RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
                 //FileSystemSupport.UploadTemplateContent(groupTemplates, webGroup, templateLocation, true);
                 Console.WriteLine("Starting to sync...");
@@ -75,6 +81,38 @@ namespace TheBallTool
                 catch(InvalidDataException ex)
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
+            }
+        }
+
+        private static void ProcessErrors(bool useWorker)
+        {
+            if (useWorker)
+            {
+                List<QueueEnvelope> envelopes = new List<QueueEnvelope>();
+                List<CloudQueueMessage> messages = new List<CloudQueueMessage>();
+                CloudQueueMessage message = null;
+                QueueEnvelope envelope = ErrorSupport.RetrieveRetryableEnvelope(out message);
+                while (envelope != null)
+                {
+                    //WorkerSupport.ProcessMessage(envelope, false);
+                    //QueueSupport.CurrErrorQueue.DeleteMessage(message);
+                    messages.Add(message);
+                    envelopes.Add(envelope);
+                    envelope = ErrorSupport.RetrieveRetryableEnvelope(out message);
+                }
+                envelopes.ForEach(QueueSupport.PutToDefaultQueue);
+                messages.ForEach(msg => QueueSupport.CurrErrorQueue.DeleteMessage(msg));
+            }
+            else
+            {
+                CloudQueueMessage message = null;
+                QueueEnvelope envelope = ErrorSupport.RetrieveRetryableEnvelope(out message);
+                while (envelope != null)
+                {
+                    WorkerSupport.ProcessMessage(envelope, false);
+                    QueueSupport.CurrErrorQueue.DeleteMessage(message);
+                    envelope = ErrorSupport.RetrieveRetryableEnvelope(out message);
+                }
             }
         }
 
@@ -101,10 +139,10 @@ namespace TheBallTool
             Task[] tasks = new Task[]
                                {
                                    Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
-                                   Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
+                                   //Task.Factory.StartNew(() => {}), 
                                };
             bool IsStopped = false;
             int initialCount = 0;
@@ -219,21 +257,42 @@ namespace TheBallTool
             FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
         }
 
-        private static void DeleteAllAccountAndGroupContents()
+        private static void DeleteAllAccountAndGroupContents(bool useWorker)
         {
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
-            foreach(var accountID in accountIDs)
+            var groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            List<string> referenceLocations = new List<string>();
+            foreach (var accountID in accountIDs)
             {
                 string referenceLocation = "acc/" + accountID + "/";
-                StorageSupport.DeleteContentsFromOwner(referenceLocation);
+                referenceLocations.Add(referenceLocation);
             }
-            var groupIDs = TBRGroupRoot.GetAllGroupIDs();
             foreach (var groupID in groupIDs)
             {
                 string referenceLocation = "grp/" + groupID + "/";
-                StorageSupport.DeleteContentsFromOwner(referenceLocation);
+                referenceLocations.Add(referenceLocation);
             }
-
+            if(useWorker)
+            {
+                referenceLocations.ForEach(refLoc =>
+                                               {
+                                                   VirtualOwner owner = VirtualOwner.FigureOwner(refLoc);
+                                                   QueueSupport.PutToOperationQueue(
+                                                       new OperationRequest
+                                                           {
+                                                               DeleteOwnerContent = new DeleteOwnerContentOperation
+                                                                                        {
+                                                                                            ContainerName = owner.ContainerName,
+                                                                                            LocationPrefix = owner.LocationPrefix
+                                                                                        }
+                                                           }
+                                                       );
+                                               });                
+            }
+            else
+            {
+                referenceLocations.ForEach(refLoc => StorageSupport.DeleteContentsFromOwner(refLoc));
+            }
         }
 
         private static void TestEmail()

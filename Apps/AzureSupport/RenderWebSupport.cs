@@ -79,7 +79,7 @@ namespace TheBall
             string renderResult = RenderTemplateWithContentRoots(templateContent, existingRoots);
             bool rerenderRequired = UpdateMismatchedRootsToSources(sources, existingRoots, renderTarget);
             renderTarget.SetBlobInformationSources(sources);
-            renderTarget.UploadBlobText(renderResult, StorageSupport.InformationType_GenericContentValue);
+            renderTarget.UploadBlobText(renderResult, StorageSupport.InformationType_RenderedWebPage);
             if(rerenderRequired)
             {
                 RenderTemplateWithContentToBlob(template, renderTarget);

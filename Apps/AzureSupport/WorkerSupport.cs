@@ -76,7 +76,7 @@ namespace TheBall
                     handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
                 }
                 if(handled == false)
-                    blobToDelete.DeleteIfExists();
+                    blobToDelete.DeleteWithoutFiringSubscriptions();
             }
             foreach(var blobCopyItem in blobCopyList)
             {
@@ -164,14 +164,24 @@ namespace TheBall
         }
 
         private static int counter = 0;
-        public static void ProcessMessage(QueueEnvelope envelope)
+        public static void ProcessMessage(QueueEnvelope envelope, bool reportEnvelopeError = true)
         {
-            if (envelope.SingleOperation != null)
-                ProcessSingleOperation(envelope.SingleOperation);
-            if(envelope.OrderDependentOperationSequence != null)
+            try
             {
-                envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
+                if (envelope.SingleOperation != null)
+                    ProcessSingleOperation(envelope.SingleOperation);
+                if (envelope.OrderDependentOperationSequence != null)
+                {
+                    envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
+                }
             }
+            catch (Exception ex)
+            {
+                if (reportEnvelopeError)
+                    ErrorSupport.ReportEnvelopeWithException(envelope, ex);
+                throw;
+            }
+
             counter++;
             if (counter >= 1000)
             {
@@ -191,8 +201,19 @@ namespace TheBall
             {
                 VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteEntireOwner.ContainerName,
                     operationRequest.DeleteEntireOwner.LocationPrefix);
-                DeleteAllOwnerContent(virtualOwner);
+                DeleteEntireOwner(virtualOwner);
             }
+            if(operationRequest.DeleteOwnerContent != null)
+            {
+                VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteOwnerContent.ContainerName,
+                    operationRequest.DeleteOwnerContent.LocationPrefix);
+                DeleteOwnerContent(virtualOwner);
+            }
+        }
+
+        private static void DeleteOwnerContent(VirtualOwner containerOwner)
+        {
+            StorageSupport.DeleteContentsFromOwner(containerOwner);
         }
 
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
@@ -209,7 +230,7 @@ namespace TheBall
         }
 
 
-        public static void DeleteAllOwnerContent(IContainerOwner containerOwner)
+        public static void DeleteEntireOwner(IContainerOwner containerOwner)
         {
             StorageSupport.DeleteEntireOwner(containerOwner);
         }

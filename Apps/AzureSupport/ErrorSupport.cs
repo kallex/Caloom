@@ -32,9 +32,12 @@ namespace TheBall
 
         private static SystemError GetErrorFromMessage(CloudQueueMessage message)
         {
-            SystemError error = SystemError.CreateDefault();
-            error.ErrorTitle = "Cloud Message: " + message.Id;
-            error.OccurredAt = DateTime.UtcNow;
+            SystemError error = new SystemError
+                                    {
+                                        ErrorTitle = "Cloud Message: " + message.Id,
+                                        OccurredAt = DateTime.UtcNow,
+                                        SystemErrorItems = new SystemErrorItemCollection()
+                                    };
             error.SystemErrorItems.CollectionContent.Add(new SystemErrorItem()
                                                              {
                                                                  ShortDescription = "Message content",
@@ -45,15 +48,43 @@ namespace TheBall
 
         public static SystemError GetErrorFromExcetion(Exception exception)
         {
-            SystemError error = SystemError.CreateDefault();
-            error.ErrorTitle = "Exception: " + exception.GetType().Name;
-            error.OccurredAt = DateTime.UtcNow;
+            SystemError error = new SystemError
+                                    {
+                                        ErrorTitle = "Exception: " + exception.GetType().Name,
+                                        OccurredAt = DateTime.UtcNow,
+                                        SystemErrorItems = new SystemErrorItemCollection()
+                                    };
             error.SystemErrorItems.CollectionContent.Add(new SystemErrorItem()
                                                              {
                                                                  ShortDescription = exception.Message,
                                                                  LongDescription = exception.ToString()
                                                              });
             return error;
+        }
+
+        public static void ReportEnvelopeWithException(QueueEnvelope envelope, Exception exception)
+        {
+            SystemError error = GetErrorFromExcetion(exception);
+            error.MessageContent = envelope;
+            ReportError(error);
+        }
+
+        public static QueueEnvelope RetrieveRetryableEnvelope(out CloudQueueMessage message)
+        {
+            SystemError error = QueueSupport.GetFromErrorQueue(out message);
+            while(error != null)
+            {
+                if(error.MessageContent == null)
+                {
+                    QueueSupport.CurrErrorQueue.DeleteMessage(message);
+                    error = QueueSupport.GetFromErrorQueue(out message);
+                }
+                else
+                {
+                    return error.MessageContent;
+                }
+            }
+            return null;
         }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
 {
@@ -72,6 +71,18 @@ namespace TheBall
                                                         };
                 QueueSupport.PutToOperationQueue(operationRequest);
             }
+        }
+
+        public static void DeleteSubscriptions(string targetLocation)
+        {
+            string blobPath = SubscriptionCollection.GetRelativeLocationAsMetadataTo(targetLocation);
+            StorageSupport.DeleteBlob(blobPath);
+        }
+
+        public static void DeleteAfterFiringSubscriptions(string targetLocation)
+        {
+            NotifySubscribers(targetLocation);
+            DeleteSubscriptions(targetLocation);
         }
     }
 }
