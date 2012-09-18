@@ -24,10 +24,10 @@ namespace TheBallTool
                                                args[0]);
                 bool debugMode = false;
 
-                InformationContext.InitializeFunctionality(3);
+                //InformationContext.InitializeFunctionality(3);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
-                ProcessErrors(false);
+                ProcessErrors(true);
                 //return;
 
                 //OperationRequest operationRequest = PushTestQueue();

@@ -126,7 +126,7 @@ namespace TheBall
 
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
-            string urlLink = "https://oip.msunit.citrus.fi/emailvalidation/" + emailValidation.ID;
+            string urlLink = "http://oip.msunit.citrus.fi/emailvalidation/" + emailValidation.ID;
             string emailMessageFormat =
                 @"Welcome to The Open Innovation Platform!
 

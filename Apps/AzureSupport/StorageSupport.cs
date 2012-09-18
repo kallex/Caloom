@@ -217,6 +217,17 @@ namespace TheBall
             blob.UploadByteArray(binaryContent);
         }
 
+        public static void UploadBlobStream(this CloudBlobContainer container,
+    string blobPath, Stream streamContent, string blobInformationType = null)
+        {
+            if (blobInformationType == null)
+                blobInformationType = InformationType_GenericContentValue;
+            var blob = container.GetBlockBlobReference(blobPath);
+            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            blob.SetBlobInformationType(blobInformationType);
+            blob.UploadFromStream(streamContent);
+        }
+
         public static string GetMimeType(string extension)
         {
             if (extension == null)

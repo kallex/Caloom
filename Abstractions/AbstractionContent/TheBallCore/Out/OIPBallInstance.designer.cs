@@ -24,6 +24,7 @@ namespace AaltoGlobalImpact.OIP {
 		void PostDeleteExecute(IContainerOwner owner);
 		void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
+		void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
     }
 
 			[DataContract]
@@ -214,6 +215,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -425,6 +434,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -634,6 +651,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -843,6 +868,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -1054,6 +1087,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -1265,6 +1306,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -1478,6 +1527,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -1705,6 +1762,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -1897,6 +1962,14 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBAccountCollaborationGroupCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -2122,6 +2195,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -2309,6 +2390,14 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBLoginInfoCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -2534,6 +2623,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -2726,6 +2823,14 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBEmailCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -2953,6 +3058,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -3148,6 +3261,14 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBCollaboratorRoleCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -3375,6 +3496,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -3591,6 +3720,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -3811,6 +3948,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -4041,6 +4186,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -4248,6 +4401,14 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref LoginProviderCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -4473,6 +4634,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -4679,6 +4848,14 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -4890,6 +5067,14 @@ JavaScriptContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -5101,6 +5286,14 @@ JavascriptContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -5312,6 +5505,14 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -5518,6 +5719,14 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -5728,6 +5937,14 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -5959,6 +6176,14 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -6206,6 +6431,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -6428,6 +6661,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -6642,6 +6883,14 @@ AccountIndex.Summary
 				static partial void CreateCustomDemo(ref AddressAndLocationCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -6869,6 +7118,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -7092,6 +7349,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -7313,6 +7578,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -7525,6 +7798,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -7754,6 +8035,14 @@ AccountIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -7980,6 +8269,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -8202,6 +8499,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -8410,6 +8715,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -8602,6 +8915,14 @@ AccountRoles.OrganizationsImPartOf
 				static partial void CreateCustomDemo(ref ReferenceCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -8833,6 +9154,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -9068,6 +9397,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -9295,6 +9632,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -9546,6 +9891,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -9741,6 +10094,14 @@ AccountRoles.OrganizationsImPartOf
 				static partial void CreateCustomDemo(ref MapMarkerCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -9972,6 +10333,14 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -10225,6 +10594,14 @@ AboutContainer.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -10476,6 +10853,14 @@ AboutContainer.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -10715,6 +11100,14 @@ AboutContainer.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -10954,6 +11347,14 @@ AboutContainer.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -11189,6 +11590,14 @@ AboutContainer.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -11413,6 +11822,14 @@ ActivitySummaryContainer.SummaryBody
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -11665,6 +12082,14 @@ ActivityIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -11866,8 +12291,9 @@ ActivityIndex.Summary
 				public static ActivityContainer CreateDefault()
 				{
 					var result = new ActivityContainer();
+					result.Header = ContainerHeader.CreateDefault();
 					result.ActivityIndex = ActivityIndex.CreateDefault();
-					result.Activities = ActivityCollection.CreateDefault();
+					result.ActivityModule = Activity.CreateDefault();
 					return result;
 				}
 
@@ -11878,13 +12304,28 @@ ActivityIndex.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new ActivityContainer();
+					result.Header = ContainerHeader.CreateDemoDefault();
 					result.ActivityIndex = ActivityIndex.CreateDemoDefault();
-					result.Activities = ActivityCollection.CreateDemoDefault();
+					result.ActivityModule = Activity.CreateDemoDefault();
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = Header;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					{
 						var item = ActivityIndex;
 						object result = item.FindObjectByID(objectId);
@@ -11892,7 +12333,7 @@ ActivityIndex.Summary
 							return result;
 					}
 					{
-						var item = Activities;
+						var item = ActivityModule;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -11909,9 +12350,11 @@ ActivityIndex.Summary
 					}
 	        }
 			[DataMember]
+			public ContainerHeader Header { get; set; }
+			[DataMember]
 			public ActivityIndex ActivityIndex { get; set; }
 			[DataMember]
-			public ActivityCollection Activities { get; set; }
+			public Activity ActivityModule { get; set; }
 			
 			}
 			[DataContract]
@@ -12081,6 +12524,14 @@ ActivityIndex.Summary
 				static partial void CreateCustomDemo(ref ActivityCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -12295,8 +12746,9 @@ ActivityIndex.Summary
 					result.ProfileImage = Image.CreateDefault();
 					result.IconImage = Image.CreateDefault();
 					result.Introduction = Introduction.CreateDefault();
-					result.Moderators = ModeratorCollection.CreateDefault();
+					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
+					result.Location = AddressAndLocation.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
@@ -12321,12 +12773,21 @@ Activity.Description
 Activity.Description
 ";
 
-					result.Moderators = ModeratorCollection.CreateDemoDefault();
+					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
+					result.Location = AddressAndLocation.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -12354,13 +12815,19 @@ Activity.Description
 							return result;
 					}
 					{
-						var item = Moderators;
+						var item = Collaborators;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
 					}
 					{
 						var item = ImageSets;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					{
+						var item = Location;
 						object result = item.FindObjectByID(objectId);
 						if(result != null)
 							return result;
@@ -12401,9 +12868,11 @@ Activity.Description
 			[DataMember]
 			public string Description { get; set; }
 			[DataMember]
-			public ModeratorCollection Moderators { get; set; }
+			public CollaboratorCollection Collaborators { get; set; }
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
+			[DataMember]
+			public AddressAndLocation Location { get; set; }
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			
@@ -12575,6 +13044,14 @@ Activity.Description
 				static partial void CreateCustomDemo(ref ModeratorCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -12802,6 +13279,14 @@ Activity.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -12994,6 +13479,14 @@ Activity.Description
 				static partial void CreateCustomDemo(ref CollaboratorCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -13223,6 +13716,14 @@ Activity.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -13439,6 +13940,14 @@ Activity.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -13626,6 +14135,14 @@ Activity.Description
 				static partial void CreateCustomDemo(ref CollaboratingGroupCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -13851,6 +14368,14 @@ Activity.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -14038,6 +14563,14 @@ Activity.Description
 				static partial void CreateCustomDemo(ref CollaboratingOrganizationCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -14276,6 +14809,14 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -14526,6 +15067,14 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -14797,6 +15346,14 @@ GroupIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -15021,6 +15578,14 @@ GroupIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -15253,6 +15818,14 @@ GroupIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -15459,6 +16032,14 @@ GroupIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -15665,6 +16246,14 @@ GroupIndex.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -15852,6 +16441,14 @@ GroupIndex.Summary
 				static partial void CreateCustomDemo(ref GroupCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -16103,6 +16700,14 @@ Group.OrganizationsAndGroupsLinkedToUs
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -16374,6 +16979,14 @@ Introduction.Body
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -16566,6 +17179,14 @@ Introduction.Body
 				static partial void CreateCustomDemo(ref BlogCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -16819,6 +17440,14 @@ Blog.Excerpt
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -17114,6 +17743,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -17367,6 +18004,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -17573,6 +18218,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -17779,6 +18432,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -17966,6 +18627,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref CalendarCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -18191,6 +18860,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -18378,6 +19055,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref MapCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -18609,6 +19294,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -18842,6 +19535,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -19032,6 +19733,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref MapResultCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -19261,6 +19970,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -19471,6 +20188,7 @@ BlogIndexGroup.Summary
 				public static Image CreateDefault()
 				{
 					var result = new Image();
+					result.ImageData = MediaContent.CreateDefault();
 					return result;
 				}
 
@@ -19481,6 +20199,7 @@ BlogIndexGroup.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new Image();
+					result.ImageData = MediaContent.CreateDemoDefault();
 					result.Title = @"Image.Title";
 
 					result.Caption = @"Image.Caption";
@@ -19488,8 +20207,22 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ImageData;
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
 					return null;
 				}
 
@@ -19508,9 +20241,203 @@ BlogIndexGroup.Summary
 					}
 	        }
 			[DataMember]
+			public MediaContent ImageData { get; set; }
+			[DataMember]
 			public string Title { get; set; }
 			[DataMember]
 			public string Caption { get; set; }
+			
+			}
+			[DataContract]
+			public partial class MediaContent : IInformationObject
+			{
+				public MediaContent()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "MediaContent";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static MediaContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveMediaContent(relativeLocation, owner);
+				}
+
+
+                public static MediaContent RetrieveMediaContent(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (MediaContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(MediaContent), null, owner);
+                    return result;
+                }
+
+				public static MediaContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = MediaContent.RetrieveMediaContent("Content/AaltoGlobalImpact.OIP/MediaContent/" + contentName, containerOwner);
+					var result = MediaContent.RetrieveMediaContent("AaltoGlobalImpact.OIP/MediaContent/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/MediaContent/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/MediaContent/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MediaContent));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MediaContent DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MediaContent));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MediaContent) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "MediaContent", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref MediaContent customDemoObject);
+
+
+				// Properties to map to handle the file: .
+				// TODO: Handle object collections
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				public static MediaContent CreateDefault()
+				{
+					var result = new MediaContent();
+					return result;
+				}
+
+				public static MediaContent CreateDemoDefault()
+				{
+					MediaContent customDemo = null;
+					MediaContent.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new MediaContent();
+					return result;
+				}
+
+
 			
 			}
 			[DataContract]
@@ -19680,6 +20607,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref ImageGroupCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -19909,6 +20844,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -20109,6 +21052,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref ImagesCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -20334,6 +21285,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -20521,6 +21480,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref SocialPanelCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -20746,6 +21713,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -20955,6 +21930,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -21161,6 +22144,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -21371,6 +22362,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -21574,6 +22573,14 @@ BlogIndexGroup.Summary
 				static partial void CreateCustomDemo(ref LocationCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -21797,6 +22804,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -22018,6 +23033,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -22242,6 +23265,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -22501,6 +23532,14 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -22738,6 +23777,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -22952,6 +23999,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -23139,6 +24194,14 @@ ImageVideoSoundVectorRaw.Vector
 				static partial void CreateCustomDemo(ref CategoryCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -23345,6 +24408,14 @@ ImageVideoSoundVectorRaw.Vector
 				static partial void CreateCustomDemo(ref SubscriptionCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -23574,6 +24645,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -23799,6 +24878,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -24010,6 +25097,14 @@ ImageVideoSoundVectorRaw.Vector
 				static partial void CreateCustomDemo(ref OperationRequestCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -24241,6 +25336,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -24476,6 +25579,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -24689,6 +25800,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -24904,6 +26023,14 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -25138,6 +26265,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -25330,6 +26465,14 @@ SystemErrorItem.LongDescription
 				static partial void CreateCustomDemo(ref SystemErrorItemCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -25565,6 +26708,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -25782,6 +26933,14 @@ SystemErrorItem.LongDescription
 				static partial void CreateCustomDemo(ref InformationSourceCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -26015,6 +27174,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -26251,6 +27418,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -26443,6 +27618,14 @@ SystemErrorItem.LongDescription
 				static partial void CreateCustomDemo(ref UpdateWebContentHandlerCollection customDemoObject);
 
 
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
 
 				
 		
@@ -26674,6 +27857,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -26903,6 +28094,14 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -27146,6 +28345,14 @@ IconTitleDescription.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
@@ -27361,6 +28568,14 @@ IconTitleDescription.Description
 				
 					return result;
 				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -27390,582 +28605,6 @@ IconTitleDescription.Description
 			public IconTitleDescription BuiltForAnybody { get; set; }
 			[DataMember]
 			public IconTitleDescription ForAllPeople { get; set; }
-			
-			}
-			[DataContract]
-			public partial class Icon : IInformationObject
-			{
-				public Icon()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Icon";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Icon", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Icon RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIcon(relativeLocation, owner);
-				}
-
-
-                public static Icon RetrieveIcon(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Icon) StorageSupport.RetrieveInformation(relativeLocation, typeof(Icon), null, owner);
-                    return result;
-                }
-
-				public static Icon RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Icon.RetrieveIcon("Content/AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
-					var result = Icon.RetrieveIcon("AaltoGlobalImpact.OIP/Icon/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/Icon/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/Icon/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Icon));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Icon DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Icon));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Icon) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Icon", masterRelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Icon", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref Icon customDemoObject);
-
-
-				// Properties to map to handle the file: Icon.png..png
-				// TODO: Handle object collections
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				public static Icon CreateDefault()
-				{
-					var result = new Icon();
-					return result;
-				}
-
-				public static Icon CreateDemoDefault()
-				{
-					Icon customDemo = null;
-					Icon.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new Icon();
-					return result;
-				}
-
-
-			
-			}
-			[DataContract]
-			public partial class WebPageTemplate : IInformationObject
-			{
-				public WebPageTemplate()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "WebPageTemplate";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static WebPageTemplate RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWebPageTemplate(relativeLocation, owner);
-				}
-
-
-                public static WebPageTemplate RetrieveWebPageTemplate(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (WebPageTemplate) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPageTemplate), null, owner);
-                    return result;
-                }
-
-				public static WebPageTemplate RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = WebPageTemplate.RetrieveWebPageTemplate("Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
-					var result = WebPageTemplate.RetrieveWebPageTemplate("AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/WebPageTemplate/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPageTemplate));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static WebPageTemplate DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPageTemplate));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (WebPageTemplate) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "WebPageTemplate", masterRelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "WebPageTemplate", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref WebPageTemplate customDemoObject);
-
-
-				// Properties to map to handle the file: WebPageTemplate.html..html
-				// TODO: Handle object collections
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				public static WebPageTemplate CreateDefault()
-				{
-					var result = new WebPageTemplate();
-					return result;
-				}
-
-				public static WebPageTemplate CreateDemoDefault()
-				{
-					WebPageTemplate customDemo = null;
-					WebPageTemplate.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new WebPageTemplate();
-					return result;
-				}
-
-
-			
-			}
-			[DataContract]
-			public partial class WebPage : IInformationObject
-			{
-				public WebPage()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "WebPage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static WebPage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWebPage(relativeLocation, owner);
-				}
-
-
-                public static WebPage RetrieveWebPage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (WebPage) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPage), null, owner);
-                    return result;
-                }
-
-				public static WebPage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = WebPage.RetrieveWebPage("Content/AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
-					var result = WebPage.RetrieveWebPage("AaltoGlobalImpact.OIP/WebPage/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/WebPage/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPage));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static WebPage DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WebPage));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (WebPage) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "WebPage", masterRelativeLocation).Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "WebPage", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref WebPage customDemoObject);
-
-
-				// Properties to map to handle the file: WebPage.html..html
-				// TODO: Handle object collections
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				public static WebPage CreateDefault()
-				{
-					var result = new WebPage();
-					return result;
-				}
-
-				public static WebPage CreateDemoDefault()
-				{
-					WebPage customDemo = null;
-					WebPage.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new WebPage();
-					return result;
-				}
-
-
 			
 			}
  } 

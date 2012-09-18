@@ -656,5 +656,17 @@ namespace TheBall
                 QueueSupport.PutToOperationQueue(accountLocalTemplate, renderLocalTemplate);
             }
         }
+
+        public static string GetUrlFromRelativeLocation(string relativeLocation)
+        {
+            if (relativeLocation.StartsWith("grp/"))
+                return "/auth/" + relativeLocation;
+            if(relativeLocation.StartsWith("acc/"))
+            {
+                string result = "/auth/account" + relativeLocation.Substring(4 + StorageSupport.GuidLength);
+                return result;
+            }
+            return relativeLocation;
+        }
     }
 }

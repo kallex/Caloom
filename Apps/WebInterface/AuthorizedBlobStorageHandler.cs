@@ -182,6 +182,11 @@ namespace WebInterface
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 rootObject.SetValuesToObjects(form);
+                foreach(string contentID in request.Files.AllKeys)
+                {
+                    HttpPostedFile postedFile = request.Files[contentID];
+                    rootObject.SetMediaContent(containerOwner, contentID, postedFile);
+                }
                 IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
                 if(addOperationProvider != null)
                 {

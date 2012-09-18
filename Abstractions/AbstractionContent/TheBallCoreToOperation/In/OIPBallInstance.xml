@@ -363,8 +363,9 @@
 
       <InformationObject name="ActivityContainer" designDesc="Group container">
         <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
           <InformationItem name="ActivityIndex" logicalDataType="InformationObject" informationObjectName="ActivityIndex" />
-          <InformationItem name="Activities" logicalDataType="InformationObject" informationObjectName="ActivityCollection"/>
+          <InformationItem name="ActivityModule" logicalDataType="InformationObject" informationObjectName="Activity"/>
         </InformationItems>
       </InformationObject>
 
@@ -380,8 +381,9 @@
           <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
           <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
           <InformationItem name="Description" logicalDataType="Text_Long"/>
-          <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="ModeratorCollection"/>
+          <InformationItem name="Collaborators" logicalDataType="InformationObject" informationObjectName="CollaboratorCollection"/>
           <InformationItem name="ImageSets" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection" />
+          <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="AddressAndLocation"/>
           <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
         </InformationItems>
       </InformationObject>
@@ -631,9 +633,7 @@
 			<!-- end Calendar -->
 			<InformationObject name="Image" designDesc="Image and attributes">
 				<InformationItems>
-					<!--
-					<InformationItem name="ImageData" informationObjectName="ImageVideoSoundVectorRaw" logicalDataType="InformationObject" />
-          -->
+					<InformationItem name="ImageData" informationObjectName="MediaContent" logicalDataType="InformationObject" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Caption" logicalDataType="Text_Short" />
           <!--
@@ -641,6 +641,11 @@
 					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
 				</InformationItems>
 			</InformationObject>
+      
+      <InformationObject name="MediaContent" designDesc="Generic media content">
+        <InformationObjectContent fileExtension="" originalFileName="" />
+      </InformationObject>
+      
       <InformationObject name="ImageGroupCollection" designDesc="Collection of image groups">
         <CollectionFor contentInformationObjectName="ImageGroup"/>
       </InformationObject>
@@ -946,6 +951,7 @@
 					<InformationItem name="ForAllPeople" logicalDataType="InformationObject" informationObjectName="IconTitleDescription" />
 				</InformationItems>
 			</InformationObject>
+      <!--
 			<InformationObject name="Icon" designDesc="Icon image">
 				<InformationObjectContent fileExtension=".png" originalFileName="Icon.png" />
 			</InformationObject>
@@ -955,6 +961,7 @@
 			<InformationObject name="WebPage" designDesc="Web Page Content">
 				<InformationObjectContent fileExtension=".html" originalFileName="WebPage.html" />
 			</InformationObject>
+      -->
 		</InformationModel>
 		<Operations>
 			<Operation name="UpdatePageContent">
