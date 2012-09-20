@@ -9,6 +9,7 @@ using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OpenId;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
+using TheBall;
 
 namespace WebInterface
 {
@@ -35,8 +36,20 @@ namespace WebInterface
                         // Store off the "friendly" username to display -- NOT for username lookup                                
                         friendlyName = response.FriendlyIdentifierForDisplay;
                         // Use FormsAuthentication to tell ASP.NET that the user is now logged in,                                
-                        // with the OpenID Claimed Identifier as their username.     
-                        FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
+                        // with the OpenID Claimed Identifier as their username. 
+                        string userName = response.ClaimedIdentifier.ToString();
+                        //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName,
+                        //                                                                 DateTime.Now,
+                        //                                                                 DateTime.Now.AddDays(10),
+                        //                                                                 true, "user custom data");
+
+                        AuthenticationSupport.SetAuthenticationCookie(Response, userName);
+                        //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
+                        //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
+                        string redirectUrl = Request.Params["ReturnUrl"];
+                        if (redirectUrl == null)
+                            redirectUrl = FormsAuthentication.DefaultUrl;
+                        Response.Redirect(redirectUrl, true);
                         break;
                     case AuthenticationStatus.Canceled:
                         this.loginCanceledLabel.Visible = true;

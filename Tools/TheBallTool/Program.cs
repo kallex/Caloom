@@ -24,9 +24,12 @@ namespace TheBallTool
                                                args[0]);
                 bool debugMode = false;
 
-                //InformationContext.InitializeFunctionality(3);
+
+                InformationContext.InitializeFunctionality(3, true);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
+                //DebugSomething();
+                //return;
                 ProcessErrors(true);
                 //return;
 
@@ -62,7 +65,7 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
-                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
                 //DeleteAllAccountAndGroupContents(true);
                 //RefreshAllAccounts();
@@ -88,6 +91,14 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void DebugSomething()
+        {
+            CloudBlob blob =
+                StorageSupport.CurrActiveContainer.GetBlob(
+                    "grp/89706487-7dc0-4711-911e-17dd0207a000/website/oip-group/oip-layout-activities-summary.phtml");
+            RenderWebSupport.RefreshContent(blob, false);
         }
 
         private static void RefreshAllAccounts()

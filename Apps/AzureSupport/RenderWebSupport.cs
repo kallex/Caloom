@@ -30,7 +30,7 @@ namespace TheBall
         private const string TheBallPrefix = "<!-- THEBALL-";
         private const string AtomTagBegin = "[!ATOM]";
         private const string AtomTagEnd = "[ATOM!]";
-        private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>\w*)\[ATOM!])";
+        private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>[^[]*)\[ATOM!])";
 
         public const string DefaultWebTemplateLocation = "webtemplate";
         public const string DefaultWebSiteLocation = "website";
@@ -39,8 +39,8 @@ namespace TheBall
         public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
         public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
-        public const string DefaultGroupID = "b8875032-a1ee-4cee-a2a9-c51b2a8ec45f";
-
+        public const string DefaultGroupID = "9798daca-afc4-4046-a99b-d0d88bb364e0";
+        // https://theball.blob.core.windows.net/00000000-0000-0000-0000-000000000000/grp/9798daca-afc4-4046-a99b-d0d88bb364e0/AaltoGlobalImpact.OIP/AboutContainer/default
 
         private static Regex ContextRootRegex;
 
@@ -318,28 +318,7 @@ namespace TheBall
                 result.AppendLine(line);
                 requireExistingContext(contextStack, line);
                 string memberName = line.Substring(ObjTagLen, line.Length - ObjTagsTotalLen).Trim();
-                StackContextItem currCtx = contextStack.Peek();
-                if (memberName == "*")
-                {
-                    // Put top item again to stack
-                    contextStack.Push(currCtx);
-                }
-                else
-                {
-                    StackContextItem objItem = null;
-                    try
-                    {
-                        Type type = GetMemberType(currCtx, memberName);
-                        object contentValue = GetPropertyValue(currCtx, memberName);
-                        StackContextItem parent = currCtx;
-                        objItem = new StackContextItem(contentValue, parent, type, memberName, false, false);
-                    } finally
-                    {
-                        if(objItem == null)
-                            objItem = new StackContextItem("Invalid Context", contextStack.Peek(), typeof(string), "INVALID", false, false);
-                        contextStack.Push(objItem);
-                    }
-                }
+                PushMemberObjectToStack(contextStack, memberName);
             }
             else if (line.StartsWith(ContextTagEnd))
             {
@@ -374,6 +353,32 @@ namespace TheBall
                 ProcessATOMLine(line, result, contextStack);
             }
             return contextStack.Count > 0;
+        }
+
+        private static void PushMemberObjectToStack(Stack<StackContextItem> contextStack, string memberName)
+        {
+            StackContextItem currCtx = contextStack.Peek();
+            if (memberName == "*")
+            {
+                // Put top item again to stack
+                contextStack.Push(currCtx);
+            }
+            else
+            {
+                StackContextItem objItem = null;
+                try
+                {
+                    Type type = GetMemberType(currCtx, memberName);
+                    object contentValue = GetPropertyValue(currCtx, memberName);
+                    StackContextItem parent = currCtx;
+                    objItem = new StackContextItem(contentValue, parent, type, memberName, false, false);
+                } finally
+                {
+                    if(objItem == null)
+                        objItem = new StackContextItem("Invalid Context", contextStack.Peek(), typeof(string), "INVALID", false, false);
+                    contextStack.Push(objItem);
+                }
+            }
         }
 
         private static void requireExistingContext(Stack<StackContextItem> contextStack, string line)
@@ -431,8 +436,20 @@ namespace TheBall
                                             match =>
                                                 {
                                                     string memberName = match.Groups["membername"].Value;
-                                                    object value = GetPropertyValue(currCtx, memberName);
-                                                    return (value ?? (currCtx.MemberName + "." + memberName + " is null")).ToString();
+                                                    var workCtx = currCtx;
+                                                    if(memberName.Contains("."))
+                                                    {
+                                                        string[] referenceList = memberName.Split('.');
+                                                        Stack<StackContextItem> workStack = new Stack<StackContextItem>(referenceList.Length);
+                                                        workStack.Push(currCtx);
+                                                        int currIx;
+                                                        for(currIx = 0; currIx < referenceList.Length - 1; currIx++)
+                                                            PushMemberObjectToStack(workStack, referenceList[currIx]);
+                                                        workCtx = workStack.Peek();
+                                                        memberName = referenceList[currIx];
+                                                    }
+                                                    object value = GetPropertyValue(workCtx, memberName);
+                                                    return (value ?? (workCtx.MemberName + "." + memberName + " is null")).ToString();
                                                 });
             result.AppendLine(contentLine);
         }
@@ -470,7 +487,7 @@ namespace TheBall
             foreach(var tableRow in tableList.Distinct())
             {
                 errorHtml.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>",
-                                       tableRow.Name, tableRow.ErrorMessage, tableRow.CurrLine);
+                                       tableRow.Name, tableRow.ErrorMessage, tableRow.CurrLine).AppendLine();
             }
             errorHtml.AppendLine("</table></p>");
             return errorHtml.ToString();
@@ -488,6 +505,8 @@ namespace TheBall
             //Type type = currCtx.ItemType;
             Type type = currCtx.CurrContent.GetType();
             PropertyInfo pi = type.GetProperty(propertyName);
+            if(pi == null)
+                throw new InvalidDataException(String.Format("No property '{0}' found in type '{1}'", propertyName, type.Name));
             return pi.GetValue(currCtx.CurrContent, null);
         }
 

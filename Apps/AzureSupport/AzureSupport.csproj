@@ -56,7 +56,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="AuthenticationSupport.cs" />
     <Compile Include="EmailSupport.cs" />
+    <Compile Include="EncryptionSupport.cs" />
     <Compile Include="ErrorItem.cs" />
     <Compile Include="ErrorSupport.cs" />
     <Compile Include="FileSystemSupport.cs" />

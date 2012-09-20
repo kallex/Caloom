@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Web;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
@@ -26,12 +27,19 @@ namespace AaltoGlobalImpact.OIP
         {
             if(ID != contentObjectID)
                 return;
+            ClearCurrentContent(containerOwner);
             HttpPostedFile postedContent = (HttpPostedFile) mediaContent;
             FileExt = Path.GetExtension(postedContent.FileName);
             ContentLength = postedContent.ContentLength;
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(containerOwner, locationFileName);
             StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream, StorageSupport.InformationType_GenericContentValue);
+        }
+
+        private void ClearCurrentContent(IContainerOwner containerOwner)
+        {
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
+            blob.DeleteWithoutFiringSubscriptions();
         }
     }
 }

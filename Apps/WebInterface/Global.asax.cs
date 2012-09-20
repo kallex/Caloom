@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
@@ -12,7 +13,6 @@ namespace WebInterface
 {
     public class Global : System.Web.HttpApplication
     {
-
         protected void Application_Start(object sender, EventArgs e)
         {
             string connStr;
@@ -39,7 +39,11 @@ namespace WebInterface
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
+            AuthenticationSupport.SetUserFromCookieIfExists(HttpContext.Current);
+        }
 
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
         }
 
         protected void Application_Error(object sender, EventArgs e)

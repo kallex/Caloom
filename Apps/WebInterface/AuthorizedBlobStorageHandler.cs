@@ -185,6 +185,8 @@ namespace WebInterface
                 foreach(string contentID in request.Files.AllKeys)
                 {
                     HttpPostedFile postedFile = request.Files[contentID];
+                    if (String.IsNullOrWhiteSpace(postedFile.FileName))
+                        continue;
                     rootObject.SetMediaContent(containerOwner, contentID, postedFile);
                 }
                 IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
