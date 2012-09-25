@@ -17,6 +17,12 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(Request.Params["SignOut"] != null)
+            {
+                AuthenticationSupport.ClearAuthenticationCookie(Response);
+                Response.Redirect("/", true);
+                return;
+            }
             openIdBox.Focus();         
             OpenIdRelyingParty openid = new OpenIdRelyingParty();        
             var response = openid.GetResponse();

@@ -283,7 +283,7 @@ namespace TheBallTool
             string[] publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
             string[] everyWhereUnusedFiles =
                 accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).ToArray();
-            FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
+            //FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
         }
 
         private static void DeleteAllAccountAndGroupContents(bool useWorker)

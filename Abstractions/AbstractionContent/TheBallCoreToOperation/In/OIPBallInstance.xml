@@ -170,7 +170,8 @@
       </InformationObject>
 			<InformationObject name="AccountIndex" designDesc="Account index">
 				<InformationItems>
-					<InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
 					<InformationItem name="Introduction" logicalDataType="Text_Long" />
 					<InformationItem name="Summary" logicalDataType="Text_Long" />
 				</InformationItems>
@@ -354,6 +355,7 @@
 
       <InformationObject name="ActivityIndex" designDesc="Activity index">
         <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Introduction" logicalDataType="Text_Long" />
           <InformationItem name="Summary" logicalDataType="Text_Long" />
@@ -361,7 +363,7 @@
       </InformationObject>
 
 
-      <InformationObject name="ActivityContainer" designDesc="Group container">
+      <InformationObject name="ActivityContainer" designDesc="Activity container">
         <InformationItems>
           <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
           <InformationItem name="ActivityIndex" logicalDataType="InformationObject" informationObjectName="ActivityIndex" />
@@ -459,6 +461,7 @@
 
       <InformationObject name="GroupIndex" designDesc="Group index">
         <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Introduction" logicalDataType="Text_Long" />
           <InformationItem name="Summary" logicalDataType="Text_Long" />
@@ -491,6 +494,11 @@
       <InformationObject name="AddActivityInfo" designDesc="Add activity">
         <InformationItems>
           <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AddBlogPostInfo" designDesc="Add blog post">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
 
@@ -532,25 +540,28 @@
 			</InformationObject>
 			<InformationObject name="Blog" designDesc="Individual Blog">
 				<InformationItems>
-					<InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
 					<InformationItem name="SubTitle" logicalDataType="Text_Short" />
           <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
           <InformationItem name="Published" logicalDataType="Time_DateTime" />
 					<InformationItem name="Author" logicalDataType="Text_Short" />
+          <InformationItem name="FeaturedImage" logicalDataType="InformationObject" informationObjectName="Image"/>
 					<InformationItem name="ImageGroup" informationObjectName="ImageGroup" logicalDataType="InformationObject" />
+					<InformationItem name="VideoGroup" informationObjectName="VideoGroup" logicalDataType="InformationObject" />
 					<InformationItem name="Body" logicalDataType="Text_Long" />
 					<InformationItem name="Excerpt" logicalDataType="Text_Long" />
 					<InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
-					<InformationItem name="Category" logicalDataType="InformationObject" informationObjectName="Category" />
-					<!-- needed is, category, servicetype description, keywords -->
+          <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+          <!-- needed is, category, servicetype description, keywords -->
 					<InformationItem name="SocialPanel" informationObjectName="SocialPanelCollection" logicalDataType="InformationObject" />
 				</InformationItems>
 			</InformationObject>
 			<!-- should this be a Collection? -->
 			<InformationObject name="BlogIndexGroup" designDesc="Index of Blogs by Date, Location, Author">
 				<InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
-          <InformationItem name="SubTitle" logicalDataType="Text_Short" />
           <InformationItem name="Introduction" logicalDataType="Text_Long" />
           <InformationItem name="BlogByDate" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
 					<InformationItem name="BlogByLocation" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
@@ -563,8 +574,11 @@
 			<!-- end Blog -->
 			<InformationObject name="CalendarIndex" designDesc="">
 				<InformationItems>
-					<InformationItem name="Title" logicalDataType="Text_Short" />
-				</InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
 			</InformationObject>
 			<InformationObject name="Filter" designDesc="">
 				<InformationItems>
@@ -631,7 +645,18 @@
 			</InformationObject>
       -->
 			<!-- end Calendar -->
-			<InformationObject name="Image" designDesc="Image and attributes">
+      <InformationObject name="Video" designDesc="Video and attributes">
+        <InformationItems>
+          <InformationItem name="VideoData" informationObjectName="MediaContent" logicalDataType="InformationObject" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Caption" logicalDataType="Text_Short" />
+          <!--
+					<InformationItem name="ImageAlt" logicalDataType="Text_Short" />
+					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="Image" designDesc="Image and attributes">
 				<InformationItems>
 					<InformationItem name="ImageData" informationObjectName="MediaContent" logicalDataType="InformationObject" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
@@ -656,10 +681,20 @@
 					<InformationItem name="ImagesCollection" informationObjectName="ImagesCollection" logicalDataType="InformationObject" />
 				</InformationItems>
 			</InformationObject>
-			<InformationObject name="ImagesCollection" designDesc="">
-				<CollectionFor contentInformationObjectName="Image" />
-			</InformationObject>
-			<InformationObject name="Tooltip" designDesc="Tooltip">
+      <InformationObject name="VideoGroup" designDesc="Group of Videos">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Short" />
+          <InformationItem name="VideoCollection" informationObjectName="VideoCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImagesCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Image" />
+      </InformationObject>
+      <InformationObject name="VideoCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Video" />
+      </InformationObject>
+      <InformationObject name="Tooltip" designDesc="Tooltip">
 				<InformationItems>
 					<InformationItem name="TooltipText" logicalDataType="Text_Short" />
 				</InformationItems>

@@ -126,6 +126,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\theball - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\theball - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Web Role OIPSSL.pubxml" />
     <None Include="Properties\PublishProfiles\Web Role Publish.pubxml" />
   </ItemGroup>
   <ItemGroup>

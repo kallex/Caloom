@@ -18,12 +18,13 @@
       <Site name="Web">
         <Bindings>
           <Binding name="HttpIn" endpointName="HttpIn" />
+          <Binding name="HttpsIn" endpointName="HttpsIn" />
         </Bindings>
       </Site>
     </Sites>
     <Endpoints>
       <InputEndpoint name="HttpIn" protocol="http" port="80" />
-      <InputEndpoint name="HttpsIn" protocol="tcp" port="443" localPort="443" />
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" localPort="443" certificate="ProtonITWildcard" />
       <!-- unused, just there so instance discovery works -->
       <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
     </Endpoints>
@@ -46,7 +47,9 @@
       <Setting name="AdminUserName" />
       <Setting name="AdminUserPassword" />
     </ConfigurationSettings>
-    <Certificates></Certificates>
+    <Certificates>
+      <Certificate name="ProtonITWildcard" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
   </WebRole>
   <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
     <Imports>

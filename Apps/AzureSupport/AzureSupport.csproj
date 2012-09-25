@@ -68,8 +68,10 @@
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="Partials\AccountContainer.cs" />
+    <Compile Include="Partials\AddBlogPostInfo.cs" />
     <Compile Include="Partials\AddEmailAddressInfo.cs" />
     <Compile Include="Partials\AddLocationInfo.cs" />
+    <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="Partials\Location.cs" />
     <Compile Include="Partials\MapMarker.cs" />
     <Compile Include="Partials\MediaContent.cs" />
+    <Compile Include="Partials\ReferenceToInformation.cs" />
     <Compile Include="Partials\TBLoginInfo.cs" />
     <Compile Include="Partials\TBLoginRoot.cs" />
     <Compile Include="Partials\TBPRegisterEmail.cs" />

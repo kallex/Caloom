@@ -506,7 +506,7 @@ namespace TheBall
             Type type = currCtx.CurrContent.GetType();
             PropertyInfo pi = type.GetProperty(propertyName);
             if(pi == null)
-                throw new InvalidDataException(String.Format("No property '{0}' found in type '{1}'", propertyName, type.Name));
+                throw new InvalidDataException(String.Format("No InformationItem '{0}' found in InformationObject '{1}'", propertyName, type.Name));
             return pi.GetValue(currCtx.CurrContent, null);
         }
 
@@ -515,7 +515,7 @@ namespace TheBall
             Type containingType = containingItem.ItemType;
             PropertyInfo pi = containingType.GetProperty(memberName);
             if(pi == null)
-                throw new InvalidDataException("Type: " + containingType.Name + " does not contain property: " + memberName);
+                throw new InvalidDataException("InformationObject: " + containingType.Name + " does not contain InformationItem with name: " + memberName);
             return pi.PropertyType;
         }
 
