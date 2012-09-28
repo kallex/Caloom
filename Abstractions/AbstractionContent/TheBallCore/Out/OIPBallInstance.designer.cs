@@ -446,9 +446,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Account;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -663,9 +666,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Account;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -880,9 +886,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Group;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -1318,9 +1327,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Account;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -1539,21 +1551,30 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Emails;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Logins;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupRoleCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -3070,9 +3091,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Email;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -3508,9 +3532,12 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Roles;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -3960,15 +3987,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = LoginProviderCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -5949,21 +5982,30 @@ FooterContainer.HtmlContent
 				{
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ActivitySummary;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupSummary;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -6188,27 +6230,39 @@ FooterContainer.HtmlContent
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountIndex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountModule;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountSummary;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -6445,9 +6499,12 @@ AccountIndex.Summary
 				{
 					{
 						var item = Icon;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -6683,27 +6740,39 @@ AccountIndex.Summary
 				{
 					{
 						var item = Profile;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Security;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Roles;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = LocationCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -7140,15 +7209,21 @@ AccountIndex.Summary
 				{
 					{
 						var item = Address;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -7820,15 +7895,21 @@ AccountIndex.Summary
 				{
 					{
 						var item = ProfileImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Address;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -8057,15 +8138,21 @@ AccountIndex.Summary
 				{
 					{
 						var item = LoginInfoCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = EmailCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -8291,15 +8378,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = ModeratorInGroups;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MemberInGroups;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -9176,27 +9269,39 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = FeaturedBlog;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = RecentBlogSummary;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = BlogIndexGroup;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -9419,15 +9524,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = RecentBlogCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -9654,39 +9765,57 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapFeatured;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapResultCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapIndexCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapMarkers;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -9913,9 +10042,12 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -10355,27 +10487,39 @@ AccountRoles.OrganizationsImPartOf
 				{
 					{
 						var item = CalendarContainerHeader;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CalendarFeatured;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CalendarCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CalendarIndexCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -10616,21 +10760,30 @@ AboutContainer.Body
 				{
 					{
 						var item = MainImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ImageGroup;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -10875,27 +11028,39 @@ AboutContainer.Body
 				{
 					{
 						var item = AccountContainerHeader;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountFeatured;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = AccountIndexCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -11122,27 +11287,39 @@ AboutContainer.Body
 				{
 					{
 						var item = ProjectContainerHeader;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ProjectFeatured;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ProjectCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ProjectIndexCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -11369,27 +11546,39 @@ AboutContainer.Body
 				{
 					{
 						var item = CourseContainerHeader;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CourseFeatured;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CourseCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CourseIndexCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -11844,27 +12033,39 @@ ActivitySummaryContainer.SummaryBody
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ActivityIndex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ActivityCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -12106,9 +12307,12 @@ ActivityIndex.Summary
 				{
 					{
 						var item = Icon;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -12342,21 +12546,30 @@ ActivityIndex.Summary
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ActivityIndex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ActivityModule;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -12812,51 +13025,75 @@ Activity.Description
 				{
 					{
 						var item = ReferenceToInformation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ProfileImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = IconImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Collaborators;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ImageSets;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CategoryCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -14841,27 +15078,39 @@ GroupSummaryContainer.SummaryBody
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupSummaryIndex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -15099,45 +15348,66 @@ GroupSummaryContainer.SummaryBody
 				{
 					{
 						var item = Header;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupIndex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = GroupProfile;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Collaborators;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = PendingCollaborators;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Activities;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Locations;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -15380,9 +15650,12 @@ GroupIndex.Summary
 				{
 					{
 						var item = Icon;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -15620,15 +15893,21 @@ GroupIndex.Summary
 				{
 					{
 						var item = MapMarkers;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Address;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -16956,39 +17235,57 @@ Group.OrganizationsAndGroupsLinkedToUs
 				{
 					{
 						var item = ReferenceToInformation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ProfileImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = IconImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Moderators;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ImageSets;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CategoryCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -17646,7 +17943,7 @@ Introduction.Body
 					result.FeaturedImage = Image.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
 					result.VideoGroup = VideoGroup.CreateDefault();
-					result.Location = Location.CreateDefault();
+					result.Location = AddressAndLocation.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDefault();
 					return result;
@@ -17684,7 +17981,7 @@ Blog.Excerpt
 Blog.Excerpt
 ";
 
-					result.Location = Location.CreateDemoDefault();
+					result.Location = AddressAndLocation.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
 				
@@ -17702,51 +17999,75 @@ Blog.Excerpt
 				{
 					{
 						var item = ReferenceToInformation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Introduction;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = FeaturedImage;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ImageGroup;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = VideoGroup;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = CategoryCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = SocialPanel;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -17800,7 +18121,7 @@ Blog.Excerpt
 			[DataMember]
 			public string Excerpt { get; set; }
 			[DataMember]
-			public Location Location { get; set; }
+			public AddressAndLocation Location { get; set; }
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			[DataMember]
@@ -18029,33 +18350,48 @@ BlogIndexGroup.Summary
 				{
 					{
 						var item = Icon;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = BlogByDate;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = BlogByLocation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = BlogByAuthor;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = BlogByCategory;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -18309,9 +18645,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = Icon;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -19617,27 +19956,39 @@ CalendarIndex.Summary
 				{
 					{
 						var item = MapByDate;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapByLocation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapByAuthor;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MapByCategory;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -19858,9 +20209,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = Location;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -20293,21 +20647,30 @@ CalendarIndex.Summary
 				{
 					{
 						var item = ResultByDate;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ResultByAuthor;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ResultByProximity;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -20530,9 +20893,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = VideoData;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -20761,9 +21127,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = ImageData;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -21398,9 +21767,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = ImagesCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -21629,9 +22001,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = VideoCollection;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -22712,9 +23087,12 @@ CalendarIndex.Summary
 				{
 					{
 						var item = SocialFilter;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -23361,15 +23739,21 @@ CalendarIndex.Summary
 				{
 					{
 						var item = Longitude;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Latitude;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -24531,15 +24915,21 @@ CalendarIndex.Summary
 				{
 					{
 						var item = Sex;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = Birthday;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -25877,21 +26267,30 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = SingleOperation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = OrderDependentOperationSequence;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ErrorContent;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -26335,27 +26734,39 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = SubscriberNotification;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = UpdateWebContentOperation;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = DeleteEntireOwner;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = DeleteOwnerContent;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -27022,15 +27433,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = SystemErrorItems;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = MessageContent;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -28173,9 +28590,12 @@ SystemErrorItem.LongDescription
 				{
 					{
 						var item = Handlers;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}
@@ -29567,15 +29987,21 @@ IconTitleDescription.Description
 				{
 					{
 						var item = BuiltForAnybody;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					{
 						var item = ForAllPeople;
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
 					}
 					return null;
 				}

@@ -6,7 +6,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class AddEmailAddressInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources)
+        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(EmailAddress);
             TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);

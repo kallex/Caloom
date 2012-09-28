@@ -20,6 +20,8 @@ namespace TheBall
                 CurrArray = collContent.ToArray();
                 ItemType = CurrArray.GetType().GetElementType();
             }
+            if (isCollection)
+                CollectionContainer = content;
             RootName = rootName;
         }
 
@@ -36,6 +38,14 @@ namespace TheBall
             }
         }
 
+        /// <summary>
+        /// Non-null when collection, storing the pure collection object
+        /// </summary>
+        public object CollectionContainer { get; set; }
+
+        /// <summary>
+        /// Current content; reflecting also the collection iteration with accessing index
+        /// </summary>
         public object CurrContent
         {
             get

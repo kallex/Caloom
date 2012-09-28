@@ -7,7 +7,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class AddLocationInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources)
+        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
         {
             if (LocationName == "")
                 throw new InvalidDataException("Location name is mandatory");

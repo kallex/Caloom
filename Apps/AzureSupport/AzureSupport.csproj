@@ -56,12 +56,14 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="AdditionalFormatContent.cs" />
     <Compile Include="AuthenticationSupport.cs" />
     <Compile Include="EmailSupport.cs" />
     <Compile Include="EncryptionSupport.cs" />
     <Compile Include="ErrorItem.cs" />
     <Compile Include="ErrorSupport.cs" />
     <Compile Include="FileSystemSupport.cs" />
+    <Compile Include="IAdditionalFormatProvider.cs" />
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="InformationContext.cs" />
     <Compile Include="InformationSourceSupport.cs" />
@@ -71,8 +73,10 @@
     <Compile Include="Partials\AddBlogPostInfo.cs" />
     <Compile Include="Partials\AddEmailAddressInfo.cs" />
     <Compile Include="Partials\AddLocationInfo.cs" />
+    <Compile Include="Partials\Blog.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
+    <Compile Include="DefaultViewSupport.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\InformationSource.cs" />

@@ -18,6 +18,7 @@ namespace TheBall
         public static string InformationObjectTypeKey = "InformationObjectType";
         public static string InformationSourcesKey = "InformationSources";
         public static string InformationType_WebTemplateValue = "WebTemplate";
+        public static string InformationType_RuntimeWebTemplateValue = "RuntimeWebTemplate";
         public static string InformationType_InformationObjectValue = "InformationObject";
         public static string InformationType_RenderedWebPage = "RenderedWebPage";
         public static string InformationType_GenericContentValue = "GenericContent";
@@ -847,6 +848,16 @@ namespace TheBall
             blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
             informationObject.ETag = blob.Properties.ETag;
+            IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
+            if(additionalFormatProvider != null)
+            {
+                var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore();
+                foreach(var additionalContent in additionalContentToStore)
+                {
+                    string contentLocation = blob.Name + "." + additionalContent.Extension;
+                    CurrActiveContainer.UploadBlobBinary(contentLocation, additionalContent.Content);
+                }
+            }
             if (isNewBlob)
                 informationObject.InitializeDefaultSubscribers(owner);
             informationObject.PostStoringExecute(owner);
@@ -947,6 +958,19 @@ namespace TheBall
                 relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             blob.DeleteAndFireSubscriptions();
+            IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
+            if(additionalFormatProvider != null)
+            {
+                foreach(var contentExtension in additionalFormatProvider.GetAdditionalFormatExtensions())
+                {
+                    string contentLocation = blob.Name + "." + contentExtension;
+                    CloudBlob contentBlob = CurrActiveContainer.GetBlobReference(contentLocation);
+                    contentBlob.DeleteIfExists();
+                }
+
+            }
+            //TODO: Generic default view deletion
+            //DefaultViewSupport.DeleteDefaultView(informationObject);
             informationObject.PostDeleteExecute(owner);
         }
 
@@ -1083,6 +1107,20 @@ namespace TheBall
             Console.WriteLine("Deleting: " + blobPath);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(blobPath);
             blob.DeleteIfExists();
+        }
+
+        public static string GetLocationParentDirectory(string location)
+        {
+            int lastIndexOfSeparator = location.LastIndexOf('/');
+            int lastPositionToInclude = lastIndexOfSeparator + 1; // keep the separator
+            return location.Substring(0, lastPositionToInclude);
+        }
+
+        public static CloudBlob GetInformationObjectBlobWithProperties(IInformationObject informationObject)
+        {
+            CloudBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
+            blob.FetchAttributes();
+            return blob;
         }
     }
 }

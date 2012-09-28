@@ -192,7 +192,7 @@ namespace WebInterface
                 IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
                 if(addOperationProvider != null)
                 {
-                    bool storeAfterAdd = addOperationProvider.PerformAddOperation(sources);
+                    bool storeAfterAdd = addOperationProvider.PerformAddOperation(sources, contentPath);
                     if (storeAfterAdd)
                         StorageSupport.StoreInformation(rootObject, containerOwner);
                 } else

@@ -6,7 +6,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class AddBlogPostInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources)
+        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
         {
             if(Title == "")
                 throw new InvalidDataException("Blog title is mandatory");
@@ -15,9 +15,10 @@ namespace AaltoGlobalImpact.OIP
             blog.SetLocationAsOwnerContent(owner, blog.ID);
             blog.Title = Title;
             blog.ReferenceToInformation.Title = blog.Title;
-            blog.ReferenceToInformation.URL = ReferenceToInformation.GetDefaultViewURL(blog);
+            blog.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(blog);
             blog.Published = DateTime.Now;
             StorageSupport.StoreInformation(blog);
+            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, blog, owner);
             BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
             blogContainer.AddNewBlogPost(blog);
             StorageSupport.StoreInformation(blogContainer);

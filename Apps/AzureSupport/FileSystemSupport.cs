@@ -37,11 +37,7 @@ namespace TheBall
                     continue;
                 string webtemplatePath = Path.Combine(targetLocation, content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
-                string blobInformationType = webtemplatePath.EndsWith(".phtml")
-                                                 ? StorageSupport.InformationType_WebTemplateValue
-                                                 : StorageSupport.InformationType_GenericContentValue;
-                if (webtemplatePath.EndsWith("oip-layout-register.phtml")) // || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
-                    blobInformationType = StorageSupport.InformationType_GenericContentValue;
+                string blobInformationType = GetBlobInformationType(webtemplatePath);
                 if (content.TextContent != null)
                 {
                     StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent, blobInformationType);
@@ -52,6 +48,24 @@ namespace TheBall
                 }
             }
             return processedDict.Keys.ToArray();
+        }
+
+        private static string GetBlobInformationType(string webtemplatePath)
+        {
+            string blobInformationType;
+            if (webtemplatePath.EndsWith(".phtml"))
+            {
+                //if (webtemplatePath.Contains("/oip-viewtemplate/"))
+                if (webtemplatePath.EndsWith("_DefaultView.phtml"))
+                    blobInformationType = StorageSupport.InformationType_RuntimeWebTemplateValue;
+                else
+                    blobInformationType = StorageSupport.InformationType_WebTemplateValue;
+            }
+            else 
+                blobInformationType = StorageSupport.InformationType_GenericContentValue;
+            if (webtemplatePath.EndsWith("oip-layout-register.phtml")) // || webtemplatePath.EndsWith("oip-layout-blog-more.phtml") || webtemplatePath.Contains("oip-layout-blog"))
+                blobInformationType = StorageSupport.InformationType_GenericContentValue;
+            return blobInformationType;
         }
 
         public static void MoveUnusedTxtFiles(string[] filesToMove)

@@ -31,6 +31,10 @@ namespace TheBall
         private const string AtomTagBegin = "[!ATOM]";
         private const string AtomTagEnd = "[ATOM!]";
         private const string MemberAtomPattern = @"(?<fulltag>\[!ATOM](?<membername>[^[]*)\[ATOM!])";
+        private const string SpanTagCollectionBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballcollection'>";
+        private const string SpanTagCollectionItemBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballcollitem'>";
+        private const string SpanTagItemBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballitem'>";
+        private const string SpanTagClosing = @"</span>";
 
         public const string DefaultWebTemplateLocation = "webtemplate";
         public const string DefaultWebSiteLocation = "website";
@@ -67,12 +71,16 @@ namespace TheBall
             public bool WasNeeded = false;
         }
 
-        public static void RenderTemplateWithContentToBlob(CloudBlob template, CloudBlob renderTarget)
+        public static void RenderTemplateWithContentToBlob(CloudBlob template, CloudBlob renderTarget, InformationSource setAsDefaultSource = null)
         {
             InformationSourceCollection sources = renderTarget.GetBlobInformationSources();
             if(sources == null)
             {
                 sources = CreateDefaultSources(template);
+            }
+            if (setAsDefaultSource != null)
+            {
+                sources.SetDefaultSource(setAsDefaultSource);
             }
             string templateContent = template.DownloadText();
             List<ContentItem> existingRoots = GetExistingRoots(sources);
@@ -263,6 +271,7 @@ namespace TheBall
                     rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", true, false, "");
                     errorList.Add(new ErrorItem(new Exception("Invalid stack root: " + rootType), rootItem, line));
                 }
+                result.AppendLine(GetSpanTag(rootItem.CurrContent, SpanTagItemBeginFormat));
                 // NOTE! We support multiple roots now, but root has to be first in stack
                 //if (contextStack.Count != 0)
                 //    throw new InvalidDataException("Context stack already has a root item before: " + content.GetType().FullName);
@@ -296,20 +305,29 @@ namespace TheBall
                 int scopeStartIx = currLineIx + 1;
                 int scopeEndIx = lines.Length; // Candidate, the lower call will adjust properly
                 // Get scope length
+                result.AppendLine(GetSpanTag(collItem.CollectionContainer, SpanTagCollectionBeginFormat));
                 ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, new StringBuilder(), contentRoots, collStack,
                                   new List<ErrorItem>());
+                // Scope goes to end context tag, so it pops the item back from scope - let's push it back
+                // ... or not, commented below for a while
+                //scopeEndIx--;
+                //collStack.Push(collItem);
                 bool isFirstRound = true;
                 while (collItem.IsNotFullyProcessed)
                 {
                     var currErrorList = isFirstRound ? errorList : new List<ErrorItem>();
                     collStack.Push(collItem);
+                    string spanTag = GetSpanTag(collItem.CurrContent, SpanTagCollectionItemBeginFormat);
+                    result.AppendLine(spanTag);
                     ProcessLinesScope(lines, scopeStartIx, ref scopeEndIx, result, contentRoots, collStack,
                                         currErrorList);
+                    //result.AppendLine(SpanTagClosing);
                     if(collStack.Count > 0)
                         throw new InvalidDataException("Collection stack should be empty at this point");
                     isFirstRound = false;
                     collItem.CurrCollectionItem++;
                 }
+                result.AppendLine(SpanTagClosing);
                 // Jump to the end tag (as the next loop will progress by one)
                 currLineIx = scopeEndIx - 1;
             }
@@ -318,10 +336,12 @@ namespace TheBall
                 result.AppendLine(line);
                 requireExistingContext(contextStack, line);
                 string memberName = line.Substring(ObjTagLen, line.Length - ObjTagsTotalLen).Trim();
-                PushMemberObjectToStack(contextStack, memberName);
+                StackContextItem currItem = PushMemberObjectToStack(contextStack, memberName);
+                result.AppendLine(GetSpanTag(currItem.CurrContent, SpanTagItemBeginFormat));
             }
             else if (line.StartsWith(ContextTagEnd))
             {
+                result.AppendLine(SpanTagClosing);
                 result.AppendLine(line);
                 StackContextItem popItem = contextStack.Pop();
                 if (contextStack.Count == 0)
@@ -355,7 +375,27 @@ namespace TheBall
             return contextStack.Count > 0;
         }
 
-        private static void PushMemberObjectToStack(Stack<StackContextItem> contextStack, string memberName)
+        private static string GetSpanTag(object content, string spanTagFormatForIDandETag)
+        {
+            IInformationObject informationObject = content as IInformationObject;
+            string currID;
+            string currEtag;
+            if(informationObject != null)
+            {
+                currID = informationObject.ID;
+                if(informationObject.ETag != null)
+                    currEtag = informationObject.ETag.Substring(1, informationObject.ETag.Length - 2);
+                else
+                    currEtag = "";
+            } else
+            {
+                currID = "";
+                currEtag = "";
+            }
+            return String.Format(spanTagFormatForIDandETag, currID, currEtag);
+        }
+
+        private static StackContextItem PushMemberObjectToStack(Stack<StackContextItem> contextStack, string memberName)
         {
             StackContextItem currCtx = contextStack.Peek();
             if (memberName == "*")
@@ -379,6 +419,7 @@ namespace TheBall
                     contextStack.Push(objItem);
                 }
             }
+            return contextStack.Peek();
         }
 
         private static void requireExistingContext(Stack<StackContextItem> contextStack, string line)
@@ -538,10 +579,6 @@ namespace TheBall
                 // Custom rendering for web templates
                 if(source.GetBlobInformationType() == StorageSupport.InformationType_WebTemplateValue)
                 {
-                    if(source.Name.Contains("map"))
-                    {
-                        bool isMap = true;
-                    }
                     RenderWebSupport.RenderTemplateWithContentToBlob(source, target);
                     return true;
                 }

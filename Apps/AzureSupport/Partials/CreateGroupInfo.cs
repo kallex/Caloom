@@ -6,7 +6,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class CreateGroupInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources)
+        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
         {
             if(GroupName == "")
                 throw new InvalidDataException("Group name must be given");

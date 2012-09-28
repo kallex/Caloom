@@ -99,7 +99,7 @@ namespace TheBall
 
         public void PerformFinalizingActions()
         {
-            QueueSupport.PutToOperationQueue(FinalizingOperationQueue.ToArray());
+            FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
         }
 
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }

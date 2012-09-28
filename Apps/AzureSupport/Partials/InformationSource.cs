@@ -13,7 +13,7 @@ namespace AaltoGlobalImpact.OIP
 
         public bool IsWebTemplateSource
         {
-            get { return SourceType == StorageSupport.InformationType_WebTemplateValue; }
+            get { return SourceType == StorageSupport.InformationType_WebTemplateValue || SourceType == StorageSupport.InformationType_RuntimeWebTemplateValue; }
         }
 
         public static InformationSource FromBlob(CloudBlob blob)
@@ -62,6 +62,13 @@ namespace AaltoGlobalImpact.OIP
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(SourceLocation);
             bool isChanged = blob.Properties.ContentMD5 != SourceMD5;
             return isChanged;
+        }
+
+        public static InformationSource GetAsDefaultSource(IInformationObject informationObject)
+        {
+            CloudBlob blob = StorageSupport.GetInformationObjectBlobWithProperties(informationObject);
+            InformationSource informationSource = FromBlob(blob);
+            return informationSource;
         }
     }
 }

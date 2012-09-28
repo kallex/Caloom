@@ -37,5 +37,16 @@ namespace AaltoGlobalImpact.OIP
                                                          SubscribeSupport.SubscribeType_WebPageToSource);
             }
         }
+
+        public void SetDefaultSource(InformationSource defaultSource)
+        {
+            InformationSource currentDefaultSource = GetDefaultSource();
+            if (currentDefaultSource != null)
+                CollectionContent.Remove(currentDefaultSource);
+            CollectionContent.Add(defaultSource);
+            currentDefaultSource = GetDefaultSource();
+            if(defaultSource != currentDefaultSource)
+                throw new InvalidDataException("Invalid default source given to add (not maching the GetDefaultSource conditions)");
+        }
     }
 }

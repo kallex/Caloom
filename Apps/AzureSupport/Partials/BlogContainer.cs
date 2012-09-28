@@ -1,4 +1,6 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System;
+
+namespace AaltoGlobalImpact.OIP
 {
     partial class BlogContainer
     {
@@ -10,5 +12,6 @@
             BlogIndexGroup.BlogByDate.CollectionContent.Add(blog);
             BlogIndexGroup.BlogByCategory.CollectionContent.Add(blog);
         }
+
     }
 }
