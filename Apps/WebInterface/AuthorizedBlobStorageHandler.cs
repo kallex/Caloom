@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
 using DotNetOpenAuth.OpenId.RelyingParty;
@@ -148,7 +149,7 @@ namespace WebInterface
         private void HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             HttpRequest request = context.Request;
-            var form = request.Form;
+            var form = request.Unvalidated().Form;
 
             string sourceNamesCommaSeparated = form["RootSourceName"];
             bool isCancelButton = form["btnCancel"] != null;
