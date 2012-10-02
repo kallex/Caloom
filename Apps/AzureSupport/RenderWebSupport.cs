@@ -39,10 +39,14 @@ namespace TheBall
         public const string DefaultWebTemplateLocation = "webtemplate";
         public const string DefaultWebSiteLocation = "website";
         public const string DefaultPublicWebTemplateLocation = "publictemplate";
+
         public const string DefaultPublicWebSiteLocation = "publicsite";
         public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
         public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
+        public const string DefaultGroupViewLocation = "oip-group";
+        public const string DefaultAccountViewLocation = "oip-account";
+        public const string DefaultPublicViewLocation = "oip-public";
         public const string DefaultGroupID = "9798daca-afc4-4046-a99b-d0d88bb364e0";
         // https://theball.blob.core.windows.net/00000000-0000-0000-0000-000000000000/grp/9798daca-afc4-4046-a99b-d0d88bb364e0/AaltoGlobalImpact.OIP/AboutContainer/default
 
@@ -607,6 +611,24 @@ namespace TheBall
             RenderTemplateWithContentToBlob(templateBlob, webPageBlob);
         }
 
+        public static OperationRequest RefreshDefaultViews(string viewLocation, string fullTypeName, bool useQueuedWorker)
+        {
+                OperationRequest operationRequest = new OperationRequest
+                                                        {
+                                                            RefreshDefaultViewsOperation = new RefreshDefaultViewsOperation
+                                                                                               {
+                                                                                                   ViewLocation = viewLocation,
+                                                                                                   TypeNameToRefresh = fullTypeName
+                                                                                               }
+                                                        };
+            if(useQueuedWorker)
+            {
+                return operationRequest;
+            }
+            WorkerSupport.RefreshDefaultViews(operationRequest.RefreshDefaultViewsOperation);
+            return null;
+        }
+        
         public static OperationRequest SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
         {
             if (useQueuedWorker)
@@ -635,18 +657,18 @@ namespace TheBall
         }
 
 
-        public static void RefreshAllAccountAndGroupTemplates(bool useWorker)
+        public static void RefreshAllAccountAndGroupTemplates(bool useWorker, params string[] viewTypesToRefresh)
         {
-            refreshAllGroupTemplates(useWorker);
-            refreshAllAccountTemplates(useWorker);
+            refreshAllGroupTemplates(useWorker, viewTypesToRefresh);
+            refreshAllAccountTemplates(useWorker, viewTypesToRefresh);
         }
 
-        private static void refreshAllGroupTemplates(bool useWorker)
+        private static void refreshAllGroupTemplates(bool useWorker, params string[] viewTypesToRefresh)
         {
             string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
             foreach (var grpID in groupIDs)
             {
-                RefreshGroupTemplates(grpID, useWorker);
+                RefreshGroupTemplates(grpID, useWorker, viewTypesToRefresh);
             }
      //       RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
      //String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
@@ -655,18 +677,21 @@ namespace TheBall
 
         }
 
-        public static void RefreshGroupTemplates(string grpID, bool useWorker)
+        public static void RefreshGroupTemplates(string grpID, bool useWorker, params string[] viewTypesToRefresh)
         {
             string syscontentRoot = "sys/AAA/";
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string anonContainerName = StorageSupport.CurrAnonPublicContainer.Name;
             string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
             string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
+            string groupSiteViewLocation = groupSiteLocation + "/" + DefaultGroupViewLocation;
             string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWebTemplateLocation;
             string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWebSiteLocation;
+            string groupPublicViewLocation = groupPublicSiteLocation + "/" + DefaultPublicViewLocation;
             string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
                 
             // Sync to group local template
+            List<OperationRequest> operationRequests = new List<OperationRequest>();
             var localGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultGroupTemplates, currContainerName, groupTemplateLocation, useWorker, false);
             // Render local template
             var renderLocalTemplates = SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
@@ -674,42 +699,64 @@ namespace TheBall
             var publicGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
             // Render local template
             var renderPublicTemplates = SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+            operationRequests.Add(localGroupTemplates);
+            operationRequests.Add(renderLocalTemplates);
+            operationRequests.Add(publicGroupTemplates);
+            operationRequests.Add(renderPublicTemplates);
+            foreach(string viewTypeToRefresh in viewTypesToRefresh)
+            {
+                OperationRequest refreshOp = RefreshDefaultViews(groupSiteViewLocation, viewTypeToRefresh, useWorker);
+                operationRequests.Add(refreshOp);
+                refreshOp = RefreshDefaultViews(groupPublicViewLocation, viewTypeToRefresh, useWorker);
+                operationRequests.Add(refreshOp);
+            }
             // Publish group public content
             var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
             OperationRequest publishDefault = null;
-            if(grpID == DefaultGroupID)
+            if (grpID == DefaultGroupID)
             {
                 publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
             }
+            operationRequests.Add(publishPublicContent);
             if(useWorker)
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
-                QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates, publicGroupTemplates, renderPublicTemplates, publishPublicContent, publishDefault);
+                QueueSupport.PutToOperationQueue(operationRequests.ToArray());
             }
         }
 
-        private static void refreshAllAccountTemplates(bool useWorker)
+        private static void refreshAllAccountTemplates(bool useWorker, params string[] viewTypesToRefresh)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach(var acctID in accountIDs)
             {
-                RefreshAccountTemplates(acctID, useWorker);
+                RefreshAccountTemplates(acctID, useWorker, viewTypesToRefresh);
             }
         }
 
-        public static void RefreshAccountTemplates(string acctID, bool useWorker)
+        public static void RefreshAccountTemplates(string acctID, bool useWorker, params string[] viewTypesToRefresh)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = "sys/AAA/";
             string acctTemplateLocation = "acc/" + acctID + "/" + DefaultWebTemplateLocation;
             string acctSiteLocation = "acc/" + acctID + "/" + DefaultWebSiteLocation;
+            string acctViewLocation = acctSiteLocation + "/" + DefaultAccountViewLocation;
+
             // Sync to account local template
             var accountLocalTemplate = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultAccountTemplates, currContainerName, acctTemplateLocation, useWorker, false);
             // Render local template
             var renderLocalTemplate = SyncTemplatesToSite(currContainerName, acctTemplateLocation, currContainerName, acctSiteLocation, useWorker, true);
+            List<OperationRequest> operationRequests = new List<OperationRequest>();
+            operationRequests.Add(accountLocalTemplate);
+            operationRequests.Add(renderLocalTemplate);
+            foreach(string viewTypeToRefresh in viewTypesToRefresh)
+            {
+                OperationRequest refreshOp = RefreshDefaultViews(acctViewLocation, viewTypeToRefresh, useWorker);
+                operationRequests.Add(refreshOp);
+            }
             if(useWorker)
             {
-                QueueSupport.PutToOperationQueue(accountLocalTemplate, renderLocalTemplate);
+                QueueSupport.PutToOperationQueue(operationRequests.ToArray());
             }
         }
 

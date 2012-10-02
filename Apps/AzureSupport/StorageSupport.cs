@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -1121,6 +1122,14 @@ namespace TheBall
             CloudBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
             blob.FetchAttributes();
             return blob;
+        }
+
+        public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
+        {
+            string contentListingPrefix = GetBlobOwnerAddress(owner, contentType);
+            string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
+            BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
+            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
         }
     }
 }

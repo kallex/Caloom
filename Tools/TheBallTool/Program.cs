@@ -28,6 +28,7 @@ namespace TheBallTool
                 InformationContext.InitializeFunctionality(3, true);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
+                //testContentFetch();
                 //DebugSomething();
                 //return;
                 ProcessErrors(true);
@@ -65,14 +66,14 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
-                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
                 //DeleteAllAccountAndGroupContents(true);
                 //RefreshAllAccounts();
 
                 // TODO: The delete above needs to go through first before the refresh one below
 
-                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true);
+                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity");
 
                 //RunTaskedQueueWorker();
 
@@ -91,6 +92,14 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
+        }
+
+        private static void testContentFetch()
+        {
+            string requesterPath = "grp/89706487-7dc0-4711-911e-17dd0207a000/website/oip-group/oip-layout-blog-summary.phtml";
+            VirtualOwner owner = VirtualOwner.FigureOwner(requesterPath);
+            //var blogs = Blog.RetrieveCollectionFromOwnerContent(owner);
+            DefaultViewSupport.RefreshDefaultViews(requesterPath, typeof(Blog));
         }
 
         private static void DebugSomething()

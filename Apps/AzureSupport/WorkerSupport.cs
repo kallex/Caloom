@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
@@ -200,6 +201,8 @@ namespace TheBall
                 ProcessUpdateWebContent(operationRequest.UpdateWebContentOperation);
             if (operationRequest.SubscriberNotification != null)
                 WorkerSupport.ExecuteSubscription(operationRequest.SubscriberNotification);
+            if (operationRequest.RefreshDefaultViewsOperation != null)
+                WorkerSupport.RefreshDefaultViews(operationRequest.RefreshDefaultViewsOperation);
             if (operationRequest.DeleteEntireOwner != null)
             {
                 VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteEntireOwner.ContainerName,
@@ -212,6 +215,12 @@ namespace TheBall
                     operationRequest.DeleteOwnerContent.LocationPrefix);
                 DeleteOwnerContent(virtualOwner);
             }
+        }
+
+        public static void RefreshDefaultViews(RefreshDefaultViewsOperation refreshDefaultViewsOperation)
+        {
+            Type type = Assembly.GetExecutingAssembly().GetType(refreshDefaultViewsOperation.TypeNameToRefresh);
+            DefaultViewSupport.RefreshDefaultViews(refreshDefaultViewsOperation.ViewLocation, type);
         }
 
         private static void DeleteOwnerContent(VirtualOwner containerOwner)

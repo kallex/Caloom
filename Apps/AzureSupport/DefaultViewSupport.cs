@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Web;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -34,7 +35,17 @@ namespace AaltoGlobalImpact.OIP
 
         public static void RefreshDefaultViews(string viewLocation, Type informationObjectType)
         {
-            
+            if (viewLocation.EndsWith("/") == false)
+                viewLocation = viewLocation + "/";
+            VirtualOwner owner = VirtualOwner.FigureOwner(viewLocation);
+            //string typeDirectoryName = informationObjectType.FullName;
+            IInformationObject[] informationObjects = (IInformationObject[]) 
+                informationObjectType.InvokeMember("RetrieveCollectionFromOwnerContent", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, new object[] { owner });
+
+            foreach (IInformationObject informationObject in informationObjects)
+            {
+                CreateDefaultViewRelativeToRequester(viewLocation, informationObject, owner);
+            }
         }
 
         public static void CreateDefaultViewRelativeToRequester(string requesterLocation, IInformationObject informationObject, IContainerOwner owner)
