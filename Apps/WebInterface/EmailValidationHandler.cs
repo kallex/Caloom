@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -57,18 +58,41 @@ namespace WebInterface
             string requestPath = context.Request.Path;
             string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
             TBAccount account = loginRoot.Account;
-            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID, account);
+            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID);
             if (emailValidation == null)
             {
                 RespondEmailValidationRecordNotExist(context);
                 return;
             }
-            StorageSupport.DeleteInformationObject(emailValidation, account);
+            StorageSupport.DeleteInformationObject(emailValidation);
             if (emailValidation.ValidUntil < DateTime.Now)
             {
                 RespondEmailValidationExpired(context, emailValidation);
                 return;
             }
+            if(emailValidation.GroupJoinConfirmation != null)
+            {
+                HandleGroupJoinConfirmation(context, account, emailValidation);
+            }
+            else
+            {
+                HandleAccountEmailValidation(context, account, emailValidation);
+            }
+        }
+
+        private void HandleGroupJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            if (account.Emails.CollectionContent.Exists(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == false)
+                throw new SecurityException("Login account does not contain email address that was target of validation");
+            string groupID = emailValidation.GroupJoinConfirmation.GroupID;
+            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            groupRoot.Group.ConfirmJoining(emailValidation.Email);
+            StorageSupport.StoreInformation(groupRoot);
+            context.Response.Redirect("/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml");
+        }
+
+        private void HandleAccountEmailValidation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
             if (account.Emails.CollectionContent.Find(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == null)
             {
                 TBEmail email = TBEmail.CreateDefault();

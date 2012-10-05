@@ -116,6 +116,7 @@ namespace WebInterface
                 throw new SecurityException("No access to requested group: TODO - Polite landing page for the group");
                 return;
             }
+            InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
             HandleOwnerRequest(loginGroupRoot, context, contentPath);
         }

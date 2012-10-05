@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -863,6 +864,8 @@ namespace TheBall
                 informationObject.InitializeDefaultSubscribers(owner);
             informationObject.PostStoringExecute(owner);
             SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
+            Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
+                informationObject.ID));
             return blob;
         }
 
@@ -916,6 +919,8 @@ namespace TheBall
             IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
             informationObject.ETag = blobEtag;
             //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
+            Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
+                informationObject.ID));
             return informationObject;
         }
 

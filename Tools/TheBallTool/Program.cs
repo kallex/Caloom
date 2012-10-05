@@ -66,7 +66,7 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
-                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
                 //DeleteAllAccountAndGroupContents(true);
                 //RefreshAllAccounts();

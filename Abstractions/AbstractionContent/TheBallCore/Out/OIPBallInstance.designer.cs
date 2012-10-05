@@ -1916,6 +1916,8 @@ namespace AaltoGlobalImpact.OIP {
 
 					result.GroupRole = @"TBAccountCollaborationGroup.GroupRole";
 
+					result.RoleStatus = @"TBAccountCollaborationGroup.RoleStatus";
+
 				
 					return result;
 				}
@@ -1942,6 +1944,9 @@ namespace AaltoGlobalImpact.OIP {
 						case "GroupRole":
 							GroupRole = value;
 							break;
+						case "RoleStatus":
+							RoleStatus = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -1950,6 +1955,8 @@ namespace AaltoGlobalImpact.OIP {
 			public string GroupID { get; set; }
 			[DataMember]
 			public string GroupRole { get; set; }
+			[DataMember]
+			public string RoleStatus { get; set; }
 			
 			}
 			[DataContract]
@@ -3314,6 +3321,8 @@ namespace AaltoGlobalImpact.OIP {
 					result.Email = TBEmail.CreateDemoDefault();
 					result.Role = @"TBCollaboratorRole.Role";
 
+					result.RoleStatus = @"TBCollaboratorRole.RoleStatus";
+
 				
 					return result;
 				}
@@ -3346,6 +3355,9 @@ namespace AaltoGlobalImpact.OIP {
 						case "Role":
 							Role = value;
 							break;
+						case "RoleStatus":
+							RoleStatus = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -3354,6 +3366,8 @@ namespace AaltoGlobalImpact.OIP {
 			public TBEmail Email { get; set; }
 			[DataMember]
 			public string Role { get; set; }
+			[DataMember]
+			public string RoleStatus { get; set; }
 			
 			}
 			[DataContract]
@@ -4015,27 +4029,6 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBEmailValidation customDemoObject);
 
 
-
-				public static TBEmailValidation CreateDefault()
-				{
-					var result = new TBEmailValidation();
-					return result;
-				}
-
-				public static TBEmailValidation CreateDemoDefault()
-				{
-					TBEmailValidation customDemo = null;
-					TBEmailValidation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new TBEmailValidation();
-					result.Email = @"TBEmailValidation.Email";
-
-					result.AccountID = @"TBEmailValidation.AccountID";
-
-				
-					return result;
-				}
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4046,6 +4039,15 @@ namespace AaltoGlobalImpact.OIP {
 
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = GroupJoinConfirmation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					return null;
 				}
 
@@ -4072,6 +4074,239 @@ namespace AaltoGlobalImpact.OIP {
 			public string AccountID { get; set; }
 			[DataMember]
 			public DateTime ValidUntil { get; set; }
+			[DataMember]
+			public TBGroupJoinConfirmation GroupJoinConfirmation { get; set; }
+			
+			}
+			[DataContract]
+			public partial class TBGroupJoinConfirmation : IInformationObject
+			{
+				public TBGroupJoinConfirmation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBGroupJoinConfirmation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(TBGroupJoinConfirmation), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBGroupJoinConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBGroupJoinConfirmation(relativeLocation, owner);
+				}
+
+
+                public static TBGroupJoinConfirmation RetrieveTBGroupJoinConfirmation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (TBGroupJoinConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBGroupJoinConfirmation), null, owner);
+                    return result;
+                }
+
+				public static TBGroupJoinConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = TBGroupJoinConfirmation.RetrieveTBGroupJoinConfirmation("Content/AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName, containerOwner);
+					var result = TBGroupJoinConfirmation.RetrieveTBGroupJoinConfirmation("AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBGroupJoinConfirmation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBGroupJoinConfirmation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBGroupJoinConfirmation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBGroupJoinConfirmation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref TBGroupJoinConfirmation customDemoObject);
+
+
+
+				public static TBGroupJoinConfirmation CreateDefault()
+				{
+					var result = new TBGroupJoinConfirmation();
+					return result;
+				}
+
+				public static TBGroupJoinConfirmation CreateDemoDefault()
+				{
+					TBGroupJoinConfirmation customDemo = null;
+					TBGroupJoinConfirmation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new TBGroupJoinConfirmation();
+					result.GroupID = @"TBGroupJoinConfirmation.GroupID";
+
+				
+					return result;
+				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupID":
+							GroupID = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string GroupID { get; set; }
 			
 			}
 			[DataContract]

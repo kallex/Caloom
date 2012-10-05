@@ -20,7 +20,7 @@ namespace AaltoGlobalImpact.OIP
             grp.Title = GroupName;
             StorageSupport.StoreInformation(groupRoot);
             foreach (var accountEmail in account.Emails.CollectionContent)
-                grp.JoinToGroup(accountEmail.EmailAddress, "initiator");
+                grp.JoinToGroup(accountEmail.EmailAddress, "Initiator");
             StorageSupport.StoreInformation(groupRoot);
             RenderWebSupport.RefreshGroupTemplates(grp.ID, true);
             this.GroupName = "";

@@ -11,7 +11,8 @@ namespace TheBall
     {
         private const string KEYNAME = "INFOCTX";
         private static ConcurrentDictionary<int, InformationContext> _syncStorage = null;
-        
+        public string CurrentGroupRole;
+
         public static void InitializeFunctionality(int concurrentWorkers, bool allowStatic = false)
         {
             if(_syncStorage != null)

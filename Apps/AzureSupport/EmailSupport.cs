@@ -14,6 +14,7 @@ namespace TheBall
     {
         private static string AWSAccessKey;
         private static string AWSSecretKey;
+        private const string FromAddress = "no-reply-theball@msunit.citrus.fi";
 
         static EmailSupport()
         {
@@ -126,7 +127,7 @@ namespace TheBall
 
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
-            string urlLink = "http://oip.msunit.citrus.fi/emailvalidation/" + emailValidation.ID;
+            string urlLink = GetUrlLink(emailValidation.ID);
             string emailMessageFormat =
                 @"Welcome to The Open Innovation Platform!
 
@@ -137,7 +138,28 @@ Use the following link to complete your registration (the link is valid for 30 m
 
 Wishing you all the best from OIP team!";
             string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
-            SendEmail("no-reply-theball@msunit.citrus.fi", emailValidation.Email, "Welcome to The Open Innovation Platform!", message);
+            SendEmail(FromAddress, emailValidation.Email, "Welcome to The Open Innovation Platform!", message);
+        }
+
+        public static void SendGroupJoinEmail(TBEmailValidation emailValidation, TBCollaboratingGroup collaboratingGroup)
+        {
+            string urlLink = GetUrlLink(emailValidation.ID);
+            string emailMessageFormat =
+                @"You have been invited to join in the collaboration platform by Aalto Global Impact to collaborate in the group: {0}. 
+
+Use the following link to accept the invitation and join the group:
+{1}
+
+The link is valid for 14 days, after which you need to request new invitation.";
+            string message = String.Format(emailMessageFormat, collaboratingGroup.Title, urlLink);
+            SendEmail(FromAddress, emailValidation.Email,
+                      "Invitation to join collaboration group: " + collaboratingGroup.Title, message);
+        }
+
+        private static string GetUrlLink(string emailValidationID)
+        {
+            string urlLink = "http://oip.msunit.citrus.fi/emailvalidation/" + emailValidationID;
+            return urlLink;
         }
     }
 }

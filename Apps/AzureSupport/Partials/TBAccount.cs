@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,14 +28,15 @@ namespace AaltoGlobalImpact.OIP
         }
 
 
-        public void JoinGroup(TBCollaboratingGroup collaboratingGroup, string role)
+        public void JoinGroup(TBCollaboratingGroup collaboratingGroup, TBCollaboratorRole role)
         {
             if (this.GroupRoleCollection.CollectionContent.Find(member => member.GroupID == collaboratingGroup.ID) != null)
                 return;
             this.GroupRoleCollection.CollectionContent.Add(new TBAccountCollaborationGroup()
                                                                {
                                                                    GroupID = collaboratingGroup.ID,
-                                                                   GroupRole = role
+                                                                   GroupRole = role.Role,
+                                                                   RoleStatus = role.RoleStatus
                                                                });
         }
 
@@ -57,7 +59,7 @@ namespace AaltoGlobalImpact.OIP
                 loginRoot.Account = this;
                 StorageSupport.StoreInformation(loginRoot);
                 // TODO: Remove invalid group role logins at this stage
-                foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent)
+                foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent.Where(grpRole => TBCollaboratorRole.IsRoleStatusValidMember(grpRole.RoleStatus)))
                 {
                     string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupRoleItem.GroupID, loginRootID);
                     TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
@@ -99,7 +101,7 @@ namespace AaltoGlobalImpact.OIP
                 reference.URL = string.Format("/auth/grp/{0}/website/oip-group/oip-layout-groups-edit.phtml",
                                               groupRoot.ID);
                 reference.Title = grp.Title + " - " + groupRoleItem.GroupRole;
-                switch(groupRoleItem.GroupRole)
+                switch(groupRoleItem.GroupRole.ToLower())
                 {
                     case "initiator":
                     case "moderator":
@@ -113,5 +115,14 @@ namespace AaltoGlobalImpact.OIP
             }
             StorageSupport.StoreInformation(accountContainer);
         }
+
+        public static TBAccount GetAccountFromEmail(string emailAddress)
+        {
+            string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
+            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBAccount account = emailRoot.Account;
+            return account;
+        }
+
     }
 }
