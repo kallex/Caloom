@@ -33,7 +33,6 @@ namespace WebInterface
         private const string AuthPersonalPrefix = "/auth/account/";
         private const string AuthGroupPrefix = "/auth/grp/";
         private const string AuthAccountPrefix = "/auth/acc/";
-        private const string AuthProcPrefix = "/auth/proc/";
         private const string AuthPrefix = "/auth/";
         private int AuthGroupPrefixLen;
         private int AuthPersonalPrefixLen;
@@ -48,7 +47,6 @@ namespace WebInterface
             AuthGroupPrefixLen = AuthGroupPrefix.Length;
             AuthPersonalPrefixLen = AuthPersonalPrefix.Length;
             AuthAccountPrefixLen = AuthAccountPrefix.Length;
-            AuthProcPrefixLen = AuthProcPrefix.Length;
             AuthPrefixLen = AuthPrefix.Length;
             GuidIDLen = Guid.Empty.ToString().Length;
         }
@@ -72,10 +70,6 @@ namespace WebInterface
                 {
                     HandleGroupRequest(context);
                 }
-                else if (request.Path.StartsWith(AuthProcPrefix))
-                {
-                    HandleProcRequest(context);
-                }
                 else if (request.Path.StartsWith(AuthAccountPrefix))
                 {
                     HandleAccountRequest(context);
@@ -90,16 +84,6 @@ namespace WebInterface
         private void HandleAccountRequest(HttpContext context)
         {
             //TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
-        }
-
-        private void HandleProcRequest(HttpContext context)
-        {
-            string loginUrl = context.User.Identity.Name;
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, false);
-            TBAccount account = loginRoot.Account;
-            string requestPath = context.Request.Path;
-            string contentPath = requestPath.Substring(AuthPrefixLen);
-            HandleOwnerRequest(account, context, contentPath);
         }
 
         private void HandleGroupRequest(HttpContext context)
@@ -118,7 +102,7 @@ namespace WebInterface
             }
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            HandleOwnerRequest(loginGroupRoot, context, contentPath);
+            HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
         }
 
         private string GetGroupID(string path)
@@ -134,14 +118,16 @@ namespace WebInterface
             TBAccount account = loginRoot.Account;
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
-            HandleOwnerRequest(account, context, contentPath);
+            HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
-        private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
         {
             if (context.Request.RequestType == "POST")
             {
                 // Do first post, and then get to the same URL
+                if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
+                    throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
                 HandleOwnerPostRequest(containerOwner, context, contentPath);
             }
             HandleOwnerGetRequest(containerOwner, context, contentPath);

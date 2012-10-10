@@ -18,7 +18,7 @@ namespace AaltoGlobalImpact.OIP
             else
                 throw new InvalidDataException("Relative location of AddEmailAddressInfo is not acc or grp context bound");
             this.EmailAddress = "";
-            return true;
+            return false;
         }
 
         private void GroupInvitationHandling()

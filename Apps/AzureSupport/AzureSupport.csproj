@@ -70,6 +70,8 @@
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="Partials\AccountContainer.cs" />
+    <Compile Include="Partials\ActivitySummaryContainer.cs" />
+    <Compile Include="Partials\AddActivityInfo.cs" />
     <Compile Include="Partials\AddBlogPostInfo.cs" />
     <Compile Include="Partials\AddEmailAddressInfo.cs" />
     <Compile Include="Partials\AddLocationInfo.cs" />

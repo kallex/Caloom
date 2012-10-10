@@ -4,7 +4,7 @@
     {
         private const string InitiatorRoleValue = "Initiator";
         private const string ModeratorRoleValue = "Moderator";
-        private const string CollaboratorRoleValue = "Collaborator";
+        public const string CollaboratorRoleValue = "Collaborator";
         public const string ViewerRoleValue = "Viewer";
 
 
@@ -13,23 +13,23 @@
 
         public static bool HasInitiatorRights(string role)
         {
-            return role == InitiatorRoleValue;
+            return role.ToLower() == InitiatorRoleValue.ToLower();
         }
 
         public static bool HasModeratorRights(string role)
         {
-            return role == ModeratorRoleValue || role.ToLower() == InitiatorRoleValue.ToLower(); 
+            return role.ToLower() == ModeratorRoleValue.ToLower() || role.ToLower() == InitiatorRoleValue.ToLower(); 
         }
 
         public static bool HasCollaboratorRights(string role)
         {
-            return role == ModeratorRoleValue || role == InitiatorRoleValue || role == CollaboratorRoleValue;
+            return role.ToLower() == ModeratorRoleValue.ToLower() || role.ToLower() == InitiatorRoleValue.ToLower() || role.ToLower() == CollaboratorRoleValue.ToLower();
         }
 
         public static bool HasViewerRights(string role)
         {
-            return role == ModeratorRoleValue || role == InitiatorRoleValue || role == CollaboratorRoleValue ||
-                   role == ViewerRoleValue;
+            return role.ToLower() == ModeratorRoleValue.ToLower() || role.ToLower() == InitiatorRoleValue.ToLower() || role.ToLower() == CollaboratorRoleValue.ToLower() ||
+                   role.ToLower() == ViewerRoleValue.ToLower();
 
         }
 
