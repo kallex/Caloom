@@ -5,14 +5,40 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class AddLocationInfo : IAddOperationProvider
+    partial class AddAddressAndLocationInfo : IAddOperationProvider
     {
         public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
         {
             if (LocationName == "")
                 throw new InvalidDataException("Location name is mandatory");
-            AccountContainer container = (AccountContainer)sources.GetDefaultSource().RetrieveInformationObject();
+            IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
             AddressAndLocation location = AddressAndLocation.CreateDefault();
+
+            VirtualOwner owner = VirtualOwner.FigureOwner(this);
+            location.SetLocationAsOwnerContent(owner, location.ID);
+            location.Location.LocationName = LocationName;
+            location.ReferenceToInformation.Title = location.Location.LocationName;
+            location.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(location);
+            StorageSupport.StoreInformation(location);
+            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, location, owner);
+
+            LocationContainer locationContainer = LocationContainer.RetrieveFromOwnerContent(owner, "Locations");
+            locationContainer.Locations.CollectionContent.Add(location);
+            StorageSupport.StoreInformation(locationContainer);
+
+            AccountContainer accountContainer = container as AccountContainer;
+            GroupContainer groupContainer = container as GroupContainer;
+            if (accountContainer != null)
+            {
+                accountContainer.AccountModule.LocationCollection.CollectionContent.Add(location);
+            } else if(groupContainer != null)
+            {
+                //groupContainer.Locations.CollectionContent.Add(location);
+            }
+            StorageSupport.StoreInformation(container);
+            return false;
+            
+            /*
             location.Address = Address;
             location.Location.Longitude.TextValue = this.Longitude;
             location.Location.Latitude.TextValue = this.Latitude;
@@ -38,6 +64,7 @@ namespace AaltoGlobalImpact.OIP
             Address = StreetAddress.CreateDefault();
             Longitude = "";
             Latitude = "";
+             */
             return true;
         }
     }

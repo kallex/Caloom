@@ -31,7 +31,7 @@ namespace TheBallTool
                 //testContentFetch();
                 //DebugSomething();
                 //return;
-                //ProcessErrors(true);
+                ProcessErrors(false);
                 //return;
 
                 //OperationRequest operationRequest = PushTestQueue();
@@ -73,7 +73,7 @@ namespace TheBallTool
 
                 // TODO: The delete above needs to go through first before the refresh one below
 
-                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity");
+                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation");
 
                 //RunTaskedQueueWorker();
 

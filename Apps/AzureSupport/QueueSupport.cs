@@ -30,7 +30,7 @@ namespace TheBall
             queue.CreateIfNotExist();
             CurrDefaultQueue = queue;
 
-            queue = CurrQueueClient.GetQueueReference(dbgModePrefix + ErrorQueueName);
+            queue = CurrQueueClient.GetQueueReference(ErrorQueueName);
             // Create the queue if it doesn't already exist
             queue.CreateIfNotExist();
             CurrErrorQueue = queue;

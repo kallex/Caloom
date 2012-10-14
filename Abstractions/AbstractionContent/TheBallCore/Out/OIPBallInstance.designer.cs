@@ -7541,6 +7541,243 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			public partial class LocationContainer : IInformationObject
+			{
+				public LocationContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "LocationContainer";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/LocationContainer/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(LocationContainer), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static LocationContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveLocationContainer(relativeLocation, owner);
+				}
+
+
+                public static LocationContainer RetrieveLocationContainer(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (LocationContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(LocationContainer), null, owner);
+                    return result;
+                }
+
+				public static LocationContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = LocationContainer.RetrieveLocationContainer("Content/AaltoGlobalImpact.OIP/LocationContainer/" + contentName, containerOwner);
+					var result = LocationContainer.RetrieveLocationContainer("AaltoGlobalImpact.OIP/LocationContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/LocationContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/LocationContainer/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(LocationContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static LocationContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(LocationContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (LocationContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", masterRelativeLocation).Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "LocationContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref LocationContainer customDemoObject);
+
+
+
+				public static LocationContainer CreateDefault()
+				{
+					var result = new LocationContainer();
+					result.Locations = AddressAndLocationCollection.CreateDefault();
+					return result;
+				}
+
+				public static LocationContainer CreateDemoDefault()
+				{
+					LocationContainer customDemo = null;
+					LocationContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new LocationContainer();
+					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
+				
+					return result;
+				}
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Locations;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public AddressAndLocationCollection Locations { get; set; }
+			
+			}
+			[DataContract]
 			public partial class AddressAndLocationCollection : IInformationObject
 			{
 				public AddressAndLocationCollection()
@@ -7959,6 +8196,7 @@ AccountIndex.Summary
 				public static AddressAndLocation CreateDefault()
 				{
 					var result = new AddressAndLocation();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.Address = StreetAddress.CreateDefault();
 					result.Location = Location.CreateDefault();
 					return result;
@@ -7971,6 +8209,7 @@ AccountIndex.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new AddressAndLocation();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.Address = StreetAddress.CreateDemoDefault();
 					result.Location = Location.CreateDemoDefault();
 				
@@ -7986,6 +8225,15 @@ AccountIndex.Summary
 
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					{
 						var item = Address;
 						if(item != null)
@@ -8015,6 +8263,8 @@ AccountIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public ReferenceToInformation ReferenceToInformation { get; set; }
 			[DataMember]
 			public StreetAddress Address { get; set; }
 			[DataMember]
@@ -17062,28 +17312,28 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddLocationInfo : IInformationObject
+			public partial class AddAddressAndLocationInfo : IInformationObject
 			{
-				public AddLocationInfo()
+				public AddAddressAndLocationInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AddLocationInfo";
+				    this.Name = "AddAddressAndLocationInfo";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/AddLocationInfo/";
+					string contentTypeName = "AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(AddLocationInfo), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(AddAddressAndLocationInfo), null, owner);
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -17092,7 +17342,7 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddLocationInfo", id).Replace("\\", "/");
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -17100,30 +17350,30 @@ GroupIndex.Summary
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static AddLocationInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static AddAddressAndLocationInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddLocationInfo(relativeLocation, owner);
+					return RetrieveAddAddressAndLocationInfo(relativeLocation, owner);
 				}
 
 
-                public static AddLocationInfo RetrieveAddLocationInfo(string relativeLocation, IContainerOwner owner = null)
+                public static AddAddressAndLocationInfo RetrieveAddAddressAndLocationInfo(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (AddLocationInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddLocationInfo), null, owner);
+                    var result = (AddAddressAndLocationInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddAddressAndLocationInfo), null, owner);
                     return result;
                 }
 
-				public static AddLocationInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static AddAddressAndLocationInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = AddLocationInfo.RetrieveAddLocationInfo("Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
-					var result = AddLocationInfo.RetrieveAddLocationInfo("AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName, containerOwner);
+					// var result = AddAddressAndLocationInfo.RetrieveAddAddressAndLocationInfo("Content/AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName, containerOwner);
+					var result = AddAddressAndLocationInfo.RetrieveAddAddressAndLocationInfo("AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddLocationInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17175,7 +17425,7 @@ GroupIndex.Summary
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AddLocationInfo));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddAddressAndLocationInfo));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -17188,13 +17438,13 @@ GroupIndex.Summary
 					}
 				}
 
-				public static AddLocationInfo DeserializeFromXml(string xmlString)
+				public static AddAddressAndLocationInfo DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AddLocationInfo));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddAddressAndLocationInfo));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (AddLocationInfo) serializer.ReadObject(xmlReader);
+							return (AddAddressAndLocationInfo) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -17224,7 +17474,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddLocationInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", masterRelativeLocation).Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17238,37 +17488,29 @@ GroupIndex.Summary
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddLocationInfo", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref AddLocationInfo customDemoObject);
+				static partial void CreateCustomDemo(ref AddAddressAndLocationInfo customDemoObject);
 
 
 
-				public static AddLocationInfo CreateDefault()
+				public static AddAddressAndLocationInfo CreateDefault()
 				{
-					var result = new AddLocationInfo();
-					result.MapMarkers = MapMarkerCollection.CreateDefault();
-					result.Address = StreetAddress.CreateDefault();
+					var result = new AddAddressAndLocationInfo();
 					return result;
 				}
 
-				public static AddLocationInfo CreateDemoDefault()
+				public static AddAddressAndLocationInfo CreateDemoDefault()
 				{
-					AddLocationInfo customDemo = null;
-					AddLocationInfo.CreateCustomDemo(ref customDemo);
+					AddAddressAndLocationInfo customDemo = null;
+					AddAddressAndLocationInfo.CreateCustomDemo(ref customDemo);
 					if(customDemo != null)
 						return customDemo;
-					var result = new AddLocationInfo();
-					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
-					result.LocationName = @"AddLocationInfo.LocationName";
+					var result = new AddAddressAndLocationInfo();
+					result.LocationName = @"AddAddressAndLocationInfo.LocationName";
 
-					result.Longitude = @"AddLocationInfo.Longitude";
-
-					result.Latitude = @"AddLocationInfo.Latitude";
-
-					result.Address = StreetAddress.CreateDemoDefault();
 				
 					return result;
 				}
@@ -17282,24 +17524,6 @@ GroupIndex.Summary
 
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = MapMarkers;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = Address;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
 					return null;
 				}
 
@@ -17310,26 +17534,12 @@ GroupIndex.Summary
 						case "LocationName":
 							LocationName = value;
 							break;
-						case "Longitude":
-							Longitude = value;
-							break;
-						case "Latitude":
-							Latitude = value;
-							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public MapMarkerCollection MapMarkers { get; set; }
-			[DataMember]
 			public string LocationName { get; set; }
-			[DataMember]
-			public string Longitude { get; set; }
-			[DataMember]
-			public string Latitude { get; set; }
-			[DataMember]
-			public StreetAddress Address { get; set; }
 			
 			}
 			[DataContract]

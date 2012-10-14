@@ -117,6 +117,9 @@ namespace TheBall
                                                                             var source = GetMissingRootAsNewSource(
                                                                                 root, renderTarget.Name,
                                                                                 out foundExistingSource);
+                                                                            // If error, returns null
+                                                                            if (source == null)
+                                                                                return null;
                                                                             return new
                                                                                        {
                                                                                            Source = source,
@@ -124,7 +127,7 @@ namespace TheBall
                                                                                                foundExistingSource
                                                                                        };
                                                                         }
-                    ).ToArray();
+                    ).Where(res => res != null).ToArray();
             sources.CollectionContent.AddRange(newSources.Select(item => item.Source));
             foreach (var item in existingRoots.Where(root => root.WasNeeded == false))
                 sources.CollectionContent.Remove(item.Source);
@@ -136,6 +139,11 @@ namespace TheBall
         {
             InformationSource source = root.Source ?? InformationSource.CreateDefault();
             IInformationObject informationObject = (IInformationObject) root.RootObject;
+            if (informationObject == null)
+            {
+                foundExistingSource = false;
+                return null;
+            }
             string sourceContentLocation = informationObject.GetLocationRelativeToContentRoot(masterLocation,
                                                                                               root.RootName);
             CloudBlob blob;
@@ -439,7 +447,7 @@ namespace TheBall
             if(contentItem == null)
             {
                 Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
-                object result = createdType.InvokeMember("CreateDemoDefault", BindingFlags.InvokeMethod, null, null, null);
+                object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null, null);
                 contentItem = new ContentItem
                                   {
                                       RootName = rootName,
@@ -463,7 +471,9 @@ namespace TheBall
                     {
                         contentItem.WasMissing = true;
                         Type createdType = Assembly.GetExecutingAssembly().GetType(rootType);
-                        object result = createdType.InvokeMember("CreateDemoDefault", BindingFlags.InvokeMethod, null, null,
+                        if(createdType == null)
+                            throw new InvalidDataException("Invalid RootObjectType: " + rootType);
+                        object result = createdType.InvokeMember("CreateDefault", BindingFlags.InvokeMethod, null, null,
                                                                  null);
                         contentItem.RootObject = result;
                     }

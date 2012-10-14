@@ -74,7 +74,7 @@
     <Compile Include="Partials\AddActivityInfo.cs" />
     <Compile Include="Partials\AddBlogPostInfo.cs" />
     <Compile Include="Partials\AddEmailAddressInfo.cs" />
-    <Compile Include="Partials\AddLocationInfo.cs" />
+    <Compile Include="Partials\AddAddressAndLocationInfo.cs" />
     <Compile Include="Partials\Blog.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
