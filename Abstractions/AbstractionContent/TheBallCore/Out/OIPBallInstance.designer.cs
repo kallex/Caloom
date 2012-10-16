@@ -30653,6 +30653,9 @@ SystemErrorItem.LongDescription
 						case "SourceType":
 							SourceType = value;
 							break;
+						case "IsDynamic":
+							IsDynamic = bool.Parse(value);
+							break;
 						case "SourceInformationObjectType":
 							SourceInformationObjectType = value;
 							break;
@@ -30675,6 +30678,8 @@ SystemErrorItem.LongDescription
 			public string SourceLocation { get; set; }
 			[DataMember]
 			public string SourceType { get; set; }
+			[DataMember]
+			public bool IsDynamic { get; set; }
 			[DataMember]
 			public string SourceInformationObjectType { get; set; }
 			[DataMember]

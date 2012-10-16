@@ -23,6 +23,7 @@ namespace TheBall
         private static int AtomTagsTotalLen;
         private const string FormHiddenFieldTag = "<!-- THEBALL-FORM-HIDDEN-FIELDS -->";
         private const string RootTagBegin = "<!-- THEBALL-CONTEXT-ROOT-BEGIN:";
+        private const string DynamicRootTagBegin = "<!-- THEBALL-CONTEXT-DYNAMICROOT-BEGIN:";
         private const string CollectionTagBegin = "<!-- THEBALL-CONTEXT-COLLECTION-BEGIN:";
         private const string ObjectTagBegin = "<!-- THEBALL-CONTEXT-OBJECT-BEGIN:";
         private const string CommentEnd = " -->";
@@ -62,7 +63,7 @@ namespace TheBall
             ObjTagsTotalLen = ObjectTagBegin.Length + CommentEnd.Length;
             AtomTagLen = AtomTagBegin.Length;
             AtomTagsTotalLen = AtomTagBegin.Length + AtomTagEnd.Length;
-            ContextRootRegex = new Regex(@"THEBALL-CONTEXT-ROOT-BEGIN:(?<rootType>[\w_\.]*)(?:\:(?<rootName>[\w_]*)|)", RegexOptions.Compiled);
+            ContextRootRegex = new Regex(@"THEBALL-CONTEXT-(?<bindingType>DYNAMIC|)ROOT-BEGIN:(?<rootType>[\w_\.]*)(?:\:(?<rootName>[\w_]*)|)", RegexOptions.Compiled);
         }
 
         public class ContentItem
@@ -70,6 +71,7 @@ namespace TheBall
             public InformationSource Source;
             public string RootName;
             public string RootType;
+            public bool IsDynamicRoot;
             public object RootObject;
             public bool WasMissing = false;
             public bool WasNeeded = false;
@@ -163,6 +165,7 @@ namespace TheBall
             }
             source.SetBlobValuesToSource(blob);
             source.SetInformationObjectValuesToSource(root.RootName, informationObject.GetType().FullName);
+            source.IsDynamic = root.IsDynamicRoot;
             return source;
         }
 
@@ -181,6 +184,7 @@ namespace TheBall
                                               Source = source,
                                               RootName = source.SourceName,
                                               RootType = source.SourceInformationObjectType,
+                                              IsDynamicRoot = source.IsDynamic
                                           };
             return contentItem;
         }
@@ -263,7 +267,7 @@ namespace TheBall
                 result.AppendLine(line);
                 return contextStack.Count > 0;
             }
-            if (line.StartsWith(RootTagBegin))
+            if (line.StartsWith(RootTagBegin) || line.StartsWith(DynamicRootTagBegin))
             {
                 result.AppendLine(line);
                 object content;
@@ -271,10 +275,12 @@ namespace TheBall
                 Match match = ContextRootRegex.Match(line);
                 string rootType = match.Groups["rootType"].Value;
                 string rootName = match.Groups["rootName"].Value;
+                string bindingType = match.Groups["bindingType"].Value;
+                bool isDynamicRoot = bindingType == "DYNAMIC";
                 try
                 {
                     //string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
-                    content = GetOrInitiateContentObject(contentRoots, rootType, rootName);
+                    content = GetOrInitiateContentObject(contentRoots, rootType, rootName, isDynamicRoot);
                     StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
                     rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false, rootName);
                 }
@@ -440,7 +446,7 @@ namespace TheBall
                 throw new InvalidDataException("No context (stack) available before using it: " + line);
         }
 
-        public static object GetOrInitiateContentObject(List<ContentItem> contentRoots, string rootType, string rootName)
+        public static object GetOrInitiateContentObject(List<ContentItem> contentRoots, string rootType, string rootName, bool isDynamicRoot)
         {
             ContentItem contentItem =
                 contentRoots.FirstOrDefault(item => item.RootType == rootType && item.RootName == rootName);
@@ -453,7 +459,8 @@ namespace TheBall
                                       RootName = rootName,
                                       RootType = rootType,
                                       RootObject = result,
-                                      WasMissing = true
+                                      WasMissing = true,
+                                      IsDynamicRoot = isDynamicRoot
                                   };
                 contentRoots.Add(contentItem);
             } else
@@ -480,6 +487,14 @@ namespace TheBall
                 }
             }
             contentItem.WasNeeded = true;
+            // Even if used elsewhere, the use of dynamic root switches whole source item as dynamic
+            if (isDynamicRoot)
+            {
+                contentItem.IsDynamicRoot = true;
+                if(contentItem.Source != null)
+                    contentItem.Source.IsDynamic = true;
+            }
+                
             return contentItem.RootObject;
         }
 

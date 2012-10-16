@@ -385,7 +385,7 @@ namespace TheBallTool
         {
             object test = RenderWebSupport.GetOrInitiateContentObject(new List<RenderWebSupport.ContentItem>(),
                                                                       "AaltoGlobalImpact.OIP.InformationSource",
-                                                                      "vilperi");
+                                                                      "vilperi", false);
         }
 
         private const string FixedGroupID = "05DF28FD-58A7-46A7-9830-DA3F51AAF6AF";

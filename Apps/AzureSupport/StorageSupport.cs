@@ -117,6 +117,7 @@ namespace TheBall
             CurrTableClient = tableClient;
 
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            blobClient.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromMilliseconds(300));
             CurrBlobClient = blobClient;
             var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
             activeContainer.CreateIfNotExist();

@@ -117,7 +117,7 @@ namespace TheBall
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'.*\?>";
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>";
             string pattern =
-                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!--\s*UseInformationObject:(?<bindingobject>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsCollection:(?<bindingcollection>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsRoot:(?<bindingroot>[^\s]*)\s*-->|)";
+                @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>(<!--\s*UseInformationObject:(?<bindingobject>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsCollection:(?<bindingcollection>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsRoot:(?<bindingroot>[^\s]*)\s*-->|<!--\s*UseInformationObjectAsDynamicRoot:(?<bindingdynamicroot>[^\s]*)\s*-->|)";
             content = Regex.Replace(content,
                                     pattern,
                                     match =>
@@ -126,6 +126,7 @@ namespace TheBall
                                         string bindObject = match.Groups["bindingobject"].Value;
                                         string bindCollection = match.Groups["bindingcollection"].Value;
                                         string bindRoot = match.Groups["bindingroot"].Value;
+                                        string bindDynamicRoot = match.Groups["bindingdynamicroot"].Value;
                                         string currPath = Path.GetDirectoryName(fileName);
                                         incFile = Path.Combine(currPath, incFile);
                                         string fileContent;
@@ -164,6 +165,15 @@ namespace TheBall
                                                               " -->" + Environment.NewLine
                                                               + fileContent + Environment.NewLine +
                                                               "<!-- THEBALL-CONTEXT-END:" + bindRoot +
+                                                              " -->" + Environment.NewLine;
+
+                                            }
+                                            if (String.IsNullOrEmpty(bindDynamicRoot) == false)
+                                            {
+                                                fileContent = Environment.NewLine + "<!-- THEBALL-CONTEXT-DYNAMICROOT-BEGIN:" + bindDynamicRoot +
+                                                              " -->" + Environment.NewLine
+                                                              + fileContent + Environment.NewLine +
+                                                              "<!-- THEBALL-CONTEXT-END:" + bindDynamicRoot +
                                                               " -->" + Environment.NewLine;
 
                                             }

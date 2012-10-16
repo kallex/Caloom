@@ -159,7 +159,7 @@ namespace WebInterface
             string[] sourceNames = sourceNamesCommaSeparated.Split(',');
             InformationSource[] sourceArray =
                 sources.CollectionContent.Where(
-                    src => src.IsInformationObjectSource && sourceNames.Contains(src.SourceName)).ToArray();
+                    src => src.IsDynamic || (src.IsInformationObjectSource && sourceNames.Contains(src.SourceName))).ToArray();
             foreach (InformationSource source in sourceArray)
             {
                 string oldETag = source.SourceETag;
