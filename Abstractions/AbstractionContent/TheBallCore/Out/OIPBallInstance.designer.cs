@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
+using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -18,6 +19,7 @@ namespace AaltoGlobalImpact.OIP {
         string RelativeLocation { get; set; }
         string SemanticDomainName { get; set; }
         string Name { get; set; }
+		bool IsIndependentMaster { get; }
 		void InitializeDefaultSubscribers(IContainerOwner owner);
 		void SetValuesToObjects(NameValueCollection form);
 		void PostStoringExecute(IContainerOwner owner);
@@ -25,6 +27,11 @@ namespace AaltoGlobalImpact.OIP {
 		void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
+		Dictionary<string, IInformationObject> CollectMasterObjects();
+		void CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result);
+		IInformationObject RetrieveMaster(bool initiateIfMissing);
+		bool IsModified { get; }
+		void SetCurrentValuesAsUnmodified();
     }
 
 			[DataContract]
@@ -70,6 +77,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBSystem(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBSystem");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBSystem), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -138,6 +160,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -232,6 +269,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -244,6 +282,35 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(InstanceName != _unmodified_InstanceName)
+							return true;
+						if(AdminGroupID != _unmodified_AdminGroupID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_InstanceName = InstanceName;
+					_unmodified_AdminGroupID = AdminGroupID;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -261,8 +328,10 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string InstanceName { get; set; }
+			private string _unmodified_InstanceName;
 			[DataMember]
 			public string AdminGroupID { get; set; }
+			private string _unmodified_AdminGroupID;
 			
 			}
 			[DataContract]
@@ -308,6 +377,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBRLoginRoot(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginRoot");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRLoginRoot), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -376,6 +460,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -468,6 +567,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -490,6 +590,37 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Account;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Account != _unmodified_Account)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Account = Account;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -500,6 +631,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBAccount Account { get; set; }
+			private TBAccount _unmodified_Account;
 			
 			}
 			[DataContract]
@@ -545,6 +677,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBRAccountRoot(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRAccountRoot");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRAccountRoot), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -613,6 +760,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -705,6 +867,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -727,6 +890,37 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Account;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Account != _unmodified_Account)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Account = Account;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -737,6 +931,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBAccount Account { get; set; }
+			private TBAccount _unmodified_Account;
 			
 			}
 			[DataContract]
@@ -782,6 +977,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBRGroupRoot(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRGroupRoot");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRGroupRoot), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -850,6 +1060,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -942,6 +1167,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -964,6 +1190,37 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Group;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Group != _unmodified_Group)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Group = Group;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -974,6 +1231,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBCollaboratingGroup Group { get; set; }
+			private TBCollaboratingGroup _unmodified_Group;
 			
 			}
 			[DataContract]
@@ -1019,6 +1277,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBRLoginGroupRoot(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginGroupRoot");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRLoginGroupRoot), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -1087,6 +1360,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -1181,6 +1469,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1193,6 +1482,35 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Role != _unmodified_Role)
+							return true;
+						if(GroupID != _unmodified_GroupID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Role = Role;
+					_unmodified_GroupID = GroupID;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -1210,8 +1528,10 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string Role { get; set; }
+			private string _unmodified_Role;
 			[DataMember]
 			public string GroupID { get; set; }
+			private string _unmodified_GroupID;
 			
 			}
 			[DataContract]
@@ -1257,6 +1577,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBREmailRoot(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBREmailRoot");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBREmailRoot), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -1325,6 +1660,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -1417,6 +1767,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1439,6 +1790,37 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Account;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Account != _unmodified_Account)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Account = Account;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -1449,6 +1831,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBAccount Account { get; set; }
+			private TBAccount _unmodified_Account;
 			
 			}
 			[DataContract]
@@ -1494,6 +1877,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBAccount(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccount");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccount), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -1562,6 +1960,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -1658,6 +2071,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1698,6 +2112,53 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Emails;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Logins;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupRoleCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Emails != _unmodified_Emails)
+							return true;
+						if(Logins != _unmodified_Logins)
+							return true;
+						if(GroupRoleCollection != _unmodified_GroupRoleCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Emails = Emails;
+					_unmodified_Logins = Logins;
+					_unmodified_GroupRoleCollection = GroupRoleCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -1708,10 +2169,13 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBEmailCollection Emails { get; set; }
+			private TBEmailCollection _unmodified_Emails;
 			[DataMember]
 			public TBLoginInfoCollection Logins { get; set; }
+			private TBLoginInfoCollection _unmodified_Logins;
 			[DataMember]
 			public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
+			private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
 			
 			}
 			[DataContract]
@@ -1757,6 +2221,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBAccountCollaborationGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccountCollaborationGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -1825,6 +2304,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -1921,6 +2415,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1933,6 +2428,38 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(GroupID != _unmodified_GroupID)
+							return true;
+						if(GroupRole != _unmodified_GroupRole)
+							return true;
+						if(RoleStatus != _unmodified_RoleStatus)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_GroupID = GroupID;
+					_unmodified_GroupRole = GroupRole;
+					_unmodified_RoleStatus = RoleStatus;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -1953,10 +2480,13 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string GroupID { get; set; }
+			private string _unmodified_GroupID;
 			[DataMember]
 			public string GroupRole { get; set; }
+			private string _unmodified_GroupRole;
 			[DataMember]
 			public string RoleStatus { get; set; }
+			private string _unmodified_RoleStatus;
 			
 			}
 			[DataContract]
@@ -2002,6 +2532,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroupCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccountCollaborationGroupCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -2070,6 +2615,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -2175,7 +2735,19 @@ namespace AaltoGlobalImpact.OIP {
 
 		
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
+				private TBAccountCollaborationGroup[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -2185,6 +2757,18 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -2233,6 +2817,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBLoginInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBLoginInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -2301,6 +2900,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -2393,6 +3007,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2405,6 +3020,32 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(OpenIDUrl != _unmodified_OpenIDUrl)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_OpenIDUrl = OpenIDUrl;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -2419,6 +3060,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string OpenIDUrl { get; set; }
+			private string _unmodified_OpenIDUrl;
 			
 			}
 			[DataContract]
@@ -2464,6 +3106,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBLoginInfoCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfoCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBLoginInfoCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -2532,6 +3189,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -2637,7 +3309,19 @@ namespace AaltoGlobalImpact.OIP {
 
 		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
+				private TBLoginInfo[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -2647,6 +3331,18 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -2695,6 +3391,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBEmail(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmail");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmail), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -2763,6 +3474,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -2855,6 +3581,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2867,6 +3594,35 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(EmailAddress != _unmodified_EmailAddress)
+							return true;
+						if(ValidatedAt != _unmodified_ValidatedAt)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_EmailAddress = EmailAddress;
+					_unmodified_ValidatedAt = ValidatedAt;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -2884,8 +3640,10 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
 			[DataMember]
 			public DateTime ValidatedAt { get; set; }
+			private DateTime _unmodified_ValidatedAt;
 			
 			}
 			[DataContract]
@@ -2931,6 +3689,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBEmailCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmailCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -2999,6 +3772,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -3104,7 +3892,19 @@ namespace AaltoGlobalImpact.OIP {
 
 		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
+				private TBEmail[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -3114,6 +3914,18 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -3162,6 +3974,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBCollaboratorRole(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRole");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratorRole), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -3230,6 +4057,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -3326,6 +4168,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -3348,6 +4191,43 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Email;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Email != _unmodified_Email)
+							return true;
+						if(Role != _unmodified_Role)
+							return true;
+						if(RoleStatus != _unmodified_RoleStatus)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Email = Email;
+					_unmodified_Role = Role;
+					_unmodified_RoleStatus = RoleStatus;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -3364,10 +4244,13 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public TBEmail Email { get; set; }
+			private TBEmail _unmodified_Email;
 			[DataMember]
 			public string Role { get; set; }
+			private string _unmodified_Role;
 			[DataMember]
 			public string RoleStatus { get; set; }
+			private string _unmodified_RoleStatus;
 			
 			}
 			[DataContract]
@@ -3413,6 +4296,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBCollaboratorRoleCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRoleCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratorRoleCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -3481,6 +4379,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -3586,7 +4499,19 @@ namespace AaltoGlobalImpact.OIP {
 
 		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
+				private TBCollaboratorRole[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -3596,6 +4521,18 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -3644,6 +4581,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBCollaboratingGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratingGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratingGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -3712,6 +4664,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -3806,6 +4773,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -3828,6 +4796,40 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Roles;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(Roles != _unmodified_Roles)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_Roles = Roles;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -3841,8 +4843,10 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public TBCollaboratorRoleCollection Roles { get; set; }
+			private TBCollaboratorRoleCollection _unmodified_Roles;
 			
 			}
 			[DataContract]
@@ -3888,6 +4892,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBEmailValidation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailValidation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmailValidation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -3956,6 +4975,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -4051,6 +5085,46 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) GroupJoinConfirmation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Email != _unmodified_Email)
+							return true;
+						if(AccountID != _unmodified_AccountID)
+							return true;
+						if(ValidUntil != _unmodified_ValidUntil)
+							return true;
+						if(GroupJoinConfirmation != _unmodified_GroupJoinConfirmation)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Email = Email;
+					_unmodified_AccountID = AccountID;
+					_unmodified_ValidUntil = ValidUntil;
+					_unmodified_GroupJoinConfirmation = GroupJoinConfirmation;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -4070,12 +5144,16 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string Email { get; set; }
+			private string _unmodified_Email;
 			[DataMember]
 			public string AccountID { get; set; }
+			private string _unmodified_AccountID;
 			[DataMember]
 			public DateTime ValidUntil { get; set; }
+			private DateTime _unmodified_ValidUntil;
 			[DataMember]
 			public TBGroupJoinConfirmation GroupJoinConfirmation { get; set; }
+			private TBGroupJoinConfirmation _unmodified_GroupJoinConfirmation;
 			
 			}
 			[DataContract]
@@ -4121,6 +5199,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBGroupJoinConfirmation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBGroupJoinConfirmation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBGroupJoinConfirmation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -4189,6 +5282,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -4281,6 +5389,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4293,6 +5402,32 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(GroupID != _unmodified_GroupID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_GroupID = GroupID;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -4307,6 +5442,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string GroupID { get; set; }
+			private string _unmodified_GroupID;
 			
 			}
 			[DataContract]
@@ -4352,6 +5488,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBRegisterContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRegisterContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRegisterContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -4420,6 +5571,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -4516,6 +5682,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4547,6 +5714,48 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) LoginProviderCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(ReturnUrl != _unmodified_ReturnUrl)
+							return true;
+						if(LoginProviderCollection != _unmodified_LoginProviderCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_ReturnUrl = ReturnUrl;
+					_unmodified_LoginProviderCollection = LoginProviderCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -4560,10 +5769,13 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public string ReturnUrl { get; set; }
+			private string _unmodified_ReturnUrl;
 			[DataMember]
 			public LoginProviderCollection LoginProviderCollection { get; set; }
+			private LoginProviderCollection _unmodified_LoginProviderCollection;
 			
 			}
 			[DataContract]
@@ -4609,6 +5821,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLoginProvider(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProvider");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LoginProvider), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -4677,6 +5904,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -4777,6 +6019,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4789,6 +6032,44 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ProviderName != _unmodified_ProviderName)
+							return true;
+						if(ProviderIconClass != _unmodified_ProviderIconClass)
+							return true;
+						if(ProviderType != _unmodified_ProviderType)
+							return true;
+						if(ProviderUrl != _unmodified_ProviderUrl)
+							return true;
+						if(ReturnUrl != _unmodified_ReturnUrl)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ProviderName = ProviderName;
+					_unmodified_ProviderIconClass = ProviderIconClass;
+					_unmodified_ProviderType = ProviderType;
+					_unmodified_ProviderUrl = ProviderUrl;
+					_unmodified_ReturnUrl = ReturnUrl;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -4815,14 +6096,19 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string ProviderName { get; set; }
+			private string _unmodified_ProviderName;
 			[DataMember]
 			public string ProviderIconClass { get; set; }
+			private string _unmodified_ProviderIconClass;
 			[DataMember]
 			public string ProviderType { get; set; }
+			private string _unmodified_ProviderType;
 			[DataMember]
 			public string ProviderUrl { get; set; }
+			private string _unmodified_ProviderUrl;
 			[DataMember]
 			public string ReturnUrl { get; set; }
+			private string _unmodified_ReturnUrl;
 			
 			}
 			[DataContract]
@@ -4868,6 +6154,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLoginProviderCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProviderCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LoginProviderCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -4936,6 +6237,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -5041,7 +6357,19 @@ namespace AaltoGlobalImpact.OIP {
 
 		
 				[DataMember] public List<LoginProvider> CollectionContent = new List<LoginProvider>();
+				private LoginProvider[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -5051,6 +6379,18 @@ namespace AaltoGlobalImpact.OIP {
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -5099,6 +6439,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveContactOipContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ContactOipContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContactOipContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -5167,6 +6522,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -5259,6 +6629,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5271,6 +6642,32 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(OIPModeratorGroupID != _unmodified_OIPModeratorGroupID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_OIPModeratorGroupID = OIPModeratorGroupID;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -5285,6 +6682,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string OIPModeratorGroupID { get; set; }
+			private string _unmodified_OIPModeratorGroupID;
 			
 			}
 			[DataContract]
@@ -5330,6 +6728,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTBPRegisterEmail(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBPRegisterEmail");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBPRegisterEmail), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -5398,6 +6811,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -5490,6 +6918,7 @@ namespace AaltoGlobalImpact.OIP {
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5502,6 +6931,32 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(EmailAddress != _unmodified_EmailAddress)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_EmailAddress = EmailAddress;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -5516,6 +6971,7 @@ namespace AaltoGlobalImpact.OIP {
 	        }
 			[DataMember]
 			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
 			
 			}
 			[DataContract]
@@ -5561,6 +7017,21 @@ namespace AaltoGlobalImpact.OIP {
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveJavaScriptContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: JavaScriptContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(JavaScriptContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -5629,6 +7100,21 @@ namespace AaltoGlobalImpact.OIP {
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -5726,6 +7212,7 @@ JavaScriptContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5738,6 +7225,32 @@ JavaScriptContainer.HtmlContent
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(HtmlContent != _unmodified_HtmlContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_HtmlContent = HtmlContent;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -5752,6 +7265,7 @@ JavaScriptContainer.HtmlContent
 	        }
 			[DataMember]
 			public string HtmlContent { get; set; }
+			private string _unmodified_HtmlContent;
 			
 			}
 			[DataContract]
@@ -5797,6 +7311,21 @@ JavaScriptContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveJavascriptContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: JavascriptContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(JavascriptContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -5865,6 +7394,21 @@ JavaScriptContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -5962,6 +7506,7 @@ JavascriptContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5974,6 +7519,32 @@ JavascriptContainer.HtmlContent
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(HtmlContent != _unmodified_HtmlContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_HtmlContent = HtmlContent;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -5988,6 +7559,7 @@ JavascriptContainer.HtmlContent
 	        }
 			[DataMember]
 			public string HtmlContent { get; set; }
+			private string _unmodified_HtmlContent;
 			
 			}
 			[DataContract]
@@ -6033,6 +7605,21 @@ JavascriptContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveFooterContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: FooterContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(FooterContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -6101,6 +7688,21 @@ JavascriptContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -6198,6 +7800,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6210,6 +7813,32 @@ FooterContainer.HtmlContent
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(HtmlContent != _unmodified_HtmlContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_HtmlContent = HtmlContent;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -6224,6 +7853,7 @@ FooterContainer.HtmlContent
 	        }
 			[DataMember]
 			public string HtmlContent { get; set; }
+			private string _unmodified_HtmlContent;
 			
 			}
 			[DataContract]
@@ -6269,6 +7899,21 @@ FooterContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveNavigationContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: NavigationContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(NavigationContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -6337,6 +7982,21 @@ FooterContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -6429,6 +8089,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6441,6 +8102,32 @@ FooterContainer.HtmlContent
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Dummy != _unmodified_Dummy)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Dummy = Dummy;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -6455,6 +8142,7 @@ FooterContainer.HtmlContent
 	        }
 			[DataMember]
 			public string Dummy { get; set; }
+			private string _unmodified_Dummy;
 			
 			}
 			[DataContract]
@@ -6500,6 +8188,21 @@ FooterContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountSummary(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSummary");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountSummary), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -6568,6 +8271,21 @@ FooterContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -6664,6 +8382,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6704,6 +8423,53 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ActivitySummary;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupSummary;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(ActivitySummary != _unmodified_ActivitySummary)
+							return true;
+						if(GroupSummary != _unmodified_GroupSummary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Introduction = Introduction;
+					_unmodified_ActivitySummary = ActivitySummary;
+					_unmodified_GroupSummary = GroupSummary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -6714,10 +8480,13 @@ FooterContainer.HtmlContent
 	        }
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public ActivitySummaryContainer ActivitySummary { get; set; }
+			private ActivitySummaryContainer _unmodified_ActivitySummary;
 			[DataMember]
 			public GroupSummaryContainer GroupSummary { get; set; }
+			private GroupSummaryContainer _unmodified_GroupSummary;
 			
 			}
 			[DataContract]
@@ -6763,6 +8532,21 @@ FooterContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -6831,6 +8615,21 @@ FooterContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -6929,6 +8728,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6978,6 +8778,61 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountIndex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountModule;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountSummary;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(AccountIndex != _unmodified_AccountIndex)
+							return true;
+						if(AccountModule != _unmodified_AccountModule)
+							return true;
+						if(AccountSummary != _unmodified_AccountSummary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_AccountIndex = AccountIndex;
+					_unmodified_AccountModule = AccountModule;
+					_unmodified_AccountSummary = AccountSummary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -6988,12 +8843,16 @@ FooterContainer.HtmlContent
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public AccountIndex AccountIndex { get; set; }
+			private AccountIndex _unmodified_AccountIndex;
 			[DataMember]
 			public AccountModule AccountModule { get; set; }
+			private AccountModule _unmodified_AccountModule;
 			[DataMember]
 			public AccountSummary AccountSummary { get; set; }
+			private AccountSummary _unmodified_AccountSummary;
 			
 			}
 			[DataContract]
@@ -7039,6 +8898,21 @@ FooterContainer.HtmlContent
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountIndex(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountIndex");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountIndex), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -7107,6 +8981,21 @@ FooterContainer.HtmlContent
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -7215,6 +9104,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7237,6 +9127,46 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Icon;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Summary != _unmodified_Summary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Summary = Summary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -7256,12 +9186,16 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public Image Icon { get; set; }
+			private Image _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Introduction { get; set; }
+			private string _unmodified_Introduction;
 			[DataMember]
 			public string Summary { get; set; }
+			private string _unmodified_Summary;
 			
 			}
 			[DataContract]
@@ -7307,6 +9241,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountModule(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountModule");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountModule), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -7375,6 +9324,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -7473,6 +9437,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7522,6 +9487,61 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Profile;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Security;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Roles;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) LocationCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Profile != _unmodified_Profile)
+							return true;
+						if(Security != _unmodified_Security)
+							return true;
+						if(Roles != _unmodified_Roles)
+							return true;
+						if(LocationCollection != _unmodified_LocationCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Profile = Profile;
+					_unmodified_Security = Security;
+					_unmodified_Roles = Roles;
+					_unmodified_LocationCollection = LocationCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -7532,12 +9552,16 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public AccountProfile Profile { get; set; }
+			private AccountProfile _unmodified_Profile;
 			[DataMember]
 			public AccountSecurity Security { get; set; }
+			private AccountSecurity _unmodified_Security;
 			[DataMember]
 			public AccountRoles Roles { get; set; }
+			private AccountRoles _unmodified_Roles;
 			[DataMember]
 			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
 			[DataContract]
@@ -7583,6 +9607,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLocationContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LocationContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -7651,6 +9690,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -7743,6 +9797,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7765,6 +9820,37 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Locations;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Locations != _unmodified_Locations)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Locations = Locations;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -7775,6 +9861,7 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public AddressAndLocationCollection Locations { get; set; }
+			private AddressAndLocationCollection _unmodified_Locations;
 			
 			}
 			[DataContract]
@@ -7820,6 +9907,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddressAndLocationCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocationCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddressAndLocationCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -7888,6 +9990,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -7993,7 +10110,19 @@ AccountIndex.Summary
 
 		
 				[DataMember] public List<AddressAndLocation> CollectionContent = new List<AddressAndLocation>();
+				private AddressAndLocation[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -8003,6 +10132,18 @@ AccountIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -8051,6 +10192,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddressAndLocation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddressAndLocation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -8119,6 +10275,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return true;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -8215,6 +10386,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8255,6 +10427,53 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Address;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Location;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
+						if(Address != _unmodified_Address)
+							return true;
+						if(Location != _unmodified_Location)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					_unmodified_Address = Address;
+					_unmodified_Location = Location;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -8265,10 +10484,13 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public StreetAddress Address { get; set; }
+			private StreetAddress _unmodified_Address;
 			[DataMember]
 			public Location Location { get; set; }
+			private Location _unmodified_Location;
 			
 			}
 			[DataContract]
@@ -8314,6 +10536,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveStreetAddress(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: StreetAddress");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StreetAddress), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -8382,6 +10619,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -8480,6 +10732,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8492,6 +10745,41 @@ AccountIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Street != _unmodified_Street)
+							return true;
+						if(ZipCode != _unmodified_ZipCode)
+							return true;
+						if(Town != _unmodified_Town)
+							return true;
+						if(Country != _unmodified_Country)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Street = Street;
+					_unmodified_ZipCode = ZipCode;
+					_unmodified_Town = Town;
+					_unmodified_Country = Country;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -8515,12 +10803,16 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public string Street { get; set; }
+			private string _unmodified_Street;
 			[DataMember]
 			public string ZipCode { get; set; }
+			private string _unmodified_ZipCode;
 			[DataMember]
 			public string Town { get; set; }
+			private string _unmodified_Town;
 			[DataMember]
 			public string Country { get; set; }
+			private string _unmodified_Country;
 			
 			}
 			[DataContract]
@@ -8566,6 +10858,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountContent(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountContent");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountContent), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -8634,6 +10941,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -8726,6 +11048,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8738,6 +11061,32 @@ AccountIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Dummy != _unmodified_Dummy)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Dummy = Dummy;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -8752,6 +11101,7 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public string Dummy { get; set; }
+			private string _unmodified_Dummy;
 			
 			}
 			[DataContract]
@@ -8797,6 +11147,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountProfile(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountProfile");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountProfile), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -8865,6 +11230,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -8963,6 +11343,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8994,6 +11375,51 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ProfileImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Address;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ProfileImage != _unmodified_ProfileImage)
+							return true;
+						if(FirstName != _unmodified_FirstName)
+							return true;
+						if(LastName != _unmodified_LastName)
+							return true;
+						if(Address != _unmodified_Address)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ProfileImage = ProfileImage;
+					_unmodified_FirstName = FirstName;
+					_unmodified_LastName = LastName;
+					_unmodified_Address = Address;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -9010,12 +11436,16 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public Image ProfileImage { get; set; }
+			private Image _unmodified_ProfileImage;
 			[DataMember]
 			public string FirstName { get; set; }
+			private string _unmodified_FirstName;
 			[DataMember]
 			public string LastName { get; set; }
+			private string _unmodified_LastName;
 			[DataMember]
 			public StreetAddress Address { get; set; }
+			private StreetAddress _unmodified_Address;
 			
 			}
 			[DataContract]
@@ -9061,6 +11491,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountSecurity(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSecurity");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountSecurity), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -9129,6 +11574,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -9223,6 +11683,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9254,6 +11715,45 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) LoginInfoCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) EmailCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(LoginInfoCollection != _unmodified_LoginInfoCollection)
+							return true;
+						if(EmailCollection != _unmodified_EmailCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_LoginInfoCollection = LoginInfoCollection;
+					_unmodified_EmailCollection = EmailCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -9264,8 +11764,10 @@ AccountIndex.Summary
 	        }
 			[DataMember]
 			public TBLoginInfoCollection LoginInfoCollection { get; set; }
+			private TBLoginInfoCollection _unmodified_LoginInfoCollection;
 			[DataMember]
 			public TBEmailCollection EmailCollection { get; set; }
+			private TBEmailCollection _unmodified_EmailCollection;
 			
 			}
 			[DataContract]
@@ -9311,6 +11813,21 @@ AccountIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAccountRoles(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountRoles");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountRoles), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -9379,6 +11896,21 @@ AccountIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -9480,6 +12012,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9511,6 +12044,48 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ModeratorInGroups;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MemberInGroups;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ModeratorInGroups != _unmodified_ModeratorInGroups)
+							return true;
+						if(MemberInGroups != _unmodified_MemberInGroups)
+							return true;
+						if(OrganizationsImPartOf != _unmodified_OrganizationsImPartOf)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ModeratorInGroups = ModeratorInGroups;
+					_unmodified_MemberInGroups = MemberInGroups;
+					_unmodified_OrganizationsImPartOf = OrganizationsImPartOf;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -9524,10 +12099,13 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public ReferenceCollection ModeratorInGroups { get; set; }
+			private ReferenceCollection _unmodified_ModeratorInGroups;
 			[DataMember]
 			public ReferenceCollection MemberInGroups { get; set; }
+			private ReferenceCollection _unmodified_MemberInGroups;
 			[DataMember]
 			public string OrganizationsImPartOf { get; set; }
+			private string _unmodified_OrganizationsImPartOf;
 			
 			}
 			[DataContract]
@@ -9573,6 +12151,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrievePersonalInfoVisibility(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: PersonalInfoVisibility");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(PersonalInfoVisibility), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -9641,6 +12234,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -9733,6 +12341,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9745,6 +12354,32 @@ AccountRoles.OrganizationsImPartOf
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(NoOne_Network_All != _unmodified_NoOne_Network_All)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_NoOne_Network_All = NoOne_Network_All;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -9759,6 +12394,7 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public string NoOne_Network_All { get; set; }
+			private string _unmodified_NoOne_Network_All;
 			
 			}
 			[DataContract]
@@ -9804,6 +12440,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveReferenceToInformation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceToInformation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceToInformation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -9872,6 +12523,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -9966,6 +12632,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9978,6 +12645,35 @@ AccountRoles.OrganizationsImPartOf
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(URL != _unmodified_URL)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_URL = URL;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -9995,8 +12691,10 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string URL { get; set; }
+			private string _unmodified_URL;
 			
 			}
 			[DataContract]
@@ -10042,6 +12740,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveReferenceCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -10110,6 +12823,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -10215,7 +12943,19 @@ AccountRoles.OrganizationsImPartOf
 
 		
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
+				private ReferenceToInformation[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -10225,6 +12965,18 @@ AccountRoles.OrganizationsImPartOf
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -10273,6 +13025,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveBlogContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -10341,6 +13108,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -10439,6 +13221,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -10488,6 +13271,61 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) FeaturedBlog;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) RecentBlogSummary;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) BlogIndexGroup;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(FeaturedBlog != _unmodified_FeaturedBlog)
+							return true;
+						if(RecentBlogSummary != _unmodified_RecentBlogSummary)
+							return true;
+						if(BlogIndexGroup != _unmodified_BlogIndexGroup)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_FeaturedBlog = FeaturedBlog;
+					_unmodified_RecentBlogSummary = RecentBlogSummary;
+					_unmodified_BlogIndexGroup = BlogIndexGroup;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -10498,12 +13336,16 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public Blog FeaturedBlog { get; set; }
+			private Blog _unmodified_FeaturedBlog;
 			[DataMember]
 			public RecentBlogSummary RecentBlogSummary { get; set; }
+			private RecentBlogSummary _unmodified_RecentBlogSummary;
 			[DataMember]
 			public BlogIndexGroup BlogIndexGroup { get; set; }
+			private BlogIndexGroup _unmodified_BlogIndexGroup;
 			
 			}
 			[DataContract]
@@ -10549,6 +13391,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveRecentBlogSummary(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: RecentBlogSummary");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RecentBlogSummary), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -10617,6 +13474,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -10711,6 +13583,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -10742,6 +13615,45 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) RecentBlogCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(RecentBlogCollection != _unmodified_RecentBlogCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Introduction = Introduction;
+					_unmodified_RecentBlogCollection = RecentBlogCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -10752,8 +13664,10 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public BlogCollection RecentBlogCollection { get; set; }
+			private BlogCollection _unmodified_RecentBlogCollection;
 			
 			}
 			[DataContract]
@@ -10799,6 +13713,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -10867,6 +13796,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -10969,6 +13913,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11036,6 +13981,77 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapFeatured;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapResultCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapIndexCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapMarkers;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(MapFeatured != _unmodified_MapFeatured)
+							return true;
+						if(MapCollection != _unmodified_MapCollection)
+							return true;
+						if(MapResultCollection != _unmodified_MapResultCollection)
+							return true;
+						if(MapIndexCollection != _unmodified_MapIndexCollection)
+							return true;
+						if(MapMarkers != _unmodified_MapMarkers)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_MapFeatured = MapFeatured;
+					_unmodified_MapCollection = MapCollection;
+					_unmodified_MapResultCollection = MapResultCollection;
+					_unmodified_MapIndexCollection = MapIndexCollection;
+					_unmodified_MapMarkers = MapMarkers;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -11046,16 +14062,22 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public Map MapFeatured { get; set; }
+			private Map _unmodified_MapFeatured;
 			[DataMember]
 			public MapCollection MapCollection { get; set; }
+			private MapCollection _unmodified_MapCollection;
 			[DataMember]
 			public MapResultCollection MapResultCollection { get; set; }
+			private MapResultCollection _unmodified_MapResultCollection;
 			[DataMember]
 			public MapIndexCollection MapIndexCollection { get; set; }
+			private MapIndexCollection _unmodified_MapIndexCollection;
 			[DataMember]
 			public MapMarkerCollection MapMarkers { get; set; }
+			private MapMarkerCollection _unmodified_MapMarkers;
 			
 			}
 			[DataContract]
@@ -11101,6 +14123,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapMarker(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarker");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapMarker), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -11169,6 +14206,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -11263,6 +14315,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11285,6 +14338,40 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Location;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(LocationText != _unmodified_LocationText)
+							return true;
+						if(Location != _unmodified_Location)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_LocationText = LocationText;
+					_unmodified_Location = Location;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -11298,8 +14385,10 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public string LocationText { get; set; }
+			private string _unmodified_LocationText;
 			[DataMember]
 			public Location Location { get; set; }
+			private Location _unmodified_Location;
 			
 			}
 			[DataContract]
@@ -11345,6 +14434,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapMarkerCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarkerCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapMarkerCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -11413,6 +14517,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -11518,7 +14637,19 @@ AccountRoles.OrganizationsImPartOf
 
 		
 				[DataMember] public List<MapMarker> CollectionContent = new List<MapMarker>();
+				private MapMarker[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -11528,6 +14659,18 @@ AccountRoles.OrganizationsImPartOf
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -11576,6 +14719,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCalendarContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -11644,6 +14802,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -11742,6 +14915,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11791,6 +14965,61 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) CalendarContainerHeader;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CalendarFeatured;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CalendarCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CalendarIndexCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CalendarContainerHeader != _unmodified_CalendarContainerHeader)
+							return true;
+						if(CalendarFeatured != _unmodified_CalendarFeatured)
+							return true;
+						if(CalendarCollection != _unmodified_CalendarCollection)
+							return true;
+						if(CalendarIndexCollection != _unmodified_CalendarIndexCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CalendarContainerHeader = CalendarContainerHeader;
+					_unmodified_CalendarFeatured = CalendarFeatured;
+					_unmodified_CalendarCollection = CalendarCollection;
+					_unmodified_CalendarIndexCollection = CalendarIndexCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -11801,12 +15030,16 @@ AccountRoles.OrganizationsImPartOf
 	        }
 			[DataMember]
 			public ContainerHeader CalendarContainerHeader { get; set; }
+			private ContainerHeader _unmodified_CalendarContainerHeader;
 			[DataMember]
 			public Calendar CalendarFeatured { get; set; }
+			private Calendar _unmodified_CalendarFeatured;
 			[DataMember]
 			public CalendarCollection CalendarCollection { get; set; }
+			private CalendarCollection _unmodified_CalendarCollection;
 			[DataMember]
 			public CalendarIndex CalendarIndexCollection { get; set; }
+			private CalendarIndex _unmodified_CalendarIndexCollection;
 			
 			}
 			[DataContract]
@@ -11852,6 +15085,21 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAboutContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AboutContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AboutContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -11920,6 +15168,21 @@ AccountRoles.OrganizationsImPartOf
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -12032,6 +15295,7 @@ AboutContainer.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12072,6 +15336,65 @@ AboutContainer.Body
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) MainImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ImageGroup;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(MainImage != _unmodified_MainImage)
+							return true;
+						if(Header != _unmodified_Header)
+							return true;
+						if(Excerpt != _unmodified_Excerpt)
+							return true;
+						if(Body != _unmodified_Body)
+							return true;
+						if(Published != _unmodified_Published)
+							return true;
+						if(Author != _unmodified_Author)
+							return true;
+						if(ImageGroup != _unmodified_ImageGroup)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_MainImage = MainImage;
+					_unmodified_Header = Header;
+					_unmodified_Excerpt = Excerpt;
+					_unmodified_Body = Body;
+					_unmodified_Published = Published;
+					_unmodified_Author = Author;
+					_unmodified_ImageGroup = ImageGroup;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -12094,18 +15417,25 @@ AboutContainer.Body
 	        }
 			[DataMember]
 			public Image MainImage { get; set; }
+			private Image _unmodified_MainImage;
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public string Excerpt { get; set; }
+			private string _unmodified_Excerpt;
 			[DataMember]
 			public string Body { get; set; }
+			private string _unmodified_Body;
 			[DataMember]
 			public DateTime Published { get; set; }
+			private DateTime _unmodified_Published;
 			[DataMember]
 			public string Author { get; set; }
+			private string _unmodified_Author;
 			[DataMember]
 			public ImageGroup ImageGroup { get; set; }
+			private ImageGroup _unmodified_ImageGroup;
 			
 			}
 			[DataContract]
@@ -12151,6 +15481,21 @@ AboutContainer.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveOBSAccountContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: OBSAccountContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OBSAccountContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -12219,6 +15564,21 @@ AboutContainer.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -12317,6 +15677,7 @@ AboutContainer.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12366,6 +15727,61 @@ AboutContainer.Body
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) AccountContainerHeader;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountFeatured;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) AccountIndexCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(AccountContainerHeader != _unmodified_AccountContainerHeader)
+							return true;
+						if(AccountFeatured != _unmodified_AccountFeatured)
+							return true;
+						if(AccountCollection != _unmodified_AccountCollection)
+							return true;
+						if(AccountIndexCollection != _unmodified_AccountIndexCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_AccountContainerHeader = AccountContainerHeader;
+					_unmodified_AccountFeatured = AccountFeatured;
+					_unmodified_AccountCollection = AccountCollection;
+					_unmodified_AccountIndexCollection = AccountIndexCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -12376,12 +15792,16 @@ AboutContainer.Body
 	        }
 			[DataMember]
 			public ContainerHeader AccountContainerHeader { get; set; }
+			private ContainerHeader _unmodified_AccountContainerHeader;
 			[DataMember]
 			public Calendar AccountFeatured { get; set; }
+			private Calendar _unmodified_AccountFeatured;
 			[DataMember]
 			public CalendarCollection AccountCollection { get; set; }
+			private CalendarCollection _unmodified_AccountCollection;
 			[DataMember]
 			public CalendarIndex AccountIndexCollection { get; set; }
+			private CalendarIndex _unmodified_AccountIndexCollection;
 			
 			}
 			[DataContract]
@@ -12427,6 +15847,21 @@ AboutContainer.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveProjectContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ProjectContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProjectContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -12495,6 +15930,21 @@ AboutContainer.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -12593,6 +16043,7 @@ AboutContainer.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12642,6 +16093,61 @@ AboutContainer.Body
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ProjectContainerHeader;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ProjectFeatured;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ProjectCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ProjectIndexCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ProjectContainerHeader != _unmodified_ProjectContainerHeader)
+							return true;
+						if(ProjectFeatured != _unmodified_ProjectFeatured)
+							return true;
+						if(ProjectCollection != _unmodified_ProjectCollection)
+							return true;
+						if(ProjectIndexCollection != _unmodified_ProjectIndexCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ProjectContainerHeader = ProjectContainerHeader;
+					_unmodified_ProjectFeatured = ProjectFeatured;
+					_unmodified_ProjectCollection = ProjectCollection;
+					_unmodified_ProjectIndexCollection = ProjectIndexCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -12652,12 +16158,16 @@ AboutContainer.Body
 	        }
 			[DataMember]
 			public ContainerHeader ProjectContainerHeader { get; set; }
+			private ContainerHeader _unmodified_ProjectContainerHeader;
 			[DataMember]
 			public Calendar ProjectFeatured { get; set; }
+			private Calendar _unmodified_ProjectFeatured;
 			[DataMember]
 			public CalendarCollection ProjectCollection { get; set; }
+			private CalendarCollection _unmodified_ProjectCollection;
 			[DataMember]
 			public CalendarIndex ProjectIndexCollection { get; set; }
+			private CalendarIndex _unmodified_ProjectIndexCollection;
 			
 			}
 			[DataContract]
@@ -12703,6 +16213,21 @@ AboutContainer.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCourseContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CourseContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CourseContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -12771,6 +16296,21 @@ AboutContainer.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -12869,6 +16409,7 @@ AboutContainer.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12918,6 +16459,61 @@ AboutContainer.Body
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) CourseContainerHeader;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CourseFeatured;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CourseCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CourseIndexCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CourseContainerHeader != _unmodified_CourseContainerHeader)
+							return true;
+						if(CourseFeatured != _unmodified_CourseFeatured)
+							return true;
+						if(CourseCollection != _unmodified_CourseCollection)
+							return true;
+						if(CourseIndexCollection != _unmodified_CourseIndexCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CourseContainerHeader = CourseContainerHeader;
+					_unmodified_CourseFeatured = CourseFeatured;
+					_unmodified_CourseCollection = CourseCollection;
+					_unmodified_CourseIndexCollection = CourseIndexCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -12928,12 +16524,16 @@ AboutContainer.Body
 	        }
 			[DataMember]
 			public ContainerHeader CourseContainerHeader { get; set; }
+			private ContainerHeader _unmodified_CourseContainerHeader;
 			[DataMember]
 			public Calendar CourseFeatured { get; set; }
+			private Calendar _unmodified_CourseFeatured;
 			[DataMember]
 			public CalendarCollection CourseCollection { get; set; }
+			private CalendarCollection _unmodified_CourseCollection;
 			[DataMember]
 			public CalendarIndex CourseIndexCollection { get; set; }
+			private CalendarIndex _unmodified_CourseIndexCollection;
 			
 			}
 			[DataContract]
@@ -12979,6 +16579,21 @@ AboutContainer.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveContainerHeader(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ContainerHeader");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContainerHeader), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -13047,6 +16662,21 @@ AboutContainer.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -13141,6 +16771,7 @@ AboutContainer.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13153,6 +16784,35 @@ AboutContainer.Body
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(SubTitle != _unmodified_SubTitle)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_SubTitle = SubTitle;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -13170,8 +16830,10 @@ AboutContainer.Body
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string SubTitle { get; set; }
+			private string _unmodified_SubTitle;
 			
 			}
 			[DataContract]
@@ -13217,6 +16879,21 @@ AboutContainer.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveActivitySummaryContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivitySummaryContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivitySummaryContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -13285,6 +16962,21 @@ AboutContainer.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -13390,6 +17082,7 @@ ActivitySummaryContainer.SummaryBody
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13439,6 +17132,64 @@ ActivitySummaryContainer.SummaryBody
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ActivityIndex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ActivityCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(SummaryBody != _unmodified_SummaryBody)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(ActivityIndex != _unmodified_ActivityIndex)
+							return true;
+						if(ActivityCollection != _unmodified_ActivityCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_SummaryBody = SummaryBody;
+					_unmodified_Introduction = Introduction;
+					_unmodified_ActivityIndex = ActivityIndex;
+					_unmodified_ActivityCollection = ActivityCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -13452,14 +17203,19 @@ ActivitySummaryContainer.SummaryBody
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public string SummaryBody { get; set; }
+			private string _unmodified_SummaryBody;
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public ActivityIndex ActivityIndex { get; set; }
+			private ActivityIndex _unmodified_ActivityIndex;
 			[DataMember]
 			public ActivityCollection ActivityCollection { get; set; }
+			private ActivityCollection _unmodified_ActivityCollection;
 			
 			}
 			[DataContract]
@@ -13505,6 +17261,21 @@ ActivitySummaryContainer.SummaryBody
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveActivityIndex(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityIndex");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityIndex), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -13573,6 +17344,21 @@ ActivitySummaryContainer.SummaryBody
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -13681,6 +17467,7 @@ ActivityIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13703,6 +17490,46 @@ ActivityIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Icon;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Summary != _unmodified_Summary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Summary = Summary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -13722,12 +17549,16 @@ ActivityIndex.Summary
 	        }
 			[DataMember]
 			public Image Icon { get; set; }
+			private Image _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Introduction { get; set; }
+			private string _unmodified_Introduction;
 			[DataMember]
 			public string Summary { get; set; }
+			private string _unmodified_Summary;
 			
 			}
 			[DataContract]
@@ -13773,6 +17604,21 @@ ActivityIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveActivityContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -13841,6 +17687,21 @@ ActivityIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -13937,6 +17798,7 @@ ActivityIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13977,6 +17839,53 @@ ActivityIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ActivityIndex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ActivityModule;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(ActivityIndex != _unmodified_ActivityIndex)
+							return true;
+						if(ActivityModule != _unmodified_ActivityModule)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_ActivityIndex = ActivityIndex;
+					_unmodified_ActivityModule = ActivityModule;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -13987,10 +17896,13 @@ ActivityIndex.Summary
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public ActivityIndex ActivityIndex { get; set; }
+			private ActivityIndex _unmodified_ActivityIndex;
 			[DataMember]
 			public Activity ActivityModule { get; set; }
+			private Activity _unmodified_ActivityModule;
 			
 			}
 			[DataContract]
@@ -14036,6 +17948,21 @@ ActivityIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveActivityCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -14104,6 +18031,21 @@ ActivityIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -14209,7 +18151,19 @@ ActivityIndex.Summary
 
 		
 				[DataMember] public List<Activity> CollectionContent = new List<Activity>();
+				private Activity[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -14219,6 +18173,18 @@ ActivityIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -14267,6 +18233,21 @@ ActivityIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveActivity(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Activity");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Activity), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -14335,6 +18316,21 @@ ActivityIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -14450,6 +18446,7 @@ Activity.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -14535,6 +18532,99 @@ Activity.Description
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ProfileImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) IconImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Collaborators;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ImageSets;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Location;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CategoryCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
+						if(ProfileImage != _unmodified_ProfileImage)
+							return true;
+						if(IconImage != _unmodified_IconImage)
+							return true;
+						if(ActivityName != _unmodified_ActivityName)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(Collaborators != _unmodified_Collaborators)
+							return true;
+						if(ImageSets != _unmodified_ImageSets)
+							return true;
+						if(Location != _unmodified_Location)
+							return true;
+						if(CategoryCollection != _unmodified_CategoryCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					_unmodified_ProfileImage = ProfileImage;
+					_unmodified_IconImage = IconImage;
+					_unmodified_ActivityName = ActivityName;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Description = Description;
+					_unmodified_Collaborators = Collaborators;
+					_unmodified_ImageSets = ImageSets;
+					_unmodified_Location = Location;
+					_unmodified_CategoryCollection = CategoryCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -14551,24 +18641,34 @@ Activity.Description
 	        }
 			[DataMember]
 			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public Image ProfileImage { get; set; }
+			private Image _unmodified_ProfileImage;
 			[DataMember]
 			public Image IconImage { get; set; }
+			private Image _unmodified_IconImage;
 			[DataMember]
 			public string ActivityName { get; set; }
+			private string _unmodified_ActivityName;
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public string Description { get; set; }
+			private string _unmodified_Description;
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
+			private CollaboratorCollection _unmodified_Collaborators;
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
+			private ImageGroupCollection _unmodified_ImageSets;
 			[DataMember]
 			public AddressAndLocation Location { get; set; }
+			private AddressAndLocation _unmodified_Location;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
+			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
 			[DataContract]
@@ -14614,6 +18714,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveModeratorCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ModeratorCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ModeratorCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -14682,6 +18797,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -14787,7 +18917,19 @@ Activity.Description
 
 		
 				[DataMember] public List<Moderator> CollectionContent = new List<Moderator>();
+				private Moderator[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -14797,6 +18939,18 @@ Activity.Description
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -14845,6 +18999,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveModerator(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Moderator");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Moderator), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -14913,6 +19082,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -15007,6 +19191,7 @@ Activity.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15019,6 +19204,35 @@ Activity.Description
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ModeratorName != _unmodified_ModeratorName)
+							return true;
+						if(ProfileUrl != _unmodified_ProfileUrl)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ModeratorName = ModeratorName;
+					_unmodified_ProfileUrl = ProfileUrl;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -15036,8 +19250,10 @@ Activity.Description
 	        }
 			[DataMember]
 			public string ModeratorName { get; set; }
+			private string _unmodified_ModeratorName;
 			[DataMember]
 			public string ProfileUrl { get; set; }
+			private string _unmodified_ProfileUrl;
 			
 			}
 			[DataContract]
@@ -15083,6 +19299,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaboratorCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratorCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratorCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -15151,6 +19382,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -15256,7 +19502,19 @@ Activity.Description
 
 		
 				[DataMember] public List<Collaborator> CollectionContent = new List<Collaborator>();
+				private Collaborator[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -15266,6 +19524,18 @@ Activity.Description
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -15314,6 +19584,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaborator(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Collaborator");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Collaborator), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -15382,6 +19667,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -15478,6 +19778,7 @@ Activity.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15490,6 +19791,38 @@ Activity.Description
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CollaboratorName != _unmodified_CollaboratorName)
+							return true;
+						if(Role != _unmodified_Role)
+							return true;
+						if(ProfileUrl != _unmodified_ProfileUrl)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollaboratorName = CollaboratorName;
+					_unmodified_Role = Role;
+					_unmodified_ProfileUrl = ProfileUrl;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -15510,10 +19843,13 @@ Activity.Description
 	        }
 			[DataMember]
 			public string CollaboratorName { get; set; }
+			private string _unmodified_CollaboratorName;
 			[DataMember]
 			public string Role { get; set; }
+			private string _unmodified_Role;
 			[DataMember]
 			public string ProfileUrl { get; set; }
+			private string _unmodified_ProfileUrl;
 			
 			}
 			[DataContract]
@@ -15559,6 +19895,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaboratingGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -15627,6 +19978,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -15719,6 +20085,7 @@ Activity.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15731,6 +20098,32 @@ Activity.Description
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CollaboratingGroupName != _unmodified_CollaboratingGroupName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollaboratingGroupName = CollaboratingGroupName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -15745,6 +20138,7 @@ Activity.Description
 	        }
 			[DataMember]
 			public string CollaboratingGroupName { get; set; }
+			private string _unmodified_CollaboratingGroupName;
 			
 			}
 			[DataContract]
@@ -15790,6 +20184,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaboratingGroupCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroupCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroupCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -15858,6 +20267,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -15963,7 +20387,19 @@ Activity.Description
 
 		
 				[DataMember] public List<CollaboratingGroup> CollectionContent = new List<CollaboratingGroup>();
+				private CollaboratingGroup[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -15973,6 +20409,18 @@ Activity.Description
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -16021,6 +20469,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaboratingOrganization(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganization");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganization), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -16089,6 +20552,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -16181,6 +20659,7 @@ Activity.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -16193,6 +20672,32 @@ Activity.Description
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CollaboratingOrganizationName != _unmodified_CollaboratingOrganizationName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollaboratingOrganizationName = CollaboratingOrganizationName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -16207,6 +20712,7 @@ Activity.Description
 	        }
 			[DataMember]
 			public string CollaboratingOrganizationName { get; set; }
+			private string _unmodified_CollaboratingOrganizationName;
 			
 			}
 			[DataContract]
@@ -16252,6 +20758,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCollaboratingOrganizationCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganizationCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganizationCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -16320,6 +20841,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -16425,7 +20961,19 @@ Activity.Description
 
 		
 				[DataMember] public List<CollaboratingOrganization> CollectionContent = new List<CollaboratingOrganization>();
+				private CollaboratingOrganization[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -16435,6 +20983,18 @@ Activity.Description
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -16483,6 +21043,21 @@ Activity.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveGroupSummaryContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupSummaryContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupSummaryContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -16551,6 +21126,21 @@ Activity.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -16656,6 +21246,7 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -16705,6 +21296,64 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupSummaryIndex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(SummaryBody != _unmodified_SummaryBody)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(GroupSummaryIndex != _unmodified_GroupSummaryIndex)
+							return true;
+						if(GroupCollection != _unmodified_GroupCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_SummaryBody = SummaryBody;
+					_unmodified_Introduction = Introduction;
+					_unmodified_GroupSummaryIndex = GroupSummaryIndex;
+					_unmodified_GroupCollection = GroupCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -16718,14 +21367,19 @@ GroupSummaryContainer.SummaryBody
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public string SummaryBody { get; set; }
+			private string _unmodified_SummaryBody;
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public GroupIndex GroupSummaryIndex { get; set; }
+			private GroupIndex _unmodified_GroupSummaryIndex;
 			[DataMember]
 			public GroupCollection GroupCollection { get; set; }
+			private GroupCollection _unmodified_GroupCollection;
 			
 			}
 			[DataContract]
@@ -16771,6 +21425,21 @@ GroupSummaryContainer.SummaryBody
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveGroupContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupContainer");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -16839,6 +21508,21 @@ GroupSummaryContainer.SummaryBody
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -16943,6 +21627,7 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17019,6 +21704,85 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Header;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupIndex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) GroupProfile;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Collaborators;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) PendingCollaborators;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Activities;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Locations;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Header != _unmodified_Header)
+							return true;
+						if(GroupIndex != _unmodified_GroupIndex)
+							return true;
+						if(GroupProfile != _unmodified_GroupProfile)
+							return true;
+						if(Collaborators != _unmodified_Collaborators)
+							return true;
+						if(PendingCollaborators != _unmodified_PendingCollaborators)
+							return true;
+						if(Activities != _unmodified_Activities)
+							return true;
+						if(Locations != _unmodified_Locations)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Header = Header;
+					_unmodified_GroupIndex = GroupIndex;
+					_unmodified_GroupProfile = GroupProfile;
+					_unmodified_Collaborators = Collaborators;
+					_unmodified_PendingCollaborators = PendingCollaborators;
+					_unmodified_Activities = Activities;
+					_unmodified_Locations = Locations;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -17029,18 +21793,25 @@ GroupSummaryContainer.SummaryBody
 	        }
 			[DataMember]
 			public ContainerHeader Header { get; set; }
+			private ContainerHeader _unmodified_Header;
 			[DataMember]
 			public GroupIndex GroupIndex { get; set; }
+			private GroupIndex _unmodified_GroupIndex;
 			[DataMember]
 			public Group GroupProfile { get; set; }
+			private Group _unmodified_GroupProfile;
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
+			private CollaboratorCollection _unmodified_Collaborators;
 			[DataMember]
 			public CollaboratorCollection PendingCollaborators { get; set; }
+			private CollaboratorCollection _unmodified_PendingCollaborators;
 			[DataMember]
 			public ActivityCollection Activities { get; set; }
+			private ActivityCollection _unmodified_Activities;
 			[DataMember]
 			public LocationCollection Locations { get; set; }
+			private LocationCollection _unmodified_Locations;
 			
 			}
 			[DataContract]
@@ -17086,6 +21857,21 @@ GroupSummaryContainer.SummaryBody
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveGroupIndex(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupIndex");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupIndex), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -17154,6 +21940,21 @@ GroupSummaryContainer.SummaryBody
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -17262,6 +22063,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17284,6 +22086,46 @@ GroupIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Icon;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Summary != _unmodified_Summary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Summary = Summary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -17303,12 +22145,16 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public Image Icon { get; set; }
+			private Image _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Introduction { get; set; }
+			private string _unmodified_Introduction;
 			[DataMember]
 			public string Summary { get; set; }
+			private string _unmodified_Summary;
 			
 			}
 			[DataContract]
@@ -17354,6 +22200,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddAddressAndLocationInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddAddressAndLocationInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddAddressAndLocationInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -17422,6 +22283,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -17514,6 +22390,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17526,6 +22403,32 @@ GroupIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(LocationName != _unmodified_LocationName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_LocationName = LocationName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -17540,6 +22443,7 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public string LocationName { get; set; }
+			private string _unmodified_LocationName;
 			
 			}
 			[DataContract]
@@ -17585,6 +22489,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddEmailAddressInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddEmailAddressInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddEmailAddressInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -17653,6 +22572,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -17745,6 +22679,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17757,6 +22692,32 @@ GroupIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(EmailAddress != _unmodified_EmailAddress)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_EmailAddress = EmailAddress;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -17771,6 +22732,7 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
 			
 			}
 			[DataContract]
@@ -17816,6 +22778,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCreateGroupInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CreateGroupInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CreateGroupInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -17884,6 +22861,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -17976,6 +22968,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17988,6 +22981,32 @@ GroupIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(GroupName != _unmodified_GroupName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_GroupName = GroupName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -18002,6 +23021,7 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public string GroupName { get; set; }
+			private string _unmodified_GroupName;
 			
 			}
 			[DataContract]
@@ -18047,6 +23067,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddActivityInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddActivityInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddActivityInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -18115,6 +23150,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -18207,6 +23257,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18219,6 +23270,32 @@ GroupIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ActivityName != _unmodified_ActivityName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ActivityName = ActivityName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -18233,6 +23310,7 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public string ActivityName { get; set; }
+			private string _unmodified_ActivityName;
 			
 			}
 			[DataContract]
@@ -18278,6 +23356,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAddBlogPostInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddBlogPostInfo");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddBlogPostInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -18346,6 +23439,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -18438,6 +23546,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18450,6 +23559,32 @@ GroupIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -18464,6 +23599,7 @@ GroupIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			
 			}
 			[DataContract]
@@ -18509,6 +23645,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveGroupCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -18577,6 +23728,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -18682,7 +23848,19 @@ GroupIndex.Summary
 
 		
 				[DataMember] public List<Group> CollectionContent = new List<Group>();
+				private Group[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -18692,6 +23870,18 @@ GroupIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -18740,6 +23930,21 @@ GroupIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Group), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -18808,6 +24013,21 @@ GroupIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -18926,6 +24146,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18993,6 +24214,86 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ProfileImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) IconImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Moderators;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ImageSets;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CategoryCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
+						if(ProfileImage != _unmodified_ProfileImage)
+							return true;
+						if(IconImage != _unmodified_IconImage)
+							return true;
+						if(GroupName != _unmodified_GroupName)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(OrganizationsAndGroupsLinkedToUs != _unmodified_OrganizationsAndGroupsLinkedToUs)
+							return true;
+						if(Moderators != _unmodified_Moderators)
+							return true;
+						if(ImageSets != _unmodified_ImageSets)
+							return true;
+						if(CategoryCollection != _unmodified_CategoryCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					_unmodified_ProfileImage = ProfileImage;
+					_unmodified_IconImage = IconImage;
+					_unmodified_GroupName = GroupName;
+					_unmodified_Description = Description;
+					_unmodified_OrganizationsAndGroupsLinkedToUs = OrganizationsAndGroupsLinkedToUs;
+					_unmodified_Moderators = Moderators;
+					_unmodified_ImageSets = ImageSets;
+					_unmodified_CategoryCollection = CategoryCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -19012,22 +24313,31 @@ Group.OrganizationsAndGroupsLinkedToUs
 	        }
 			[DataMember]
 			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public Image ProfileImage { get; set; }
+			private Image _unmodified_ProfileImage;
 			[DataMember]
 			public Image IconImage { get; set; }
+			private Image _unmodified_IconImage;
 			[DataMember]
 			public string GroupName { get; set; }
+			private string _unmodified_GroupName;
 			[DataMember]
 			public string Description { get; set; }
+			private string _unmodified_Description;
 			[DataMember]
 			public string OrganizationsAndGroupsLinkedToUs { get; set; }
+			private string _unmodified_OrganizationsAndGroupsLinkedToUs;
 			[DataMember]
 			public ModeratorCollection Moderators { get; set; }
+			private ModeratorCollection _unmodified_Moderators;
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
+			private ImageGroupCollection _unmodified_ImageSets;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
+			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
 			[DataContract]
@@ -19073,6 +24383,21 @@ Group.OrganizationsAndGroupsLinkedToUs
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveIntroduction(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Introduction");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Introduction), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -19141,6 +24466,21 @@ Group.OrganizationsAndGroupsLinkedToUs
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -19240,6 +24580,7 @@ Introduction.Body
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -19252,6 +24593,35 @@ Introduction.Body
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(Body != _unmodified_Body)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_Body = Body;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -19269,8 +24639,10 @@ Introduction.Body
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Body { get; set; }
+			private string _unmodified_Body;
 			
 			}
 			[DataContract]
@@ -19316,6 +24688,21 @@ Introduction.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveBlogCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -19384,6 +24771,21 @@ Introduction.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -19489,7 +24891,19 @@ Introduction.Body
 
 		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
+				private Blog[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -19499,6 +24913,18 @@ Introduction.Body
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -19547,6 +24973,21 @@ Introduction.Body
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveBlog(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Blog");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Blog), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -19615,6 +25056,21 @@ Introduction.Body
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -19741,6 +25197,7 @@ Blog.Excerpt
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -19826,6 +25283,111 @@ Blog.Excerpt
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Introduction;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) FeaturedImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ImageGroup;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) VideoGroup;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Location;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) CategoryCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) SocialPanel;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(SubTitle != _unmodified_SubTitle)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Published != _unmodified_Published)
+							return true;
+						if(Author != _unmodified_Author)
+							return true;
+						if(FeaturedImage != _unmodified_FeaturedImage)
+							return true;
+						if(ImageGroup != _unmodified_ImageGroup)
+							return true;
+						if(VideoGroup != _unmodified_VideoGroup)
+							return true;
+						if(Body != _unmodified_Body)
+							return true;
+						if(Excerpt != _unmodified_Excerpt)
+							return true;
+						if(Location != _unmodified_Location)
+							return true;
+						if(CategoryCollection != _unmodified_CategoryCollection)
+							return true;
+						if(SocialPanel != _unmodified_SocialPanel)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					_unmodified_Title = Title;
+					_unmodified_SubTitle = SubTitle;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Published = Published;
+					_unmodified_Author = Author;
+					_unmodified_FeaturedImage = FeaturedImage;
+					_unmodified_ImageGroup = ImageGroup;
+					_unmodified_VideoGroup = VideoGroup;
+					_unmodified_Body = Body;
+					_unmodified_Excerpt = Excerpt;
+					_unmodified_Location = Location;
+					_unmodified_CategoryCollection = CategoryCollection;
+					_unmodified_SocialPanel = SocialPanel;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -19854,32 +25416,46 @@ Blog.Excerpt
 	        }
 			[DataMember]
 			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string SubTitle { get; set; }
+			private string _unmodified_SubTitle;
 			[DataMember]
 			public Introduction Introduction { get; set; }
+			private Introduction _unmodified_Introduction;
 			[DataMember]
 			public DateTime Published { get; set; }
+			private DateTime _unmodified_Published;
 			[DataMember]
 			public string Author { get; set; }
+			private string _unmodified_Author;
 			[DataMember]
 			public Image FeaturedImage { get; set; }
+			private Image _unmodified_FeaturedImage;
 			[DataMember]
 			public ImageGroup ImageGroup { get; set; }
+			private ImageGroup _unmodified_ImageGroup;
 			[DataMember]
 			public VideoGroup VideoGroup { get; set; }
+			private VideoGroup _unmodified_VideoGroup;
 			[DataMember]
 			public string Body { get; set; }
+			private string _unmodified_Body;
 			[DataMember]
 			public string Excerpt { get; set; }
+			private string _unmodified_Excerpt;
 			[DataMember]
 			public AddressAndLocation Location { get; set; }
+			private AddressAndLocation _unmodified_Location;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
+			private CategoryCollection _unmodified_CategoryCollection;
 			[DataMember]
 			public SocialPanelCollection SocialPanel { get; set; }
+			private SocialPanelCollection _unmodified_SocialPanel;
 			
 			}
 			[DataContract]
@@ -19925,6 +25501,21 @@ Blog.Excerpt
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveBlogIndexGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogIndexGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogIndexGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -19993,6 +25584,21 @@ Blog.Excerpt
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -20109,6 +25715,7 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20167,6 +25774,78 @@ BlogIndexGroup.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Icon;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) BlogByDate;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) BlogByLocation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) BlogByAuthor;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) BlogByCategory;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(BlogByDate != _unmodified_BlogByDate)
+							return true;
+						if(BlogByLocation != _unmodified_BlogByLocation)
+							return true;
+						if(BlogByAuthor != _unmodified_BlogByAuthor)
+							return true;
+						if(BlogByCategory != _unmodified_BlogByCategory)
+							return true;
+						if(Summary != _unmodified_Summary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Introduction = Introduction;
+					_unmodified_BlogByDate = BlogByDate;
+					_unmodified_BlogByLocation = BlogByLocation;
+					_unmodified_BlogByAuthor = BlogByAuthor;
+					_unmodified_BlogByCategory = BlogByCategory;
+					_unmodified_Summary = Summary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -20186,20 +25865,28 @@ BlogIndexGroup.Summary
 	        }
 			[DataMember]
 			public Image Icon { get; set; }
+			private Image _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Introduction { get; set; }
+			private string _unmodified_Introduction;
 			[DataMember]
 			public BlogCollection BlogByDate { get; set; }
+			private BlogCollection _unmodified_BlogByDate;
 			[DataMember]
 			public BlogCollection BlogByLocation { get; set; }
+			private BlogCollection _unmodified_BlogByLocation;
 			[DataMember]
 			public BlogCollection BlogByAuthor { get; set; }
+			private BlogCollection _unmodified_BlogByAuthor;
 			[DataMember]
 			public BlogCollection BlogByCategory { get; set; }
+			private BlogCollection _unmodified_BlogByCategory;
 			[DataMember]
 			public string Summary { get; set; }
+			private string _unmodified_Summary;
 			
 			}
 			[DataContract]
@@ -20245,6 +25932,21 @@ BlogIndexGroup.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCalendarIndex(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarIndex");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarIndex), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -20313,6 +26015,21 @@ BlogIndexGroup.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -20421,6 +26138,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20443,6 +26161,46 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Icon;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Introduction != _unmodified_Introduction)
+							return true;
+						if(Summary != _unmodified_Summary)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Introduction = Introduction;
+					_unmodified_Summary = Summary;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -20462,12 +26220,16 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public Image Icon { get; set; }
+			private Image _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Introduction { get; set; }
+			private string _unmodified_Introduction;
 			[DataMember]
 			public string Summary { get; set; }
+			private string _unmodified_Summary;
 			
 			}
 			[DataContract]
@@ -20513,6 +26275,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveFilter(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Filter");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Filter), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -20581,6 +26358,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -20673,6 +26465,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20685,6 +26478,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -20699,6 +26518,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			
 			}
 			[DataContract]
@@ -20744,6 +26564,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCalendar(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Calendar");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Calendar), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -20812,6 +26647,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -20904,6 +26754,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20916,6 +26767,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -20930,6 +26807,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			
 			}
 			[DataContract]
@@ -20975,6 +26853,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCalendarCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -21043,6 +26936,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -21148,7 +27056,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
+				private Calendar[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -21158,6 +27078,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -21206,6 +27138,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMap(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Map");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Map), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -21274,6 +27221,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -21366,6 +27328,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21378,6 +27341,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -21392,6 +27381,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			
 			}
 			[DataContract]
@@ -21437,6 +27427,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -21505,6 +27510,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -21610,7 +27630,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
+				private Map[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -21620,6 +27652,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -21668,6 +27712,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapIndexCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapIndexCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapIndexCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -21736,6 +27795,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -21834,6 +27908,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21883,6 +27958,61 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) MapByDate;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapByLocation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapByAuthor;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MapByCategory;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(MapByDate != _unmodified_MapByDate)
+							return true;
+						if(MapByLocation != _unmodified_MapByLocation)
+							return true;
+						if(MapByAuthor != _unmodified_MapByAuthor)
+							return true;
+						if(MapByCategory != _unmodified_MapByCategory)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_MapByDate = MapByDate;
+					_unmodified_MapByLocation = MapByLocation;
+					_unmodified_MapByAuthor = MapByAuthor;
+					_unmodified_MapByCategory = MapByCategory;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -21893,12 +28023,16 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public MapCollection MapByDate { get; set; }
+			private MapCollection _unmodified_MapByDate;
 			[DataMember]
 			public MapCollection MapByLocation { get; set; }
+			private MapCollection _unmodified_MapByLocation;
 			[DataMember]
 			public MapCollection MapByAuthor { get; set; }
+			private MapCollection _unmodified_MapByAuthor;
 			[DataMember]
 			public MapCollection MapByCategory { get; set; }
+			private MapCollection _unmodified_MapByCategory;
 			
 			}
 			[DataContract]
@@ -21944,6 +28078,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapResult(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResult");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResult), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -22012,6 +28161,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -22104,6 +28268,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -22126,6 +28291,37 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Location;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Location != _unmodified_Location)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Location = Location;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -22136,6 +28332,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public Location Location { get; set; }
+			private Location _unmodified_Location;
 			
 			}
 			[DataContract]
@@ -22181,6 +28378,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapResultCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResultCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -22249,6 +28461,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -22354,7 +28581,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
+				private MapResult[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -22364,6 +28603,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -22412,6 +28663,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMapResultsCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultsCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResultsCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -22480,6 +28746,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -22576,6 +28857,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -22616,6 +28898,53 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ResultByDate;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ResultByAuthor;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ResultByProximity;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ResultByDate != _unmodified_ResultByDate)
+							return true;
+						if(ResultByAuthor != _unmodified_ResultByAuthor)
+							return true;
+						if(ResultByProximity != _unmodified_ResultByProximity)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ResultByDate = ResultByDate;
+					_unmodified_ResultByAuthor = ResultByAuthor;
+					_unmodified_ResultByProximity = ResultByProximity;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -22626,10 +28955,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public MapResultCollection ResultByDate { get; set; }
+			private MapResultCollection _unmodified_ResultByDate;
 			[DataMember]
 			public MapResultCollection ResultByAuthor { get; set; }
+			private MapResultCollection _unmodified_ResultByAuthor;
 			[DataMember]
 			public MapResultCollection ResultByProximity { get; set; }
+			private MapResultCollection _unmodified_ResultByProximity;
 			
 			}
 			[DataContract]
@@ -22675,6 +29007,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveVideo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Video");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Video), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -22743,6 +29090,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -22839,6 +29201,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -22861,6 +29224,43 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) VideoData;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(VideoData != _unmodified_VideoData)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Caption != _unmodified_Caption)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_VideoData = VideoData;
+					_unmodified_Title = Title;
+					_unmodified_Caption = Caption;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -22877,10 +29277,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public MediaContent VideoData { get; set; }
+			private MediaContent _unmodified_VideoData;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Caption { get; set; }
+			private string _unmodified_Caption;
 			
 			}
 			[DataContract]
@@ -22926,6 +29329,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveImage(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Image");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Image), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -22994,6 +29412,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -23090,6 +29523,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -23112,6 +29546,43 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ImageData;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ImageData != _unmodified_ImageData)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Caption != _unmodified_Caption)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ImageData = ImageData;
+					_unmodified_Title = Title;
+					_unmodified_Caption = Caption;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -23128,10 +29599,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public MediaContent ImageData { get; set; }
+			private MediaContent _unmodified_ImageData;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Caption { get; set; }
+			private string _unmodified_Caption;
 			
 			}
 			[DataContract]
@@ -23177,6 +29651,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMediaContent(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: MediaContent");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MediaContent), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -23245,6 +29734,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -23324,6 +29828,25 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				bool IInformationObject.IsModified {
+					get {
+						// Currently is always false
+						return false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					// Reflected to IsModified above, no action right now
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+				}
+
 				public static MediaContent CreateDefault()
 				{
 					var result = new MediaContent();
@@ -23386,6 +29909,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveImageGroupCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageGroupCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageGroupCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -23454,6 +29992,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -23559,7 +30112,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<ImageGroup> CollectionContent = new List<ImageGroup>();
+				private ImageGroup[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -23569,6 +30134,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -23617,6 +30194,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveImageGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -23685,6 +30277,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -23781,6 +30388,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -23803,6 +30411,43 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) ImagesCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(ImagesCollection != _unmodified_ImagesCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_Description = Description;
+					_unmodified_ImagesCollection = ImagesCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -23819,10 +30464,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Description { get; set; }
+			private string _unmodified_Description;
 			[DataMember]
 			public ImagesCollection ImagesCollection { get; set; }
+			private ImagesCollection _unmodified_ImagesCollection;
 			
 			}
 			[DataContract]
@@ -23868,6 +30516,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveVideoGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: VideoGroup");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(VideoGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -23936,6 +30599,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -24032,6 +30710,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -24054,6 +30733,43 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) VideoCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Title != _unmodified_Title)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(VideoCollection != _unmodified_VideoCollection)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Title = Title;
+					_unmodified_Description = Description;
+					_unmodified_VideoCollection = VideoCollection;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -24070,10 +30786,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Description { get; set; }
+			private string _unmodified_Description;
 			[DataMember]
 			public VideoCollection VideoCollection { get; set; }
+			private VideoCollection _unmodified_VideoCollection;
 			
 			}
 			[DataContract]
@@ -24119,6 +30838,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveImagesCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ImagesCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImagesCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -24187,6 +30921,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -24292,7 +31041,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
+				private Image[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -24302,6 +31063,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -24350,6 +31123,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveVideoCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: VideoCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(VideoCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -24418,6 +31206,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -24523,7 +31326,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<Video> CollectionContent = new List<Video>();
+				private Video[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -24533,6 +31348,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -24581,6 +31408,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveTooltip(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Tooltip");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Tooltip), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -24649,6 +31491,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -24741,6 +31598,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -24753,6 +31611,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(TooltipText != _unmodified_TooltipText)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_TooltipText = TooltipText;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -24767,6 +31651,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string TooltipText { get; set; }
+			private string _unmodified_TooltipText;
 			
 			}
 			[DataContract]
@@ -24812,6 +31697,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSocialPanelCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SocialPanelCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SocialPanelCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -24880,6 +31780,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -24985,7 +31900,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
+				private SocialPanel[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -24995,6 +31922,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -25043,6 +31982,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSocialPanel(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SocialPanel");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SocialPanel), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -25111,6 +32065,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -25203,6 +32172,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25225,6 +32195,37 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) SocialFilter;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(SocialFilter != _unmodified_SocialFilter)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_SocialFilter = SocialFilter;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -25235,6 +32236,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public Filter SocialFilter { get; set; }
+			private Filter _unmodified_SocialFilter;
 			
 			}
 			[DataContract]
@@ -25280,6 +32282,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLongitude(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Longitude");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Longitude), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -25348,6 +32365,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -25440,6 +32472,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25452,6 +32485,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(TextValue != _unmodified_TextValue)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_TextValue = TextValue;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -25466,6 +32525,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string TextValue { get; set; }
+			private string _unmodified_TextValue;
 			
 			}
 			[DataContract]
@@ -25511,6 +32571,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLatitude(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Latitude");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Latitude), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -25579,6 +32654,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -25671,6 +32761,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25683,6 +32774,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(TextValue != _unmodified_TextValue)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_TextValue = TextValue;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -25697,6 +32814,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string TextValue { get; set; }
+			private string _unmodified_TextValue;
 			
 			}
 			[DataContract]
@@ -25742,6 +32860,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLocation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Location");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Location), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -25810,6 +32943,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -25906,6 +33054,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25937,6 +33086,48 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Longitude;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Latitude;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(LocationName != _unmodified_LocationName)
+							return true;
+						if(Longitude != _unmodified_Longitude)
+							return true;
+						if(Latitude != _unmodified_Latitude)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_LocationName = LocationName;
+					_unmodified_Longitude = Longitude;
+					_unmodified_Latitude = Latitude;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -25950,10 +33141,13 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string LocationName { get; set; }
+			private string _unmodified_LocationName;
 			[DataMember]
 			public Longitude Longitude { get; set; }
+			private Longitude _unmodified_Longitude;
 			[DataMember]
 			public Latitude Latitude { get; set; }
+			private Latitude _unmodified_Latitude;
 			
 			}
 			[DataContract]
@@ -25999,6 +33193,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveLocationCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LocationCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -26067,6 +33276,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -26172,7 +33396,19 @@ CalendarIndex.Summary
 
 		
 				[DataMember] public List<Location> CollectionContent = new List<Location>();
+				private Location[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -26182,6 +33418,18 @@ CalendarIndex.Summary
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -26230,6 +33478,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveDate(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Date");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Date), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -26298,6 +33561,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -26388,6 +33666,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -26400,6 +33679,41 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Day != _unmodified_Day)
+							return true;
+						if(Week != _unmodified_Week)
+							return true;
+						if(Month != _unmodified_Month)
+							return true;
+						if(Year != _unmodified_Year)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Day = Day;
+					_unmodified_Week = Week;
+					_unmodified_Month = Month;
+					_unmodified_Year = Year;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -26423,12 +33737,16 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public DateTime Day { get; set; }
+			private DateTime _unmodified_Day;
 			[DataMember]
 			public DateTime Week { get; set; }
+			private DateTime _unmodified_Week;
 			[DataMember]
 			public DateTime Month { get; set; }
+			private DateTime _unmodified_Month;
 			[DataMember]
 			public DateTime Year { get; set; }
+			private DateTime _unmodified_Year;
 			
 			}
 			[DataContract]
@@ -26474,6 +33792,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSex(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Sex");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Sex), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -26542,6 +33875,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -26634,6 +33982,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -26646,6 +33995,32 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(SexText != _unmodified_SexText)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_SexText = SexText;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -26660,6 +34035,7 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string SexText { get; set; }
+			private string _unmodified_SexText;
 			
 			}
 			[DataContract]
@@ -26705,6 +34081,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveOBSAddress(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: OBSAddress");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OBSAddress), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -26773,6 +34164,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -26883,6 +34289,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -26895,6 +34302,59 @@ CalendarIndex.Summary
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(StreetName != _unmodified_StreetName)
+							return true;
+						if(BuildingNumber != _unmodified_BuildingNumber)
+							return true;
+						if(PostOfficeBox != _unmodified_PostOfficeBox)
+							return true;
+						if(PostalCode != _unmodified_PostalCode)
+							return true;
+						if(Municipality != _unmodified_Municipality)
+							return true;
+						if(Region != _unmodified_Region)
+							return true;
+						if(Province != _unmodified_Province)
+							return true;
+						if(state != _unmodified_state)
+							return true;
+						if(Country != _unmodified_Country)
+							return true;
+						if(Continent != _unmodified_Continent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_StreetName = StreetName;
+					_unmodified_BuildingNumber = BuildingNumber;
+					_unmodified_PostOfficeBox = PostOfficeBox;
+					_unmodified_PostalCode = PostalCode;
+					_unmodified_Municipality = Municipality;
+					_unmodified_Region = Region;
+					_unmodified_Province = Province;
+					_unmodified_state = state;
+					_unmodified_Country = Country;
+					_unmodified_Continent = Continent;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -26936,24 +34396,34 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string StreetName { get; set; }
+			private string _unmodified_StreetName;
 			[DataMember]
 			public string BuildingNumber { get; set; }
+			private string _unmodified_BuildingNumber;
 			[DataMember]
 			public string PostOfficeBox { get; set; }
+			private string _unmodified_PostOfficeBox;
 			[DataMember]
 			public string PostalCode { get; set; }
+			private string _unmodified_PostalCode;
 			[DataMember]
 			public string Municipality { get; set; }
+			private string _unmodified_Municipality;
 			[DataMember]
 			public string Region { get; set; }
+			private string _unmodified_Region;
 			[DataMember]
 			public string Province { get; set; }
+			private string _unmodified_Province;
 			[DataMember]
 			public string state { get; set; }
+			private string _unmodified_state;
 			[DataMember]
 			public string Country { get; set; }
+			private string _unmodified_Country;
 			[DataMember]
 			public string Continent { get; set; }
+			private string _unmodified_Continent;
 			
 			}
 			[DataContract]
@@ -26999,6 +34469,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveIdentity(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Identity");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Identity), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -27067,6 +34552,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -27167,6 +34667,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27198,6 +34699,54 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Sex;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) Birthday;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(FirstName != _unmodified_FirstName)
+							return true;
+						if(LastName != _unmodified_LastName)
+							return true;
+						if(Initials != _unmodified_Initials)
+							return true;
+						if(Sex != _unmodified_Sex)
+							return true;
+						if(Birthday != _unmodified_Birthday)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_FirstName = FirstName;
+					_unmodified_LastName = LastName;
+					_unmodified_Initials = Initials;
+					_unmodified_Sex = Sex;
+					_unmodified_Birthday = Birthday;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -27217,14 +34766,19 @@ CalendarIndex.Summary
 	        }
 			[DataMember]
 			public string FirstName { get; set; }
+			private string _unmodified_FirstName;
 			[DataMember]
 			public string LastName { get; set; }
+			private string _unmodified_LastName;
 			[DataMember]
 			public string Initials { get; set; }
+			private string _unmodified_Initials;
 			[DataMember]
 			public Sex Sex { get; set; }
+			private Sex _unmodified_Sex;
 			[DataMember]
 			public Date Birthday { get; set; }
+			private Date _unmodified_Birthday;
 			
 			}
 			[DataContract]
@@ -27270,6 +34824,21 @@ CalendarIndex.Summary
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveImageVideoSoundVectorRaw(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageVideoSoundVectorRaw");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageVideoSoundVectorRaw), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -27338,6 +34907,21 @@ CalendarIndex.Summary
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -27435,6 +35019,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27447,6 +35032,44 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Image != _unmodified_Image)
+							return true;
+						if(Video != _unmodified_Video)
+							return true;
+						if(Sound != _unmodified_Sound)
+							return true;
+						if(Vector != _unmodified_Vector)
+							return true;
+						if(Raw != _unmodified_Raw)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Image = Image;
+					_unmodified_Video = Video;
+					_unmodified_Sound = Sound;
+					_unmodified_Vector = Vector;
+					_unmodified_Raw = Raw;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -27461,14 +35084,19 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public byte[] Image { get; set; }
+			private byte[] _unmodified_Image;
 			[DataMember]
 			public byte[] Video { get; set; }
+			private byte[] _unmodified_Video;
 			[DataMember]
 			public byte[] Sound { get; set; }
+			private byte[] _unmodified_Sound;
 			[DataMember]
 			public string Vector { get; set; }
+			private string _unmodified_Vector;
 			[DataMember]
 			public byte[] Raw { get; set; }
+			private byte[] _unmodified_Raw;
 			
 			}
 			[DataContract]
@@ -27514,6 +35142,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCategory(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Category), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -27582,6 +35225,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -27674,6 +35332,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27686,6 +35345,32 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CategoryName != _unmodified_CategoryName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CategoryName = CategoryName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -27700,6 +35385,7 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public string CategoryName { get; set; }
+			private string _unmodified_CategoryName;
 			
 			}
 			[DataContract]
@@ -27745,6 +35431,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveCategoryCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CategoryCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -27813,6 +35514,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -27918,7 +35634,19 @@ ImageVideoSoundVectorRaw.Vector
 
 		
 				[DataMember] public List<Category> CollectionContent = new List<Category>();
+				private Category[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -27928,6 +35656,18 @@ ImageVideoSoundVectorRaw.Vector
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -27976,6 +35716,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSubscriptionCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -28044,6 +35799,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -28149,7 +35919,19 @@ ImageVideoSoundVectorRaw.Vector
 
 		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
+				private Subscription[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -28159,6 +35941,18 @@ ImageVideoSoundVectorRaw.Vector
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -28207,6 +36001,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSubscription(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Subscription");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Subscription), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -28275,6 +36084,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -28371,6 +36195,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -28383,6 +36208,41 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Priority != _unmodified_Priority)
+							return true;
+						if(TargetRelativeLocation != _unmodified_TargetRelativeLocation)
+							return true;
+						if(SubscriberRelativeLocation != _unmodified_SubscriberRelativeLocation)
+							return true;
+						if(SubscriptionType != _unmodified_SubscriptionType)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Priority = Priority;
+					_unmodified_TargetRelativeLocation = TargetRelativeLocation;
+					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
+					_unmodified_SubscriptionType = SubscriptionType;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -28406,12 +36266,16 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public long Priority { get; set; }
+			private long _unmodified_Priority;
 			[DataMember]
 			public string TargetRelativeLocation { get; set; }
+			private string _unmodified_TargetRelativeLocation;
 			[DataMember]
 			public string SubscriberRelativeLocation { get; set; }
+			private string _unmodified_SubscriberRelativeLocation;
 			[DataMember]
 			public string SubscriptionType { get; set; }
+			private string _unmodified_SubscriptionType;
 			
 			}
 			[DataContract]
@@ -28457,6 +36321,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveQueueEnvelope(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: QueueEnvelope");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(QueueEnvelope), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -28525,6 +36404,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -28621,6 +36515,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -28661,6 +36556,56 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) SingleOperation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) OrderDependentOperationSequence;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ErrorContent;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(CurrentRetryCount != _unmodified_CurrentRetryCount)
+							return true;
+						if(SingleOperation != _unmodified_SingleOperation)
+							return true;
+						if(OrderDependentOperationSequence != _unmodified_OrderDependentOperationSequence)
+							return true;
+						if(ErrorContent != _unmodified_ErrorContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CurrentRetryCount = CurrentRetryCount;
+					_unmodified_SingleOperation = SingleOperation;
+					_unmodified_OrderDependentOperationSequence = OrderDependentOperationSequence;
+					_unmodified_ErrorContent = ErrorContent;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -28674,12 +36619,16 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public long CurrentRetryCount { get; set; }
+			private long _unmodified_CurrentRetryCount;
 			[DataMember]
 			public OperationRequest SingleOperation { get; set; }
+			private OperationRequest _unmodified_SingleOperation;
 			[DataMember]
 			public OperationRequestCollection OrderDependentOperationSequence { get; set; }
+			private OperationRequestCollection _unmodified_OrderDependentOperationSequence;
 			[DataMember]
 			public SystemError ErrorContent { get; set; }
+			private SystemError _unmodified_ErrorContent;
 			
 			}
 			[DataContract]
@@ -28725,6 +36674,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveOperationRequestCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequestCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequestCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -28793,6 +36757,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -28898,7 +36877,19 @@ ImageVideoSoundVectorRaw.Vector
 
 		
 				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
+				private OperationRequest[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -28908,6 +36899,18 @@ ImageVideoSoundVectorRaw.Vector
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -28956,6 +36959,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveOperationRequest(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequest");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequest), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -29024,6 +37042,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -29124,6 +37157,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29182,6 +37216,69 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) SubscriberNotification;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) UpdateWebContentOperation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) RefreshDefaultViewsOperation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) DeleteEntireOwner;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) DeleteOwnerContent;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(SubscriberNotification != _unmodified_SubscriberNotification)
+							return true;
+						if(UpdateWebContentOperation != _unmodified_UpdateWebContentOperation)
+							return true;
+						if(RefreshDefaultViewsOperation != _unmodified_RefreshDefaultViewsOperation)
+							return true;
+						if(DeleteEntireOwner != _unmodified_DeleteEntireOwner)
+							return true;
+						if(DeleteOwnerContent != _unmodified_DeleteOwnerContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_SubscriberNotification = SubscriberNotification;
+					_unmodified_UpdateWebContentOperation = UpdateWebContentOperation;
+					_unmodified_RefreshDefaultViewsOperation = RefreshDefaultViewsOperation;
+					_unmodified_DeleteEntireOwner = DeleteEntireOwner;
+					_unmodified_DeleteOwnerContent = DeleteOwnerContent;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -29192,14 +37289,19 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public Subscription SubscriberNotification { get; set; }
+			private Subscription _unmodified_SubscriberNotification;
 			[DataMember]
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
+			private UpdateWebContentOperation _unmodified_UpdateWebContentOperation;
 			[DataMember]
 			public RefreshDefaultViewsOperation RefreshDefaultViewsOperation { get; set; }
+			private RefreshDefaultViewsOperation _unmodified_RefreshDefaultViewsOperation;
 			[DataMember]
 			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
+			private DeleteEntireOwnerOperation _unmodified_DeleteEntireOwner;
 			[DataMember]
 			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
+			private DeleteOwnerContentOperation _unmodified_DeleteOwnerContent;
 			
 			}
 			[DataContract]
@@ -29245,6 +37347,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveDeleteEntireOwnerOperation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteEntireOwnerOperation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteEntireOwnerOperation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -29313,6 +37430,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -29407,6 +37539,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29419,6 +37552,35 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ContainerName != _unmodified_ContainerName)
+							return true;
+						if(LocationPrefix != _unmodified_LocationPrefix)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ContainerName = ContainerName;
+					_unmodified_LocationPrefix = LocationPrefix;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -29436,8 +37598,10 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public string ContainerName { get; set; }
+			private string _unmodified_ContainerName;
 			[DataMember]
 			public string LocationPrefix { get; set; }
+			private string _unmodified_LocationPrefix;
 			
 			}
 			[DataContract]
@@ -29483,6 +37647,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveDeleteOwnerContentOperation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteOwnerContentOperation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteOwnerContentOperation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -29551,6 +37730,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -29645,6 +37839,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29657,6 +37852,35 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ContainerName != _unmodified_ContainerName)
+							return true;
+						if(LocationPrefix != _unmodified_LocationPrefix)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ContainerName = ContainerName;
+					_unmodified_LocationPrefix = LocationPrefix;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -29674,8 +37898,10 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public string ContainerName { get; set; }
+			private string _unmodified_ContainerName;
 			[DataMember]
 			public string LocationPrefix { get; set; }
+			private string _unmodified_LocationPrefix;
 			
 			}
 			[DataContract]
@@ -29721,6 +37947,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSystemError(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemError");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemError), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -29789,6 +38030,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -29885,6 +38141,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29916,6 +38173,51 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) SystemErrorItems;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) MessageContent;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ErrorTitle != _unmodified_ErrorTitle)
+							return true;
+						if(OccurredAt != _unmodified_OccurredAt)
+							return true;
+						if(SystemErrorItems != _unmodified_SystemErrorItems)
+							return true;
+						if(MessageContent != _unmodified_MessageContent)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ErrorTitle = ErrorTitle;
+					_unmodified_OccurredAt = OccurredAt;
+					_unmodified_SystemErrorItems = SystemErrorItems;
+					_unmodified_MessageContent = MessageContent;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -29932,12 +38234,16 @@ ImageVideoSoundVectorRaw.Vector
 	        }
 			[DataMember]
 			public string ErrorTitle { get; set; }
+			private string _unmodified_ErrorTitle;
 			[DataMember]
 			public DateTime OccurredAt { get; set; }
+			private DateTime _unmodified_OccurredAt;
 			[DataMember]
 			public SystemErrorItemCollection SystemErrorItems { get; set; }
+			private SystemErrorItemCollection _unmodified_SystemErrorItems;
 			[DataMember]
 			public QueueEnvelope MessageContent { get; set; }
+			private QueueEnvelope _unmodified_MessageContent;
 			
 			}
 			[DataContract]
@@ -29983,6 +38289,21 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSystemErrorItem(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItem");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItem), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -30051,6 +38372,21 @@ ImageVideoSoundVectorRaw.Vector
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -30150,6 +38486,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -30162,6 +38499,35 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ShortDescription != _unmodified_ShortDescription)
+							return true;
+						if(LongDescription != _unmodified_LongDescription)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ShortDescription = ShortDescription;
+					_unmodified_LongDescription = LongDescription;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -30179,8 +38545,10 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string ShortDescription { get; set; }
+			private string _unmodified_ShortDescription;
 			[DataMember]
 			public string LongDescription { get; set; }
+			private string _unmodified_LongDescription;
 			
 			}
 			[DataContract]
@@ -30226,6 +38594,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSystemErrorItemCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItemCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItemCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -30294,6 +38677,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -30399,7 +38797,19 @@ SystemErrorItem.LongDescription
 
 		
 				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
+				private SystemErrorItem[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -30409,6 +38819,18 @@ SystemErrorItem.LongDescription
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -30457,6 +38879,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveInformationSource(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSource");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSource), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -30525,6 +38962,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -30627,6 +39079,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -30639,6 +39092,53 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(SourceName != _unmodified_SourceName)
+							return true;
+						if(SourceLocation != _unmodified_SourceLocation)
+							return true;
+						if(SourceType != _unmodified_SourceType)
+							return true;
+						if(IsDynamic != _unmodified_IsDynamic)
+							return true;
+						if(SourceInformationObjectType != _unmodified_SourceInformationObjectType)
+							return true;
+						if(SourceETag != _unmodified_SourceETag)
+							return true;
+						if(SourceMD5 != _unmodified_SourceMD5)
+							return true;
+						if(SourceLastModified != _unmodified_SourceLastModified)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_SourceName = SourceName;
+					_unmodified_SourceLocation = SourceLocation;
+					_unmodified_SourceType = SourceType;
+					_unmodified_IsDynamic = IsDynamic;
+					_unmodified_SourceInformationObjectType = SourceInformationObjectType;
+					_unmodified_SourceETag = SourceETag;
+					_unmodified_SourceMD5 = SourceMD5;
+					_unmodified_SourceLastModified = SourceLastModified;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -30674,20 +39174,28 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string SourceName { get; set; }
+			private string _unmodified_SourceName;
 			[DataMember]
 			public string SourceLocation { get; set; }
+			private string _unmodified_SourceLocation;
 			[DataMember]
 			public string SourceType { get; set; }
+			private string _unmodified_SourceType;
 			[DataMember]
 			public bool IsDynamic { get; set; }
+			private bool _unmodified_IsDynamic;
 			[DataMember]
 			public string SourceInformationObjectType { get; set; }
+			private string _unmodified_SourceInformationObjectType;
 			[DataMember]
 			public string SourceETag { get; set; }
+			private string _unmodified_SourceETag;
 			[DataMember]
 			public string SourceMD5 { get; set; }
+			private string _unmodified_SourceMD5;
 			[DataMember]
 			public DateTime SourceLastModified { get; set; }
+			private DateTime _unmodified_SourceLastModified;
 			
 			}
 			[DataContract]
@@ -30733,6 +39241,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveInformationSourceCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSourceCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSourceCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -30801,6 +39324,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -30906,7 +39444,19 @@ SystemErrorItem.LongDescription
 
 		
 				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
+				private InformationSource[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -30916,6 +39466,18 @@ SystemErrorItem.LongDescription
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -30964,6 +39526,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveRefreshDefaultViewsOperation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: RefreshDefaultViewsOperation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RefreshDefaultViewsOperation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -31032,6 +39609,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -31126,6 +39718,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -31138,6 +39731,35 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(ViewLocation != _unmodified_ViewLocation)
+							return true;
+						if(TypeNameToRefresh != _unmodified_TypeNameToRefresh)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_ViewLocation = ViewLocation;
+					_unmodified_TypeNameToRefresh = TypeNameToRefresh;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -31155,8 +39777,10 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string ViewLocation { get; set; }
+			private string _unmodified_ViewLocation;
 			[DataMember]
 			public string TypeNameToRefresh { get; set; }
+			private string _unmodified_TypeNameToRefresh;
 			
 			}
 			[DataContract]
@@ -31202,6 +39826,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveUpdateWebContentOperation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentOperation");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentOperation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -31270,6 +39909,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -31370,6 +40024,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -31391,6 +40046,52 @@ SystemErrorItem.LongDescription
 					}
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) Handlers;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(SourceContainerName != _unmodified_SourceContainerName)
+							return true;
+						if(SourcePathRoot != _unmodified_SourcePathRoot)
+							return true;
+						if(TargetContainerName != _unmodified_TargetContainerName)
+							return true;
+						if(TargetPathRoot != _unmodified_TargetPathRoot)
+							return true;
+						if(RenderWhileSync != _unmodified_RenderWhileSync)
+							return true;
+						if(Handlers != _unmodified_Handlers)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_SourceContainerName = SourceContainerName;
+					_unmodified_SourcePathRoot = SourcePathRoot;
+					_unmodified_TargetContainerName = TargetContainerName;
+					_unmodified_TargetPathRoot = TargetPathRoot;
+					_unmodified_RenderWhileSync = RenderWhileSync;
+					_unmodified_Handlers = Handlers;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -31417,16 +40118,22 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string SourceContainerName { get; set; }
+			private string _unmodified_SourceContainerName;
 			[DataMember]
 			public string SourcePathRoot { get; set; }
+			private string _unmodified_SourcePathRoot;
 			[DataMember]
 			public string TargetContainerName { get; set; }
+			private string _unmodified_TargetContainerName;
 			[DataMember]
 			public string TargetPathRoot { get; set; }
+			private string _unmodified_TargetPathRoot;
 			[DataMember]
 			public bool RenderWhileSync { get; set; }
+			private bool _unmodified_RenderWhileSync;
 			[DataMember]
 			public UpdateWebContentHandlerCollection Handlers { get; set; }
+			private UpdateWebContentHandlerCollection _unmodified_Handlers;
 			
 			}
 			[DataContract]
@@ -31472,6 +40179,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveUpdateWebContentHandlerItem(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerItem");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentHandlerItem), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -31540,6 +40262,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -31634,6 +40371,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -31646,6 +40384,35 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(InformationTypeName != _unmodified_InformationTypeName)
+							return true;
+						if(OptionName != _unmodified_OptionName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_InformationTypeName = InformationTypeName;
+					_unmodified_OptionName = OptionName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -31663,8 +40430,10 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string InformationTypeName { get; set; }
+			private string _unmodified_InformationTypeName;
 			[DataMember]
 			public string OptionName { get; set; }
+			private string _unmodified_OptionName;
 			
 			}
 			[DataContract]
@@ -31710,6 +40479,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveUpdateWebContentHandlerCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerCollection");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentHandlerCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -31778,6 +40562,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -31883,7 +40682,19 @@ SystemErrorItem.LongDescription
 
 		
 				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
+				private UpdateWebContentHandlerItem[] _unmodified_CollectionContent;
+				
+				bool IInformationObject.IsModified {
+					get {
+						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+					}
+				}
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+				}
 
+				
 				private object FindFromObjectTree(string objectId)
 				{
 					foreach(var item in CollectionContent)
@@ -31893,6 +40704,18 @@ SystemErrorItem.LongDescription
 							return result;
 					}
 					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
 				}
 
 
@@ -31941,6 +40764,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveSubscriberInput(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriberInput");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriberInput), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -32009,6 +40847,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -32107,6 +40960,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32119,6 +40973,41 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(InputRelativeLocation != _unmodified_InputRelativeLocation)
+							return true;
+						if(InformationObjectName != _unmodified_InformationObjectName)
+							return true;
+						if(InformationItemName != _unmodified_InformationItemName)
+							return true;
+						if(SubscriberRelativeLocation != _unmodified_SubscriberRelativeLocation)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_InputRelativeLocation = InputRelativeLocation;
+					_unmodified_InformationObjectName = InformationObjectName;
+					_unmodified_InformationItemName = InformationItemName;
+					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -32142,12 +41031,16 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string InputRelativeLocation { get; set; }
+			private string _unmodified_InputRelativeLocation;
 			[DataMember]
 			public string InformationObjectName { get; set; }
+			private string _unmodified_InformationObjectName;
 			[DataMember]
 			public string InformationItemName { get; set; }
+			private string _unmodified_InformationItemName;
 			[DataMember]
 			public string SubscriberRelativeLocation { get; set; }
+			private string _unmodified_SubscriberRelativeLocation;
 			
 			}
 			[DataContract]
@@ -32193,6 +41086,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveMonitor(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Monitor");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Monitor), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -32261,6 +41169,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -32361,6 +41284,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32373,6 +41297,50 @@ SystemErrorItem.LongDescription
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(TargetObjectName != _unmodified_TargetObjectName)
+							return true;
+						if(TargetItemName != _unmodified_TargetItemName)
+							return true;
+						if(MonitoringUtcTimeStampToStart != _unmodified_MonitoringUtcTimeStampToStart)
+							return true;
+						if(MonitoringCycleFrequencyUnit != _unmodified_MonitoringCycleFrequencyUnit)
+							return true;
+						if(MonitoringCycleEveryXthOfUnit != _unmodified_MonitoringCycleEveryXthOfUnit)
+							return true;
+						if(CustomMonitoringCycleOperationName != _unmodified_CustomMonitoringCycleOperationName)
+							return true;
+						if(OperationActionName != _unmodified_OperationActionName)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_TargetObjectName = TargetObjectName;
+					_unmodified_TargetItemName = TargetItemName;
+					_unmodified_MonitoringUtcTimeStampToStart = MonitoringUtcTimeStampToStart;
+					_unmodified_MonitoringCycleFrequencyUnit = MonitoringCycleFrequencyUnit;
+					_unmodified_MonitoringCycleEveryXthOfUnit = MonitoringCycleEveryXthOfUnit;
+					_unmodified_CustomMonitoringCycleOperationName = CustomMonitoringCycleOperationName;
+					_unmodified_OperationActionName = OperationActionName;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -32405,18 +41373,25 @@ SystemErrorItem.LongDescription
 	        }
 			[DataMember]
 			public string TargetObjectName { get; set; }
+			private string _unmodified_TargetObjectName;
 			[DataMember]
 			public string TargetItemName { get; set; }
+			private string _unmodified_TargetItemName;
 			[DataMember]
 			public DateTime MonitoringUtcTimeStampToStart { get; set; }
+			private DateTime _unmodified_MonitoringUtcTimeStampToStart;
 			[DataMember]
 			public string MonitoringCycleFrequencyUnit { get; set; }
+			private string _unmodified_MonitoringCycleFrequencyUnit;
 			[DataMember]
 			public long MonitoringCycleEveryXthOfUnit { get; set; }
+			private long _unmodified_MonitoringCycleEveryXthOfUnit;
 			[DataMember]
 			public string CustomMonitoringCycleOperationName { get; set; }
+			private string _unmodified_CustomMonitoringCycleOperationName;
 			[DataMember]
 			public string OperationActionName { get; set; }
+			private string _unmodified_OperationActionName;
 			
 			}
 			[DataContract]
@@ -32462,6 +41437,21 @@ SystemErrorItem.LongDescription
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveIconTitleDescription(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: IconTitleDescription");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(IconTitleDescription), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -32530,6 +41520,21 @@ SystemErrorItem.LongDescription
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -32629,6 +41634,7 @@ IconTitleDescription.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32641,6 +41647,38 @@ IconTitleDescription.Description
 				{
 					return null;
 				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(Icon != _unmodified_Icon)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_Icon = Icon;
+					_unmodified_Title = Title;
+					_unmodified_Description = Description;
+				
+				}
+
+
+
 
 				public void ParsePropertyValue(string propertyName, string value)
 				{
@@ -32658,10 +41696,13 @@ IconTitleDescription.Description
 	        }
 			[DataMember]
 			public byte[] Icon { get; set; }
+			private byte[] _unmodified_Icon;
 			[DataMember]
 			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Description { get; set; }
+			private string _unmodified_Description;
 			
 			}
 			[DataContract]
@@ -32707,6 +41748,21 @@ IconTitleDescription.Description
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
 					return RetrieveAboutAGIApplications(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AboutAGIApplications");
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AboutAGIApplications), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+					}
+					return master;
 				}
 
 
@@ -32775,6 +41831,21 @@ IconTitleDescription.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result);
+					return result;
+				}
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -32869,6 +41940,7 @@ IconTitleDescription.Description
 				
 					return result;
 				}
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32900,6 +41972,45 @@ IconTitleDescription.Description
 					return null;
 				}
 
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+						result.Add(iObject.ID, iObject);
+					{
+						var item = (IInformationObject) BuiltForAnybody;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+					{
+						var item = (IInformationObject) ForAllPeople;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result);
+					}
+
+				}
+
+				bool IInformationObject.IsModified {
+					get {
+						if(BuiltForAnybody != _unmodified_BuiltForAnybody)
+							return true;
+						if(ForAllPeople != _unmodified_ForAllPeople)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.SetCurrentValuesAsUnmodified()
+				{
+					_unmodified_BuiltForAnybody = BuiltForAnybody;
+					_unmodified_ForAllPeople = ForAllPeople;
+				
+				}
+
+
+
+
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -32910,8 +42021,10 @@ IconTitleDescription.Description
 	        }
 			[DataMember]
 			public IconTitleDescription BuiltForAnybody { get; set; }
+			private IconTitleDescription _unmodified_BuiltForAnybody;
 			[DataMember]
 			public IconTitleDescription ForAllPeople { get; set; }
+			private IconTitleDescription _unmodified_ForAllPeople;
 			
 			}
  } 

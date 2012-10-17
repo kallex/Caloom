@@ -824,6 +824,17 @@ namespace TheBall
 
         public static CloudBlob StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
         {
+            Dictionary<string, IInformationObject> objectDictionary = informationObject.CollectMasterObjects();
+            foreach(var key in objectDictionary.Keys)
+            {
+                var referenceInstance = objectDictionary[key];
+                if (referenceInstance == informationObject) // Don't master-manage the currently being saved object
+                    continue;
+                var realMaster = referenceInstance.RetrieveMaster(true);
+                // Compare etag for master vs real-master - issue warning for mismatch and abort save for this part
+            }
+            
+
             Type informationObjectType = informationObject.GetType();
             DataContractSerializer ser = new DataContractSerializer(informationObjectType);
             MemoryStream memoryStream = new MemoryStream();
