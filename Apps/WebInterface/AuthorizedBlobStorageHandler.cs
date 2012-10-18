@@ -184,7 +184,7 @@ namespace WebInterface
                     if (storeAfterAdd)
                         StorageSupport.StoreInformation(rootObject, containerOwner);
                 } else
-                    StorageSupport.StoreInformation(rootObject, containerOwner);
+                    rootObject.StoreInformationMasterFirst(containerOwner);
             }
             RenderWebSupport.RefreshContent(webPageBlob);
             // Temporary live to pub sync below, to be removed

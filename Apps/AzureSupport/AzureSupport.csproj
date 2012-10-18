@@ -79,6 +79,7 @@
     <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="DefaultViewSupport.cs" />
+    <Compile Include="Partials\ExtIInformationObject.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\InformationSource.cs" />

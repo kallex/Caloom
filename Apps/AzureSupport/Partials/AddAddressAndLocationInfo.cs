@@ -23,6 +23,8 @@ namespace AaltoGlobalImpact.OIP
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, location, owner);
 
             LocationContainer locationContainer = LocationContainer.RetrieveFromOwnerContent(owner, "Locations");
+            // Referencelocation etag in place
+            location.MasterETag = location.ETag;
             locationContainer.Locations.CollectionContent.Add(location);
             StorageSupport.StoreInformation(locationContainer);
 

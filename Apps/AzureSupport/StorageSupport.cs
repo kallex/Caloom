@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Security;
 using System.Text;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
@@ -821,20 +822,40 @@ namespace TheBall
             }
         }
 
-
-        public static CloudBlob StoreInformation(IInformationObject informationObject, IContainerOwner owner = null)
+        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner = null)
         {
-            Dictionary<string, IInformationObject> objectDictionary = informationObject.CollectMasterObjects();
-            foreach(var key in objectDictionary.Keys)
+            Dictionary<string, IInformationObject> modifiedMasters =
+                informationObject.CollectMasterObjects(candidate => candidate.IsInstanceTreeModified);
+            foreach (var key in modifiedMasters.Keys)
             {
-                var referenceInstance = objectDictionary[key];
+                var referenceInstance = modifiedMasters[key];
                 if (referenceInstance == informationObject) // Don't master-manage the currently being saved object
                     continue;
                 var realMaster = referenceInstance.RetrieveMaster(true);
-                // Compare etag for master vs real-master - issue warning for mismatch and abort save for this part
+                SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject,
+                                                 referenceInstance: referenceInstance, masterInstance: realMaster);
+                // Compare MasterEtag for reference vs master - throw Exception on mismatch
+                if (referenceInstance.MasterETag != realMaster.ETag)
+                {
+                    WorkerSupport.UpdateContainerFromMaster(informationObject.RelativeLocation, informationObject.GetType().FullName,
+                        realMaster.RelativeLocation, realMaster.GetType().FullName);
+                    throw new ReferenceOutdatedException(containerObject: informationObject, referenceInstance: referenceInstance, masterInstance: realMaster);
+                }
+                // Update and store real master, get the up-to-date ETag for reference
+                realMaster.UpdateMasterValueTreeFromOtherInstance(referenceInstance);
+                StorageSupport.StoreInformation(realMaster, owner);
+                referenceInstance.MasterETag = realMaster.ETag;
             }
-            
+            return StoreInformation(informationObject, owner);
+        }
 
+        public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null)
+        {
+            string location = owner != null
+                                  ? GetBlobOwnerAddress(owner, informationObject.RelativeLocation)
+                                  : informationObject.RelativeLocation;
+            // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
+            informationObject.RelativeLocation = location;
             Type informationObjectType = informationObject.GetType();
             DataContractSerializer ser = new DataContractSerializer(informationObjectType);
             MemoryStream memoryStream = new MemoryStream();
@@ -846,9 +867,6 @@ namespace TheBall
                 dataContent = memoryStream.ToArray();
             }
             //memoryStream.Seek(0, SeekOrigin.Begin);
-            string location = owner != null
-                                  ? GetBlobOwnerAddress(owner, informationObject.RelativeLocation)
-                                  : informationObject.RelativeLocation;
             CloudBlob blob = CurrActiveContainer.GetBlobReference(location);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
@@ -931,6 +949,7 @@ namespace TheBall
             IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
             informationObject.ETag = blobEtag;
             //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
+            informationObject.SetInstanceTreeValuesAsUnmodified();
             Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
             return informationObject;
@@ -938,9 +957,14 @@ namespace TheBall
 
         public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
         {
+            string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
             if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/"))
-                return blobAddress;
-            return owner.ContainerName + "/" + owner.LocationPrefix + "/" + blobAddress;
+            {
+                if(blobAddress.StartsWith(ownerPrefix))
+                    return blobAddress;
+                throw new SecurityException("Invalid reference to blob: " + blobAddress + " by owner prefix: " + owner.LocationPrefix);
+            }
+            return ownerPrefix + blobAddress;
         }
 
         public static string DownloadOwnerBlobText(IContainerOwner owner, string blobAddress, bool returnNullIfMissing = false)
@@ -1147,6 +1171,21 @@ namespace TheBall
             string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
+        }
+    }
+
+    public class ReferenceOutdatedException : Exception
+    {
+        private IInformationObject containerObject;
+        private IInformationObject referenceInstance;
+        private IInformationObject masterInstance;
+
+        public ReferenceOutdatedException(IInformationObject containerObject, IInformationObject referenceInstance, IInformationObject masterInstance)
+        {
+            // TODO: Complete member initialization
+            this.containerObject = containerObject;
+            this.referenceInstance = referenceInstance;
+            this.masterInstance = masterInstance;
         }
     }
 }

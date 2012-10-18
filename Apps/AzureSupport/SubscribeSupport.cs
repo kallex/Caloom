@@ -10,17 +10,24 @@ namespace TheBall
     public static class SubscribeSupport
     {
         public const string SubscribeType_WebPageToSource = "webpage";
+        // TODO: Create needs to be applied as of address regexp filter or something, as there is no concrete object to subscribe against
+        // Real case is for object creation to master collection of those objects that are created
+        //public const string SubscribeType_MasterToReferenceCreate = "MasterToReferenceCreate";
+        public const string SubscribeType_MasterToReferenceUpdate = "MasterToReferenceUpdate";
+        // Master to reference delete can be also special case where master is no longer available
+        public const string SubscribeType_MasterToReferenceDelete = "MasterToReferenceDelete";
 
-        public static void AddSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType)
+        public static void AddSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType, string targetTypeName = null, string subscriberTypeName = null)
         {
-            var sub = GetSubscriptionToObject(targetLocation, subscriberLocation, subscriptionType);
+            var sub = GetSubscriptionToObject(targetLocation, subscriberLocation, subscriptionType, targetTypeName:targetTypeName, subscriberTypeName:subscriberTypeName);
             SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             if(subscriptionCollection == null)
             {
                 subscriptionCollection = new SubscriptionCollection();
                 subscriptionCollection.SetRelativeLocationAsMetadataTo(targetLocation);
             }
-            if (subscriptionCollection.CollectionContent.Exists(existing => existing.SubscriberRelativeLocation == sub.SubscriberRelativeLocation))
+            if (subscriptionCollection.CollectionContent.Exists(existing => existing.SubscriberRelativeLocation == sub.SubscriberRelativeLocation 
+                && existing.SubscriptionType == sub.SubscriptionType ))
                 return;
             subscriptionCollection.CollectionContent.Add(sub);
             StorageSupport.StoreInformation(subscriptionCollection);
@@ -32,12 +39,14 @@ namespace TheBall
             var sub = GetSubscriptionToItem(target, itemName, subscriber, operationName);
         }*/
 
-        public static Subscription GetSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType)
+        public static Subscription GetSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType, string targetTypeName = null, string subscriberTypeName = null)
         {
             var sub = new Subscription
                           {
                               TargetRelativeLocation = targetLocation,
+                              TargetInformationObjectType = targetTypeName,
                               SubscriberRelativeLocation = subscriberLocation,
+                              SubscriberInformationObjectType = subscriberTypeName,
                               SubscriptionType = subscriptionType
                           };
             return sub;
@@ -86,6 +95,12 @@ namespace TheBall
         {
             NotifySubscribers(targetLocation);
             DeleteSubscriptions(targetLocation);
+        }
+
+        public static void SetReferenceSubscriptionToMaster(IInformationObject containerObject, IInformationObject referenceInstance, IInformationObject masterInstance)
+        {
+            AddSubscriptionToObject(masterInstance.RelativeLocation, containerObject.RelativeLocation, SubscribeType_MasterToReferenceUpdate, targetTypeName:masterInstance.GetType().FullName,
+                subscriberTypeName:containerObject.GetType().FullName);
         }
     }
 }

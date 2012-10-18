@@ -16,6 +16,7 @@ namespace AaltoGlobalImpact.OIP {
         Guid OwnerID { get; set; }
         string ID { get; set; }
         string ETag { get; set;  }
+		string MasterETag { get; set; }
         string RelativeLocation { get; set; }
         string SemanticDomainName { get; set; }
         string Name { get; set; }
@@ -27,11 +28,13 @@ namespace AaltoGlobalImpact.OIP {
 		void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
-		Dictionary<string, IInformationObject> CollectMasterObjects();
-		void CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result);
+		void ReplaceObjectInTree(IInformationObject replacingObject);
+		Dictionary<string, IInformationObject> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
+		void CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse = null);
 		IInformationObject RetrieveMaster(bool initiateIfMissing);
-		bool IsModified { get; }
-		void SetCurrentValuesAsUnmodified();
+		bool IsInstanceTreeModified { get; }
+		void SetInstanceTreeValuesAsUnmodified();
+		void UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceInstance);
     }
 
 			[DataContract]
@@ -167,12 +170,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBSystem) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -219,6 +236,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -283,15 +303,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(InstanceName != _unmodified_InstanceName)
 							return true;
@@ -302,10 +325,24 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBSystem sourceObject)
+				{
+					InstanceName = sourceObject.InstanceName;
+					AdminGroupID = sourceObject.AdminGroupID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_InstanceName = InstanceName;
 					_unmodified_AdminGroupID = AdminGroupID;
+				
 				
 				}
 
@@ -467,12 +504,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBRLoginRoot) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -519,6 +570,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -590,31 +644,67 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Account;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Account != _unmodified_Account)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Account;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Account != null) {
+						if(Account.ID == replacingObject.ID)
+							Account = (TBAccount) replacingObject;
+						else {
+							IInformationObject iObject = Account;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBRLoginRoot sourceObject)
+				{
+					Account = sourceObject.Account;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Account = Account;
+					if(Account != null)
+						((IInformationObject) Account).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -767,12 +857,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBRAccountRoot) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -819,6 +923,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -890,31 +997,67 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Account;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Account != _unmodified_Account)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Account;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Account != null) {
+						if(Account.ID == replacingObject.ID)
+							Account = (TBAccount) replacingObject;
+						else {
+							IInformationObject iObject = Account;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBRAccountRoot sourceObject)
+				{
+					Account = sourceObject.Account;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Account = Account;
+					if(Account != null)
+						((IInformationObject) Account).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -1067,12 +1210,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBRGroupRoot) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -1119,6 +1276,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1190,31 +1350,67 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Group;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Group != _unmodified_Group)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Group;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Group != null) {
+						if(Group.ID == replacingObject.ID)
+							Group = (TBCollaboratingGroup) replacingObject;
+						else {
+							IInformationObject iObject = Group;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBRGroupRoot sourceObject)
+				{
+					Group = sourceObject.Group;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Group = Group;
+					if(Group != null)
+						((IInformationObject) Group).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -1367,12 +1563,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBRLoginGroupRoot) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -1419,6 +1629,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1483,15 +1696,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Role != _unmodified_Role)
 							return true;
@@ -1502,10 +1718,24 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBRLoginGroupRoot sourceObject)
+				{
+					Role = sourceObject.Role;
+					GroupID = sourceObject.GroupID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Role = Role;
 					_unmodified_GroupID = GroupID;
+				
 				
 				}
 
@@ -1667,12 +1897,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBREmailRoot) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -1719,6 +1963,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1790,31 +2037,67 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Account;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Account != _unmodified_Account)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Account;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Account != null) {
+						if(Account.ID == replacingObject.ID)
+							Account = (TBAccount) replacingObject;
+						else {
+							IInformationObject iObject = Account;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBREmailRoot sourceObject)
+				{
+					Account = sourceObject.Account;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Account = Account;
+					if(Account != null)
+						((IInformationObject) Account).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -1967,12 +2250,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBAccount) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -2019,6 +2316,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -2112,30 +2412,33 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Emails;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Logins;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupRoleCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Emails != _unmodified_Emails)
 							return true;
@@ -2143,16 +2446,91 @@ namespace AaltoGlobalImpact.OIP {
 							return true;
 						if(GroupRoleCollection != _unmodified_GroupRoleCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Emails;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Logins;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupRoleCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Emails != null) {
+						if(Emails.ID == replacingObject.ID)
+							Emails = (TBEmailCollection) replacingObject;
+						else {
+							IInformationObject iObject = Emails;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Logins != null) {
+						if(Logins.ID == replacingObject.ID)
+							Logins = (TBLoginInfoCollection) replacingObject;
+						else {
+							IInformationObject iObject = Logins;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupRoleCollection != null) {
+						if(GroupRoleCollection.ID == replacingObject.ID)
+							GroupRoleCollection = (TBAccountCollaborationGroupCollection) replacingObject;
+						else {
+							IInformationObject iObject = GroupRoleCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBAccount sourceObject)
+				{
+					Emails = sourceObject.Emails;
+					Logins = sourceObject.Logins;
+					GroupRoleCollection = sourceObject.GroupRoleCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Emails = Emails;
+					if(Emails != null)
+						((IInformationObject) Emails).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Logins = Logins;
+					if(Logins != null)
+						((IInformationObject) Logins).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupRoleCollection = GroupRoleCollection;
+					if(GroupRoleCollection != null)
+						((IInformationObject) GroupRoleCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -2311,12 +2689,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBAccountCollaborationGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -2363,6 +2755,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -2429,15 +2824,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(GroupID != _unmodified_GroupID)
 							return true;
@@ -2450,11 +2848,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBAccountCollaborationGroup sourceObject)
+				{
+					GroupID = sourceObject.GroupID;
+					GroupRole = sourceObject.GroupRole;
+					RoleStatus = sourceObject.RoleStatus;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_GroupID = GroupID;
 					_unmodified_GroupRole = GroupRole;
 					_unmodified_RoleStatus = RoleStatus;
+				
 				
 				}
 
@@ -2622,12 +3035,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBAccountCollaborationGroupCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -2674,6 +3101,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -2736,17 +3166,49 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
 				private TBAccountCollaborationGroup[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (TBAccountCollaborationGroup )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(TBAccountCollaborationGroupCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -2759,15 +3221,21 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -2907,12 +3375,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBLoginInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -2959,6 +3441,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3021,15 +3506,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(OpenIDUrl != _unmodified_OpenIDUrl)
 							return true;
@@ -3038,9 +3526,22 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBLoginInfo sourceObject)
+				{
+					OpenIDUrl = sourceObject.OpenIDUrl;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OpenIDUrl = OpenIDUrl;
+				
 				
 				}
 
@@ -3196,12 +3697,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBLoginInfoCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -3248,6 +3763,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3310,17 +3828,49 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
 				private TBLoginInfo[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (TBLoginInfo )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(TBLoginInfoCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -3333,15 +3883,21 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -3481,12 +4037,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBEmail) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -3533,6 +4103,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3595,15 +4168,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(EmailAddress != _unmodified_EmailAddress)
 							return true;
@@ -3614,10 +4190,24 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBEmail sourceObject)
+				{
+					EmailAddress = sourceObject.EmailAddress;
+					ValidatedAt = sourceObject.ValidatedAt;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_EmailAddress = EmailAddress;
 					_unmodified_ValidatedAt = ValidatedAt;
+				
 				
 				}
 
@@ -3779,12 +4369,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBEmailCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -3831,6 +4435,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3893,17 +4500,49 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
 				private TBEmail[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (TBEmail )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(TBEmailCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -3916,15 +4555,21 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -4064,12 +4709,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBCollaboratorRole) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -4116,6 +4775,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4191,20 +4853,23 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Email;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Email != _unmodified_Email)
 							return true;
@@ -4212,16 +4877,51 @@ namespace AaltoGlobalImpact.OIP {
 							return true;
 						if(RoleStatus != _unmodified_RoleStatus)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Email;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Email = Email;
+					if(Email != null) {
+						if(Email.ID == replacingObject.ID)
+							Email = (TBEmail) replacingObject;
+						else {
+							IInformationObject iObject = Email;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBCollaboratorRole sourceObject)
+				{
+					Email = sourceObject.Email;
+					Role = sourceObject.Role;
+					RoleStatus = sourceObject.RoleStatus;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Role = Role;
 					_unmodified_RoleStatus = RoleStatus;
+				
+					_unmodified_Email = Email;
+					if(Email != null)
+						((IInformationObject) Email).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -4386,12 +5086,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBCollaboratorRoleCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -4438,6 +5152,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4500,17 +5217,49 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
 				private TBCollaboratorRole[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (TBCollaboratorRole )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(TBCollaboratorRoleCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -4523,15 +5272,21 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -4671,12 +5426,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBCollaboratingGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -4723,6 +5492,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4796,34 +5568,71 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Roles;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
 						if(Roles != _unmodified_Roles)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Roles;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Roles != null) {
+						if(Roles.ID == replacingObject.ID)
+							Roles = (TBCollaboratorRoleCollection) replacingObject;
+						else {
+							IInformationObject iObject = Roles;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBCollaboratingGroup sourceObject)
+				{
+					Title = sourceObject.Title;
+					Roles = sourceObject.Roles;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+				
 					_unmodified_Roles = Roles;
+					if(Roles != null)
+						((IInformationObject) Roles).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -4982,12 +5791,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBEmailValidation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -5034,6 +5857,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -5085,20 +5911,23 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) GroupJoinConfirmation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Email != _unmodified_Email)
 							return true;
@@ -5108,17 +5937,53 @@ namespace AaltoGlobalImpact.OIP {
 							return true;
 						if(GroupJoinConfirmation != _unmodified_GroupJoinConfirmation)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) GroupJoinConfirmation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(GroupJoinConfirmation != null) {
+						if(GroupJoinConfirmation.ID == replacingObject.ID)
+							GroupJoinConfirmation = (TBGroupJoinConfirmation) replacingObject;
+						else {
+							IInformationObject iObject = GroupJoinConfirmation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBEmailValidation sourceObject)
+				{
+					Email = sourceObject.Email;
+					AccountID = sourceObject.AccountID;
+					ValidUntil = sourceObject.ValidUntil;
+					GroupJoinConfirmation = sourceObject.GroupJoinConfirmation;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Email = Email;
 					_unmodified_AccountID = AccountID;
 					_unmodified_ValidUntil = ValidUntil;
+				
 					_unmodified_GroupJoinConfirmation = GroupJoinConfirmation;
+					if(GroupJoinConfirmation != null)
+						((IInformationObject) GroupJoinConfirmation).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -5289,12 +6154,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBGroupJoinConfirmation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -5341,6 +6220,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -5403,15 +6285,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(GroupID != _unmodified_GroupID)
 							return true;
@@ -5420,9 +6305,22 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBGroupJoinConfirmation sourceObject)
+				{
+					GroupID = sourceObject.GroupID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_GroupID = GroupID;
+				
 				
 				}
 
@@ -5578,12 +6476,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBRegisterContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -5630,6 +6542,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -5714,25 +6629,28 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) LoginProviderCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -5740,16 +6658,71 @@ namespace AaltoGlobalImpact.OIP {
 							return true;
 						if(LoginProviderCollection != _unmodified_LoginProviderCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LoginProviderCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Header = Header;
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(LoginProviderCollection != null) {
+						if(LoginProviderCollection.ID == replacingObject.ID)
+							LoginProviderCollection = (LoginProviderCollection) replacingObject;
+						else {
+							IInformationObject iObject = LoginProviderCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(TBRegisterContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					ReturnUrl = sourceObject.ReturnUrl;
+					LoginProviderCollection = sourceObject.LoginProviderCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_ReturnUrl = ReturnUrl;
+				
+					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_LoginProviderCollection = LoginProviderCollection;
+					if(LoginProviderCollection != null)
+						((IInformationObject) LoginProviderCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -5911,12 +6884,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((LoginProvider) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -5963,6 +6950,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -6033,15 +7023,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ProviderName != _unmodified_ProviderName)
 							return true;
@@ -6058,13 +7051,30 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(LoginProvider sourceObject)
+				{
+					ProviderName = sourceObject.ProviderName;
+					ProviderIconClass = sourceObject.ProviderIconClass;
+					ProviderType = sourceObject.ProviderType;
+					ProviderUrl = sourceObject.ProviderUrl;
+					ReturnUrl = sourceObject.ReturnUrl;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ProviderName = ProviderName;
 					_unmodified_ProviderIconClass = ProviderIconClass;
 					_unmodified_ProviderType = ProviderType;
 					_unmodified_ProviderUrl = ProviderUrl;
 					_unmodified_ReturnUrl = ReturnUrl;
+				
 				
 				}
 
@@ -6244,12 +7254,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((LoginProviderCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -6296,6 +7320,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -6358,17 +7385,49 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<LoginProvider> CollectionContent = new List<LoginProvider>();
 				private LoginProvider[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (LoginProvider )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(LoginProviderCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -6381,15 +7440,21 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -6529,12 +7594,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ContactOipContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -6581,6 +7660,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -6643,15 +7725,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(OIPModeratorGroupID != _unmodified_OIPModeratorGroupID)
 							return true;
@@ -6660,9 +7745,22 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(ContactOipContainer sourceObject)
+				{
+					OIPModeratorGroupID = sourceObject.OIPModeratorGroupID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OIPModeratorGroupID = OIPModeratorGroupID;
+				
 				
 				}
 
@@ -6818,12 +7916,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBPRegisterEmail) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -6870,6 +7982,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -6932,15 +8047,18 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(EmailAddress != _unmodified_EmailAddress)
 							return true;
@@ -6949,9 +8067,22 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBPRegisterEmail sourceObject)
+				{
+					EmailAddress = sourceObject.EmailAddress;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_EmailAddress = EmailAddress;
+				
 				
 				}
 
@@ -7107,12 +8238,26 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((JavaScriptContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -7159,6 +8304,9 @@ namespace AaltoGlobalImpact.OIP {
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -7226,15 +8374,18 @@ JavaScriptContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(HtmlContent != _unmodified_HtmlContent)
 							return true;
@@ -7243,9 +8394,22 @@ JavaScriptContainer.HtmlContent
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(JavaScriptContainer sourceObject)
+				{
+					HtmlContent = sourceObject.HtmlContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_HtmlContent = HtmlContent;
+				
 				
 				}
 
@@ -7401,12 +8565,26 @@ JavaScriptContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((JavascriptContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -7453,6 +8631,9 @@ JavaScriptContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -7520,15 +8701,18 @@ JavascriptContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(HtmlContent != _unmodified_HtmlContent)
 							return true;
@@ -7537,9 +8721,22 @@ JavascriptContainer.HtmlContent
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(JavascriptContainer sourceObject)
+				{
+					HtmlContent = sourceObject.HtmlContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_HtmlContent = HtmlContent;
+				
 				
 				}
 
@@ -7695,12 +8892,26 @@ JavascriptContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((FooterContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -7747,6 +8958,9 @@ JavascriptContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -7814,15 +9028,18 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(HtmlContent != _unmodified_HtmlContent)
 							return true;
@@ -7831,9 +9048,22 @@ FooterContainer.HtmlContent
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(FooterContainer sourceObject)
+				{
+					HtmlContent = sourceObject.HtmlContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_HtmlContent = HtmlContent;
+				
 				
 				}
 
@@ -7989,12 +9219,26 @@ FooterContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((NavigationContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -8041,6 +9285,9 @@ FooterContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -8103,15 +9350,18 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Dummy != _unmodified_Dummy)
 							return true;
@@ -8120,9 +9370,22 @@ FooterContainer.HtmlContent
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(NavigationContainer sourceObject)
+				{
+					Dummy = sourceObject.Dummy;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Dummy = Dummy;
+				
 				
 				}
 
@@ -8278,12 +9541,26 @@ FooterContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountSummary) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -8330,6 +9607,9 @@ FooterContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -8423,30 +9703,33 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ActivitySummary;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupSummary;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Introduction != _unmodified_Introduction)
 							return true;
@@ -8454,16 +9737,91 @@ FooterContainer.HtmlContent
 							return true;
 						if(GroupSummary != _unmodified_GroupSummary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ActivitySummary;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupSummary;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ActivitySummary != null) {
+						if(ActivitySummary.ID == replacingObject.ID)
+							ActivitySummary = (ActivitySummaryContainer) replacingObject;
+						else {
+							IInformationObject iObject = ActivitySummary;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupSummary != null) {
+						if(GroupSummary.ID == replacingObject.ID)
+							GroupSummary = (GroupSummaryContainer) replacingObject;
+						else {
+							IInformationObject iObject = GroupSummary;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountSummary sourceObject)
+				{
+					Introduction = sourceObject.Introduction;
+					ActivitySummary = sourceObject.ActivitySummary;
+					GroupSummary = sourceObject.GroupSummary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ActivitySummary = ActivitySummary;
+					if(ActivitySummary != null)
+						((IInformationObject) ActivitySummary).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupSummary = GroupSummary;
+					if(GroupSummary != null)
+						((IInformationObject) GroupSummary).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -8622,12 +9980,26 @@ FooterContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -8674,6 +10046,9 @@ FooterContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -8778,35 +10153,38 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountIndex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountModule;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountSummary;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -8816,17 +10194,113 @@ FooterContainer.HtmlContent
 							return true;
 						if(AccountSummary != _unmodified_AccountSummary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountIndex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountModule;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountSummary;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountIndex != null) {
+						if(AccountIndex.ID == replacingObject.ID)
+							AccountIndex = (AccountIndex) replacingObject;
+						else {
+							IInformationObject iObject = AccountIndex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountModule != null) {
+						if(AccountModule.ID == replacingObject.ID)
+							AccountModule = (AccountModule) replacingObject;
+						else {
+							IInformationObject iObject = AccountModule;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountSummary != null) {
+						if(AccountSummary.ID == replacingObject.ID)
+							AccountSummary = (AccountSummary) replacingObject;
+						else {
+							IInformationObject iObject = AccountSummary;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					AccountIndex = sourceObject.AccountIndex;
+					AccountModule = sourceObject.AccountModule;
+					AccountSummary = sourceObject.AccountSummary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountIndex = AccountIndex;
+					if(AccountIndex != null)
+						((IInformationObject) AccountIndex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountModule = AccountModule;
+					if(AccountModule != null)
+						((IInformationObject) AccountModule).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountSummary = AccountSummary;
+					if(AccountSummary != null)
+						((IInformationObject) AccountSummary).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -8988,12 +10462,26 @@ FooterContainer.HtmlContent
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountIndex) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -9040,6 +10528,9 @@ FooterContainer.HtmlContent
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -9127,20 +10618,23 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Icon;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -9150,17 +10644,53 @@ AccountIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Icon;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Icon = Icon;
+					if(Icon != null) {
+						if(Icon.ID == replacingObject.ID)
+							Icon = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Icon;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountIndex sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Introduction = sourceObject.Introduction;
+					Summary = sourceObject.Summary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Introduction = Introduction;
 					_unmodified_Summary = Summary;
+				
+					_unmodified_Icon = Icon;
+					if(Icon != null)
+						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -9331,12 +10861,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountModule) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -9383,6 +10927,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -9487,35 +11034,38 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Profile;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Security;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Roles;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) LocationCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Profile != _unmodified_Profile)
 							return true;
@@ -9525,17 +11075,113 @@ AccountIndex.Summary
 							return true;
 						if(LocationCollection != _unmodified_LocationCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Profile;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Security;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Roles;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LocationCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Profile != null) {
+						if(Profile.ID == replacingObject.ID)
+							Profile = (AccountProfile) replacingObject;
+						else {
+							IInformationObject iObject = Profile;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Security != null) {
+						if(Security.ID == replacingObject.ID)
+							Security = (AccountSecurity) replacingObject;
+						else {
+							IInformationObject iObject = Security;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Roles != null) {
+						if(Roles.ID == replacingObject.ID)
+							Roles = (AccountRoles) replacingObject;
+						else {
+							IInformationObject iObject = Roles;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = LocationCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountModule sourceObject)
+				{
+					Profile = sourceObject.Profile;
+					Security = sourceObject.Security;
+					Roles = sourceObject.Roles;
+					LocationCollection = sourceObject.LocationCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Profile = Profile;
+					if(Profile != null)
+						((IInformationObject) Profile).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Security = Security;
+					if(Security != null)
+						((IInformationObject) Security).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Roles = Roles;
+					if(Roles != null)
+						((IInformationObject) Roles).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -9697,12 +11343,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((LocationContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -9749,6 +11409,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -9820,31 +11483,67 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Locations;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Locations != _unmodified_Locations)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Locations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Locations != null) {
+						if(Locations.ID == replacingObject.ID)
+							Locations = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = Locations;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(LocationContainer sourceObject)
+				{
+					Locations = sourceObject.Locations;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Locations = Locations;
+					if(Locations != null)
+						((IInformationObject) Locations).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -9997,12 +11696,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddressAndLocationCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -10049,6 +11762,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -10111,17 +11827,41 @@ AccountIndex.Summary
 		
 				[DataMember] public List<AddressAndLocation> CollectionContent = new List<AddressAndLocation>();
 				private AddressAndLocation[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (AddressAndLocation )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(AddressAndLocationCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -10134,15 +11874,21 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -10282,12 +12028,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddressAndLocation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -10334,6 +12094,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -10427,30 +12190,33 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Address;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Location;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
@@ -10458,16 +12224,91 @@ AccountIndex.Summary
 							return true;
 						if(Location != _unmodified_Location)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ReferenceToInformation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Address;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Location;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Address != null) {
+						if(Address.ID == replacingObject.ID)
+							Address = (StreetAddress) replacingObject;
+						else {
+							IInformationObject iObject = Address;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Location != null) {
+						if(Location.ID == replacingObject.ID)
+							Location = (Location) replacingObject;
+						else {
+							IInformationObject iObject = Location;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AddressAndLocation sourceObject)
+				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
+					Address = sourceObject.Address;
+					Location = sourceObject.Location;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Address = Address;
+					if(Address != null)
+						((IInformationObject) Address).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Location = Location;
+					if(Location != null)
+						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -10626,12 +12467,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((StreetAddress) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -10678,6 +12533,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -10746,15 +12604,18 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Street != _unmodified_Street)
 							return true;
@@ -10769,12 +12630,28 @@ AccountIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(StreetAddress sourceObject)
+				{
+					Street = sourceObject.Street;
+					ZipCode = sourceObject.ZipCode;
+					Town = sourceObject.Town;
+					Country = sourceObject.Country;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Street = Street;
 					_unmodified_ZipCode = ZipCode;
 					_unmodified_Town = Town;
 					_unmodified_Country = Country;
+				
 				
 				}
 
@@ -10948,12 +12825,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountContent) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -11000,6 +12891,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -11062,15 +12956,18 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Dummy != _unmodified_Dummy)
 							return true;
@@ -11079,9 +12976,22 @@ AccountIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AccountContent sourceObject)
+				{
+					Dummy = sourceObject.Dummy;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Dummy = Dummy;
+				
 				
 				}
 
@@ -11237,12 +13147,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountProfile) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -11289,6 +13213,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -11375,25 +13302,28 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ProfileImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Address;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ProfileImage != _unmodified_ProfileImage)
 							return true;
@@ -11403,17 +13333,73 @@ AccountIndex.Summary
 							return true;
 						if(Address != _unmodified_Address)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ProfileImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Address;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ProfileImage = ProfileImage;
+					if(ProfileImage != null) {
+						if(ProfileImage.ID == replacingObject.ID)
+							ProfileImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = ProfileImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Address != null) {
+						if(Address.ID == replacingObject.ID)
+							Address = (StreetAddress) replacingObject;
+						else {
+							IInformationObject iObject = Address;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountProfile sourceObject)
+				{
+					ProfileImage = sourceObject.ProfileImage;
+					FirstName = sourceObject.FirstName;
+					LastName = sourceObject.LastName;
+					Address = sourceObject.Address;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_FirstName = FirstName;
 					_unmodified_LastName = LastName;
+				
+					_unmodified_ProfileImage = ProfileImage;
+					if(ProfileImage != null)
+						((IInformationObject) ProfileImage).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Address = Address;
+					if(Address != null)
+						((IInformationObject) Address).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -11581,12 +13567,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountSecurity) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -11633,6 +13633,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -11715,39 +13718,96 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) LoginInfoCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) EmailCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(LoginInfoCollection != _unmodified_LoginInfoCollection)
 							return true;
 						if(EmailCollection != _unmodified_EmailCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) LoginInfoCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) EmailCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(LoginInfoCollection != null) {
+						if(LoginInfoCollection.ID == replacingObject.ID)
+							LoginInfoCollection = (TBLoginInfoCollection) replacingObject;
+						else {
+							IInformationObject iObject = LoginInfoCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(EmailCollection != null) {
+						if(EmailCollection.ID == replacingObject.ID)
+							EmailCollection = (TBEmailCollection) replacingObject;
+						else {
+							IInformationObject iObject = EmailCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountSecurity sourceObject)
+				{
+					LoginInfoCollection = sourceObject.LoginInfoCollection;
+					EmailCollection = sourceObject.EmailCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_LoginInfoCollection = LoginInfoCollection;
+					if(LoginInfoCollection != null)
+						((IInformationObject) LoginInfoCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_EmailCollection = EmailCollection;
+					if(EmailCollection != null)
+						((IInformationObject) EmailCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -11903,12 +13963,26 @@ AccountIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AccountRoles) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -11955,6 +14029,9 @@ AccountIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -12044,25 +14121,28 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ModeratorInGroups;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MemberInGroups;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ModeratorInGroups != _unmodified_ModeratorInGroups)
 							return true;
@@ -12070,16 +14150,71 @@ AccountRoles.OrganizationsImPartOf
 							return true;
 						if(OrganizationsImPartOf != _unmodified_OrganizationsImPartOf)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ModeratorInGroups;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MemberInGroups;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ModeratorInGroups = ModeratorInGroups;
-					_unmodified_MemberInGroups = MemberInGroups;
+					if(ModeratorInGroups != null) {
+						if(ModeratorInGroups.ID == replacingObject.ID)
+							ModeratorInGroups = (ReferenceCollection) replacingObject;
+						else {
+							IInformationObject iObject = ModeratorInGroups;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MemberInGroups != null) {
+						if(MemberInGroups.ID == replacingObject.ID)
+							MemberInGroups = (ReferenceCollection) replacingObject;
+						else {
+							IInformationObject iObject = MemberInGroups;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AccountRoles sourceObject)
+				{
+					ModeratorInGroups = sourceObject.ModeratorInGroups;
+					MemberInGroups = sourceObject.MemberInGroups;
+					OrganizationsImPartOf = sourceObject.OrganizationsImPartOf;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_OrganizationsImPartOf = OrganizationsImPartOf;
+				
+					_unmodified_ModeratorInGroups = ModeratorInGroups;
+					if(ModeratorInGroups != null)
+						((IInformationObject) ModeratorInGroups).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MemberInGroups = MemberInGroups;
+					if(MemberInGroups != null)
+						((IInformationObject) MemberInGroups).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -12241,12 +14376,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((PersonalInfoVisibility) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -12293,6 +14442,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -12355,15 +14507,18 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(NoOne_Network_All != _unmodified_NoOne_Network_All)
 							return true;
@@ -12372,9 +14527,22 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(PersonalInfoVisibility sourceObject)
+				{
+					NoOne_Network_All = sourceObject.NoOne_Network_All;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_NoOne_Network_All = NoOne_Network_All;
+				
 				
 				}
 
@@ -12530,12 +14698,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ReferenceToInformation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -12582,6 +14764,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -12646,15 +14831,18 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -12665,10 +14853,24 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(ReferenceToInformation sourceObject)
+				{
+					Title = sourceObject.Title;
+					URL = sourceObject.URL;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
 					_unmodified_URL = URL;
+				
 				
 				}
 
@@ -12830,12 +15032,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ReferenceCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -12882,6 +15098,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -12944,17 +15163,49 @@ AccountRoles.OrganizationsImPartOf
 		
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
 				private ReferenceToInformation[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (ReferenceToInformation )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(ReferenceCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -12967,15 +15218,21 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -13115,12 +15372,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((BlogContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -13167,6 +15438,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13271,35 +15545,38 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) FeaturedBlog;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) RecentBlogSummary;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) BlogIndexGroup;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -13309,17 +15586,113 @@ AccountRoles.OrganizationsImPartOf
 							return true;
 						if(BlogIndexGroup != _unmodified_BlogIndexGroup)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) FeaturedBlog;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) RecentBlogSummary;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogIndexGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(FeaturedBlog != null) {
+						if(FeaturedBlog.ID == replacingObject.ID)
+							FeaturedBlog = (Blog) replacingObject;
+						else {
+							IInformationObject iObject = FeaturedBlog;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(RecentBlogSummary != null) {
+						if(RecentBlogSummary.ID == replacingObject.ID)
+							RecentBlogSummary = (RecentBlogSummary) replacingObject;
+						else {
+							IInformationObject iObject = RecentBlogSummary;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogIndexGroup != null) {
+						if(BlogIndexGroup.ID == replacingObject.ID)
+							BlogIndexGroup = (BlogIndexGroup) replacingObject;
+						else {
+							IInformationObject iObject = BlogIndexGroup;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(BlogContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					FeaturedBlog = sourceObject.FeaturedBlog;
+					RecentBlogSummary = sourceObject.RecentBlogSummary;
+					BlogIndexGroup = sourceObject.BlogIndexGroup;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_FeaturedBlog = FeaturedBlog;
+					if(FeaturedBlog != null)
+						((IInformationObject) FeaturedBlog).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_RecentBlogSummary = RecentBlogSummary;
+					if(RecentBlogSummary != null)
+						((IInformationObject) RecentBlogSummary).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_BlogIndexGroup = BlogIndexGroup;
+					if(BlogIndexGroup != null)
+						((IInformationObject) BlogIndexGroup).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -13481,12 +15854,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((RecentBlogSummary) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -13533,6 +15920,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13615,39 +16005,96 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) RecentBlogCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Introduction != _unmodified_Introduction)
 							return true;
 						if(RecentBlogCollection != _unmodified_RecentBlogCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) RecentBlogCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(RecentBlogCollection != null) {
+						if(RecentBlogCollection.ID == replacingObject.ID)
+							RecentBlogCollection = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = RecentBlogCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(RecentBlogSummary sourceObject)
+				{
+					Introduction = sourceObject.Introduction;
+					RecentBlogCollection = sourceObject.RecentBlogCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_RecentBlogCollection = RecentBlogCollection;
+					if(RecentBlogCollection != null)
+						((IInformationObject) RecentBlogCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -13803,12 +16250,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -13855,6 +16316,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13981,45 +16445,48 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapFeatured;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapResultCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapIndexCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapMarkers;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -14033,19 +16500,157 @@ AccountRoles.OrganizationsImPartOf
 							return true;
 						if(MapMarkers != _unmodified_MapMarkers)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapFeatured;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapResultCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapMarkers;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapFeatured != null) {
+						if(MapFeatured.ID == replacingObject.ID)
+							MapFeatured = (Map) replacingObject;
+						else {
+							IInformationObject iObject = MapFeatured;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapCollection != null) {
+						if(MapCollection.ID == replacingObject.ID)
+							MapCollection = (MapCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapResultCollection != null) {
+						if(MapResultCollection.ID == replacingObject.ID)
+							MapResultCollection = (MapResultCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapResultCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapIndexCollection != null) {
+						if(MapIndexCollection.ID == replacingObject.ID)
+							MapIndexCollection = (MapIndexCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapIndexCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapMarkers != null) {
+						if(MapMarkers.ID == replacingObject.ID)
+							MapMarkers = (MapMarkerCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapMarkers;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(MapContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					MapFeatured = sourceObject.MapFeatured;
+					MapCollection = sourceObject.MapCollection;
+					MapResultCollection = sourceObject.MapResultCollection;
+					MapIndexCollection = sourceObject.MapIndexCollection;
+					MapMarkers = sourceObject.MapMarkers;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapFeatured = MapFeatured;
+					if(MapFeatured != null)
+						((IInformationObject) MapFeatured).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapCollection = MapCollection;
+					if(MapCollection != null)
+						((IInformationObject) MapCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapResultCollection = MapResultCollection;
+					if(MapResultCollection != null)
+						((IInformationObject) MapResultCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapIndexCollection = MapIndexCollection;
+					if(MapIndexCollection != null)
+						((IInformationObject) MapIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapMarkers = MapMarkers;
+					if(MapMarkers != null)
+						((IInformationObject) MapMarkers).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -14213,12 +16818,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapMarker) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -14265,6 +16884,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -14338,34 +16960,71 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Location;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(LocationText != _unmodified_LocationText)
 							return true;
 						if(Location != _unmodified_Location)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Location;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Location != null) {
+						if(Location.ID == replacingObject.ID)
+							Location = (Location) replacingObject;
+						else {
+							IInformationObject iObject = Location;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(MapMarker sourceObject)
+				{
+					LocationText = sourceObject.LocationText;
+					Location = sourceObject.Location;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_LocationText = LocationText;
+				
 					_unmodified_Location = Location;
+					if(Location != null)
+						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -14524,12 +17183,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapMarkerCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -14576,6 +17249,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -14638,17 +17314,49 @@ AccountRoles.OrganizationsImPartOf
 		
 				[DataMember] public List<MapMarker> CollectionContent = new List<MapMarker>();
 				private MapMarker[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (MapMarker )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(MapMarkerCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -14661,15 +17369,21 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -14809,12 +17523,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CalendarContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -14861,6 +17589,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -14965,35 +17696,38 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) CalendarContainerHeader;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CalendarFeatured;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CalendarCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CalendarIndexCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CalendarContainerHeader != _unmodified_CalendarContainerHeader)
 							return true;
@@ -15003,17 +17737,113 @@ AccountRoles.OrganizationsImPartOf
 							return true;
 						if(CalendarIndexCollection != _unmodified_CalendarIndexCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) CalendarContainerHeader;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CalendarFeatured;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CalendarCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CalendarIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(CalendarContainerHeader != null) {
+						if(CalendarContainerHeader.ID == replacingObject.ID)
+							CalendarContainerHeader = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = CalendarContainerHeader;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CalendarFeatured != null) {
+						if(CalendarFeatured.ID == replacingObject.ID)
+							CalendarFeatured = (Calendar) replacingObject;
+						else {
+							IInformationObject iObject = CalendarFeatured;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CalendarCollection != null) {
+						if(CalendarCollection.ID == replacingObject.ID)
+							CalendarCollection = (CalendarCollection) replacingObject;
+						else {
+							IInformationObject iObject = CalendarCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CalendarIndexCollection != null) {
+						if(CalendarIndexCollection.ID == replacingObject.ID)
+							CalendarIndexCollection = (CalendarIndex) replacingObject;
+						else {
+							IInformationObject iObject = CalendarIndexCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(CalendarContainer sourceObject)
+				{
+					CalendarContainerHeader = sourceObject.CalendarContainerHeader;
+					CalendarFeatured = sourceObject.CalendarFeatured;
+					CalendarCollection = sourceObject.CalendarCollection;
+					CalendarIndexCollection = sourceObject.CalendarIndexCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_CalendarContainerHeader = CalendarContainerHeader;
+					if(CalendarContainerHeader != null)
+						((IInformationObject) CalendarContainerHeader).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CalendarFeatured = CalendarFeatured;
+					if(CalendarFeatured != null)
+						((IInformationObject) CalendarFeatured).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CalendarCollection = CalendarCollection;
+					if(CalendarCollection != null)
+						((IInformationObject) CalendarCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CalendarIndexCollection = CalendarIndexCollection;
+					if(CalendarIndexCollection != null)
+						((IInformationObject) CalendarIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -15175,12 +18005,26 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AboutContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -15227,6 +18071,9 @@ AccountRoles.OrganizationsImPartOf
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -15336,30 +18183,33 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) MainImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ImageGroup;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(MainImage != _unmodified_MainImage)
 							return true;
@@ -15375,20 +18225,99 @@ AboutContainer.Body
 							return true;
 						if(ImageGroup != _unmodified_ImageGroup)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) MainImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ImageGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_MainImage = MainImage;
-					_unmodified_Header = Header;
+					if(MainImage != null) {
+						if(MainImage.ID == replacingObject.ID)
+							MainImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = MainImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ImageGroup != null) {
+						if(ImageGroup.ID == replacingObject.ID)
+							ImageGroup = (ImageGroup) replacingObject;
+						else {
+							IInformationObject iObject = ImageGroup;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AboutContainer sourceObject)
+				{
+					MainImage = sourceObject.MainImage;
+					Header = sourceObject.Header;
+					Excerpt = sourceObject.Excerpt;
+					Body = sourceObject.Body;
+					Published = sourceObject.Published;
+					Author = sourceObject.Author;
+					ImageGroup = sourceObject.ImageGroup;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_Body = Body;
 					_unmodified_Published = Published;
 					_unmodified_Author = Author;
+				
+					_unmodified_MainImage = MainImage;
+					if(MainImage != null)
+						((IInformationObject) MainImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ImageGroup = ImageGroup;
+					if(ImageGroup != null)
+						((IInformationObject) ImageGroup).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -15571,12 +18500,26 @@ AboutContainer.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((OBSAccountContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -15623,6 +18566,9 @@ AboutContainer.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -15727,35 +18673,38 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) AccountContainerHeader;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountFeatured;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) AccountIndexCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(AccountContainerHeader != _unmodified_AccountContainerHeader)
 							return true;
@@ -15765,17 +18714,113 @@ AboutContainer.Body
 							return true;
 						if(AccountIndexCollection != _unmodified_AccountIndexCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) AccountContainerHeader;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountFeatured;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) AccountIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(AccountContainerHeader != null) {
+						if(AccountContainerHeader.ID == replacingObject.ID)
+							AccountContainerHeader = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = AccountContainerHeader;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountFeatured != null) {
+						if(AccountFeatured.ID == replacingObject.ID)
+							AccountFeatured = (Calendar) replacingObject;
+						else {
+							IInformationObject iObject = AccountFeatured;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountCollection != null) {
+						if(AccountCollection.ID == replacingObject.ID)
+							AccountCollection = (CalendarCollection) replacingObject;
+						else {
+							IInformationObject iObject = AccountCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(AccountIndexCollection != null) {
+						if(AccountIndexCollection.ID == replacingObject.ID)
+							AccountIndexCollection = (CalendarIndex) replacingObject;
+						else {
+							IInformationObject iObject = AccountIndexCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(OBSAccountContainer sourceObject)
+				{
+					AccountContainerHeader = sourceObject.AccountContainerHeader;
+					AccountFeatured = sourceObject.AccountFeatured;
+					AccountCollection = sourceObject.AccountCollection;
+					AccountIndexCollection = sourceObject.AccountIndexCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_AccountContainerHeader = AccountContainerHeader;
+					if(AccountContainerHeader != null)
+						((IInformationObject) AccountContainerHeader).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountFeatured = AccountFeatured;
+					if(AccountFeatured != null)
+						((IInformationObject) AccountFeatured).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountCollection = AccountCollection;
+					if(AccountCollection != null)
+						((IInformationObject) AccountCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_AccountIndexCollection = AccountIndexCollection;
+					if(AccountIndexCollection != null)
+						((IInformationObject) AccountIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -15937,12 +18982,26 @@ AboutContainer.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ProjectContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -15989,6 +19048,9 @@ AboutContainer.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -16093,35 +19155,38 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ProjectContainerHeader;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ProjectFeatured;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ProjectCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ProjectIndexCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ProjectContainerHeader != _unmodified_ProjectContainerHeader)
 							return true;
@@ -16131,17 +19196,113 @@ AboutContainer.Body
 							return true;
 						if(ProjectIndexCollection != _unmodified_ProjectIndexCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ProjectContainerHeader;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProjectFeatured;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProjectCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProjectIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ProjectContainerHeader != null) {
+						if(ProjectContainerHeader.ID == replacingObject.ID)
+							ProjectContainerHeader = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = ProjectContainerHeader;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProjectFeatured != null) {
+						if(ProjectFeatured.ID == replacingObject.ID)
+							ProjectFeatured = (Calendar) replacingObject;
+						else {
+							IInformationObject iObject = ProjectFeatured;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProjectCollection != null) {
+						if(ProjectCollection.ID == replacingObject.ID)
+							ProjectCollection = (CalendarCollection) replacingObject;
+						else {
+							IInformationObject iObject = ProjectCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProjectIndexCollection != null) {
+						if(ProjectIndexCollection.ID == replacingObject.ID)
+							ProjectIndexCollection = (CalendarIndex) replacingObject;
+						else {
+							IInformationObject iObject = ProjectIndexCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ProjectContainer sourceObject)
+				{
+					ProjectContainerHeader = sourceObject.ProjectContainerHeader;
+					ProjectFeatured = sourceObject.ProjectFeatured;
+					ProjectCollection = sourceObject.ProjectCollection;
+					ProjectIndexCollection = sourceObject.ProjectIndexCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_ProjectContainerHeader = ProjectContainerHeader;
+					if(ProjectContainerHeader != null)
+						((IInformationObject) ProjectContainerHeader).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ProjectFeatured = ProjectFeatured;
+					if(ProjectFeatured != null)
+						((IInformationObject) ProjectFeatured).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ProjectCollection = ProjectCollection;
+					if(ProjectCollection != null)
+						((IInformationObject) ProjectCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ProjectIndexCollection = ProjectIndexCollection;
+					if(ProjectIndexCollection != null)
+						((IInformationObject) ProjectIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -16303,12 +19464,26 @@ AboutContainer.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CourseContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -16355,6 +19530,9 @@ AboutContainer.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -16459,35 +19637,38 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) CourseContainerHeader;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CourseFeatured;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CourseCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CourseIndexCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CourseContainerHeader != _unmodified_CourseContainerHeader)
 							return true;
@@ -16497,17 +19678,113 @@ AboutContainer.Body
 							return true;
 						if(CourseIndexCollection != _unmodified_CourseIndexCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) CourseContainerHeader;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CourseFeatured;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CourseCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CourseIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(CourseContainerHeader != null) {
+						if(CourseContainerHeader.ID == replacingObject.ID)
+							CourseContainerHeader = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = CourseContainerHeader;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CourseFeatured != null) {
+						if(CourseFeatured.ID == replacingObject.ID)
+							CourseFeatured = (Calendar) replacingObject;
+						else {
+							IInformationObject iObject = CourseFeatured;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CourseCollection != null) {
+						if(CourseCollection.ID == replacingObject.ID)
+							CourseCollection = (CalendarCollection) replacingObject;
+						else {
+							IInformationObject iObject = CourseCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CourseIndexCollection != null) {
+						if(CourseIndexCollection.ID == replacingObject.ID)
+							CourseIndexCollection = (CalendarIndex) replacingObject;
+						else {
+							IInformationObject iObject = CourseIndexCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(CourseContainer sourceObject)
+				{
+					CourseContainerHeader = sourceObject.CourseContainerHeader;
+					CourseFeatured = sourceObject.CourseFeatured;
+					CourseCollection = sourceObject.CourseCollection;
+					CourseIndexCollection = sourceObject.CourseIndexCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_CourseContainerHeader = CourseContainerHeader;
+					if(CourseContainerHeader != null)
+						((IInformationObject) CourseContainerHeader).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CourseFeatured = CourseFeatured;
+					if(CourseFeatured != null)
+						((IInformationObject) CourseFeatured).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CourseCollection = CourseCollection;
+					if(CourseCollection != null)
+						((IInformationObject) CourseCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CourseIndexCollection = CourseIndexCollection;
+					if(CourseIndexCollection != null)
+						((IInformationObject) CourseIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -16669,12 +19946,26 @@ AboutContainer.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ContainerHeader) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -16721,6 +20012,9 @@ AboutContainer.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -16785,15 +20079,18 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -16804,10 +20101,24 @@ AboutContainer.Body
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(ContainerHeader sourceObject)
+				{
+					Title = sourceObject.Title;
+					SubTitle = sourceObject.SubTitle;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
 					_unmodified_SubTitle = SubTitle;
+				
 				
 				}
 
@@ -16969,12 +20280,26 @@ AboutContainer.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ActivitySummaryContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -17021,6 +20346,9 @@ AboutContainer.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -17132,35 +20460,38 @@ ActivitySummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ActivityIndex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ActivityCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -17172,18 +20503,115 @@ ActivitySummaryContainer.SummaryBody
 							return true;
 						if(ActivityCollection != _unmodified_ActivityCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ActivityIndex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ActivityCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Header = Header;
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ActivityIndex != null) {
+						if(ActivityIndex.ID == replacingObject.ID)
+							ActivityIndex = (ActivityIndex) replacingObject;
+						else {
+							IInformationObject iObject = ActivityIndex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ActivityCollection != null) {
+						if(ActivityCollection.ID == replacingObject.ID)
+							ActivityCollection = (ActivityCollection) replacingObject;
+						else {
+							IInformationObject iObject = ActivityCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ActivitySummaryContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					SummaryBody = sourceObject.SummaryBody;
+					Introduction = sourceObject.Introduction;
+					ActivityIndex = sourceObject.ActivityIndex;
+					ActivityCollection = sourceObject.ActivityCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_SummaryBody = SummaryBody;
+				
+					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ActivityIndex = ActivityIndex;
+					if(ActivityIndex != null)
+						((IInformationObject) ActivityIndex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ActivityCollection = ActivityCollection;
+					if(ActivityCollection != null)
+						((IInformationObject) ActivityCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -17351,12 +20779,26 @@ ActivitySummaryContainer.SummaryBody
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ActivityIndex) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -17403,6 +20845,9 @@ ActivitySummaryContainer.SummaryBody
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -17490,20 +20935,23 @@ ActivityIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Icon;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -17513,17 +20961,53 @@ ActivityIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Icon;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Icon = Icon;
+					if(Icon != null) {
+						if(Icon.ID == replacingObject.ID)
+							Icon = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Icon;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ActivityIndex sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Introduction = sourceObject.Introduction;
+					Summary = sourceObject.Summary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Introduction = Introduction;
 					_unmodified_Summary = Summary;
+				
+					_unmodified_Icon = Icon;
+					if(Icon != null)
+						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -17694,12 +21178,26 @@ ActivityIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ActivityContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -17746,6 +21244,9 @@ ActivityIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -17839,30 +21340,33 @@ ActivityIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ActivityIndex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ActivityModule;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -17870,16 +21374,91 @@ ActivityIndex.Summary
 							return true;
 						if(ActivityModule != _unmodified_ActivityModule)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ActivityIndex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ActivityModule;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ActivityIndex != null) {
+						if(ActivityIndex.ID == replacingObject.ID)
+							ActivityIndex = (ActivityIndex) replacingObject;
+						else {
+							IInformationObject iObject = ActivityIndex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ActivityModule != null) {
+						if(ActivityModule.ID == replacingObject.ID)
+							ActivityModule = (Activity) replacingObject;
+						else {
+							IInformationObject iObject = ActivityModule;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ActivityContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					ActivityIndex = sourceObject.ActivityIndex;
+					ActivityModule = sourceObject.ActivityModule;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ActivityIndex = ActivityIndex;
+					if(ActivityIndex != null)
+						((IInformationObject) ActivityIndex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ActivityModule = ActivityModule;
+					if(ActivityModule != null)
+						((IInformationObject) ActivityModule).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -18038,12 +21617,26 @@ ActivityIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ActivityCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -18090,6 +21683,9 @@ ActivityIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -18152,17 +21748,49 @@ ActivityIndex.Summary
 		
 				[DataMember] public List<Activity> CollectionContent = new List<Activity>();
 				private Activity[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Activity )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(ActivityCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -18175,15 +21803,21 @@ ActivityIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -18323,12 +21957,26 @@ ActivityIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Activity) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -18375,6 +22023,9 @@ ActivityIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -18532,55 +22183,58 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ProfileImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) IconImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Collaborators;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ImageSets;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Location;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
@@ -18602,23 +22256,196 @@ Activity.Description
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ReferenceToInformation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProfileImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) IconImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Collaborators;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ImageSets;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CategoryCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ReferenceToInformation = ReferenceToInformation;
-					_unmodified_ProfileImage = ProfileImage;
-					_unmodified_IconImage = IconImage;
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProfileImage != null) {
+						if(ProfileImage.ID == replacingObject.ID)
+							ProfileImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = ProfileImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(IconImage != null) {
+						if(IconImage.ID == replacingObject.ID)
+							IconImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = IconImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Collaborators != null) {
+						if(Collaborators.ID == replacingObject.ID)
+							Collaborators = (CollaboratorCollection) replacingObject;
+						else {
+							IInformationObject iObject = Collaborators;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ImageSets != null) {
+						if(ImageSets.ID == replacingObject.ID)
+							ImageSets = (ImageGroupCollection) replacingObject;
+						else {
+							IInformationObject iObject = ImageSets;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Location != null) {
+						if(Location.ID == replacingObject.ID)
+							Location = (AddressAndLocation) replacingObject;
+						else {
+							IInformationObject iObject = Location;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CategoryCollection != null) {
+						if(CategoryCollection.ID == replacingObject.ID)
+							CategoryCollection = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = CategoryCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Activity sourceObject)
+				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
+					ProfileImage = sourceObject.ProfileImage;
+					IconImage = sourceObject.IconImage;
+					ActivityName = sourceObject.ActivityName;
+					Introduction = sourceObject.Introduction;
+					Description = sourceObject.Description;
+					Collaborators = sourceObject.Collaborators;
+					ImageSets = sourceObject.ImageSets;
+					Location = sourceObject.Location;
+					CategoryCollection = sourceObject.CategoryCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_ActivityName = ActivityName;
-					_unmodified_Introduction = Introduction;
 					_unmodified_Description = Description;
+				
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ProfileImage = ProfileImage;
+					if(ProfileImage != null)
+						((IInformationObject) ProfileImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_IconImage = IconImage;
+					if(IconImage != null)
+						((IInformationObject) IconImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Collaborators = Collaborators;
+					if(Collaborators != null)
+						((IInformationObject) Collaborators).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ImageSets = ImageSets;
+					if(ImageSets != null)
+						((IInformationObject) ImageSets).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Location = Location;
+					if(Location != null)
+						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CategoryCollection = CategoryCollection;
+					if(CategoryCollection != null)
+						((IInformationObject) CategoryCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -18804,12 +22631,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ModeratorCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -18856,6 +22697,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -18918,17 +22762,49 @@ Activity.Description
 		
 				[DataMember] public List<Moderator> CollectionContent = new List<Moderator>();
 				private Moderator[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Moderator )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(ModeratorCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -18941,15 +22817,21 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -19089,12 +22971,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Moderator) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -19141,6 +23037,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -19205,15 +23104,18 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ModeratorName != _unmodified_ModeratorName)
 							return true;
@@ -19224,10 +23126,24 @@ Activity.Description
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Moderator sourceObject)
+				{
+					ModeratorName = sourceObject.ModeratorName;
+					ProfileUrl = sourceObject.ProfileUrl;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ModeratorName = ModeratorName;
 					_unmodified_ProfileUrl = ProfileUrl;
+				
 				
 				}
 
@@ -19389,12 +23305,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CollaboratorCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -19441,6 +23371,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -19503,17 +23436,49 @@ Activity.Description
 		
 				[DataMember] public List<Collaborator> CollectionContent = new List<Collaborator>();
 				private Collaborator[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Collaborator )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(CollaboratorCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -19526,15 +23491,21 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -19674,12 +23645,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Collaborator) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -19726,6 +23711,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -19792,15 +23780,18 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CollaboratorName != _unmodified_CollaboratorName)
 							return true;
@@ -19813,11 +23804,26 @@ Activity.Description
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Collaborator sourceObject)
+				{
+					CollaboratorName = sourceObject.CollaboratorName;
+					Role = sourceObject.Role;
+					ProfileUrl = sourceObject.ProfileUrl;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollaboratorName = CollaboratorName;
 					_unmodified_Role = Role;
 					_unmodified_ProfileUrl = ProfileUrl;
+				
 				
 				}
 
@@ -19985,12 +23991,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CollaboratingGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -20037,6 +24057,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20099,15 +24122,18 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CollaboratingGroupName != _unmodified_CollaboratingGroupName)
 							return true;
@@ -20116,9 +24142,22 @@ Activity.Description
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(CollaboratingGroup sourceObject)
+				{
+					CollaboratingGroupName = sourceObject.CollaboratingGroupName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollaboratingGroupName = CollaboratingGroupName;
+				
 				
 				}
 
@@ -20274,12 +24313,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CollaboratingGroupCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -20326,6 +24379,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20388,17 +24444,49 @@ Activity.Description
 		
 				[DataMember] public List<CollaboratingGroup> CollectionContent = new List<CollaboratingGroup>();
 				private CollaboratingGroup[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (CollaboratingGroup )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(CollaboratingGroupCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20411,15 +24499,21 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -20559,12 +24653,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CollaboratingOrganization) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -20611,6 +24719,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20673,15 +24784,18 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CollaboratingOrganizationName != _unmodified_CollaboratingOrganizationName)
 							return true;
@@ -20690,9 +24804,22 @@ Activity.Description
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(CollaboratingOrganization sourceObject)
+				{
+					CollaboratingOrganizationName = sourceObject.CollaboratingOrganizationName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollaboratingOrganizationName = CollaboratingOrganizationName;
+				
 				
 				}
 
@@ -20848,12 +24975,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CollaboratingOrganizationCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -20900,6 +25041,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20962,17 +25106,49 @@ Activity.Description
 		
 				[DataMember] public List<CollaboratingOrganization> CollectionContent = new List<CollaboratingOrganization>();
 				private CollaboratingOrganization[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (CollaboratingOrganization )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(CollaboratingOrganizationCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20985,15 +25161,21 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -21133,12 +25315,26 @@ Activity.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupSummaryContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -21185,6 +25381,9 @@ Activity.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -21296,35 +25495,38 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupSummaryIndex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -21336,18 +25538,115 @@ GroupSummaryContainer.SummaryBody
 							return true;
 						if(GroupCollection != _unmodified_GroupCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupSummaryIndex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Header = Header;
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupSummaryIndex != null) {
+						if(GroupSummaryIndex.ID == replacingObject.ID)
+							GroupSummaryIndex = (GroupIndex) replacingObject;
+						else {
+							IInformationObject iObject = GroupSummaryIndex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupCollection != null) {
+						if(GroupCollection.ID == replacingObject.ID)
+							GroupCollection = (GroupCollection) replacingObject;
+						else {
+							IInformationObject iObject = GroupCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(GroupSummaryContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					SummaryBody = sourceObject.SummaryBody;
+					Introduction = sourceObject.Introduction;
+					GroupSummaryIndex = sourceObject.GroupSummaryIndex;
+					GroupCollection = sourceObject.GroupCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_SummaryBody = SummaryBody;
+				
+					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupSummaryIndex = GroupSummaryIndex;
+					if(GroupSummaryIndex != null)
+						((IInformationObject) GroupSummaryIndex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupCollection = GroupCollection;
+					if(GroupCollection != null)
+						((IInformationObject) GroupCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -21515,12 +25814,26 @@ GroupSummaryContainer.SummaryBody
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupContainer) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -21567,6 +25880,9 @@ GroupSummaryContainer.SummaryBody
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -21704,50 +26020,53 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Header;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupIndex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) GroupProfile;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Collaborators;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) PendingCollaborators;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Activities;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Locations;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Header != _unmodified_Header)
 							return true;
@@ -21763,20 +26082,179 @@ GroupSummaryContainer.SummaryBody
 							return true;
 						if(Locations != _unmodified_Locations)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Header;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupIndex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) GroupProfile;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Collaborators;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) PendingCollaborators;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Activities;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Locations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Header != null) {
+						if(Header.ID == replacingObject.ID)
+							Header = (ContainerHeader) replacingObject;
+						else {
+							IInformationObject iObject = Header;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupIndex != null) {
+						if(GroupIndex.ID == replacingObject.ID)
+							GroupIndex = (GroupIndex) replacingObject;
+						else {
+							IInformationObject iObject = GroupIndex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(GroupProfile != null) {
+						if(GroupProfile.ID == replacingObject.ID)
+							GroupProfile = (Group) replacingObject;
+						else {
+							IInformationObject iObject = GroupProfile;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Collaborators != null) {
+						if(Collaborators.ID == replacingObject.ID)
+							Collaborators = (CollaboratorCollection) replacingObject;
+						else {
+							IInformationObject iObject = Collaborators;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(PendingCollaborators != null) {
+						if(PendingCollaborators.ID == replacingObject.ID)
+							PendingCollaborators = (CollaboratorCollection) replacingObject;
+						else {
+							IInformationObject iObject = PendingCollaborators;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Activities != null) {
+						if(Activities.ID == replacingObject.ID)
+							Activities = (ActivityCollection) replacingObject;
+						else {
+							IInformationObject iObject = Activities;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Locations != null) {
+						if(Locations.ID == replacingObject.ID)
+							Locations = (LocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = Locations;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(GroupContainer sourceObject)
+				{
+					Header = sourceObject.Header;
+					GroupIndex = sourceObject.GroupIndex;
+					GroupProfile = sourceObject.GroupProfile;
+					Collaborators = sourceObject.Collaborators;
+					PendingCollaborators = sourceObject.PendingCollaborators;
+					Activities = sourceObject.Activities;
+					Locations = sourceObject.Locations;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Header = Header;
+					if(Header != null)
+						((IInformationObject) Header).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupIndex = GroupIndex;
+					if(GroupIndex != null)
+						((IInformationObject) GroupIndex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_GroupProfile = GroupProfile;
+					if(GroupProfile != null)
+						((IInformationObject) GroupProfile).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Collaborators = Collaborators;
+					if(Collaborators != null)
+						((IInformationObject) Collaborators).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_PendingCollaborators = PendingCollaborators;
+					if(PendingCollaborators != null)
+						((IInformationObject) PendingCollaborators).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Activities = Activities;
+					if(Activities != null)
+						((IInformationObject) Activities).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Locations = Locations;
+					if(Locations != null)
+						((IInformationObject) Locations).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -21947,12 +26425,26 @@ GroupSummaryContainer.SummaryBody
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupIndex) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -21999,6 +26491,9 @@ GroupSummaryContainer.SummaryBody
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -22086,20 +26581,23 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Icon;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -22109,17 +26607,53 @@ GroupIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Icon;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Icon = Icon;
+					if(Icon != null) {
+						if(Icon.ID == replacingObject.ID)
+							Icon = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Icon;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(GroupIndex sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Introduction = sourceObject.Introduction;
+					Summary = sourceObject.Summary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Introduction = Introduction;
 					_unmodified_Summary = Summary;
+				
+					_unmodified_Icon = Icon;
+					if(Icon != null)
+						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -22290,12 +26824,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddAddressAndLocationInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -22342,6 +26890,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -22404,15 +26955,18 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(LocationName != _unmodified_LocationName)
 							return true;
@@ -22421,9 +26975,22 @@ GroupIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddAddressAndLocationInfo sourceObject)
+				{
+					LocationName = sourceObject.LocationName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_LocationName = LocationName;
+				
 				
 				}
 
@@ -22579,12 +27146,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddEmailAddressInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -22631,6 +27212,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -22693,15 +27277,18 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(EmailAddress != _unmodified_EmailAddress)
 							return true;
@@ -22710,9 +27297,22 @@ GroupIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddEmailAddressInfo sourceObject)
+				{
+					EmailAddress = sourceObject.EmailAddress;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_EmailAddress = EmailAddress;
+				
 				
 				}
 
@@ -22868,12 +27468,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CreateGroupInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -22920,6 +27534,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -22982,15 +27599,18 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(GroupName != _unmodified_GroupName)
 							return true;
@@ -22999,9 +27619,22 @@ GroupIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(CreateGroupInfo sourceObject)
+				{
+					GroupName = sourceObject.GroupName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_GroupName = GroupName;
+				
 				
 				}
 
@@ -23157,12 +27790,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddActivityInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -23209,6 +27856,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -23271,15 +27921,18 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ActivityName != _unmodified_ActivityName)
 							return true;
@@ -23288,9 +27941,22 @@ GroupIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddActivityInfo sourceObject)
+				{
+					ActivityName = sourceObject.ActivityName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ActivityName = ActivityName;
+				
 				
 				}
 
@@ -23446,12 +28112,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddBlogPostInfo) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -23498,6 +28178,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -23560,15 +28243,18 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -23577,9 +28263,22 @@ GroupIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddBlogPostInfo sourceObject)
+				{
+					Title = sourceObject.Title;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+				
 				
 				}
 
@@ -23735,12 +28434,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -23787,6 +28500,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -23849,17 +28565,49 @@ GroupIndex.Summary
 		
 				[DataMember] public List<Group> CollectionContent = new List<Group>();
 				private Group[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Group )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(GroupCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -23872,15 +28620,21 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -24020,12 +28774,26 @@ GroupIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Group) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -24072,6 +28840,9 @@ GroupIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -24214,45 +28985,48 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ProfileImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) IconImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Moderators;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ImageSets;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
@@ -24272,22 +29046,163 @@ Group.OrganizationsAndGroupsLinkedToUs
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ReferenceToInformation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProfileImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) IconImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Moderators;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ImageSets;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CategoryCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ReferenceToInformation = ReferenceToInformation;
-					_unmodified_ProfileImage = ProfileImage;
-					_unmodified_IconImage = IconImage;
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProfileImage != null) {
+						if(ProfileImage.ID == replacingObject.ID)
+							ProfileImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = ProfileImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(IconImage != null) {
+						if(IconImage.ID == replacingObject.ID)
+							IconImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = IconImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Moderators != null) {
+						if(Moderators.ID == replacingObject.ID)
+							Moderators = (ModeratorCollection) replacingObject;
+						else {
+							IInformationObject iObject = Moderators;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ImageSets != null) {
+						if(ImageSets.ID == replacingObject.ID)
+							ImageSets = (ImageGroupCollection) replacingObject;
+						else {
+							IInformationObject iObject = ImageSets;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CategoryCollection != null) {
+						if(CategoryCollection.ID == replacingObject.ID)
+							CategoryCollection = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = CategoryCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Group sourceObject)
+				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
+					ProfileImage = sourceObject.ProfileImage;
+					IconImage = sourceObject.IconImage;
+					GroupName = sourceObject.GroupName;
+					Description = sourceObject.Description;
+					OrganizationsAndGroupsLinkedToUs = sourceObject.OrganizationsAndGroupsLinkedToUs;
+					Moderators = sourceObject.Moderators;
+					ImageSets = sourceObject.ImageSets;
+					CategoryCollection = sourceObject.CategoryCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_GroupName = GroupName;
 					_unmodified_Description = Description;
 					_unmodified_OrganizationsAndGroupsLinkedToUs = OrganizationsAndGroupsLinkedToUs;
+				
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ProfileImage = ProfileImage;
+					if(ProfileImage != null)
+						((IInformationObject) ProfileImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_IconImage = IconImage;
+					if(IconImage != null)
+						((IInformationObject) IconImage).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Moderators = Moderators;
+					if(Moderators != null)
+						((IInformationObject) Moderators).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ImageSets = ImageSets;
+					if(ImageSets != null)
+						((IInformationObject) ImageSets).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CategoryCollection = CategoryCollection;
+					if(CategoryCollection != null)
+						((IInformationObject) CategoryCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -24473,12 +29388,26 @@ Group.OrganizationsAndGroupsLinkedToUs
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Introduction) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -24525,6 +29454,9 @@ Group.OrganizationsAndGroupsLinkedToUs
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -24594,15 +29526,18 @@ Introduction.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -24613,10 +29548,24 @@ Introduction.Body
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Introduction sourceObject)
+				{
+					Title = sourceObject.Title;
+					Body = sourceObject.Body;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
 					_unmodified_Body = Body;
+				
 				
 				}
 
@@ -24778,12 +29727,26 @@ Introduction.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((BlogCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -24830,6 +29793,9 @@ Introduction.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -24892,17 +29858,49 @@ Introduction.Body
 		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
 				private Blog[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Blog )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(BlogCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -24915,15 +29913,21 @@ Introduction.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -25063,12 +30067,26 @@ Introduction.Body
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Blog) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -25115,6 +30133,9 @@ Introduction.Body
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -25283,55 +30304,58 @@ Blog.Excerpt
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) FeaturedImage;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ImageGroup;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) VideoGroup;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Location;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) SocialPanel;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
@@ -25361,27 +30385,204 @@ Blog.Excerpt
 							return true;
 						if(SocialPanel != _unmodified_SocialPanel)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ReferenceToInformation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Introduction;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) FeaturedImage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ImageGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) VideoGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CategoryCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) SocialPanel;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Introduction != null) {
+						if(Introduction.ID == replacingObject.ID)
+							Introduction = (Introduction) replacingObject;
+						else {
+							IInformationObject iObject = Introduction;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(FeaturedImage != null) {
+						if(FeaturedImage.ID == replacingObject.ID)
+							FeaturedImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = FeaturedImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ImageGroup != null) {
+						if(ImageGroup.ID == replacingObject.ID)
+							ImageGroup = (ImageGroup) replacingObject;
+						else {
+							IInformationObject iObject = ImageGroup;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(VideoGroup != null) {
+						if(VideoGroup.ID == replacingObject.ID)
+							VideoGroup = (VideoGroup) replacingObject;
+						else {
+							IInformationObject iObject = VideoGroup;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Location != null) {
+						if(Location.ID == replacingObject.ID)
+							Location = (AddressAndLocation) replacingObject;
+						else {
+							IInformationObject iObject = Location;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CategoryCollection != null) {
+						if(CategoryCollection.ID == replacingObject.ID)
+							CategoryCollection = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = CategoryCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(SocialPanel != null) {
+						if(SocialPanel.ID == replacingObject.ID)
+							SocialPanel = (SocialPanelCollection) replacingObject;
+						else {
+							IInformationObject iObject = SocialPanel;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Blog sourceObject)
+				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
+					Title = sourceObject.Title;
+					SubTitle = sourceObject.SubTitle;
+					Introduction = sourceObject.Introduction;
+					Published = sourceObject.Published;
+					Author = sourceObject.Author;
+					FeaturedImage = sourceObject.FeaturedImage;
+					ImageGroup = sourceObject.ImageGroup;
+					VideoGroup = sourceObject.VideoGroup;
+					Body = sourceObject.Body;
+					Excerpt = sourceObject.Excerpt;
+					Location = sourceObject.Location;
+					CategoryCollection = sourceObject.CategoryCollection;
+					SocialPanel = sourceObject.SocialPanel;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_SubTitle = SubTitle;
-					_unmodified_Introduction = Introduction;
 					_unmodified_Published = Published;
 					_unmodified_Author = Author;
-					_unmodified_FeaturedImage = FeaturedImage;
-					_unmodified_ImageGroup = ImageGroup;
-					_unmodified_VideoGroup = VideoGroup;
 					_unmodified_Body = Body;
 					_unmodified_Excerpt = Excerpt;
+				
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Introduction = Introduction;
+					if(Introduction != null)
+						((IInformationObject) Introduction).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_FeaturedImage = FeaturedImage;
+					if(FeaturedImage != null)
+						((IInformationObject) FeaturedImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ImageGroup = ImageGroup;
+					if(ImageGroup != null)
+						((IInformationObject) ImageGroup).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_VideoGroup = VideoGroup;
+					if(VideoGroup != null)
+						((IInformationObject) VideoGroup).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Location = Location;
+					if(Location != null)
+						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_CategoryCollection = CategoryCollection;
+					if(CategoryCollection != null)
+						((IInformationObject) CategoryCollection).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_SocialPanel = SocialPanel;
+					if(SocialPanel != null)
+						((IInformationObject) SocialPanel).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -25591,12 +30792,26 @@ Blog.Excerpt
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((BlogIndexGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -25643,6 +30858,9 @@ Blog.Excerpt
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -25774,40 +30992,43 @@ BlogIndexGroup.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Icon;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) BlogByDate;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) BlogByLocation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) BlogByAuthor;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) BlogByCategory;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -25825,21 +31046,141 @@ BlogIndexGroup.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Icon;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogByDate;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogByLocation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogByAuthor;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogByCategory;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Icon = Icon;
+					if(Icon != null) {
+						if(Icon.ID == replacingObject.ID)
+							Icon = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Icon;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogByDate != null) {
+						if(BlogByDate.ID == replacingObject.ID)
+							BlogByDate = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = BlogByDate;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogByLocation != null) {
+						if(BlogByLocation.ID == replacingObject.ID)
+							BlogByLocation = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = BlogByLocation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogByAuthor != null) {
+						if(BlogByAuthor.ID == replacingObject.ID)
+							BlogByAuthor = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = BlogByAuthor;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogByCategory != null) {
+						if(BlogByCategory.ID == replacingObject.ID)
+							BlogByCategory = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = BlogByCategory;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(BlogIndexGroup sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Introduction = sourceObject.Introduction;
+					BlogByDate = sourceObject.BlogByDate;
+					BlogByLocation = sourceObject.BlogByLocation;
+					BlogByAuthor = sourceObject.BlogByAuthor;
+					BlogByCategory = sourceObject.BlogByCategory;
+					Summary = sourceObject.Summary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Introduction = Introduction;
-					_unmodified_BlogByDate = BlogByDate;
-					_unmodified_BlogByLocation = BlogByLocation;
-					_unmodified_BlogByAuthor = BlogByAuthor;
-					_unmodified_BlogByCategory = BlogByCategory;
 					_unmodified_Summary = Summary;
+				
+					_unmodified_Icon = Icon;
+					if(Icon != null)
+						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_BlogByDate = BlogByDate;
+					if(BlogByDate != null)
+						((IInformationObject) BlogByDate).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_BlogByLocation = BlogByLocation;
+					if(BlogByLocation != null)
+						((IInformationObject) BlogByLocation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_BlogByAuthor = BlogByAuthor;
+					if(BlogByAuthor != null)
+						((IInformationObject) BlogByAuthor).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_BlogByCategory = BlogByCategory;
+					if(BlogByCategory != null)
+						((IInformationObject) BlogByCategory).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -26022,12 +31363,26 @@ BlogIndexGroup.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CalendarIndex) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -26074,6 +31429,9 @@ BlogIndexGroup.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -26161,20 +31519,23 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Icon;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -26184,17 +31545,53 @@ CalendarIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Icon;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_Icon = Icon;
+					if(Icon != null) {
+						if(Icon.ID == replacingObject.ID)
+							Icon = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Icon;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(CalendarIndex sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Introduction = sourceObject.Introduction;
+					Summary = sourceObject.Summary;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Introduction = Introduction;
 					_unmodified_Summary = Summary;
+				
+					_unmodified_Icon = Icon;
+					if(Icon != null)
+						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -26365,12 +31762,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Filter) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -26417,6 +31828,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -26479,15 +31893,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -26496,9 +31913,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Filter sourceObject)
+				{
+					Title = sourceObject.Title;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+				
 				
 				}
 
@@ -26654,12 +32084,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Calendar) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -26706,6 +32150,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -26768,15 +32215,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -26785,9 +32235,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Calendar sourceObject)
+				{
+					Title = sourceObject.Title;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+				
 				
 				}
 
@@ -26943,12 +32406,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CalendarCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -26995,6 +32472,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -27057,17 +32537,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
 				private Calendar[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Calendar )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(CalendarCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -27080,15 +32592,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -27228,12 +32746,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Map) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -27280,6 +32812,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -27342,15 +32877,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -27359,9 +32897,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Map sourceObject)
+				{
+					Title = sourceObject.Title;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+				
 				
 				}
 
@@ -27517,12 +33068,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -27569,6 +33134,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -27631,17 +33199,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
 				private Map[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Map )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(MapCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -27654,15 +33254,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -27802,12 +33408,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapIndexCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -27854,6 +33474,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -27958,35 +33581,38 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) MapByDate;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapByLocation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapByAuthor;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MapByCategory;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(MapByDate != _unmodified_MapByDate)
 							return true;
@@ -27996,17 +33622,113 @@ CalendarIndex.Summary
 							return true;
 						if(MapByCategory != _unmodified_MapByCategory)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) MapByDate;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapByLocation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapByAuthor;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MapByCategory;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(MapByDate != null) {
+						if(MapByDate.ID == replacingObject.ID)
+							MapByDate = (MapCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapByDate;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapByLocation != null) {
+						if(MapByLocation.ID == replacingObject.ID)
+							MapByLocation = (MapCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapByLocation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapByAuthor != null) {
+						if(MapByAuthor.ID == replacingObject.ID)
+							MapByAuthor = (MapCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapByAuthor;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MapByCategory != null) {
+						if(MapByCategory.ID == replacingObject.ID)
+							MapByCategory = (MapCollection) replacingObject;
+						else {
+							IInformationObject iObject = MapByCategory;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(MapIndexCollection sourceObject)
+				{
+					MapByDate = sourceObject.MapByDate;
+					MapByLocation = sourceObject.MapByLocation;
+					MapByAuthor = sourceObject.MapByAuthor;
+					MapByCategory = sourceObject.MapByCategory;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_MapByDate = MapByDate;
+					if(MapByDate != null)
+						((IInformationObject) MapByDate).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapByLocation = MapByLocation;
+					if(MapByLocation != null)
+						((IInformationObject) MapByLocation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapByAuthor = MapByAuthor;
+					if(MapByAuthor != null)
+						((IInformationObject) MapByAuthor).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MapByCategory = MapByCategory;
+					if(MapByCategory != null)
+						((IInformationObject) MapByCategory).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -28168,12 +33890,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapResult) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -28220,6 +33956,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -28291,31 +34030,67 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Location;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Location != _unmodified_Location)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Location;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(Location != null) {
+						if(Location.ID == replacingObject.ID)
+							Location = (Location) replacingObject;
+						else {
+							IInformationObject iObject = Location;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(MapResult sourceObject)
+				{
+					Location = sourceObject.Location;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_Location = Location;
+					if(Location != null)
+						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -28468,12 +34243,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapResultCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -28520,6 +34309,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -28582,17 +34374,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
 				private MapResult[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (MapResult )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(MapResultCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -28605,15 +34429,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -28753,12 +34583,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MapResultsCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -28805,6 +34649,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -28898,30 +34745,33 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ResultByDate;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ResultByAuthor;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ResultByProximity;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ResultByDate != _unmodified_ResultByDate)
 							return true;
@@ -28929,16 +34779,91 @@ CalendarIndex.Summary
 							return true;
 						if(ResultByProximity != _unmodified_ResultByProximity)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ResultByDate;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ResultByAuthor;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ResultByProximity;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ResultByDate != null) {
+						if(ResultByDate.ID == replacingObject.ID)
+							ResultByDate = (MapResultCollection) replacingObject;
+						else {
+							IInformationObject iObject = ResultByDate;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ResultByAuthor != null) {
+						if(ResultByAuthor.ID == replacingObject.ID)
+							ResultByAuthor = (MapResultCollection) replacingObject;
+						else {
+							IInformationObject iObject = ResultByAuthor;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ResultByProximity != null) {
+						if(ResultByProximity.ID == replacingObject.ID)
+							ResultByProximity = (MapResultCollection) replacingObject;
+						else {
+							IInformationObject iObject = ResultByProximity;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(MapResultsCollection sourceObject)
+				{
+					ResultByDate = sourceObject.ResultByDate;
+					ResultByAuthor = sourceObject.ResultByAuthor;
+					ResultByProximity = sourceObject.ResultByProximity;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_ResultByDate = ResultByDate;
+					if(ResultByDate != null)
+						((IInformationObject) ResultByDate).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ResultByAuthor = ResultByAuthor;
+					if(ResultByAuthor != null)
+						((IInformationObject) ResultByAuthor).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ResultByProximity = ResultByProximity;
+					if(ResultByProximity != null)
+						((IInformationObject) ResultByProximity).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -29097,12 +35022,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Video) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -29149,6 +35088,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -29224,20 +35166,23 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) VideoData;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(VideoData != _unmodified_VideoData)
 							return true;
@@ -29245,16 +35190,51 @@ CalendarIndex.Summary
 							return true;
 						if(Caption != _unmodified_Caption)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) VideoData;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_VideoData = VideoData;
+					if(VideoData != null) {
+						if(VideoData.ID == replacingObject.ID)
+							VideoData = (MediaContent) replacingObject;
+						else {
+							IInformationObject iObject = VideoData;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Video sourceObject)
+				{
+					VideoData = sourceObject.VideoData;
+					Title = sourceObject.Title;
+					Caption = sourceObject.Caption;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Caption = Caption;
+				
+					_unmodified_VideoData = VideoData;
+					if(VideoData != null)
+						((IInformationObject) VideoData).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -29419,12 +35399,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Image) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -29471,6 +35465,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -29546,20 +35543,23 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ImageData;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ImageData != _unmodified_ImageData)
 							return true;
@@ -29567,16 +35567,51 @@ CalendarIndex.Summary
 							return true;
 						if(Caption != _unmodified_Caption)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ImageData;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					_unmodified_ImageData = ImageData;
+					if(ImageData != null) {
+						if(ImageData.ID == replacingObject.ID)
+							ImageData = (MediaContent) replacingObject;
+						else {
+							IInformationObject iObject = ImageData;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Image sourceObject)
+				{
+					ImageData = sourceObject.ImageData;
+					Title = sourceObject.Title;
+					Caption = sourceObject.Caption;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
 					_unmodified_Title = Title;
 					_unmodified_Caption = Caption;
+				
+					_unmodified_ImageData = ImageData;
+					if(ImageData != null)
+						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -29741,12 +35776,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((MediaContent) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -29794,6 +35843,9 @@ CalendarIndex.Summary
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
+				[DataMember]
+				public string MasterETag { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -29829,23 +35881,37 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						// Currently is always false
 						return false;
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					// Reflected to IsModified above, no action right now
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					// Cannot replace self, doesn't contain subitems, nothing to do
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 				}
+
+				private void CopyContentFrom(MediaContent sourceObject)
+				{
+					throw new NotImplementedException("Media masters are not currently supported");
+				}
+
 
 				public static MediaContent CreateDefault()
 				{
@@ -29999,12 +36065,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ImageGroupCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -30051,6 +36131,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -30113,17 +36196,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<ImageGroup> CollectionContent = new List<ImageGroup>();
 				private ImageGroup[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (ImageGroup )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(ImageGroupCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -30136,15 +36251,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -30284,12 +36405,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ImageGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -30336,6 +36471,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -30411,20 +36549,23 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) ImagesCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -30432,16 +36573,51 @@ CalendarIndex.Summary
 							return true;
 						if(ImagesCollection != _unmodified_ImagesCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ImagesCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(ImagesCollection != null) {
+						if(ImagesCollection.ID == replacingObject.ID)
+							ImagesCollection = (ImagesCollection) replacingObject;
+						else {
+							IInformationObject iObject = ImagesCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ImageGroup sourceObject)
+				{
+					Title = sourceObject.Title;
+					Description = sourceObject.Description;
+					ImagesCollection = sourceObject.ImagesCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
 					_unmodified_Description = Description;
+				
 					_unmodified_ImagesCollection = ImagesCollection;
+					if(ImagesCollection != null)
+						((IInformationObject) ImagesCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -30606,12 +36782,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((VideoGroup) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -30658,6 +36848,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -30733,20 +36926,23 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) VideoCollection;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Title != _unmodified_Title)
 							return true;
@@ -30754,16 +36950,51 @@ CalendarIndex.Summary
 							return true;
 						if(VideoCollection != _unmodified_VideoCollection)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) VideoCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(VideoCollection != null) {
+						if(VideoCollection.ID == replacingObject.ID)
+							VideoCollection = (VideoCollection) replacingObject;
+						else {
+							IInformationObject iObject = VideoCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(VideoGroup sourceObject)
+				{
+					Title = sourceObject.Title;
+					Description = sourceObject.Description;
+					VideoCollection = sourceObject.VideoCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
 					_unmodified_Description = Description;
+				
 					_unmodified_VideoCollection = VideoCollection;
+					if(VideoCollection != null)
+						((IInformationObject) VideoCollection).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -30928,12 +37159,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ImagesCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -30980,6 +37225,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -31042,17 +37290,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
 				private Image[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Image )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(ImagesCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -31065,15 +37345,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -31213,12 +37499,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((VideoCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -31265,6 +37565,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -31327,17 +37630,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Video> CollectionContent = new List<Video>();
 				private Video[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Video )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(VideoCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -31350,15 +37685,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -31498,12 +37839,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Tooltip) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -31550,6 +37905,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -31612,15 +37970,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(TooltipText != _unmodified_TooltipText)
 							return true;
@@ -31629,9 +37990,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Tooltip sourceObject)
+				{
+					TooltipText = sourceObject.TooltipText;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_TooltipText = TooltipText;
+				
 				
 				}
 
@@ -31787,12 +38161,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SocialPanelCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -31839,6 +38227,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -31901,17 +38292,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
 				private SocialPanel[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (SocialPanel )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(SocialPanelCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -31924,15 +38347,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -32072,12 +38501,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SocialPanel) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -32124,6 +38567,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -32195,31 +38641,67 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) SocialFilter;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(SocialFilter != _unmodified_SocialFilter)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) SocialFilter;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(SocialFilter != null) {
+						if(SocialFilter.ID == replacingObject.ID)
+							SocialFilter = (Filter) replacingObject;
+						else {
+							IInformationObject iObject = SocialFilter;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(SocialPanel sourceObject)
+				{
+					SocialFilter = sourceObject.SocialFilter;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_SocialFilter = SocialFilter;
+					if(SocialFilter != null)
+						((IInformationObject) SocialFilter).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -32372,12 +38854,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Longitude) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -32424,6 +38920,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -32486,15 +38985,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(TextValue != _unmodified_TextValue)
 							return true;
@@ -32503,9 +39005,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Longitude sourceObject)
+				{
+					TextValue = sourceObject.TextValue;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_TextValue = TextValue;
+				
 				
 				}
 
@@ -32661,12 +39176,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Latitude) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -32713,6 +39242,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -32775,15 +39307,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(TextValue != _unmodified_TextValue)
 							return true;
@@ -32792,9 +39327,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Latitude sourceObject)
+				{
+					TextValue = sourceObject.TextValue;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_TextValue = TextValue;
+				
 				
 				}
 
@@ -32950,12 +39498,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Location) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -33002,6 +39564,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -33086,25 +39651,28 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Longitude;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Latitude;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(LocationName != _unmodified_LocationName)
 							return true;
@@ -33112,16 +39680,71 @@ CalendarIndex.Summary
 							return true;
 						if(Latitude != _unmodified_Latitude)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Longitude;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Latitude;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Longitude != null) {
+						if(Longitude.ID == replacingObject.ID)
+							Longitude = (Longitude) replacingObject;
+						else {
+							IInformationObject iObject = Longitude;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Latitude != null) {
+						if(Latitude.ID == replacingObject.ID)
+							Latitude = (Latitude) replacingObject;
+						else {
+							IInformationObject iObject = Latitude;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Location sourceObject)
+				{
+					LocationName = sourceObject.LocationName;
+					Longitude = sourceObject.Longitude;
+					Latitude = sourceObject.Latitude;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_LocationName = LocationName;
+				
 					_unmodified_Longitude = Longitude;
+					if(Longitude != null)
+						((IInformationObject) Longitude).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Latitude = Latitude;
+					if(Latitude != null)
+						((IInformationObject) Latitude).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -33283,12 +39906,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((LocationCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -33335,6 +39972,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -33397,17 +40037,49 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Location> CollectionContent = new List<Location>();
 				private Location[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Location )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(LocationCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -33420,15 +40092,21 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -33568,12 +40246,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Date) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -33620,6 +40312,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -33680,15 +40375,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Day != _unmodified_Day)
 							return true;
@@ -33703,12 +40401,28 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Date sourceObject)
+				{
+					Day = sourceObject.Day;
+					Week = sourceObject.Week;
+					Month = sourceObject.Month;
+					Year = sourceObject.Year;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Day = Day;
 					_unmodified_Week = Week;
 					_unmodified_Month = Month;
 					_unmodified_Year = Year;
+				
 				
 				}
 
@@ -33882,12 +40596,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Sex) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -33934,6 +40662,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -33996,15 +40727,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(SexText != _unmodified_SexText)
 							return true;
@@ -34013,9 +40747,22 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Sex sourceObject)
+				{
+					SexText = sourceObject.SexText;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_SexText = SexText;
+				
 				
 				}
 
@@ -34171,12 +40918,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((OBSAddress) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -34223,6 +40984,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -34303,15 +41067,18 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(StreetName != _unmodified_StreetName)
 							return true;
@@ -34338,7 +41105,28 @@ CalendarIndex.Summary
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(OBSAddress sourceObject)
+				{
+					StreetName = sourceObject.StreetName;
+					BuildingNumber = sourceObject.BuildingNumber;
+					PostOfficeBox = sourceObject.PostOfficeBox;
+					PostalCode = sourceObject.PostalCode;
+					Municipality = sourceObject.Municipality;
+					Region = sourceObject.Region;
+					Province = sourceObject.Province;
+					state = sourceObject.state;
+					Country = sourceObject.Country;
+					Continent = sourceObject.Continent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_StreetName = StreetName;
 					_unmodified_BuildingNumber = BuildingNumber;
@@ -34350,6 +41138,7 @@ CalendarIndex.Summary
 					_unmodified_state = state;
 					_unmodified_Country = Country;
 					_unmodified_Continent = Continent;
+				
 				
 				}
 
@@ -34559,12 +41348,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Identity) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -34611,6 +41414,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -34699,25 +41505,28 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Sex;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) Birthday;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(FirstName != _unmodified_FirstName)
 							return true;
@@ -34729,18 +41538,75 @@ CalendarIndex.Summary
 							return true;
 						if(Birthday != _unmodified_Birthday)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Sex;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Birthday;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Sex != null) {
+						if(Sex.ID == replacingObject.ID)
+							Sex = (Sex) replacingObject;
+						else {
+							IInformationObject iObject = Sex;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Birthday != null) {
+						if(Birthday.ID == replacingObject.ID)
+							Birthday = (Date) replacingObject;
+						else {
+							IInformationObject iObject = Birthday;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(Identity sourceObject)
+				{
+					FirstName = sourceObject.FirstName;
+					LastName = sourceObject.LastName;
+					Initials = sourceObject.Initials;
+					Sex = sourceObject.Sex;
+					Birthday = sourceObject.Birthday;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_FirstName = FirstName;
 					_unmodified_LastName = LastName;
 					_unmodified_Initials = Initials;
+				
 					_unmodified_Sex = Sex;
+					if(Sex != null)
+						((IInformationObject) Sex).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Birthday = Birthday;
+					if(Birthday != null)
+						((IInformationObject) Birthday).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -34914,12 +41780,26 @@ CalendarIndex.Summary
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ImageVideoSoundVectorRaw) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -34966,6 +41846,9 @@ CalendarIndex.Summary
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -35033,15 +41916,18 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Image != _unmodified_Image)
 							return true;
@@ -35058,13 +41944,30 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(ImageVideoSoundVectorRaw sourceObject)
+				{
+					Image = sourceObject.Image;
+					Video = sourceObject.Video;
+					Sound = sourceObject.Sound;
+					Vector = sourceObject.Vector;
+					Raw = sourceObject.Raw;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Image = Image;
 					_unmodified_Video = Video;
 					_unmodified_Sound = Sound;
 					_unmodified_Vector = Vector;
 					_unmodified_Raw = Raw;
+				
 				
 				}
 
@@ -35232,12 +42135,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Category) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -35284,6 +42201,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -35346,15 +42266,18 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CategoryName != _unmodified_CategoryName)
 							return true;
@@ -35363,9 +42286,22 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Category sourceObject)
+				{
+					CategoryName = sourceObject.CategoryName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CategoryName = CategoryName;
+				
 				
 				}
 
@@ -35521,12 +42457,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CategoryCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -35573,6 +42523,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -35635,17 +42588,49 @@ ImageVideoSoundVectorRaw.Vector
 		
 				[DataMember] public List<Category> CollectionContent = new List<Category>();
 				private Category[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Category )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(CategoryCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -35658,15 +42643,21 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -35806,12 +42797,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriptionCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -35858,6 +42863,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -35920,17 +42928,49 @@ ImageVideoSoundVectorRaw.Vector
 		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
 				private Subscription[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (Subscription )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(SubscriptionCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -35943,15 +42983,21 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -36091,12 +43137,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Subscription) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -36144,6 +43204,9 @@ ImageVideoSoundVectorRaw.Vector
                 [DataMember]
                 public string SemanticDomainName { get; set; }
 
+				[DataMember]
+				public string MasterETag { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -36188,7 +43251,11 @@ ImageVideoSoundVectorRaw.Vector
 					var result = new Subscription();
 					result.TargetRelativeLocation = @"Subscription.TargetRelativeLocation";
 
+					result.TargetInformationObjectType = @"Subscription.TargetInformationObjectType";
+
 					result.SubscriberRelativeLocation = @"Subscription.SubscriberRelativeLocation";
+
+					result.SubscriberInformationObjectType = @"Subscription.SubscriberInformationObjectType";
 
 					result.SubscriptionType = @"Subscription.SubscriptionType";
 
@@ -36209,21 +43276,28 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Priority != _unmodified_Priority)
 							return true;
 						if(TargetRelativeLocation != _unmodified_TargetRelativeLocation)
 							return true;
+						if(TargetInformationObjectType != _unmodified_TargetInformationObjectType)
+							return true;
 						if(SubscriberRelativeLocation != _unmodified_SubscriberRelativeLocation)
+							return true;
+						if(SubscriberInformationObjectType != _unmodified_SubscriberInformationObjectType)
 							return true;
 						if(SubscriptionType != _unmodified_SubscriptionType)
 							return true;
@@ -36232,12 +43306,32 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Subscription sourceObject)
+				{
+					Priority = sourceObject.Priority;
+					TargetRelativeLocation = sourceObject.TargetRelativeLocation;
+					TargetInformationObjectType = sourceObject.TargetInformationObjectType;
+					SubscriberRelativeLocation = sourceObject.SubscriberRelativeLocation;
+					SubscriberInformationObjectType = sourceObject.SubscriberInformationObjectType;
+					SubscriptionType = sourceObject.SubscriptionType;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Priority = Priority;
 					_unmodified_TargetRelativeLocation = TargetRelativeLocation;
+					_unmodified_TargetInformationObjectType = TargetInformationObjectType;
 					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
+					_unmodified_SubscriberInformationObjectType = SubscriberInformationObjectType;
 					_unmodified_SubscriptionType = SubscriptionType;
+				
 				
 				}
 
@@ -36254,8 +43348,14 @@ ImageVideoSoundVectorRaw.Vector
 						case "TargetRelativeLocation":
 							TargetRelativeLocation = value;
 							break;
+						case "TargetInformationObjectType":
+							TargetInformationObjectType = value;
+							break;
 						case "SubscriberRelativeLocation":
 							SubscriberRelativeLocation = value;
+							break;
+						case "SubscriberInformationObjectType":
+							SubscriberInformationObjectType = value;
 							break;
 						case "SubscriptionType":
 							SubscriptionType = value;
@@ -36271,8 +43371,14 @@ ImageVideoSoundVectorRaw.Vector
 			public string TargetRelativeLocation { get; set; }
 			private string _unmodified_TargetRelativeLocation;
 			[DataMember]
+			public string TargetInformationObjectType { get; set; }
+			private string _unmodified_TargetInformationObjectType;
+			[DataMember]
 			public string SubscriberRelativeLocation { get; set; }
 			private string _unmodified_SubscriberRelativeLocation;
+			[DataMember]
+			public string SubscriberInformationObjectType { get; set; }
+			private string _unmodified_SubscriberInformationObjectType;
 			[DataMember]
 			public string SubscriptionType { get; set; }
 			private string _unmodified_SubscriptionType;
@@ -36411,12 +43517,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((QueueEnvelope) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -36463,6 +43583,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -36556,30 +43679,33 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) SingleOperation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) OrderDependentOperationSequence;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ErrorContent;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(CurrentRetryCount != _unmodified_CurrentRetryCount)
 							return true;
@@ -36589,17 +43715,93 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						if(ErrorContent != _unmodified_ErrorContent)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) SingleOperation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) OrderDependentOperationSequence;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ErrorContent;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(SingleOperation != null) {
+						if(SingleOperation.ID == replacingObject.ID)
+							SingleOperation = (OperationRequest) replacingObject;
+						else {
+							IInformationObject iObject = SingleOperation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(OrderDependentOperationSequence != null) {
+						if(OrderDependentOperationSequence.ID == replacingObject.ID)
+							OrderDependentOperationSequence = (OperationRequestCollection) replacingObject;
+						else {
+							IInformationObject iObject = OrderDependentOperationSequence;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ErrorContent != null) {
+						if(ErrorContent.ID == replacingObject.ID)
+							ErrorContent = (SystemError) replacingObject;
+						else {
+							IInformationObject iObject = ErrorContent;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(QueueEnvelope sourceObject)
+				{
+					CurrentRetryCount = sourceObject.CurrentRetryCount;
+					SingleOperation = sourceObject.SingleOperation;
+					OrderDependentOperationSequence = sourceObject.OrderDependentOperationSequence;
+					ErrorContent = sourceObject.ErrorContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CurrentRetryCount = CurrentRetryCount;
+				
 					_unmodified_SingleOperation = SingleOperation;
+					if(SingleOperation != null)
+						((IInformationObject) SingleOperation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_OrderDependentOperationSequence = OrderDependentOperationSequence;
+					if(OrderDependentOperationSequence != null)
+						((IInformationObject) OrderDependentOperationSequence).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ErrorContent = ErrorContent;
+					if(ErrorContent != null)
+						((IInformationObject) ErrorContent).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -36764,12 +43966,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((OperationRequestCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -36816,6 +44032,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -36878,17 +44097,49 @@ ImageVideoSoundVectorRaw.Vector
 		
 				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
 				private OperationRequest[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (OperationRequest )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(OperationRequestCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -36901,15 +44152,21 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -37049,12 +44306,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((OperationRequest) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -37101,6 +44372,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -37216,40 +44490,43 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) SubscriberNotification;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) UpdateWebContentOperation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) RefreshDefaultViewsOperation;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) DeleteEntireOwner;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) DeleteOwnerContent;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(SubscriberNotification != _unmodified_SubscriberNotification)
 							return true;
@@ -37261,18 +44538,135 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						if(DeleteOwnerContent != _unmodified_DeleteOwnerContent)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) SubscriberNotification;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) UpdateWebContentOperation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) RefreshDefaultViewsOperation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) DeleteEntireOwner;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) DeleteOwnerContent;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(SubscriberNotification != null) {
+						if(SubscriberNotification.ID == replacingObject.ID)
+							SubscriberNotification = (Subscription) replacingObject;
+						else {
+							IInformationObject iObject = SubscriberNotification;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(UpdateWebContentOperation != null) {
+						if(UpdateWebContentOperation.ID == replacingObject.ID)
+							UpdateWebContentOperation = (UpdateWebContentOperation) replacingObject;
+						else {
+							IInformationObject iObject = UpdateWebContentOperation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(RefreshDefaultViewsOperation != null) {
+						if(RefreshDefaultViewsOperation.ID == replacingObject.ID)
+							RefreshDefaultViewsOperation = (RefreshDefaultViewsOperation) replacingObject;
+						else {
+							IInformationObject iObject = RefreshDefaultViewsOperation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(DeleteEntireOwner != null) {
+						if(DeleteEntireOwner.ID == replacingObject.ID)
+							DeleteEntireOwner = (DeleteEntireOwnerOperation) replacingObject;
+						else {
+							IInformationObject iObject = DeleteEntireOwner;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(DeleteOwnerContent != null) {
+						if(DeleteOwnerContent.ID == replacingObject.ID)
+							DeleteOwnerContent = (DeleteOwnerContentOperation) replacingObject;
+						else {
+							IInformationObject iObject = DeleteOwnerContent;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(OperationRequest sourceObject)
+				{
+					SubscriberNotification = sourceObject.SubscriberNotification;
+					UpdateWebContentOperation = sourceObject.UpdateWebContentOperation;
+					RefreshDefaultViewsOperation = sourceObject.RefreshDefaultViewsOperation;
+					DeleteEntireOwner = sourceObject.DeleteEntireOwner;
+					DeleteOwnerContent = sourceObject.DeleteOwnerContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_SubscriberNotification = SubscriberNotification;
+					if(SubscriberNotification != null)
+						((IInformationObject) SubscriberNotification).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_UpdateWebContentOperation = UpdateWebContentOperation;
+					if(UpdateWebContentOperation != null)
+						((IInformationObject) UpdateWebContentOperation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_RefreshDefaultViewsOperation = RefreshDefaultViewsOperation;
+					if(RefreshDefaultViewsOperation != null)
+						((IInformationObject) RefreshDefaultViewsOperation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_DeleteEntireOwner = DeleteEntireOwner;
+					if(DeleteEntireOwner != null)
+						((IInformationObject) DeleteEntireOwner).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_DeleteOwnerContent = DeleteOwnerContent;
+					if(DeleteOwnerContent != null)
+						((IInformationObject) DeleteOwnerContent).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -37437,12 +44831,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((DeleteEntireOwnerOperation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -37489,6 +44897,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -37553,15 +44964,18 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ContainerName != _unmodified_ContainerName)
 							return true;
@@ -37572,10 +44986,24 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(DeleteEntireOwnerOperation sourceObject)
+				{
+					ContainerName = sourceObject.ContainerName;
+					LocationPrefix = sourceObject.LocationPrefix;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ContainerName = ContainerName;
 					_unmodified_LocationPrefix = LocationPrefix;
+				
 				
 				}
 
@@ -37737,12 +45165,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((DeleteOwnerContentOperation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -37789,6 +45231,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -37853,15 +45298,18 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ContainerName != _unmodified_ContainerName)
 							return true;
@@ -37872,10 +45320,24 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(DeleteOwnerContentOperation sourceObject)
+				{
+					ContainerName = sourceObject.ContainerName;
+					LocationPrefix = sourceObject.LocationPrefix;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ContainerName = ContainerName;
 					_unmodified_LocationPrefix = LocationPrefix;
+				
 				
 				}
 
@@ -38037,12 +45499,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SystemError) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -38089,6 +45565,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -38173,25 +45652,28 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) SystemErrorItems;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) MessageContent;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ErrorTitle != _unmodified_ErrorTitle)
 							return true;
@@ -38201,17 +45683,73 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						if(MessageContent != _unmodified_MessageContent)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) SystemErrorItems;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MessageContent;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(SystemErrorItems != null) {
+						if(SystemErrorItems.ID == replacingObject.ID)
+							SystemErrorItems = (SystemErrorItemCollection) replacingObject;
+						else {
+							IInformationObject iObject = SystemErrorItems;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MessageContent != null) {
+						if(MessageContent.ID == replacingObject.ID)
+							MessageContent = (QueueEnvelope) replacingObject;
+						else {
+							IInformationObject iObject = MessageContent;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(SystemError sourceObject)
+				{
+					ErrorTitle = sourceObject.ErrorTitle;
+					OccurredAt = sourceObject.OccurredAt;
+					SystemErrorItems = sourceObject.SystemErrorItems;
+					MessageContent = sourceObject.MessageContent;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ErrorTitle = ErrorTitle;
 					_unmodified_OccurredAt = OccurredAt;
+				
 					_unmodified_SystemErrorItems = SystemErrorItems;
+					if(SystemErrorItems != null)
+						((IInformationObject) SystemErrorItems).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_MessageContent = MessageContent;
+					if(MessageContent != null)
+						((IInformationObject) MessageContent).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -38379,12 +45917,26 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SystemErrorItem) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -38431,6 +45983,9 @@ ImageVideoSoundVectorRaw.Vector
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -38500,15 +46055,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ShortDescription != _unmodified_ShortDescription)
 							return true;
@@ -38519,10 +46077,24 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(SystemErrorItem sourceObject)
+				{
+					ShortDescription = sourceObject.ShortDescription;
+					LongDescription = sourceObject.LongDescription;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ShortDescription = ShortDescription;
 					_unmodified_LongDescription = LongDescription;
+				
 				
 				}
 
@@ -38684,12 +46256,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SystemErrorItemCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -38736,6 +46322,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -38798,17 +46387,49 @@ SystemErrorItem.LongDescription
 		
 				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
 				private SystemErrorItem[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (SystemErrorItem )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(SystemErrorItemCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -38821,15 +46442,21 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -38969,12 +46596,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((InformationSource) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -39021,6 +46662,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -39093,15 +46737,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(SourceName != _unmodified_SourceName)
 							return true;
@@ -39124,7 +46771,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(InformationSource sourceObject)
+				{
+					SourceName = sourceObject.SourceName;
+					SourceLocation = sourceObject.SourceLocation;
+					SourceType = sourceObject.SourceType;
+					IsDynamic = sourceObject.IsDynamic;
+					SourceInformationObjectType = sourceObject.SourceInformationObjectType;
+					SourceETag = sourceObject.SourceETag;
+					SourceMD5 = sourceObject.SourceMD5;
+					SourceLastModified = sourceObject.SourceLastModified;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_SourceName = SourceName;
 					_unmodified_SourceLocation = SourceLocation;
@@ -39134,6 +46800,7 @@ SystemErrorItem.LongDescription
 					_unmodified_SourceETag = SourceETag;
 					_unmodified_SourceMD5 = SourceMD5;
 					_unmodified_SourceLastModified = SourceLastModified;
+				
 				
 				}
 
@@ -39331,12 +46998,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((InformationSourceCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -39383,6 +47064,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -39445,17 +47129,49 @@ SystemErrorItem.LongDescription
 		
 				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
 				private InformationSource[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (InformationSource )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(InformationSourceCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -39468,15 +47184,21 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -39616,12 +47338,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((RefreshDefaultViewsOperation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -39668,6 +47404,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -39732,15 +47471,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ViewLocation != _unmodified_ViewLocation)
 							return true;
@@ -39751,10 +47493,24 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(RefreshDefaultViewsOperation sourceObject)
+				{
+					ViewLocation = sourceObject.ViewLocation;
+					TypeNameToRefresh = sourceObject.TypeNameToRefresh;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ViewLocation = ViewLocation;
 					_unmodified_TypeNameToRefresh = TypeNameToRefresh;
+				
 				
 				}
 
@@ -39916,12 +47672,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((UpdateWebContentOperation) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -39968,6 +47738,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -40047,20 +47820,23 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) Handlers;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(SourceContainerName != _unmodified_SourceContainerName)
 							return true;
@@ -40074,19 +47850,57 @@ SystemErrorItem.LongDescription
 							return true;
 						if(Handlers != _unmodified_Handlers)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) Handlers;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Handlers != null) {
+						if(Handlers.ID == replacingObject.ID)
+							Handlers = (UpdateWebContentHandlerCollection) replacingObject;
+						else {
+							IInformationObject iObject = Handlers;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(UpdateWebContentOperation sourceObject)
+				{
+					SourceContainerName = sourceObject.SourceContainerName;
+					SourcePathRoot = sourceObject.SourcePathRoot;
+					TargetContainerName = sourceObject.TargetContainerName;
+					TargetPathRoot = sourceObject.TargetPathRoot;
+					RenderWhileSync = sourceObject.RenderWhileSync;
+					Handlers = sourceObject.Handlers;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_SourceContainerName = SourceContainerName;
 					_unmodified_SourcePathRoot = SourcePathRoot;
 					_unmodified_TargetContainerName = TargetContainerName;
 					_unmodified_TargetPathRoot = TargetPathRoot;
 					_unmodified_RenderWhileSync = RenderWhileSync;
+				
 					_unmodified_Handlers = Handlers;
+					if(Handlers != null)
+						((IInformationObject) Handlers).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -40269,12 +48083,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((UpdateWebContentHandlerItem) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -40321,6 +48149,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -40385,15 +48216,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(InformationTypeName != _unmodified_InformationTypeName)
 							return true;
@@ -40404,10 +48238,24 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(UpdateWebContentHandlerItem sourceObject)
+				{
+					InformationTypeName = sourceObject.InformationTypeName;
+					OptionName = sourceObject.OptionName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_InformationTypeName = InformationTypeName;
 					_unmodified_OptionName = OptionName;
+				
 				
 				}
 
@@ -40569,12 +48417,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((UpdateWebContentHandlerCollection) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -40621,6 +48483,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -40683,17 +48548,49 @@ SystemErrorItem.LongDescription
 		
 				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
 				private UpdateWebContentHandlerItem[] _unmodified_CollectionContent;
-				
-				bool IInformationObject.IsModified {
-					get {
-						return CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++)
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (UpdateWebContentHandlerItem )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
+				private void CopyContentFrom(UpdateWebContentHandlerCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
 				
 				private object FindFromObjectTree(string objectId)
 				{
@@ -40706,15 +48603,21 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd)
+							result.Add(iObject.ID, iObject);
+					}
 					foreach(IInformationObject item in CollectionContent)
 					{
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 				}
 
@@ -40854,12 +48757,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriberInput) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -40906,6 +48823,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -40974,15 +48894,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(InputRelativeLocation != _unmodified_InputRelativeLocation)
 							return true;
@@ -40997,12 +48920,28 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(SubscriberInput sourceObject)
+				{
+					InputRelativeLocation = sourceObject.InputRelativeLocation;
+					InformationObjectName = sourceObject.InformationObjectName;
+					InformationItemName = sourceObject.InformationItemName;
+					SubscriberRelativeLocation = sourceObject.SubscriberRelativeLocation;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_InputRelativeLocation = InputRelativeLocation;
 					_unmodified_InformationObjectName = InformationObjectName;
 					_unmodified_InformationItemName = InformationItemName;
 					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
+				
 				
 				}
 
@@ -41176,12 +49115,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Monitor) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -41228,6 +49181,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -41298,15 +49254,18 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(TargetObjectName != _unmodified_TargetObjectName)
 							return true;
@@ -41327,7 +49286,25 @@ SystemErrorItem.LongDescription
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Monitor sourceObject)
+				{
+					TargetObjectName = sourceObject.TargetObjectName;
+					TargetItemName = sourceObject.TargetItemName;
+					MonitoringUtcTimeStampToStart = sourceObject.MonitoringUtcTimeStampToStart;
+					MonitoringCycleFrequencyUnit = sourceObject.MonitoringCycleFrequencyUnit;
+					MonitoringCycleEveryXthOfUnit = sourceObject.MonitoringCycleEveryXthOfUnit;
+					CustomMonitoringCycleOperationName = sourceObject.CustomMonitoringCycleOperationName;
+					OperationActionName = sourceObject.OperationActionName;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_TargetObjectName = TargetObjectName;
 					_unmodified_TargetItemName = TargetItemName;
@@ -41336,6 +49313,7 @@ SystemErrorItem.LongDescription
 					_unmodified_MonitoringCycleEveryXthOfUnit = MonitoringCycleEveryXthOfUnit;
 					_unmodified_CustomMonitoringCycleOperationName = CustomMonitoringCycleOperationName;
 					_unmodified_OperationActionName = OperationActionName;
+				
 				
 				}
 
@@ -41527,12 +49505,26 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((IconTitleDescription) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -41579,6 +49571,9 @@ SystemErrorItem.LongDescription
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -41648,15 +49643,18 @@ IconTitleDescription.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(Icon != _unmodified_Icon)
 							return true;
@@ -41669,11 +49667,26 @@ IconTitleDescription.Description
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(IconTitleDescription sourceObject)
+				{
+					Icon = sourceObject.Icon;
+					Title = sourceObject.Title;
+					Description = sourceObject.Description;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Icon = Icon;
 					_unmodified_Title = Title;
 					_unmodified_Description = Description;
+				
 				
 				}
 
@@ -41838,12 +49851,26 @@ IconTitleDescription.Description
 					}
 				}
 
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AboutAGIApplications) sourceMaster);
+				}
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects()
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
 					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
 					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result);
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
 				}
 
@@ -41890,6 +49917,9 @@ IconTitleDescription.Description
 
                 [DataMember]
                 public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -41972,39 +50002,96 @@ IconTitleDescription.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
-						result.Add(iObject.ID, iObject);
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
 					{
 						var item = (IInformationObject) BuiltForAnybody;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
 						var item = (IInformationObject) ForAllPeople;
 						if(item != null)
-							item.CollectMasterObjectsFromTree(result);
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
 
-				bool IInformationObject.IsModified {
+				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(BuiltForAnybody != _unmodified_BuiltForAnybody)
 							return true;
 						if(ForAllPeople != _unmodified_ForAllPeople)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) BuiltForAnybody;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ForAllPeople;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
 				}
 
-				void IInformationObject.SetCurrentValuesAsUnmodified()
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(BuiltForAnybody != null) {
+						if(BuiltForAnybody.ID == replacingObject.ID)
+							BuiltForAnybody = (IconTitleDescription) replacingObject;
+						else {
+							IInformationObject iObject = BuiltForAnybody;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ForAllPeople != null) {
+						if(ForAllPeople.ID == replacingObject.ID)
+							ForAllPeople = (IconTitleDescription) replacingObject;
+						else {
+							IInformationObject iObject = ForAllPeople;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(AboutAGIApplications sourceObject)
+				{
+					BuiltForAnybody = sourceObject.BuiltForAnybody;
+					ForAllPeople = sourceObject.ForAllPeople;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
 					_unmodified_BuiltForAnybody = BuiltForAnybody;
+					if(BuiltForAnybody != null)
+						((IInformationObject) BuiltForAnybody).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ForAllPeople = ForAllPeople;
+					if(ForAllPeople != null)
+						((IInformationObject) ForAllPeople).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 

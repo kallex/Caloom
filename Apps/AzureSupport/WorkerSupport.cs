@@ -38,14 +38,48 @@ namespace TheBall
                     RenderWebSupport.RefreshContent(cloudBlob, true);
                 } catch(Exception ex)
                 {
+                    StorageClientException storageClientException = ex as StorageClientException;
+                    if(storageClientException != null)
+                    {
+                        if (storageClientException.ErrorCode == StorageErrorCode.BlobNotFound)
+                            return;
+                    }
                     // TODO: Detect and remove the missing subscribers
                     ErrorSupport.ReportException(ex);
                 }
             }
-            else
+            else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_MasterToReferenceUpdate)
+            {
+                try
+                {
+                    string containerLocation = subscription.SubscriberRelativeLocation;
+                    string containerType = subscription.SubscriberInformationObjectType;
+                    string masterLocation = subscription.TargetRelativeLocation;
+                    string masterType = subscription.TargetInformationObjectType;
+                    UpdateContainerFromMaster(containerLocation, containerType, masterLocation, masterType);
+                } catch(Exception ex)
+                {
+                    StorageClientException storageClientException = ex as StorageClientException;
+                    if (storageClientException != null)
+                    {
+                        if (storageClientException.ErrorCode == StorageErrorCode.BlobNotFound)
+                            return;
+                    }
+                    ErrorSupport.ReportException(ex);
+                }
+            } else
                 throw new InvalidDataException(String.Format(
                     "Unsupported subscription type {0} for object: {1} by {2}", subscription.SubscriptionType,
                     subscription.TargetRelativeLocation, subscription.SubscriberRelativeLocation));
+        }
+
+        public static void UpdateContainerFromMaster(string containerLocation, string containerType, string masterLocation, string masterType)
+        {
+            IInformationObject container = StorageSupport.RetrieveInformation(containerLocation, containerType);
+            IInformationObject referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
+            referenceToMaster.MasterETag = referenceToMaster.ETag;
+            container.ReplaceObjectInTree(referenceToMaster);
+            container.StoreInformation();
         }
 
         public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
