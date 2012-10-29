@@ -42,6 +42,7 @@
   <ItemGroup>
     <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\OIPBallInstance.xml">
       <Link>TheBallCore\OIPBallInstance.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>

@@ -11,7 +11,14 @@ using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP { 
-		    public interface IInformationObject
+			public interface IInformationCollection
+    {
+        string GetItemDirectory();
+        void RefreshContent();
+        void SubscribeToContentSource();
+    }
+
+    public interface IInformationObject
     {
         Guid OwnerID { get; set; }
         string ID { get; set; }
@@ -37,8 +44,12 @@ namespace AaltoGlobalImpact.OIP {
 		void UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceInstance);
     }
 
+		public static class DomainInformationSupport
+		{
+			
+		}
 			[DataContract]
-			public partial class TBSystem : IInformationObject
+			public partial class TBSystem : IInformationObject 
 			{
 				public TBSystem()
 				{
@@ -247,7 +258,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -372,7 +383,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBRLoginRoot : IInformationObject
+			public partial class TBRLoginRoot : IInformationObject 
 			{
 				public TBRLoginRoot()
 				{
@@ -581,7 +592,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -725,7 +736,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBRAccountRoot : IInformationObject
+			public partial class TBRAccountRoot : IInformationObject 
 			{
 				public TBRAccountRoot()
 				{
@@ -934,7 +945,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1078,7 +1089,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBRGroupRoot : IInformationObject
+			public partial class TBRGroupRoot : IInformationObject 
 			{
 				public TBRGroupRoot()
 				{
@@ -1287,7 +1298,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1431,7 +1442,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBRLoginGroupRoot : IInformationObject
+			public partial class TBRLoginGroupRoot : IInformationObject 
 			{
 				public TBRLoginGroupRoot()
 				{
@@ -1640,7 +1651,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1765,7 +1776,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBREmailRoot : IInformationObject
+			public partial class TBREmailRoot : IInformationObject 
 			{
 				public TBREmailRoot()
 				{
@@ -1974,7 +1985,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2118,7 +2129,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBAccount : IInformationObject
+			public partial class TBAccount : IInformationObject 
 			{
 				public TBAccount()
 				{
@@ -2327,7 +2338,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2557,7 +2568,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBAccountCollaborationGroup : IInformationObject
+			public partial class TBAccountCollaborationGroup : IInformationObject 
 			{
 				public TBAccountCollaborationGroup()
 				{
@@ -2766,7 +2777,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2903,7 +2914,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBAccountCollaborationGroupCollection : IInformationObject
+			public partial class TBAccountCollaborationGroupCollection : IInformationObject , IInformationCollection
 			{
 				public TBAccountCollaborationGroupCollection()
 				{
@@ -3112,7 +3123,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3131,6 +3142,27 @@ namespace AaltoGlobalImpact.OIP {
                 }
 
 				static partial void CreateCustomDemo(ref TBAccountCollaborationGroupCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = TBAccountCollaborationGroup.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -3169,7 +3201,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (TBAccountCollaborationGroup )replacingObject;
@@ -3243,7 +3275,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBLoginInfo : IInformationObject
+			public partial class TBLoginInfo : IInformationObject 
 			{
 				public TBLoginInfo()
 				{
@@ -3452,7 +3484,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3565,7 +3597,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBLoginInfoCollection : IInformationObject
+			public partial class TBLoginInfoCollection : IInformationObject , IInformationCollection
 			{
 				public TBLoginInfoCollection()
 				{
@@ -3774,7 +3806,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3793,6 +3825,27 @@ namespace AaltoGlobalImpact.OIP {
                 }
 
 				static partial void CreateCustomDemo(ref TBLoginInfoCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = TBLoginInfo.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -3831,7 +3884,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (TBLoginInfo )replacingObject;
@@ -3905,7 +3958,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBEmail : IInformationObject
+			public partial class TBEmail : IInformationObject 
 			{
 				public TBEmail()
 				{
@@ -4114,7 +4167,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4237,7 +4290,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBEmailCollection : IInformationObject
+			public partial class TBEmailCollection : IInformationObject , IInformationCollection
 			{
 				public TBEmailCollection()
 				{
@@ -4446,7 +4499,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4465,6 +4518,27 @@ namespace AaltoGlobalImpact.OIP {
                 }
 
 				static partial void CreateCustomDemo(ref TBEmailCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = TBEmail.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -4503,7 +4577,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (TBEmail )replacingObject;
@@ -4577,7 +4651,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBCollaboratorRole : IInformationObject
+			public partial class TBCollaboratorRole : IInformationObject 
 			{
 				public TBCollaboratorRole()
 				{
@@ -4786,7 +4860,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4954,7 +5028,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBCollaboratorRoleCollection : IInformationObject
+			public partial class TBCollaboratorRoleCollection : IInformationObject , IInformationCollection
 			{
 				public TBCollaboratorRoleCollection()
 				{
@@ -5163,7 +5237,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5182,6 +5256,27 @@ namespace AaltoGlobalImpact.OIP {
                 }
 
 				static partial void CreateCustomDemo(ref TBCollaboratorRoleCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = TBCollaboratorRole.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -5220,7 +5315,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (TBCollaboratorRole )replacingObject;
@@ -5294,7 +5389,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBCollaboratingGroup : IInformationObject
+			public partial class TBCollaboratingGroup : IInformationObject 
 			{
 				public TBCollaboratingGroup()
 				{
@@ -5503,7 +5598,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5659,7 +5754,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBEmailValidation : IInformationObject
+			public partial class TBEmailValidation : IInformationObject 
 			{
 				public TBEmailValidation()
 				{
@@ -5868,7 +5963,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6022,7 +6117,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBGroupJoinConfirmation : IInformationObject
+			public partial class TBGroupJoinConfirmation : IInformationObject 
 			{
 				public TBGroupJoinConfirmation()
 				{
@@ -6231,7 +6326,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6344,7 +6439,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBRegisterContainer : IInformationObject
+			public partial class TBRegisterContainer : IInformationObject 
 			{
 				public TBRegisterContainer()
 				{
@@ -6553,7 +6648,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6752,7 +6847,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class LoginProvider : IInformationObject
+			public partial class LoginProvider : IInformationObject 
 			{
 				public LoginProvider()
 				{
@@ -6961,7 +7056,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7122,7 +7217,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class LoginProviderCollection : IInformationObject
+			public partial class LoginProviderCollection : IInformationObject , IInformationCollection
 			{
 				public LoginProviderCollection()
 				{
@@ -7331,7 +7426,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7350,6 +7445,27 @@ namespace AaltoGlobalImpact.OIP {
                 }
 
 				static partial void CreateCustomDemo(ref LoginProviderCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = LoginProvider.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -7388,7 +7504,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (LoginProvider )replacingObject;
@@ -7462,7 +7578,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class ContactOipContainer : IInformationObject
+			public partial class ContactOipContainer : IInformationObject 
 			{
 				public ContactOipContainer()
 				{
@@ -7671,7 +7787,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7784,7 +7900,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class TBPRegisterEmail : IInformationObject
+			public partial class TBPRegisterEmail : IInformationObject 
 			{
 				public TBPRegisterEmail()
 				{
@@ -7993,7 +8109,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8106,7 +8222,7 @@ namespace AaltoGlobalImpact.OIP {
 			
 			}
 			[DataContract]
-			public partial class JavaScriptContainer : IInformationObject
+			public partial class JavaScriptContainer : IInformationObject 
 			{
 				public JavaScriptContainer()
 				{
@@ -8315,7 +8431,7 @@ namespace AaltoGlobalImpact.OIP {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8433,7 +8549,7 @@ JavaScriptContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class JavascriptContainer : IInformationObject
+			public partial class JavascriptContainer : IInformationObject 
 			{
 				public JavascriptContainer()
 				{
@@ -8642,7 +8758,7 @@ JavaScriptContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8760,7 +8876,7 @@ JavascriptContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class FooterContainer : IInformationObject
+			public partial class FooterContainer : IInformationObject 
 			{
 				public FooterContainer()
 				{
@@ -8969,7 +9085,7 @@ JavascriptContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9087,7 +9203,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class NavigationContainer : IInformationObject
+			public partial class NavigationContainer : IInformationObject 
 			{
 				public NavigationContainer()
 				{
@@ -9296,7 +9412,7 @@ FooterContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9409,7 +9525,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class AccountSummary : IInformationObject
+			public partial class AccountSummary : IInformationObject 
 			{
 				public AccountSummary()
 				{
@@ -9618,7 +9734,7 @@ FooterContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9848,7 +9964,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class AccountContainer : IInformationObject
+			public partial class AccountContainer : IInformationObject 
 			{
 				public AccountContainer()
 				{
@@ -10057,7 +10173,7 @@ FooterContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10330,7 +10446,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
-			public partial class AccountIndex : IInformationObject
+			public partial class AccountIndex : IInformationObject 
 			{
 				public AccountIndex()
 				{
@@ -10539,7 +10655,7 @@ FooterContainer.HtmlContent
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10729,7 +10845,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AccountModule : IInformationObject
+			public partial class AccountModule : IInformationObject 
 			{
 				public AccountModule()
 				{
@@ -10938,7 +11054,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11211,7 +11327,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class LocationContainer : IInformationObject
+			public partial class LocationContainer : IInformationObject 
 			{
 				public LocationContainer()
 				{
@@ -11420,7 +11536,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11564,7 +11680,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddressAndLocationCollection : IInformationObject
+			public partial class AddressAndLocationCollection : IInformationObject , IInformationCollection
 			{
 				public AddressAndLocationCollection()
 				{
@@ -11773,7 +11889,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11792,6 +11908,46 @@ AccountIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref AddressAndLocationCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = AddressAndLocation.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(AddressAndLocation));
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (AddressAndLocation) obj));
+            
+				}
+
+				public static AddressAndLocationCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return AddressAndLocationCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
+
+				public void SubscribeToContentSource()
+				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection);
+				}
+
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetBlobOwnerAddress(owner, "AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + "MasterCollection");
+				}
 
 
 
@@ -11830,7 +11986,7 @@ AccountIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (AddressAndLocation )replacingObject;
@@ -11896,7 +12052,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddressAndLocation : IInformationObject
+			public partial class AddressAndLocation : IInformationObject 
 			{
 				public AddressAndLocation()
 				{
@@ -12105,7 +12261,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12335,7 +12491,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class StreetAddress : IInformationObject
+			public partial class StreetAddress : IInformationObject 
 			{
 				public StreetAddress()
 				{
@@ -12544,7 +12700,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12693,7 +12849,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AccountContent : IInformationObject
+			public partial class AccountContent : IInformationObject 
 			{
 				public AccountContent()
 				{
@@ -12902,7 +13058,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13015,7 +13171,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AccountProfile : IInformationObject
+			public partial class AccountProfile : IInformationObject 
 			{
 				public AccountProfile()
 				{
@@ -13224,7 +13380,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13435,7 +13591,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AccountSecurity : IInformationObject
+			public partial class AccountSecurity : IInformationObject 
 			{
 				public AccountSecurity()
 				{
@@ -13644,7 +13800,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13831,7 +13987,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AccountRoles : IInformationObject
+			public partial class AccountRoles : IInformationObject 
 			{
 				public AccountRoles()
 				{
@@ -14040,7 +14196,7 @@ AccountIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14244,7 +14400,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class PersonalInfoVisibility : IInformationObject
+			public partial class PersonalInfoVisibility : IInformationObject 
 			{
 				public PersonalInfoVisibility()
 				{
@@ -14453,7 +14609,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14566,7 +14722,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class ReferenceToInformation : IInformationObject
+			public partial class ReferenceToInformation : IInformationObject 
 			{
 				public ReferenceToInformation()
 				{
@@ -14775,7 +14931,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14900,7 +15056,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class ReferenceCollection : IInformationObject
+			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
 				public ReferenceCollection()
 				{
@@ -15109,7 +15265,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15128,6 +15284,27 @@ AccountRoles.OrganizationsImPartOf
                 }
 
 				static partial void CreateCustomDemo(ref ReferenceCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = ReferenceToInformation.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -15166,7 +15343,7 @@ AccountRoles.OrganizationsImPartOf
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (ReferenceToInformation )replacingObject;
@@ -15240,7 +15417,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class BlogContainer : IInformationObject
+			public partial class BlogContainer : IInformationObject 
 			{
 				public BlogContainer()
 				{
@@ -15449,7 +15626,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15722,7 +15899,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class RecentBlogSummary : IInformationObject
+			public partial class RecentBlogSummary : IInformationObject 
 			{
 				public RecentBlogSummary()
 				{
@@ -15931,7 +16108,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "RecentBlogSummary", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "RecentBlogSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16118,7 +16295,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class MapContainer : IInformationObject
+			public partial class MapContainer : IInformationObject 
 			{
 				public MapContainer()
 				{
@@ -16327,7 +16504,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16686,7 +16863,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class MapMarker : IInformationObject
+			public partial class MapMarker : IInformationObject 
 			{
 				public MapMarker()
 				{
@@ -16895,7 +17072,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17051,7 +17228,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class MapMarkerCollection : IInformationObject
+			public partial class MapMarkerCollection : IInformationObject , IInformationCollection
 			{
 				public MapMarkerCollection()
 				{
@@ -17260,7 +17437,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17279,6 +17456,27 @@ AccountRoles.OrganizationsImPartOf
                 }
 
 				static partial void CreateCustomDemo(ref MapMarkerCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = MapMarker.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -17317,7 +17515,7 @@ AccountRoles.OrganizationsImPartOf
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (MapMarker )replacingObject;
@@ -17391,7 +17589,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class CalendarContainer : IInformationObject
+			public partial class CalendarContainer : IInformationObject 
 			{
 				public CalendarContainer()
 				{
@@ -17600,7 +17798,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17873,7 +18071,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
-			public partial class AboutContainer : IInformationObject
+			public partial class AboutContainer : IInformationObject 
 			{
 				public AboutContainer()
 				{
@@ -18082,7 +18280,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18368,7 +18566,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
-			public partial class OBSAccountContainer : IInformationObject
+			public partial class OBSAccountContainer : IInformationObject 
 			{
 				public OBSAccountContainer()
 				{
@@ -18577,7 +18775,7 @@ AboutContainer.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18850,7 +19048,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
-			public partial class ProjectContainer : IInformationObject
+			public partial class ProjectContainer : IInformationObject 
 			{
 				public ProjectContainer()
 				{
@@ -19059,7 +19257,7 @@ AboutContainer.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19332,7 +19530,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
-			public partial class CourseContainer : IInformationObject
+			public partial class CourseContainer : IInformationObject 
 			{
 				public CourseContainer()
 				{
@@ -19541,7 +19739,7 @@ AboutContainer.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19814,7 +20012,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
-			public partial class ContainerHeader : IInformationObject
+			public partial class ContainerHeader : IInformationObject 
 			{
 				public ContainerHeader()
 				{
@@ -20023,7 +20221,7 @@ AboutContainer.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20148,7 +20346,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
-			public partial class ActivitySummaryContainer : IInformationObject
+			public partial class ActivitySummaryContainer : IInformationObject 
 			{
 				public ActivitySummaryContainer()
 				{
@@ -20357,7 +20555,7 @@ AboutContainer.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20647,7 +20845,7 @@ ActivitySummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
-			public partial class ActivityIndex : IInformationObject
+			public partial class ActivityIndex : IInformationObject 
 			{
 				public ActivityIndex()
 				{
@@ -20856,7 +21054,7 @@ ActivitySummaryContainer.SummaryBody
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityIndex", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityIndex", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21046,7 +21244,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ActivityContainer : IInformationObject
+			public partial class ActivityContainer : IInformationObject 
 			{
 				public ActivityContainer()
 				{
@@ -21255,7 +21453,7 @@ ActivityIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21485,7 +21683,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ActivityCollection : IInformationObject
+			public partial class ActivityCollection : IInformationObject , IInformationCollection
 			{
 				public ActivityCollection()
 				{
@@ -21694,7 +21892,7 @@ ActivityIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21713,6 +21911,27 @@ ActivityIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref ActivityCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Activity.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -21751,7 +21970,7 @@ ActivityIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Activity )replacingObject;
@@ -21825,7 +22044,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Activity : IInformationObject
+			public partial class Activity : IInformationObject 
 			{
 				public Activity()
 				{
@@ -22034,7 +22253,7 @@ ActivityIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Activity", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22499,7 +22718,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class ModeratorCollection : IInformationObject
+			public partial class ModeratorCollection : IInformationObject , IInformationCollection
 			{
 				public ModeratorCollection()
 				{
@@ -22708,7 +22927,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22727,6 +22946,27 @@ Activity.Description
                 }
 
 				static partial void CreateCustomDemo(ref ModeratorCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Moderator.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -22765,7 +23005,7 @@ Activity.Description
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Moderator )replacingObject;
@@ -22839,7 +23079,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class Moderator : IInformationObject
+			public partial class Moderator : IInformationObject 
 			{
 				public Moderator()
 				{
@@ -23048,7 +23288,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23173,7 +23413,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class CollaboratorCollection : IInformationObject
+			public partial class CollaboratorCollection : IInformationObject , IInformationCollection
 			{
 				public CollaboratorCollection()
 				{
@@ -23382,7 +23622,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23401,6 +23641,27 @@ Activity.Description
                 }
 
 				static partial void CreateCustomDemo(ref CollaboratorCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Collaborator.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -23439,7 +23700,7 @@ Activity.Description
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Collaborator )replacingObject;
@@ -23513,7 +23774,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class Collaborator : IInformationObject
+			public partial class Collaborator : IInformationObject 
 			{
 				public Collaborator()
 				{
@@ -23722,7 +23983,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -23859,7 +24120,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class CollaboratingGroup : IInformationObject
+			public partial class CollaboratingGroup : IInformationObject 
 			{
 				public CollaboratingGroup()
 				{
@@ -24068,7 +24329,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -24181,7 +24442,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class CollaboratingGroupCollection : IInformationObject
+			public partial class CollaboratingGroupCollection : IInformationObject , IInformationCollection
 			{
 				public CollaboratingGroupCollection()
 				{
@@ -24390,7 +24651,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -24409,6 +24670,27 @@ Activity.Description
                 }
 
 				static partial void CreateCustomDemo(ref CollaboratingGroupCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = CollaboratingGroup.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -24447,7 +24729,7 @@ Activity.Description
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (CollaboratingGroup )replacingObject;
@@ -24521,7 +24803,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class CollaboratingOrganization : IInformationObject
+			public partial class CollaboratingOrganization : IInformationObject 
 			{
 				public CollaboratingOrganization()
 				{
@@ -24730,7 +25012,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -24843,7 +25125,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class CollaboratingOrganizationCollection : IInformationObject
+			public partial class CollaboratingOrganizationCollection : IInformationObject , IInformationCollection
 			{
 				public CollaboratingOrganizationCollection()
 				{
@@ -25052,7 +25334,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -25071,6 +25353,27 @@ Activity.Description
                 }
 
 				static partial void CreateCustomDemo(ref CollaboratingOrganizationCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = CollaboratingOrganization.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -25109,7 +25412,7 @@ Activity.Description
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (CollaboratingOrganization )replacingObject;
@@ -25183,7 +25486,7 @@ Activity.Description
 			
 			}
 			[DataContract]
-			public partial class GroupSummaryContainer : IInformationObject
+			public partial class GroupSummaryContainer : IInformationObject 
 			{
 				public GroupSummaryContainer()
 				{
@@ -25392,7 +25695,7 @@ Activity.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -25682,7 +25985,7 @@ GroupSummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
-			public partial class GroupContainer : IInformationObject
+			public partial class GroupContainer : IInformationObject 
 			{
 				public GroupContainer()
 				{
@@ -25891,7 +26194,7 @@ GroupSummaryContainer.SummaryBody
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -26293,7 +26596,7 @@ GroupSummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
-			public partial class GroupIndex : IInformationObject
+			public partial class GroupIndex : IInformationObject 
 			{
 				public GroupIndex()
 				{
@@ -26502,7 +26805,7 @@ GroupSummaryContainer.SummaryBody
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -26692,7 +26995,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddAddressAndLocationInfo : IInformationObject
+			public partial class AddAddressAndLocationInfo : IInformationObject 
 			{
 				public AddAddressAndLocationInfo()
 				{
@@ -26901,7 +27204,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -27014,7 +27317,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddEmailAddressInfo : IInformationObject
+			public partial class AddEmailAddressInfo : IInformationObject 
 			{
 				public AddEmailAddressInfo()
 				{
@@ -27223,7 +27526,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -27336,7 +27639,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class CreateGroupInfo : IInformationObject
+			public partial class CreateGroupInfo : IInformationObject 
 			{
 				public CreateGroupInfo()
 				{
@@ -27545,7 +27848,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -27658,7 +27961,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddActivityInfo : IInformationObject
+			public partial class AddActivityInfo : IInformationObject 
 			{
 				public AddActivityInfo()
 				{
@@ -27867,7 +28170,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -27980,7 +28283,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class AddBlogPostInfo : IInformationObject
+			public partial class AddBlogPostInfo : IInformationObject 
 			{
 				public AddBlogPostInfo()
 				{
@@ -28189,7 +28492,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AddBlogPostInfo", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddBlogPostInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -28302,7 +28605,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class GroupCollection : IInformationObject
+			public partial class GroupCollection : IInformationObject , IInformationCollection
 			{
 				public GroupCollection()
 				{
@@ -28511,7 +28814,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -28530,6 +28833,27 @@ GroupIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref GroupCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Group.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -28568,7 +28892,7 @@ GroupIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Group )replacingObject;
@@ -28642,7 +28966,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Group : IInformationObject
+			public partial class Group : IInformationObject 
 			{
 				public Group()
 				{
@@ -28851,7 +29175,7 @@ GroupIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Group", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Group", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -29256,7 +29580,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 			
 			}
 			[DataContract]
-			public partial class Introduction : IInformationObject
+			public partial class Introduction : IInformationObject 
 			{
 				public Introduction()
 				{
@@ -29465,7 +29789,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -29595,7 +29919,7 @@ Introduction.Body
 			
 			}
 			[DataContract]
-			public partial class BlogCollection : IInformationObject
+			public partial class BlogCollection : IInformationObject , IInformationCollection
 			{
 				public BlogCollection()
 				{
@@ -29804,7 +30128,7 @@ Introduction.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -29823,6 +30147,27 @@ Introduction.Body
                 }
 
 				static partial void CreateCustomDemo(ref BlogCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Blog.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -29861,7 +30206,7 @@ Introduction.Body
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Blog )replacingObject;
@@ -29935,7 +30280,7 @@ Introduction.Body
 			
 			}
 			[DataContract]
-			public partial class Blog : IInformationObject
+			public partial class Blog : IInformationObject 
 			{
 				public Blog()
 				{
@@ -30144,7 +30489,7 @@ Introduction.Body
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Blog", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -30660,7 +31005,7 @@ Blog.Excerpt
 			
 			}
 			[DataContract]
-			public partial class BlogIndexGroup : IInformationObject
+			public partial class BlogIndexGroup : IInformationObject 
 			{
 				public BlogIndexGroup()
 				{
@@ -30869,7 +31214,7 @@ Blog.Excerpt
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -31231,7 +31576,7 @@ BlogIndexGroup.Summary
 			
 			}
 			[DataContract]
-			public partial class CalendarIndex : IInformationObject
+			public partial class CalendarIndex : IInformationObject 
 			{
 				public CalendarIndex()
 				{
@@ -31440,7 +31785,7 @@ BlogIndexGroup.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -31630,7 +31975,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Filter : IInformationObject
+			public partial class Filter : IInformationObject 
 			{
 				public Filter()
 				{
@@ -31839,7 +32184,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Filter", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -31952,7 +32297,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Calendar : IInformationObject
+			public partial class Calendar : IInformationObject 
 			{
 				public Calendar()
 				{
@@ -32161,7 +32506,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -32274,7 +32619,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class CalendarCollection : IInformationObject
+			public partial class CalendarCollection : IInformationObject , IInformationCollection
 			{
 				public CalendarCollection()
 				{
@@ -32483,7 +32828,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -32502,6 +32847,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref CalendarCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Calendar.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -32540,7 +32906,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Calendar )replacingObject;
@@ -32614,7 +32980,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Map : IInformationObject
+			public partial class Map : IInformationObject 
 			{
 				public Map()
 				{
@@ -32823,7 +33189,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Map", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -32936,7 +33302,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MapCollection : IInformationObject
+			public partial class MapCollection : IInformationObject , IInformationCollection
 			{
 				public MapCollection()
 				{
@@ -33145,7 +33511,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -33164,6 +33530,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref MapCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Map.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -33202,7 +33589,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Map )replacingObject;
@@ -33276,7 +33663,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MapIndexCollection : IInformationObject
+			public partial class MapIndexCollection : IInformationObject 
 			{
 				public MapIndexCollection()
 				{
@@ -33485,7 +33872,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -33758,7 +34145,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MapResult : IInformationObject
+			public partial class MapResult : IInformationObject 
 			{
 				public MapResult()
 				{
@@ -33967,7 +34354,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -34111,7 +34498,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MapResultCollection : IInformationObject
+			public partial class MapResultCollection : IInformationObject , IInformationCollection
 			{
 				public MapResultCollection()
 				{
@@ -34320,7 +34707,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -34339,6 +34726,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref MapResultCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = MapResult.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -34377,7 +34785,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (MapResult )replacingObject;
@@ -34451,7 +34859,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MapResultsCollection : IInformationObject
+			public partial class MapResultsCollection : IInformationObject 
 			{
 				public MapResultsCollection()
 				{
@@ -34660,7 +35068,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -34890,7 +35298,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Video : IInformationObject
+			public partial class Video : IInformationObject 
 			{
 				public Video()
 				{
@@ -35099,7 +35507,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Video", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Video", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -35267,7 +35675,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Image : IInformationObject
+			public partial class Image : IInformationObject 
 			{
 				public Image()
 				{
@@ -35476,7 +35884,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Image", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -35644,7 +36052,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class MediaContent : IInformationObject
+			public partial class MediaContent : IInformationObject 
 			{
 				public MediaContent()
 				{
@@ -35853,7 +36261,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -35933,7 +36341,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ImageGroupCollection : IInformationObject
+			public partial class ImageGroupCollection : IInformationObject , IInformationCollection
 			{
 				public ImageGroupCollection()
 				{
@@ -36142,7 +36550,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -36161,6 +36569,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref ImageGroupCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = ImageGroup.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -36199,7 +36628,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (ImageGroup )replacingObject;
@@ -36273,7 +36702,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ImageGroup : IInformationObject
+			public partial class ImageGroup : IInformationObject 
 			{
 				public ImageGroup()
 				{
@@ -36482,7 +36911,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -36650,7 +37079,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class VideoGroup : IInformationObject
+			public partial class VideoGroup : IInformationObject 
 			{
 				public VideoGroup()
 				{
@@ -36859,7 +37288,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "VideoGroup", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "VideoGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -37027,7 +37456,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ImagesCollection : IInformationObject
+			public partial class ImagesCollection : IInformationObject , IInformationCollection
 			{
 				public ImagesCollection()
 				{
@@ -37236,7 +37665,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -37255,6 +37684,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref ImagesCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Image.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -37293,7 +37743,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Image )replacingObject;
@@ -37367,7 +37817,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class VideoCollection : IInformationObject
+			public partial class VideoCollection : IInformationObject , IInformationCollection
 			{
 				public VideoCollection()
 				{
@@ -37576,7 +38026,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "VideoCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "VideoCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -37595,6 +38045,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref VideoCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Video.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -37633,7 +38104,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Video )replacingObject;
@@ -37707,7 +38178,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Tooltip : IInformationObject
+			public partial class Tooltip : IInformationObject 
 			{
 				public Tooltip()
 				{
@@ -37916,7 +38387,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -38029,7 +38500,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class SocialPanelCollection : IInformationObject
+			public partial class SocialPanelCollection : IInformationObject , IInformationCollection
 			{
 				public SocialPanelCollection()
 				{
@@ -38238,7 +38709,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -38257,6 +38728,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref SocialPanelCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = SocialPanel.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -38295,7 +38787,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (SocialPanel )replacingObject;
@@ -38369,7 +38861,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class SocialPanel : IInformationObject
+			public partial class SocialPanel : IInformationObject 
 			{
 				public SocialPanel()
 				{
@@ -38578,7 +39070,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -38722,7 +39214,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Longitude : IInformationObject
+			public partial class Longitude : IInformationObject 
 			{
 				public Longitude()
 				{
@@ -38931,7 +39423,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -39044,7 +39536,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Latitude : IInformationObject
+			public partial class Latitude : IInformationObject 
 			{
 				public Latitude()
 				{
@@ -39253,7 +39745,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -39366,7 +39858,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Location : IInformationObject
+			public partial class Location : IInformationObject 
 			{
 				public Location()
 				{
@@ -39575,7 +40067,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Location", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -39774,7 +40266,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class LocationCollection : IInformationObject
+			public partial class LocationCollection : IInformationObject , IInformationCollection
 			{
 				public LocationCollection()
 				{
@@ -39983,7 +40475,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -40002,6 +40494,27 @@ CalendarIndex.Summary
                 }
 
 				static partial void CreateCustomDemo(ref LocationCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Location.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -40040,7 +40553,7 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Location )replacingObject;
@@ -40114,7 +40627,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Date : IInformationObject
+			public partial class Date : IInformationObject 
 			{
 				public Date()
 				{
@@ -40323,7 +40836,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Date", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -40464,7 +40977,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Sex : IInformationObject
+			public partial class Sex : IInformationObject 
 			{
 				public Sex()
 				{
@@ -40673,7 +41186,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Sex", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -40786,7 +41299,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class OBSAddress : IInformationObject
+			public partial class OBSAddress : IInformationObject 
 			{
 				public OBSAddress()
 				{
@@ -40995,7 +41508,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -41216,7 +41729,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class Identity : IInformationObject
+			public partial class Identity : IInformationObject 
 			{
 				public Identity()
 				{
@@ -41425,7 +41938,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Identity", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -41648,7 +42161,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
-			public partial class ImageVideoSoundVectorRaw : IInformationObject
+			public partial class ImageVideoSoundVectorRaw : IInformationObject 
 			{
 				public ImageVideoSoundVectorRaw()
 				{
@@ -41857,7 +42370,7 @@ CalendarIndex.Summary
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -42003,7 +42516,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class Category : IInformationObject
+			public partial class Category : IInformationObject 
 			{
 				public Category()
 				{
@@ -42212,7 +42725,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Category", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -42325,7 +42838,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class CategoryCollection : IInformationObject
+			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
 				public CategoryCollection()
 				{
@@ -42534,7 +43047,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -42553,6 +43066,27 @@ ImageVideoSoundVectorRaw.Vector
                 }
 
 				static partial void CreateCustomDemo(ref CategoryCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Category.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -42591,7 +43125,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Category )replacingObject;
@@ -42665,7 +43199,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class SubscriptionCollection : IInformationObject
+			public partial class SubscriptionCollection : IInformationObject , IInformationCollection
 			{
 				public SubscriptionCollection()
 				{
@@ -42874,7 +43408,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -42893,6 +43427,27 @@ ImageVideoSoundVectorRaw.Vector
                 }
 
 				static partial void CreateCustomDemo(ref SubscriptionCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = Subscription.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -42931,7 +43486,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (Subscription )replacingObject;
@@ -43005,7 +43560,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class Subscription : IInformationObject
+			public partial class Subscription : IInformationObject 
 			{
 				public Subscription()
 				{
@@ -43214,7 +43769,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -43385,7 +43940,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class QueueEnvelope : IInformationObject
+			public partial class QueueEnvelope : IInformationObject 
 			{
 				public QueueEnvelope()
 				{
@@ -43594,7 +44149,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -43834,7 +44389,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class OperationRequestCollection : IInformationObject
+			public partial class OperationRequestCollection : IInformationObject , IInformationCollection
 			{
 				public OperationRequestCollection()
 				{
@@ -44043,7 +44598,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -44062,6 +44617,27 @@ ImageVideoSoundVectorRaw.Vector
                 }
 
 				static partial void CreateCustomDemo(ref OperationRequestCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = OperationRequest.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -44100,7 +44676,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (OperationRequest )replacingObject;
@@ -44174,7 +44750,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class OperationRequest : IInformationObject
+			public partial class OperationRequest : IInformationObject 
 			{
 				public OperationRequest()
 				{
@@ -44383,7 +44959,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -44699,7 +45275,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class DeleteEntireOwnerOperation : IInformationObject
+			public partial class DeleteEntireOwnerOperation : IInformationObject 
 			{
 				public DeleteEntireOwnerOperation()
 				{
@@ -44908,7 +45484,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -45033,7 +45609,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class DeleteOwnerContentOperation : IInformationObject
+			public partial class DeleteOwnerContentOperation : IInformationObject 
 			{
 				public DeleteOwnerContentOperation()
 				{
@@ -45242,7 +45818,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -45367,7 +45943,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class SystemError : IInformationObject
+			public partial class SystemError : IInformationObject 
 			{
 				public SystemError()
 				{
@@ -45576,7 +46152,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -45785,7 +46361,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
-			public partial class SystemErrorItem : IInformationObject
+			public partial class SystemErrorItem : IInformationObject 
 			{
 				public SystemErrorItem()
 				{
@@ -45994,7 +46570,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -46124,7 +46700,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class SystemErrorItemCollection : IInformationObject
+			public partial class SystemErrorItemCollection : IInformationObject , IInformationCollection
 			{
 				public SystemErrorItemCollection()
 				{
@@ -46333,7 +46909,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -46352,6 +46928,27 @@ SystemErrorItem.LongDescription
                 }
 
 				static partial void CreateCustomDemo(ref SystemErrorItemCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = SystemErrorItem.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -46390,7 +46987,7 @@ SystemErrorItem.LongDescription
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (SystemErrorItem )replacingObject;
@@ -46464,7 +47061,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class InformationSource : IInformationObject
+			public partial class InformationSource : IInformationObject 
 			{
 				public InformationSource()
 				{
@@ -46673,7 +47270,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -46866,7 +47463,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class InformationSourceCollection : IInformationObject
+			public partial class InformationSourceCollection : IInformationObject , IInformationCollection
 			{
 				public InformationSourceCollection()
 				{
@@ -47075,7 +47672,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -47094,6 +47691,27 @@ SystemErrorItem.LongDescription
                 }
 
 				static partial void CreateCustomDemo(ref InformationSourceCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = InformationSource.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -47132,7 +47750,7 @@ SystemErrorItem.LongDescription
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (InformationSource )replacingObject;
@@ -47206,7 +47824,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class RefreshDefaultViewsOperation : IInformationObject
+			public partial class RefreshDefaultViewsOperation : IInformationObject 
 			{
 				public RefreshDefaultViewsOperation()
 				{
@@ -47415,7 +48033,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -47540,7 +48158,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class UpdateWebContentOperation : IInformationObject
+			public partial class UpdateWebContentOperation : IInformationObject 
 			{
 				public UpdateWebContentOperation()
 				{
@@ -47749,7 +48367,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -47951,7 +48569,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class UpdateWebContentHandlerItem : IInformationObject
+			public partial class UpdateWebContentHandlerItem : IInformationObject 
 			{
 				public UpdateWebContentHandlerItem()
 				{
@@ -48160,7 +48778,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -48285,7 +48903,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class UpdateWebContentHandlerCollection : IInformationObject
+			public partial class UpdateWebContentHandlerCollection : IInformationObject , IInformationCollection
 			{
 				public UpdateWebContentHandlerCollection()
 				{
@@ -48494,7 +49112,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -48513,6 +49131,27 @@ SystemErrorItem.LongDescription
                 }
 
 				static partial void CreateCustomDemo(ref UpdateWebContentHandlerCollection customDemoObject);
+
+
+				
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = UpdateWebContentHandlerItem.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
 
 
 
@@ -48551,7 +49190,7 @@ SystemErrorItem.LongDescription
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					for(int i = 0; i < CollectionContent.Count; i++)
+					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
 							CollectionContent[i] = (UpdateWebContentHandlerItem )replacingObject;
@@ -48625,7 +49264,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class SubscriberInput : IInformationObject
+			public partial class SubscriberInput : IInformationObject 
 			{
 				public SubscriberInput()
 				{
@@ -48834,7 +49473,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -48983,7 +49622,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class Monitor : IInformationObject
+			public partial class Monitor : IInformationObject 
 			{
 				public Monitor()
 				{
@@ -49192,7 +49831,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -49373,7 +50012,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
-			public partial class IconTitleDescription : IInformationObject
+			public partial class IconTitleDescription : IInformationObject 
 			{
 				public IconTitleDescription()
 				{
@@ -49582,7 +50221,7 @@ SystemErrorItem.LongDescription
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -49719,7 +50358,7 @@ IconTitleDescription.Description
 			
 			}
 			[DataContract]
-			public partial class AboutAGIApplications : IInformationObject
+			public partial class AboutAGIApplications : IInformationObject 
 			{
 				public AboutAGIApplications()
 				{
@@ -49928,7 +50567,7 @@ IconTitleDescription.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterRelativeLocation).Replace("\\", "/"); 
+					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)

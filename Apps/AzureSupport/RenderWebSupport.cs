@@ -35,7 +35,8 @@ namespace TheBall
         private const string SpanTagCollectionBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballcollection'>";
         private const string SpanTagCollectionItemBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballcollitem'>";
         private const string SpanTagItemBeginFormat = @"<span id='{0}' data-id='{0}' data-etag='{1}' class='theballitem'>";
-        private const string SpanTagClosing = @"</span>";
+        //private const string SpanTagClosing = @"</span>";
+        private const string SpanTagClosing = @"";
 
         public const string DefaultWebTemplateLocation = "webtemplate";
         public const string DefaultWebSiteLocation = "website";
@@ -395,6 +396,7 @@ namespace TheBall
 
         private static string GetSpanTag(object content, string spanTagFormatForIDandETag)
         {
+            return "";
             IInformationObject informationObject = content as IInformationObject;
             string currID;
             string currEtag;

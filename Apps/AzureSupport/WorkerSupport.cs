@@ -67,10 +67,42 @@ namespace TheBall
                     }
                     ErrorSupport.ReportException(ex);
                 }
-            } else
+            } else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_DirectoryToCollection)
+            {
+                string directoryLocation = subscription.TargetRelativeLocation;
+                string collectionType = subscription.SubscriberInformationObjectType;
+                string collectionLocation = subscription.SubscriberRelativeLocation;
+                UpdateCollectionFromDirectory(collectionType, collectionLocation, directoryLocation);
+            } else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_CollectionToCollectionUpdate)
+            {
+                string masterCollectionLocation = subscription.TargetRelativeLocation;
+                string masterCollectionType = subscription.TargetInformationObjectType;
+                string referenceCollectionLocation = subscription.SubscriberRelativeLocation;
+                string referenceCollectionType = subscription.SubscriberInformationObjectType;
+                UpdateCollectionFromMasterCollection(referenceCollectionType, referenceCollectionLocation,
+                                                     masterCollectionType, masterCollectionLocation);
+            }
+            else
                 throw new InvalidDataException(String.Format(
                     "Unsupported subscription type {0} for object: {1} by {2}", subscription.SubscriptionType,
                     subscription.TargetRelativeLocation, subscription.SubscriberRelativeLocation));
+        }
+
+        private static void UpdateCollectionFromMasterCollection(string referenceCollectionType, string referenceCollectionLocation, string masterCollectionType, string masterCollectionLocation)
+        {
+            IInformationObject referenceCollectionObject = StorageSupport.RetrieveInformation(referenceCollectionLocation,
+                                                                                        referenceCollectionType);
+            IInformationCollection referenceCollection = (IInformationCollection) referenceCollectionObject;
+            referenceCollection.RefreshContent();
+            StorageSupport.StoreInformation(referenceCollectionObject);
+        }
+
+        private static void UpdateCollectionFromDirectory(string collectionType, string collectionLocation, string directoryLocation)
+        {
+            IInformationObject collectionObject = StorageSupport.RetrieveInformation(collectionLocation, collectionType);
+            IInformationCollection collection = (IInformationCollection) collectionObject;
+            collection.RefreshContent();
+            StorageSupport.StoreInformation(collectionObject);
         }
 
         public static void UpdateContainerFromMaster(string containerLocation, string containerType, string masterLocation, string masterType)

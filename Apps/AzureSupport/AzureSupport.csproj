@@ -85,6 +85,7 @@
     <Compile Include="Partials\InformationSource.cs" />
     <Compile Include="Partials\InformationSourceCollection.cs" />
     <Compile Include="Partials\Location.cs" />
+    <Compile Include="Partials\LocationCollection.cs" />
     <Compile Include="Partials\MapMarker.cs" />
     <Compile Include="Partials\MediaContent.cs" />
     <Compile Include="Partials\ReferenceToInformation.cs" />

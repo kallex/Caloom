@@ -16,6 +16,8 @@ namespace TheBall
         public const string SubscribeType_MasterToReferenceUpdate = "MasterToReferenceUpdate";
         // Master to reference delete can be also special case where master is no longer available
         public const string SubscribeType_MasterToReferenceDelete = "MasterToReferenceDelete";
+        public const string SubscribeType_DirectoryToCollection = "DirectoryToCollectionUpdate";
+        public const string SubscribeType_CollectionToCollectionUpdate = "CollectionToCollectionUpdate";
 
         public static void AddSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType, string targetTypeName = null, string subscriberTypeName = null)
         {
@@ -58,7 +60,24 @@ namespace TheBall
             Subscription sub = GetSubscriptionToObject(target, subscriber, operationName);
             sub.TargetItemName = itemName;
             return sub;
-        }*/
+        }
+
+        public static SubscriptionCollection GetDirectorySubscriptions(string targetLocation)
+        {
+            int lastDirectorySlashIndex = targetLocation.LastIndexOf("/");
+            string directoryLocation = targetLocation.Substring(0, lastDirectorySlashIndex + 1);
+            string metadataBlobLocation = SubscriptionCollection.GetRelativeLocationAsMetadataTo(directoryLocation);
+            var result = StorageSupport.RetrieveInformation(metadataBlobLocation, typeof(SubscriptionCollection))
+            return (SubscriptionCollection) result;
+        }
+         * */
+
+        public static string GetParentDirectoryTarget(string targetLocation)
+        {
+            int lastDirectorySlashIndex = targetLocation.LastIndexOf("/");
+            string directoryLocation = targetLocation.Substring(0, lastDirectorySlashIndex + 1);
+            return directoryLocation;
+        }
 
         public static SubscriptionCollection GetSubscriptions(string targetLocation)
         {
@@ -70,18 +89,35 @@ namespace TheBall
         public static void NotifySubscribers(string targetLocation)
         {
             SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
-            if (subscriptionCollection == null)
+            string targetParentLocation = GetParentDirectoryTarget(targetLocation);
+            SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
+            if (subscriptionCollection == null && parentSubscriptionCollection == null)
                 return;
             var ictx = InformationContext.Current;
 
-            foreach(var subscription in subscriptionCollection.CollectionContent)
+            if(subscriptionCollection != null)
             {
-                OperationRequest operationRequest = new OperationRequest
-                                                        {
-                                                            SubscriberNotification = subscription
-                                                        };
-                //QueueSupport.PutToOperationQueue(operationRequest);
-                ictx.AddOperationRequestToFinalizingQueue(operationRequest);
+                foreach(var subscription in subscriptionCollection.CollectionContent)
+                {
+                    OperationRequest operationRequest = new OperationRequest
+                                                            {
+                                                                SubscriberNotification = subscription
+                                                            };
+                    //QueueSupport.PutToOperationQueue(operationRequest);
+                    ictx.AddOperationRequestToFinalizingQueue(operationRequest);
+                }
+            }
+            if(parentSubscriptionCollection != null)
+            {
+                foreach (var subscription in parentSubscriptionCollection.CollectionContent)
+                {
+                    OperationRequest operationRequest = new OperationRequest
+                    {
+                        SubscriberNotification = subscription
+                    };
+                    //QueueSupport.PutToOperationQueue(operationRequest);
+                    ictx.AddOperationRequestToFinalizingQueue(operationRequest);
+                }
             }
         }
 

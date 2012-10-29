@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -955,6 +956,18 @@ namespace TheBall
             return informationObject;
         }
 
+        public static IInformationObject[] RetrieveInformationObjects(string itemDirectory, Type type)
+        {
+            var blobList = CurrActiveContainer.GetBlobListing(itemDirectory, withMetaData: false).ToArray();
+            List<IInformationObject> result = new List<IInformationObject>(blobList.Length);
+            foreach(CloudBlockBlob blob in blobList)
+            {
+                var item = RetrieveInformation(blob.Name, type);
+                result.Add(item);
+            }
+            return result.ToArray();
+        }
+
         public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
         {
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
@@ -1165,6 +1178,13 @@ namespace TheBall
             return blob;
         }
 
+        public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)
+        {
+            string storageListingPrefix = container.Name + "/" + directoryLocation;
+            BlobRequestOptions options = new BlobRequestOptions() { UseFlatBlobListing = true, BlobListingDetails = withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None };
+            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
+        }
+        
         public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
         {
             string contentListingPrefix = GetBlobOwnerAddress(owner, contentType);
@@ -1172,6 +1192,7 @@ namespace TheBall
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
         }
+
     }
 
     public class ReferenceOutdatedException : Exception
