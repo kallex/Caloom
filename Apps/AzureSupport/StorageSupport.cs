@@ -905,12 +905,16 @@ namespace TheBall
         public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null, IContainerOwner owner = null)
         {
             Type type = Assembly.GetExecutingAssembly().GetType(typeName);
+            if(type == null)
+                throw new InvalidDataException("Type not found: " + typeName);
             return RetrieveInformation(relativeLocation, type, eTag, owner);
         }
 
         public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, string typeName, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             Type type = Assembly.GetExecutingAssembly().GetType(typeName);
+            if (type == null)
+                throw new InvalidDataException("Type not found: " + typeName);
             return RetrieveInformationWithBlob(relativeLocation, type, out blob, eTag, owner);
         }
 
@@ -1184,7 +1188,45 @@ namespace TheBall
             BlobRequestOptions options = new BlobRequestOptions() { UseFlatBlobListing = true, BlobListingDetails = withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None };
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
         }
+
+        public static IEnumerable<CloudBlockBlob> GetFilteredBlobListing(this CloudBlobContainer container, string directoryLocation, Predicate<CloudBlockBlob> filterIfFalse)
+        {
+            var blobListing = container.GetBlobListing(directoryLocation, true);
+            return blobListing.Cast<CloudBlockBlob>().Where(blob => filterIfFalse(blob));
+        }
         
+        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<IInformationObject> filterIfFalse = null)
+        {
+            var informationObjectBlobs = GetFilteredBlobListing(container, directoryLocation,
+                                                                blob =>
+                                                                blob.GetBlobInformationType() ==
+                                                                StorageSupport.InformationType_InformationObjectValue);
+            var result = informationObjectBlobs.Select(blob =>
+                                                           {
+                                                               string informationObjectLocation = blob.Name;
+                                                               string informationObjectType =
+                                                                   blob.GetBlobInformationObjectType();
+                                                               IInformationObject iObj = null;
+                                                               try
+                                                               {
+                                                                   Debug.WriteLine("Loading type: " +
+                                                                                   informationObjectType + " from " +
+                                                                                   informationObjectLocation);
+                                                                   iObj = RetrieveInformation(
+                                                                       informationObjectLocation, informationObjectType);
+                                                               }
+                                                               catch (InvalidDataException dataException)
+                                                               {
+                                                                   Debug.WriteLine("Failed due to invalid data");
+                                                                   // Old types and such cause this, ignore and allow returning null.
+                                                               }
+                                                               return iObj;
+                                                           }).Where(iObj => iObj != null);
+            if (filterIfFalse != null)
+                result = result.Where(iObj => filterIfFalse(iObj));
+            return result;
+        }
+
         public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
         {
             string contentListingPrefix = GetBlobOwnerAddress(owner, contentType);
@@ -1192,7 +1234,6 @@ namespace TheBall
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
         }
-
     }
 
     public class ReferenceOutdatedException : Exception

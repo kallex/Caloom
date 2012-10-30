@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
@@ -107,11 +108,27 @@ namespace TheBall
 
         public static void UpdateContainerFromMaster(string containerLocation, string containerType, string masterLocation, string masterType)
         {
-            IInformationObject container = StorageSupport.RetrieveInformation(containerLocation, containerType);
-            IInformationObject referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
-            referenceToMaster.MasterETag = referenceToMaster.ETag;
-            container.ReplaceObjectInTree(referenceToMaster);
-            container.StoreInformation();
+            bool masterEtagUpdated = false;
+            //do
+            //{
+                masterEtagUpdated = false;
+                IInformationObject container = StorageSupport.RetrieveInformation(containerLocation, containerType);
+                IInformationObject referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
+                string masterEtag = referenceToMaster.ETag;
+                string masterID = referenceToMaster.ID;
+                Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+                container.CollectMasterObjectsFromTree(result, candidate => candidate.ID == masterID);
+                bool foundOutdatedMaster =
+                    result.Values.Count(candidate => candidate.MasterETag != masterEtag) > 0;
+                if(foundOutdatedMaster)
+                {
+                    referenceToMaster.MasterETag = referenceToMaster.ETag;
+                    container.ReplaceObjectInTree(referenceToMaster);
+                    container.StoreInformation();
+                    referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
+                    masterEtagUpdated = referenceToMaster.ETag != masterEtag;
+                }
+            //} while (masterEtagUpdated);
         }
 
         public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
