@@ -15,11 +15,11 @@ namespace AaltoGlobalImpact.OIP
             activity.ActivityName = ActivityName;
             activity.ReferenceToInformation.Title = activity.ActivityName;
             activity.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(activity);
-            StorageSupport.StoreInformation(activity);
+            StorageSupport.StoreInformationMasterFirst(activity, owner);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, activity, owner);
-            ActivitySummaryContainer summaryContainer = ActivitySummaryContainer.RetrieveFromOwnerContent(owner, "default");
-            summaryContainer.AddNewActivity(activity);
-            StorageSupport.StoreInformation(summaryContainer);
+            //ActivitySummaryContainer summaryContainer = ActivitySummaryContainer.RetrieveFromOwnerContent(owner, "default");
+            //summaryContainer.AddNewActivity(activity);
+            //StorageSupport.StoreInformation(summaryContainer);
             return false;
         }
     }

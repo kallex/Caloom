@@ -16,6 +16,9 @@ namespace AaltoGlobalImpact.OIP {
         string GetItemDirectory();
         void RefreshContent();
         void SubscribeToContentSource();
+		bool IsMasterCollection { get; }
+		string GetMasterLocation();
+		IInformationCollection GetMasterInstance();
     }
 
     public interface IInformationObject
@@ -39,14 +42,99 @@ namespace AaltoGlobalImpact.OIP {
 		Dictionary<string, IInformationObject> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
 		void CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse = null);
 		IInformationObject RetrieveMaster(bool initiateIfMissing);
+		IInformationObject RetrieveMaster(bool initiateIfMissing, out bool initiated);
 		bool IsInstanceTreeModified { get; }
 		void SetInstanceTreeValuesAsUnmodified();
 		void UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceInstance);
+		void FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly);
+		void UpdateCollections(IInformationCollection masterInstance);
     }
 
 		public static class DomainInformationSupport
 		{
-			
+            public static void EnsureMasterCollections(this IContainerOwner owner)
+            {
+                {
+                    var masterCollection = AddressAndLocationCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = AddressAndLocationCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            AddressAndLocationCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+                {
+                    var masterCollection = ActivityCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = ActivityCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            ActivityCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+                {
+                    var masterCollection = BlogCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = BlogCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            BlogCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+                {
+                    var masterCollection = ImageGroupCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = ImageGroupCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            ImageGroupCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+            }
+
+            public static void RefreshMasterCollections(this IContainerOwner owner)
+            {
+                {
+                    IInformationCollection masterCollection = AddressAndLocationCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection AddressAndLocationCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
+                {
+                    IInformationCollection masterCollection = ActivityCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection ActivityCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
+                {
+                    IInformationCollection masterCollection = BlogCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection BlogCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
+                {
+                    IInformationCollection masterCollection = ImageGroupCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection ImageGroupCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
+            }
 		}
 			[DataContract]
 			public partial class TBSystem : IInformationObject 
@@ -76,7 +164,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", id).Replace("\\", "/");
@@ -93,19 +180,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBSystem(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBSystem");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBSystem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -301,6 +398,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -308,6 +413,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -410,7 +525,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", id).Replace("\\", "/");
@@ -427,19 +541,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBRLoginRoot(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginRoot");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRLoginRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -633,6 +757,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Account != null) {
+						((IInformationObject) Account).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -640,6 +776,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Account;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -763,7 +917,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", id).Replace("\\", "/");
@@ -780,19 +933,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBRAccountRoot(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRAccountRoot");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRAccountRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -986,6 +1149,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Account != null) {
+						((IInformationObject) Account).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -993,6 +1168,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Account;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -1116,7 +1309,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", id).Replace("\\", "/");
@@ -1133,19 +1325,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBRGroupRoot(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRGroupRoot");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRGroupRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -1339,6 +1541,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Group != null) {
+						((IInformationObject) Group).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1346,6 +1560,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Group;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -1469,7 +1701,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", id).Replace("\\", "/");
@@ -1486,19 +1717,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBRLoginGroupRoot(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginGroupRoot");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRLoginGroupRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -1694,6 +1935,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1701,6 +1950,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -1803,7 +2062,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", id).Replace("\\", "/");
@@ -1820,19 +2078,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBREmailRoot(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBREmailRoot");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBREmailRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -2026,6 +2294,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Account != null) {
+						((IInformationObject) Account).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2033,6 +2313,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Account;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -2156,7 +2454,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", id).Replace("\\", "/");
@@ -2173,19 +2470,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBAccount(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccount");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccount), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -2383,6 +2690,26 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Emails != null) {
+						((IInformationObject) Emails).UpdateCollections(masterInstance);
+					}
+
+					if(Logins != null) {
+						((IInformationObject) Logins).UpdateCollections(masterInstance);
+					}
+
+					if(GroupRoleCollection != null) {
+						((IInformationObject) GroupRoleCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2390,6 +2717,40 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Emails;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Logins;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupRoleCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -2595,7 +2956,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", id).Replace("\\", "/");
@@ -2612,19 +2972,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBAccountCollaborationGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccountCollaborationGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -2822,6 +3192,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2829,6 +3207,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -2941,7 +3329,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", id).Replace("\\", "/");
@@ -2958,19 +3345,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroupCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBAccountCollaborationGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -3145,6 +3542,36 @@ namespace AaltoGlobalImpact.OIP {
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = TBAccountCollaborationGroup.GetRelativeLocationFromID("dummy");
@@ -3253,6 +3680,15 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -3302,7 +3738,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", id).Replace("\\", "/");
@@ -3319,19 +3754,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBLoginInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBLoginInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -3525,6 +3970,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -3532,6 +3985,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -3624,7 +4087,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", id).Replace("\\", "/");
@@ -3641,19 +4103,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBLoginInfoCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfoCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBLoginInfoCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -3828,6 +4300,36 @@ namespace AaltoGlobalImpact.OIP {
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = TBLoginInfo.GetRelativeLocationFromID("dummy");
@@ -3936,6 +4438,15 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -3985,7 +4496,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", id).Replace("\\", "/");
@@ -4002,19 +4512,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBEmail(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmail");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -4208,6 +4728,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4215,6 +4743,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -4317,7 +4855,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", id).Replace("\\", "/");
@@ -4334,19 +4871,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBEmailCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmailCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -4521,6 +5068,36 @@ namespace AaltoGlobalImpact.OIP {
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = TBEmail.GetRelativeLocationFromID("dummy");
@@ -4629,6 +5206,15 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -4678,7 +5264,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", id).Replace("\\", "/");
@@ -4695,19 +5280,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBCollaboratorRole(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRole");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratorRole), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -4905,6 +5500,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Email != null) {
+						((IInformationObject) Email).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4912,6 +5519,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Email;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -5055,7 +5680,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", id).Replace("\\", "/");
@@ -5072,19 +5696,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBCollaboratorRoleCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRoleCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratorRoleCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -5259,6 +5893,36 @@ namespace AaltoGlobalImpact.OIP {
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = TBCollaboratorRole.GetRelativeLocationFromID("dummy");
@@ -5367,6 +6031,15 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -5416,7 +6089,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", id).Replace("\\", "/");
@@ -5433,19 +6105,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBCollaboratingGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratingGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBCollaboratingGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -5641,6 +6323,18 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Roles != null) {
+						((IInformationObject) Roles).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5648,6 +6342,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Roles;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -5781,7 +6493,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", id).Replace("\\", "/");
@@ -5798,19 +6509,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBEmailValidation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailValidation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBEmailValidation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -5984,6 +6705,18 @@ namespace AaltoGlobalImpact.OIP {
 				static partial void CreateCustomDemo(ref TBEmailValidation customDemoObject);
 
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(GroupJoinConfirmation != null) {
+						((IInformationObject) GroupJoinConfirmation).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5991,6 +6724,24 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupJoinConfirmation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -6144,7 +6895,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", id).Replace("\\", "/");
@@ -6161,19 +6911,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBGroupJoinConfirmation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBGroupJoinConfirmation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBGroupJoinConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -6367,6 +7127,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6374,6 +7142,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -6466,7 +7244,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBRegisterContainer", id).Replace("\\", "/");
@@ -6483,19 +7260,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBRegisterContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRegisterContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBRegisterContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -6693,6 +7480,22 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(LoginProviderCollection != null) {
+						((IInformationObject) LoginProviderCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6700,6 +7503,32 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = LoginProviderCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -6874,7 +7703,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", id).Replace("\\", "/");
@@ -6891,19 +7719,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveLoginProvider(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProvider");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LoginProvider), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -7105,6 +7943,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7112,6 +7958,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -7244,7 +8100,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", id).Replace("\\", "/");
@@ -7261,19 +8116,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveLoginProviderCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProviderCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LoginProviderCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -7448,6 +8313,36 @@ namespace AaltoGlobalImpact.OIP {
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = LoginProvider.GetRelativeLocationFromID("dummy");
@@ -7556,6 +8451,15 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -7605,7 +8509,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ContactOipContainer", id).Replace("\\", "/");
@@ -7622,19 +8525,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveContactOipContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContactOipContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContactOipContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -7828,6 +8741,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7835,6 +8756,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -7927,7 +8858,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", id).Replace("\\", "/");
@@ -7944,19 +8874,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveTBPRegisterEmail(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBPRegisterEmail");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBPRegisterEmail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -8150,6 +9090,14 @@ namespace AaltoGlobalImpact.OIP {
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8157,6 +9105,16 @@ namespace AaltoGlobalImpact.OIP {
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -8249,7 +9207,6 @@ namespace AaltoGlobalImpact.OIP {
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "JavaScriptContainer", id).Replace("\\", "/");
@@ -8266,19 +9223,29 @@ namespace AaltoGlobalImpact.OIP {
 					return RetrieveJavaScriptContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: JavaScriptContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(JavaScriptContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -8477,6 +9444,14 @@ JavaScriptContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8484,6 +9459,16 @@ JavaScriptContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -8576,7 +9561,6 @@ JavaScriptContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "JavascriptContainer", id).Replace("\\", "/");
@@ -8593,19 +9577,29 @@ JavaScriptContainer.HtmlContent
 					return RetrieveJavascriptContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: JavascriptContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(JavascriptContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -8804,6 +9798,14 @@ JavascriptContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8811,6 +9813,16 @@ JavascriptContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -8903,7 +9915,6 @@ JavascriptContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "FooterContainer", id).Replace("\\", "/");
@@ -8920,19 +9931,29 @@ JavascriptContainer.HtmlContent
 					return RetrieveFooterContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: FooterContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(FooterContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -9131,6 +10152,14 @@ FooterContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9138,6 +10167,16 @@ FooterContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -9230,7 +10269,6 @@ FooterContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "NavigationContainer", id).Replace("\\", "/");
@@ -9247,19 +10285,29 @@ FooterContainer.HtmlContent
 					return RetrieveNavigationContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NavigationContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(NavigationContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -9453,6 +10501,14 @@ FooterContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9460,6 +10516,16 @@ FooterContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -9552,7 +10618,6 @@ FooterContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", id).Replace("\\", "/");
@@ -9569,19 +10634,29 @@ FooterContainer.HtmlContent
 					return RetrieveAccountSummary(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSummary");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -9779,6 +10854,26 @@ FooterContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(ActivitySummary != null) {
+						((IInformationObject) ActivitySummary).UpdateCollections(masterInstance);
+					}
+
+					if(GroupSummary != null) {
+						((IInformationObject) GroupSummary).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9786,6 +10881,40 @@ FooterContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ActivitySummary;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupSummary;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -9991,7 +11120,6 @@ FooterContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", id).Replace("\\", "/");
@@ -10008,19 +11136,29 @@ FooterContainer.HtmlContent
 					return RetrieveAccountContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -10220,6 +11358,30 @@ FooterContainer.HtmlContent
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(AccountIndex != null) {
+						((IInformationObject) AccountIndex).UpdateCollections(masterInstance);
+					}
+
+					if(AccountModule != null) {
+						((IInformationObject) AccountModule).UpdateCollections(masterInstance);
+					}
+
+					if(AccountSummary != null) {
+						((IInformationObject) AccountSummary).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -10227,6 +11389,48 @@ FooterContainer.HtmlContent
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountIndex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountModule;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountSummary;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -10473,7 +11677,6 @@ FooterContainer.HtmlContent
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountIndex", id).Replace("\\", "/");
@@ -10490,19 +11693,29 @@ FooterContainer.HtmlContent
 					return RetrieveAccountIndex(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountIndex");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountIndex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -10712,6 +11925,14 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -10719,6 +11940,23 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = Icon;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -10760,15 +11998,6 @@ AccountIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) Icon;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 				
 						return false;
 					}
@@ -10872,7 +12101,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", id).Replace("\\", "/");
@@ -10889,19 +12117,29 @@ AccountIndex.Summary
 					return RetrieveAccountModule(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountModule");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountModule), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -11101,6 +12339,31 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Profile != null) {
+						((IInformationObject) Profile).UpdateCollections(masterInstance);
+					}
+
+					if(Security != null) {
+						((IInformationObject) Security).UpdateCollections(masterInstance);
+					}
+
+					if(Roles != null) {
+						((IInformationObject) Roles).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_AccountModule_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
+					}
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11108,6 +12371,48 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Profile;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Security;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Roles;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = LocationCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -11327,6 +12632,399 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			public partial class ImageGroupContainer : IInformationObject 
+			{
+				public ImageGroupContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "ImageGroupContainer";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/ImageGroupContainer/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ImageGroupContainer), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ImageGroupContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveImageGroupContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageGroupContainer");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageGroupContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static ImageGroupContainer RetrieveImageGroupContainer(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ImageGroupContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageGroupContainer), null, owner);
+                    return result;
+                }
+
+				public static ImageGroupContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = ImageGroupContainer.RetrieveImageGroupContainer("Content/AaltoGlobalImpact.OIP/ImageGroupContainer/" + contentName, containerOwner);
+					var result = ImageGroupContainer.RetrieveImageGroupContainer("AaltoGlobalImpact.OIP/ImageGroupContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageGroupContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/ImageGroupContainer/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ImageGroupContainer) sourceMaster);
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroupContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ImageGroupContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ImageGroupContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ImageGroupContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "ImageGroupContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref ImageGroupContainer customDemoObject);
+
+
+
+				public static ImageGroupContainer CreateDefault()
+				{
+					var result = new ImageGroupContainer();
+					result.ImageGroups = ImageGroupCollection.CreateDefault();
+					return result;
+				}
+
+				public static ImageGroupContainer CreateDemoDefault()
+				{
+					ImageGroupContainer customDemo = null;
+					ImageGroupContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new ImageGroupContainer();
+					result.ImageGroups = ImageGroupCollection.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(masterInstance is ImageGroupCollection) {
+						CollectionUpdateImplementation.Update_ImageGroupContainer_ImageGroups(this, localCollection:ImageGroups, masterCollection:(ImageGroupCollection) masterInstance);
+					} else if(ImageGroups != null) {
+						((IInformationObject) ImageGroups).UpdateCollections(masterInstance);
+					}
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImageGroups;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = ImageGroups;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
+					{
+						var item = (IInformationObject) ImageGroups;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(ImageGroups != _unmodified_ImageGroups)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) ImageGroups;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(ImageGroups != null) {
+						if(ImageGroups.ID == replacingObject.ID)
+							ImageGroups = (ImageGroupCollection) replacingObject;
+						else {
+							IInformationObject iObject = ImageGroups;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ImageGroupContainer sourceObject)
+				{
+					ImageGroups = sourceObject.ImageGroups;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
+					_unmodified_ImageGroups = ImageGroups;
+					if(ImageGroups != null)
+						((IInformationObject) ImageGroups).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public ImageGroupCollection ImageGroups { get; set; }
+			private ImageGroupCollection _unmodified_ImageGroups;
+			
+			}
+			[DataContract]
 			public partial class LocationContainer : IInformationObject 
 			{
 				public LocationContainer()
@@ -11354,7 +13052,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", id).Replace("\\", "/");
@@ -11371,19 +13068,29 @@ AccountIndex.Summary
 					return RetrieveLocationContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LocationContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -11577,6 +13284,19 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_LocationContainer_Locations(this, localCollection:Locations, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(Locations != null) {
+						((IInformationObject) Locations).UpdateCollections(masterInstance);
+					}
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11584,6 +13304,24 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Locations;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -11707,7 +13445,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", id).Replace("\\", "/");
@@ -11724,19 +13461,29 @@ AccountIndex.Summary
 					return RetrieveAddressAndLocationCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocationCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddressAndLocationCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -11911,6 +13658,33 @@ AccountIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = AddressAndLocation.GetRelativeLocationFromID("dummy");
@@ -11941,7 +13715,7 @@ AccountIndex.Summary
 					// DirectoryToCollection
 					string itemDirectory = GetItemDirectory();
 					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection);
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(AddressAndLocationCollection).FullName);
 				}
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
@@ -12030,6 +13804,17 @@ AccountIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false) {
+						foreach(IInformationObject iObject in CollectionContent)
+							iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+					}
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -12079,7 +13864,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", id).Replace("\\", "/");
@@ -12096,19 +13880,29 @@ AccountIndex.Summary
 					return RetrieveAddressAndLocation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddressAndLocation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -12306,6 +14100,22 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Address != null) {
+						((IInformationObject) Address).UpdateCollections(masterInstance);
+					}
+
+					if(Location != null) {
+						((IInformationObject) Location).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12313,6 +14123,39 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Address;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Location;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -12380,15 +14223,6 @@ AccountIndex.Summary
 							return true;
 						if(Location != _unmodified_Location)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) ReferenceToInformation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 						{
 							IInformationObject item = (IInformationObject) Address;
 							if(item != null) 
@@ -12518,7 +14352,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", id).Replace("\\", "/");
@@ -12535,19 +14368,29 @@ AccountIndex.Summary
 					return RetrieveStreetAddress(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StreetAddress");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StreetAddress), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -12747,6 +14590,14 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12754,6 +14605,16 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -12876,7 +14737,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountContent", id).Replace("\\", "/");
@@ -12893,19 +14753,29 @@ AccountIndex.Summary
 					return RetrieveAccountContent(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountContent");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -13099,6 +14969,14 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13106,6 +14984,16 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -13198,7 +15086,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", id).Replace("\\", "/");
@@ -13215,19 +15102,29 @@ AccountIndex.Summary
 					return RetrieveAccountProfile(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountProfile");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountProfile), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -13427,6 +15324,18 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Address != null) {
+						((IInformationObject) Address).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13434,6 +15343,31 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Address;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ProfileImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -13489,15 +15423,6 @@ AccountIndex.Summary
 							return true;
 						if(Address != _unmodified_Address)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) ProfileImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 						{
 							IInformationObject item = (IInformationObject) Address;
 							if(item != null) 
@@ -13618,7 +15543,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", id).Replace("\\", "/");
@@ -13635,19 +15559,29 @@ AccountIndex.Summary
 					return RetrieveAccountSecurity(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSecurity");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountSecurity), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -13843,6 +15777,22 @@ AccountIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(LoginInfoCollection != null) {
+						((IInformationObject) LoginInfoCollection).UpdateCollections(masterInstance);
+					}
+
+					if(EmailCollection != null) {
+						((IInformationObject) EmailCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13850,6 +15800,32 @@ AccountIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = LoginInfoCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = EmailCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -14014,7 +15990,6 @@ AccountIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", id).Replace("\\", "/");
@@ -14031,19 +16006,29 @@ AccountIndex.Summary
 					return RetrieveAccountRoles(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountRoles");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AccountRoles), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -14246,6 +16231,22 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ModeratorInGroups != null) {
+						((IInformationObject) ModeratorInGroups).UpdateCollections(masterInstance);
+					}
+
+					if(MemberInGroups != null) {
+						((IInformationObject) MemberInGroups).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -14253,6 +16254,32 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ModeratorInGroups;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MemberInGroups;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -14427,7 +16454,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", id).Replace("\\", "/");
@@ -14444,19 +16470,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrievePersonalInfoVisibility(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: PersonalInfoVisibility");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(PersonalInfoVisibility), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -14650,6 +16686,14 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -14657,6 +16701,16 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -14749,7 +16803,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", id).Replace("\\", "/");
@@ -14766,19 +16819,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveReferenceToInformation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceToInformation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceToInformation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -14850,7 +16913,7 @@ AccountRoles.OrganizationsImPartOf
 
 				bool IInformationObject.IsIndependentMaster { 
 					get {
-						return false;
+						return true;
 					}
 				}
 
@@ -14974,6 +17037,14 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -14981,6 +17052,16 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -15083,7 +17164,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", id).Replace("\\", "/");
@@ -15100,19 +17180,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveReferenceCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -15287,6 +17377,31 @@ AccountRoles.OrganizationsImPartOf
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ReferenceToInformation.GetRelativeLocationFromID("dummy");
@@ -15360,14 +17475,6 @@ AccountRoles.OrganizationsImPartOf
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
 						return false;
 					}
 				}
@@ -15394,6 +17501,17 @@ AccountRoles.OrganizationsImPartOf
 					}
 					return null;
 				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false) {
+						foreach(IInformationObject iObject in CollectionContent)
+							iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+					}
+				}
+
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
@@ -15444,7 +17562,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "BlogContainer", id).Replace("\\", "/");
@@ -15461,19 +17578,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveBlogContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -15673,6 +17800,30 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(FeaturedBlog != null) {
+						((IInformationObject) FeaturedBlog).UpdateCollections(masterInstance);
+					}
+
+					if(RecentBlogSummary != null) {
+						((IInformationObject) RecentBlogSummary).UpdateCollections(masterInstance);
+					}
+
+					if(BlogIndexGroup != null) {
+						((IInformationObject) BlogIndexGroup).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15680,6 +17831,48 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = FeaturedBlog;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = RecentBlogSummary;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogIndexGroup;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -15926,7 +18119,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "RecentBlogSummary", id).Replace("\\", "/");
@@ -15943,19 +18135,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveRecentBlogSummary(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RecentBlogSummary");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RecentBlogSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -16151,6 +18353,23 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_RecentBlogSummary_RecentBlogCollection(this, localCollection:RecentBlogCollection, masterCollection:(BlogCollection) masterInstance);
+					} else if(RecentBlogCollection != null) {
+						((IInformationObject) RecentBlogCollection).UpdateCollections(masterInstance);
+					}
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -16158,6 +18377,32 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = RecentBlogCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -16322,7 +18567,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapContainer", id).Replace("\\", "/");
@@ -16339,19 +18583,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveMapContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -16555,6 +18809,38 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(MapFeatured != null) {
+						((IInformationObject) MapFeatured).UpdateCollections(masterInstance);
+					}
+
+					if(MapCollection != null) {
+						((IInformationObject) MapCollection).UpdateCollections(masterInstance);
+					}
+
+					if(MapResultCollection != null) {
+						((IInformationObject) MapResultCollection).UpdateCollections(masterInstance);
+					}
+
+					if(MapIndexCollection != null) {
+						((IInformationObject) MapIndexCollection).UpdateCollections(masterInstance);
+					}
+
+					if(MapMarkers != null) {
+						((IInformationObject) MapMarkers).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -16562,6 +18848,64 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapFeatured;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapResultCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapMarkers;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -16890,7 +19234,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", id).Replace("\\", "/");
@@ -16907,19 +19250,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveMapMarker(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarker");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapMarker), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -17115,6 +19468,18 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Location != null) {
+						((IInformationObject) Location).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17122,6 +19487,24 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Location;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -17255,7 +19638,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", id).Replace("\\", "/");
@@ -17272,19 +19654,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveMapMarkerCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarkerCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapMarkerCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -17459,6 +19851,36 @@ AccountRoles.OrganizationsImPartOf
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = MapMarker.GetRelativeLocationFromID("dummy");
@@ -17567,6 +19989,15 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -17616,7 +20047,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CalendarContainer", id).Replace("\\", "/");
@@ -17633,19 +20063,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveCalendarContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -17845,6 +20285,30 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(CalendarContainerHeader != null) {
+						((IInformationObject) CalendarContainerHeader).UpdateCollections(masterInstance);
+					}
+
+					if(CalendarFeatured != null) {
+						((IInformationObject) CalendarFeatured).UpdateCollections(masterInstance);
+					}
+
+					if(CalendarCollection != null) {
+						((IInformationObject) CalendarCollection).UpdateCollections(masterInstance);
+					}
+
+					if(CalendarIndexCollection != null) {
+						((IInformationObject) CalendarIndexCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17852,6 +20316,48 @@ AccountRoles.OrganizationsImPartOf
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CalendarContainerHeader;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CalendarFeatured;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CalendarCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CalendarIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -18098,7 +20604,6 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AboutContainer", id).Replace("\\", "/");
@@ -18115,19 +20620,29 @@ AccountRoles.OrganizationsImPartOf
 					return RetrieveAboutContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AboutContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AboutContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -18341,6 +20856,18 @@ AboutContainer.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18348,6 +20875,38 @@ AboutContainer.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = MainImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = ImageGroup;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -18424,25 +20983,7 @@ AboutContainer.Body
 						if(ImageGroup != _unmodified_ImageGroup)
 							return true;
 						{
-							IInformationObject item = (IInformationObject) MainImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
 							IInformationObject item = (IInformationObject) Header;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ImageGroup;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -18593,7 +21134,6 @@ AboutContainer.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "OBSAccountContainer", id).Replace("\\", "/");
@@ -18610,19 +21150,29 @@ AboutContainer.Body
 					return RetrieveOBSAccountContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OBSAccountContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OBSAccountContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -18822,6 +21372,30 @@ AboutContainer.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(AccountContainerHeader != null) {
+						((IInformationObject) AccountContainerHeader).UpdateCollections(masterInstance);
+					}
+
+					if(AccountFeatured != null) {
+						((IInformationObject) AccountFeatured).UpdateCollections(masterInstance);
+					}
+
+					if(AccountCollection != null) {
+						((IInformationObject) AccountCollection).UpdateCollections(masterInstance);
+					}
+
+					if(AccountIndexCollection != null) {
+						((IInformationObject) AccountIndexCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18829,6 +21403,48 @@ AboutContainer.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountContainerHeader;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountFeatured;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = AccountIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -19075,7 +21691,6 @@ AboutContainer.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ProjectContainer", id).Replace("\\", "/");
@@ -19092,19 +21707,29 @@ AboutContainer.Body
 					return RetrieveProjectContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProjectContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProjectContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -19304,6 +21929,30 @@ AboutContainer.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ProjectContainerHeader != null) {
+						((IInformationObject) ProjectContainerHeader).UpdateCollections(masterInstance);
+					}
+
+					if(ProjectFeatured != null) {
+						((IInformationObject) ProjectFeatured).UpdateCollections(masterInstance);
+					}
+
+					if(ProjectCollection != null) {
+						((IInformationObject) ProjectCollection).UpdateCollections(masterInstance);
+					}
+
+					if(ProjectIndexCollection != null) {
+						((IInformationObject) ProjectIndexCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -19311,6 +21960,48 @@ AboutContainer.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ProjectContainerHeader;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ProjectFeatured;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ProjectCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ProjectIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -19557,7 +22248,6 @@ AboutContainer.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CourseContainer", id).Replace("\\", "/");
@@ -19574,19 +22264,29 @@ AboutContainer.Body
 					return RetrieveCourseContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CourseContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CourseContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -19786,6 +22486,30 @@ AboutContainer.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(CourseContainerHeader != null) {
+						((IInformationObject) CourseContainerHeader).UpdateCollections(masterInstance);
+					}
+
+					if(CourseFeatured != null) {
+						((IInformationObject) CourseFeatured).UpdateCollections(masterInstance);
+					}
+
+					if(CourseCollection != null) {
+						((IInformationObject) CourseCollection).UpdateCollections(masterInstance);
+					}
+
+					if(CourseIndexCollection != null) {
+						((IInformationObject) CourseIndexCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -19793,6 +22517,48 @@ AboutContainer.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CourseContainerHeader;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CourseFeatured;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CourseCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CourseIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20039,7 +22805,6 @@ AboutContainer.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ContainerHeader", id).Replace("\\", "/");
@@ -20056,19 +22821,29 @@ AboutContainer.Body
 					return RetrieveContainerHeader(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContainerHeader");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContainerHeader), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -20264,6 +23039,14 @@ AboutContainer.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20271,6 +23054,16 @@ AboutContainer.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20373,7 +23166,6 @@ AboutContainer.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ActivitySummaryContainer", id).Replace("\\", "/");
@@ -20390,19 +23182,29 @@ AboutContainer.Body
 					return RetrieveActivitySummaryContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivitySummaryContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivitySummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -20609,6 +23411,31 @@ ActivitySummaryContainer.SummaryBody
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(ActivityIndex != null) {
+						((IInformationObject) ActivityIndex).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is ActivityCollection) {
+						CollectionUpdateImplementation.Update_ActivitySummaryContainer_ActivityCollection(this, localCollection:ActivityCollection, masterCollection:(ActivityCollection) masterInstance);
+					} else if(ActivityCollection != null) {
+						((IInformationObject) ActivityCollection).UpdateCollections(masterInstance);
+					}
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20616,6 +23443,48 @@ ActivitySummaryContainer.SummaryBody
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ActivityIndex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ActivityCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -20872,7 +23741,6 @@ ActivitySummaryContainer.SummaryBody
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ActivityIndex", id).Replace("\\", "/");
@@ -20889,19 +23757,29 @@ ActivitySummaryContainer.SummaryBody
 					return RetrieveActivityIndex(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityIndex");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityIndex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -21111,6 +23989,14 @@ ActivityIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21118,6 +24004,23 @@ ActivityIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = Icon;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -21159,15 +24062,6 @@ ActivityIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) Icon;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 				
 						return false;
 					}
@@ -21271,7 +24165,6 @@ ActivityIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ActivityContainer", id).Replace("\\", "/");
@@ -21288,19 +24181,29 @@ ActivityIndex.Summary
 					return RetrieveActivityContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -21498,6 +24401,26 @@ ActivityIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(ActivityIndex != null) {
+						((IInformationObject) ActivityIndex).UpdateCollections(masterInstance);
+					}
+
+					if(ActivityModule != null) {
+						((IInformationObject) ActivityModule).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21505,6 +24428,40 @@ ActivityIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ActivityIndex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ActivityModule;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -21710,7 +24667,6 @@ ActivityIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ActivityCollection", id).Replace("\\", "/");
@@ -21727,19 +24683,29 @@ ActivityIndex.Summary
 					return RetrieveActivityCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ActivityCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ActivityCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -21914,6 +24880,38 @@ ActivityIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Activity.GetRelativeLocationFromID("dummy");
@@ -21925,13 +24923,32 @@ ActivityIndex.Summary
 
 				public void RefreshContent()
 				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(Activity));
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (Activity) obj));
+            
 				}
 
+				public static ActivityCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return ActivityCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
 
 				public void SubscribeToContentSource()
 				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ActivityCollection).FullName);
 				}
 
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetBlobOwnerAddress(owner, "AaltoGlobalImpact.OIP/ActivityCollection/" + "MasterCollection");
+				}
 
 
 
@@ -22022,6 +25039,15 @@ ActivityIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -22071,7 +25097,6 @@ ActivityIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Activity", id).Replace("\\", "/");
@@ -22088,19 +25113,29 @@ ActivityIndex.Summary
 					return RetrieveActivity(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Activity");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Activity), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -22317,6 +25352,31 @@ Activity.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(Collaborators != null) {
+						((IInformationObject) Collaborators).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is ImageGroupCollection) {
+						CollectionUpdateImplementation.Update_Activity_ImageSets(this, localCollection:ImageSets, masterCollection:(ImageGroupCollection) masterInstance);
+					} else if(ImageSets != null) {
+						((IInformationObject) ImageSets).UpdateCollections(masterInstance);
+					}
+					if(CategoryCollection != null) {
+						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -22324,6 +25384,76 @@ Activity.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Collaborators;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImageSets;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CategoryCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = ProfileImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = IconImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = Location;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -22475,33 +25605,6 @@ Activity.Description
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) ReferenceToInformation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ProfileImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) IconImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 						{
 							IInformationObject item = (IInformationObject) Introduction;
 							if(item != null) 
@@ -22745,7 +25848,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", id).Replace("\\", "/");
@@ -22762,19 +25864,29 @@ Activity.Description
 					return RetrieveModeratorCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ModeratorCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ModeratorCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -22949,6 +26061,36 @@ Activity.Description
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Moderator.GetRelativeLocationFromID("dummy");
@@ -23057,6 +26199,15 @@ Activity.Description
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -23106,7 +26257,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", id).Replace("\\", "/");
@@ -23123,19 +26273,29 @@ Activity.Description
 					return RetrieveModerator(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Moderator");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Moderator), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -23331,6 +26491,14 @@ Activity.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -23338,6 +26506,16 @@ Activity.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -23440,7 +26618,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", id).Replace("\\", "/");
@@ -23457,19 +26634,29 @@ Activity.Description
 					return RetrieveCollaboratorCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratorCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratorCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -23644,6 +26831,36 @@ Activity.Description
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Collaborator.GetRelativeLocationFromID("dummy");
@@ -23752,6 +26969,15 @@ Activity.Description
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -23801,7 +27027,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", id).Replace("\\", "/");
@@ -23818,19 +27043,29 @@ Activity.Description
 					return RetrieveCollaborator(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Collaborator");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Collaborator), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -24028,6 +27263,14 @@ Activity.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -24035,6 +27278,16 @@ Activity.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -24147,7 +27400,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", id).Replace("\\", "/");
@@ -24164,19 +27416,29 @@ Activity.Description
 					return RetrieveCollaboratingGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -24370,6 +27632,14 @@ Activity.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -24377,6 +27647,16 @@ Activity.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -24469,7 +27749,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", id).Replace("\\", "/");
@@ -24486,19 +27765,29 @@ Activity.Description
 					return RetrieveCollaboratingGroupCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroupCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -24673,6 +27962,36 @@ Activity.Description
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = CollaboratingGroup.GetRelativeLocationFromID("dummy");
@@ -24781,6 +28100,15 @@ Activity.Description
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -24830,7 +28158,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", id).Replace("\\", "/");
@@ -24847,19 +28174,29 @@ Activity.Description
 					return RetrieveCollaboratingOrganization(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganization");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganization), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -25053,6 +28390,14 @@ Activity.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25060,6 +28405,16 @@ Activity.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -25152,7 +28507,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", id).Replace("\\", "/");
@@ -25169,19 +28523,29 @@ Activity.Description
 					return RetrieveCollaboratingOrganizationCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganizationCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganizationCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -25356,6 +28720,36 @@ Activity.Description
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = CollaboratingOrganization.GetRelativeLocationFromID("dummy");
@@ -25464,6 +28858,15 @@ Activity.Description
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -25513,7 +28916,6 @@ Activity.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", id).Replace("\\", "/");
@@ -25530,19 +28932,29 @@ Activity.Description
 					return RetrieveGroupSummaryContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupSummaryContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupSummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -25749,6 +29161,30 @@ GroupSummaryContainer.SummaryBody
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(GroupSummaryIndex != null) {
+						((IInformationObject) GroupSummaryIndex).UpdateCollections(masterInstance);
+					}
+
+					if(GroupCollection != null) {
+						((IInformationObject) GroupCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -25756,6 +29192,48 @@ GroupSummaryContainer.SummaryBody
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupSummaryIndex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -26012,7 +29490,6 @@ GroupSummaryContainer.SummaryBody
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", id).Replace("\\", "/");
@@ -26029,19 +29506,29 @@ GroupSummaryContainer.SummaryBody
 					return RetrieveGroupContainer(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupContainer");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -26247,6 +29734,43 @@ GroupSummaryContainer.SummaryBody
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Header != null) {
+						((IInformationObject) Header).UpdateCollections(masterInstance);
+					}
+
+					if(GroupIndex != null) {
+						((IInformationObject) GroupIndex).UpdateCollections(masterInstance);
+					}
+
+					if(GroupProfile != null) {
+						((IInformationObject) GroupProfile).UpdateCollections(masterInstance);
+					}
+
+					if(Collaborators != null) {
+						((IInformationObject) Collaborators).UpdateCollections(masterInstance);
+					}
+
+					if(PendingCollaborators != null) {
+						((IInformationObject) PendingCollaborators).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is ActivityCollection) {
+						CollectionUpdateImplementation.Update_GroupContainer_Activities(this, localCollection:Activities, masterCollection:(ActivityCollection) masterInstance);
+					} else if(Activities != null) {
+						((IInformationObject) Activities).UpdateCollections(masterInstance);
+					}
+					if(Locations != null) {
+						((IInformationObject) Locations).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -26254,6 +29778,72 @@ GroupSummaryContainer.SummaryBody
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Header;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupIndex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = GroupProfile;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Collaborators;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = PendingCollaborators;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Activities;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Locations;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -26623,7 +30213,6 @@ GroupSummaryContainer.SummaryBody
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", id).Replace("\\", "/");
@@ -26640,19 +30229,29 @@ GroupSummaryContainer.SummaryBody
 					return RetrieveGroupIndex(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupIndex");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupIndex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -26862,6 +30461,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -26869,6 +30476,23 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = Icon;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -26910,15 +30534,6 @@ GroupIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) Icon;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 				
 						return false;
 					}
@@ -27022,7 +30637,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", id).Replace("\\", "/");
@@ -27039,19 +30653,29 @@ GroupIndex.Summary
 					return RetrieveAddAddressAndLocationInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddAddressAndLocationInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddAddressAndLocationInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -27245,6 +30869,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27252,6 +30884,16 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -27317,6 +30959,704 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			public partial class AddImageInfo : IInformationObject 
+			{
+				public AddImageInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AddImageInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/AddImageInfo/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(AddImageInfo), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddImageInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AddImageInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAddImageInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddImageInfo");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddImageInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static AddImageInfo RetrieveAddImageInfo(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AddImageInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddImageInfo), null, owner);
+                    return result;
+                }
+
+				public static AddImageInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = AddImageInfo.RetrieveAddImageInfo("Content/AaltoGlobalImpact.OIP/AddImageInfo/" + contentName, containerOwner);
+					var result = AddImageInfo.RetrieveAddImageInfo("AaltoGlobalImpact.OIP/AddImageInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddImageInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddImageInfo/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddImageInfo) sourceMaster);
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddImageInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AddImageInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddImageInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AddImageInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddImageInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddImageInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref AddImageInfo customDemoObject);
+
+
+
+				public static AddImageInfo CreateDefault()
+				{
+					var result = new AddImageInfo();
+					return result;
+				}
+
+				public static AddImageInfo CreateDemoDefault()
+				{
+					AddImageInfo customDemo = null;
+					AddImageInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new AddImageInfo();
+					result.ImageTitle = @"AddImageInfo.ImageTitle";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(ImageTitle != _unmodified_ImageTitle)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddImageInfo sourceObject)
+				{
+					ImageTitle = sourceObject.ImageTitle;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_ImageTitle = ImageTitle;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ImageTitle":
+							ImageTitle = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ImageTitle { get; set; }
+			private string _unmodified_ImageTitle;
+			
+			}
+			[DataContract]
+			public partial class AddImageGroupInfo : IInformationObject 
+			{
+				public AddImageGroupInfo()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "AddImageGroupInfo";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/AddImageGroupInfo/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(AddImageGroupInfo), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "AddImageGroupInfo", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static AddImageGroupInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAddImageGroupInfo(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: AddImageGroupInfo");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddImageGroupInfo), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static AddImageGroupInfo RetrieveAddImageGroupInfo(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (AddImageGroupInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddImageGroupInfo), null, owner);
+                    return result;
+                }
+
+				public static AddImageGroupInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = AddImageGroupInfo.RetrieveAddImageGroupInfo("Content/AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName, containerOwner);
+					var result = AddImageGroupInfo.RetrieveAddImageGroupInfo("AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((AddImageGroupInfo) sourceMaster);
+				}
+
+
+				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddImageGroupInfo));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static AddImageGroupInfo DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(AddImageGroupInfo));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (AddImageGroupInfo) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "AddImageGroupInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AddImageGroupInfo", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref AddImageGroupInfo customDemoObject);
+
+
+
+				public static AddImageGroupInfo CreateDefault()
+				{
+					var result = new AddImageGroupInfo();
+					return result;
+				}
+
+				public static AddImageGroupInfo CreateDemoDefault()
+				{
+					AddImageGroupInfo customDemo = null;
+					AddImageGroupInfo.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new AddImageGroupInfo();
+					result.ImageGroupTitle = @"AddImageGroupInfo.ImageGroupTitle";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject))
+							result.Add(iObject.ID, iObject);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(ImageGroupTitle != _unmodified_ImageGroupTitle)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(AddImageGroupInfo sourceObject)
+				{
+					ImageGroupTitle = sourceObject.ImageGroupTitle;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_ImageGroupTitle = ImageGroupTitle;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ImageGroupTitle":
+							ImageGroupTitle = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ImageGroupTitle { get; set; }
+			private string _unmodified_ImageGroupTitle;
+			
+			}
+			[DataContract]
 			public partial class AddEmailAddressInfo : IInformationObject 
 			{
 				public AddEmailAddressInfo()
@@ -27344,7 +31684,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", id).Replace("\\", "/");
@@ -27361,19 +31700,29 @@ GroupIndex.Summary
 					return RetrieveAddEmailAddressInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddEmailAddressInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddEmailAddressInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -27567,6 +31916,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27574,6 +31931,16 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -27666,7 +32033,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", id).Replace("\\", "/");
@@ -27683,19 +32049,29 @@ GroupIndex.Summary
 					return RetrieveCreateGroupInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CreateGroupInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CreateGroupInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -27889,6 +32265,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -27896,6 +32280,16 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -27988,7 +32382,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", id).Replace("\\", "/");
@@ -28005,19 +32398,29 @@ GroupIndex.Summary
 					return RetrieveAddActivityInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddActivityInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddActivityInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -28211,6 +32614,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -28218,6 +32629,16 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -28310,7 +32731,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AddBlogPostInfo", id).Replace("\\", "/");
@@ -28327,19 +32747,29 @@ GroupIndex.Summary
 					return RetrieveAddBlogPostInfo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddBlogPostInfo");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AddBlogPostInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -28533,6 +32963,14 @@ GroupIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -28540,6 +32978,16 @@ GroupIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -28632,7 +33080,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", id).Replace("\\", "/");
@@ -28649,19 +33096,29 @@ GroupIndex.Summary
 					return RetrieveGroupCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -28836,6 +33293,36 @@ GroupIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Group.GetRelativeLocationFromID("dummy");
@@ -28944,6 +33431,15 @@ GroupIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -28993,7 +33489,6 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Group", id).Replace("\\", "/");
@@ -29010,19 +33505,29 @@ GroupIndex.Summary
 					return RetrieveGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Group), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -29242,6 +33747,27 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Moderators != null) {
+						((IInformationObject) Moderators).UpdateCollections(masterInstance);
+					}
+
+					if(masterInstance is ImageGroupCollection) {
+						CollectionUpdateImplementation.Update_Group_ImageSets(this, localCollection:ImageSets, masterCollection:(ImageGroupCollection) masterInstance);
+					} else if(ImageSets != null) {
+						((IInformationObject) ImageSets).UpdateCollections(masterInstance);
+					}
+					if(CategoryCollection != null) {
+						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29249,6 +33775,61 @@ Group.OrganizationsAndGroupsLinkedToUs
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Moderators;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImageSets;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CategoryCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = ProfileImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = IconImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -29370,33 +33951,6 @@ Group.OrganizationsAndGroupsLinkedToUs
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) ReferenceToInformation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ProfileImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) IconImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 						{
 							IInformationObject item = (IInformationObject) Moderators;
 							if(item != null) 
@@ -29607,7 +34161,6 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", id).Replace("\\", "/");
@@ -29624,19 +34177,29 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return RetrieveIntroduction(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Introduction");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Introduction), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -29837,6 +34400,14 @@ Introduction.Body
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -29844,6 +34415,16 @@ Introduction.Body
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -29946,7 +34527,6 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "BlogCollection", id).Replace("\\", "/");
@@ -29963,19 +34543,29 @@ Introduction.Body
 					return RetrieveBlogCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -30150,6 +34740,38 @@ Introduction.Body
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Blog.GetRelativeLocationFromID("dummy");
@@ -30161,13 +34783,32 @@ Introduction.Body
 
 				public void RefreshContent()
 				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(Blog));
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (Blog) obj));
+            
 				}
 
+				public static BlogCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return BlogCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
 
 				public void SubscribeToContentSource()
 				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(BlogCollection).FullName);
 				}
 
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetBlobOwnerAddress(owner, "AaltoGlobalImpact.OIP/BlogCollection/" + "MasterCollection");
+				}
 
 
 
@@ -30258,6 +34899,15 @@ Introduction.Body
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -30307,7 +34957,6 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Blog", id).Replace("\\", "/");
@@ -30324,19 +34973,29 @@ Introduction.Body
 					return RetrieveBlog(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Blog");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Blog), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -30564,6 +35223,30 @@ Blog.Excerpt
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Introduction != null) {
+						((IInformationObject) Introduction).UpdateCollections(masterInstance);
+					}
+
+					if(VideoGroup != null) {
+						((IInformationObject) VideoGroup).UpdateCollections(masterInstance);
+					}
+
+					if(CategoryCollection != null) {
+						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
+					}
+
+					if(SocialPanel != null) {
+						((IInformationObject) SocialPanel).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -30571,6 +35254,76 @@ Blog.Excerpt
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Introduction;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = VideoGroup;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CategoryCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SocialPanel;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = FeaturedImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = ImageGroup;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = Location;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -30731,34 +35484,7 @@ Blog.Excerpt
 						if(SocialPanel != _unmodified_SocialPanel)
 							return true;
 						{
-							IInformationObject item = (IInformationObject) ReferenceToInformation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
 							IInformationObject item = (IInformationObject) Introduction;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) FeaturedImage;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ImageGroup;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -31032,7 +35758,6 @@ Blog.Excerpt
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "BlogIndexGroup", id).Replace("\\", "/");
@@ -31049,19 +35774,29 @@ Blog.Excerpt
 					return RetrieveBlogIndexGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: BlogIndexGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(BlogIndexGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -31279,6 +36014,34 @@ BlogIndexGroup.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByDate(this, localCollection:BlogByDate, masterCollection:(BlogCollection) masterInstance);
+					} else if(BlogByDate != null) {
+						((IInformationObject) BlogByDate).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByLocation(this, localCollection:BlogByLocation, masterCollection:(BlogCollection) masterInstance);
+					} else if(BlogByLocation != null) {
+						((IInformationObject) BlogByLocation).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByAuthor(this, localCollection:BlogByAuthor, masterCollection:(BlogCollection) masterInstance);
+					} else if(BlogByAuthor != null) {
+						((IInformationObject) BlogByAuthor).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByCategory(this, localCollection:BlogByCategory, masterCollection:(BlogCollection) masterInstance);
+					} else if(BlogByCategory != null) {
+						((IInformationObject) BlogByCategory).UpdateCollections(masterInstance);
+					}
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -31286,6 +36049,55 @@ BlogIndexGroup.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogByDate;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogByLocation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogByAuthor;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogByCategory;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = Icon;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -31391,15 +36203,6 @@ BlogIndexGroup.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) Icon;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 						{
 							IInformationObject item = (IInformationObject) BlogByDate;
 							if(item != null) 
@@ -31603,7 +36406,6 @@ BlogIndexGroup.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CalendarIndex", id).Replace("\\", "/");
@@ -31620,19 +36422,29 @@ BlogIndexGroup.Summary
 					return RetrieveCalendarIndex(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarIndex");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarIndex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -31842,6 +36654,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -31849,6 +36669,23 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = Icon;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -31890,15 +36727,6 @@ CalendarIndex.Summary
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
-						{
-							IInformationObject item = (IInformationObject) Icon;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
 				
 						return false;
 					}
@@ -32002,7 +36830,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Filter", id).Replace("\\", "/");
@@ -32019,19 +36846,29 @@ CalendarIndex.Summary
 					return RetrieveFilter(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Filter");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Filter), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -32225,6 +37062,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32232,6 +37077,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -32324,7 +37179,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Calendar", id).Replace("\\", "/");
@@ -32341,19 +37195,29 @@ CalendarIndex.Summary
 					return RetrieveCalendar(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Calendar");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Calendar), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -32547,6 +37411,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -32554,6 +37426,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -32646,7 +37528,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CalendarCollection", id).Replace("\\", "/");
@@ -32663,19 +37544,29 @@ CalendarIndex.Summary
 					return RetrieveCalendarCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CalendarCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CalendarCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -32850,6 +37741,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Calendar.GetRelativeLocationFromID("dummy");
@@ -32958,6 +37879,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -33007,7 +37937,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Map", id).Replace("\\", "/");
@@ -33024,19 +37953,29 @@ CalendarIndex.Summary
 					return RetrieveMap(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Map");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Map), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -33230,6 +38169,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -33237,6 +38184,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -33329,7 +38286,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", id).Replace("\\", "/");
@@ -33346,19 +38302,29 @@ CalendarIndex.Summary
 					return RetrieveMapCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -33533,6 +38499,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Map.GetRelativeLocationFromID("dummy");
@@ -33641,6 +38637,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -33690,7 +38695,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapIndexCollection", id).Replace("\\", "/");
@@ -33707,19 +38711,29 @@ CalendarIndex.Summary
 					return RetrieveMapIndexCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapIndexCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapIndexCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -33919,6 +38933,30 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(MapByDate != null) {
+						((IInformationObject) MapByDate).UpdateCollections(masterInstance);
+					}
+
+					if(MapByLocation != null) {
+						((IInformationObject) MapByLocation).UpdateCollections(masterInstance);
+					}
+
+					if(MapByAuthor != null) {
+						((IInformationObject) MapByAuthor).UpdateCollections(masterInstance);
+					}
+
+					if(MapByCategory != null) {
+						((IInformationObject) MapByCategory).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -33926,6 +38964,48 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapByDate;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapByLocation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapByAuthor;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MapByCategory;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -34172,7 +39252,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", id).Replace("\\", "/");
@@ -34189,19 +39268,29 @@ CalendarIndex.Summary
 					return RetrieveMapResult(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResult");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResult), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -34395,6 +39484,18 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Location != null) {
+						((IInformationObject) Location).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -34402,6 +39503,24 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Location;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -34525,7 +39644,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", id).Replace("\\", "/");
@@ -34542,19 +39660,29 @@ CalendarIndex.Summary
 					return RetrieveMapResultCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResultCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -34729,6 +39857,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = MapResult.GetRelativeLocationFromID("dummy");
@@ -34837,6 +39995,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -34886,7 +40053,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", id).Replace("\\", "/");
@@ -34903,19 +40069,29 @@ CalendarIndex.Summary
 					return RetrieveMapResultsCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultsCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MapResultsCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -35113,6 +40289,26 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ResultByDate != null) {
+						((IInformationObject) ResultByDate).UpdateCollections(masterInstance);
+					}
+
+					if(ResultByAuthor != null) {
+						((IInformationObject) ResultByAuthor).UpdateCollections(masterInstance);
+					}
+
+					if(ResultByProximity != null) {
+						((IInformationObject) ResultByProximity).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -35120,6 +40316,40 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ResultByDate;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ResultByAuthor;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ResultByProximity;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -35325,7 +40555,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Video", id).Replace("\\", "/");
@@ -35342,19 +40571,29 @@ CalendarIndex.Summary
 					return RetrieveVideo(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Video");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Video), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -35552,6 +40791,18 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(VideoData != null) {
+						((IInformationObject) VideoData).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -35559,6 +40810,24 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = VideoData;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -35702,7 +40971,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Image", id).Replace("\\", "/");
@@ -35719,19 +40987,29 @@ CalendarIndex.Summary
 					return RetrieveImage(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Image");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Image), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -35803,7 +41081,7 @@ CalendarIndex.Summary
 
 				bool IInformationObject.IsIndependentMaster { 
 					get {
-						return false;
+						return true;
 					}
 				}
 
@@ -35909,6 +41187,7 @@ CalendarIndex.Summary
 				public static Image CreateDefault()
 				{
 					var result = new Image();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.ImageData = MediaContent.CreateDefault();
 					return result;
 				}
@@ -35920,6 +41199,7 @@ CalendarIndex.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new Image();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.ImageData = MediaContent.CreateDemoDefault();
 					result.Title = @"Image.Title";
 
@@ -35929,6 +41209,18 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ImageData != null) {
+						((IInformationObject) ImageData).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -35937,8 +41229,42 @@ CalendarIndex.Summary
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImageData;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
+
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					{
 						var item = ImageData;
 						if(item != null)
@@ -35960,6 +41286,11 @@ CalendarIndex.Summary
 							result.Add(iObject.ID, iObject);
 					}
 					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) ImageData;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -35969,6 +41300,8 @@ CalendarIndex.Summary
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
 						if(ImageData != _unmodified_ImageData)
 							return true;
 						if(Title != _unmodified_Title)
@@ -35991,6 +41324,14 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(ImageData != null) {
 						if(ImageData.ID == replacingObject.ID)
 							ImageData = (MediaContent) replacingObject;
@@ -36004,6 +41345,7 @@ CalendarIndex.Summary
 
 				private void CopyContentFrom(Image sourceObject)
 				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
 					Caption = sourceObject.Caption;
@@ -36016,6 +41358,10 @@ CalendarIndex.Summary
 					_unmodified_Title = Title;
 					_unmodified_Caption = Caption;
 				
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ImageData = ImageData;
 					if(ImageData != null)
 						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
@@ -36040,6 +41386,9 @@ CalendarIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
@@ -36079,7 +41428,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", id).Replace("\\", "/");
@@ -36096,19 +41444,29 @@ CalendarIndex.Summary
 					return RetrieveMediaContent(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MediaContent");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(MediaContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -36289,6 +41647,17 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+				}
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+				}
+
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						// Currently is always false
@@ -36368,7 +41737,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroupCollection", id).Replace("\\", "/");
@@ -36385,19 +41753,29 @@ CalendarIndex.Summary
 					return RetrieveImageGroupCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageGroupCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -36572,6 +41950,33 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ImageGroup.GetRelativeLocationFromID("dummy");
@@ -36583,13 +41988,32 @@ CalendarIndex.Summary
 
 				public void RefreshContent()
 				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(ImageGroup));
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (ImageGroup) obj));
+            
 				}
 
+				public static ImageGroupCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return ImageGroupCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
 
 				public void SubscribeToContentSource()
 				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ImageGroupCollection).FullName);
 				}
 
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetBlobOwnerAddress(owner, "AaltoGlobalImpact.OIP/ImageGroupCollection/" + "MasterCollection");
+				}
 
 
 
@@ -36645,14 +42069,6 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
 						return false;
 					}
 				}
@@ -36679,6 +42095,17 @@ CalendarIndex.Summary
 					}
 					return null;
 				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false) {
+						foreach(IInformationObject iObject in CollectionContent)
+							iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+					}
+				}
+
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
@@ -36729,7 +42156,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ImageGroup", id).Replace("\\", "/");
@@ -36746,19 +42172,29 @@ CalendarIndex.Summary
 					return RetrieveImageGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -36830,7 +42266,7 @@ CalendarIndex.Summary
 
 				bool IInformationObject.IsIndependentMaster { 
 					get {
-						return false;
+						return true;
 					}
 				}
 
@@ -36936,6 +42372,7 @@ CalendarIndex.Summary
 				public static ImageGroup CreateDefault()
 				{
 					var result = new ImageGroup();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.ImagesCollection = ImagesCollection.CreateDefault();
 					return result;
 				}
@@ -36947,14 +42384,32 @@ CalendarIndex.Summary
 					if(customDemo != null)
 						return customDemo;
 					var result = new ImageGroup();
+					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.Title = @"ImageGroup.Title";
 
-					result.Description = @"ImageGroup.Description";
+					result.Description = @"ImageGroup.Description
+ImageGroup.Description
+ImageGroup.Description
+ImageGroup.Description
+ImageGroup.Description
+";
 
 					result.ImagesCollection = ImagesCollection.CreateDemoDefault();
 				
 					return result;
 				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ImagesCollection != null) {
+						((IInformationObject) ImagesCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
 
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
@@ -36964,8 +42419,42 @@ CalendarIndex.Summary
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImagesCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+						{
+							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+					}					
+				}
+
+
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					{
 						var item = ImagesCollection;
 						if(item != null)
@@ -36987,6 +42476,11 @@ CalendarIndex.Summary
 							result.Add(iObject.ID, iObject);
 					}
 					{
+						var item = (IInformationObject) ReferenceToInformation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) ImagesCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -36996,6 +42490,8 @@ CalendarIndex.Summary
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
+						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
 						if(Title != _unmodified_Title)
 							return true;
 						if(Description != _unmodified_Description)
@@ -37018,6 +42514,14 @@ CalendarIndex.Summary
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ReferenceToInformation != null) {
+						if(ReferenceToInformation.ID == replacingObject.ID)
+							ReferenceToInformation = (ReferenceToInformation) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(ImagesCollection != null) {
 						if(ImagesCollection.ID == replacingObject.ID)
 							ImagesCollection = (ImagesCollection) replacingObject;
@@ -37031,6 +42535,7 @@ CalendarIndex.Summary
 
 				private void CopyContentFrom(ImageGroup sourceObject)
 				{
+					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					Title = sourceObject.Title;
 					Description = sourceObject.Description;
 					ImagesCollection = sourceObject.ImagesCollection;
@@ -37043,6 +42548,10 @@ CalendarIndex.Summary
 					_unmodified_Title = Title;
 					_unmodified_Description = Description;
 				
+					_unmodified_ReferenceToInformation = ReferenceToInformation;
+					if(ReferenceToInformation != null)
+						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_ImagesCollection = ImagesCollection;
 					if(ImagesCollection != null)
 						((IInformationObject) ImagesCollection).SetInstanceTreeValuesAsUnmodified();
@@ -37067,6 +42576,9 @@ CalendarIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public ReferenceToInformation ReferenceToInformation { get; set; }
+			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public string Title { get; set; }
 			private string _unmodified_Title;
@@ -37106,7 +42618,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "VideoGroup", id).Replace("\\", "/");
@@ -37123,19 +42634,29 @@ CalendarIndex.Summary
 					return RetrieveVideoGroup(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: VideoGroup");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(VideoGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -37333,6 +42854,18 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(VideoCollection != null) {
+						((IInformationObject) VideoCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -37340,6 +42873,24 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = VideoCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -37483,7 +43034,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ImagesCollection", id).Replace("\\", "/");
@@ -37500,19 +43050,29 @@ CalendarIndex.Summary
 					return RetrieveImagesCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ImagesCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImagesCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -37687,6 +43247,31 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Image.GetRelativeLocationFromID("dummy");
@@ -37760,14 +43345,6 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
 						return false;
 					}
 				}
@@ -37794,6 +43371,17 @@ CalendarIndex.Summary
 					}
 					return null;
 				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false) {
+						foreach(IInformationObject iObject in CollectionContent)
+							iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+					}
+				}
+
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
@@ -37844,7 +43432,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "VideoCollection", id).Replace("\\", "/");
@@ -37861,19 +43448,29 @@ CalendarIndex.Summary
 					return RetrieveVideoCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: VideoCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(VideoCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -38048,6 +43645,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Video.GetRelativeLocationFromID("dummy");
@@ -38156,6 +43783,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -38205,7 +43841,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Tooltip", id).Replace("\\", "/");
@@ -38222,19 +43857,29 @@ CalendarIndex.Summary
 					return RetrieveTooltip(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Tooltip");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Tooltip), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -38428,6 +44073,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -38435,6 +44088,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -38527,7 +44190,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanelCollection", id).Replace("\\", "/");
@@ -38544,19 +44206,29 @@ CalendarIndex.Summary
 					return RetrieveSocialPanelCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SocialPanelCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SocialPanelCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -38731,6 +44403,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = SocialPanel.GetRelativeLocationFromID("dummy");
@@ -38839,6 +44541,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -38888,7 +44599,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SocialPanel", id).Replace("\\", "/");
@@ -38905,19 +44615,29 @@ CalendarIndex.Summary
 					return RetrieveSocialPanel(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SocialPanel");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SocialPanel), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -39111,6 +44831,18 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SocialFilter != null) {
+						((IInformationObject) SocialFilter).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -39118,6 +44850,24 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SocialFilter;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -39241,7 +44991,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", id).Replace("\\", "/");
@@ -39258,19 +45007,29 @@ CalendarIndex.Summary
 					return RetrieveLongitude(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Longitude");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Longitude), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -39464,6 +45223,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -39471,6 +45238,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -39563,7 +45340,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", id).Replace("\\", "/");
@@ -39580,19 +45356,29 @@ CalendarIndex.Summary
 					return RetrieveLatitude(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Latitude");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Latitude), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -39786,6 +45572,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -39793,6 +45587,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -39885,7 +45689,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Location", id).Replace("\\", "/");
@@ -39902,19 +45705,29 @@ CalendarIndex.Summary
 					return RetrieveLocation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Location");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Location), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -40112,6 +45925,22 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Longitude != null) {
+						((IInformationObject) Longitude).UpdateCollections(masterInstance);
+					}
+
+					if(Latitude != null) {
+						((IInformationObject) Latitude).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -40119,6 +45948,32 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Longitude;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Latitude;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -40293,7 +46148,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", id).Replace("\\", "/");
@@ -40310,19 +46164,29 @@ CalendarIndex.Summary
 					return RetrieveLocationCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(LocationCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -40497,6 +46361,36 @@ CalendarIndex.Summary
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Location.GetRelativeLocationFromID("dummy");
@@ -40605,6 +46499,15 @@ CalendarIndex.Summary
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -40654,7 +46557,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Date", id).Replace("\\", "/");
@@ -40671,19 +46573,29 @@ CalendarIndex.Summary
 					return RetrieveDate(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Date");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Date), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -40875,6 +46787,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -40882,6 +46802,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -41004,7 +46934,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Sex", id).Replace("\\", "/");
@@ -41021,19 +46950,29 @@ CalendarIndex.Summary
 					return RetrieveSex(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Sex");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Sex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -41227,6 +47166,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -41234,6 +47181,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -41326,7 +47283,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "OBSAddress", id).Replace("\\", "/");
@@ -41343,19 +47299,29 @@ CalendarIndex.Summary
 					return RetrieveOBSAddress(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OBSAddress");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OBSAddress), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -41567,6 +47533,14 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -41574,6 +47548,16 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -41756,7 +47740,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Identity", id).Replace("\\", "/");
@@ -41773,19 +47756,29 @@ CalendarIndex.Summary
 					return RetrieveIdentity(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Identity");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Identity), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -41987,6 +47980,22 @@ CalendarIndex.Summary
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Sex != null) {
+						((IInformationObject) Sex).UpdateCollections(masterInstance);
+					}
+
+					if(Birthday != null) {
+						((IInformationObject) Birthday).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -41994,6 +48003,32 @@ CalendarIndex.Summary
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Sex;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Birthday;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -42188,7 +48223,6 @@ CalendarIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "ImageVideoSoundVectorRaw", id).Replace("\\", "/");
@@ -42205,19 +48239,29 @@ CalendarIndex.Summary
 					return RetrieveImageVideoSoundVectorRaw(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageVideoSoundVectorRaw");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ImageVideoSoundVectorRaw), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -42416,6 +48460,14 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -42423,6 +48475,16 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -42543,7 +48605,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Category", id).Replace("\\", "/");
@@ -42560,19 +48621,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveCategory(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -42766,6 +48837,14 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -42773,6 +48852,16 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -42865,7 +48954,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", id).Replace("\\", "/");
@@ -42882,19 +48970,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveCategoryCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CategoryCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -43069,6 +49167,36 @@ ImageVideoSoundVectorRaw.Vector
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Category.GetRelativeLocationFromID("dummy");
@@ -43177,6 +49305,15 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -43226,7 +49363,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", id).Replace("\\", "/");
@@ -43243,19 +49379,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveSubscriptionCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -43430,6 +49576,36 @@ ImageVideoSoundVectorRaw.Vector
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = Subscription.GetRelativeLocationFromID("dummy");
@@ -43538,6 +49714,15 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -43587,7 +49772,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", id).Replace("\\", "/");
@@ -43604,19 +49788,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveSubscription(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Subscription");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Subscription), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -43818,6 +50012,14 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -43825,6 +50027,16 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -43967,7 +50179,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", id).Replace("\\", "/");
@@ -43984,19 +50195,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveQueueEnvelope(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: QueueEnvelope");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(QueueEnvelope), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -44194,6 +50415,26 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SingleOperation != null) {
+						((IInformationObject) SingleOperation).UpdateCollections(masterInstance);
+					}
+
+					if(OrderDependentOperationSequence != null) {
+						((IInformationObject) OrderDependentOperationSequence).UpdateCollections(masterInstance);
+					}
+
+					if(ErrorContent != null) {
+						((IInformationObject) ErrorContent).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -44201,6 +50442,40 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SingleOperation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = OrderDependentOperationSequence;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ErrorContent;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -44416,7 +50691,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", id).Replace("\\", "/");
@@ -44433,19 +50707,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveOperationRequestCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequestCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequestCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -44620,6 +50904,36 @@ ImageVideoSoundVectorRaw.Vector
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = OperationRequest.GetRelativeLocationFromID("dummy");
@@ -44728,6 +51042,15 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -44777,7 +51100,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", id).Replace("\\", "/");
@@ -44794,19 +51116,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveOperationRequest(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequest");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequest), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -45008,6 +51340,34 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SubscriberNotification != null) {
+						((IInformationObject) SubscriberNotification).UpdateCollections(masterInstance);
+					}
+
+					if(UpdateWebContentOperation != null) {
+						((IInformationObject) UpdateWebContentOperation).UpdateCollections(masterInstance);
+					}
+
+					if(RefreshDefaultViewsOperation != null) {
+						((IInformationObject) RefreshDefaultViewsOperation).UpdateCollections(masterInstance);
+					}
+
+					if(DeleteEntireOwner != null) {
+						((IInformationObject) DeleteEntireOwner).UpdateCollections(masterInstance);
+					}
+
+					if(DeleteOwnerContent != null) {
+						((IInformationObject) DeleteOwnerContent).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -45015,6 +51375,56 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SubscriberNotification;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = UpdateWebContentOperation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = RefreshDefaultViewsOperation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = DeleteEntireOwner;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = DeleteOwnerContent;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -45302,7 +51712,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", id).Replace("\\", "/");
@@ -45319,19 +51728,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveDeleteEntireOwnerOperation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteEntireOwnerOperation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteEntireOwnerOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -45527,6 +51946,14 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -45534,6 +51961,16 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -45636,7 +52073,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", id).Replace("\\", "/");
@@ -45653,19 +52089,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveDeleteOwnerContentOperation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteOwnerContentOperation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteOwnerContentOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -45861,6 +52307,14 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -45868,6 +52322,16 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -45970,7 +52434,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", id).Replace("\\", "/");
@@ -45987,19 +52450,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveSystemError(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemError");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemError), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -46197,6 +52670,22 @@ ImageVideoSoundVectorRaw.Vector
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SystemErrorItems != null) {
+						((IInformationObject) SystemErrorItems).UpdateCollections(masterInstance);
+					}
+
+					if(MessageContent != null) {
+						((IInformationObject) MessageContent).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -46204,6 +52693,32 @@ ImageVideoSoundVectorRaw.Vector
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SystemErrorItems;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MessageContent;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -46388,7 +52903,6 @@ ImageVideoSoundVectorRaw.Vector
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", id).Replace("\\", "/");
@@ -46405,19 +52919,29 @@ ImageVideoSoundVectorRaw.Vector
 					return RetrieveSystemErrorItem(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItem");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -46618,6 +53142,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -46625,6 +53157,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -46727,7 +53269,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", id).Replace("\\", "/");
@@ -46744,19 +53285,29 @@ SystemErrorItem.LongDescription
 					return RetrieveSystemErrorItemCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItemCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItemCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -46931,6 +53482,36 @@ SystemErrorItem.LongDescription
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = SystemErrorItem.GetRelativeLocationFromID("dummy");
@@ -47039,6 +53620,15 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -47088,7 +53678,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", id).Replace("\\", "/");
@@ -47105,19 +53694,29 @@ SystemErrorItem.LongDescription
 					return RetrieveInformationSource(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSource");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSource), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -47321,6 +53920,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -47328,6 +53935,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -47490,7 +54107,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", id).Replace("\\", "/");
@@ -47507,19 +54123,29 @@ SystemErrorItem.LongDescription
 					return RetrieveInformationSourceCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSourceCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSourceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -47694,6 +54320,36 @@ SystemErrorItem.LongDescription
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = InformationSource.GetRelativeLocationFromID("dummy");
@@ -47802,6 +54458,15 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -47851,7 +54516,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", id).Replace("\\", "/");
@@ -47868,19 +54532,29 @@ SystemErrorItem.LongDescription
 					return RetrieveRefreshDefaultViewsOperation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RefreshDefaultViewsOperation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RefreshDefaultViewsOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -48076,6 +54750,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -48083,6 +54765,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -48185,7 +54877,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", id).Replace("\\", "/");
@@ -48202,19 +54893,29 @@ SystemErrorItem.LongDescription
 					return RetrieveUpdateWebContentOperation(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentOperation");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -48416,6 +55117,18 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Handlers != null) {
+						((IInformationObject) Handlers).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -48423,6 +55136,24 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Handlers;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -48596,7 +55327,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", id).Replace("\\", "/");
@@ -48613,19 +55343,29 @@ SystemErrorItem.LongDescription
 					return RetrieveUpdateWebContentHandlerItem(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerItem");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentHandlerItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -48821,6 +55561,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -48828,6 +55576,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -48930,7 +55688,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", id).Replace("\\", "/");
@@ -48947,19 +55704,29 @@ SystemErrorItem.LongDescription
 					return RetrieveUpdateWebContentHandlerCollection(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerCollection");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UpdateWebContentHandlerCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -49134,6 +55901,36 @@ SystemErrorItem.LongDescription
 
 
 				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = UpdateWebContentHandlerItem.GetRelativeLocationFromID("dummy");
@@ -49242,6 +56039,15 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -49291,7 +56097,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", id).Replace("\\", "/");
@@ -49308,19 +56113,29 @@ SystemErrorItem.LongDescription
 					return RetrieveSubscriberInput(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriberInput");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriberInput), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -49520,6 +56335,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -49527,6 +56350,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -49649,7 +56482,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", id).Replace("\\", "/");
@@ -49666,19 +56498,29 @@ SystemErrorItem.LongDescription
 					return RetrieveMonitor(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Monitor");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Monitor), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -49880,6 +56722,14 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -49887,6 +56737,16 @@ SystemErrorItem.LongDescription
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -50039,7 +56899,6 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", id).Replace("\\", "/");
@@ -50056,19 +56915,29 @@ SystemErrorItem.LongDescription
 					return RetrieveIconTitleDescription(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: IconTitleDescription");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(IconTitleDescription), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -50269,6 +57138,14 @@ IconTitleDescription.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -50276,6 +57153,16 @@ IconTitleDescription.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -50385,7 +57272,6 @@ IconTitleDescription.Description
 					return informationObjects.ToArray();
 				}
 
-
                 public static string GetRelativeLocationFromID(string id)
                 {
                     return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", id).Replace("\\", "/");
@@ -50402,19 +57288,29 @@ IconTitleDescription.Description
 					return RetrieveAboutAGIApplications(relativeLocation, owner);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AboutAGIApplications");
+					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AboutAGIApplications), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
 						master = this;
+						initiated = true;
 					}
 					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
 
@@ -50610,6 +57506,22 @@ IconTitleDescription.Description
 					return result;
 				}
 
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(BuiltForAnybody != null) {
+						((IInformationObject) BuiltForAnybody).UpdateCollections(masterInstance);
+					}
+
+					if(ForAllPeople != null) {
+						((IInformationObject) ForAllPeople).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -50617,6 +57529,32 @@ IconTitleDescription.Description
                         return;
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BuiltForAnybody;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ForAllPeople;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
 
 				private object FindFromObjectTree(string objectId)
 				{

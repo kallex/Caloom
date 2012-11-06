@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using AaltoGlobalImpact.OIP;
 
@@ -18,9 +19,12 @@ namespace TheBall
         public const string SubscribeType_MasterToReferenceDelete = "MasterToReferenceDelete";
         public const string SubscribeType_DirectoryToCollection = "DirectoryToCollectionUpdate";
         public const string SubscribeType_CollectionToCollectionUpdate = "CollectionToCollectionUpdate";
+        public const string SubscribeType_MasterCollectionToContainerUpdate = "MasterCollectionToContainerUpdate";
 
         public static void AddSubscriptionToObject(string targetLocation, string subscriberLocation, string subscriptionType, string targetTypeName = null, string subscriberTypeName = null)
         {
+            if(targetLocation == subscriberLocation)
+                throw new InvalidDataException("Self-circular subscription targeting self attempted: " + targetLocation);
             var sub = GetSubscriptionToObject(targetLocation, subscriberLocation, subscriptionType, targetTypeName:targetTypeName, subscriberTypeName:subscriberTypeName);
             SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             if(subscriptionCollection == null)
@@ -28,10 +32,23 @@ namespace TheBall
                 subscriptionCollection = new SubscriptionCollection();
                 subscriptionCollection.SetRelativeLocationAsMetadataTo(targetLocation);
             }
-            if (subscriptionCollection.CollectionContent.Exists(existing => existing.SubscriberRelativeLocation == sub.SubscriberRelativeLocation 
-                && existing.SubscriptionType == sub.SubscriptionType ))
-                return;
-            subscriptionCollection.CollectionContent.Add(sub);
+            var alreadyExists =
+                subscriptionCollection.CollectionContent.FirstOrDefault(
+                    existing => existing.SubscriberRelativeLocation == sub.SubscriberRelativeLocation
+                                && existing.SubscriptionType == sub.SubscriptionType);
+            if(alreadyExists != null)
+            {
+                // If the values match, don't save when there are no changes
+                if (alreadyExists.SubscriberInformationObjectType == sub.SubscriberInformationObjectType &&
+                    alreadyExists.TargetInformationObjectType == sub.TargetInformationObjectType)
+                    return;
+                // ... otherwise update the values 
+                alreadyExists.SubscriberInformationObjectType = sub.SubscriberInformationObjectType;
+                alreadyExists.TargetInformationObjectType = sub.TargetInformationObjectType;
+            } else
+            {
+                subscriptionCollection.CollectionContent.Add(sub);
+            }
             StorageSupport.StoreInformation(subscriptionCollection);
         }
 
@@ -137,6 +154,12 @@ namespace TheBall
         {
             AddSubscriptionToObject(masterInstance.RelativeLocation, containerObject.RelativeLocation, SubscribeType_MasterToReferenceUpdate, targetTypeName:masterInstance.GetType().FullName,
                 subscriberTypeName:containerObject.GetType().FullName);
+        }
+
+        public static void SetCollectionSubscriptionToMaster(IInformationObject containerObject, string masterCollectionLocation, Type collectionType)
+        {
+            AddSubscriptionToObject(masterCollectionLocation, containerObject.RelativeLocation, SubscribeType_MasterCollectionToContainerUpdate, collectionType.FullName,
+                containerObject.GetType().FullName);
         }
     }
 }

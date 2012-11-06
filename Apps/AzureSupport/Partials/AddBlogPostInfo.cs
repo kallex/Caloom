@@ -17,11 +17,11 @@ namespace AaltoGlobalImpact.OIP
             blog.ReferenceToInformation.Title = blog.Title;
             blog.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(blog);
             blog.Published = DateTime.Now;
-            StorageSupport.StoreInformation(blog);
+            StorageSupport.StoreInformationMasterFirst(blog, owner);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, blog, owner);
-            BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
-            blogContainer.AddNewBlogPost(blog);
-            StorageSupport.StoreInformation(blogContainer);
+            //BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
+            //blogContainer.AddNewBlogPost(blog);
+            //StorageSupport.StoreInformation(blogContainer);
             Title = "";
             return true;
         }

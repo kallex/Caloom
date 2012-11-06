@@ -7,6 +7,17 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
+    partial class Blog : IBeforeStoreHandler
+    {
+        public void PerformBeforeStoreUpdate()
+        {
+            if (ReferenceToInformation == null)
+                ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
+            this.ReferenceToInformation.Title = this.Title;
+            ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+        }
+    }
+#if jsondatetimefixed
     partial class Blog : IAdditionalFormatProvider
     {
         public AdditionalFormatContent[] GetAdditionalContentToStore()
@@ -32,4 +43,5 @@ namespace AaltoGlobalImpact.OIP
         }
 
     }
+#endif
 }

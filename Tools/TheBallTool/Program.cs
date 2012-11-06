@@ -28,21 +28,12 @@ namespace TheBallTool
                 InformationContext.InitializeFunctionality(3, true);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
 
-                //testContentFetch();
-                //DebugSomething();
-                //return;
+                if(DataPatcher.DoPatching())
+                    return;
+
                 //ProcessErrors(false);
                 //return;
 
-                //OperationRequest operationRequest = PushTestQueue();
-                //QueueEnvelope envelope = new QueueEnvelope();
-                //envelope.SingleOperation = operationRequest;
-                //RunQueueWorker(null);
-                //return;
-                //var test1 = TBRAccountRoot.GetAllAccountIDs();
-                //var test2 = TBRGroupRoot.GetAllGroupIDs();
-
-                //TBCollaboratingGroup webGroup = InitializeDefaultOIPWebGroup();
                 string templateLocation = "livetemplate";
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
@@ -66,14 +57,15 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
-                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
 
                 //DeleteAllAccountAndGroupContents(true);
                 //RefreshAllAccounts();
 
                 // TODO: The delete above needs to go through first before the refresh one below
 
-                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation");
+                RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation",
+                    "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup");
 
                 //RunTaskedQueueWorker();
 
@@ -511,9 +503,15 @@ namespace TheBallTool
         }
 
 
-        private static void doTest(string connStr)
+        private static void doTestxyz()
         {
-            StorageSupport.InitializeWithConnectionString(connStr);
+            //StorageSupport.InitializeWithConnectionString(connStr);
+            VirtualOwner owner = new VirtualOwner("acc", "0c560c69-c3a7-4363-b125-ba1660d21cf4");
+            AddressAndLocationCollection locationCollection = new AddressAndLocationCollection();
+            locationCollection.SetLocationAsOwnerContent(owner, "MasterCollection");
+            IInformationCollection informationCollection = locationCollection;
+            informationCollection.RefreshContent();
+            return;
 /*            AboutAGIApplications target = new AboutAGIApplications()
                                               {
                                                   ID = "TargetID1",

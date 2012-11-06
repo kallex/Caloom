@@ -823,8 +823,65 @@ namespace TheBall
             }
         }
 
-        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner = null)
+        public static void ReconnectMastersAndCollections(this IInformationObject informationObject, bool updateContents)
         {
+            VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
+            List<IInformationObject> masterObjects = new List<IInformationObject>();
+            List<IInformationObject> masterReferringCollections = new List<IInformationObject>();
+            informationObject.FindObjectsFromTree(masterObjects, candidate => candidate.IsIndependentMaster, true);
+            informationObject.FindObjectsFromTree(
+                masterReferringCollections, candidate =>
+                                                {
+                                                    IInformationCollection informationCollection =
+                                                        candidate as IInformationCollection;
+                                                    return informationCollection != null &&
+                                                           informationCollection.IsMasterCollection;
+                                                }, true);
+            foreach(var referenceMaster in masterObjects)
+            {
+                var realMaster = referenceMaster.RetrieveMaster(true);
+                SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject, masterInstance: realMaster, referenceInstance: referenceMaster);
+                if (updateContents)
+                {
+                    if (referenceMaster.MasterETag != realMaster.ETag)
+                    {
+                        referenceMaster.UpdateMasterValueTreeFromOtherInstance(realMaster);
+                        referenceMaster.MasterETag = realMaster.ETag;
+                    }
+                }
+            }
+            foreach(IInformationCollection referringCollection in masterReferringCollections)
+            {
+                IInformationObject referringObject = (IInformationObject) referringCollection;
+                FixOwnerLocation(referringObject, owner);
+                string masterLocation = referringCollection.GetMasterLocation();
+                // Don't self master
+                if (masterLocation == referringObject.RelativeLocation)
+                    continue;
+                SubscribeSupport.SetCollectionSubscriptionToMaster(containerObject: informationObject,
+                                                                   masterCollectionLocation: masterLocation,
+                                                                   collectionType: referringCollection.GetType());
+                if(updateContents)
+                {
+                    var masterInstance = referringCollection.GetMasterInstance();
+                    informationObject.UpdateCollections(masterInstance: masterInstance);
+                }
+            }
+            if (updateContents)
+                StoreInformation(informationObject);
+        }
+
+        public static void FixOwnerLocation(IInformationObject informationObject, IContainerOwner owner)
+        {
+            string ownerLocation = GetBlobOwnerAddress(owner, informationObject.RelativeLocation);
+            informationObject.RelativeLocation = ownerLocation;
+        }
+
+        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner)
+        {
+            IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
+            if(beforeStoreHandler != null)
+                beforeStoreHandler.PerformBeforeStoreUpdate();
             Dictionary<string, IInformationObject> modifiedMasters =
                 informationObject.CollectMasterObjects(candidate => candidate.IsInstanceTreeModified);
             foreach (var key in modifiedMasters.Keys)
@@ -832,19 +889,25 @@ namespace TheBall
                 var referenceInstance = modifiedMasters[key];
                 if (referenceInstance == informationObject) // Don't master-manage the currently being saved object
                     continue;
-                var realMaster = referenceInstance.RetrieveMaster(true);
+                FixOwnerLocation(referenceInstance, owner);
+                // TODO: 
+                bool masterDidNotExist;
+                var realMaster = referenceInstance.RetrieveMaster(true, out masterDidNotExist);
                 SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject,
                                                  referenceInstance: referenceInstance, masterInstance: realMaster);
                 // Compare MasterEtag for reference vs master - throw Exception on mismatch
-                if (referenceInstance.MasterETag != realMaster.ETag)
+                if(masterDidNotExist == false)
                 {
-                    WorkerSupport.UpdateContainerFromMaster(informationObject.RelativeLocation, informationObject.GetType().FullName,
-                        realMaster.RelativeLocation, realMaster.GetType().FullName);
-                    throw new ReferenceOutdatedException(containerObject: informationObject, referenceInstance: referenceInstance, masterInstance: realMaster);
+                    if (referenceInstance.MasterETag != realMaster.ETag)
+                    {
+                        WorkerSupport.UpdateContainerFromMaster(informationObject.RelativeLocation, informationObject.GetType().FullName,
+                            realMaster.RelativeLocation, realMaster.GetType().FullName);
+                        throw new ReferenceOutdatedException(containerObject: informationObject, referenceInstance: referenceInstance, masterInstance: realMaster);
+                    }
+                    // Update and store real master, get the up-to-date ETag for reference
+                    realMaster.UpdateMasterValueTreeFromOtherInstance(referenceInstance);
+                    StorageSupport.StoreInformation(realMaster, owner);
                 }
-                // Update and store real master, get the up-to-date ETag for reference
-                realMaster.UpdateMasterValueTreeFromOtherInstance(referenceInstance);
-                StorageSupport.StoreInformation(realMaster, owner);
                 referenceInstance.MasterETag = realMaster.ETag;
             }
             return StoreInformation(informationObject, owner);
@@ -962,7 +1025,11 @@ namespace TheBall
 
         public static IInformationObject[] RetrieveInformationObjects(string itemDirectory, Type type)
         {
-            var blobList = CurrActiveContainer.GetBlobListing(itemDirectory, withMetaData: false).ToArray();
+            var result =
+                CurrActiveContainer.GetInformationObjects(itemDirectory, iObj => iObj.GetType() == type).ToArray();
+            return result;
+            /*
+            var blobList = CurrActiveContainer.GetBlobListing(itemDirectory, withMetaData: true).ToArray();
             List<IInformationObject> result = new List<IInformationObject>(blobList.Length);
             foreach(CloudBlockBlob blob in blobList)
             {
@@ -970,6 +1037,7 @@ namespace TheBall
                 result.Add(item);
             }
             return result.ToArray();
+             * */
         }
 
         public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)

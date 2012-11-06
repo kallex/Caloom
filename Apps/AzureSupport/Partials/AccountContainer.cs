@@ -6,6 +6,11 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class AccountContainer
     {
+        void kk()
+        {
+            IInformationCollection c;
+        }
+
         //void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
         //{
         //    if (sourceMaster == null)

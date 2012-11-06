@@ -263,7 +263,7 @@ namespace TheBall
 
         private static bool ProcessLine(string[] lines, ref int currLineIx, string line, StringBuilder result, List<ContentItem> contentRoots, Stack<StackContextItem> contextStack, List<ErrorItem> errorList)
         {
-            if (line.StartsWith(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
+            if (line.Contains(TheBallPrefix) == false && line.Contains("[!ATOM]") == false)
             {
                 result.AppendLine(line);
                 return contextStack.Count > 0;
@@ -626,6 +626,8 @@ namespace TheBall
         public static void RefreshContent(CloudBlob webPageBlob, bool skipIfSourcesIntact = false)
         {
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
+            if(sources == null)
+                throw new InvalidDataException("Web page to refresh is missing information sources: " + webPageBlob.Name);
             if(skipIfSourcesIntact)
             {
                 bool sourcesIntact = sources.HasAnySourceChanged() == false;
@@ -633,6 +635,8 @@ namespace TheBall
                     return;
             }
             InformationSource templateSource = sources.CollectionContent.First(src => src.IsWebTemplateSource);
+            if(templateSource == null)
+                throw new InvalidDataException("Web page to refresh is missing template source: " + webPageBlob.Name);
             CloudBlob templateBlob =
                 StorageSupport.CurrActiveContainer.GetBlockBlobReference(templateSource.SourceLocation);
             RenderTemplateWithContentToBlob(templateBlob, webPageBlob);
@@ -739,12 +743,13 @@ namespace TheBall
             }
             // Publish group public content
             var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
+            operationRequests.Add(publishPublicContent);
             OperationRequest publishDefault = null;
             if (grpID == DefaultGroupID)
             {
                 publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+                operationRequests.Add(publishDefault);
             }
-            operationRequests.Add(publishPublicContent);
             if(useWorker)
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);

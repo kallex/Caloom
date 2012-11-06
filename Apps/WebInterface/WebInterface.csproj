@@ -125,6 +125,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />
+    <None Include="Properties\PublishProfiles\demopublicoip.aaltoglobalimpact.org.pubxml" />
+    <None Include="Properties\PublishProfiles\demowww.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\theball - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\theball - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Web Role OIPSSL.pubxml" />

@@ -30,6 +30,8 @@ namespace TheBall
         {
             if (String.IsNullOrEmpty(subscription.SubscriptionType))
                 return;
+            if(subscription.TargetRelativeLocation == subscription.SubscriberRelativeLocation)
+                throw new InvalidDataException("Self-circular subscription for target: " + subscription.TargetRelativeLocation);
             if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource)
             {
                 try
@@ -83,10 +85,29 @@ namespace TheBall
                 UpdateCollectionFromMasterCollection(referenceCollectionType, referenceCollectionLocation,
                                                      masterCollectionType, masterCollectionLocation);
             }
+            else if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_MasterCollectionToContainerUpdate)
+            {
+                string masterCollectionLocation = subscription.TargetRelativeLocation;
+                string masterCollectionType = subscription.TargetInformationObjectType;
+                string containerLocation = subscription.SubscriberRelativeLocation;
+                string containerType = subscription.SubscriberInformationObjectType;
+                UpdateContainerFromMasterCollection(containerType, containerLocation,
+                                                     masterCollectionType, masterCollectionLocation);
+            }
             else
                 throw new InvalidDataException(String.Format(
                     "Unsupported subscription type {0} for object: {1} by {2}", subscription.SubscriptionType,
                     subscription.TargetRelativeLocation, subscription.SubscriberRelativeLocation));
+        }
+
+        private static void UpdateContainerFromMasterCollection(string containerType, string containerLocation, string masterCollectionType, string masterCollectionLocation)
+        {
+            IInformationObject containerObject = StorageSupport.RetrieveInformation(containerLocation, containerType);
+            IInformationObject masterCollectionObject = StorageSupport.RetrieveInformation(masterCollectionLocation,
+                                                                                           masterCollectionType);
+            IInformationCollection masterCollection = (IInformationCollection) masterCollectionObject;
+            containerObject.UpdateCollections(masterCollection);
+            StorageSupport.StoreInformation(containerObject);
         }
 
         private static void UpdateCollectionFromMasterCollection(string referenceCollectionType, string referenceCollectionLocation, string masterCollectionType, string masterCollectionLocation)
@@ -256,7 +277,21 @@ namespace TheBall
                     ProcessSingleOperation(envelope.SingleOperation);
                 if (envelope.OrderDependentOperationSequence != null)
                 {
-                    envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
+                    Exception firstException = null;
+                    //envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
+                    foreach(var singleOperation in envelope.OrderDependentOperationSequence.CollectionContent)
+                    {
+                        try
+                        {
+                            ProcessSingleOperation(singleOperation);
+                        } catch(Exception ex)
+                        {
+                            firstException = ex;
+                            ErrorSupport.ReportException(ex);
+                        }
+                    }
+                    if (firstException != null)
+                        throw firstException;
                 }
             }
             catch (Exception ex)
