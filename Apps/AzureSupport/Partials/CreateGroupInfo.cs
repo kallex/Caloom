@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class CreateGroupInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if(GroupName == "")
                 throw new InvalidDataException("Group name must be given");

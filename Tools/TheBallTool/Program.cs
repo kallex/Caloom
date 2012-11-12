@@ -57,7 +57,8 @@ namespace TheBallTool
                 string[] accountTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
                         ToArray();
-                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                //UploadAndMoveUnused(accountTemplates, null, null);
 
                 //DeleteAllAccountAndGroupContents(true);
                 //RefreshAllAccounts();
@@ -279,12 +280,21 @@ namespace TheBallTool
 
         private static void UploadAndMoveUnused(string[] accountTemplates, string[] groupTemplates, string[] publicTemplates)
         {
-            string[] accountUnusedFiles = FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
-            string[] groupUnusedFiles = FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
-            string[] publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
-            string[] everyWhereUnusedFiles =
-                accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).ToArray();
-            //FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
+            string[] accountUnusedFiles = null;
+            if(accountTemplates != null)
+                accountUnusedFiles = FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
+            string[] groupUnusedFiles = null;
+            if(groupTemplates != null)
+                groupUnusedFiles = FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
+            string[] publicUnusedFiles = null;
+            if(publicTemplates != null)
+                publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
+            if(accountTemplates != null && groupTemplates != null && publicTemplates != null)
+            {
+                string[] everyWhereUnusedFiles =
+                    accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).ToArray();
+                //FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
+            }
         }
 
         private static void DeleteAllAccountAndGroupContents(bool useWorker)

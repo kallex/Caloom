@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Web;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class AddImageInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if(ImageTitle == "")
                 throw new InvalidDataException("Image title is mandatory");
@@ -18,13 +19,13 @@ namespace AaltoGlobalImpact.OIP
             image.Title = ImageTitle;
             StorageSupport.StoreInformationMasterFirst(image, owner);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, image, owner);
-            return false;
+            return true;
         }
     }
 
     partial class AddImageGroupInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if(ImageGroupTitle == "")
                 throw new InvalidDataException("Image group title is mandatory");
@@ -35,13 +36,13 @@ namespace AaltoGlobalImpact.OIP
             imageGroup.Title = ImageGroupTitle;
             StorageSupport.StoreInformationMasterFirst(imageGroup, owner);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, imageGroup, owner);
-            return false;
+            return true;
         }
     }
 
     partial class AddAddressAndLocationInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if (LocationName == "")
                 throw new InvalidDataException("Location name is mandatory");
@@ -72,7 +73,7 @@ namespace AaltoGlobalImpact.OIP
             //    //groupContainer.Locations.CollectionContent.Add(location);
             //}
             //StorageSupport.StoreInformation(container);
-            return false;
+            return true;
             
             /*
             location.Address = Address;

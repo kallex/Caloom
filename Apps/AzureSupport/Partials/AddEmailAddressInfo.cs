@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class AddEmailAddressInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             // TODO: Properly separate acct add email and grp invite
             if (RelativeLocation.StartsWith("acc/"))
@@ -18,7 +19,7 @@ namespace AaltoGlobalImpact.OIP
             else
                 throw new InvalidDataException("Relative location of AddEmailAddressInfo is not acc or grp context bound");
             this.EmailAddress = "";
-            return false;
+            return true;
         }
 
         private void GroupInvitationHandling()

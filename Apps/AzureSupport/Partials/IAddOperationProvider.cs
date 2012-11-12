@@ -1,7 +1,9 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System.Web;
+
+namespace AaltoGlobalImpact.OIP
 {
     public interface IAddOperationProvider
     {
-        bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation);
+        bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files);
     }
 }

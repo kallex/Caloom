@@ -101,20 +101,19 @@ namespace TheBallTool
             return accountLocs.ToArray();
         }
 
-        public static void ReconnedGroupsMastersAndCollections()
+        public static void ReconnectGroupsMastersAndCollections()
         {
             var groupLocs = GetAllGroupLocations();
             foreach(var grpLoc in groupLocs)
                 ReconnectMastersAndCollections(grpLoc);
         }
 
-        public static void ReconnedAccountsMastersAndCollections()
+        public static void ReconnectAccountsMastersAndCollections()
         {
             var acctLocs = GetAllAccountLocations();
             foreach (var acctLoc in acctLocs)
                 ReconnectMastersAndCollections(acctLoc);
         }
-
 
         private static void ReconnectMastersAndCollections(string groupLoc)
         {
@@ -157,12 +156,14 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            //return false;
+            return false;
             Debugger.Break();
             bool skip = false;
             if(skip == false)
                 throw new NotSupportedException("Skip this with debugger");
-            EnsureAndRefreshMasterCollections();
+            //EnsureAndRefreshMasterCollections();
+            ReconnectAccountsMastersAndCollections();
+            ReconnectGroupsMastersAndCollections();
             return true;
         }
     }

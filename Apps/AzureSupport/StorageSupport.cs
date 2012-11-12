@@ -904,6 +904,9 @@ namespace TheBall
                             realMaster.RelativeLocation, realMaster.GetType().FullName);
                         throw new ReferenceOutdatedException(containerObject: informationObject, referenceInstance: referenceInstance, masterInstance: realMaster);
                     }
+                    IBeforeStoreHandler referenceStoreHandler = referenceInstance as IBeforeStoreHandler;
+                    if(referenceStoreHandler != null)
+                        referenceStoreHandler.PerformBeforeStoreUpdate();
                     // Update and store real master, get the up-to-date ETag for reference
                     realMaster.UpdateMasterValueTreeFromOtherInstance(referenceInstance);
                     StorageSupport.StoreInformation(realMaster, owner);

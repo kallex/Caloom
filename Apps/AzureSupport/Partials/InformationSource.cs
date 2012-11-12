@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
+    [DebuggerDisplay("Source: {SourceName} Type: {SourceType} IO: {SourceInformationObjectType} ETag: {SourceETag} Mod: {SourceLastModified}")]
     partial class InformationSource
     {
         public bool IsInformationObjectSource

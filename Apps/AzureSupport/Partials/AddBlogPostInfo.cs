@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class AddBlogPostInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if(Title == "")
                 throw new InvalidDataException("Blog title is mandatory");

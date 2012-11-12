@@ -1,11 +1,12 @@
 ﻿using System.IO;
+using System.Web;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class AddActivityInfo : IAddOperationProvider
     {
-        public bool PerformAddOperation(InformationSourceCollection sources, string requesterLocation)
+        public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             if (ActivityName == "")
                 throw new InvalidDataException("Activity name is mandatory");
@@ -20,7 +21,7 @@ namespace AaltoGlobalImpact.OIP
             //ActivitySummaryContainer summaryContainer = ActivitySummaryContainer.RetrieveFromOwnerContent(owner, "default");
             //summaryContainer.AddNewActivity(activity);
             //StorageSupport.StoreInformation(summaryContainer);
-            return false;
+            return true;
         }
     }
 }

@@ -521,7 +521,7 @@ namespace TheBall
                                                         memberName = referenceList[currIx];
                                                     }
                                                     object value = GetPropertyValue(workCtx, memberName);
-                                                    return (value ?? (workCtx.MemberName + "." + memberName + " is null")).ToString();
+                                                    return (value ?? ("")).ToString();
                                                 });
             result.AppendLine(contentLine);
         }

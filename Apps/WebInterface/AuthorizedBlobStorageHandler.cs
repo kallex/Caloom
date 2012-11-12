@@ -142,6 +142,7 @@ namespace WebInterface
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
                 return;
+            string actionName = form["RootSourceAction"];
             string objectFieldID = form["ObjectFieldID"];
             string objectFieldValue = form["Text_Short"];
             if (objectFieldValue == null)
@@ -159,7 +160,7 @@ namespace WebInterface
             string[] sourceNames = sourceNamesCommaSeparated.Split(',');
             InformationSource[] sourceArray =
                 sources.CollectionContent.Where(
-                    src => src.IsDynamic || (src.IsInformationObjectSource && sourceNames.Contains(src.SourceName))).ToArray();
+                    src => src.IsDynamic || (src.IsInformationObjectSource && sourceNames.Contains(src.SourceName)) ).ToArray();
             foreach (InformationSource source in sourceArray)
             {
                 string oldETag = source.SourceETag;
@@ -170,21 +171,23 @@ namespace WebInterface
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 rootObject.SetValuesToObjects(form);
-                foreach(string contentID in request.Files.AllKeys)
-                {
-                    HttpPostedFile postedFile = request.Files[contentID];
-                    if (String.IsNullOrWhiteSpace(postedFile.FileName))
-                        continue;
-                    rootObject.SetMediaContent(containerOwner, contentID, postedFile);
-                }
                 IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
+                bool skipNormalStoreAfterAdd = false;
                 if(addOperationProvider != null)
                 {
-                    bool storeAfterAdd = addOperationProvider.PerformAddOperation(sources, contentPath);
-                    if (storeAfterAdd)
-                        StorageSupport.StoreInformation(rootObject, containerOwner);
-                } else
+                    skipNormalStoreAfterAdd = addOperationProvider.PerformAddOperation(actionName, sources, contentPath, request.Files);
+                }
+                if(skipNormalStoreAfterAdd == false) {
+                    // If not add operation, set media content to stored object
+                    foreach (string contentID in request.Files.AllKeys)
+                    {
+                        HttpPostedFile postedFile = request.Files[contentID];
+                        if (String.IsNullOrWhiteSpace(postedFile.FileName))
+                            continue;
+                        rootObject.SetMediaContent(containerOwner, contentID, postedFile);
+                    }
                     rootObject.StoreInformationMasterFirst(containerOwner);
+                }
             }
             RenderWebSupport.RefreshContent(webPageBlob);
             // Temporary live to pub sync below, to be removed
