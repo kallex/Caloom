@@ -181,7 +181,7 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            //return false;
+            return false;
             Debugger.Break();
             bool skip = false;
             if(skip == false)

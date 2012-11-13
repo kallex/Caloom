@@ -109,18 +109,28 @@ namespace WebInterface
                 blob.DownloadToStream(response.OutputStream);
             } catch(StorageClientException scEx)
             {
-                response.Write(scEx.ToString());
+                if (scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
+                {
+                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
+                    response.StatusCode = (int)scEx.StatusCode;
+                }
+                else
+                {
+                    response.Write("Errorcode: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write(scEx.ToString());
+                    response.StatusCode = (int) scEx.StatusCode;
+                }
             } finally
             {
                 response.End();
             }
         }
 
-        private string GetBlobPath(HttpRequest request)
+        private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
             if (hostName == "localhost")
-                hostName = "demowww.aaltoglobalimpact.org";
+                hostName = "demopublicoip.aaltoglobalimpact.org";
             if(hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
                 return request.Path.Replace("/public/", "pub/");
             string containerName = hostName.Replace('.', '-');
@@ -130,30 +140,46 @@ namespace WebInterface
         private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/public/", "pub/");
+            string blobPath = GetBlobPath(request);
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try
             {
                 string template = blob.DownloadText();
                 string returnUrl = request.Params["ReturnUrl"];
-                TBRegisterContainer registerContainer = GetRegistrationInfo(returnUrl);
+                TBRegisterContainer registerContainer = GetRegistrationInfo(returnUrl, request.Url.DnsSafeHost);
                 string responseContent = RenderWebSupport.RenderTemplateWithContent(template, registerContainer);
                 response.ContentType = blob.Properties.ContentType;
                 response.Write(responseContent);
             } catch(StorageClientException scEx)
             {
                 response.Write(scEx.ToString());
+                response.StatusCode = (int)scEx.StatusCode;
             } finally
             {
                 response.End();
             }
         }
 
-        private static TBRegisterContainer GetRegistrationInfo(string returnUrl)
+        private static TBRegisterContainer GetRegistrationInfo(string returnUrl, string hostName)
         {
-            TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register");
+            TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register", absoluteLoginUrl:GetAbsoluteLoginUrl(hostName:hostName));
             return registerContainer;
+        }
+
+        private static string GetAbsoluteLoginUrl(string hostName)
+        {
+            switch(hostName)
+            {
+                case "oip.msunit.citrus.fi":
+                    return "http://oip.msunit.citrus.fi/TheBallLogin.aspx";
+                case "demopublicoip.aaltoglobalimpact.org":
+                    return "http://demooip.aaltoglobalimpact.org/TheBallLogin.aspx";
+                case "localhost":
+                    return null;
+                default:
+                    return null;
+            }
         }
 
         #endregion

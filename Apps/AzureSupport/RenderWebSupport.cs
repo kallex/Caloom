@@ -49,6 +49,7 @@ namespace TheBall
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
         public const string DefaultPublicGroupTemplates = DefaultWebTemplateLocation + "/public";
         public const string DefaultPublicWwwTemplates = DefaultWebTemplateLocation + "/www";
+        public const string DefaultAboutTargetLocation = "about";
 
         public const string DefaultGroupViewLocation = "oip-group";
         public const string DefaultAccountViewLocation = "oip-account";
@@ -717,7 +718,8 @@ namespace TheBall
         {
             string syscontentRoot = "sys/AAA/";
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string anonContainerName = StorageSupport.CurrAnonPublicContainer.Name;
+            string anonContainerName = //StorageSupport.CurrAnonPublicContainer.Name;
+                "demopublicoip-aaltoglobalimpact-org";
             string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
             string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
             string groupSiteViewLocation = groupSiteLocation + "/" + DefaultGroupViewLocation;
@@ -728,6 +730,7 @@ namespace TheBall
             string groupWwwPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWwwTemplateLocation;
             string groupWwwPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWwwSiteLocation;
             string groupWwwSiteViewLocation = groupWwwPublicSiteLocation + "/" + DefaultPublicWwwViewLocation;
+            string aboutAuthTargetLocation = DefaultAboutTargetLocation;
                 
             // Sync to group local template
             List<OperationRequest> operationRequests = new List<OperationRequest>();
@@ -762,10 +765,12 @@ namespace TheBall
             // Publish group public content
             var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
             operationRequests.Add(publishPublicContent);
-            OperationRequest publishDefault = null;
             if (grpID == DefaultGroupID)
             {
-                publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+                OperationRequest publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
+                operationRequests.Add(publishDefault);
+                publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, currContainerName,
+                    aboutAuthTargetLocation, useWorker, false);
                 operationRequests.Add(publishDefault);
             }
             if(useWorker)

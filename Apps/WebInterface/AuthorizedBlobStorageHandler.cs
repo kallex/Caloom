@@ -34,6 +34,7 @@ namespace WebInterface
         private const string AuthGroupPrefix = "/auth/grp/";
         private const string AuthAccountPrefix = "/auth/acc/";
         private const string AuthPrefix = "/auth/";
+        private const string AboutPrefix = "/about/";
         private int AuthGroupPrefixLen;
         private int AuthPersonalPrefixLen;
         private int AuthAccountPrefixLen;
@@ -55,13 +56,23 @@ namespace WebInterface
         {
             string user = context.User.Identity.Name;
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
+            var request = context.Request;
+            var response = context.Response;
+            if (request.Path.StartsWith(AboutPrefix))
+            {
+                if(request.Path.EndsWith("/oip-layout-register.phtml"))
+                    ProcessDynamicRegisterRequest(request, response);
+                else
+                    HandleAboutGetRequest(context, request.Path);
+                return;
+            }
+
             if (isAuthenticated == false)
             {
                 return;
             }
             try
             {
-                HttpRequest request = context.Request;
                 if (request.Path.StartsWith(AuthPersonalPrefix))
                 {
                     HandlePersonalRequest(context);
@@ -79,6 +90,45 @@ namespace WebInterface
             {
                 InformationContext.ProcessAndClearCurrent();
             }
+        }
+
+        private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)
+        {
+            string blobPath = GetBlobPath(request);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobPath);
+            response.Clear();
+            try
+            {
+                string template = blob.DownloadText();
+                string returnUrl = request.Params["ReturnUrl"];
+                TBRegisterContainer registerContainer = GetRegistrationInfo(returnUrl);
+                string responseContent = RenderWebSupport.RenderTemplateWithContent(template, registerContainer);
+                response.ContentType = blob.Properties.ContentType;
+                response.Write(responseContent);
+            }
+            catch (StorageClientException scEx)
+            {
+                response.Write(scEx.ToString());
+                response.StatusCode = (int)scEx.StatusCode;
+            }
+            finally
+            {
+                response.End();
+            }
+        }
+
+        private static TBRegisterContainer GetRegistrationInfo(string returnUrl)
+        {
+            TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register", absoluteLoginUrl:null);
+            return registerContainer;
+        }
+
+        private static string GetBlobPath(HttpRequest request)
+        {
+            string contentPath = request.Path;
+            if (contentPath.StartsWith(AboutPrefix) == false)
+                throw new NotSupportedException("Content path for other than about/ is not supported");
+            return contentPath.Substring(1);
         }
 
         private void HandleAccountRequest(HttpContext context)
@@ -198,6 +248,40 @@ namespace WebInterface
 
         }
 
+        private void HandleAboutGetRequest(HttpContext context, string contentPath)
+        {
+            var response = context.Response;
+            var request = context.Request;
+            string blobPath = GetBlobPath(request);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobPath);  //publicClient.GetBlobReference(blobPath);
+            response.Clear();
+            try
+            {
+                blob.FetchAttributes();
+                response.ContentType = blob.Properties.ContentType;
+                blob.DownloadToStream(response.OutputStream);
+            }
+            catch (StorageClientException scEx)
+            {
+                if (scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
+                {
+                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
+                    response.StatusCode = (int)scEx.StatusCode;
+                }
+                else
+                {
+                    response.Write("Errorcode: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write(scEx.ToString());
+                    response.StatusCode = (int)scEx.StatusCode;
+                }
+            }
+            finally
+            {
+                response.End();
+            }
+
+        }
+
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
@@ -211,13 +295,15 @@ namespace WebInterface
                 blob.DownloadToStream(context.Response.OutputStream);
             } catch(StorageClientException scEx)
             {
-                if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound)
+                if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
                 {
-                    context.Response.Write("Blob not found: " + blob.Name + " (original path: " + context.Request.Path + ")");
+                    context.Response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + context.Request.Path + ")");
+                    context.Response.StatusCode = (int)scEx.StatusCode;
                 } else
                 {
                     context.Response.Write("Error code: " + scEx.ErrorCode.ToString() + Environment.NewLine);
                     context.Response.Write(scEx.ToString());
+                    context.Response.StatusCode = (int)scEx.StatusCode;
                 }
             }
             catch (Exception ex)

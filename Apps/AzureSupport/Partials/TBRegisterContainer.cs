@@ -5,19 +5,20 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class TBRegisterContainer
     {
-        public static TBRegisterContainer CreateWithLoginProviders(string returnUrl, string title, string subtitle)
+        public static TBRegisterContainer CreateWithLoginProviders(string returnUrl, string title, string subtitle, string absoluteLoginUrl)
         {
             TBRegisterContainer registerContainer = TBRegisterContainer.CreateDefault();
             registerContainer.ReturnUrl = returnUrl;
             registerContainer.Header.Title = "Sign in";
             registerContainer.Header.SubTitle = "... or register";
-            registerContainer.addLoginProviders(returnUrl);
+            registerContainer.addLoginProviders(returnUrl, absoluteLoginUrl);
             return registerContainer;
         }
 
-        private void addLoginProviders(string returnUrl)
+        private void addLoginProviders(string returnUrl, string absoluteLoginUrl)
         {
-            string googleRedirectUrl = getForwardingLoginUrl("https://www.google.com/accounts/o8/id", returnUrl);
+            string loginUrl = absoluteLoginUrl ?? "/TheBallLogin.aspx";
+            string googleRedirectUrl = getForwardingLoginUrl("https://www.google.com/accounts/o8/id", returnUrl, loginUrl);
             LoginProvider google = LoginProvider.CreateDefault();
             google.ProviderName = "Google";
             google.ProviderIconClass = "icon-oip-google";
@@ -25,7 +26,7 @@ namespace AaltoGlobalImpact.OIP
             google.ProviderUrl = googleRedirectUrl;
             google.ReturnUrl = returnUrl;
 
-            string yahooRedirectUrl = getForwardingLoginUrl("https://me.yahoo.com", returnUrl);
+            string yahooRedirectUrl = getForwardingLoginUrl("https://me.yahoo.com", returnUrl, loginUrl);
             LoginProvider yahoo = LoginProvider.CreateDefault();
             yahoo.ProviderName = "Yahoo";
             yahoo.ProviderIconClass = "icon-oip-yahoo";
@@ -37,12 +38,12 @@ namespace AaltoGlobalImpact.OIP
             LoginProviderCollection.CollectionContent.Add(yahoo);
         }
 
-        private string getForwardingLoginUrl(string openIDUrl, string returnUrl)
+        private string getForwardingLoginUrl(string openIDUrl, string returnUrl, string loginUrl)
         {
             if(String.IsNullOrEmpty(returnUrl))
-                return string.Format("/TheBallLogin.aspx?idProviderUrl={0}",
+                return string.Format("{0}?idProviderUrl={1}", loginUrl, 
                                 HttpUtility.UrlEncode(openIDUrl));
-            return string.Format("/TheBallLogin.aspx?idProviderUrl={0}&ReturnUrl={1}",
+            return string.Format("{0}?idProviderUrl={1}&ReturnUrl={2}", loginUrl,
                             HttpUtility.UrlEncode(openIDUrl), HttpUtility.UrlEncode(returnUrl));
         }
     }
