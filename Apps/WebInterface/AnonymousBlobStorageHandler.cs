@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -37,8 +38,8 @@ namespace WebInterface
                 return;
             }
             HttpResponse response = context.Response;
-            if(request.Path.StartsWith("/public/"))
-            {
+            //if(request.Path.StartsWith("/public/") || request.Path.StartsWith("/www-public/"))
+            //{
                 if (request.Path.EndsWith("/oip-layout-register.phtml"))
                 {
                     ProcessDynamicRegisterRequest(request, response);
@@ -47,7 +48,7 @@ namespace WebInterface
 
                 ProcessAnonymousRequest(request, response);
                 return;
-            }
+            //}
         }
 
         private void ProcessProxyRequest(HttpContext context)
@@ -98,7 +99,7 @@ namespace WebInterface
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string blobPath = request.Path.Replace("/public/", "pub/");
+            string blobPath = GetBlobPath(request);
             CloudBlob blob = publicClient.GetBlobReference(blobPath);
             response.Clear();
             try
@@ -113,6 +114,17 @@ namespace WebInterface
             {
                 response.End();
             }
+        }
+
+        private string GetBlobPath(HttpRequest request)
+        {
+            string hostName = request.Url.DnsSafeHost;
+            if (hostName == "localhost")
+                hostName = "demowww.aaltoglobalimpact.org";
+            if(hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
+                return request.Path.Replace("/public/", "pub/");
+            string containerName = hostName.Replace('.', '-');
+            return containerName + request.Path;
         }
 
         private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)

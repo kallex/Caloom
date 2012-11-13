@@ -153,17 +153,32 @@ namespace TheBallTool
             InformationContext.ProcessAndClearCurrent();
         }
 
+        private static void SyncWwwPublicFromDefaultGroup()
+        {
+            string publicSite = "demowww.aaltoglobalimpact.org";
+            string[] folderList = new[] {"bootstrap-default", "oip-additions", "www-public"};
+            foreach(string folder in folderList)
+            {
+                string sourceFolder = folder;
+                if (sourceFolder == "www-public")
+                    sourceFolder = "oip-public";
+                var operationRequest = RenderWebSupport.SyncTemplatesToSite("pub", "grp/default/publicsite/" + sourceFolder,
+                                                     publicSite.Replace('.', '-'), folder, true, false);
+                QueueSupport.PutToOperationQueue(operationRequest);
+            }
+        }
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if(skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             //EnsureAndRefreshMasterCollections();
-            ReconnectAccountsMastersAndCollections();
-            ReconnectGroupsMastersAndCollections();
+            //ReconnectAccountsMastersAndCollections();
+            //ReconnectGroupsMastersAndCollections();
+            SyncWwwPublicFromDefaultGroup();
             return true;
         }
     }

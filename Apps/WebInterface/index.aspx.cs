@@ -11,7 +11,11 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
+            string hostName = Request.Url.DnsSafeHost;
+            if (hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName.StartsWith("publicoip.") || hostName.StartsWith("demopublicoip."))
+                Response.Redirect("public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
+            if(hostName.StartsWith("www.") || hostName.StartsWith("demowww"))
+                Response.Redirect("www-public/oip-layout-landing.phtml");
         }
     }
 }
