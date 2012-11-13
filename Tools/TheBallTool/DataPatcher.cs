@@ -160,12 +160,23 @@ namespace TheBallTool
             foreach(string folder in folderList)
             {
                 string sourceFolder = folder;
-                if (sourceFolder == "www-public")
-                    sourceFolder = "oip-public";
-                var operationRequest = RenderWebSupport.SyncTemplatesToSite("pub", "grp/default/publicsite/" + sourceFolder,
+                //if (sourceFolder == "www-public")
+                //    sourceFolder = "oip-public";
+                var operationRequest = RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name, "grp/9798daca-afc4-4046-a99b-d0d88bb364e0/wwwsite/" + sourceFolder,
                                                      publicSite.Replace('.', '-'), folder, true, false);
                 QueueSupport.PutToOperationQueue(operationRequest);
             }
+        }
+
+        private static void RefreshAllAccounts()
+        {
+            var accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach (var accountID in accountIDs)
+            {
+                var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+                accountRoot.Account.StoreAndPropagate();
+            }
+
         }
 
         public static bool DoPatching()

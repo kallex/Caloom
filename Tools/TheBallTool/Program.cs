@@ -38,8 +38,9 @@ namespace TheBallTool
                 string privateSiteLocation = "livesite";
                 string publicSiteLocation = "livepubsite";
                 const string accountNamePart = "oip-account\\";
-                const string publicNamePart = "oip-public\\";
+                const string publicGroupNamePart = "oip-public\\";
                 const string groupNamePart = "oip-group\\";
+                const string wwwNamePart = "www-public\\";
                 //DoMapData(webGroup);
                 //return;
                 string directory = Directory.GetCurrentDirectory();
@@ -49,15 +50,18 @@ namespace TheBallTool
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(
                         str => str.Substring(directory.Length)).Where(str => str.StartsWith("theball-") == false).ToArray();
                 string[] groupTemplates =
-                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(publicNamePart) == false).
+                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(publicGroupNamePart) == false && file.StartsWith(wwwNamePart) == false).
                         ToArray();
-                string[] publicTemplates =
-                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(groupNamePart) == false).
+                string[] publicGroupTemplates =
+                    allFiles.Where(file => file.StartsWith(accountNamePart) == false && file.StartsWith(groupNamePart) == false && file.StartsWith(wwwNamePart) == false).
                         ToArray();
                 string[] accountTemplates =
-                    allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicNamePart) == false).
+                    allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicGroupNamePart) == false && file.StartsWith(wwwNamePart) == false).
                         ToArray();
-                UploadAndMoveUnused(accountTemplates, groupTemplates, publicTemplates);
+                string[] wwwTemplates =
+                    allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicGroupNamePart) == false && file.StartsWith(accountNamePart) == false).
+                        ToArray();
+                UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, wwwTemplates);
                 //UploadAndMoveUnused(accountTemplates, null, null);
 
                 //DeleteAllAccountAndGroupContents(true);
@@ -85,33 +89,6 @@ namespace TheBallTool
             {
                 Console.WriteLine("Error exit: " + ex.ToString());
             }
-        }
-
-        private static void testContentFetch()
-        {
-            string requesterPath = "grp/89706487-7dc0-4711-911e-17dd0207a000/website/oip-group/oip-layout-blog-summary.phtml";
-            VirtualOwner owner = VirtualOwner.FigureOwner(requesterPath);
-            //var blogs = Blog.RetrieveCollectionFromOwnerContent(owner);
-            DefaultViewSupport.RefreshDefaultViews(requesterPath, typeof(Blog));
-        }
-
-        private static void DebugSomething()
-        {
-            CloudBlob blob =
-                StorageSupport.CurrActiveContainer.GetBlob(
-                    "grp/89706487-7dc0-4711-911e-17dd0207a000/website/oip-group/oip-layout-activities-summary.phtml");
-            RenderWebSupport.RefreshContent(blob, false);
-        }
-
-        private static void RefreshAllAccounts()
-        {
-            var accountIDs = TBRAccountRoot.GetAllAccountIDs();
-            foreach(var accountID in accountIDs)
-            {
-                var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
-                accountRoot.Account.StoreAndPropagate();
-            }
-
         }
 
         private static void ProcessErrors(bool useWorker)
@@ -278,7 +255,7 @@ namespace TheBallTool
             }
         }
 
-        private static void UploadAndMoveUnused(string[] accountTemplates, string[] groupTemplates, string[] publicTemplates)
+        private static void UploadAndMoveUnused(string[] accountTemplates, string[] groupTemplates, string[] publicTemplates, string[] wwwTemplates)
         {
             string[] accountUnusedFiles = null;
             if(accountTemplates != null)
@@ -288,11 +265,14 @@ namespace TheBallTool
                 groupUnusedFiles = FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
             string[] publicUnusedFiles = null;
             if(publicTemplates != null)
-                publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicTemplates, true);
-            if(accountTemplates != null && groupTemplates != null && publicTemplates != null)
+                publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicGroupTemplates, true);
+            string[] wwwUnusedFiles = null;
+            wwwUnusedFiles = FileSystemSupport.UploadTemplateContent(wwwTemplates, TBSystem.CurrSystem,
+                                                                     RenderWebSupport.DefaultPublicWwwTemplates, true);
+            if(accountTemplates != null && groupTemplates != null && publicTemplates != null && wwwUnusedFiles != null)
             {
                 string[] everyWhereUnusedFiles =
-                    accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).ToArray();
+                    accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).Intersect(wwwUnusedFiles).ToArray();
                 //FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
             }
         }

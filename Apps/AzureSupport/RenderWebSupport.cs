@@ -40,15 +40,20 @@ namespace TheBall
 
         public const string DefaultWebTemplateLocation = "webtemplate";
         public const string DefaultWebSiteLocation = "website";
-        public const string DefaultPublicWebTemplateLocation = "publictemplate";
+        public const string DefaultPublicGroupTemplateLocation = "publictemplate";
+        public const string DefaultPublicGroupSiteLocation = "publicsite";
+        public const string DefaultPublicWwwTemplateLocation = "wwwtemplate";
+        public const string DefaultPublicWwwSiteLocation = "wwwsite";
 
-        public const string DefaultPublicWebSiteLocation = "publicsite";
         public const string DefaultAccountTemplates = DefaultWebTemplateLocation + "/account";
         public const string DefaultGroupTemplates = DefaultWebTemplateLocation + "/group";
-        public const string DefaultPublicTemplates = DefaultWebTemplateLocation + "/public";
+        public const string DefaultPublicGroupTemplates = DefaultWebTemplateLocation + "/public";
+        public const string DefaultPublicWwwTemplates = DefaultWebTemplateLocation + "/www";
+
         public const string DefaultGroupViewLocation = "oip-group";
         public const string DefaultAccountViewLocation = "oip-account";
-        public const string DefaultPublicViewLocation = "oip-public";
+        public const string DefaultPublicGroupViewLocation = "oip-public";
+        public const string DefaultPublicWwwViewLocation = "www-public";
         public const string DefaultGroupID = "9798daca-afc4-4046-a99b-d0d88bb364e0";
         // https://theball.blob.core.windows.net/00000000-0000-0000-0000-000000000000/grp/9798daca-afc4-4046-a99b-d0d88bb364e0/AaltoGlobalImpact.OIP/AboutContainer/default
 
@@ -716,10 +721,13 @@ namespace TheBall
             string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
             string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
             string groupSiteViewLocation = groupSiteLocation + "/" + DefaultGroupViewLocation;
-            string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWebTemplateLocation;
-            string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWebSiteLocation;
-            string groupPublicViewLocation = groupPublicSiteLocation + "/" + DefaultPublicViewLocation;
-            string defaultPublicSiteLocation = "grp/default/" + DefaultPublicWebSiteLocation;
+            string groupPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicGroupTemplateLocation;
+            string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicGroupSiteLocation;
+            string groupPublicViewLocation = groupPublicSiteLocation + "/" + DefaultPublicGroupViewLocation;
+            string defaultPublicSiteLocation = "grp/default/" + DefaultPublicGroupSiteLocation;
+            string groupWwwPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWwwTemplateLocation;
+            string groupWwwPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWwwSiteLocation;
+            string groupWwwSiteViewLocation = groupWwwPublicSiteLocation + "/" + DefaultPublicWwwViewLocation;
                 
             // Sync to group local template
             List<OperationRequest> operationRequests = new List<OperationRequest>();
@@ -727,18 +735,28 @@ namespace TheBall
             // Render local template
             var renderLocalTemplates = SyncTemplatesToSite(currContainerName, groupTemplateLocation, currContainerName, groupSiteLocation, useWorker, true);
             // Sync public pages to group local template
-            var publicGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
+            var publicGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicGroupTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
             // Render local template
             var renderPublicTemplates = SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+            // Sync public www-pages to group local template
+            var publicWwwTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicWwwTemplates,
+                                                         currContainerName, groupWwwPublicTemplateLocation, useWorker, false);
+
+            // Render local template
+            var renderWwwTemplates = SyncTemplatesToSite(currContainerName, groupWwwPublicTemplateLocation, currContainerName, groupWwwPublicSiteLocation, useWorker, true);
             operationRequests.Add(localGroupTemplates);
             operationRequests.Add(renderLocalTemplates);
             operationRequests.Add(publicGroupTemplates);
             operationRequests.Add(renderPublicTemplates);
+            operationRequests.Add(publicWwwTemplates);
+            operationRequests.Add(renderWwwTemplates);
             foreach(string viewTypeToRefresh in viewTypesToRefresh)
             {
                 OperationRequest refreshOp = RefreshDefaultViews(groupSiteViewLocation, viewTypeToRefresh, useWorker);
                 operationRequests.Add(refreshOp);
                 refreshOp = RefreshDefaultViews(groupPublicViewLocation, viewTypeToRefresh, useWorker);
+                operationRequests.Add(refreshOp);
+                refreshOp = RefreshDefaultViews(groupWwwSiteViewLocation, viewTypeToRefresh, useWorker);
                 operationRequests.Add(refreshOp);
             }
             // Publish group public content
