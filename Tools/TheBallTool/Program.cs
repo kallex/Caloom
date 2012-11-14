@@ -25,8 +25,9 @@ namespace TheBallTool
                 bool debugMode = false;
 
 
-                InformationContext.InitializeFunctionality(3, true);
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
+                InformationContext.InitializeFunctionality(3, true);
+                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
 
                 if(DataPatcher.DoPatching())
                     return;
@@ -340,18 +341,6 @@ namespace TheBallTool
             StorageSupport.StoreInformation(mapContainer, owner);
         }
 
-        static void DoSyncs(string templateLocation, string privateSiteLocation, string publicSiteLocation)
-        {
-           RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
-                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", templateLocation),
-                StorageSupport.CurrActiveContainer.Name,
-                                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation), false, true);
-           RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
-                String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", privateSiteLocation),
-                StorageSupport.CurrAnonPublicContainer.Name,
-                                String.Format("grp/default/{0}/", publicSiteLocation), true, true);
-        }
-
         private static void AddLoginToAccount(string loginUrlID, string accountID)
         {
             TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
@@ -387,171 +376,12 @@ namespace TheBallTool
             return groupRoot.Group;
         }
 
-        private static void InitLandingPages()
-        {
-            var sourceBlob = StorageSupport.CurrTemplateContainer.GetBlobReference("oip-layouts/oip-anon-landing-page.phtml");
-            var targetBlob =
-                StorageSupport.CurrAnonPublicContainer.GetBlobReference("default/oip-anon-landing-page.phtml");
-            targetBlob.CopyFromBlob(sourceBlob);
-        }
-
-        private static void doDataTest(string connStr)
-        {
-            StorageSupport.InitializeWithConnectionString(connStr);
-            AccountContainer container = null;
-            try
-            {
-                container = AccountContainer.RetrieveAccountContainer("AcctContainer123");
-            }
-            catch (StorageException sEx)
-            {
-
-            }
-            if (container == null)
-            {
-                container = AccountContainer.CreateDefault();
-                container.ID = "AC123";
-                container.RelativeLocation = "AcctContainer123";
-                container.AccountIndex.Title = "Account demo index";
-                container.AccountIndex.Introduction = "Account introduction";
-                container.AccountIndex.Summary = "Account demo summary";
-                var memberColl = container.AccountModule.Roles.MemberInGroups.CollectionContent;
-                memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi", URL = "http://www.yle.fi" });
-                memberColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi", URL = "http://www.aalto.fi" });
-                var moderatorColl = container.AccountModule.Roles.ModeratorInGroups.CollectionContent;
-                moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Yle.fi 2", URL = "http://www.yle.fi" });
-                moderatorColl.Add(new ReferenceToInformation { Title = "The Ball Test Aalto.fi 2", URL = "http://www.aalto.fi" });
-                StorageSupport.StoreInformation(container);
-            }
-
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/oip-layouts/oip-layout-account.phtml";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, container);
-            string finalPath = "theball-reference/account-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
-        }
-
-        private static void doDataTest33(string connStr)
-        {
-            StorageSupport.InitializeWithConnectionString(connStr);
-            BlogContainer container = null;
-            try
-            {
-                container = BlogContainer.RetrieveBlogContainer("BlogContainer123");
-            }
-            catch (StorageException sEx)
-            {
-
-            }
-            if (container == null)
-            {
-                container = BlogContainer.CreateDefault();
-                container.ID = "BC123";
-                container.RelativeLocation = "BlogContainer123";
-                StorageSupport.StoreInformation(container);
-            }
-
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/oip-layouts/oip-layout-blog.html";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, container);
-            string finalPath = "theball-reference/blog-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);
-
-/*            StorageSupport.InitializeWithConnectionString(connStr);
-            TBReferenceEvent dummyData = null;
-            try
-            {
-                dummyData = TBReferenceEvent.RetrieveTBReferenceEvent("EventTestRelativeLoc134");
-            } catch(StorageException sEx)
-            {
-                
-            }
-            if(dummyData == null)
-            {
-                dummyData = TBReferenceEvent.CreateDefault();
-                dummyData.ID = "EventTestID134";
-                dummyData.RelativeLocation = "EventTestRelativeLoc134";
-                dummyData.Title = "Otsikko";
-                dummyData.Description = "Kuvaus";
-                dummyData.EnoughToAttend = false;
-                dummyData.AttendeeCount = 12;
-                dummyData.DueTime = DateTime.Today;
-                StorageSupport.StoreInformation(dummyData);
-            } 
-
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-            string templatePath = "anon-webcontainer/theball-reference/example1-layout-default.html";
-            CloudBlob blob = publicClient.GetBlobReference(templatePath);
-            string templateContent = blob.DownloadText();
-            string finalHtml = RenderWebSupport.RenderTemplateWithContent(templateContent, dummyData);
-            string finalPath = "theball-reference/example1-rendered.html";
-            StorageSupport.CurrAnonPublicContainer.UploadBlobText(finalPath, finalHtml);*/
-        }
-
-
-        private static void doTestxyz()
-        {
-            //StorageSupport.InitializeWithConnectionString(connStr);
-            VirtualOwner owner = new VirtualOwner("acc", "0c560c69-c3a7-4363-b125-ba1660d21cf4");
-            AddressAndLocationCollection locationCollection = new AddressAndLocationCollection();
-            locationCollection.SetLocationAsOwnerContent(owner, "MasterCollection");
-            IInformationCollection informationCollection = locationCollection;
-            informationCollection.RefreshContent();
-            return;
-/*            AboutAGIApplications target = new AboutAGIApplications()
-                                              {
-                                                  ID = "TargetID1",
-                                                  RelativeLocation = "RelativeNew7",
-                                                  ForAllPeople = new IconTitleDescription
-                                                                     {
-                                                                         Description = "KukkanenZ",
-                                                                         Title = "OtsikkoX"
-                                                                     }
-                                              };
-            StorageSupport.StoreInformation(target);*/
-            AboutAGIApplications target = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew5");
-            //target = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew2");
-            try
-            {
-                //StorageSupport.StoreInformation(target);
-            } catch(Exception ex)
-            {
-                
-            }
-            //AboutAGIApplications subscriber = new AboutAGIApplications()
-            //                                      {
-            //                                          ID = "Subscriber1",
-            //                                          RelativeLocation = "SubscriberFixed1"
-            //                                      };
-            AboutAGIApplications subscriber = AboutAGIApplications.RetrieveAboutAGIApplications("RelativeNew1");
-            try
-            {
-                StorageSupport.StoreInformation(subscriber);
-            }
-            catch (Exception ex)
-            {
-            }
-            //SubscribeSupport.AddSubscriptionToObject(target, subscriber, "UpdateSubscriberBasedOnObject");
-            //SubscribeSupport.AddSubscriptionToItem(target, "ForAllPeople.Title", subscriber, "UpdateSubscriberBasedOnItem");
-            StorageSupport.StoreInformation(target);
-        }
-
 
         private static void ReportInfo(string text)
         {
             Console.WriteLine(text);
         }
 
-        private static string replaceEvaluator(Match match)
-        {
-            string fileName = match.Groups[0].Value;
-            string fileContent = File.ReadAllText(fileName);
-            return fileContent;
-        }
     }
 }
 //AddLoginToAccount("https://www.google.com/accounts/o8/id?id=AItOawkXb-XQERsvhNkZVlEEiCSOuP1y82uHCQc", "fbbaaded-6615-4083-8ea8-92b2aa162861");

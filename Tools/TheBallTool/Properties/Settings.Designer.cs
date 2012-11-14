@@ -25,10 +25,10 @@ namespace TheBallTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("demooip-aaltoglobalimpact-org")]
+        public string CurrentActiveContainerName {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["CurrentActiveContainerName"]));
             }
         }
     }

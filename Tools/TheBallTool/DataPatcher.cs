@@ -48,6 +48,7 @@ namespace TheBallTool
                     {
                         StorageSupport.StoreInformationMasterFirst(iObj, owner);
                         InformationContext.ProcessAndClearCurrent();
+                        InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                     } catch(Exception ex)
                     {
                         bool letThrow = false;
@@ -115,14 +116,14 @@ namespace TheBallTool
                 ReconnectMastersAndCollections(acctLoc);
         }
 
-        private static void ReconnectMastersAndCollections(string groupLoc)
+        private static void ReconnectMastersAndCollections(string ownerLocation)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";
             //string acctLoc = "acc/" + myLocalAccountID + "/";
 
-            VirtualOwner me = VirtualOwner.FigureOwner(groupLoc);
+            VirtualOwner me = VirtualOwner.FigureOwner(ownerLocation);
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(groupLoc,
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation,
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
@@ -151,6 +152,7 @@ namespace TheBallTool
                 StorageSupport.DeleteInformationObject(blog);
             }
             InformationContext.ProcessAndClearCurrent();
+            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
         private static void SyncWwwPublicFromDefaultGroup()

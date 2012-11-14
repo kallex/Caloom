@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Web;
+using AzureSupport;
 
 namespace TheBall
 {
@@ -10,6 +11,7 @@ namespace TheBall
         private const int TimeoutSeconds = 600;
         public static void SetAuthenticationCookie(HttpResponse response, string validUserName)
         {
+            WebSupport.InitializeContextStorage(HttpContext.Current.Request);
             string authString = EncryptionSupport.EncryptStringToBase64(validUserName);
             if(response.Cookies[AuthCookieName] != null)
                 response.Cookies.Remove(AuthCookieName);
@@ -26,6 +28,7 @@ namespace TheBall
             {
                 try
                 {
+                    WebSupport.InitializeContextStorage(context.Request);
                     string userName = EncryptionSupport.DecryptStringFromBase64(encCookie.Value);
                     context.User = new GenericPrincipal(new GenericIdentity(userName, "theball"), new string[0]);
                     // Reset cookie time to be again timeout from this request

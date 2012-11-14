@@ -27,12 +27,18 @@ namespace TheBall
         public static string InformationType_RenderedWebPage = "RenderedWebPage";
         public static string InformationType_GenericContentValue = "GenericContent";
 
-        public static CloudTableClient CurrTableClient { get; private set; }
+        //public static CloudTableClient CurrTableClient { get; private set; }
         public static CloudStorageAccount CurrStorageAccount { get; private set; }
-        public static CloudBlobContainer CurrActiveContainer { get; private set; }
-        public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
-        public static CloudBlobContainer CurrTemplateContainer { get; private set; }
-        public static CloudBlobClient CurrBlobClient { get; private set; }
+        public static CloudBlobContainer CurrActiveContainer
+        {
+            get { return InformationContext.Current.CurrActiveContainer; }
+        }
+        //public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
+        //public static CloudBlobContainer CurrTemplateContainer { get; private set; }
+        public static CloudBlobClient CurrBlobClient
+        {
+            get { return InformationContext.Current.CurrBlobClient; }
+        }
         private const int AccOrGrpPlusIDPathLength = 41;
         private const string ContentFolderName = "Content";
         public const int GuidLength = 36;
@@ -115,19 +121,13 @@ namespace TheBall
             ServicePointManager.UseNagleAlgorithm = false;
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
             CurrStorageAccount = storageAccount;
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            CurrTableClient = tableClient;
+            //CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+            //CurrTableClient = tableClient;
 
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            blobClient.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromMilliseconds(300));
-            CurrBlobClient = blobClient;
-            var activeContainer = blobClient.GetContainerReference(ActiveOwnerID.ToString().ToLower());
-            activeContainer.CreateIfNotExist();
-            CurrActiveContainer = activeContainer;
-            var activeAnonPublicContainer = blobClient.GetContainerReference("pub");
-            CurrAnonPublicContainer = activeAnonPublicContainer;
-            var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
-            CurrTemplateContainer = activeTemplateContainer;
+            //var activeAnonPublicContainer = blobClient.GetContainerReference("pub");
+            //CurrAnonPublicContainer = activeAnonPublicContainer;
+            //var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
+            //CurrTemplateContainer = activeTemplateContainer;
             QueueSupport.InitializeAfterStorage(debugMode:debugMode);
         }
 
@@ -826,6 +826,12 @@ namespace TheBall
         public static void ReconnectMastersAndCollections(this IInformationObject informationObject, bool updateContents)
         {
             VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
+            if (updateContents)
+            {
+                IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
+                if(beforeStoreHandler != null)
+                    beforeStoreHandler.PerformBeforeStoreUpdate();
+            }
             List<IInformationObject> masterObjects = new List<IInformationObject>();
             List<IInformationObject> masterReferringCollections = new List<IInformationObject>();
             informationObject.FindObjectsFromTree(masterObjects, candidate => candidate.IsIndependentMaster, true);

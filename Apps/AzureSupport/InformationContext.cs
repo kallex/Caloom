@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
+using Amazon.IdentityManagement.Model;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
 {
@@ -104,5 +106,64 @@ namespace TheBall
         }
 
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
+
+        private string initializedContainerName = null;
+        public void InitializeCloudStorageAccess(string containerName)
+        {
+            if(containerName == null)
+                throw new ArgumentNullException("containerName");
+            if(containerName == "")
+                throw new ArgumentException("Invalid container name", "containerName");
+            if(initializedContainerName != null)
+            {
+                if (containerName == initializedContainerName)
+                    return;
+                if(containerName != initializedContainerName)
+                    throw new NotSupportedException("InitializeCloudStorageAccess already initialized with container name: " 
+                        + initializedContainerName + " (tried to initialize with: "
+                        + containerName + ")");
+            }
+            CloudBlobClient blobClient = StorageSupport.CurrStorageAccount.CreateCloudBlobClient();
+            blobClient.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromMilliseconds(300));
+            CurrBlobClient = blobClient;
+
+            var activeContainer = blobClient.GetContainerReference(containerName.ToLower());
+            activeContainer.CreateIfNotExist();
+            CurrActiveContainer = activeContainer;
+            initializedContainerName = containerName;
+        }
+
+        private CloudBlobContainer _currActiveContainer;
+        public CloudBlobContainer CurrActiveContainer { 
+            get
+            {
+                if(_currActiveContainer == null)
+                    throw new NotSupportedException("CurrActiveContainer needs to be initialized with InitializeCloudStorageAccess method");
+                return _currActiveContainer;
+            }
+            private set
+            {
+                if(_currActiveContainer != null)
+                    throw new NotSupportedException("CurrActiveContainer can only be set once");
+                _currActiveContainer = value;
+            }
+        }
+
+        private CloudBlobClient _currBlobClient;
+        public CloudBlobClient CurrBlobClient { 
+            get
+            {
+                if(_currBlobClient == null)
+                    throw new NotSupportedException(
+                        "CurrBlobClient needs to be initialized with InitializeCloudStorageAccess method");
+                return _currBlobClient;
+            }
+            private set
+            {
+                if(_currBlobClient != null)
+                    throw new NotSupportedException("CurrBlobClient can only be set once");
+                _currBlobClient = value;
+            }
+        }
     }
 }

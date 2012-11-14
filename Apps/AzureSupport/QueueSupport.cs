@@ -99,6 +99,7 @@ namespace TheBall
             if (operationRequests.Length == 0)
                 return;
             QueueEnvelope envelope = new QueueEnvelope();
+            envelope.ActiveContainerName = StorageSupport.CurrActiveContainer.Name;
             if (operationRequests.Length == 1)
                 envelope.SingleOperation = operationRequests[0];
             else

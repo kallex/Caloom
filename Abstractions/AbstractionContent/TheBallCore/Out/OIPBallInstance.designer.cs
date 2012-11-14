@@ -413,6 +413,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -778,6 +780,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -1172,6 +1176,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -1566,6 +1572,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -1958,6 +1966,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -2323,6 +2333,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -2729,6 +2741,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -3221,6 +3235,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -3616,6 +3632,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -4003,6 +4021,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -4378,6 +4398,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -4765,6 +4787,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -5150,6 +5174,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -5545,6 +5571,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -5979,6 +6007,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -6372,6 +6402,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -6756,6 +6788,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -7176,6 +7210,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -7539,6 +7575,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -7996,6 +8034,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -8411,6 +8451,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -8798,6 +8840,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -9149,6 +9193,8 @@ namespace AaltoGlobalImpact.OIP {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -9505,6 +9551,8 @@ JavaScriptContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -9861,6 +9909,8 @@ JavascriptContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -10217,6 +10267,8 @@ FooterContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -10568,6 +10620,8 @@ FooterContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -10935,6 +10989,8 @@ FooterContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -11445,6 +11501,8 @@ FooterContainer.HtmlContent
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -11998,6 +12056,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -12431,6 +12491,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -12973,6 +13035,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -13368,6 +13432,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -13798,6 +13864,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -14191,6 +14259,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -14675,6 +14745,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -15056,6 +15128,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -15417,6 +15491,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -15876,6 +15952,8 @@ AccountIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -16332,6 +16410,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -16781,6 +16861,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -17134,6 +17216,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -17514,6 +17598,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -17917,6 +18003,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -18465,6 +18553,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -18938,6 +19028,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -19579,6 +19671,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -20003,6 +20097,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -20412,6 +20508,8 @@ AccountRoles.OrganizationsImPartOf
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -20973,6 +21071,8 @@ AboutContainer.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -21503,6 +21603,8 @@ AboutContainer.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -22062,6 +22164,8 @@ AboutContainer.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -22621,6 +22725,8 @@ AboutContainer.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -23160,6 +23266,8 @@ AboutContainer.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -23551,6 +23659,8 @@ ActivitySummaryContainer.SummaryBody
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -24114,6 +24224,8 @@ ActivityIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -24540,6 +24652,8 @@ ActivityIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -25073,6 +25187,8 @@ ActivityIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -25500,6 +25616,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -26237,6 +26355,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -26626,6 +26746,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -27011,6 +27133,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -27402,6 +27526,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -27773,6 +27899,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -28148,6 +28276,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -28535,6 +28665,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -28910,6 +29042,8 @@ Activity.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -29326,6 +29460,8 @@ GroupSummaryContainer.SummaryBody
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -29914,6 +30050,8 @@ GroupSummaryContainer.SummaryBody
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -30614,6 +30752,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -31024,6 +31164,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -31375,6 +31517,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -31726,6 +31870,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -32077,6 +32223,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -32428,6 +32576,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -32779,6 +32929,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -33130,6 +33282,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -33505,6 +33659,8 @@ GroupIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -33931,6 +34087,8 @@ Group.OrganizationsAndGroupsLinkedToUs
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -34573,6 +34731,8 @@ Introduction.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -34979,6 +35139,8 @@ Introduction.Body
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -35416,6 +35578,8 @@ Blog.Excerpt
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -36213,6 +36377,8 @@ BlogIndexGroup.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -36835,6 +37001,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -37245,6 +37413,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -37596,6 +37766,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -37971,6 +38143,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -38358,6 +38532,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -38733,6 +38909,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -39142,6 +39320,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -39683,6 +39863,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -40097,6 +40279,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -40500,6 +40684,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -40996,6 +41182,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -41416,6 +41604,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -42216,6 +42406,8 @@ CalendarIndex.Summary
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -42612,6 +42804,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -43069,6 +43263,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -43498,6 +43694,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -43903,6 +44101,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -44290,6 +44490,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -44665,6 +44867,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -45056,6 +45260,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -45446,6 +45652,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -45797,6 +46005,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -46160,6 +46370,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -46633,6 +46845,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -47018,6 +47232,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -47399,6 +47615,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -47768,6 +47986,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -48225,6 +48445,8 @@ ImageGroup.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -48699,6 +48921,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -49078,6 +49302,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -49453,6 +49679,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -49864,6 +50092,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -50259,6 +50489,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -50644,6 +50876,8 @@ ImageVideoSoundVectorRaw.Vector
 					if(customDemo != null)
 						return customDemo;
 					var result = new QueueEnvelope();
+					result.ActiveContainerName = @"QueueEnvelope.ActiveContainerName";
+
 					result.SingleOperation = OperationRequest.CreateDemoDefault();
 					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDemoDefault();
 					result.ErrorContent = SystemError.CreateDemoDefault();
@@ -50676,6 +50910,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -50773,6 +51009,8 @@ ImageVideoSoundVectorRaw.Vector
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
+						if(ActiveContainerName != _unmodified_ActiveContainerName)
+							return true;
 						if(CurrentRetryCount != _unmodified_CurrentRetryCount)
 							return true;
 						if(SingleOperation != _unmodified_SingleOperation)
@@ -50844,6 +51082,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				private void CopyContentFrom(QueueEnvelope sourceObject)
 				{
+					ActiveContainerName = sourceObject.ActiveContainerName;
 					CurrentRetryCount = sourceObject.CurrentRetryCount;
 					SingleOperation = sourceObject.SingleOperation;
 					OrderDependentOperationSequence = sourceObject.OrderDependentOperationSequence;
@@ -50854,6 +51093,7 @@ ImageVideoSoundVectorRaw.Vector
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_ActiveContainerName = ActiveContainerName;
 					_unmodified_CurrentRetryCount = CurrentRetryCount;
 				
 					_unmodified_SingleOperation = SingleOperation;
@@ -50878,6 +51118,9 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					switch (propertyName)
 					{
+						case "ActiveContainerName":
+							ActiveContainerName = value;
+							break;
 						case "CurrentRetryCount":
 							CurrentRetryCount = long.Parse(value);
 							break;
@@ -50885,6 +51128,9 @@ ImageVideoSoundVectorRaw.Vector
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string ActiveContainerName { get; set; }
+			private string _unmodified_ActiveContainerName;
 			[DataMember]
 			public long CurrentRetryCount { get; set; }
 			private long _unmodified_CurrentRetryCount;
@@ -51198,6 +51444,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -51613,6 +51861,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -52201,6 +52451,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -52564,6 +52816,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -52937,6 +53191,8 @@ ImageVideoSoundVectorRaw.Vector
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -53403,6 +53659,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -53788,6 +54046,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -54185,6 +54445,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -54630,6 +54892,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -55019,6 +55283,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -55392,6 +55658,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -55834,6 +56102,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -56219,6 +56489,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -56612,6 +56884,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -57001,6 +57275,8 @@ SystemErrorItem.LongDescription
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -57419,6 +57695,8 @@ IconTitleDescription.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
@@ -57797,6 +58075,8 @@ IconTitleDescription.Description
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 

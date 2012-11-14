@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
@@ -58,6 +59,7 @@ namespace WebInterface
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             var request = context.Request;
             var response = context.Response;
+            WebSupport.InitializeContextStorage(context.Request);
             if (request.Path.StartsWith(AboutPrefix))
             {
                 if(request.Path.EndsWith("/oip-layout-register.phtml"))

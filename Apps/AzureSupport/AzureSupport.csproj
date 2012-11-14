@@ -114,6 +114,7 @@
     <Compile Include="Partials\TBAccount.cs" />
     <Compile Include="Partials\TBCollaboratingGroup.cs" />
     <Compile Include="Partials\TBRLoginGroupRoot.cs" />
+    <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -273,6 +273,7 @@ namespace TheBall
         {
             try
             {
+                InformationContext.Current.InitializeCloudStorageAccess(envelope.ActiveContainerName);
                 if (envelope.SingleOperation != null)
                     ProcessSingleOperation(envelope.SingleOperation);
                 if (envelope.OrderDependentOperationSequence != null)

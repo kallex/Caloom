@@ -27,6 +27,12 @@ namespace AaltoGlobalImpact.OIP
                 // If this request is for account, we propagate the pages immediately
                 bool useBackgroundWorker = isAccountRequest == false;
                 RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);
+                if(isAccountRequest)
+                {
+                    accountRoot.Account.EnsureMasterCollections();
+                    accountRoot.Account.RefreshMasterCollections();
+                    accountRoot.Account.ReconnectMastersAndCollectionsForOwner();
+                }
             }
             loginRoot = RetrieveFromDefaultLocation(loginRootID);
             return loginRoot;

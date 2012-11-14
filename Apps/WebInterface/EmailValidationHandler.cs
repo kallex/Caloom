@@ -4,6 +4,7 @@ using System.Security;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
@@ -39,6 +40,7 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             HttpRequest request = context.Request;
+            WebSupport.InitializeContextStorage(context.Request);
             try
             {
                 if (request.Path.StartsWith(AuthEmailValidation))
