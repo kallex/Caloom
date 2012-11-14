@@ -16,7 +16,7 @@ namespace AaltoGlobalImpact.OIP
             activity.ActivityName = ActivityName;
             activity.ReferenceToInformation.Title = activity.ActivityName;
             activity.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(activity);
-            StorageSupport.StoreInformationMasterFirst(activity, owner);
+            StorageSupport.StoreInformationMasterFirst(activity, owner, true);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, activity, owner);
             //ActivitySummaryContainer summaryContainer = ActivitySummaryContainer.RetrieveFromOwnerContent(owner, "default");
             //summaryContainer.AddNewActivity(activity);

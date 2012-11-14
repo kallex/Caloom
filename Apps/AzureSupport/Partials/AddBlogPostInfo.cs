@@ -18,7 +18,7 @@ namespace AaltoGlobalImpact.OIP
             blog.ReferenceToInformation.Title = blog.Title;
             blog.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(blog);
             blog.Published = DateTime.Now;
-            StorageSupport.StoreInformationMasterFirst(blog, owner);
+            StorageSupport.StoreInformationMasterFirst(blog, owner, true);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, blog, owner);
             //BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
             //blogContainer.AddNewBlogPost(blog);

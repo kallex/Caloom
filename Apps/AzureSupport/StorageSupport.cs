@@ -845,6 +845,9 @@ namespace TheBall
                                                 }, true);
             foreach(var referenceMaster in masterObjects)
             {
+                if (referenceMaster == informationObject)
+                    continue;
+                FixOwnerLocation(referenceMaster, owner);
                 var realMaster = referenceMaster.RetrieveMaster(true);
                 SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject, masterInstance: realMaster, referenceInstance: referenceMaster);
                 if (updateContents)
@@ -858,6 +861,8 @@ namespace TheBall
             }
             foreach(IInformationCollection referringCollection in masterReferringCollections)
             {
+                if (referringCollection == informationObject)
+                    continue;
                 IInformationObject referringObject = (IInformationObject) referringCollection;
                 FixOwnerLocation(referringObject, owner);
                 string masterLocation = referringCollection.GetMasterLocation();
@@ -883,7 +888,7 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
-        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner)
+        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndLocations)
         {
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
             if(beforeStoreHandler != null)
@@ -919,7 +924,12 @@ namespace TheBall
                 }
                 referenceInstance.MasterETag = realMaster.ETag;
             }
-            return StoreInformation(informationObject, owner);
+            CloudBlob storedResult = StoreInformation(informationObject, owner);
+            if(reconnectMastersAndLocations)
+            {
+                informationObject.ReconnectMastersAndCollections(false);
+            }
+            return storedResult;
         }
 
         public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null)
@@ -964,7 +974,9 @@ namespace TheBall
                 }
             }
             if (isNewBlob)
+            {
                 informationObject.InitializeDefaultSubscribers(owner);
+            }
             informationObject.PostStoringExecute(owner);
             SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
             Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
@@ -1087,7 +1099,7 @@ namespace TheBall
             return blob;
         }
 
-        public static void DeleteInformationObject(IInformationObject informationObject, IContainerOwner owner = null)
+        public static void DeleteInformationObject(this IInformationObject informationObject, IContainerOwner owner = null)
         {
             string relativeLocation = informationObject.RelativeLocation;
             if (owner != null)

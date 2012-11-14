@@ -47,7 +47,7 @@ namespace TheBallTool
                 {
                     try
                     {
-                        StorageSupport.StoreInformationMasterFirst(iObj, owner);
+                        StorageSupport.StoreInformationMasterFirst(iObj, owner, true);
                         InformationContext.ProcessAndClearCurrent();
                         InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                     } catch(Exception ex)
@@ -147,7 +147,7 @@ namespace TheBallTool
             {
                 try
                 {
-                    iObj.ReconnectMastersAndCollections(true);
+                    iObj.ReconnectMastersAndCollections(false);
                 } catch(Exception ex)
                 {
                     bool ignoreException = false;
@@ -242,17 +242,49 @@ namespace TheBallTool
             var blogsAndActivities = GetAllInformationObjects(io => io is Activity || io is Blog).ToArray();
             var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
             var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
-            foreach(var blog in blogs)
+            foreach(var blog in blogs.Where(bl => bl.LocationCollection == null))
             {
                 blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
                 blog.StoreInformation();
                 blog.ReconnectMastersAndCollections(false);
             }
-            foreach(var activity in activities)
+            foreach(var activity in activities.Where(act => act.LocationCollection == null))
             {
                 activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
                 activity.StoreInformation();
                 activity.ReconnectMastersAndCollections(false);
+            }
+        }
+
+        private static void ConnectMapContainerToCollections()
+        {
+            var mapContainers = GetAllInformationObjects(io => io is MapContainer).Cast<MapContainer>().ToArray();
+            foreach(var mapContainer in mapContainers)
+            {
+                mapContainer.MarkerSourceActivities = ActivityCollection.CreateDefault();
+                mapContainer.MarkerSourceBlogs = BlogCollection.CreateDefault();
+                mapContainer.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
+                mapContainer.ReconnectMastersAndCollections(true);
+            }
+        }
+
+        private static void ClearEmptyLocations()
+        {
+            var locations =
+                GetAllInformationObjects(io => io is AddressAndLocation).Cast<AddressAndLocation>().ToArray();
+            foreach(var loc in locations)
+            {
+                if(String.IsNullOrEmpty(loc.Location.LocationName))
+                {
+                    try
+                    {
+                        StorageSupport.DeleteInformationObject(loc);
+                    } finally
+                    {
+                        InformationContext.ProcessAndClearCurrent();
+                        InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+                    }
+                }
             }
         }
 
@@ -265,12 +297,15 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             //EnsureAndRefreshMasterCollections();
-            //ReconnectAccountsMastersAndCollections();
-            //ReconnectGroupsMastersAndCollections();
+            ReconnectAccountsMastersAndCollections();
+            ReconnectGroupsMastersAndCollections();
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
-            InitBlogAndActivityLocationCollectionsOnce();
+            //InitBlogAndActivityLocationCollectionsOnce();
+            
+            //ConnectMapContainerToCollections();
+            //ClearEmptyLocations();
             return true;
         }
 

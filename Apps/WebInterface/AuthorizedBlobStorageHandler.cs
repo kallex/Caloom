@@ -166,7 +166,12 @@ namespace WebInterface
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
             TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true);
-
+            bool doDelete = false;
+            if(doDelete)
+            {
+                loginRoot.DeleteInformationObject();
+                return;
+            }
             TBAccount account = loginRoot.Account;
             string requestPath = context.Request.Path;
             string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
@@ -240,7 +245,7 @@ namespace WebInterface
                             continue;
                         rootObject.SetMediaContent(containerOwner, contentID, postedFile);
                     }
-                    rootObject.StoreInformationMasterFirst(containerOwner);
+                    rootObject.StoreInformationMasterFirst(containerOwner, false);
                 }
             }
             RenderWebSupport.RefreshContent(webPageBlob);

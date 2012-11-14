@@ -16,7 +16,7 @@ namespace WebInterface
                 Response.Redirect("/public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
             else if (hostName.StartsWith("publicoip.") || hostName.StartsWith("demopublicoip."))
                 Response.Redirect("/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
-            else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip."))
+            else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName == "localhost" )
                 Response.Redirect("/about/oip-public/oip-layout-register.phtml");
             else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww"))
                 Response.Redirect("/www-public/oip-layout-landing.phtml");

@@ -3662,6 +3662,8 @@ namespace AaltoGlobalImpact.OIP {
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
 				private TBAccountCollaborationGroup[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -4427,6 +4429,8 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
 				private TBLoginInfo[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -5203,6 +5207,8 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
 				private TBEmail[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -6036,6 +6042,8 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
 				private TBCollaboratorRole[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -8480,6 +8488,8 @@ namespace AaltoGlobalImpact.OIP {
 		
 				[DataMember] public List<LoginProvider> CollectionContent = new List<LoginProvider>();
 				private LoginProvider[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -13894,6 +13904,8 @@ AccountIndex.Summary
 				[DataMember] public List<AddressAndLocation> CollectionContent = new List<AddressAndLocation>();
 				private AddressAndLocation[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -17628,6 +17640,8 @@ AccountRoles.OrganizationsImPartOf
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
 				private ReferenceToInformation[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -18970,6 +18984,9 @@ AccountRoles.OrganizationsImPartOf
 					result.MapCollection = MapCollection.CreateDefault();
 					result.MapResultCollection = MapResultCollection.CreateDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDefault();
+					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
+					result.MarkerSourceBlogs = BlogCollection.CreateDefault();
+					result.MarkerSourceActivities = ActivityCollection.CreateDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDefault();
 					return result;
 				}
@@ -18986,6 +19003,9 @@ AccountRoles.OrganizationsImPartOf
 					result.MapCollection = MapCollection.CreateDemoDefault();
 					result.MapResultCollection = MapResultCollection.CreateDemoDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDemoDefault();
+					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDemoDefault();
+					result.MarkerSourceBlogs = BlogCollection.CreateDemoDefault();
+					result.MarkerSourceActivities = ActivityCollection.CreateDemoDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
 				
 					return result;
@@ -19016,6 +19036,21 @@ AccountRoles.OrganizationsImPartOf
 						((IInformationObject) MapIndexCollection).UpdateCollections(masterInstance);
 					}
 
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceLocations(this, localCollection:MarkerSourceLocations, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(MarkerSourceLocations != null) {
+						((IInformationObject) MarkerSourceLocations).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceBlogs(this, localCollection:MarkerSourceBlogs, masterCollection:(BlogCollection) masterInstance);
+					} else if(MarkerSourceBlogs != null) {
+						((IInformationObject) MarkerSourceBlogs).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is ActivityCollection) {
+						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceActivities(this, localCollection:MarkerSourceActivities, masterCollection:(ActivityCollection) masterInstance);
+					} else if(MarkerSourceActivities != null) {
+						((IInformationObject) MarkerSourceActivities).UpdateCollections(masterInstance);
+					}
 					if(MapMarkers != null) {
 						((IInformationObject) MapMarkers).UpdateCollections(masterInstance);
 					}
@@ -19071,6 +19106,30 @@ AccountRoles.OrganizationsImPartOf
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = MapIndexCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MarkerSourceLocations;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MarkerSourceBlogs;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MarkerSourceActivities;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -19139,6 +19198,33 @@ AccountRoles.OrganizationsImPartOf
 						}
 					}
 					{
+						var item = MarkerSourceLocations;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = MarkerSourceBlogs;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = MarkerSourceActivities;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
 						var item = MapMarkers;
 						if(item != null)
 						{
@@ -19184,6 +19270,21 @@ AccountRoles.OrganizationsImPartOf
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) MarkerSourceLocations;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) MarkerSourceBlogs;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) MarkerSourceActivities;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) MapMarkers;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -19202,6 +19303,12 @@ AccountRoles.OrganizationsImPartOf
 						if(MapResultCollection != _unmodified_MapResultCollection)
 							return true;
 						if(MapIndexCollection != _unmodified_MapIndexCollection)
+							return true;
+						if(MarkerSourceLocations != _unmodified_MarkerSourceLocations)
+							return true;
+						if(MarkerSourceBlogs != _unmodified_MarkerSourceBlogs)
+							return true;
+						if(MarkerSourceActivities != _unmodified_MarkerSourceActivities)
 							return true;
 						if(MapMarkers != _unmodified_MapMarkers)
 							return true;
@@ -19243,6 +19350,33 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) MapIndexCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MarkerSourceLocations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MarkerSourceBlogs;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MarkerSourceActivities;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -19306,6 +19440,30 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(MarkerSourceLocations != null) {
+						if(MarkerSourceLocations.ID == replacingObject.ID)
+							MarkerSourceLocations = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = MarkerSourceLocations;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MarkerSourceBlogs != null) {
+						if(MarkerSourceBlogs.ID == replacingObject.ID)
+							MarkerSourceBlogs = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = MarkerSourceBlogs;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MarkerSourceActivities != null) {
+						if(MarkerSourceActivities.ID == replacingObject.ID)
+							MarkerSourceActivities = (ActivityCollection) replacingObject;
+						else {
+							IInformationObject iObject = MarkerSourceActivities;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(MapMarkers != null) {
 						if(MapMarkers.ID == replacingObject.ID)
 							MapMarkers = (MapMarkerCollection) replacingObject;
@@ -19324,6 +19482,9 @@ AccountRoles.OrganizationsImPartOf
 					MapCollection = sourceObject.MapCollection;
 					MapResultCollection = sourceObject.MapResultCollection;
 					MapIndexCollection = sourceObject.MapIndexCollection;
+					MarkerSourceLocations = sourceObject.MarkerSourceLocations;
+					MarkerSourceBlogs = sourceObject.MarkerSourceBlogs;
+					MarkerSourceActivities = sourceObject.MarkerSourceActivities;
 					MapMarkers = sourceObject.MapMarkers;
 				}
 				
@@ -19351,6 +19512,18 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_MapIndexCollection = MapIndexCollection;
 					if(MapIndexCollection != null)
 						((IInformationObject) MapIndexCollection).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MarkerSourceLocations = MarkerSourceLocations;
+					if(MarkerSourceLocations != null)
+						((IInformationObject) MarkerSourceLocations).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MarkerSourceBlogs = MarkerSourceBlogs;
+					if(MarkerSourceBlogs != null)
+						((IInformationObject) MarkerSourceBlogs).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MarkerSourceActivities = MarkerSourceActivities;
+					if(MarkerSourceActivities != null)
+						((IInformationObject) MarkerSourceActivities).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_MapMarkers = MapMarkers;
 					if(MapMarkers != null)
@@ -19385,6 +19558,15 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public MapIndexCollection MapIndexCollection { get; set; }
 			private MapIndexCollection _unmodified_MapIndexCollection;
+			[DataMember]
+			public AddressAndLocationCollection MarkerSourceLocations { get; set; }
+			private AddressAndLocationCollection _unmodified_MarkerSourceLocations;
+			[DataMember]
+			public BlogCollection MarkerSourceBlogs { get; set; }
+			private BlogCollection _unmodified_MarkerSourceBlogs;
+			[DataMember]
+			public ActivityCollection MarkerSourceActivities { get; set; }
+			private ActivityCollection _unmodified_MarkerSourceActivities;
 			[DataMember]
 			public MapMarkerCollection MapMarkers { get; set; }
 			private MapMarkerCollection _unmodified_MapMarkers;
@@ -19647,6 +19829,10 @@ AccountRoles.OrganizationsImPartOf
 					if(customDemo != null)
 						return customDemo;
 					var result = new MapMarker();
+					result.IconUrl = @"MapMarker.IconUrl";
+
+					result.MarkerSource = @"MapMarker.MarkerSource";
+
 					result.LocationText = @"MapMarker.LocationText";
 
 					result.Location = Location.CreateDemoDefault();
@@ -19726,6 +19912,10 @@ AccountRoles.OrganizationsImPartOf
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
+						if(IconUrl != _unmodified_IconUrl)
+							return true;
+						if(MarkerSource != _unmodified_MarkerSource)
+							return true;
 						if(LocationText != _unmodified_LocationText)
 							return true;
 						if(Location != _unmodified_Location)
@@ -19759,6 +19949,8 @@ AccountRoles.OrganizationsImPartOf
 
 				private void CopyContentFrom(MapMarker sourceObject)
 				{
+					IconUrl = sourceObject.IconUrl;
+					MarkerSource = sourceObject.MarkerSource;
 					LocationText = sourceObject.LocationText;
 					Location = sourceObject.Location;
 				}
@@ -19767,6 +19959,8 @@ AccountRoles.OrganizationsImPartOf
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_IconUrl = IconUrl;
+					_unmodified_MarkerSource = MarkerSource;
 					_unmodified_LocationText = LocationText;
 				
 					_unmodified_Location = Location;
@@ -19783,6 +19977,12 @@ AccountRoles.OrganizationsImPartOf
 				{
 					switch (propertyName)
 					{
+						case "IconUrl":
+							IconUrl = value;
+							break;
+						case "MarkerSource":
+							MarkerSource = value;
+							break;
 						case "LocationText":
 							LocationText = value;
 							break;
@@ -19790,6 +19990,12 @@ AccountRoles.OrganizationsImPartOf
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string IconUrl { get; set; }
+			private string _unmodified_IconUrl;
+			[DataMember]
+			public string MarkerSource { get; set; }
+			private string _unmodified_MarkerSource;
 			[DataMember]
 			public string LocationText { get; set; }
 			private string _unmodified_LocationText;
@@ -20126,6 +20332,8 @@ AccountRoles.OrganizationsImPartOf
 		
 				[DataMember] public List<MapMarker> CollectionContent = new List<MapMarker>();
 				private MapMarker[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -25217,6 +25425,8 @@ ActivityIndex.Summary
 				[DataMember] public List<Activity> CollectionContent = new List<Activity>();
 				private Activity[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -26400,6 +26610,8 @@ Activity.Description
 				[DataMember] public List<Moderator> CollectionContent = new List<Moderator>();
 				private Moderator[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -27177,6 +27389,8 @@ Activity.Description
 		
 				[DataMember] public List<Collaborator> CollectionContent = new List<Collaborator>();
 				private Collaborator[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -28321,6 +28535,8 @@ Activity.Description
 				[DataMember] public List<CollaboratingGroup> CollectionContent = new List<CollaboratingGroup>();
 				private CollaboratingGroup[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -29086,6 +29302,8 @@ Activity.Description
 		
 				[DataMember] public List<CollaboratingOrganization> CollectionContent = new List<CollaboratingOrganization>();
 				private CollaboratingOrganization[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -33704,6 +33922,8 @@ GroupIndex.Summary
 				[DataMember] public List<Group> CollectionContent = new List<Group>();
 				private Group[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -35183,6 +35403,8 @@ Introduction.Body
 		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
 				private Blog[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -38203,6 +38425,8 @@ CalendarIndex.Summary
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
 				private Calendar[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -38968,6 +39192,8 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
 				private Map[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -40338,6 +40564,8 @@ CalendarIndex.Summary
 		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
 				private MapResult[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -42466,6 +42694,8 @@ CalendarIndex.Summary
 				[DataMember] public List<ImageGroup> CollectionContent = new List<ImageGroup>();
 				private ImageGroup[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -43754,6 +43984,8 @@ ImageGroup.Description
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
 				private Image[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -44160,6 +44392,8 @@ ImageGroup.Description
 		
 				[DataMember] public List<Video> CollectionContent = new List<Video>();
 				private Video[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -44926,6 +45160,8 @@ ImageGroup.Description
 		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
 				private SocialPanel[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -46904,6 +47140,8 @@ ImageGroup.Description
 		
 				[DataMember] public List<Location> CollectionContent = new List<Location>();
 				private Location[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -49739,6 +49977,8 @@ ImageVideoSoundVectorRaw.Vector
 				[DataMember] public List<Category> CollectionContent = new List<Category>();
 				private Category[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -50151,6 +50391,8 @@ ImageVideoSoundVectorRaw.Vector
 		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
 				private Subscription[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -51503,6 +51745,8 @@ ImageVideoSoundVectorRaw.Vector
 		
 				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
 				private OperationRequest[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -54106,6 +54350,8 @@ SystemErrorItem.LongDescription
 				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
 				private SystemErrorItem[] _unmodified_CollectionContent;
 
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
 					for(int i = 0; i < CollectionContent.Count; i++) // >
@@ -54951,6 +55197,8 @@ SystemErrorItem.LongDescription
 		
 				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
 				private InformationSource[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -56548,6 +56796,8 @@ SystemErrorItem.LongDescription
 		
 				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
 				private UpdateWebContentHandlerItem[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{

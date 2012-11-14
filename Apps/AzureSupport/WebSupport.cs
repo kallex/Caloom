@@ -12,7 +12,10 @@ namespace AzureSupport
 
         static string GetContainerName(HttpRequest request)
         {
-            return request.Url.DnsSafeHost.Replace('.', '-').ToLower();
+            string hostName = request.Url.DnsSafeHost;
+            if (hostName == "localhost")
+                hostName = "demooip.aaltoglobalimpact.org";
+            return hostName.Replace('.', '-').ToLower();
         }
 
         public static void InitializeContextStorage(HttpRequest request)

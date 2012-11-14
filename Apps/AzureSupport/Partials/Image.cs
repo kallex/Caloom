@@ -35,7 +35,7 @@ namespace AaltoGlobalImpact.OIP
                 addedImage.SetMediaContent(owner, addedImage.ImageData.ID, postedFile);
             }
             currImageGroup.ImagesCollection.CollectionContent.Add(addedImage);
-            currImageGroup.StoreInformationMasterFirst(owner);
+            currImageGroup.StoreInformationMasterFirst(owner, true);
             return true;
         }
     }

@@ -17,7 +17,7 @@ namespace AaltoGlobalImpact.OIP
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             image.SetLocationAsOwnerContent(owner, image.ID);
             image.Title = ImageTitle;
-            StorageSupport.StoreInformationMasterFirst(image, owner);
+            StorageSupport.StoreInformationMasterFirst(image, owner, true);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, image, owner);
             return true;
         }
@@ -34,7 +34,7 @@ namespace AaltoGlobalImpact.OIP
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             imageGroup.SetLocationAsOwnerContent(owner, imageGroup.ID);
             imageGroup.Title = ImageGroupTitle;
-            StorageSupport.StoreInformationMasterFirst(imageGroup, owner);
+            StorageSupport.StoreInformationMasterFirst(imageGroup, owner, true);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, imageGroup, owner);
             return true;
         }
@@ -54,7 +54,7 @@ namespace AaltoGlobalImpact.OIP
             location.Location.LocationName = LocationName;
             location.ReferenceToInformation.Title = location.Location.LocationName;
             location.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(location);
-            StorageSupport.StoreInformationMasterFirst(location, owner);
+            StorageSupport.StoreInformationMasterFirst(location, owner, true);
             DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, location, owner);
 
             //LocationContainer locationContainer = LocationContainer.RetrieveFromOwnerContent(owner, "Locations");
