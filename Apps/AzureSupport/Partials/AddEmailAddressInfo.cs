@@ -39,7 +39,7 @@ namespace AaltoGlobalImpact.OIP
                                                         };
             StorageSupport.StoreInformation(emailValidation);
             TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
-            groupRoot.Group.InviteToGroup(EmailAddress, TBCollaboratorRole.ViewerRoleValue);
+            groupRoot.Group.InviteToGroup(EmailAddress, TBCollaboratorRole.CollaboratorRoleValue);
             StorageSupport.StoreInformation(groupRoot);
             EmailSupport.SendGroupJoinEmail(emailValidation, groupRoot.Group);
         }

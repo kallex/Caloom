@@ -158,7 +158,7 @@ The link is valid for 14 days, after which you need to request new invitation.";
 
         private static string GetUrlLink(string emailValidationID)
         {
-            string urlLink = "http://oip.msunit.citrus.fi/emailvalidation/" + emailValidationID;
+            string urlLink = "http://demooip.aaltoglobalimpact.org/emailvalidation/" + emailValidationID;
             return urlLink;
         }
     }

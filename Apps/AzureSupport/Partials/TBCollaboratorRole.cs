@@ -2,7 +2,7 @@
 {
     partial class TBCollaboratorRole
     {
-        private const string InitiatorRoleValue = "Initiator";
+        public const string InitiatorRoleValue = "Initiator";
         private const string ModeratorRoleValue = "Moderator";
         public const string CollaboratorRoleValue = "Collaborator";
         public const string ViewerRoleValue = "Viewer";

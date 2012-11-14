@@ -207,6 +207,8 @@ namespace WebInterface
 
             CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
+            if(sources == null)
+                throw new InvalidDataException("Postback to page with no information sources defined - where there should be");
             if(sourceNamesCommaSeparated == null)
                 sourceNamesCommaSeparated = "";
             string[] sourceNames = sourceNamesCommaSeparated.Split(',');

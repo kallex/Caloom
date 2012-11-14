@@ -23,6 +23,15 @@ namespace AaltoGlobalImpact.OIP
             return groupRoot;
         }
 
+        public static TBRGroupRoot CreateLegacyNewWithGroup(string legacyID)
+        {
+            TBRGroupRoot groupRoot = TBRGroupRoot.CreateDefault();
+            groupRoot.ID = legacyID;
+            groupRoot.UpdateRelativeLocationFromID();
+            groupRoot.Group.ID = groupRoot.ID;
+            return groupRoot;
+        }
+
         public static void DeleteEntireGroup(string groupID)
         {
             TBRGroupRoot groupToDelete = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);

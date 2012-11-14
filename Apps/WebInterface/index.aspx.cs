@@ -13,11 +13,13 @@ namespace WebInterface
         {
             string hostName = Request.Url.DnsSafeHost;
             if (hostName.StartsWith("oip.msunit.citrus.fi"))
-                Response.Redirect("public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
-            else if (hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName.StartsWith("publicoip.") || hostName.StartsWith("demopublicoip."))
-                Response.Redirect("grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
+                Response.Redirect("/public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
+            else if (hostName.StartsWith("publicoip.") || hostName.StartsWith("demopublicoip."))
+                Response.Redirect("/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
+            else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip."))
+                Response.Redirect("/about/oip-public/oip-layout-register.phtml");
             else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww"))
-                Response.Redirect("www-public/oip-layout-landing.phtml");
+                Response.Redirect("/www-public/oip-layout-landing.phtml");
         }
     }
 }

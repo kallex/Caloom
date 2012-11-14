@@ -25553,7 +25553,7 @@ ActivityIndex.Summary
 					result.Introduction = Introduction.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
-					result.Location = AddressAndLocation.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
@@ -25580,7 +25580,7 @@ Activity.Description
 
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
-					result.Location = AddressAndLocation.CreateDemoDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
@@ -25603,6 +25603,11 @@ Activity.Description
 						CollectionUpdateImplementation.Update_Activity_ImageSets(this, localCollection:ImageSets, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageSets != null) {
 						((IInformationObject) ImageSets).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_Activity_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
@@ -25650,6 +25655,14 @@ Activity.Description
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
+						IInformationObject item = LocationCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
 						IInformationObject item = CategoryCollection;
 						if(item != null)
 						{
@@ -25675,13 +25688,6 @@ Activity.Description
 						}
 						{
 							IInformationObject item = IconImage;
-							if(item != null)
-							{
-								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-							}
-						}
-						{
-							IInformationObject item = Location;
 							if(item != null)
 							{
 								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -25748,7 +25754,7 @@ Activity.Description
 						}
 					}
 					{
-						var item = Location;
+						var item = LocationCollection;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -25807,7 +25813,7 @@ Activity.Description
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) Location;
+						var item = (IInformationObject) LocationCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -25837,7 +25843,7 @@ Activity.Description
 							return true;
 						if(ImageSets != _unmodified_ImageSets)
 							return true;
-						if(Location != _unmodified_Location)
+						if(LocationCollection != _unmodified_LocationCollection)
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
@@ -25861,6 +25867,15 @@ Activity.Description
 						}
 						{
 							IInformationObject item = (IInformationObject) ImageSets;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -25932,11 +25947,11 @@ Activity.Description
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(Location != null) {
-						if(Location.ID == replacingObject.ID)
-							Location = (AddressAndLocation) replacingObject;
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
 						else {
-							IInformationObject iObject = Location;
+							IInformationObject iObject = LocationCollection;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -25961,7 +25976,7 @@ Activity.Description
 					Description = sourceObject.Description;
 					Collaborators = sourceObject.Collaborators;
 					ImageSets = sourceObject.ImageSets;
-					Location = sourceObject.Location;
+					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 				}
 				
@@ -25996,9 +26011,9 @@ Activity.Description
 					if(ImageSets != null)
 						((IInformationObject) ImageSets).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_Location = Location;
-					if(Location != null)
-						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -26049,8 +26064,8 @@ Activity.Description
 			public ImageGroupCollection ImageSets { get; set; }
 			private ImageGroupCollection _unmodified_ImageSets;
 			[DataMember]
-			public AddressAndLocation Location { get; set; }
-			private AddressAndLocation _unmodified_Location;
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
@@ -35504,7 +35519,7 @@ Introduction.Body
 					result.FeaturedImage = Image.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
 					result.VideoGroup = VideoGroup.CreateDefault();
-					result.Location = AddressAndLocation.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDefault();
 					return result;
@@ -35542,7 +35557,7 @@ Blog.Excerpt
 Blog.Excerpt
 ";
 
-					result.Location = AddressAndLocation.CreateDemoDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
 				
@@ -35562,6 +35577,11 @@ Blog.Excerpt
 						((IInformationObject) VideoGroup).UpdateCollections(masterInstance);
 					}
 
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_Blog_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
+					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -35604,6 +35624,14 @@ Blog.Excerpt
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
+						IInformationObject item = LocationCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
 						IInformationObject item = CategoryCollection;
 						if(item != null)
 						{
@@ -35637,13 +35665,6 @@ Blog.Excerpt
 						}
 						{
 							IInformationObject item = ImageGroup;
-							if(item != null)
-							{
-								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-							}
-						}
-						{
-							IInformationObject item = Location;
 							if(item != null)
 							{
 								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -35701,7 +35722,7 @@ Blog.Excerpt
 						}
 					}
 					{
-						var item = Location;
+						var item = LocationCollection;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -35764,7 +35785,7 @@ Blog.Excerpt
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) Location;
+						var item = (IInformationObject) LocationCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -35805,7 +35826,7 @@ Blog.Excerpt
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
-						if(Location != _unmodified_Location)
+						if(LocationCollection != _unmodified_LocationCollection)
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
@@ -35822,6 +35843,15 @@ Blog.Excerpt
 						}
 						{
 							IInformationObject item = (IInformationObject) VideoGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -35894,11 +35924,11 @@ Blog.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(Location != null) {
-						if(Location.ID == replacingObject.ID)
-							Location = (AddressAndLocation) replacingObject;
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
 						else {
-							IInformationObject iObject = Location;
+							IInformationObject iObject = LocationCollection;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -35934,7 +35964,7 @@ Blog.Excerpt
 					VideoGroup = sourceObject.VideoGroup;
 					Body = sourceObject.Body;
 					Excerpt = sourceObject.Excerpt;
-					Location = sourceObject.Location;
+					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 					SocialPanel = sourceObject.SocialPanel;
 				}
@@ -35970,9 +36000,9 @@ Blog.Excerpt
 					if(VideoGroup != null)
 						((IInformationObject) VideoGroup).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_Location = Location;
-					if(Location != null)
-						((IInformationObject) Location).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -36048,8 +36078,8 @@ Blog.Excerpt
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
 			[DataMember]
-			public AddressAndLocation Location { get; set; }
-			private AddressAndLocation _unmodified_Location;
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;

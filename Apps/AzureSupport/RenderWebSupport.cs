@@ -718,8 +718,8 @@ namespace TheBall
         {
             string syscontentRoot = "sys/AAA/";
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string anonContainerName = //StorageSupport.CurrAnonPublicContainer.Name;
-                "demopublicoip-aaltoglobalimpact-org";
+            string anonContainerName = GetCurrentAnonContainerName(); //StorageSupport.CurrAnonPublicContainer.Name;
+                //"demopublicoip-aaltoglobalimpact-org";
             string groupTemplateLocation = "grp/" + grpID + "/" + DefaultWebTemplateLocation;
             string groupSiteLocation = "grp/" + grpID + "/" + DefaultWebSiteLocation;
             string groupSiteViewLocation = groupSiteLocation + "/" + DefaultGroupViewLocation;
@@ -777,6 +777,18 @@ namespace TheBall
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
                 QueueSupport.PutToOperationQueue(operationRequests.ToArray());
+            }
+        }
+
+        private static string GetCurrentAnonContainerName()
+        {
+            switch(StorageSupport.CurrActiveContainer.Name)
+            {
+                case "demooip-aaltoglobalimpact-org":
+                    return "demopublicoip-aaltoglobalimpact-org";
+                default:
+                    throw new InvalidDataException("Anonymous container not defined for: " +
+                                                   StorageSupport.CurrActiveContainer.Name);
             }
         }
 

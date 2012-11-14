@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
@@ -95,6 +96,8 @@ namespace TheBallTool
             return groupLocs.ToArray();
         }
 
+
+
         public static string[] GetAllAccountLocations()
         {
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
@@ -114,6 +117,18 @@ namespace TheBallTool
             var acctLocs = GetAllAccountLocations();
             foreach (var acctLoc in acctLocs)
                 ReconnectMastersAndCollections(acctLoc);
+        }
+
+        private static IInformationObject[] GetAllInformationObjects(Predicate<IInformationObject> filterIfFalse)
+        {
+            string[] ownerLocations = GetAllOwnerLocations();
+            List<IInformationObject> result = new List<IInformationObject>();
+            foreach(string ownerLocation in ownerLocations)
+            {
+                var ownerObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, filterIfFalse);
+                result.AddRange(ownerObjects);
+            }
+            return result.ToArray();
         }
 
         private static void ReconnectMastersAndCollections(string ownerLocation)
@@ -141,6 +156,8 @@ namespace TheBallTool
                 }
             }
         }
+
+
 
         private static void DoCustomCleanup(string groupLoc)
         {
@@ -181,18 +198,81 @@ namespace TheBallTool
 
         }
 
+        private static void FixGroupMastersAndCollections(string groupID)
+        {
+            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            groupRoot.Group.EnsureMasterCollections();
+            groupRoot.Group.RefreshMasterCollections();
+            groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
+        }
+
+        private static void AddLegacyGroupWithInitiator(string groupID, string initiatorEmailAddress)
+        {
+            var groupRoot = TBRGroupRoot.CreateLegacyNewWithGroup(groupID);
+            groupRoot.Group.JoinToGroup(initiatorEmailAddress, TBCollaboratorRole.InitiatorRoleValue);
+            //groupRoot.Group.JoinToGroup("jeroen@caloom.com", "moderator");
+            StorageSupport.StoreInformation(groupRoot);
+            groupRoot.Group.EnsureMasterCollections();
+            groupRoot.Group.RefreshMasterCollections();
+            groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
+        }
+
+        private static void RemoveBlogLocationsOnce()
+        {
+            var blogs = GetAllInformationObjects(io => io is Blog).Cast<Blog>().ToArray();
+            foreach (var blog in blogs)
+            {
+                //blog.Location = null;
+                //blog.StoreInformation();
+            }
+        }
+
+        private static void RemoveActivityLocationsOnce()
+        {
+            var activities = GetAllInformationObjects(io => io is Activity).Cast<Activity>().ToArray();
+            foreach (var activity in activities)
+            {
+                //activity.Location = null;
+                //activity.StoreInformation();
+            }
+        }
+
+        private static void InitBlogAndActivityLocationCollectionsOnce()
+        {
+            var blogsAndActivities = GetAllInformationObjects(io => io is Activity || io is Blog).ToArray();
+            var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
+            var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
+            foreach(var blog in blogs)
+            {
+                blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
+                blog.StoreInformation();
+                blog.ReconnectMastersAndCollections(false);
+            }
+            foreach(var activity in activities)
+            {
+                activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
+                activity.StoreInformation();
+                activity.ReconnectMastersAndCollections(false);
+            }
+        }
+
+
         public static bool DoPatching()
         {
             return false;
             Debugger.Break();
             bool skip = false;
-            if(skip == false)
+            if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
             //ReconnectGroupsMastersAndCollections();
-            SyncWwwPublicFromDefaultGroup();
+            //SyncWwwPublicFromDefaultGroup();
+            //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
+            //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
+            InitBlogAndActivityLocationCollectionsOnce();
             return true;
         }
+
     }
 }

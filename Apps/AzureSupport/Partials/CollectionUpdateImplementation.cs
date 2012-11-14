@@ -64,5 +64,15 @@ namespace AaltoGlobalImpact.OIP
         {
             localCollection.CollectionContent = masterCollection.CollectionContent;
         }
+
+        internal static void Update_Blog_LocationCollection(Blog blog, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+        }
+
+        internal static void Update_Activity_LocationCollection(Activity activity, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+        }
     }
 }
