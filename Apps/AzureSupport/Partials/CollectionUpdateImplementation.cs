@@ -90,34 +90,34 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
-        internal static void Update_Blog_LocationCollection(Blog blog, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
-        {
-            if (localCollection == null)
-            {
-                blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                localCollection = blog.LocationCollection;
-            }
-            localCollection.CollectionContent = masterCollection.CollectionContent;
-            if (localCollection.OrderFilterIDList == null)
-                localCollection.OrderFilterIDList = new List<string>();
-        }
+        //internal static void Update_Blog_LocationCollection(Blog blog, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        //{
+        //    if (localCollection == null)
+        //    {
+        //        blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
+        //        localCollection = blog.LocationCollection;
+        //    }
+        //    localCollection.CollectionContent = masterCollection.CollectionContent;
+        //    if (localCollection.OrderFilterIDList == null)
+        //        localCollection.OrderFilterIDList = new List<string>();
+        //}
 
-        internal static void Update_Activity_LocationCollection(Activity activity, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
-        {
-            if(localCollection == null)
-            {
-                activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                localCollection = activity.LocationCollection;
-            }
-            localCollection.CollectionContent = masterCollection.CollectionContent;
-            if (localCollection.OrderFilterIDList == null)
-                localCollection.OrderFilterIDList = new List<string>();
-        }
+        //internal static void Update_Activity_LocationCollection(Activity activity, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        //{
+        //    if(localCollection == null)
+        //    {
+        //        activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
+        //        localCollection = activity.LocationCollection;
+        //    }
+        //    localCollection.CollectionContent = masterCollection.CollectionContent;
+        //    if (localCollection.OrderFilterIDList == null)
+        //        localCollection.OrderFilterIDList = new List<string>();
+        //}
 
         internal static void Update_MapContainer_MarkerSourceLocations(MapContainer mapContainer, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
         {
-            mapContainer.MapMarkers.CollectionContent.RemoveAll(
-                marker => marker.MarkerSource == MapMarker.MarkerSourceLocationValue);
+            mapContainer.MapMarkers.CollectionContent.Clear();
+            //    marker => marker.MarkerSource == MapMarker.MarkerSourceLocationValue);
             var mapMarkersFromLocation = masterCollection.CollectionContent.
                 Select(loc =>
                            {
@@ -132,40 +132,40 @@ namespace AaltoGlobalImpact.OIP
             mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
         }
 
-        internal static void Update_MapContainer_MarkerSourceBlogs(MapContainer mapContainer, BlogCollection localCollection, BlogCollection masterCollection)
-        {
-            mapContainer.MapMarkers.CollectionContent.RemoveAll(
-                marker => marker.MarkerSource == MapMarker.MarkerSourceBlogValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(blog => blog.LocationCollection.CollectionContent).
-                Select(loc =>
-                {
-                    MapMarker marker = MapMarker.CreateDefault();
-                    marker.Location = loc.Location;
-                    marker.MarkerSource = MapMarker.MarkerSourceBlogValue;
-                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-2.png";
-                    marker.SetLocationTextFromLocation(loc.Location);
-                    return marker;
+        //internal static void Update_MapContainer_MarkerSourceBlogs(MapContainer mapContainer, BlogCollection localCollection, BlogCollection masterCollection)
+        //{
+        //    mapContainer.MapMarkers.CollectionContent.RemoveAll(
+        //        marker => marker.MarkerSource == MapMarker.MarkerSourceBlogValue);
+        //    var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(blog => blog.LocationCollection.CollectionContent).
+        //        Select(loc =>
+        //        {
+        //            MapMarker marker = MapMarker.CreateDefault();
+        //            marker.Location = loc.Location;
+        //            marker.MarkerSource = MapMarker.MarkerSourceBlogValue;
+        //            marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-2.png";
+        //            marker.SetLocationTextFromLocation(loc.Location);
+        //            return marker;
 
-                }).ToArray();
-            mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
-        }
+        //        }).ToArray();
+        //    mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
+        //}
 
-        internal static void Update_MapContainer_MarkerSourceActivities(MapContainer mapContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
-        {
-            mapContainer.MapMarkers.CollectionContent.RemoveAll(
-                marker => marker.MarkerSource == MapMarker.MarkerSourceActivityValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(activity => activity.LocationCollection.CollectionContent).
-                Select(loc =>
-                {
-                    MapMarker marker = MapMarker.CreateDefault();
-                    marker.Location = loc.Location;
-                    marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
-                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
-                    marker.SetLocationTextFromLocation(loc.Location);
-                    return marker;
+        //internal static void Update_MapContainer_MarkerSourceActivities(MapContainer mapContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
+        //{
+        //    mapContainer.MapMarkers.CollectionContent.RemoveAll(
+        //        marker => marker.MarkerSource == MapMarker.MarkerSourceActivityValue);
+        //    var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(activity => activity.LocationCollection.CollectionContent).
+        //        Select(loc =>
+        //        {
+        //            MapMarker marker = MapMarker.CreateDefault();
+        //            marker.Location = loc.Location;
+        //            marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
+        //            marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
+        //            marker.SetLocationTextFromLocation(loc.Location);
+        //            return marker;
 
-                }).ToArray();
-            mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
-        }
+        //        }).ToArray();
+        //    mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
+        //}
     }
 }

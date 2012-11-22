@@ -1,4 +1,7 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System;
+using System.Collections.Generic;
+
+namespace AaltoGlobalImpact.OIP
 {
     partial class TBCollaboratorRole
     {
@@ -47,5 +50,6 @@
         {
             RoleStatus = RoleStatusMemberValue;
         }
+
     }
 }

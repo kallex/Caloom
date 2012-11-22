@@ -1,6 +1,8 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -94,6 +96,37 @@ namespace TheBall
             int lastDirectorySlashIndex = targetLocation.LastIndexOf("/");
             string directoryLocation = targetLocation.Substring(0, lastDirectorySlashIndex + 1);
             return directoryLocation;
+        }
+
+        public static void GetSubcriptionList(string startTargetLocation, List<Subscription> result, List<string> currTargetStack)
+        {
+            if(currTargetStack.Contains(startTargetLocation))
+            {
+                bool circular = true;
+            }
+            currTargetStack.Add(startTargetLocation);
+            SubscriptionCollection subscriptionCollection = GetSubscriptions(startTargetLocation);
+            string targetParentLocation = GetParentDirectoryTarget(startTargetLocation);
+            SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
+            if (subscriptionCollection == null && parentSubscriptionCollection == null)
+                return;
+            List<Subscription> thisLevelCombined = new List<Subscription>();
+            if(subscriptionCollection != null)
+            {
+                thisLevelCombined.AddRange(subscriptionCollection.CollectionContent);
+            }
+            if(parentSubscriptionCollection != null)
+            {
+                thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
+            }
+            result.AddRange(thisLevelCombined);
+            foreach(var subscription in thisLevelCombined)
+            {
+                List<string> independentTargetStack = new List<string>(currTargetStack);
+                GetSubcriptionList(subscription.SubscriberRelativeLocation, result, independentTargetStack);
+            }
+            int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
+            Debug.WriteLine("Count: " + result.Count + " Distinctive: " + distinctCount);
         }
 
         public static SubscriptionCollection GetSubscriptions(string targetLocation)

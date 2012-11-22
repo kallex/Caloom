@@ -1,6 +1,218 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="AaltoGlobalImpact.OIP">
+    <Operation name="InviteMemberToGroup">
+      <OperationSpec>
+        <Description>Invite member to collaboration group</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved" />
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root for given ID" state="designApproved">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="EmailValidation" dataType="TBEmailValidation" designDesc="Email validation item for 14 days" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID of email" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+          </TargetDefinition>
+          <MethodExecute name="AddAsPendingInvitationToGroupRoot" designDesc="Add as pending invitation to group root" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="GroupRoot" />
+            <Target name="EmailValidation" />
+          </MethodExecute>
+          <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the group" state="designApproved">
+            <Target name="EmailValidation" />
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers" state="designApproved">
+            <Target name="GroupRoot" />
+            <Target name="AccountID" />
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ConfirmInviteToJoinGroup">
+      <OperationSpec>
+        <Description>Confirm member joining to collaboration group</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved" />
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root for given ID" state="designApproved">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID of email" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+          </TargetDefinition>
+          <MethodExecute name="ConfirmPendingInvitationToGroupRoot" designDesc="Confirm pending invitation to membership in group root" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers" state="designApproved">
+            <Target name="GroupRoot" />
+            <Target name="AccountID" />
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="RefreshAccountGroupMemberships">
+      <OperationSpec>
+        <Description>Refresh account group memberships in logins, group and account containers</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <OperationExecute name="UpdateAccountRoot" targetOperationName="UpdateAccountRootGroupMembership" designDesc="Update account root" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Parameter name="AccountID" />
+          </OperationExecute>
+          <OperationExecute name="UpdateAccountLoginGroups" targetOperationName="UpdateLoginGroupPermissions" designDesc="Update login group permissions" state="designApproved">
+            <Parameter name="AccountID" />
+          </OperationExecute>
+          <OperationExecute name="UpdateGroupContainers" targetOperationName="UpdateGroupContainersGroupMembership" designDesc="Update group containers" state="designApproved">
+            <Parameter name="GroupRoot" />
+          </OperationExecute>
+          <OperationExecute name="UpdateAccountContainers" targetOperationName="UpdateAccountContainersGroupMembership" designDesc="Update account containers" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Parameter name="AccountID" />
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="UpdateGroupContainersGroupMembership">
+      <OperationSpec>
+        <Description>Updates group container level memberships</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountRootsAndContainers" dataType="AccountRootAndContainer[]" designDesc="Account roots and containers for profile information" state="designApproved">
+            <Parameter name="GroupRoot" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupContainer" dataType="GroupContainer" designDesc="Group container in the group" state="designApproved">
+            <Parameter name="GroupRoot" />
+          </TargetDefinition>
+          <MethodExecute name="UpdateGroupContainerMembership" designDesc="Update group container memberships" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Target name="AccountRootsAndContainers" />
+            <Target name="GroupContainer" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="GroupContainer" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="UpdateLoginGroupPermissions">
+      <OperationSpec>
+        <Description>Updates account login permissions per group</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountRoot" dataType="TBRAccountRoot" designDesc="Account root" state="designApproved">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="LoginGroupRoots" dataType="TBRLoginGroupRoot[]" designDesc="Account's group login entries" state="designApproved">
+            <Target name="AccountRoot" />
+          </TargetDefinition>
+          <MethodExecute name="SynchronizeLoginGroupRoots" designDesc="Add missing and remove nonexistent login group roots" state="designApproved">
+            <Target name="AccountRoot" />
+            <Target name="LoginGroupRoots" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="UpdateAccountRootGroupMembership">
+      <OperationSpec>
+        <Description>Updates account container level group memberships and summaries based on the values</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountRoot" dataType="TBRAccountRoot" designDesc="Account root" state="designApproved">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <MethodExecute name="UpdateAccountRootGroupMemberships" designDesc="Update account container memberships" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Target name="AccountRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="AccountRoot" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="UpdateAccountContainersGroupMembership">
+      <OperationSpec>
+        <Description>Updates account container level group memberships and summaries based on the values</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupContainer" dataType="GroupContainer" designDesc="Group's group container" state="designApproved">
+            <Parameter name="GroupRoot" />
+          </TargetDefinition>
+          <TargetDefinition name="Group" dataType="Group" designDesc="Group item" state="designApproved">
+            <Target name="GroupContainer" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountRoot" dataType="TBRAccountRoot" designDesc="Account root" state="designApproved">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountContainer" dataType="AccountContainer" designDesc="Account container" state="designApproved">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupSummaryContainer" dataType="GroupSummaryContainer" designDesc="Group summary container of account" state="designApproved">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <MethodExecute name="UpdateGroupSummaryContainerMemberships" designDesc="Update group summary container memberships" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Target name="Group" />
+            <Target name="AccountRoot" />
+            <Target name="GroupSummaryContainer" />
+          </MethodExecute>
+          <MethodExecute name="UpdateAccountContainerMemberships" designDesc="Update account container memberships" state="designApproved">
+            <Parameter name="GroupRoot" />
+            <Target name="Group" />
+            <Target name="GroupSummaryContainer" />
+            <Target name="AccountRoot" />
+            <Target name="AccountContainer" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="AccountContainer" />
+            <Target name="GroupSummaryContainer" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="UpdatePageContent">
       <OperationSpec>
         <Description />

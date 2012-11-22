@@ -765,18 +765,34 @@ namespace TheBall
             // Publish group public content
             var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
             operationRequests.Add(publishPublicContent);
-            if (grpID == DefaultGroupID)
+            if (grpID == DefaultGroupID) // Currently also publish www
             {
                 OperationRequest publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, defaultPublicSiteLocation, useWorker, false);
                 operationRequests.Add(publishDefault);
                 publishDefault = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, currContainerName,
                     aboutAuthTargetLocation, useWorker, false);
                 operationRequests.Add(publishDefault);
+                string defaultWwwContainerName = GetCurrentWwwContainerName();
+                publishDefault = SyncTemplatesToSite(currContainerName, groupWwwPublicSiteLocation,
+                                                     defaultWwwContainerName, "", useWorker, false);
+                operationRequests.Add(publishDefault);
             }
             if(useWorker)
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
                 QueueSupport.PutToOperationQueue(operationRequests.ToArray());
+            }
+        }
+
+        private static string GetCurrentWwwContainerName()
+        {
+            switch(StorageSupport.CurrActiveContainer.Name)
+            {
+                case "demooip-aaltoglobalimpact-org":
+                    return "demowww-aaltoglobalimpact-org";
+                default:
+                    throw new InvalidDataException("Www container not defined for: " +
+                                                   StorageSupport.CurrActiveContainer.Name);
             }
         }
 

@@ -137,10 +137,10 @@ namespace TheBall
                 IInformationObject referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
                 string masterEtag = referenceToMaster.ETag;
                 string masterID = referenceToMaster.ID;
-                Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+                Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
                 container.CollectMasterObjectsFromTree(result, candidate => candidate.ID == masterID);
                 bool foundOutdatedMaster =
-                    result.Values.Count(candidate => candidate.MasterETag != masterEtag) > 0;
+                    result.Values.SelectMany(item => item).Count(candidate => candidate.MasterETag != masterEtag) > 0;
                 if(foundOutdatedMaster)
                 {
                     referenceToMaster.MasterETag = referenceToMaster.ETag;
@@ -188,7 +188,15 @@ namespace TheBall
                 CloudBlob targetBlob;
                 if (blobCopyItem.TargetBlob == null)
                 {
-                    string targetBlobName = blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
+                    string sourceBlobNameWithoutSourcePrefix = blobCopyItem.SourceBlob.Name.Substring(sourcePathRoot.Length);
+                    string targetBlobName;
+                    if (sourceBlobNameWithoutSourcePrefix.StartsWith("/") && String.IsNullOrEmpty(targetPathRoot))
+                        targetBlobName = sourceBlobNameWithoutSourcePrefix.Substring(1);
+                    else
+                        targetBlobName = targetPathRoot + sourceBlobNameWithoutSourcePrefix;
+                    //string targetBlobName = String.IsNullOrEmpty(targetPathRoot) ? sourceBlobName.
+                    //string targetBlobName = 
+                    //    blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
                     targetBlob = targetContainer.GetBlobReference(targetBlobName);
                 }
                 else

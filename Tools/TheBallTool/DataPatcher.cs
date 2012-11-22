@@ -147,7 +147,7 @@ namespace TheBallTool
             {
                 try
                 {
-                    iObj.ReconnectMastersAndCollections(false);
+                    iObj.ReconnectMastersAndCollections(true);
                 } catch(Exception ex)
                 {
                     bool ignoreException = false;
@@ -237,36 +237,36 @@ namespace TheBallTool
             }
         }
 
-        private static void InitBlogAndActivityLocationCollectionsOnce()
-        {
-            var blogsAndActivities = GetAllInformationObjects(io => io is Activity || io is Blog).ToArray();
-            var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
-            var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
-            foreach(var blog in blogs.Where(bl => bl.LocationCollection == null))
-            {
-                blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                blog.StoreInformation();
-                blog.ReconnectMastersAndCollections(false);
-            }
-            foreach(var activity in activities.Where(act => act.LocationCollection == null))
-            {
-                activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                activity.StoreInformation();
-                activity.ReconnectMastersAndCollections(false);
-            }
-        }
+        //private static void InitBlogAndActivityLocationCollectionsOnce()
+        //{
+        //    var blogsAndActivities = GetAllInformationObjects(io => io is Activity || io is Blog).ToArray();
+        //    var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
+        //    var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
+        //    foreach(var blog in blogs.Where(bl => bl.LocationCollection == null))
+        //    {
+        //        blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
+        //        blog.StoreInformation();
+        //        blog.ReconnectMastersAndCollections(false);
+        //    }
+        //    foreach(var activity in activities.Where(act => act.LocationCollection == null))
+        //    {
+        //        activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
+        //        activity.StoreInformation();
+        //        activity.ReconnectMastersAndCollections(false);
+        //    }
+        //}
 
-        private static void ConnectMapContainerToCollections()
-        {
-            var mapContainers = GetAllInformationObjects(io => io is MapContainer).Cast<MapContainer>().ToArray();
-            foreach(var mapContainer in mapContainers)
-            {
-                mapContainer.MarkerSourceActivities = ActivityCollection.CreateDefault();
-                mapContainer.MarkerSourceBlogs = BlogCollection.CreateDefault();
-                mapContainer.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
-                mapContainer.ReconnectMastersAndCollections(true);
-            }
-        }
+        //private static void ConnectMapContainerToCollections()
+        //{
+        //    var mapContainers = GetAllInformationObjects(io => io is MapContainer).Cast<MapContainer>().ToArray();
+        //    foreach(var mapContainer in mapContainers)
+        //    {
+        //        mapContainer.MarkerSourceActivities = ActivityCollection.CreateDefault();
+        //        mapContainer.MarkerSourceBlogs = BlogCollection.CreateDefault();
+        //        mapContainer.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
+        //        mapContainer.ReconnectMastersAndCollections(true);
+        //    }
+        //}
 
         private static void ClearEmptyLocations()
         {
@@ -288,6 +288,57 @@ namespace TheBallTool
             }
         }
 
+        private static void ReportAllSubscriptionCounts()
+        {
+            //var informationObjects = GetAllInformationObjects(io => SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
+            string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, io => io is AddressAndLocation && SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
+
+            int currMaxSubs = 0;
+            int currMaxDistinct = 0;
+            foreach(var iObject in informationObjects)
+            {
+                int subCount = GetTotalSubscriberCount(iObject, ref currMaxSubs, ref currMaxDistinct);
+            }
+        }
+
+        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct)
+        {
+            string location = informationObject.RelativeLocation;
+            List<Subscription> result = new List<Subscription>();
+            List<string> subscriberStack = new List<string>();
+            SubscribeSupport.GetSubcriptionList(location, result, subscriberStack);
+            int count = result.Count;
+            int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
+            if(result.Count >= CurrMaxSubs || distinctCount >= CurrMaxDistinct)
+            {
+                if (count > CurrMaxSubs)
+                    CurrMaxSubs = count;
+                if (distinctCount > CurrMaxDistinct)
+                    CurrMaxDistinct = distinctCount;
+                Console.WriteLine(count + " / " + distinctCount + " : " + location);
+            }
+            return count;
+        }
+
+        private static void UpdateAccountAndGroups(string accountEmail)
+        {
+            string emailID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
+            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailID);
+            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(emailRoot.Account.ID);
+            foreach(var groupRole in accountRoot.Account.GroupRoleCollection.CollectionContent)
+            {
+                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupRole.GroupID);
+                RefreshAccountGroupMemberships.Execute(new RefreshAccountGroupMembershipsParameters
+                {
+                    AccountID = accountRoot.Account.ID,
+                    GroupRoot = groupRoot
+                });
+                InformationContext.ProcessAndClearCurrent();
+                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+            }
+        }
+
 
         public static bool DoPatching()
         {
@@ -297,8 +348,9 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             //EnsureAndRefreshMasterCollections();
-            ReconnectAccountsMastersAndCollections();
-            ReconnectGroupsMastersAndCollections();
+            //ReconnectAccountsMastersAndCollections();
+            //ReconnectGroupsMastersAndCollections();
+
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
@@ -306,6 +358,10 @@ namespace TheBallTool
             
             //ConnectMapContainerToCollections();
             //ClearEmptyLocations();
+            //ReportAllSubscriptionCounts();
+
+            UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
+
             return true;
         }
 

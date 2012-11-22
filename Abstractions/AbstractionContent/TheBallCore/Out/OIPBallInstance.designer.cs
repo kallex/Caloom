@@ -39,8 +39,8 @@ namespace AaltoGlobalImpact.OIP {
 		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
 		void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
 		void ReplaceObjectInTree(IInformationObject replacingObject);
-		Dictionary<string, IInformationObject> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
-		void CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse = null);
+		Dictionary<string, List<IInformationObject>> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
+		void CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse = null);
 		IInformationObject RetrieveMaster(bool initiateIfMissing);
 		IInformationObject RetrieveMaster(bool initiateIfMissing, out bool initiated);
 		bool IsInstanceTreeModified { get; }
@@ -295,9 +295,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -433,13 +433,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -660,9 +669,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -817,13 +826,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Account;
@@ -1056,9 +1074,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -1213,13 +1231,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Account;
@@ -1452,9 +1479,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -1609,13 +1636,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Group;
@@ -1848,9 +1884,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -1986,13 +2022,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -2213,9 +2258,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -2370,13 +2415,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Account;
@@ -2609,9 +2663,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -2812,13 +2866,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Emails;
@@ -3115,9 +3178,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -3255,13 +3318,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -3492,9 +3564,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -3727,7 +3799,7 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -3735,8 +3807,16 @@ namespace AaltoGlobalImpact.OIP {
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -3907,9 +3987,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -4043,13 +4123,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -4260,9 +4349,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -4495,7 +4584,7 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -4503,8 +4592,16 @@ namespace AaltoGlobalImpact.OIP {
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -4675,9 +4772,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -4811,13 +4908,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -5038,9 +5144,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -5273,7 +5379,7 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -5281,8 +5387,16 @@ namespace AaltoGlobalImpact.OIP {
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -5453,9 +5567,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -5614,13 +5728,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Email;
@@ -5873,9 +5996,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -6108,7 +6231,7 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -6116,8 +6239,16 @@ namespace AaltoGlobalImpact.OIP {
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -6288,9 +6419,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -6447,13 +6578,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Roles;
@@ -6696,9 +6836,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -6833,13 +6973,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) GroupJoinConfirmation;
@@ -7102,9 +7251,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -7238,13 +7387,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -7455,9 +7613,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -7637,13 +7795,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -7918,9 +8085,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -8062,13 +8229,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -8319,9 +8495,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -8554,7 +8730,7 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -8562,8 +8738,16 @@ namespace AaltoGlobalImpact.OIP {
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -8734,9 +8918,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -8870,13 +9054,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -9087,9 +9280,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -9223,13 +9416,22 @@ namespace AaltoGlobalImpact.OIP {
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -9440,9 +9642,9 @@ namespace AaltoGlobalImpact.OIP {
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -9581,13 +9783,22 @@ JavaScriptContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -9798,9 +10009,9 @@ JavaScriptContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -9939,13 +10150,22 @@ JavascriptContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -10156,9 +10376,9 @@ JavascriptContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -10297,13 +10517,22 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -10514,9 +10743,9 @@ FooterContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -10650,13 +10879,22 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -10867,9 +11105,9 @@ FooterContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -11070,13 +11308,22 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Introduction;
@@ -11373,9 +11620,9 @@ FooterContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -11599,13 +11846,22 @@ FooterContainer.HtmlContent
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -11934,9 +12190,9 @@ FooterContainer.HtmlContent
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -12102,13 +12358,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Icon;
@@ -12362,9 +12627,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -12589,13 +12854,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Profile;
@@ -12924,9 +13198,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -13082,13 +13356,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ImageGroups;
@@ -13321,9 +13604,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -13479,13 +13762,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Locations;
@@ -13718,9 +14010,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -13963,7 +14255,7 @@ AccountIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -13971,8 +14263,16 @@ AccountIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -14143,9 +14443,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -14341,13 +14641,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -14635,9 +14944,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -14777,13 +15086,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -15024,9 +15342,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -15160,13 +15478,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -15377,9 +15704,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -15556,13 +15883,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ProfileImage;
@@ -15838,9 +16174,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -16018,13 +16354,22 @@ AccountIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) LoginInfoCollection;
@@ -16289,9 +16634,9 @@ AccountIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -16476,13 +16821,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ModeratorInGroups;
@@ -16757,9 +17111,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -16893,13 +17247,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -17110,9 +17473,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -17248,13 +17611,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -17475,9 +17847,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -17699,7 +18071,7 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -17707,8 +18079,16 @@ AccountRoles.OrganizationsImPartOf
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -17879,9 +18259,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -18105,13 +18485,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -18440,9 +18829,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -18621,13 +19010,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Introduction;
@@ -18892,9 +19290,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -18985,8 +19383,6 @@ AccountRoles.OrganizationsImPartOf
 					result.MapResultCollection = MapResultCollection.CreateDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDefault();
 					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
-					result.MarkerSourceBlogs = BlogCollection.CreateDefault();
-					result.MarkerSourceActivities = ActivityCollection.CreateDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDefault();
 					return result;
 				}
@@ -19004,8 +19400,6 @@ AccountRoles.OrganizationsImPartOf
 					result.MapResultCollection = MapResultCollection.CreateDemoDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDemoDefault();
 					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDemoDefault();
-					result.MarkerSourceBlogs = BlogCollection.CreateDemoDefault();
-					result.MarkerSourceActivities = ActivityCollection.CreateDemoDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
 				
 					return result;
@@ -19040,16 +19434,6 @@ AccountRoles.OrganizationsImPartOf
 						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceLocations(this, localCollection:MarkerSourceLocations, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(MarkerSourceLocations != null) {
 						((IInformationObject) MarkerSourceLocations).UpdateCollections(masterInstance);
-					}
-					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceBlogs(this, localCollection:MarkerSourceBlogs, masterCollection:(BlogCollection) masterInstance);
-					} else if(MarkerSourceBlogs != null) {
-						((IInformationObject) MarkerSourceBlogs).UpdateCollections(masterInstance);
-					}
-					if(masterInstance is ActivityCollection) {
-						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceActivities(this, localCollection:MarkerSourceActivities, masterCollection:(ActivityCollection) masterInstance);
-					} else if(MarkerSourceActivities != null) {
-						((IInformationObject) MarkerSourceActivities).UpdateCollections(masterInstance);
 					}
 					if(MapMarkers != null) {
 						((IInformationObject) MapMarkers).UpdateCollections(masterInstance);
@@ -19114,22 +19498,6 @@ AccountRoles.OrganizationsImPartOf
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = MarkerSourceLocations;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = MarkerSourceBlogs;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = MarkerSourceActivities;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -19207,24 +19575,6 @@ AccountRoles.OrganizationsImPartOf
 						}
 					}
 					{
-						var item = MarkerSourceBlogs;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = MarkerSourceActivities;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
 						var item = MapMarkers;
 						if(item != null)
 						{
@@ -19236,13 +19586,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -19275,16 +19634,6 @@ AccountRoles.OrganizationsImPartOf
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) MarkerSourceBlogs;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) MarkerSourceActivities;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
 						var item = (IInformationObject) MapMarkers;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -19305,10 +19654,6 @@ AccountRoles.OrganizationsImPartOf
 						if(MapIndexCollection != _unmodified_MapIndexCollection)
 							return true;
 						if(MarkerSourceLocations != _unmodified_MarkerSourceLocations)
-							return true;
-						if(MarkerSourceBlogs != _unmodified_MarkerSourceBlogs)
-							return true;
-						if(MarkerSourceActivities != _unmodified_MarkerSourceActivities)
 							return true;
 						if(MapMarkers != _unmodified_MapMarkers)
 							return true;
@@ -19359,24 +19704,6 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) MarkerSourceLocations;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) MarkerSourceBlogs;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) MarkerSourceActivities;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -19448,22 +19775,6 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(MarkerSourceBlogs != null) {
-						if(MarkerSourceBlogs.ID == replacingObject.ID)
-							MarkerSourceBlogs = (BlogCollection) replacingObject;
-						else {
-							IInformationObject iObject = MarkerSourceBlogs;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(MarkerSourceActivities != null) {
-						if(MarkerSourceActivities.ID == replacingObject.ID)
-							MarkerSourceActivities = (ActivityCollection) replacingObject;
-						else {
-							IInformationObject iObject = MarkerSourceActivities;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
 					if(MapMarkers != null) {
 						if(MapMarkers.ID == replacingObject.ID)
 							MapMarkers = (MapMarkerCollection) replacingObject;
@@ -19483,8 +19794,6 @@ AccountRoles.OrganizationsImPartOf
 					MapResultCollection = sourceObject.MapResultCollection;
 					MapIndexCollection = sourceObject.MapIndexCollection;
 					MarkerSourceLocations = sourceObject.MarkerSourceLocations;
-					MarkerSourceBlogs = sourceObject.MarkerSourceBlogs;
-					MarkerSourceActivities = sourceObject.MarkerSourceActivities;
 					MapMarkers = sourceObject.MapMarkers;
 				}
 				
@@ -19516,14 +19825,6 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_MarkerSourceLocations = MarkerSourceLocations;
 					if(MarkerSourceLocations != null)
 						((IInformationObject) MarkerSourceLocations).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_MarkerSourceBlogs = MarkerSourceBlogs;
-					if(MarkerSourceBlogs != null)
-						((IInformationObject) MarkerSourceBlogs).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_MarkerSourceActivities = MarkerSourceActivities;
-					if(MarkerSourceActivities != null)
-						((IInformationObject) MarkerSourceActivities).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_MapMarkers = MapMarkers;
 					if(MapMarkers != null)
@@ -19561,12 +19862,6 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public AddressAndLocationCollection MarkerSourceLocations { get; set; }
 			private AddressAndLocationCollection _unmodified_MarkerSourceLocations;
-			[DataMember]
-			public BlogCollection MarkerSourceBlogs { get; set; }
-			private BlogCollection _unmodified_MarkerSourceBlogs;
-			[DataMember]
-			public ActivityCollection MarkerSourceActivities { get; set; }
-			private ActivityCollection _unmodified_MarkerSourceActivities;
 			[DataMember]
 			public MapMarkerCollection MapMarkers { get; set; }
 			private MapMarkerCollection _unmodified_MapMarkers;
@@ -19731,9 +20026,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -19894,13 +20189,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Location;
@@ -20163,9 +20467,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -20398,7 +20702,7 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -20406,8 +20710,16 @@ AccountRoles.OrganizationsImPartOf
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -20578,9 +20890,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -20804,13 +21116,22 @@ AccountRoles.OrganizationsImPartOf
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) CalendarContainerHeader;
@@ -21139,9 +21460,9 @@ AccountRoles.OrganizationsImPartOf
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -21348,13 +21669,22 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) MainImage;
@@ -21673,9 +22003,9 @@ AboutContainer.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -21899,13 +22229,22 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) AccountContainerHeader;
@@ -22234,9 +22573,9 @@ AboutContainer.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -22460,13 +22799,22 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ProjectContainerHeader;
@@ -22795,9 +23143,9 @@ AboutContainer.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -23021,13 +23369,22 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) CourseContainerHeader;
@@ -23356,9 +23713,9 @@ AboutContainer.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -23494,13 +23851,22 @@ AboutContainer.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -23721,9 +24087,9 @@ AboutContainer.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -23955,13 +24321,22 @@ ActivitySummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -24300,9 +24675,9 @@ ActivitySummaryContainer.SummaryBody
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -24468,13 +24843,22 @@ ActivityIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Icon;
@@ -24728,9 +25112,9 @@ ActivityIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -24931,13 +25315,22 @@ ActivityIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -25234,9 +25627,9 @@ ActivityIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -25490,7 +25883,7 @@ ActivityIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -25498,8 +25891,16 @@ ActivityIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -25670,9 +26071,9 @@ ActivityIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -25763,7 +26164,6 @@ ActivityIndex.Summary
 					result.Introduction = Introduction.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
-					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
@@ -25790,7 +26190,6 @@ Activity.Description
 
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
-					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
@@ -25813,11 +26212,6 @@ Activity.Description
 						CollectionUpdateImplementation.Update_Activity_ImageSets(this, localCollection:ImageSets, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageSets != null) {
 						((IInformationObject) ImageSets).UpdateCollections(masterInstance);
-					}
-					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_Activity_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
-					} else if(LocationCollection != null) {
-						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
@@ -25858,14 +26252,6 @@ Activity.Description
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = ImageSets;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = LocationCollection;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -25964,15 +26350,6 @@ Activity.Description
 						}
 					}
 					{
-						var item = LocationCollection;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
 						var item = CategoryCollection;
 						if(item != null)
 						{
@@ -25984,13 +26361,22 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -26023,11 +26409,6 @@ Activity.Description
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) LocationCollection;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -26053,8 +26434,6 @@ Activity.Description
 							return true;
 						if(ImageSets != _unmodified_ImageSets)
 							return true;
-						if(LocationCollection != _unmodified_LocationCollection)
-							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
 						{
@@ -26077,15 +26456,6 @@ Activity.Description
 						}
 						{
 							IInformationObject item = (IInformationObject) ImageSets;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -26157,14 +26527,6 @@ Activity.Description
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(LocationCollection != null) {
-						if(LocationCollection.ID == replacingObject.ID)
-							LocationCollection = (AddressAndLocationCollection) replacingObject;
-						else {
-							IInformationObject iObject = LocationCollection;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
 					if(CategoryCollection != null) {
 						if(CategoryCollection.ID == replacingObject.ID)
 							CategoryCollection = (CategoryCollection) replacingObject;
@@ -26186,7 +26548,6 @@ Activity.Description
 					Description = sourceObject.Description;
 					Collaborators = sourceObject.Collaborators;
 					ImageSets = sourceObject.ImageSets;
-					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 				}
 				
@@ -26220,10 +26581,6 @@ Activity.Description
 					_unmodified_ImageSets = ImageSets;
 					if(ImageSets != null)
 						((IInformationObject) ImageSets).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_LocationCollection = LocationCollection;
-					if(LocationCollection != null)
-						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -26273,9 +26630,6 @@ Activity.Description
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
 			private ImageGroupCollection _unmodified_ImageSets;
-			[DataMember]
-			public AddressAndLocationCollection LocationCollection { get; set; }
-			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
@@ -26440,9 +26794,9 @@ Activity.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -26675,7 +27029,7 @@ Activity.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -26683,8 +27037,16 @@ Activity.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -26855,9 +27217,9 @@ Activity.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -26993,13 +27355,22 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -27220,9 +27591,9 @@ Activity.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -27455,7 +27826,7 @@ Activity.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -27463,8 +27834,16 @@ Activity.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -27635,9 +28014,9 @@ Activity.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -27732,6 +28111,10 @@ Activity.Description
 					if(customDemo != null)
 						return customDemo;
 					var result = new Collaborator();
+					result.AccountID = @"Collaborator.AccountID";
+
+					result.EmailAddress = @"Collaborator.EmailAddress";
+
 					result.CollaboratorName = @"Collaborator.CollaboratorName";
 
 					result.Role = @"Collaborator.Role";
@@ -27775,19 +28158,32 @@ Activity.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
+						if(AccountID != _unmodified_AccountID)
+							return true;
+						if(EmailAddress != _unmodified_EmailAddress)
+							return true;
 						if(CollaboratorName != _unmodified_CollaboratorName)
 							return true;
 						if(Role != _unmodified_Role)
@@ -27806,6 +28202,8 @@ Activity.Description
 
 				private void CopyContentFrom(Collaborator sourceObject)
 				{
+					AccountID = sourceObject.AccountID;
+					EmailAddress = sourceObject.EmailAddress;
 					CollaboratorName = sourceObject.CollaboratorName;
 					Role = sourceObject.Role;
 					ProfileUrl = sourceObject.ProfileUrl;
@@ -27815,6 +28213,8 @@ Activity.Description
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_AccountID = AccountID;
+					_unmodified_EmailAddress = EmailAddress;
 					_unmodified_CollaboratorName = CollaboratorName;
 					_unmodified_Role = Role;
 					_unmodified_ProfileUrl = ProfileUrl;
@@ -27829,6 +28229,12 @@ Activity.Description
 				{
 					switch (propertyName)
 					{
+						case "AccountID":
+							AccountID = value;
+							break;
+						case "EmailAddress":
+							EmailAddress = value;
+							break;
 						case "CollaboratorName":
 							CollaboratorName = value;
 							break;
@@ -27843,6 +28249,12 @@ Activity.Description
 					}
 	        }
 			[DataMember]
+			public string AccountID { get; set; }
+			private string _unmodified_AccountID;
+			[DataMember]
+			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
+			[DataMember]
 			public string CollaboratorName { get; set; }
 			private string _unmodified_CollaboratorName;
 			[DataMember]
@@ -27851,1542 +28263,6 @@ Activity.Description
 			[DataMember]
 			public string ProfileUrl { get; set; }
 			private string _unmodified_ProfileUrl;
-			
-			}
-			[DataContract]
-			public partial class CollaboratingGroup : IInformationObject 
-			{
-				public CollaboratingGroup()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratingGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/CollaboratingGroup/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CollaboratingGroup), null, owner);
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CollaboratingGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaboratingGroup(relativeLocation, owner);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroup");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroup), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CollaboratingGroup RetrieveCollaboratingGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CollaboratingGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratingGroup), null, owner);
-                    return result;
-                }
-
-				public static CollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CollaboratingGroup.RetrieveCollaboratingGroup("Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
-					var result = CollaboratingGroup.RetrieveCollaboratingGroup("AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingGroup/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((CollaboratingGroup) sourceMaster);
-				}
-
-
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingGroup));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static CollaboratingGroup DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingGroup));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (CollaboratingGroup) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroup", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref CollaboratingGroup customDemoObject);
-
-
-
-				public static CollaboratingGroup CreateDefault()
-				{
-					var result = new CollaboratingGroup();
-					return result;
-				}
-
-				public static CollaboratingGroup CreateDemoDefault()
-				{
-					CollaboratingGroup customDemo = null;
-					CollaboratingGroup.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new CollaboratingGroup();
-					result.CollaboratingGroupName = @"CollaboratingGroup.CollaboratingGroupName";
-
-				
-					return result;
-				}
-
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						if(CollaboratingGroupName != _unmodified_CollaboratingGroupName)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(CollaboratingGroup sourceObject)
-				{
-					CollaboratingGroupName = sourceObject.CollaboratingGroupName;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollaboratingGroupName = CollaboratingGroupName;
-				
-				
-				}
-
-
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "CollaboratingGroupName":
-							CollaboratingGroupName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string CollaboratingGroupName { get; set; }
-			private string _unmodified_CollaboratingGroupName;
-			
-			}
-			[DataContract]
-			public partial class CollaboratingGroupCollection : IInformationObject , IInformationCollection
-			{
-				public CollaboratingGroupCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratingGroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/CollaboratingGroupCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CollaboratingGroupCollection), null, owner);
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CollaboratingGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaboratingGroupCollection(relativeLocation, owner);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingGroupCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingGroupCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CollaboratingGroupCollection RetrieveCollaboratingGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CollaboratingGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratingGroupCollection), null, owner);
-                    return result;
-                }
-
-				public static CollaboratingGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
-					var result = CollaboratingGroupCollection.RetrieveCollaboratingGroupCollection("AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingGroupCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((CollaboratingGroupCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingGroupCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static CollaboratingGroupCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingGroupCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (CollaboratingGroupCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingGroupCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref CollaboratingGroupCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = CollaboratingGroup.GetRelativeLocationFromID("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static CollaboratingGroupCollection CreateDefault()
-				{
-					var result = new CollaboratingGroupCollection();
-					return result;
-				}
-
-				public static CollaboratingGroupCollection CreateDemoDefault()
-				{
-					CollaboratingGroupCollection customDemo = null;
-					CollaboratingGroupCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new CollaboratingGroupCollection();
-					result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
-					//result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
-					//result.CollectionContent.Add(CollaboratingGroup.CreateDemoDefault());
-					return result;
-				}
-
-		
-				[DataMember] public List<CollaboratingGroup> CollectionContent = new List<CollaboratingGroup>();
-				private CollaboratingGroup[] _unmodified_CollectionContent;
-
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (CollaboratingGroup )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(CollaboratingGroupCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract]
-			public partial class CollaboratingOrganization : IInformationObject 
-			{
-				public CollaboratingOrganization()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratingOrganization";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/CollaboratingOrganization/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CollaboratingOrganization), null, owner);
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CollaboratingOrganization RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaboratingOrganization(relativeLocation, owner);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganization");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganization), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CollaboratingOrganization RetrieveCollaboratingOrganization(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CollaboratingOrganization) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratingOrganization), null, owner);
-                    return result;
-                }
-
-				public static CollaboratingOrganization RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
-					var result = CollaboratingOrganization.RetrieveCollaboratingOrganization("AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingOrganization/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((CollaboratingOrganization) sourceMaster);
-				}
-
-
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingOrganization));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static CollaboratingOrganization DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingOrganization));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (CollaboratingOrganization) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganization", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganization", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref CollaboratingOrganization customDemoObject);
-
-
-
-				public static CollaboratingOrganization CreateDefault()
-				{
-					var result = new CollaboratingOrganization();
-					return result;
-				}
-
-				public static CollaboratingOrganization CreateDemoDefault()
-				{
-					CollaboratingOrganization customDemo = null;
-					CollaboratingOrganization.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new CollaboratingOrganization();
-					result.CollaboratingOrganizationName = @"CollaboratingOrganization.CollaboratingOrganizationName";
-
-				
-					return result;
-				}
-
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						if(CollaboratingOrganizationName != _unmodified_CollaboratingOrganizationName)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(CollaboratingOrganization sourceObject)
-				{
-					CollaboratingOrganizationName = sourceObject.CollaboratingOrganizationName;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollaboratingOrganizationName = CollaboratingOrganizationName;
-				
-				
-				}
-
-
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "CollaboratingOrganizationName":
-							CollaboratingOrganizationName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public string CollaboratingOrganizationName { get; set; }
-			private string _unmodified_CollaboratingOrganizationName;
-			
-			}
-			[DataContract]
-			public partial class CollaboratingOrganizationCollection : IInformationObject , IInformationCollection
-			{
-				public CollaboratingOrganizationCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "CollaboratingOrganizationCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CollaboratingOrganizationCollection), null, owner);
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CollaboratingOrganizationCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaboratingOrganizationCollection(relativeLocation, owner);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratingOrganizationCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CollaboratingOrganizationCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CollaboratingOrganizationCollection RetrieveCollaboratingOrganizationCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CollaboratingOrganizationCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratingOrganizationCollection), null, owner);
-                    return result;
-                }
-
-				public static CollaboratingOrganizationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
-					var result = CollaboratingOrganizationCollection.RetrieveCollaboratingOrganizationCollection("AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/CollaboratingOrganizationCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((CollaboratingOrganizationCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingOrganizationCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static CollaboratingOrganizationCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CollaboratingOrganizationCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (CollaboratingOrganizationCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "CollaboratingOrganizationCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref CollaboratingOrganizationCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = CollaboratingOrganization.GetRelativeLocationFromID("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static CollaboratingOrganizationCollection CreateDefault()
-				{
-					var result = new CollaboratingOrganizationCollection();
-					return result;
-				}
-
-				public static CollaboratingOrganizationCollection CreateDemoDefault()
-				{
-					CollaboratingOrganizationCollection customDemo = null;
-					CollaboratingOrganizationCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new CollaboratingOrganizationCollection();
-					result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
-					//result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
-					//result.CollectionContent.Add(CollaboratingOrganization.CreateDemoDefault());
-					return result;
-				}
-
-		
-				[DataMember] public List<CollaboratingOrganization> CollectionContent = new List<CollaboratingOrganization>();
-				private CollaboratingOrganization[] _unmodified_CollectionContent;
-
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (CollaboratingOrganization )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(CollaboratingOrganizationCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
 			
 			}
 			[DataContract]
@@ -29548,9 +28424,9 @@ Activity.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -29781,13 +28657,22 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -30126,9 +29011,9 @@ GroupSummaryContainer.SummaryBody
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -30422,13 +29307,22 @@ GroupSummaryContainer.SummaryBody
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Header;
@@ -30853,9 +29747,9 @@ GroupSummaryContainer.SummaryBody
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -31021,13 +29915,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Icon;
@@ -31281,9 +30184,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -31417,13 +30320,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -31634,9 +30546,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -31770,13 +30682,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -31987,9 +30908,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -32123,13 +31044,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -32340,9 +31270,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -32476,13 +31406,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -32693,9 +31632,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -32829,13 +31768,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -33046,9 +31994,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -33182,13 +32130,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -33399,9 +32356,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -33535,13 +32492,22 @@ GroupIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -33752,9 +32718,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -33987,7 +32953,7 @@ GroupIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -33995,8 +32961,16 @@ GroupIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -34167,9 +33141,9 @@ GroupIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -34441,13 +33415,22 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -34843,9 +33826,9 @@ Group.OrganizationsAndGroupsLinkedToUs
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -34986,13 +33969,22 @@ Introduction.Body
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -35213,9 +34205,9 @@ Introduction.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -35469,7 +34461,7 @@ Introduction.Body
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -35477,8 +34469,16 @@ Introduction.Body
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -35649,9 +34649,9 @@ Introduction.Body
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -35741,7 +34741,6 @@ Introduction.Body
 					result.FeaturedImage = Image.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
 					result.VideoGroup = VideoGroup.CreateDefault();
-					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDefault();
 					return result;
@@ -35779,7 +34778,6 @@ Blog.Excerpt
 Blog.Excerpt
 ";
 
-					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
 				
@@ -35799,11 +34797,6 @@ Blog.Excerpt
 						((IInformationObject) VideoGroup).UpdateCollections(masterInstance);
 					}
 
-					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_Blog_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
-					} else if(LocationCollection != null) {
-						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
-					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -35839,14 +34832,6 @@ Blog.Excerpt
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = VideoGroup;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = LocationCollection;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -35944,15 +34929,6 @@ Blog.Excerpt
 						}
 					}
 					{
-						var item = LocationCollection;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
 						var item = CategoryCollection;
 						if(item != null)
 						{
@@ -35973,13 +34949,22 @@ Blog.Excerpt
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -36003,11 +34988,6 @@ Blog.Excerpt
 					}
 					{
 						var item = (IInformationObject) VideoGroup;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) LocationCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -36048,8 +35028,6 @@ Blog.Excerpt
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
-						if(LocationCollection != _unmodified_LocationCollection)
-							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
 						if(SocialPanel != _unmodified_SocialPanel)
@@ -36065,15 +35043,6 @@ Blog.Excerpt
 						}
 						{
 							IInformationObject item = (IInformationObject) VideoGroup;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -36146,14 +35115,6 @@ Blog.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(LocationCollection != null) {
-						if(LocationCollection.ID == replacingObject.ID)
-							LocationCollection = (AddressAndLocationCollection) replacingObject;
-						else {
-							IInformationObject iObject = LocationCollection;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
 					if(CategoryCollection != null) {
 						if(CategoryCollection.ID == replacingObject.ID)
 							CategoryCollection = (CategoryCollection) replacingObject;
@@ -36186,7 +35147,6 @@ Blog.Excerpt
 					VideoGroup = sourceObject.VideoGroup;
 					Body = sourceObject.Body;
 					Excerpt = sourceObject.Excerpt;
-					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 					SocialPanel = sourceObject.SocialPanel;
 				}
@@ -36221,10 +35181,6 @@ Blog.Excerpt
 					_unmodified_VideoGroup = VideoGroup;
 					if(VideoGroup != null)
 						((IInformationObject) VideoGroup).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_LocationCollection = LocationCollection;
-					if(LocationCollection != null)
-						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -36299,9 +35255,6 @@ Blog.Excerpt
 			[DataMember]
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
-			public AddressAndLocationCollection LocationCollection { get; set; }
-			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
@@ -36469,9 +35422,9 @@ Blog.Excerpt
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -36733,13 +35686,22 @@ BlogIndexGroup.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Icon;
@@ -37121,9 +36083,9 @@ BlogIndexGroup.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -37289,13 +36251,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Icon;
@@ -37549,9 +36520,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -37685,13 +36656,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -37902,9 +36882,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -38038,13 +37018,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -38255,9 +37244,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -38490,7 +37479,7 @@ CalendarIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -38498,8 +37487,16 @@ CalendarIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -38670,9 +37667,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -38806,13 +37803,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -39023,9 +38029,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -39258,7 +38264,7 @@ CalendarIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -39266,8 +38272,16 @@ CalendarIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -39438,9 +38452,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -39664,13 +38678,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) MapByDate;
@@ -39999,9 +39022,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -40156,13 +39179,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Location;
@@ -40395,9 +39427,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -40630,7 +39662,7 @@ CalendarIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -40638,8 +39670,16 @@ CalendarIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -40810,9 +39850,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -41013,13 +40053,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ResultByDate;
@@ -41316,9 +40365,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -41477,13 +40526,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) VideoData;
@@ -41736,9 +40794,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -41915,13 +40973,22 @@ CalendarIndex.Summary
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -42197,9 +41264,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -42314,13 +41381,22 @@ CalendarIndex.Summary
 					// Cannot replace self, doesn't contain subitems, nothing to do
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 				}
 
@@ -42508,9 +41584,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -42753,7 +41829,7 @@ CalendarIndex.Summary
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -42761,8 +41837,16 @@ CalendarIndex.Summary
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -42933,9 +42017,9 @@ CalendarIndex.Summary
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -43117,13 +42201,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) ReferenceToInformation;
@@ -43399,9 +42492,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -43560,13 +42653,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) VideoCollection;
@@ -43819,9 +42921,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -44043,7 +43145,7 @@ ImageGroup.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -44051,8 +43153,16 @@ ImageGroup.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -44223,9 +43333,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -44458,7 +43568,7 @@ ImageGroup.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -44466,8 +43576,16 @@ ImageGroup.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -44638,9 +43756,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -44774,13 +43892,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -44991,9 +44118,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -45226,7 +44353,7 @@ ImageGroup.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -45234,8 +44361,16 @@ ImageGroup.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -45406,9 +44541,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -45563,13 +44698,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) SocialFilter;
@@ -45802,9 +44946,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -45938,13 +45082,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -46155,9 +45308,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -46291,13 +45444,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -46508,9 +45670,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -46690,13 +45852,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Longitude;
@@ -46971,9 +46142,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -47206,7 +46377,7 @@ ImageGroup.Description
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -47214,8 +46385,16 @@ ImageGroup.Description
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -47386,9 +46565,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -47520,13 +46699,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -47767,9 +46955,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -47903,13 +47091,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -48120,9 +47317,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -48274,13 +47471,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -48581,9 +47787,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -48767,13 +47973,22 @@ ImageGroup.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Sex;
@@ -49068,9 +48283,9 @@ ImageGroup.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -49209,13 +48424,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -49454,9 +48678,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -49590,13 +48814,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -49807,9 +49040,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -50042,7 +49275,7 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -50050,8 +49283,16 @@ ImageVideoSoundVectorRaw.Vector
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -50222,9 +49463,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -50457,7 +49698,7 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -50465,8 +49706,16 @@ ImageVideoSoundVectorRaw.Vector
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -50637,9 +49886,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -50781,13 +50030,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -51048,9 +50306,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -51253,13 +50511,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) SingleOperation;
@@ -51576,9 +50843,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -51811,7 +51078,7 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -51819,8 +51086,16 @@ ImageVideoSoundVectorRaw.Vector
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -51991,9 +51266,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -52240,13 +51515,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) SubscriberNotification;
@@ -52607,9 +51891,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -52745,13 +52029,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -52972,9 +52265,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -53110,13 +52403,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -53337,9 +52639,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -53519,13 +52821,22 @@ ImageVideoSoundVectorRaw.Vector
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) SystemErrorItems;
@@ -53810,9 +53121,9 @@ ImageVideoSoundVectorRaw.Vector
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -53953,13 +53264,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -54180,9 +53500,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -54415,7 +53735,7 @@ SystemErrorItem.LongDescription
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -54423,8 +53743,16 @@ SystemErrorItem.LongDescription
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -54595,9 +53923,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -54741,13 +54069,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -55028,9 +54365,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -55263,7 +54600,7 @@ SystemErrorItem.LongDescription
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -55271,8 +54608,16 @@ SystemErrorItem.LongDescription
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -55443,9 +54788,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -55581,13 +54926,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -55808,9 +55162,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -55973,13 +55327,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) Handlers;
@@ -56262,9 +55625,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -56400,13 +55763,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -56627,9 +55999,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -56862,7 +56234,7 @@ SystemErrorItem.LongDescription
 				}
 
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
@@ -56870,8 +56242,16 @@ SystemErrorItem.LongDescription
 						bool doAdd = true;
 						if(filterOnFalse != null)
 							doAdd = filterOnFalse(iObject);
-						if(doAdd)
-							result.Add(iObject.ID, iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					foreach(IInformationObject item in CollectionContent)
 					{
@@ -57042,9 +56422,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -57184,13 +56564,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -57431,9 +56820,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -57575,13 +56964,22 @@ SystemErrorItem.LongDescription
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -57852,9 +57250,9 @@ SystemErrorItem.LongDescription
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -57995,13 +57393,22 @@ IconTitleDescription.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 
 				}
@@ -58229,9 +57636,9 @@ IconTitleDescription.Description
 				}
 
 
-				Dictionary<string, IInformationObject> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, IInformationObject> result = new Dictionary<string, IInformationObject>();
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
 					IInformationObject iObject = (IInformationObject) this;
 					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
 					return result;
@@ -58409,13 +57816,22 @@ IconTitleDescription.Description
 					return null;
 				}
 
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, IInformationObject> result, Predicate<IInformationObject> filterOnFalse)
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						if(filterOnFalse == null || filterOnFalse(iObject))
-							result.Add(iObject.ID, iObject);
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
 					}
 					{
 						var item = (IInformationObject) BuiltForAnybody;

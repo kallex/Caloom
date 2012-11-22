@@ -893,11 +893,15 @@ namespace TheBall
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
             if(beforeStoreHandler != null)
                 beforeStoreHandler.PerformBeforeStoreUpdate();
-            Dictionary<string, IInformationObject> modifiedMasters =
+            Dictionary<string, List<IInformationObject>> modifiedMasters =
                 informationObject.CollectMasterObjects(candidate => candidate.IsInstanceTreeModified);
             foreach (var key in modifiedMasters.Keys)
             {
-                var referenceInstance = modifiedMasters[key];
+                var masters = modifiedMasters[key];
+                bool masterSaving = masters.Contains(informationObject);
+                if (masterSaving)
+                    continue;
+                var referenceInstance = modifiedMasters[key].First(); // We take first changed, even though there would be several
                 if (referenceInstance == informationObject) // Don't master-manage the currently being saved object
                     continue;
                 FixOwnerLocation(referenceInstance, owner);

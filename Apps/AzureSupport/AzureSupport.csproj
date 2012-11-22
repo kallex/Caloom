@@ -56,6 +56,13 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="Operation\RefreshAccountGroupMembershipsImplementation.cs" />
+    <Compile Include="Operation\ConfirmInviteToJoinGroupImplementation.cs" />
+    <Compile Include="Operation\UpdateAccountContainersGroupMembershipImplementation.cs" />
+    <Compile Include="Operation\UpdateAccountRootGroupMembershipImplementation.cs" />
+    <Compile Include="Operation\UpdateGroupContainersGroupMembershipImplementation.cs" />
+    <Compile Include="Operation\UpdateLoginGroupPermissionsImplementation.cs" />
+    <Compile Include="Operation\InviteMemberToGroupImplementation.cs" />
     <Compile Include="AdditionalFormatContent.cs" />
     <Compile Include="AuthenticationSupport.cs" />
     <Compile Include="EmailSupport.cs" />
@@ -84,6 +91,7 @@
     <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="DefaultViewSupport.cs" />
     <Compile Include="Partials\ExtIInformationObject.cs" />
+    <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
     <Compile Include="Partials\Image.cs" />
