@@ -31,7 +31,34 @@ using System;
 		} // Local block closing
 				}
 				}
-				public class ConfirmInviteToJoinGroupParameters 
+				public class RemoveMemberFromGroupParameters 
+		{
+				public string MemberEmailAddress ;
+				public string GroupID ;
+				}
+		
+		public class RemoveMemberFromGroup 
+		{
+				private static void PrepareParameters(RemoveMemberFromGroupParameters parameters)
+		{
+					}
+				public static void Execute(RemoveMemberFromGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRGroupRoot GroupRoot = RemoveMemberFromGroupImplementation.GetTarget_GroupRoot(parameters.GroupID);	
+				string AccountID = RemoveMemberFromGroupImplementation.GetTarget_AccountID(parameters.MemberEmailAddress);	
+				RemoveMemberFromGroupImplementation.ExecuteMethod_RemoveMemberFromGroup(parameters.MemberEmailAddress, GroupRoot);		
+				RemoveMemberFromGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot);		
+				
+		{ // Local block to allow local naming
+			RefreshAccountGroupMembershipsParameters operationParameters = RemoveMemberFromGroupImplementation.RefreshAccountAndGroupContainers_GetParameters(GroupRoot, AccountID);
+			RefreshAccountGroupMemberships.Execute(operationParameters);
+									
+		} // Local block closing
+				}
+				}
+
+		    public class ConfirmInviteToJoinGroupParameters 
 		{
 				public string MemberEmailAddress ;
 				public string GroupID ;

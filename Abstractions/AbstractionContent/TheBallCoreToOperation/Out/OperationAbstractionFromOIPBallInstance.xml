@@ -40,6 +40,36 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="RemoveMemberFromGroup">
+      <OperationSpec>
+        <Description>Invite member to collaboration group</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved" />
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root for given ID" state="designApproved">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID of email" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+          </TargetDefinition>
+          <MethodExecute name="RemoveMemberFromGroup" designDesc="Remove member from group" state="designApproved">
+            <Parameter name="MemberEmailAddress" />
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="GroupRoot" />
+          </MethodExecute>
+          <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers" state="designApproved">
+            <Target name="GroupRoot" />
+            <Target name="AccountID" />
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ConfirmInviteToJoinGroup">
       <OperationSpec>
         <Description>Confirm member joining to collaboration group</Description>

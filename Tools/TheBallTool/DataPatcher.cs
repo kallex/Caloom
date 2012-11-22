@@ -339,10 +339,21 @@ namespace TheBallTool
             }
         }
 
+        private static void RemoveMemberFromGroup(string groupID, string memberEmail)
+        {
+            AaltoGlobalImpact.OIP.RemoveMemberFromGroup.Execute(new RemoveMemberFromGroupParameters()
+                                                                    {
+                                                                        GroupID = groupID,
+                                                                        MemberEmailAddress = memberEmail
+                                                                    });
+            InformationContext.ProcessAndClearCurrent();
+            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+        }
+
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
@@ -360,7 +371,10 @@ namespace TheBallTool
             //ClearEmptyLocations();
             //ReportAllSubscriptionCounts();
 
-            UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
+            //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
+            //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");
+            RemoveMemberFromGroup(groupID: "9798daca-afc4-4046-a99b-d0d88bb364e0",
+                                  memberEmail: "kalle.launiala@gmail.com");
 
             return true;
         }

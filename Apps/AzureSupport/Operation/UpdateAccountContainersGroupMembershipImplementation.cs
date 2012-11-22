@@ -56,7 +56,7 @@ namespace AaltoGlobalImpact.OIP
         public static void ExecuteMethod_UpdateGroupSummaryContainerMemberships(TBRGroupRoot groupRoot, Group currGroup, TBRAccountRoot accountRoot, GroupSummaryContainer groupSummaryContainer)
         {
             string currRootId = groupRoot.Group.ID;
-            string currGroupID = groupRoot.Group.ID;
+            string currGroupID = currGroup.ID;
             bool isMember =
                 accountRoot.Account.GroupRoleCollection.CollectionContent.Exists(
                     grp => grp.GroupID == currRootId);
