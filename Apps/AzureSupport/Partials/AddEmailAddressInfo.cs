@@ -10,6 +10,7 @@ namespace AaltoGlobalImpact.OIP
         public bool PerformAddOperation(string commandName, InformationSourceCollection sources, string requesterLocation, HttpFileCollection files)
         {
             // TODO: Properly separate acct add email and grp invite
+            EmailAddress = EmailAddress.ToLower();
             if (RelativeLocation.StartsWith("acc/"))
                 AddAccountEmailAddressHandling();
             else if(RelativeLocation.StartsWith("grp/"))
@@ -30,18 +31,8 @@ namespace AaltoGlobalImpact.OIP
                 throw new NotSupportedException("Email used for group invitation is not yet registered to the system");
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             string groupID = owner.LocationPrefix;
-            TBEmailValidation emailValidation = new TBEmailValidation();
-            emailValidation.Email = EmailAddress;
-            emailValidation.ValidUntil = DateTime.Now.AddDays(14); // Two weeks to accept the group join
-            emailValidation.GroupJoinConfirmation = new TBGroupJoinConfirmation
-                                                        {
-                                                            GroupID = groupID
-                                                        };
-            StorageSupport.StoreInformation(emailValidation);
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
-            groupRoot.Group.InviteToGroup(EmailAddress, TBCollaboratorRole.CollaboratorRoleValue);
-            StorageSupport.StoreInformation(groupRoot);
-            EmailSupport.SendGroupJoinEmail(emailValidation, groupRoot.Group);
+            InviteMemberToGroup.Execute(new InviteMemberToGroupParameters
+                                            {GroupID = groupID, MemberEmailAddress = EmailAddress});
         }
 
         private void AddAccountEmailAddressHandling()

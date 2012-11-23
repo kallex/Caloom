@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
@@ -31,9 +33,14 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_AddAsPendingInvitationToGroupRoot(string memberEmailAddress, TBRGroupRoot groupRoot)
         {
-            TBCollaboratorRole role = TBCollaboratorRole.CreateDefault();
+            TBCollaboratorRole role =
+                groupRoot.Group.Roles.CollectionContent.FirstOrDefault(
+                    candidate => candidate.Email.EmailAddress == memberEmailAddress);
+            if(role != null)
+                throw new InvalidDataException("Person to be invited is already member (or pending) of the group");
+            role = TBCollaboratorRole.CreateDefault();
             role.Email.EmailAddress = memberEmailAddress;
-            role.Role = TBCollaboratorRole.ViewerRoleValue;
+            role.Role = TBCollaboratorRole.CollaboratorRoleValue;
             role.SetRoleAsInvited();
             groupRoot.Group.Roles.CollectionContent.Add(role);
         }

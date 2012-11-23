@@ -153,7 +153,6 @@ namespace TheBall
             return ConfigureBlobStorageContainer(connString, deleteBlobs, "anon-webcontainer", BlobContainerPublicAccessType.Blob);
         }
 
-
         public static CloudBlobContainer ConfigureBlobStorageContainer(string connString, bool deleteBlobs, string containerName, BlobContainerPublicAccessType containerAccessType)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connString);
@@ -1179,6 +1178,15 @@ namespace TheBall
                 deleteCount++;
             }
             return deleteCount;
+        }
+
+
+        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix, BlobRequestOptions options = null)
+        {
+            string searchRoot = container.Name + "/" + prefix;
+            if (options != null)
+                return CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
+            return CurrBlobClient.ListBlobsWithPrefix(searchRoot);
         }
 
         public static string GetOwnerRootAddress(IContainerOwner owner)

@@ -87,9 +87,8 @@ namespace WebInterface
             if (account.Emails.CollectionContent.Exists(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == false)
                 throw new SecurityException("Login account does not contain email address that was target of validation");
             string groupID = emailValidation.GroupJoinConfirmation.GroupID;
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
-            groupRoot.Group.ConfirmJoining(emailValidation.Email);
-            StorageSupport.StoreInformation(groupRoot);
+            ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
+                                                 {GroupID = groupID, MemberEmailAddress = emailValidation.Email});
             context.Response.Redirect("/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml");
         }
 

@@ -36,6 +36,11 @@ namespace AaltoGlobalImpact.OIP
 
         }
 
+        public bool IsRoleStatusValidMember()
+        {
+            return IsRoleStatusValidMember(RoleStatus);
+        }
+
         public static bool IsRoleStatusValidMember(string roleStatus)
         {
             return roleStatus == RoleStatusMemberValue;
