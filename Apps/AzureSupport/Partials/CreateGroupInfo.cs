@@ -11,6 +11,7 @@ namespace AaltoGlobalImpact.OIP
         {
             if(GroupName == "")
                 throw new InvalidDataException("Group name must be given");
+            throw new NotImplementedException("Old implementation not converted to managed group structures");
             AccountContainer container = (AccountContainer) sources.GetDefaultSource().RetrieveInformationObject();
             TBRAccountRoot accountRoot = TBRAccountRoot.GetOwningAccountRoot(container);
             TBAccount account = accountRoot.Account;
@@ -27,6 +28,8 @@ namespace AaltoGlobalImpact.OIP
             grp.EnsureMasterCollections();
             grp.RefreshMasterCollections();
             grp.ReconnectMastersAndCollectionsForOwner();
+            RefreshAccountGroupMemberships.Execute(new RefreshAccountGroupMembershipsParameters
+                                                       {AccountID = account.ID, GroupRoot = groupRoot});
             this.GroupName = "";
             return true;
         }
