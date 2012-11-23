@@ -10,9 +10,28 @@ namespace AaltoGlobalImpact.OIP
             {
                 case "RemoveCollaborator":
                     return CallRemoveGroupMember(targetObjectID, owner);
+                case "PublishGroupPublicContent":
+                    return CallPublishGroupContentToPublicArea(owner);
+                case "PublishGroupWwwContent":
+                    return CallPublishGroupContentToWww(owner);
                 default:
                     throw new NotImplementedException("Operation mapping for command not implemented: " + commandName);
             }
+        }
+
+        private static bool CallPublishGroupContentToWww(IContainerOwner owner)
+        {
+            string groupID = owner.LocationPrefix;
+            PublishGroupContentToWww.Execute(new PublishGroupContentToWwwParameters { GroupID = groupID, UseWorker = true });
+            return false;
+        }
+
+        private static bool CallPublishGroupContentToPublicArea(IContainerOwner owner)
+        {
+            string groupID = owner.LocationPrefix;
+            PublishGroupContentToPublicArea.Execute(new PublishGroupContentToPublicAreaParameters
+                                                        {GroupID = groupID, UseWorker = true});
+            return false;
         }
 
         private static bool CallRemoveGroupMember(string targetObjectID, IContainerOwner owner)

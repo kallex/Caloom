@@ -232,6 +232,44 @@ using System;
 		{
 				public bool RenderPageAfterOperation ;
 				}
+				public class PublishGroupContentToPublicAreaParameters 
+		{
+				public string GroupID ;
+				public bool UseWorker ;
+				}
+		
+		public class PublishGroupContentToPublicArea 
+		{
+				private static void PrepareParameters(PublishGroupContentToPublicAreaParameters parameters)
+		{
+					}
+				public static void Execute(PublishGroupContentToPublicAreaParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string CurrentContainerName = PublishGroupContentToPublicAreaImplementation.GetTarget_CurrentContainerName(parameters.GroupID);	
+				string PublicContainerName = PublishGroupContentToPublicAreaImplementation.GetTarget_PublicContainerName(parameters.GroupID);	
+				PublishGroupContentToPublicAreaImplementation.ExecuteMethod_PublishGroupContent(parameters.GroupID, parameters.UseWorker, CurrentContainerName, PublicContainerName);		
+				}
+				}
+				public class PublishGroupContentToWwwParameters 
+		{
+				public string GroupID ;
+				public bool UseWorker ;
+				}
+		
+		public class PublishGroupContentToWww 
+		{
+				private static void PrepareParameters(PublishGroupContentToWwwParameters parameters)
+		{
+					}
+				public static void Execute(PublishGroupContentToWwwParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string CurrentContainerName = PublishGroupContentToWwwImplementation.GetTarget_CurrentContainerName(parameters.GroupID);	
+				string WwwContainerName = PublishGroupContentToWwwImplementation.GetTarget_WwwContainerName(parameters.GroupID);	
+				PublishGroupContentToWwwImplementation.ExecuteMethod_PublishGroupContentToWww(parameters.GroupID, parameters.UseWorker, CurrentContainerName, WwwContainerName);		
+				}
+				}
 				public class UpdatePageContentParameters 
 		{
 				public string changedInformation ;

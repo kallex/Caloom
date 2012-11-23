@@ -56,6 +56,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="Operation\PublishGroupContentToPublicAreaImplementation.cs" />
+    <Compile Include="Operation\PublishGroupContentToWwwImplementation.cs" />
     <Compile Include="Operation\PerformWebActionImplementation.cs" />
     <Compile Include="Operation\RemoveMemberFromGroupImplementation.cs" />
     <Compile Include="Operation\RefreshAccountGroupMembershipsImplementation.cs" />

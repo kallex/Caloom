@@ -763,6 +763,7 @@ namespace TheBall
                 operationRequests.Add(refreshOp);
             }
             // Publish group public content
+#if never // Moved to separate operations to be web-ui activated
             var publishPublicContent = SyncTemplatesToSite(currContainerName, groupPublicSiteLocation, anonContainerName, groupPublicSiteLocation, useWorker, false);
             operationRequests.Add(publishPublicContent);
             if (grpID == DefaultGroupID) // Currently also publish www
@@ -777,6 +778,7 @@ namespace TheBall
                                                      defaultWwwContainerName, "", useWorker, false);
                 operationRequests.Add(publishDefault);
             }
+#endif
             if(useWorker)
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
@@ -784,7 +786,7 @@ namespace TheBall
             }
         }
 
-        private static string GetCurrentWwwContainerName()
+        public static string GetCurrentWwwContainerName()
         {
             switch(StorageSupport.CurrActiveContainer.Name)
             {
@@ -796,7 +798,7 @@ namespace TheBall
             }
         }
 
-        private static string GetCurrentAnonContainerName()
+        public static string GetCurrentAnonContainerName()
         {
             switch(StorageSupport.CurrActiveContainer.Name)
             {
