@@ -344,7 +344,7 @@ namespace TheBallTool
             AaltoGlobalImpact.OIP.RemoveMemberFromGroup.Execute(new RemoveMemberFromGroupParameters()
                                                                     {
                                                                         GroupID = groupID,
-                                                                        MemberEmailAddress = memberEmail
+                                                                        EmailAddress = memberEmail
                                                                     });
             InformationContext.ProcessAndClearCurrent();
             InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
@@ -353,7 +353,7 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            //return false;
+            return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)

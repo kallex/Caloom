@@ -33,7 +33,8 @@ using System;
 				}
 				public class RemoveMemberFromGroupParameters 
 		{
-				public string MemberEmailAddress ;
+				public string EmailAddress ;
+				public string AccountID ;
 				public string GroupID ;
 				}
 		
@@ -46,8 +47,10 @@ using System;
 		{
 						PrepareParameters(parameters);
 					TBRGroupRoot GroupRoot = RemoveMemberFromGroupImplementation.GetTarget_GroupRoot(parameters.GroupID);	
-				string AccountID = RemoveMemberFromGroupImplementation.GetTarget_AccountID(parameters.MemberEmailAddress);	
-				RemoveMemberFromGroupImplementation.ExecuteMethod_RemoveMemberFromGroup(parameters.MemberEmailAddress, GroupRoot);		
+				string AccountID = RemoveMemberFromGroupImplementation.GetTarget_AccountID(parameters.EmailAddress, parameters.AccountID);	
+				TBRAccountRoot AccountRoot = RemoveMemberFromGroupImplementation.GetTarget_AccountRoot(AccountID);	
+				string MemberEmailAddress = RemoveMemberFromGroupImplementation.GetTarget_MemberEmailAddress(parameters.EmailAddress, AccountRoot, GroupRoot);	
+				RemoveMemberFromGroupImplementation.ExecuteMethod_RemoveMemberFromGroup(MemberEmailAddress, GroupRoot);		
 				RemoveMemberFromGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot);		
 				
 		{ // Local block to allow local naming
@@ -57,8 +60,7 @@ using System;
 		} // Local block closing
 				}
 				}
-
-		    public class ConfirmInviteToJoinGroupParameters 
+				public class ConfirmInviteToJoinGroupParameters 
 		{
 				public string MemberEmailAddress ;
 				public string GroupID ;
@@ -203,6 +205,32 @@ using System;
 				UpdateAccountContainersGroupMembershipImplementation.ExecuteMethod_UpdateAccountContainerMemberships(parameters.GroupRoot, Group, GroupSummaryContainer, AccountRoot, AccountContainer);		
 				UpdateAccountContainersGroupMembershipImplementation.ExecuteMethod_StoreObjects(AccountContainer, GroupSummaryContainer);		
 				}
+				}
+				public class PerformWebActionParameters 
+		{
+				public string TargetObjectID ;
+				public string CommandName ;
+				public IContainerOwner Owner ;
+				public InformationSourceCollection InformationSources ;
+				public string[] FormSourceNames ;
+				}
+		
+		public class PerformWebAction 
+		{
+				private static void PrepareParameters(PerformWebActionParameters parameters)
+		{
+					}
+				public static PerformWebActionReturnValue Execute(PerformWebActionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					bool ExecuteActualOperationOutput = PerformWebActionImplementation.ExecuteMethod_ExecuteActualOperation(parameters.TargetObjectID, parameters.CommandName, parameters.Owner, parameters.InformationSources, parameters.FormSourceNames);		
+				PerformWebActionReturnValue returnValue = PerformWebActionImplementation.Get_ReturnValue(ExecuteActualOperationOutput);
+		return returnValue;
+				}
+				}
+				public class PerformWebActionReturnValue 
+		{
+				public bool RenderPageAfterOperation ;
 				}
 				public class UpdatePageContentParameters 
 		{

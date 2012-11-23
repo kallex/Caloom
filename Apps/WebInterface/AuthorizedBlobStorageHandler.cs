@@ -204,19 +204,30 @@ namespace WebInterface
             string objectFieldValue = form["Text_Short"];
             if (objectFieldValue == null)
                 objectFieldValue = form["Text_Long"];
-            if(objectFieldID != null)
-            {
-                form = new NameValueCollection();
-                form.Set(objectFieldID, objectFieldValue);
-            }
 
             CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
-            if(sources == null)
+            if (sources == null)
                 throw new InvalidDataException("Postback to page with no information sources defined - where there should be");
-            if(sourceNamesCommaSeparated == null)
+            if (sourceNamesCommaSeparated == null)
                 sourceNamesCommaSeparated = "";
             string[] sourceNames = sourceNamesCommaSeparated.Split(',');
+            
+            if(objectFieldID != null)
+            {
+                var result = PerformWebAction.Execute(new PerformWebActionParameters
+                                                          {
+                                                              CommandName = actionName,
+                                                              FormSourceNames = sourceNames,
+                                                              InformationSources = sources,
+                                                              Owner = containerOwner,
+                                                              TargetObjectID = objectFieldID
+                                                          });
+                if(result.RenderPageAfterOperation)
+                    RenderWebSupport.RefreshContent(webPageBlob);
+                return;
+            }
+
             InformationSource[] sourceArray =
                 sources.CollectionContent.Where(
                     src => src.IsDynamic || (src.IsInformationObjectSource && sourceNames.Contains(src.SourceName)) ).ToArray();
