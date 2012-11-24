@@ -98,32 +98,72 @@ namespace TheBall
             return directoryLocation;
         }
 
-        public static void GetSubcriptionList(string startTargetLocation, List<Subscription> result, List<string> currTargetStack)
+        public static void GetSubscriptionDictionary(string startTargetLocation, Dictionary<string, List<Subscription>> result)
         {
-            if(currTargetStack.Contains(startTargetLocation))
-            {
-                bool circular = true;
-            }
-            currTargetStack.Add(startTargetLocation);
+            if (result.ContainsKey(startTargetLocation))
+                return;
             SubscriptionCollection subscriptionCollection = GetSubscriptions(startTargetLocation);
             string targetParentLocation = GetParentDirectoryTarget(startTargetLocation);
             SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
             if (subscriptionCollection == null && parentSubscriptionCollection == null)
                 return;
             List<Subscription> thisLevelCombined = new List<Subscription>();
-            if(subscriptionCollection != null)
+            if (subscriptionCollection != null)
             {
                 thisLevelCombined.AddRange(subscriptionCollection.CollectionContent);
             }
-            if(parentSubscriptionCollection != null)
+            if (parentSubscriptionCollection != null)
             {
                 thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
             }
+            result.Add(startTargetLocation, thisLevelCombined);
+            foreach (var subscription in thisLevelCombined)
+            {
+                GetSubscriptionDictionary(subscription.SubscriberRelativeLocation, result);
+            }
+            Debug.WriteLine("Count: " + result.Count);
+        }
+
+        public static void GetSubcriptionList(string startTargetLocation, List<Subscription> result, List<string> currTargetStack, 
+            Dictionary<string, List<Subscription>> lookupDictionary = null)
+        {
+            if(currTargetStack.Contains(startTargetLocation))
+            {
+                bool circular = true;
+            }
+            currTargetStack.Add(startTargetLocation);
+            List<Subscription> thisLevelCombined = new List<Subscription>();
+            if (lookupDictionary == null || lookupDictionary.ContainsKey(startTargetLocation) == false)
+            {
+                SubscriptionCollection subscriptionCollection = GetSubscriptions(startTargetLocation);
+                string targetParentLocation = GetParentDirectoryTarget(startTargetLocation);
+                SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
+                if (subscriptionCollection == null && parentSubscriptionCollection == null)
+                {
+                    if(lookupDictionary != null)
+                        lookupDictionary.Add(startTargetLocation, null);
+                    return;
+                }
+                if (subscriptionCollection != null)
+                {
+                    thisLevelCombined.AddRange(subscriptionCollection.CollectionContent);
+                }
+                if (parentSubscriptionCollection != null)
+                {
+                    thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
+                }
+                if(lookupDictionary != null)
+                    lookupDictionary.Add(startTargetLocation, thisLevelCombined);
+            }
+            else
+                thisLevelCombined = lookupDictionary[startTargetLocation];
+            if (thisLevelCombined == null)
+                return;
             result.AddRange(thisLevelCombined);
             foreach(var subscription in thisLevelCombined)
             {
                 List<string> independentTargetStack = new List<string>(currTargetStack);
-                GetSubcriptionList(subscription.SubscriberRelativeLocation, result, independentTargetStack);
+                GetSubcriptionList(subscription.SubscriberRelativeLocation, result, independentTargetStack, lookupDictionary);
             }
             int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
             Debug.WriteLine("Count: " + result.Count + " Distinctive: " + distinctCount);

@@ -296,18 +296,21 @@ namespace TheBallTool
 
             int currMaxSubs = 0;
             int currMaxDistinct = 0;
+            Dictionary<string, List<Subscription>> lookupDictionary = new Dictionary<string, List<Subscription>>();
             foreach(var iObject in informationObjects)
             {
-                int subCount = GetTotalSubscriberCount(iObject, ref currMaxSubs, ref currMaxDistinct);
+                int subCount = GetTotalSubscriberCount(iObject, ref currMaxSubs, ref currMaxDistinct, lookupDictionary);
             }
         }
 
-        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct)
+        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct, Dictionary<string, List<Subscription>> lookupDictionary)
         {
             string location = informationObject.RelativeLocation;
+            //SubscribeSupport.GetSubscriptionDictionary(location, populatedDictionary);
+
             List<Subscription> result = new List<Subscription>();
             List<string> subscriberStack = new List<string>();
-            SubscribeSupport.GetSubcriptionList(location, result, subscriberStack);
+            SubscribeSupport.GetSubcriptionList(location, result, subscriberStack, lookupDictionary);
             int count = result.Count;
             int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
             if(result.Count >= CurrMaxSubs || distinctCount >= CurrMaxDistinct)
@@ -369,12 +372,12 @@ namespace TheBallTool
             
             //ConnectMapContainerToCollections();
             //ClearEmptyLocations();
-            //ReportAllSubscriptionCounts();
+            ReportAllSubscriptionCounts();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");
-            RemoveMemberFromGroup(groupID: "9798daca-afc4-4046-a99b-d0d88bb364e0",
-                                  memberEmail: "kalle.launiala@gmail.com");
+            //RemoveMemberFromGroup(groupID: "9798daca-afc4-4046-a99b-d0d88bb364e0",
+            //                      memberEmail: "kalle.launiala@gmail.com");
 
             return true;
         }
