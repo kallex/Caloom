@@ -307,13 +307,17 @@ namespace TheBallTool
             }
             DateTime after = DateTime.Now;
             var executionOrder = lookupDictionary.GetExecutionOrder();
+            var subscriptionsToExecute = executionOrder.SelectMany(exec => exec.GetMySubscriptionsFromTargets()).ToArray();
             DateTime afterWards = DateTime.Now;
             TimeSpan duration1 = after - before;
             TimeSpan duration2 = afterWards - before;
+            var filteredListToExecute =
+                SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(
+                    informationObjects.Select(io => io.RelativeLocation).ToArray());
             long memAfter = GC.GetTotalMemory(false);
         }
 
-        private static void TestWorkerSubscriberDictPerformance()
+        private static void TestWorkerSubscriberChainExecutionPerformance()
         {
             string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
             var informationObjects =
@@ -338,6 +342,32 @@ namespace TheBallTool
             content.StoreInformation();
             operationRequest.SubscriptionChainRequest = message;
             QueueSupport.PutToOperationQueue(operationRequest);
+        }
+
+        private static void TestSubscriptionExecution()
+        {
+            string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
+            var informationObjects =
+                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation,
+                                                                         io => io is AddressAndLocation &&
+                                                                               SubscribeSupport.GetSubscriptions(
+                                                                                   io.RelativeLocation) != null).ToArray
+                    ();
+            OperationRequest operationRequest = new OperationRequest();
+            SubscriptionChainRequestContent content = SubscriptionChainRequestContent.CreateDefault();
+            SubscriptionChainRequestMessage message = SubscriptionChainRequestMessage.CreateDefault();
+            message.ContentItemID = content.ID;
+            content.SubmitTime = DateTime.UtcNow;
+            SubscriptionTarget[] targets = informationObjects.
+                Select(io =>
+                {
+                    SubscriptionTarget target = SubscriptionTarget.CreateDefault();
+                    target.BlobLocation = io.RelativeLocation;
+                    return target;
+                }).ToArray();
+            content.SubscriptionTargetCollection.CollectionContent.AddRange(targets);
+            content.StoreInformation();
+            WorkerSupport.ExecuteSubscriptionChain(message);
         }
 
 
@@ -423,8 +453,9 @@ namespace TheBallTool
 
 
             //RenderAllPagesInWorker();
-            ReportAllSubscriptionCounts();
-            //TestWorkerSubscriberDictPerformance();
+            //ReportAllSubscriptionCounts();
+            TestWorkerSubscriberChainExecutionPerformance();
+            //TestSubscriptionExecution();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

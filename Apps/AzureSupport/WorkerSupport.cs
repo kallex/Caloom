@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -346,8 +347,9 @@ namespace TheBall
                 WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
         }
 
-        private static void ExecuteSubscriptionChain(SubscriptionChainRequestMessage subscriptionChainRequest)
+        public static void ExecuteSubscriptionChain(SubscriptionChainRequestMessage subscriptionChainRequest)
         {
+            InformationContext.Current.IsExecutingSubscriptions = true;
             SubscriptionChainRequestContent requestContent =
                 SubscriptionChainRequestContent.RetrieveFromDefaultLocation(subscriptionChainRequest.ContentItemID);
             requestContent.ProcessingStartTime = DateTime.UtcNow;
@@ -355,9 +357,17 @@ namespace TheBall
             string[] subscriptionTargetList =
                 requestContent.SubscriptionTargetCollection.CollectionContent.Select(subTarget => subTarget.BlobLocation)
                     .ToArray();
-            SubscribeSupport.ProcessSubscriptionChain(subscriptionTargetList);
+            var subscriptions = SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(subscriptionTargetList);
+            int currSubscription = 1;
+            foreach(var subscription in subscriptions)
+            {
+                ExecuteSubscription(subscription);
+                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType, 
+                    subscription.SubscriberRelativeLocation);
+            }
             requestContent.ProcessingEndTime = DateTime.UtcNow;
             requestContent.StoreInformation();
+            InformationContext.Current.IsExecutingSubscriptions = false;
         }
 
         public static void RefreshDefaultViews(RefreshDefaultViewsOperation refreshDefaultViewsOperation)

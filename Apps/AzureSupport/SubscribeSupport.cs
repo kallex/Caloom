@@ -18,6 +18,13 @@ namespace TheBall
         public List<Subscription> SubscribersList = new List<Subscription>();
         public bool IsVisited = false;
 
+        public Subscription[] GetMySubscriptionsFromTargets()
+        {
+            var result = Targets.SelectMany(target => target.SubscribersList.Where(sub => sub.SubscriberRelativeLocation == Key)).
+                ToArray();
+            return result;
+        }
+
         public void Visit(List<SubcriptionGraphItem> executionList)
         {
             if (IsVisited)
@@ -141,32 +148,6 @@ namespace TheBall
             int lastDirectorySlashIndex = targetLocation.LastIndexOf("/");
             string directoryLocation = targetLocation.Substring(0, lastDirectorySlashIndex + 1);
             return directoryLocation;
-        }
-
-        public static void GetSubscriptionDictionary(string startTargetLocation, Dictionary<string, List<Subscription>> result)
-        {
-            if (result.ContainsKey(startTargetLocation))
-                return;
-            SubscriptionCollection subscriptionCollection = GetSubscriptions(startTargetLocation);
-            string targetParentLocation = GetParentDirectoryTarget(startTargetLocation);
-            SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
-            if (subscriptionCollection == null && parentSubscriptionCollection == null)
-                return;
-            List<Subscription> thisLevelCombined = new List<Subscription>();
-            if (subscriptionCollection != null)
-            {
-                thisLevelCombined.AddRange(subscriptionCollection.CollectionContent);
-            }
-            if (parentSubscriptionCollection != null)
-            {
-                thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
-            }
-            result.Add(startTargetLocation, thisLevelCombined);
-            foreach (var subscription in thisLevelCombined)
-            {
-                GetSubscriptionDictionary(subscription.SubscriberRelativeLocation, result);
-            }
-            Debug.WriteLine("Count: " + result.Count);
         }
 
         public static void GetSubcriptionList(string targetLocation, List<Subscription> result, Stack<string> currTargetStack, 
@@ -300,15 +281,34 @@ namespace TheBall
                 containerObject.GetType().FullName);
         }
 
-        public static void ProcessSubscriptionChain(string[] subscriptionTargetList)
+        public static Subscription[] GetSubscriptionChainItemsInOrderOfExecution(string[] subscriptionTargetList)
         {
-            List<Subscription> result = new List<Subscription>();
+            List<Subscription> subscriptions = new List<Subscription>();
             Dictionary<string, SubcriptionGraphItem> lookupDictionary = new Dictionary<string, SubcriptionGraphItem>();
             foreach(var subTarget in subscriptionTargetList)
             {
                 var subscriberStack = new Stack<string>();
-                GetSubcriptionList(subTarget, result, subscriberStack, lookupDictionary);
+                GetSubcriptionList(subTarget, subscriptions, subscriberStack, lookupDictionary);
             }
+            var executionOrder = lookupDictionary.GetExecutionOrder();
+            Dictionary<string, bool> alreadyExecuted = new Dictionary<string, bool>();
+            var result = executionOrder.SelectMany(exec =>
+                                                       {
+                                                           var subItems = exec.GetMySubscriptionsFromTargets();
+                                                           subItems = subItems.Where(subItem =>
+                                                                                         {
+                                                                                             if (
+                                                                                                 alreadyExecuted.
+                                                                                                     ContainsKey(
+                                                                                                         subItem.ID))
+                                                                                                 return false;
+                                                                                             alreadyExecuted.Add(
+                                                                                                 subItem.ID, true);
+                                                                                             return true;
+                                                                                         }).ToArray();
+                                                           return subItems;
+                                                       }).ToArray();
+            return result;
         }
     }
 }
