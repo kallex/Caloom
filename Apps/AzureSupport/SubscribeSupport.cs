@@ -10,11 +10,32 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall
 {
+    [DebuggerDisplay("{Key}: TargetCount: {Targets.Count} SubscribersCount: {SubscribersList.Count}")]
     public class SubcriptionGraphItem
     {
         public string Key;
-        public List<string> Targets = new List<string>();
-        public List<Subscription> Subscriptions = new List<Subscription>();
+        public List<SubcriptionGraphItem> Targets = new List<SubcriptionGraphItem>();
+        public List<Subscription> SubscribersList = new List<Subscription>();
+        public bool IsVisited = false;
+
+        public void Visit(List<SubcriptionGraphItem> executionList)
+        {
+            if (IsVisited)
+                return;
+            foreach(var target in Targets)
+            {
+                target.Visit(executionList);
+            }
+            IsVisited = true;
+            executionList.Add(this);
+        }
+
+        public void AddTargetIfMissing(string targetKey, Dictionary<string, SubcriptionGraphItem> dictionary)
+        {
+            var targetObject = dictionary[targetKey];
+            if(Targets.Contains(targetObject) == false)
+                Targets.Add(targetObject);
+        }
     }
 
     public static class SubscribeSupport
@@ -59,6 +80,23 @@ namespace TheBall
                 subscriptionCollection.CollectionContent.Add(sub);
             }
             StorageSupport.StoreInformation(subscriptionCollection);
+        }
+
+        public static List<SubcriptionGraphItem> GetExecutionOrder(this Dictionary<string, SubcriptionGraphItem> dictionary)
+        {
+            var values = dictionary.Values;
+            List<SubcriptionGraphItem> executionList = new List<SubcriptionGraphItem>();
+            // Reset visited flags
+            foreach (var value in values)
+            {
+                value.IsVisited = false;
+            }
+
+            foreach(var value in values)
+            {
+                value.Visit(executionList);
+            }
+            return executionList;
         }
 
         /*
@@ -151,7 +189,7 @@ namespace TheBall
                                                             Key = currKey,
                                                         };
                 if(previousReferrerKey != null)
-                    graphItem.Targets.Add(previousReferrerKey);
+                    graphItem.Targets.Add(lookupDictionary[previousReferrerKey]);
                 lookupDictionary.Add(currKey, graphItem);
                 SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
                 string targetParentLocation = GetParentDirectoryTarget(targetLocation);
@@ -168,14 +206,14 @@ namespace TheBall
                 {
                     thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
                 }
-                graphItem.Subscriptions = thisLevelCombined;
+                graphItem.SubscribersList = thisLevelCombined;
             }
             else
             {
                 SubcriptionGraphItem graphItem = lookupDictionary[targetLocation];
-                if(previousReferrerKey != null && graphItem.Targets.Contains(previousReferrerKey) == false)
-                    graphItem.Targets.Add(previousReferrerKey);
-                thisLevelCombined = graphItem.Subscriptions;
+                if(previousReferrerKey != null)
+                    graphItem.AddTargetIfMissing(targetKey:previousReferrerKey, dictionary:lookupDictionary);
+                thisLevelCombined = graphItem.SubscribersList;
                 //thisLevelCombined = lookupDictionary[targetLocation];
             }
             if (thisLevelCombined == null || thisLevelCombined.Count == 0)

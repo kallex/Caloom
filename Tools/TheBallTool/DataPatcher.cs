@@ -306,7 +306,10 @@ namespace TheBallTool
                 int subCount = GetTotalSubscriberCount(iObject, ref currMaxSubs, ref currMaxDistinct, lookupDictionary);
             }
             DateTime after = DateTime.Now;
-            TimeSpan duration = after - before;
+            var executionOrder = lookupDictionary.GetExecutionOrder();
+            DateTime afterWards = DateTime.Now;
+            TimeSpan duration1 = after - before;
+            TimeSpan duration2 = afterWards - before;
             long memAfter = GC.GetTotalMemory(false);
         }
 
