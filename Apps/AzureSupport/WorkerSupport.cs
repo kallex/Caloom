@@ -342,6 +342,22 @@ namespace TheBall
                     operationRequest.DeleteOwnerContent.LocationPrefix);
                 DeleteOwnerContent(virtualOwner);
             }
+            if(operationRequest.SubscriptionChainRequest != null)
+                WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
+        }
+
+        private static void ExecuteSubscriptionChain(SubscriptionChainRequestMessage subscriptionChainRequest)
+        {
+            SubscriptionChainRequestContent requestContent =
+                SubscriptionChainRequestContent.RetrieveFromDefaultLocation(subscriptionChainRequest.ContentItemID);
+            requestContent.ProcessingStartTime = DateTime.UtcNow;
+            requestContent.StoreInformation();
+            string[] subscriptionTargetList =
+                requestContent.SubscriptionTargetCollection.CollectionContent.Select(subTarget => subTarget.BlobLocation)
+                    .ToArray();
+            SubscribeSupport.ProcessSubscriptionChain(subscriptionTargetList);
+            requestContent.ProcessingEndTime = DateTime.UtcNow;
+            requestContent.StoreInformation();
         }
 
         public static void RefreshDefaultViews(RefreshDefaultViewsOperation refreshDefaultViewsOperation)

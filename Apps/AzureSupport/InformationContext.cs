@@ -26,7 +26,10 @@ namespace TheBall
         public InformationContext()
         {
             FinalizingOperationQueue = new List<OperationRequest>();
+            SubscriptionChainTargetsToUpdate = new List<string>();
         }
+
+        protected List<string> SubscriptionChainTargetsToUpdate { get; private set; }
 
         public static bool AllowStatic { get; private set; }
 
@@ -95,6 +98,11 @@ namespace TheBall
             return new InformationContext();
         }
 
+        public void AddSubscriptionUpdateTarget(string targetLocation)
+        {
+            SubscriptionChainTargetsToUpdate.Add(targetLocation);
+        }
+
         public void AddOperationRequestToFinalizingQueue(OperationRequest operationRequest)
         {
             FinalizingOperationQueue.Add(operationRequest);
@@ -150,6 +158,8 @@ namespace TheBall
         }
 
         private CloudBlobClient _currBlobClient;
+        public bool IsExecutingSubscriptions;
+
         public CloudBlobClient CurrBlobClient { 
             get
             {
@@ -165,5 +175,6 @@ namespace TheBall
                 _currBlobClient = value;
             }
         }
+
     }
 }

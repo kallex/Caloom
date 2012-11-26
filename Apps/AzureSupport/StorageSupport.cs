@@ -1071,6 +1071,8 @@ namespace TheBall
             {
                 if(blobAddress.StartsWith(ownerPrefix))
                     return blobAddress;
+                // TODO: NOTE! this allows cross-referencing blobs between owner boundaries in subscriptions
+                return blobAddress;
                 throw new SecurityException("Invalid reference to blob: " + blobAddress + " by owner prefix: " + owner.LocationPrefix);
             }
             return ownerPrefix + blobAddress;

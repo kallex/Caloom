@@ -10,6 +10,13 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall
 {
+    public class SubcriptionGraphItem
+    {
+        public string Key;
+        public List<string> Targets = new List<string>();
+        public List<Subscription> Subscriptions = new List<Subscription>();
+    }
+
     public static class SubscribeSupport
     {
         public const string SubscribeType_WebPageToSource = "webpage";
@@ -178,12 +185,17 @@ namespace TheBall
 
         public static void NotifySubscribers(string targetLocation)
         {
+            var ictx = InformationContext.Current;
+            if (ictx.IsExecutingSubscriptions)
+                return;
             SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
             string targetParentLocation = GetParentDirectoryTarget(targetLocation);
             SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
             if (subscriptionCollection == null && parentSubscriptionCollection == null)
                 return;
-            var ictx = InformationContext.Current;
+
+            ictx.AddSubscriptionUpdateTarget(targetLocation);
+            //return;
 
             if(subscriptionCollection != null)
             {
@@ -233,6 +245,17 @@ namespace TheBall
         {
             AddSubscriptionToObject(masterCollectionLocation, containerObject.RelativeLocation, SubscribeType_MasterCollectionToContainerUpdate, collectionType.FullName,
                 containerObject.GetType().FullName);
+        }
+
+        public static void ProcessSubscriptionChain(string[] subscriptionTargetList)
+        {
+            List<Subscription> result = new List<Subscription>();
+            Dictionary<string, List<Subscription>> lookupDictionary = new Dictionary<string, List<Subscription>>();
+            foreach(var subTarget in subscriptionTargetList)
+            {
+                var subscriberStack = new List<string>();
+                GetSubcriptionList(subTarget, result, subscriberStack, lookupDictionary);
+            }
         }
     }
 }

@@ -19383,6 +19383,8 @@ AccountRoles.OrganizationsImPartOf
 					result.MapResultCollection = MapResultCollection.CreateDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDefault();
 					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
+					result.MarkerSourceBlogs = BlogCollection.CreateDefault();
+					result.MarkerSourceActivities = ActivityCollection.CreateDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDefault();
 					return result;
 				}
@@ -19400,6 +19402,8 @@ AccountRoles.OrganizationsImPartOf
 					result.MapResultCollection = MapResultCollection.CreateDemoDefault();
 					result.MapIndexCollection = MapIndexCollection.CreateDemoDefault();
 					result.MarkerSourceLocations = AddressAndLocationCollection.CreateDemoDefault();
+					result.MarkerSourceBlogs = BlogCollection.CreateDemoDefault();
+					result.MarkerSourceActivities = ActivityCollection.CreateDemoDefault();
 					result.MapMarkers = MapMarkerCollection.CreateDemoDefault();
 				
 					return result;
@@ -19434,6 +19438,16 @@ AccountRoles.OrganizationsImPartOf
 						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceLocations(this, localCollection:MarkerSourceLocations, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(MarkerSourceLocations != null) {
 						((IInformationObject) MarkerSourceLocations).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BlogCollection) {
+						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceBlogs(this, localCollection:MarkerSourceBlogs, masterCollection:(BlogCollection) masterInstance);
+					} else if(MarkerSourceBlogs != null) {
+						((IInformationObject) MarkerSourceBlogs).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is ActivityCollection) {
+						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceActivities(this, localCollection:MarkerSourceActivities, masterCollection:(ActivityCollection) masterInstance);
+					} else if(MarkerSourceActivities != null) {
+						((IInformationObject) MarkerSourceActivities).UpdateCollections(masterInstance);
 					}
 					if(MapMarkers != null) {
 						((IInformationObject) MapMarkers).UpdateCollections(masterInstance);
@@ -19498,6 +19512,22 @@ AccountRoles.OrganizationsImPartOf
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = MarkerSourceLocations;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MarkerSourceBlogs;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MarkerSourceActivities;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -19575,6 +19605,24 @@ AccountRoles.OrganizationsImPartOf
 						}
 					}
 					{
+						var item = MarkerSourceBlogs;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = MarkerSourceActivities;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
 						var item = MapMarkers;
 						if(item != null)
 						{
@@ -19634,6 +19682,16 @@ AccountRoles.OrganizationsImPartOf
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) MarkerSourceBlogs;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) MarkerSourceActivities;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) MapMarkers;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -19654,6 +19712,10 @@ AccountRoles.OrganizationsImPartOf
 						if(MapIndexCollection != _unmodified_MapIndexCollection)
 							return true;
 						if(MarkerSourceLocations != _unmodified_MarkerSourceLocations)
+							return true;
+						if(MarkerSourceBlogs != _unmodified_MarkerSourceBlogs)
+							return true;
+						if(MarkerSourceActivities != _unmodified_MarkerSourceActivities)
 							return true;
 						if(MapMarkers != _unmodified_MapMarkers)
 							return true;
@@ -19704,6 +19766,24 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) MarkerSourceLocations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MarkerSourceBlogs;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MarkerSourceActivities;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -19775,6 +19855,22 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(MarkerSourceBlogs != null) {
+						if(MarkerSourceBlogs.ID == replacingObject.ID)
+							MarkerSourceBlogs = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = MarkerSourceBlogs;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(MarkerSourceActivities != null) {
+						if(MarkerSourceActivities.ID == replacingObject.ID)
+							MarkerSourceActivities = (ActivityCollection) replacingObject;
+						else {
+							IInformationObject iObject = MarkerSourceActivities;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(MapMarkers != null) {
 						if(MapMarkers.ID == replacingObject.ID)
 							MapMarkers = (MapMarkerCollection) replacingObject;
@@ -19794,6 +19890,8 @@ AccountRoles.OrganizationsImPartOf
 					MapResultCollection = sourceObject.MapResultCollection;
 					MapIndexCollection = sourceObject.MapIndexCollection;
 					MarkerSourceLocations = sourceObject.MarkerSourceLocations;
+					MarkerSourceBlogs = sourceObject.MarkerSourceBlogs;
+					MarkerSourceActivities = sourceObject.MarkerSourceActivities;
 					MapMarkers = sourceObject.MapMarkers;
 				}
 				
@@ -19825,6 +19923,14 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_MarkerSourceLocations = MarkerSourceLocations;
 					if(MarkerSourceLocations != null)
 						((IInformationObject) MarkerSourceLocations).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MarkerSourceBlogs = MarkerSourceBlogs;
+					if(MarkerSourceBlogs != null)
+						((IInformationObject) MarkerSourceBlogs).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MarkerSourceActivities = MarkerSourceActivities;
+					if(MarkerSourceActivities != null)
+						((IInformationObject) MarkerSourceActivities).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_MapMarkers = MapMarkers;
 					if(MapMarkers != null)
@@ -19862,6 +19968,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public AddressAndLocationCollection MarkerSourceLocations { get; set; }
 			private AddressAndLocationCollection _unmodified_MarkerSourceLocations;
+			[DataMember]
+			public BlogCollection MarkerSourceBlogs { get; set; }
+			private BlogCollection _unmodified_MarkerSourceBlogs;
+			[DataMember]
+			public ActivityCollection MarkerSourceActivities { get; set; }
+			private ActivityCollection _unmodified_MarkerSourceActivities;
 			[DataMember]
 			public MapMarkerCollection MapMarkers { get; set; }
 			private MapMarkerCollection _unmodified_MapMarkers;
@@ -26164,6 +26276,7 @@ ActivityIndex.Summary
 					result.Introduction = Introduction.CreateDefault();
 					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.ImageSets = ImageGroupCollection.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
@@ -26190,6 +26303,7 @@ Activity.Description
 
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ImageSets = ImageGroupCollection.CreateDemoDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
 					return result;
@@ -26212,6 +26326,11 @@ Activity.Description
 						CollectionUpdateImplementation.Update_Activity_ImageSets(this, localCollection:ImageSets, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageSets != null) {
 						((IInformationObject) ImageSets).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_Activity_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
@@ -26252,6 +26371,14 @@ Activity.Description
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = ImageSets;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = LocationCollection;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -26350,6 +26477,15 @@ Activity.Description
 						}
 					}
 					{
+						var item = LocationCollection;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
 						var item = CategoryCollection;
 						if(item != null)
 						{
@@ -26409,6 +26545,11 @@ Activity.Description
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) LocationCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -26434,6 +26575,8 @@ Activity.Description
 							return true;
 						if(ImageSets != _unmodified_ImageSets)
 							return true;
+						if(LocationCollection != _unmodified_LocationCollection)
+							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
 						{
@@ -26456,6 +26599,15 @@ Activity.Description
 						}
 						{
 							IInformationObject item = (IInformationObject) ImageSets;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -26527,6 +26679,14 @@ Activity.Description
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = LocationCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(CategoryCollection != null) {
 						if(CategoryCollection.ID == replacingObject.ID)
 							CategoryCollection = (CategoryCollection) replacingObject;
@@ -26548,6 +26708,7 @@ Activity.Description
 					Description = sourceObject.Description;
 					Collaborators = sourceObject.Collaborators;
 					ImageSets = sourceObject.ImageSets;
+					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 				}
 				
@@ -26581,6 +26742,10 @@ Activity.Description
 					_unmodified_ImageSets = ImageSets;
 					if(ImageSets != null)
 						((IInformationObject) ImageSets).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -26630,6 +26795,9 @@ Activity.Description
 			[DataMember]
 			public ImageGroupCollection ImageSets { get; set; }
 			private ImageGroupCollection _unmodified_ImageSets;
+			[DataMember]
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
@@ -34741,6 +34909,7 @@ Introduction.Body
 					result.FeaturedImage = Image.CreateDefault();
 					result.ImageGroup = ImageGroup.CreateDefault();
 					result.VideoGroup = VideoGroup.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDefault();
 					return result;
@@ -34778,6 +34947,7 @@ Blog.Excerpt
 Blog.Excerpt
 ";
 
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
 				
@@ -34797,6 +34967,11 @@ Blog.Excerpt
 						((IInformationObject) VideoGroup).UpdateCollections(masterInstance);
 					}
 
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_Blog_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
+					}
 					if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -34832,6 +35007,14 @@ Blog.Excerpt
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = VideoGroup;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = LocationCollection;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -34929,6 +35112,15 @@ Blog.Excerpt
 						}
 					}
 					{
+						var item = LocationCollection;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
 						var item = CategoryCollection;
 						if(item != null)
 						{
@@ -34992,6 +35184,11 @@ Blog.Excerpt
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) LocationCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) CategoryCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -35028,6 +35225,8 @@ Blog.Excerpt
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
+						if(LocationCollection != _unmodified_LocationCollection)
+							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
 							return true;
 						if(SocialPanel != _unmodified_SocialPanel)
@@ -35043,6 +35242,15 @@ Blog.Excerpt
 						}
 						{
 							IInformationObject item = (IInformationObject) VideoGroup;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -35115,6 +35323,14 @@ Blog.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = LocationCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(CategoryCollection != null) {
 						if(CategoryCollection.ID == replacingObject.ID)
 							CategoryCollection = (CategoryCollection) replacingObject;
@@ -35147,6 +35363,7 @@ Blog.Excerpt
 					VideoGroup = sourceObject.VideoGroup;
 					Body = sourceObject.Body;
 					Excerpt = sourceObject.Excerpt;
+					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 					SocialPanel = sourceObject.SocialPanel;
 				}
@@ -35181,6 +35398,10 @@ Blog.Excerpt
 					_unmodified_VideoGroup = VideoGroup;
 					if(VideoGroup != null)
 						((IInformationObject) VideoGroup).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_CategoryCollection = CategoryCollection;
 					if(CategoryCollection != null)
@@ -35255,6 +35476,9 @@ Blog.Excerpt
 			[DataMember]
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
+			[DataMember]
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			[DataMember]
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
@@ -51354,6 +51578,7 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					var result = new OperationRequest();
 					result.SubscriberNotification = Subscription.CreateDefault();
+					result.SubscriptionChainRequest = SubscriptionChainRequestMessage.CreateDefault();
 					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
 					result.RefreshDefaultViewsOperation = RefreshDefaultViewsOperation.CreateDefault();
 					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
@@ -51369,6 +51594,7 @@ ImageVideoSoundVectorRaw.Vector
 						return customDemo;
 					var result = new OperationRequest();
 					result.SubscriberNotification = Subscription.CreateDemoDefault();
+					result.SubscriptionChainRequest = SubscriptionChainRequestMessage.CreateDemoDefault();
 					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDemoDefault();
 					result.RefreshDefaultViewsOperation = RefreshDefaultViewsOperation.CreateDemoDefault();
 					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDemoDefault();
@@ -51384,6 +51610,10 @@ ImageVideoSoundVectorRaw.Vector
 					//string typeName = collType.Name;
 					if(SubscriberNotification != null) {
 						((IInformationObject) SubscriberNotification).UpdateCollections(masterInstance);
+					}
+
+					if(SubscriptionChainRequest != null) {
+						((IInformationObject) SubscriptionChainRequest).UpdateCollections(masterInstance);
 					}
 
 					if(UpdateWebContentOperation != null) {
@@ -51421,6 +51651,14 @@ ImageVideoSoundVectorRaw.Vector
 						result.Add(this);
 					{ // Scoping block for variable name reusability
 						IInformationObject item = SubscriberNotification;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SubscriptionChainRequest;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -51469,6 +51707,15 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = SubscriberNotification;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = SubscriptionChainRequest;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -51538,6 +51785,11 @@ ImageVideoSoundVectorRaw.Vector
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) SubscriptionChainRequest;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) UpdateWebContentOperation;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -51564,6 +51816,8 @@ ImageVideoSoundVectorRaw.Vector
 					get {
 						if(SubscriberNotification != _unmodified_SubscriberNotification)
 							return true;
+						if(SubscriptionChainRequest != _unmodified_SubscriptionChainRequest)
+							return true;
 						if(UpdateWebContentOperation != _unmodified_UpdateWebContentOperation)
 							return true;
 						if(RefreshDefaultViewsOperation != _unmodified_RefreshDefaultViewsOperation)
@@ -51574,6 +51828,15 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						{
 							IInformationObject item = (IInformationObject) SubscriberNotification;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) SubscriptionChainRequest;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -51632,6 +51895,14 @@ ImageVideoSoundVectorRaw.Vector
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(SubscriptionChainRequest != null) {
+						if(SubscriptionChainRequest.ID == replacingObject.ID)
+							SubscriptionChainRequest = (SubscriptionChainRequestMessage) replacingObject;
+						else {
+							IInformationObject iObject = SubscriptionChainRequest;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(UpdateWebContentOperation != null) {
 						if(UpdateWebContentOperation.ID == replacingObject.ID)
 							UpdateWebContentOperation = (UpdateWebContentOperation) replacingObject;
@@ -51670,6 +51941,7 @@ ImageVideoSoundVectorRaw.Vector
 				private void CopyContentFrom(OperationRequest sourceObject)
 				{
 					SubscriberNotification = sourceObject.SubscriberNotification;
+					SubscriptionChainRequest = sourceObject.SubscriptionChainRequest;
 					UpdateWebContentOperation = sourceObject.UpdateWebContentOperation;
 					RefreshDefaultViewsOperation = sourceObject.RefreshDefaultViewsOperation;
 					DeleteEntireOwner = sourceObject.DeleteEntireOwner;
@@ -51684,6 +51956,10 @@ ImageVideoSoundVectorRaw.Vector
 					_unmodified_SubscriberNotification = SubscriberNotification;
 					if(SubscriberNotification != null)
 						((IInformationObject) SubscriberNotification).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_SubscriptionChainRequest = SubscriptionChainRequest;
+					if(SubscriptionChainRequest != null)
+						((IInformationObject) SubscriptionChainRequest).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_UpdateWebContentOperation = UpdateWebContentOperation;
 					if(UpdateWebContentOperation != null)
@@ -51719,6 +51995,9 @@ ImageVideoSoundVectorRaw.Vector
 			public Subscription SubscriberNotification { get; set; }
 			private Subscription _unmodified_SubscriberNotification;
 			[DataMember]
+			public SubscriptionChainRequestMessage SubscriptionChainRequest { get; set; }
+			private SubscriptionChainRequestMessage _unmodified_SubscriptionChainRequest;
+			[DataMember]
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			private UpdateWebContentOperation _unmodified_UpdateWebContentOperation;
 			[DataMember]
@@ -51730,6 +52009,1588 @@ ImageVideoSoundVectorRaw.Vector
 			[DataMember]
 			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
 			private DeleteOwnerContentOperation _unmodified_DeleteOwnerContent;
+			
+			}
+			[DataContract]
+			public partial class SubscriptionChainRequestMessage : IInformationObject 
+			{
+				public SubscriptionChainRequestMessage()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SubscriptionChainRequestMessage";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionChainRequestMessage), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriptionChainRequestMessage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriptionChainRequestMessage(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionChainRequestMessage");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionChainRequestMessage), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static SubscriptionChainRequestMessage RetrieveSubscriptionChainRequestMessage(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SubscriptionChainRequestMessage) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionChainRequestMessage), null, owner);
+                    return result;
+                }
+
+				public static SubscriptionChainRequestMessage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = SubscriptionChainRequestMessage.RetrieveSubscriptionChainRequestMessage("Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName, containerOwner);
+					var result = SubscriptionChainRequestMessage.RetrieveSubscriptionChainRequestMessage("AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriptionChainRequestMessage) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestMessage));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionChainRequestMessage DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestMessage));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionChainRequestMessage) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref SubscriptionChainRequestMessage customDemoObject);
+
+
+
+				public static SubscriptionChainRequestMessage CreateDefault()
+				{
+					var result = new SubscriptionChainRequestMessage();
+					return result;
+				}
+
+				public static SubscriptionChainRequestMessage CreateDemoDefault()
+				{
+					SubscriptionChainRequestMessage customDemo = null;
+					SubscriptionChainRequestMessage.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new SubscriptionChainRequestMessage();
+					result.ContentItemID = @"SubscriptionChainRequestMessage.ContentItemID";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(ContentItemID != _unmodified_ContentItemID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(SubscriptionChainRequestMessage sourceObject)
+				{
+					ContentItemID = sourceObject.ContentItemID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_ContentItemID = ContentItemID;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ContentItemID":
+							ContentItemID = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ContentItemID { get; set; }
+			private string _unmodified_ContentItemID;
+			
+			}
+			[DataContract]
+			public partial class SubscriptionChainRequestContent : IInformationObject 
+			{
+				public SubscriptionChainRequestContent()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SubscriptionChainRequestContent";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionChainRequestContent), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriptionChainRequestContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriptionChainRequestContent(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionChainRequestContent");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionChainRequestContent), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static SubscriptionChainRequestContent RetrieveSubscriptionChainRequestContent(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SubscriptionChainRequestContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionChainRequestContent), null, owner);
+                    return result;
+                }
+
+				public static SubscriptionChainRequestContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = SubscriptionChainRequestContent.RetrieveSubscriptionChainRequestContent("Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName, containerOwner);
+					var result = SubscriptionChainRequestContent.RetrieveSubscriptionChainRequestContent("AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriptionChainRequestContent) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestContent));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionChainRequestContent DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestContent));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionChainRequestContent) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref SubscriptionChainRequestContent customDemoObject);
+
+
+
+				public static SubscriptionChainRequestContent CreateDefault()
+				{
+					var result = new SubscriptionChainRequestContent();
+					result.SubscriptionTargetCollection = SubscriptionTargetCollection.CreateDefault();
+					return result;
+				}
+
+				public static SubscriptionChainRequestContent CreateDemoDefault()
+				{
+					SubscriptionChainRequestContent customDemo = null;
+					SubscriptionChainRequestContent.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new SubscriptionChainRequestContent();
+					result.SubscriptionTargetCollection = SubscriptionTargetCollection.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SubscriptionTargetCollection != null) {
+						((IInformationObject) SubscriptionTargetCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SubscriptionTargetCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = SubscriptionTargetCollection;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) SubscriptionTargetCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(SubmitTime != _unmodified_SubmitTime)
+							return true;
+						if(ProcessingStartTime != _unmodified_ProcessingStartTime)
+							return true;
+						if(ProcessingEndTime != _unmodified_ProcessingEndTime)
+							return true;
+						if(SubscriptionTargetCollection != _unmodified_SubscriptionTargetCollection)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) SubscriptionTargetCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(SubscriptionTargetCollection != null) {
+						if(SubscriptionTargetCollection.ID == replacingObject.ID)
+							SubscriptionTargetCollection = (SubscriptionTargetCollection) replacingObject;
+						else {
+							IInformationObject iObject = SubscriptionTargetCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(SubscriptionChainRequestContent sourceObject)
+				{
+					SubmitTime = sourceObject.SubmitTime;
+					ProcessingStartTime = sourceObject.ProcessingStartTime;
+					ProcessingEndTime = sourceObject.ProcessingEndTime;
+					SubscriptionTargetCollection = sourceObject.SubscriptionTargetCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_SubmitTime = SubmitTime;
+					_unmodified_ProcessingStartTime = ProcessingStartTime;
+					_unmodified_ProcessingEndTime = ProcessingEndTime;
+				
+					_unmodified_SubscriptionTargetCollection = SubscriptionTargetCollection;
+					if(SubscriptionTargetCollection != null)
+						((IInformationObject) SubscriptionTargetCollection).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SubmitTime":
+							SubmitTime = DateTime.Parse(value);
+							break;
+						case "ProcessingStartTime":
+							ProcessingStartTime = DateTime.Parse(value);
+							break;
+						case "ProcessingEndTime":
+							ProcessingEndTime = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public DateTime SubmitTime { get; set; }
+			private DateTime _unmodified_SubmitTime;
+			[DataMember]
+			public DateTime ProcessingStartTime { get; set; }
+			private DateTime _unmodified_ProcessingStartTime;
+			[DataMember]
+			public DateTime ProcessingEndTime { get; set; }
+			private DateTime _unmodified_ProcessingEndTime;
+			[DataMember]
+			public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
+			private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
+			
+			}
+			[DataContract]
+			public partial class SubscriptionTarget : IInformationObject 
+			{
+				public SubscriptionTarget()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SubscriptionTarget";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionTarget/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionTarget), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTarget", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriptionTarget RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriptionTarget(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionTarget");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionTarget), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static SubscriptionTarget RetrieveSubscriptionTarget(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SubscriptionTarget) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionTarget), null, owner);
+                    return result;
+                }
+
+				public static SubscriptionTarget RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = SubscriptionTarget.RetrieveSubscriptionTarget("Content/AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName, containerOwner);
+					var result = SubscriptionTarget.RetrieveSubscriptionTarget("AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriptionTarget) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTarget));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionTarget DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTarget));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionTarget) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTarget", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionTarget", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref SubscriptionTarget customDemoObject);
+
+
+
+				public static SubscriptionTarget CreateDefault()
+				{
+					var result = new SubscriptionTarget();
+					return result;
+				}
+
+				public static SubscriptionTarget CreateDemoDefault()
+				{
+					SubscriptionTarget customDemo = null;
+					SubscriptionTarget.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new SubscriptionTarget();
+					result.BlobLocation = @"SubscriptionTarget.BlobLocation";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(BlobLocation != _unmodified_BlobLocation)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(SubscriptionTarget sourceObject)
+				{
+					BlobLocation = sourceObject.BlobLocation;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_BlobLocation = BlobLocation;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "BlobLocation":
+							BlobLocation = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string BlobLocation { get; set; }
+			private string _unmodified_BlobLocation;
+			
+			}
+			[DataContract]
+			public partial class SubscriptionTargetCollection : IInformationObject , IInformationCollection
+			{
+				public SubscriptionTargetCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "SubscriptionTargetCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionTargetCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionTargetCollection), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static SubscriptionTargetCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveSubscriptionTargetCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionTargetCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionTargetCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static SubscriptionTargetCollection RetrieveSubscriptionTargetCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (SubscriptionTargetCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionTargetCollection), null, owner);
+                    return result;
+                }
+
+				public static SubscriptionTargetCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = SubscriptionTargetCollection.RetrieveSubscriptionTargetCollection("Content/AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName, containerOwner);
+					var result = SubscriptionTargetCollection.RetrieveSubscriptionTargetCollection("AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((SubscriptionTargetCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTargetCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionTargetCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTargetCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionTargetCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref SubscriptionTargetCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = SubscriptionTarget.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static SubscriptionTargetCollection CreateDefault()
+				{
+					var result = new SubscriptionTargetCollection();
+					return result;
+				}
+
+				public static SubscriptionTargetCollection CreateDemoDefault()
+				{
+					SubscriptionTargetCollection customDemo = null;
+					SubscriptionTargetCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new SubscriptionTargetCollection();
+					result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
+					//result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
+					//result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<SubscriptionTarget> CollectionContent = new List<SubscriptionTarget>();
+				private SubscriptionTarget[] _unmodified_CollectionContent;
+
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (SubscriptionTarget )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(SubscriptionTargetCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
 			
 			}
 			[DataContract]
