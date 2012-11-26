@@ -292,22 +292,26 @@ namespace TheBall
             }
             var executionOrder = lookupDictionary.GetExecutionOrder();
             Dictionary<string, bool> alreadyExecuted = new Dictionary<string, bool>();
-            var result = executionOrder.SelectMany(exec =>
-                                                       {
-                                                           var subItems = exec.GetMySubscriptionsFromTargets();
-                                                           subItems = subItems.Where(subItem =>
-                                                                                         {
-                                                                                             if (
-                                                                                                 alreadyExecuted.
-                                                                                                     ContainsKey(
-                                                                                                         subItem.ID))
-                                                                                                 return false;
-                                                                                             alreadyExecuted.Add(
-                                                                                                 subItem.ID, true);
-                                                                                             return true;
-                                                                                         }).ToArray();
-                                                           return subItems;
-                                                       }).ToArray();
+            var result = executionOrder.
+                SelectMany(exec =>
+                               {
+                                   var subItems = exec.GetMySubscriptionsFromTargets();
+                                   subItems = subItems.Where(subItem =>
+                                                                 {
+                                                                     string keyValue =
+                                                                         subItem.
+                                                                             SubscriptionType !=
+                                                                         SubscribeType_WebPageToSource
+                                                                             ? subItem.ID
+                                                                             : subItem.SubscriberRelativeLocation;
+                                                                     if (alreadyExecuted.ContainsKey(keyValue))
+                                                                         return false;
+                                                                     alreadyExecuted.Add(
+                                                                         keyValue, true);
+                                                                     return true;
+                                                                 }).ToArray();
+                                   return subItems;
+                               }).ToArray();
             return result;
         }
     }

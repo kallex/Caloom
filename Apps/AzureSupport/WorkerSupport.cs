@@ -359,12 +359,30 @@ namespace TheBall
                     .ToArray();
             var subscriptions = SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(subscriptionTargetList);
             int currSubscription = 1;
-            foreach(var subscription in subscriptions)
+            var informationObjectSubscriptions =
+                subscriptions.Where(sub => sub.SubscriptionType != SubscribeSupport.SubscribeType_WebPageToSource).
+                    ToArray();
+            var webPageSubscriptions =
+                subscriptions.Where(sub => sub.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource).
+                    ToArray();
+            foreach (var subscription in informationObjectSubscriptions)
             {
                 ExecuteSubscription(subscription);
-                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType, 
+                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
                     subscription.SubscriberRelativeLocation);
             }
+            requestContent.ProcessingEndTimeInformationObjects = DateTime.UtcNow;
+            requestContent.StoreInformation();
+            foreach (var subscription in webPageSubscriptions)
+            {
+                //ExecuteSubscription(subscription);
+                OperationRequest operationRequest = new OperationRequest();
+                operationRequest.SubscriberNotification = subscription;
+                QueueSupport.PutToOperationQueue(operationRequest);
+                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
+                    subscription.SubscriberRelativeLocation);
+            }
+            requestContent.ProcessingEndTimeWebTemplatesRendering = DateTime.UtcNow;
             requestContent.ProcessingEndTime = DateTime.UtcNow;
             requestContent.StoreInformation();
             InformationContext.Current.IsExecutingSubscriptions = false;

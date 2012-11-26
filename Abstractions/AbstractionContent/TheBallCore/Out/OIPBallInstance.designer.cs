@@ -52720,6 +52720,10 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						if(ProcessingStartTime != _unmodified_ProcessingStartTime)
 							return true;
+						if(ProcessingEndTimeInformationObjects != _unmodified_ProcessingEndTimeInformationObjects)
+							return true;
+						if(ProcessingEndTimeWebTemplatesRendering != _unmodified_ProcessingEndTimeWebTemplatesRendering)
+							return true;
 						if(ProcessingEndTime != _unmodified_ProcessingEndTime)
 							return true;
 						if(SubscriptionTargetCollection != _unmodified_SubscriptionTargetCollection)
@@ -52755,6 +52759,8 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					SubmitTime = sourceObject.SubmitTime;
 					ProcessingStartTime = sourceObject.ProcessingStartTime;
+					ProcessingEndTimeInformationObjects = sourceObject.ProcessingEndTimeInformationObjects;
+					ProcessingEndTimeWebTemplatesRendering = sourceObject.ProcessingEndTimeWebTemplatesRendering;
 					ProcessingEndTime = sourceObject.ProcessingEndTime;
 					SubscriptionTargetCollection = sourceObject.SubscriptionTargetCollection;
 				}
@@ -52765,6 +52771,8 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					_unmodified_SubmitTime = SubmitTime;
 					_unmodified_ProcessingStartTime = ProcessingStartTime;
+					_unmodified_ProcessingEndTimeInformationObjects = ProcessingEndTimeInformationObjects;
+					_unmodified_ProcessingEndTimeWebTemplatesRendering = ProcessingEndTimeWebTemplatesRendering;
 					_unmodified_ProcessingEndTime = ProcessingEndTime;
 				
 					_unmodified_SubscriptionTargetCollection = SubscriptionTargetCollection;
@@ -52787,6 +52795,12 @@ ImageVideoSoundVectorRaw.Vector
 						case "ProcessingStartTime":
 							ProcessingStartTime = DateTime.Parse(value);
 							break;
+						case "ProcessingEndTimeInformationObjects":
+							ProcessingEndTimeInformationObjects = DateTime.Parse(value);
+							break;
+						case "ProcessingEndTimeWebTemplatesRendering":
+							ProcessingEndTimeWebTemplatesRendering = DateTime.Parse(value);
+							break;
 						case "ProcessingEndTime":
 							ProcessingEndTime = DateTime.Parse(value);
 							break;
@@ -52800,6 +52814,12 @@ ImageVideoSoundVectorRaw.Vector
 			[DataMember]
 			public DateTime ProcessingStartTime { get; set; }
 			private DateTime _unmodified_ProcessingStartTime;
+			[DataMember]
+			public DateTime ProcessingEndTimeInformationObjects { get; set; }
+			private DateTime _unmodified_ProcessingEndTimeInformationObjects;
+			[DataMember]
+			public DateTime ProcessingEndTimeWebTemplatesRendering { get; set; }
+			private DateTime _unmodified_ProcessingEndTimeWebTemplatesRendering;
 			[DataMember]
 			public DateTime ProcessingEndTime { get; set; }
 			private DateTime _unmodified_ProcessingEndTime;
