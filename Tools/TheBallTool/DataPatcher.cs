@@ -298,7 +298,7 @@ namespace TheBallTool
 
             int currMaxSubs = 0;
             int currMaxDistinct = 0;
-            Dictionary<string, List<Subscription>> lookupDictionary = new Dictionary<string, List<Subscription>>();
+            Dictionary<string, SubcriptionGraphItem> lookupDictionary = new Dictionary<string, SubcriptionGraphItem>();
             //lookupDictionary = null;
             DateTime before = DateTime.Now;
             foreach(var iObject in informationObjects)
@@ -338,13 +338,13 @@ namespace TheBallTool
         }
 
 
-        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct, Dictionary<string, List<Subscription>> lookupDictionary)
+        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct, Dictionary<string, SubcriptionGraphItem> lookupDictionary)
         {
             string location = informationObject.RelativeLocation;
             //SubscribeSupport.GetSubscriptionDictionary(location, populatedDictionary);
 
             List<Subscription> result = new List<Subscription>();
-            List<string> subscriberStack = new List<string>();
+            Stack<string> subscriberStack = new Stack<string>();
             SubscribeSupport.GetSubcriptionList(location, result, subscriberStack, lookupDictionary);
             int count = result.Count;
             int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
@@ -420,8 +420,8 @@ namespace TheBallTool
 
 
             //RenderAllPagesInWorker();
-            //ReportAllSubscriptionCounts();
-            TestWorkerSubscriberDictPerformance();
+            ReportAllSubscriptionCounts();
+            //TestWorkerSubscriberDictPerformance();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

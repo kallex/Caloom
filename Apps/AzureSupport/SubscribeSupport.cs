@@ -131,24 +131,33 @@ namespace TheBall
             Debug.WriteLine("Count: " + result.Count);
         }
 
-        public static void GetSubcriptionList(string startTargetLocation, List<Subscription> result, List<string> currTargetStack, 
-            Dictionary<string, List<Subscription>> lookupDictionary = null)
+        public static void GetSubcriptionList(string targetLocation, List<Subscription> result, Stack<string> currTargetStack, 
+            Dictionary<string, SubcriptionGraphItem> lookupDictionary)
         {
-            if(currTargetStack.Contains(startTargetLocation))
+            if(currTargetStack.Contains(targetLocation))
             {
                 bool circular = true;
             }
-            currTargetStack.Add(startTargetLocation);
+            string currKey = targetLocation;
+            string previousReferrerKey = null;
+            if (currTargetStack.Count > 0)
+                previousReferrerKey = currTargetStack.Peek();
+            currTargetStack.Push(targetLocation);
             List<Subscription> thisLevelCombined = new List<Subscription>();
-            if (lookupDictionary == null || lookupDictionary.ContainsKey(startTargetLocation) == false)
+            if (lookupDictionary.ContainsKey(targetLocation) == false)
             {
-                SubscriptionCollection subscriptionCollection = GetSubscriptions(startTargetLocation);
-                string targetParentLocation = GetParentDirectoryTarget(startTargetLocation);
+                SubcriptionGraphItem graphItem = new SubcriptionGraphItem()
+                                                        {
+                                                            Key = currKey,
+                                                        };
+                if(previousReferrerKey != null)
+                    graphItem.Targets.Add(previousReferrerKey);
+                lookupDictionary.Add(currKey, graphItem);
+                SubscriptionCollection subscriptionCollection = GetSubscriptions(targetLocation);
+                string targetParentLocation = GetParentDirectoryTarget(targetLocation);
                 SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
                 if (subscriptionCollection == null && parentSubscriptionCollection == null)
                 {
-                    if(lookupDictionary != null)
-                        lookupDictionary.Add(startTargetLocation, null);
                     return;
                 }
                 if (subscriptionCollection != null)
@@ -159,17 +168,23 @@ namespace TheBall
                 {
                     thisLevelCombined.AddRange(parentSubscriptionCollection.CollectionContent);
                 }
-                if(lookupDictionary != null)
-                    lookupDictionary.Add(startTargetLocation, thisLevelCombined);
+                graphItem.Subscriptions = thisLevelCombined;
             }
             else
-                thisLevelCombined = lookupDictionary[startTargetLocation];
-            if (thisLevelCombined == null)
+            {
+                SubcriptionGraphItem graphItem = lookupDictionary[targetLocation];
+                if(previousReferrerKey != null && graphItem.Targets.Contains(previousReferrerKey) == false)
+                    graphItem.Targets.Add(previousReferrerKey);
+                thisLevelCombined = graphItem.Subscriptions;
+                //thisLevelCombined = lookupDictionary[targetLocation];
+            }
+            if (thisLevelCombined == null || thisLevelCombined.Count == 0)
                 return;
             result.AddRange(thisLevelCombined);
             foreach(var subscription in thisLevelCombined)
             {
-                List<string> independentTargetStack = new List<string>(currTargetStack);
+                //List<string> independentTargetStack = new List<string>(currTargetStack);
+                Stack<string> independentTargetStack = new Stack<string>(currTargetStack.Reverse());
                 GetSubcriptionList(subscription.SubscriberRelativeLocation, result, independentTargetStack, lookupDictionary);
             }
             int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
@@ -250,10 +265,10 @@ namespace TheBall
         public static void ProcessSubscriptionChain(string[] subscriptionTargetList)
         {
             List<Subscription> result = new List<Subscription>();
-            Dictionary<string, List<Subscription>> lookupDictionary = new Dictionary<string, List<Subscription>>();
+            Dictionary<string, SubcriptionGraphItem> lookupDictionary = new Dictionary<string, SubcriptionGraphItem>();
             foreach(var subTarget in subscriptionTargetList)
             {
-                var subscriberStack = new List<string>();
+                var subscriberStack = new Stack<string>();
                 GetSubcriptionList(subTarget, result, subscriberStack, lookupDictionary);
             }
         }
