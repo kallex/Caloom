@@ -274,7 +274,7 @@ namespace TheBall
                 result.AppendLine(line);
                 return contextStack.Count > 0;
             }
-            if (line.StartsWith(RootTagBegin) || line.StartsWith(DynamicRootTagBegin))
+            if (line.Contains(RootTagBegin) || line.Contains(DynamicRootTagBegin))
             {
                 result.AppendLine(line);
                 object content;
@@ -302,7 +302,7 @@ namespace TheBall
                 //    throw new InvalidDataException("Context stack already has a root item before: " + content.GetType().FullName);
                 contextStack.Push(rootItem);
             }
-            else if (line.StartsWith(CollectionTagBegin))
+            else if (line.Contains(CollectionTagBegin))
             {
                 result.AppendLine(line);
                 requireExistingContext(contextStack, line);
@@ -356,7 +356,7 @@ namespace TheBall
                 // Jump to the end tag (as the next loop will progress by one)
                 currLineIx = scopeEndIx - 1;
             }
-            else if (line.StartsWith(ObjectTagBegin))
+            else if (line.Contains(ObjectTagBegin))
             {
                 result.AppendLine(line);
                 requireExistingContext(contextStack, line);
@@ -364,7 +364,7 @@ namespace TheBall
                 StackContextItem currItem = PushMemberObjectToStack(contextStack, memberName);
                 result.AppendLine(GetSpanTag(currItem.CurrContent, SpanTagItemBeginFormat));
             }
-            else if (line.StartsWith(ContextTagEnd))
+            else if (line.Contains(ContextTagEnd))
             {
                 result.AppendLine(SpanTagClosing);
                 result.AppendLine(line);

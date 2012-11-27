@@ -449,15 +449,15 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            //return false;
+            return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             
             //EnsureAndRefreshMasterCollections();
-            //ReconnectAccountsMastersAndCollections();
-            //ReconnectGroupsMastersAndCollections();
+            ReconnectAccountsMastersAndCollections();
+            ReconnectGroupsMastersAndCollections();
 
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
@@ -477,7 +477,7 @@ namespace TheBallTool
             //TestWorkerSubscriberChainExecutionPerformance();
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
-            PatchSubscriptionsToSubmitted();
+            //PatchSubscriptionsToSubmitted();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

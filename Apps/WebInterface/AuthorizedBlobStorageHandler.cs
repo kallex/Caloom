@@ -211,7 +211,8 @@ namespace WebInterface
                 throw new InvalidDataException("Postback to page with no information sources defined - where there should be");
             if (sourceNamesCommaSeparated == null)
                 sourceNamesCommaSeparated = "";
-            string[] sourceNames = sourceNamesCommaSeparated.Split(',');
+            sourceNamesCommaSeparated += ",";
+            string[] sourceNames = sourceNamesCommaSeparated.Split(',').Distinct().ToArray();
             
             if(objectFieldID != null)
             {

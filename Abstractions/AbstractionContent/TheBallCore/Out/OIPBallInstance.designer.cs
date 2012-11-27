@@ -3735,6 +3735,37 @@ namespace AaltoGlobalImpact.OIP {
 				private TBAccountCollaborationGroup[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -3755,6 +3786,8 @@ namespace AaltoGlobalImpact.OIP {
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -3769,6 +3802,10 @@ namespace AaltoGlobalImpact.OIP {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -4520,6 +4557,37 @@ namespace AaltoGlobalImpact.OIP {
 				private TBLoginInfo[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -4540,6 +4608,8 @@ namespace AaltoGlobalImpact.OIP {
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -4554,6 +4624,10 @@ namespace AaltoGlobalImpact.OIP {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -5315,6 +5389,37 @@ namespace AaltoGlobalImpact.OIP {
 				private TBEmail[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -5335,6 +5440,8 @@ namespace AaltoGlobalImpact.OIP {
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -5349,6 +5456,10 @@ namespace AaltoGlobalImpact.OIP {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -6167,6 +6278,37 @@ namespace AaltoGlobalImpact.OIP {
 				private TBCollaboratorRole[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -6187,6 +6329,8 @@ namespace AaltoGlobalImpact.OIP {
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -6201,6 +6345,10 @@ namespace AaltoGlobalImpact.OIP {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -8666,6 +8814,37 @@ namespace AaltoGlobalImpact.OIP {
 				private LoginProvider[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -8686,6 +8865,8 @@ namespace AaltoGlobalImpact.OIP {
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -8700,6 +8881,10 @@ namespace AaltoGlobalImpact.OIP {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -14197,6 +14382,37 @@ AccountIndex.Summary
 				private AddressAndLocation[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -14217,12 +14433,18 @@ AccountIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						return false;
 					}
 				}
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -18013,6 +18235,37 @@ AccountRoles.OrganizationsImPartOf
 				private ReferenceToInformation[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -18033,12 +18286,18 @@ AccountRoles.OrganizationsImPartOf
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						return false;
 					}
 				}
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -20750,6 +21009,37 @@ AccountRoles.OrganizationsImPartOf
 				private MapMarker[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -20770,6 +21060,8 @@ AccountRoles.OrganizationsImPartOf
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -20784,6 +21076,10 @@ AccountRoles.OrganizationsImPartOf
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -25931,6 +26227,37 @@ ActivityIndex.Summary
 				private Activity[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -25951,6 +26278,8 @@ ActivityIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -25965,6 +26294,10 @@ ActivityIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -27133,6 +27466,37 @@ Activity.Description
 				private Moderator[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -27153,6 +27517,8 @@ Activity.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -27167,6 +27533,10 @@ Activity.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -27930,6 +28300,37 @@ Activity.Description
 				private Collaborator[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -27950,6 +28351,8 @@ Activity.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -27964,6 +28367,10 @@ Activity.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -29272,7 +29679,7 @@ GroupSummaryContainer.SummaryBody
 					result.Collaborators = CollaboratorCollection.CreateDefault();
 					result.PendingCollaborators = CollaboratorCollection.CreateDefault();
 					result.Activities = ActivityCollection.CreateDefault();
-					result.Locations = LocationCollection.CreateDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					return result;
 				}
 
@@ -29289,7 +29696,7 @@ GroupSummaryContainer.SummaryBody
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.PendingCollaborators = CollaboratorCollection.CreateDemoDefault();
 					result.Activities = ActivityCollection.CreateDemoDefault();
-					result.Locations = LocationCollection.CreateDemoDefault();
+					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -29324,10 +29731,11 @@ GroupSummaryContainer.SummaryBody
 					} else if(Activities != null) {
 						((IInformationObject) Activities).UpdateCollections(masterInstance);
 					}
-					if(Locations != null) {
-						((IInformationObject) Locations).UpdateCollections(masterInstance);
+					if(masterInstance is AddressAndLocationCollection) {
+						CollectionUpdateImplementation.Update_GroupContainer_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(LocationCollection != null) {
+						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
-
 				}
 
 
@@ -29394,7 +29802,7 @@ GroupSummaryContainer.SummaryBody
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
-						IInformationObject item = Locations;
+						IInformationObject item = LocationCollection;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -29464,7 +29872,7 @@ GroupSummaryContainer.SummaryBody
 						}
 					}
 					{
-						var item = Locations;
+						var item = LocationCollection;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -29523,7 +29931,7 @@ GroupSummaryContainer.SummaryBody
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) Locations;
+						var item = (IInformationObject) LocationCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -29544,7 +29952,7 @@ GroupSummaryContainer.SummaryBody
 							return true;
 						if(Activities != _unmodified_Activities)
 							return true;
-						if(Locations != _unmodified_Locations)
+						if(LocationCollection != _unmodified_LocationCollection)
 							return true;
 						{
 							IInformationObject item = (IInformationObject) Header;
@@ -29601,7 +30009,7 @@ GroupSummaryContainer.SummaryBody
 							}
 						}
 						{
-							IInformationObject item = (IInformationObject) Locations;
+							IInformationObject item = (IInformationObject) LocationCollection;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -29664,11 +30072,11 @@ GroupSummaryContainer.SummaryBody
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(Locations != null) {
-						if(Locations.ID == replacingObject.ID)
-							Locations = (LocationCollection) replacingObject;
+					if(LocationCollection != null) {
+						if(LocationCollection.ID == replacingObject.ID)
+							LocationCollection = (AddressAndLocationCollection) replacingObject;
 						else {
-							IInformationObject iObject = Locations;
+							IInformationObject iObject = LocationCollection;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -29683,7 +30091,7 @@ GroupSummaryContainer.SummaryBody
 					Collaborators = sourceObject.Collaborators;
 					PendingCollaborators = sourceObject.PendingCollaborators;
 					Activities = sourceObject.Activities;
-					Locations = sourceObject.Locations;
+					LocationCollection = sourceObject.LocationCollection;
 				}
 				
 
@@ -29715,9 +30123,9 @@ GroupSummaryContainer.SummaryBody
 					if(Activities != null)
 						((IInformationObject) Activities).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_Locations = Locations;
-					if(Locations != null)
-						((IInformationObject) Locations).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_LocationCollection = LocationCollection;
+					if(LocationCollection != null)
+						((IInformationObject) LocationCollection).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -29752,8 +30160,8 @@ GroupSummaryContainer.SummaryBody
 			public ActivityCollection Activities { get; set; }
 			private ActivityCollection _unmodified_Activities;
 			[DataMember]
-			public LocationCollection Locations { get; set; }
-			private LocationCollection _unmodified_Locations;
+			public AddressAndLocationCollection LocationCollection { get; set; }
+			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
 			[DataContract]
@@ -33057,6 +33465,37 @@ GroupIndex.Summary
 				private Group[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -33077,6 +33516,8 @@ GroupIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -33091,6 +33532,10 @@ GroupIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -34565,6 +35010,37 @@ Introduction.Body
 				private Blog[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -34585,6 +35061,8 @@ Introduction.Body
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -34599,6 +35077,10 @@ Introduction.Body
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -37639,6 +38121,37 @@ CalendarIndex.Summary
 				private Calendar[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -37659,6 +38172,8 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -37673,6 +38188,10 @@ CalendarIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -38424,6 +38943,37 @@ CalendarIndex.Summary
 				private Map[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -38444,6 +38994,8 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -38458,6 +39010,10 @@ CalendarIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -39822,6 +40378,37 @@ CalendarIndex.Summary
 				private MapResult[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -39842,6 +40429,8 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -39856,6 +40445,10 @@ CalendarIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -41995,6 +42588,37 @@ CalendarIndex.Summary
 				private ImageGroup[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -42015,12 +42639,18 @@ CalendarIndex.Summary
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						return false;
 					}
 				}
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -43311,6 +43941,37 @@ ImageGroup.Description
 				private Image[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -43331,12 +43992,18 @@ ImageGroup.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						return false;
 					}
 				}
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -43728,6 +44395,37 @@ ImageGroup.Description
 				private Video[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -43748,6 +44446,8 @@ ImageGroup.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -43762,6 +44462,10 @@ ImageGroup.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -44513,6 +45217,37 @@ ImageGroup.Description
 				private SocialPanel[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -44533,6 +45268,8 @@ ImageGroup.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -44547,6 +45284,10 @@ ImageGroup.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -46537,6 +47278,37 @@ ImageGroup.Description
 				private Location[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -46557,6 +47329,8 @@ ImageGroup.Description
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -46571,6 +47345,10 @@ ImageGroup.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -49435,6 +50213,37 @@ ImageVideoSoundVectorRaw.Vector
 				private Category[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -49455,6 +50264,8 @@ ImageVideoSoundVectorRaw.Vector
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -49469,6 +50280,10 @@ ImageVideoSoundVectorRaw.Vector
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -49858,6 +50673,37 @@ ImageVideoSoundVectorRaw.Vector
 				private Subscription[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -49878,6 +50724,8 @@ ImageVideoSoundVectorRaw.Vector
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -49892,6 +50740,10 @@ ImageVideoSoundVectorRaw.Vector
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -51238,6 +52090,37 @@ ImageVideoSoundVectorRaw.Vector
 				private OperationRequest[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -51258,6 +52141,8 @@ ImageVideoSoundVectorRaw.Vector
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -51272,6 +52157,10 @@ ImageVideoSoundVectorRaw.Vector
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -53520,6 +54409,37 @@ ImageVideoSoundVectorRaw.Vector
 				private SubscriptionTarget[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -53540,6 +54460,8 @@ ImageVideoSoundVectorRaw.Vector
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -53554,6 +54476,10 @@ ImageVideoSoundVectorRaw.Vector
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -55552,6 +56478,37 @@ SystemErrorItem.LongDescription
 				private SystemErrorItem[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -55572,6 +56529,8 @@ SystemErrorItem.LongDescription
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -55586,6 +56545,10 @@ SystemErrorItem.LongDescription
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -56417,6 +57380,37 @@ SystemErrorItem.LongDescription
 				private InformationSource[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -56437,6 +57431,8 @@ SystemErrorItem.LongDescription
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -56451,6 +57447,10 @@ SystemErrorItem.LongDescription
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
@@ -58051,6 +59051,37 @@ SystemErrorItem.LongDescription
 				private UpdateWebContentHandlerItem[] _unmodified_CollectionContent;
 
 				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					if(propertyName != "SelectedIDCommaSeparated")
+						throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					SelectedIDCommaSeparated = propertyValue;
+				}
+
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
@@ -58071,6 +59102,8 @@ SystemErrorItem.LongDescription
 						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
 						if(collectionModified)
 							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+
 						// For non-master content
 						foreach(IInformationObject item in CollectionContent)
 						{
@@ -58085,6 +59118,10 @@ SystemErrorItem.LongDescription
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CollectionContent = CollectionContent.ToArray();
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
 					foreach(IInformationObject iObject in CollectionContent)
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}

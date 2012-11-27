@@ -90,6 +90,19 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
+        internal static void Update_GroupContainer_LocationCollection(GroupContainer groupContainer, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                groupContainer.LocationCollection = AddressAndLocationCollection.CreateDefault();
+                localCollection = groupContainer.LocationCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+
         internal static void Update_Blog_LocationCollection(Blog blog, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
         {
             if (localCollection == null)
@@ -167,5 +180,6 @@ namespace AaltoGlobalImpact.OIP
                 }).ToArray();
             mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
         }
+
     }
 }
