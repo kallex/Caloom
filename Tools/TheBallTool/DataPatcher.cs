@@ -429,26 +429,20 @@ namespace TheBallTool
 
         private static void TestSubscriptionChainPick()
         {
-            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
-            if(result.Length == 0)
-                return;
-            string acquiredEtag = null;
-            var firstLockedOwner =
-                result.FirstOrDefault(
-                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
-            if(firstLockedOwner != null)
+            bool result = WorkerSupport.PollAndExecuteChainSubscription();
+        }
+
+        private static void PatchSubscriptionsToSubmitted()
+        {
+            string subscriptionChainLocation = SubscribeSupport.ChainRequestDirectory;
+            var submissions =
+                StorageSupport.CurrActiveContainer.GetInformationObjects(subscriptionChainLocation,
+                                                                         io => io is SubscriptionChainRequestContent).
+                    Cast<SubscriptionChainRequestContent>().ToArray();
+            foreach(var submission in submissions)
             {
-                try
-                {
-                    string[] blobs = SubscribeSupport.GetChainRequestList(firstLockedOwner);
-                    var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
-                    WorkerSupport.ExecuteSubscriptionChains(chainContent);
-                    foreach(string blob in blobs)
-                        StorageSupport.DeleteBlob(blob);
-                } finally
-                {
-                    SubscribeSupport.ReleaseChainLock(firstLockedOwner, acquiredEtag);
-                }
+                submission.SubmitTime = DateTime.UtcNow;
+                submission.StoreInformation();
             }
         }
 
@@ -482,7 +476,8 @@ namespace TheBallTool
             //ReportAllSubscriptionCounts();
             //TestWorkerSubscriberChainExecutionPerformance();
             //TestSubscriptionExecution();
-            TestSubscriptionChainPick();
+            //TestSubscriptionChainPick();
+            PatchSubscriptionsToSubmitted();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

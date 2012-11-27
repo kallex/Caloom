@@ -347,7 +347,42 @@ namespace TheBall
                 WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
         }
 
-        public static bool PollAndExecuteChainSubscription(double deadSubscriptionPeriodInSeconds)
+        public static void ProcessOwnerSubscriptionChains(IContainerOwner lockedOwner, string acquiredEtag, string containerName)
+        {
+            try
+            {
+                if(containerName != null)
+                    InformationContext.Current.InitializeCloudStorageAccess(containerName:containerName);
+                string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
+                var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
+                const double invalidSubscriptionSubmissionTimeInSeconds = 600;
+                if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-invalidSubscriptionSubmissionTimeInSeconds)))
+                    return;
+                WorkerSupport.ExecuteSubscriptionChains(chainContent);
+                foreach (string blob in blobs)
+                    StorageSupport.DeleteBlob(blob);
+            }
+            catch (Exception ex)
+            {
+                ErrorSupport.ReportException(ex);
+                throw;
+            }
+            finally
+            {
+                SubscribeSupport.ReleaseChainLock(lockedOwner, acquiredEtag);
+                if(containerName != null)
+                    InformationContext.ProcessAndClearCurrent();
+            }
+            counter++;
+            if (counter >= 1000)
+            {
+                QueueSupport.ReportStatistics("Processed " + counter + " messages...");
+                counter = 0;
+            }
+        }
+
+
+        public static bool PollAndExecuteChainSubscription()
         {
             var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
             if (result.Length == 0)
@@ -358,24 +393,7 @@ namespace TheBall
                     lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
             if (firstLockedOwner == null)
                 return false;
-            try
-            {
-                string[] blobs = SubscribeSupport.GetChainRequestList(firstLockedOwner);
-                var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
-                if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-deadSubscriptionPeriodInSeconds)))
-                    return false;
-                WorkerSupport.ExecuteSubscriptionChains(chainContent);
-                foreach (string blob in blobs)
-                    StorageSupport.DeleteBlob(blob);
-            } catch(Exception ex)
-            {
-                ErrorSupport.ReportException(ex);
-                throw;
-            }
-            finally
-            {
-                SubscribeSupport.ReleaseChainLock(firstLockedOwner, acquiredEtag);
-            }
+            ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, null);
             return true;
         }
 

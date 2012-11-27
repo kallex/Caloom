@@ -56,26 +56,13 @@ namespace CaloomWorkerRole
                         break;
                     int availableIx;
                     Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
-                    CloudQueueMessage message;
-                    QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
-                    if (envelope != null)
-                    {
-                        Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessMessage(envelope));
-                        tasks[availableIx] = executing;
-                        QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                        if (availableTask.Exception != null)
-                            ErrorSupport.ReportException(availableTask.Exception);
-                    }
-                    else 
-                    {
-                        if(message != null)
-                        {
-                            QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                            ErrorSupport.ReportMessageError(message);
-                        }
-                        GC.Collect();
-                        Thread.Sleep(1000);
-                    }
+                    bool handledSubscriptionChain = PollAndHandleSubscriptionChain(tasks, availableIx, availableTask);
+                    if (handledSubscriptionChain)
+                        continue;
+                    bool handledMessage = PollAndHandleMessage(tasks, availableIx, availableTask);
+                    if (handledMessage)
+                        continue;
+                    Thread.Sleep(1000);
                 }
                 catch (AggregateException ae)
                 {
@@ -119,8 +106,52 @@ namespace CaloomWorkerRole
             GracefullyStopped = true;
         }
 
-        protected string CurrWorkerID { get; private set; }
+        private bool PollAndHandleSubscriptionChain(Task[] tasks, int availableIx, Task availableTask)
+        {
+            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
+            if (result.Length == 0)
+                return false;
+            string acquiredEtag = null;
+            var firstLockedOwner =
+                result.FirstOrDefault(
+                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
+            if (firstLockedOwner == null)
+                return false;
+            Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, CURRENT_HARDCODED_CONTAINER_NAME));
+            tasks[availableIx] = executing;
+            if (availableTask.Exception != null)
+                ErrorSupport.ReportException(availableTask.Exception);
+            return true;
+        }
 
+
+        private bool PollAndHandleMessage(Task[] tasks, int availableIx, Task availableTask)
+        {
+            CloudQueueMessage message;
+            QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
+            if (envelope != null)
+            {
+                Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessMessage(envelope));
+                tasks[availableIx] = executing;
+                QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                if (availableTask.Exception != null)
+                    ErrorSupport.ReportException(availableTask.Exception);
+                return true;
+            }
+            else 
+            {
+                if(message != null)
+                {
+                    QueueSupport.CurrDefaultQueue.DeleteMessage(message);
+                    ErrorSupport.ReportMessageError(message);
+                }
+                GC.Collect();
+                return false;
+            }
+        }
+
+        protected string CurrWorkerID { get; private set; }
+        public const string CURRENT_HARDCODED_CONTAINER_NAME = "demooip-aaltoglobalimpact-org";
 
         public override bool OnStart()
         {
@@ -135,7 +166,8 @@ namespace CaloomWorkerRole
             else
                 connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
             StorageSupport.InitializeWithConnectionString(connStr);
-            InformationContext.InitializeFunctionality(3);
+            InformationContext.InitializeFunctionality(3, allowStatic:true);
+            InformationContext.Current.InitializeCloudStorageAccess(CURRENT_HARDCODED_CONTAINER_NAME);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             IsStopped = false;
             return base.OnStart();
