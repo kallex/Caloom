@@ -236,6 +236,33 @@ namespace TheBallTool
                 //activity.StoreInformation();
             }
         }
+        private static void InitBlogGroupActivityImageGroupCollectionsOnce()
+        {
+            var blogsGroupsActivities = GetAllInformationObjects(io => io is Activity || io is Blog || io is GroupContainer).ToArray();
+            var blogs = blogsGroupsActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
+            var activities = blogsGroupsActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
+            var groupContainers = blogsGroupsActivities.Where(ba => ba is GroupContainer).Cast<GroupContainer>().ToArray();
+            foreach (var blog in blogs.Where(bl => bl.ImageGroupCollection == null))
+            {
+                blog.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                blog.StoreInformation();
+                blog.ReconnectMastersAndCollections(false);
+            }
+            foreach (var activity in activities.Where(act => act.ImageGroupCollection == null))
+            {
+                activity.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                activity.StoreInformation();
+                activity.ReconnectMastersAndCollections(false);
+            }
+            foreach (var groupContainer in groupContainers.Where(grpC => grpC.ImageGroupCollection == null))
+            {
+                groupContainer.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                groupContainer.StoreInformation();
+                groupContainer.ReconnectMastersAndCollections(false);
+            }
+
+        }
+
 
         private static void InitBlogAndActivityLocationCollectionsOnce()
         {
@@ -449,7 +476,7 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
@@ -465,6 +492,9 @@ namespace TheBallTool
 
             
             //InitBlogAndActivityLocationCollectionsOnce();
+            //InitBlogGroupActivityImageGroupCollectionsOnce();
+            RenderAllPagesInWorker();
+
             //ReconnectAccountsMastersAndCollections();
             //ReconnectGroupsMastersAndCollections();
             //EnsureAndRefreshMasterCollections();

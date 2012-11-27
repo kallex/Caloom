@@ -127,6 +127,43 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
+        internal static void Update_GroupContainer_ImageGroupCollection(GroupContainer groupContainer, ImageGroupCollection localCollection, ImageGroupCollection masterCollection)
+        {
+            if(localCollection == null)
+            {
+                groupContainer.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                localCollection = groupContainer.ImageGroupCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if(localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+        internal static void Update_Blog_ImageGroupCollection(Blog blog, ImageGroupCollection localCollection, ImageGroupCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                blog.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                localCollection = blog.ImageGroupCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+        internal static void Update_Activity_ImageGroupCollection(Activity activity, ImageGroupCollection localCollection, ImageGroupCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                activity.ImageGroupCollection = ImageGroupCollection.CreateDefault();
+                localCollection = activity.ImageGroupCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+
         internal static void Update_MapContainer_MarkerSourceLocations(MapContainer mapContainer, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
@@ -180,6 +217,7 @@ namespace AaltoGlobalImpact.OIP
                 }).ToArray();
             mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
         }
+
 
     }
 }
