@@ -7,46 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using AaltoGlobalImpact.OIP;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall
 {
-    [DebuggerDisplay("{Key}: TargetCount: {Targets.Count} SubscribersCount: {SubscribersList.Count}")]
-    public class SubcriptionGraphItem
-    {
-        public string Key;
-        public List<SubcriptionGraphItem> Targets = new List<SubcriptionGraphItem>();
-        public List<Subscription> SubscribersList = new List<Subscription>();
-        public bool IsVisited = false;
-
-        public Subscription[] GetMySubscriptionsFromTargets()
-        {
-            var result = Targets.SelectMany(target => target.SubscribersList.Where(sub => sub.SubscriberRelativeLocation == Key)).
-                ToArray();
-            return result;
-        }
-
-        public void Visit(List<SubcriptionGraphItem> executionList)
-        {
-            if (IsVisited)
-                return;
-            foreach(var target in Targets)
-            {
-                target.Visit(executionList);
-            }
-            IsVisited = true;
-            executionList.Add(this);
-        }
-
-        public void AddTargetIfMissing(string targetKey, Dictionary<string, SubcriptionGraphItem> dictionary)
-        {
-            var targetObject = dictionary[targetKey];
-            if(Targets.Contains(targetObject) == false)
-                Targets.Add(targetObject);
-        }
-    }
-
     public static class SubscribeSupport
     {
+        public const string ChainRequestDirectory = "AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/";
         public const string SubscribeType_WebPageToSource = "webpage";
         // TODO: Create needs to be applied as of address regexp filter or something, as there is no concrete object to subscribe against
         // Real case is for object creation to master collection of those objects that are created
@@ -227,9 +194,11 @@ namespace TheBall
             SubscriptionCollection parentSubscriptionCollection = GetSubscriptions(targetParentLocation);
             if (subscriptionCollection == null && parentSubscriptionCollection == null)
                 return;
-
-            ictx.AddSubscriptionUpdateTarget(targetLocation);
-            //return;
+            VirtualOwner owner = VirtualOwner.FigureOwner(targetLocation);
+            OwnerSubscriptionItem subscriptionItem = new OwnerSubscriptionItem
+                                                         {Owner = owner, TargetLocation = targetLocation};
+            ictx.AddSubscriptionUpdateTarget(subscriptionItem);
+            return;
 
             if(subscriptionCollection != null)
             {
@@ -314,5 +283,78 @@ namespace TheBall
                                }).ToArray();
             return result;
         }
+
+        public const string StatusValue_Pending = "pending";
+        public const string StatusValue_Executing = "executing";
+
+        public static void AddPendingRequests(IContainerOwner owner, string[] subscriptionTargets)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+            var requestContent = SubscriptionChainRequestContent.CreateDefault();
+            DateTime submitTime = DateTime.UtcNow;
+            string dateTimePrefix = submitTime.ToString("yyyyMMdd_HHmmss");
+            requestContent.ID = dateTimePrefix + "_" + requestContent.ID;
+            requestContent.SubscriptionTargetCollection.CollectionContent.
+                AddRange(subscriptionTargets.Select(target => new SubscriptionTarget() { BlobLocation = target }));
+            requestContent.SubmitTime = submitTime;
+            string ownerSubscriptionLocation = GetOwnerIDStatusBasedLocation(owner, requestContent.ID, StatusValue_Pending);
+            requestContent.RelativeLocation = ownerSubscriptionLocation;
+            requestContent.StoreInformation();
+        }
+
+        public static bool AcquireChainLock(IContainerOwner owner, out string lockEtag)
+        {
+            string lockLocation = GetLockLocation(owner);
+            return StorageSupport.AcquireLogicalLockByCreatingBlob(lockLocation, out lockEtag);
+        }
+
+        private static string GetLockLocation(IContainerOwner owner)
+        {
+            return GetOwnerIDStatusBasedLocation(owner, "lock", "system");
+        }
+
+        public static bool ReleaseChainLock(IContainerOwner owner, string lockEtag)
+        {
+            string lockLocation = GetLockLocation(owner);
+            return StorageSupport.ReleaseLogicalLockByDeletingBlob(lockLocation, lockEtag);
+        }
+
+        private static string GetOwnerIDStatusBasedLocation(IContainerOwner owner, string id, string status)
+        {
+            return ChainRequestDirectory + owner.ContainerName + "/" + owner.LocationPrefix + "/" + id + "." + status;
+        }
+
+        public static IContainerOwner[] GetOwnerChainsInOrderOfSubmission()
+        {
+            int indexStart = ChainRequestDirectory.Length;
+            int substringLength = StorageSupport.GuidLength + 4;
+            string[] chainRequestList = GetChainRequestList();
+            var groupedResult = chainRequestList.GroupBy(item => item.Substring(indexStart, substringLength));
+            var resultsWithoutLock = groupedResult.Where(grp => grp.Any(item => IsLock(item) == false));
+            return resultsWithoutLock.Select(grp => VirtualOwner.FigureOwner(grp.Key)).ToArray();
+        }
+
+        public static string[] GetChainRequestList(IContainerOwner owner)
+        {
+            string directory = owner != null
+                                   ? ChainRequestDirectory + owner.ContainerName + "/" + owner.LocationPrefix + "/"
+                                   : ChainRequestDirectory;
+
+
+            var blobListing = StorageSupport.CurrActiveContainer.GetBlobListing(directory, false);
+            return blobListing.Cast<CloudBlob>().Select(blob => blob.Name).Where(str => IsLock(str) == false).ToArray();
+        }
+
+        public static string[] GetChainRequestList()
+        {
+            return GetChainRequestList(null);
+        }
+
+        public static bool IsLock(string blobName)
+        {
+            return blobName.Contains("/lock.");
+        }
+
     }
 }

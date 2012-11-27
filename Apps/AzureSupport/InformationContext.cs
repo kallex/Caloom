@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
@@ -26,10 +27,10 @@ namespace TheBall
         public InformationContext()
         {
             FinalizingOperationQueue = new List<OperationRequest>();
-            SubscriptionChainTargetsToUpdate = new List<string>();
+            SubscriptionChainTargetsToUpdate = new List<OwnerSubscriptionItem>();
         }
 
-        protected List<string> SubscriptionChainTargetsToUpdate { get; private set; }
+        protected List<OwnerSubscriptionItem> SubscriptionChainTargetsToUpdate { get; private set; }
 
         public static bool AllowStatic { get; private set; }
 
@@ -98,7 +99,7 @@ namespace TheBall
             return new InformationContext();
         }
 
-        public void AddSubscriptionUpdateTarget(string targetLocation)
+        public void AddSubscriptionUpdateTarget(OwnerSubscriptionItem targetLocation)
         {
             SubscriptionChainTargetsToUpdate.Add(targetLocation);
         }
@@ -110,6 +111,11 @@ namespace TheBall
 
         public void PerformFinalizingActions()
         {
+            var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
+            foreach(var grpItem in grouped)
+            {
+                SubscribeSupport.AddPendingRequests(grpItem.Key, grpItem.Select(item => item.TargetLocation).ToArray());
+            }
             FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
         }
 

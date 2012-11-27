@@ -427,9 +427,35 @@ namespace TheBallTool
                 "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup");
         }
 
+        private static void TestSubscriptionChainPick()
+        {
+            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
+            if(result.Length == 0)
+                return;
+            string acquiredEtag = null;
+            var firstLockedOwner =
+                result.FirstOrDefault(
+                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
+            if(firstLockedOwner != null)
+            {
+                try
+                {
+                    string[] blobs = SubscribeSupport.GetChainRequestList(firstLockedOwner);
+                    var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
+                    WorkerSupport.ExecuteSubscriptionChains(chainContent);
+                    foreach(string blob in blobs)
+                        StorageSupport.DeleteBlob(blob);
+                } finally
+                {
+                    SubscribeSupport.ReleaseChainLock(firstLockedOwner, acquiredEtag);
+                }
+            }
+        }
+
+
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
@@ -454,8 +480,9 @@ namespace TheBallTool
 
             //RenderAllPagesInWorker();
             //ReportAllSubscriptionCounts();
-            TestWorkerSubscriberChainExecutionPerformance();
+            //TestWorkerSubscriberChainExecutionPerformance();
             //TestSubscriptionExecution();
+            TestSubscriptionChainPick();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

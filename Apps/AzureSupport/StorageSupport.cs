@@ -1337,6 +1337,44 @@ namespace TheBall
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
         }
+
+        public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
+        {
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(lockLocation);
+            DateTime created = DateTime.UtcNow;
+            blob.Metadata.Add("LockCreated", created.ToString("s"));
+            string blobContent = "LockCreated: " + created.ToString("s");
+            BlobRequestOptions options = new BlobRequestOptions();
+            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            try
+            {
+                blob.UploadText(blobContent, Encoding.UTF8, options);
+            } catch
+            {
+                lockEtag = null;
+                return false;
+            }
+            lockEtag = blob.Properties.ETag;
+            return true;
+        }
+
+        public static bool ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)
+        {
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(lockLocation);
+            BlobRequestOptions options = new BlobRequestOptions();
+            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            if (lockEtag != null)
+                options.AccessCondition = AccessCondition.IfMatch(lockEtag);
+            try
+            {
+                blob.Delete(options);
+            } catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 
     public class ReferenceOutdatedException : Exception

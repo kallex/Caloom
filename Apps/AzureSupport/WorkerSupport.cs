@@ -347,6 +347,78 @@ namespace TheBall
                 WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
         }
 
+        public static bool PollAndExecuteChainSubscription(double deadSubscriptionPeriodInSeconds)
+        {
+            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
+            if (result.Length == 0)
+                return false;
+            string acquiredEtag = null;
+            var firstLockedOwner =
+                result.FirstOrDefault(
+                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
+            if (firstLockedOwner == null)
+                return false;
+            try
+            {
+                string[] blobs = SubscribeSupport.GetChainRequestList(firstLockedOwner);
+                var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
+                if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-deadSubscriptionPeriodInSeconds)))
+                    return false;
+                WorkerSupport.ExecuteSubscriptionChains(chainContent);
+                foreach (string blob in blobs)
+                    StorageSupport.DeleteBlob(blob);
+            } catch(Exception ex)
+            {
+                ErrorSupport.ReportException(ex);
+                throw;
+            }
+            finally
+            {
+                SubscribeSupport.ReleaseChainLock(firstLockedOwner, acquiredEtag);
+            }
+            return true;
+        }
+
+
+        public static void ExecuteSubscriptionChains(params SubscriptionChainRequestContent[] contentList)
+        {
+            InformationContext.Current.IsExecutingSubscriptions = true;
+            try
+            {
+
+                string[] subscriptionTargetList =
+                    contentList.SelectMany(reqContent => reqContent.SubscriptionTargetCollection.CollectionContent).Select(subTarget => subTarget.BlobLocation)
+                        .ToArray();
+                var subscriptions = SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(subscriptionTargetList);
+                int currSubscription = 1;
+                var informationObjectSubscriptions =
+                    subscriptions.Where(sub => sub.SubscriptionType != SubscribeSupport.SubscribeType_WebPageToSource).
+                        ToArray();
+                var webPageSubscriptions =
+                    subscriptions.Where(sub => sub.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource).
+                        ToArray();
+                foreach (var subscription in informationObjectSubscriptions)
+                {
+                    ExecuteSubscription(subscription);
+                    Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
+                        subscription.SubscriberRelativeLocation);
+                }
+                foreach (var subscription in webPageSubscriptions)
+                {
+                    //ExecuteSubscription(subscription);
+                    OperationRequest operationRequest = new OperationRequest();
+                    operationRequest.SubscriberNotification = subscription;
+                    QueueSupport.PutToOperationQueue(operationRequest);
+                    Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
+                        subscription.SubscriberRelativeLocation);
+                }
+            }
+            finally
+            {
+                InformationContext.Current.IsExecutingSubscriptions = false;
+            }
+        }
+
         public static void ExecuteSubscriptionChain(SubscriptionChainRequestMessage subscriptionChainRequest)
         {
             InformationContext.Current.IsExecutingSubscriptions = true;
