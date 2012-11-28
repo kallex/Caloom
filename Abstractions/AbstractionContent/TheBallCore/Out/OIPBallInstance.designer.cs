@@ -42974,6 +42974,7 @@ CalendarIndex.Summary
 				{
 					var result = new ImageGroup();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
+					result.FeaturedImage = Image.CreateDefault();
 					result.ImagesCollection = ImagesCollection.CreateDefault();
 					return result;
 				}
@@ -42995,6 +42996,7 @@ ImageGroup.Description
 ImageGroup.Description
 ";
 
+					result.FeaturedImage = Image.CreateDemoDefault();
 					result.ImagesCollection = ImagesCollection.CreateDemoDefault();
 				
 					return result;
@@ -43043,6 +43045,13 @@ ImageGroup.Description
 								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
 							}
 						}
+						{
+							IInformationObject item = FeaturedImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
 					}					
 				}
 
@@ -43051,6 +43060,15 @@ ImageGroup.Description
 				{
 					{
 						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = FeaturedImage;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -43093,6 +43111,11 @@ ImageGroup.Description
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) FeaturedImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) ImagesCollection;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -43107,6 +43130,8 @@ ImageGroup.Description
 						if(Title != _unmodified_Title)
 							return true;
 						if(Description != _unmodified_Description)
+							return true;
+						if(FeaturedImage != _unmodified_FeaturedImage)
 							return true;
 						if(ImagesCollection != _unmodified_ImagesCollection)
 							return true;
@@ -43134,6 +43159,14 @@ ImageGroup.Description
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(FeaturedImage != null) {
+						if(FeaturedImage.ID == replacingObject.ID)
+							FeaturedImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = FeaturedImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(ImagesCollection != null) {
 						if(ImagesCollection.ID == replacingObject.ID)
 							ImagesCollection = (ImagesCollection) replacingObject;
@@ -43150,6 +43183,7 @@ ImageGroup.Description
 					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					Title = sourceObject.Title;
 					Description = sourceObject.Description;
+					FeaturedImage = sourceObject.FeaturedImage;
 					ImagesCollection = sourceObject.ImagesCollection;
 				}
 				
@@ -43163,6 +43197,10 @@ ImageGroup.Description
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
 						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_FeaturedImage = FeaturedImage;
+					if(FeaturedImage != null)
+						((IInformationObject) FeaturedImage).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_ImagesCollection = ImagesCollection;
 					if(ImagesCollection != null)
@@ -43197,6 +43235,9 @@ ImageGroup.Description
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;
+			[DataMember]
+			public Image FeaturedImage { get; set; }
+			private Image _unmodified_FeaturedImage;
 			[DataMember]
 			public ImagesCollection ImagesCollection { get; set; }
 			private ImagesCollection _unmodified_ImagesCollection;

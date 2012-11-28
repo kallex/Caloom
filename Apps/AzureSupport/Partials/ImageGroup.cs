@@ -1,4 +1,6 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System.Linq;
+
+namespace AaltoGlobalImpact.OIP
 {
     partial class ImageGroup : IBeforeStoreHandler
     {
@@ -8,6 +10,7 @@
                 ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
             this.ReferenceToInformation.Title = this.Title;
             ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+            FeaturedImage = ImagesCollection.CollectionContent.FirstOrDefault();
         }
     }
 }
