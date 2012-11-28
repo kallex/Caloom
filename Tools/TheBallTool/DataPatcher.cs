@@ -451,7 +451,7 @@ namespace TheBallTool
         private static void RenderAllPagesInWorker()
         {
             RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation",
-                "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup");
+                "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup", "AaltoGlobalImpact.OIP.Category");
         }
 
         private static void TestSubscriptionChainPick()
@@ -476,15 +476,16 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
             
             //EnsureAndRefreshMasterCollections();
-            ReconnectAccountsMastersAndCollections();
-            ReconnectGroupsMastersAndCollections();
+            //ReconnectAccountsMastersAndCollections();
+            //ReconnectGroupsMastersAndCollections();
+            RenderAllPagesInWorker();
 
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
@@ -493,7 +494,6 @@ namespace TheBallTool
             
             //InitBlogAndActivityLocationCollectionsOnce();
             //InitBlogGroupActivityImageGroupCollectionsOnce();
-            RenderAllPagesInWorker();
 
             //ReconnectAccountsMastersAndCollections();
             //ReconnectGroupsMastersAndCollections();

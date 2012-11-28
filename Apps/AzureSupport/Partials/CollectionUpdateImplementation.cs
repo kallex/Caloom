@@ -219,5 +219,53 @@ namespace AaltoGlobalImpact.OIP
         }
 
 
+
+        internal static void Update_Group_CategoryCollection(Group group, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                group.CategoryCollection = CategoryCollection.CreateDefault();
+                localCollection = group.CategoryCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+        internal static void Update_CategoryContainer_Categories(CategoryContainer categoryContainer, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                categoryContainer.Categories = CategoryCollection.CreateDefault();
+                localCollection = categoryContainer.Categories;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+        internal static void Update_Blog_CategoryCollection(Blog blog, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                blog.CategoryCollection = CategoryCollection.CreateDefault();
+                localCollection = blog.CategoryCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
+
+        internal static void Update_Activity_CategoryCollection(Activity activity, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            if (localCollection == null)
+            {
+                activity.CategoryCollection = CategoryCollection.CreateDefault();
+                localCollection = activity.CategoryCollection;
+            }
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            if (localCollection.OrderFilterIDList == null)
+                localCollection.OrderFilterIDList = new List<string>();
+        }
     }
 }

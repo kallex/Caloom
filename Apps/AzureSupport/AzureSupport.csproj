@@ -93,6 +93,7 @@
     <Compile Include="Partials\Blog.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\CollectionUpdateImplementation.cs" />
+    <Compile Include="Partials\AddCategoryInfo.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
     <Compile Include="DefaultViewSupport.cs" />
     <Compile Include="Partials\ExtIInformationObject.cs" />
