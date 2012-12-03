@@ -15,11 +15,11 @@ namespace AaltoGlobalImpact.OIP
                 source => source.RetrieveInformationObject()).ToArray();
         }
 
-        public InformationSource GetDefaultSource()
+        public InformationSource GetDefaultSource(string informationObjectTypeName)
         {
             return
                 CollectionContent.FirstOrDefault(
-                    source => source.IsInformationObjectSource && String.IsNullOrEmpty(source.SourceName));
+                    source => source.IsInformationObjectSource && String.IsNullOrEmpty(source.SourceName) && source.SourceInformationObjectType == informationObjectTypeName);
         }
 
         public bool HasAnySourceChanged()
@@ -40,11 +40,11 @@ namespace AaltoGlobalImpact.OIP
 
         public void SetDefaultSource(InformationSource defaultSource)
         {
-            InformationSource currentDefaultSource = GetDefaultSource();
+            InformationSource currentDefaultSource = GetDefaultSource(defaultSource.SourceInformationObjectType);
             if (currentDefaultSource != null)
                 CollectionContent.Remove(currentDefaultSource);
             CollectionContent.Add(defaultSource);
-            currentDefaultSource = GetDefaultSource();
+            currentDefaultSource = GetDefaultSource(defaultSource.SourceInformationObjectType);
             if(defaultSource != currentDefaultSource)
                 throw new InvalidDataException("Invalid default source given to add (not maching the GetDefaultSource conditions)");
         }

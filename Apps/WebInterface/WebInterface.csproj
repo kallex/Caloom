@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
+    <Compile Include="DeveloperBlobStorageHandler.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -124,6 +125,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\OIPExternal.config">
+      <Link>OIPExternal.config</Link>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\demopublicoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\demowww.aaltoglobalimpact.org.pubxml" />

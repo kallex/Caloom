@@ -12,7 +12,7 @@ namespace AaltoGlobalImpact.OIP
             if(GroupName == "")
                 throw new InvalidDataException("Group name must be given");
             throw new NotImplementedException("Old implementation not converted to managed group structures");
-            AccountContainer container = (AccountContainer) sources.GetDefaultSource().RetrieveInformationObject();
+            AccountContainer container = (AccountContainer) sources.GetDefaultSource(typeof(AccountContainer).FullName).RetrieveInformationObject();
             TBRAccountRoot accountRoot = TBRAccountRoot.GetOwningAccountRoot(container);
             TBAccount account = accountRoot.Account;
             if(account.Emails.CollectionContent.Count == 0)

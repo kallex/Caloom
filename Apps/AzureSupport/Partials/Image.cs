@@ -23,7 +23,7 @@ namespace AaltoGlobalImpact.OIP
             string cmdID = cmdIDList[1];
             if (cmdID != this.ID)
                 return false;
-            var defaultSource = sources.GetDefaultSource();
+            var defaultSource = sources.GetDefaultSource(typeof(ImageGroup).FullName);
             ImageGroup currImageGroup = (ImageGroup) defaultSource.RetrieveInformationObject();
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             Image addedImage = Image.CreateDefault();

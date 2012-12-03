@@ -48,7 +48,7 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
-        public static void CreateDefaultViewRelativeToRequester(string requesterLocation, IInformationObject informationObject, IContainerOwner owner)
+        public static CloudBlob CreateDefaultViewRelativeToRequester(string requesterLocation, IInformationObject informationObject, IContainerOwner owner)
         {
             string viewItemDirectory = StorageSupport.GetLocationParentDirectory(requesterLocation);
             string viewName = GetDefaultStaticViewName(informationObject);
@@ -61,9 +61,10 @@ namespace AaltoGlobalImpact.OIP
             CloudBlob renderTarget = StorageSupport.CurrActiveContainer.GetBlob(renderedViewLocation, owner);
             InformationSource defaultSource = InformationSource.GetAsDefaultSource(informationObject);
             RenderWebSupport.RenderTemplateWithContentToBlob(viewTemplate, renderTarget, defaultSource);
+            return renderTarget;
         }
 
-        private static string GetDefaultStaticTemplateName(IInformationObject informationObject)
+        public static string GetDefaultStaticTemplateName(IInformationObject informationObject)
         {
             string templateName = informationObject.GetType().FullName + "_DefaultView.phtml";
             return templateName;

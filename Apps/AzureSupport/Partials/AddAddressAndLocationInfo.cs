@@ -12,7 +12,7 @@ namespace AaltoGlobalImpact.OIP
         {
             if(ImageTitle == "")
                 throw new InvalidDataException("Image title is mandatory");
-            IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
+            //IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
             Image image = Image.CreateDefault();
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             image.SetLocationAsOwnerContent(owner, image.ID);
@@ -29,7 +29,7 @@ namespace AaltoGlobalImpact.OIP
         {
             if(ImageGroupTitle == "")
                 throw new InvalidDataException("Image group title is mandatory");
-            IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
+            //IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
             ImageGroup imageGroup = ImageGroup.CreateDefault();
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             imageGroup.SetLocationAsOwnerContent(owner, imageGroup.ID);
@@ -46,7 +46,7 @@ namespace AaltoGlobalImpact.OIP
         {
             if (LocationName == "")
                 throw new InvalidDataException("Location name is mandatory");
-            IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
+            //IInformationObject container = sources.GetDefaultSource().RetrieveInformationObject();
             AddressAndLocation location = AddressAndLocation.CreateDefault();
 
             VirtualOwner owner = VirtualOwner.FigureOwner(this);

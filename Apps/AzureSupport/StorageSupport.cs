@@ -195,11 +195,12 @@ namespace TheBall
             }
         }
 
-        public static void UploadBlobText(this CloudBlobContainer container,
+        public static CloudBlockBlob UploadBlobText(this CloudBlobContainer container,
             string blobPath, string textContent, string blobInformationType = null)
         {
             var blob = container.GetBlockBlobReference(blobPath);
             UploadBlobText(blob, textContent, blobInformationType);
+            return blob;
         }
 
         public static void UploadBlobText(this CloudBlob blob, string textContent, string blobInformationType = null)
@@ -1067,7 +1068,7 @@ namespace TheBall
         public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
         {
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
-            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/"))
+            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("dev/"))
             {
                 if(blobAddress.StartsWith(ownerPrefix))
                     return blobAddress;
@@ -1084,10 +1085,10 @@ namespace TheBall
             return CurrActiveContainer.DownloadBlobText(downloadAddress, returnNullIfMissing);
         }
 
-        public static void UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
+        public static CloudBlockBlob UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
         {
             string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
-            CurrActiveContainer.UploadBlobText(uploadAddress, content, blobInformationType);
+            return CurrActiveContainer.UploadBlobText(uploadAddress, content, blobInformationType);
         }
 
         public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent)
@@ -1153,7 +1154,7 @@ namespace TheBall
 
         public static string GetContentRootLocation(string referenceLocation)
         {
-            if(referenceLocation.StartsWith("acc/") == false && referenceLocation.StartsWith("grp/") == false)
+            if(referenceLocation.StartsWith("acc/") == false && referenceLocation.StartsWith("grp/") == false && referenceLocation.StartsWith("dev/") == false)
                 throw new InvalidDataException("Unable to determine root for reference: " + referenceLocation);
             //var contentRoot = referenceLocation.Substring(0, AccOrGrpPlusIDPathLength) + ContentFolderName + "/";
             var contentRoot = referenceLocation.Substring(0, AccOrGrpPlusIDPathLength);

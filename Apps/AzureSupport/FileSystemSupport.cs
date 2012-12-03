@@ -96,7 +96,7 @@ namespace TheBall
             return File.ReadAllBytes(fileName);
         }
 
-        private static string GetFixedContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
+        public static string GetFixedContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
         {
             if (fileName.EndsWith(".phtml") == false)
                 //return File.ReadAllText(fileName);
