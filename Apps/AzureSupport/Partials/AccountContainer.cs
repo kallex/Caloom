@@ -4,13 +4,8 @@ using System.IO;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class AccountContainer
+    partial class AccountContainer : IBeforeStoreHandler
     {
-        void kk()
-        {
-            IInformationCollection c;
-        }
-
         //void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
         //{
         //    if (sourceMaster == null)
@@ -24,5 +19,9 @@ namespace AaltoGlobalImpact.OIP
         //        throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
 
         //}
+        public void PerformBeforeStoreUpdate()
+        {
+            this.AccountIndex.Icon = AccountModule.Profile.ProfileImage;
+        }
     }
 }

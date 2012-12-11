@@ -18,6 +18,7 @@ namespace TheBall
                 dynamic dyn = content;
                 dynamic collContent = dyn.CollectionContent;
                 CurrArray = collContent.ToArray();
+                //CurrArray = dyn.GetIDSelectedArray();
                 ItemType = CurrArray.GetType().GetElementType();
             }
             if (isCollection)

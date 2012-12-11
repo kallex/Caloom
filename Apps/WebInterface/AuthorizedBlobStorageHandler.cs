@@ -214,12 +214,13 @@ namespace WebInterface
             sourceNamesCommaSeparated += ",";
             string[] sourceNames = sourceNamesCommaSeparated.Split(',').Distinct().ToArray();
             
-            if(objectFieldID != null)
+            if(objectFieldID != null && actionName.StartsWith("cmd") == false && actionName != "Save" && actionName.Contains(",") == false)
             {
                 var result = PerformWebAction.Execute(new PerformWebActionParameters
                                                           {
                                                               CommandName = actionName,
                                                               FormSourceNames = sourceNames,
+                                                              FormSubmitContent = form,
                                                               InformationSources = sources,
                                                               Owner = containerOwner,
                                                               TargetObjectID = objectFieldID

@@ -168,6 +168,7 @@ namespace AaltoGlobalImpact.OIP
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
                 marker => marker.MarkerSource == MapMarker.MarkerSourceLocationValue);
+            return;
             var mapMarkersFromLocation = masterCollection.CollectionContent.
                 Select(loc =>
                            {
@@ -186,7 +187,7 @@ namespace AaltoGlobalImpact.OIP
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
                 marker => marker.MarkerSource == MapMarker.MarkerSourceBlogValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(blog => blog.LocationCollection.CollectionContent).
+            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(blog => blog.LocationCollection.GetIDSelectedArray()).
                 Select(loc =>
                 {
                     MapMarker marker = MapMarker.CreateDefault();
@@ -204,7 +205,7 @@ namespace AaltoGlobalImpact.OIP
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
                 marker => marker.MarkerSource == MapMarker.MarkerSourceActivityValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(activity => activity.LocationCollection.CollectionContent).
+            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(activity => activity.LocationCollection.GetIDSelectedArray()).
                 Select(loc =>
                 {
                     MapMarker marker = MapMarker.CreateDefault();

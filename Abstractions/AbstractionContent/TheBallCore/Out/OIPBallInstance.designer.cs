@@ -3778,6 +3778,15 @@ namespace AaltoGlobalImpact.OIP {
 					}
 				}
 
+				public TBAccountCollaborationGroup[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -4599,6 +4608,15 @@ namespace AaltoGlobalImpact.OIP {
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public TBLoginInfo[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -5431,6 +5449,15 @@ namespace AaltoGlobalImpact.OIP {
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public TBEmail[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -6320,6 +6347,15 @@ namespace AaltoGlobalImpact.OIP {
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public TBCollaboratorRole[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -8856,6 +8892,15 @@ namespace AaltoGlobalImpact.OIP {
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public LoginProvider[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -14425,6 +14470,15 @@ AccountIndex.Summary
 					}
 				}
 
+				public AddressAndLocation[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -18278,6 +18332,15 @@ AccountRoles.OrganizationsImPartOf
 					}
 				}
 
+				public ReferenceToInformation[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -21051,6 +21114,15 @@ AccountRoles.OrganizationsImPartOf
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public MapMarker[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -26270,6 +26342,15 @@ ActivityIndex.Summary
 					}
 				}
 
+				public Activity[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -27510,6 +27591,15 @@ Activity.Description
 					}
 				}
 
+				public Moderator[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -28343,6 +28433,15 @@ Activity.Description
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Collaborator[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -33927,6 +34026,15 @@ GroupIndex.Summary
 					}
 				}
 
+				public Group[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -35416,6 +35524,15 @@ Introduction.Body
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Blog[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -38544,6 +38661,15 @@ CalendarIndex.Summary
 					}
 				}
 
+				public Calendar[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -39365,6 +39491,15 @@ CalendarIndex.Summary
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Map[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -40800,6 +40935,15 @@ CalendarIndex.Summary
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public MapResult[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -43011,6 +43155,15 @@ CalendarIndex.Summary
 					}
 				}
 
+				public ImageGroup[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -44405,6 +44558,15 @@ ImageGroup.Description
 					}
 				}
 
+				public Image[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -44858,6 +45020,15 @@ ImageGroup.Description
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Video[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -45680,6 +45851,15 @@ ImageGroup.Description
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public SocialPanel[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -47741,6 +47921,15 @@ ImageGroup.Description
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Location[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -51140,6 +51329,15 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				public Category[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -51593,6 +51791,15 @@ ImageVideoSoundVectorRaw.Vector
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public Subscription[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -53010,6 +53217,15 @@ ImageVideoSoundVectorRaw.Vector
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public OperationRequest[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -55330,6 +55546,15 @@ ImageVideoSoundVectorRaw.Vector
 					}
 				}
 
+				public SubscriptionTarget[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -57399,6 +57624,15 @@ SystemErrorItem.LongDescription
 					}
 				}
 
+				public SystemErrorItem[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
 					if(propertyName != "SelectedIDCommaSeparated")
@@ -58300,6 +58534,15 @@ SystemErrorItem.LongDescription
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public InformationSource[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -59971,6 +60214,15 @@ SystemErrorItem.LongDescription
 						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
 					}
 				}
+
+				public UpdateWebContentHandlerItem[] GetIDSelectedArray()
+				{
+					if (this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{

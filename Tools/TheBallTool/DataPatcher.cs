@@ -485,7 +485,7 @@ namespace TheBallTool
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
             //ReconnectGroupsMastersAndCollections();
-            RenderAllPagesInWorker();
+            //RenderAllPagesInWorker();
 
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
@@ -507,7 +507,8 @@ namespace TheBallTool
             //TestWorkerSubscriberChainExecutionPerformance();
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
-            //PatchSubscriptionsToSubmitted();
+            
+            PatchSubscriptionsToSubmitted();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

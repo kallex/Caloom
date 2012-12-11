@@ -149,7 +149,7 @@ namespace WebInterface
         {
             string requestPath = context.Request.Path;
             string groupID = GetGroupID(context.Request.Path);
-            string roleValue = TBCollaboratorRole.ViewerRoleValue;
+            string roleValue = TBCollaboratorRole.CollaboratorRoleValue;
             InformationContext.Current.CurrentGroupRole = roleValue;
             string contentPath = requestPath.Substring(AuthDeveloperPrefixLen + GuidIDLen + 1);
             VirtualOwner owner = new VirtualOwner(DeveloperAuthPrefix, DeveloperGroupID);
@@ -168,7 +168,7 @@ namespace WebInterface
                 // Do first post, and then get to the same URL
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
-                //HandleOwnerPostRequest(containerOwner, context, contentPath);
+                HandleOwnerPostRequest(containerOwner, context, contentPath);
             }
             HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
@@ -197,6 +197,7 @@ namespace WebInterface
             sourceNamesCommaSeparated += ",";
             string[] sourceNames = sourceNamesCommaSeparated.Split(',').Distinct().ToArray();
 
+            return;
             if (objectFieldID != null)
             {
                 var result = PerformWebAction.Execute(new PerformWebActionParameters
@@ -345,6 +346,7 @@ namespace WebInterface
                     {
                         var fileStream = File.OpenRead(fileName);
                         fileStream.CopyTo(context.Response.OutputStream);
+                        fileStream.Close();
                     }
                 }
             }

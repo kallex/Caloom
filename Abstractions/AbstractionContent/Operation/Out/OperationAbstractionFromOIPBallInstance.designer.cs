@@ -1,6 +1,7 @@
  
 
 using System;
+using System.Collections.Specialized;
 
 		namespace AaltoGlobalImpact.OIP { 
 				public class InviteMemberToGroupParameters 
@@ -81,6 +82,38 @@ using System;
 				
 		{ // Local block to allow local naming
 			RefreshAccountGroupMembershipsParameters operationParameters = ConfirmInviteToJoinGroupImplementation.RefreshAccountAndGroupContainers_GetParameters(GroupRoot, AccountID);
+			RefreshAccountGroupMemberships.Execute(operationParameters);
+									
+		} // Local block closing
+				}
+				}
+				public class AssignCollaboratorRoleParameters 
+		{
+				public string GroupID ;
+				public GroupContainer GroupContainer ;
+				public string CollaboratorID ;
+				public string RoleToAssign ;
+				}
+		
+		public class AssignCollaboratorRole 
+		{
+				private static void PrepareParameters(AssignCollaboratorRoleParameters parameters)
+		{
+					}
+				public static void Execute(AssignCollaboratorRoleParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRGroupRoot GroupRoot = AssignCollaboratorRoleImplementation.GetTarget_GroupRoot(parameters.GroupID);	
+				Collaborator Collaborator = AssignCollaboratorRoleImplementation.GetTarget_Collaborator(parameters.GroupContainer, parameters.CollaboratorID);	
+				string AccountID = AssignCollaboratorRoleImplementation.GetTarget_AccountID(Collaborator);	
+				TBRAccountRoot AccountRoot = AssignCollaboratorRoleImplementation.GetTarget_AccountRoot(AccountID);	
+				string EmailAddress = AssignCollaboratorRoleImplementation.GetTarget_EmailAddress(GroupRoot, AccountRoot);	
+				TBCollaboratorRole TBCollaboratorRole = AssignCollaboratorRoleImplementation.GetTarget_TBCollaboratorRole(GroupRoot, EmailAddress);	
+				AssignCollaboratorRoleImplementation.ExecuteMethod_AssignCollaboratorRole(parameters.RoleToAssign, TBCollaboratorRole);		
+				AssignCollaboratorRoleImplementation.ExecuteMethod_StoreObjects(GroupRoot);		
+				
+		{ // Local block to allow local naming
+			RefreshAccountGroupMembershipsParameters operationParameters = AssignCollaboratorRoleImplementation.RefreshAccountAndGroupContainers_GetParameters(GroupRoot, AccountID);
 			RefreshAccountGroupMemberships.Execute(operationParameters);
 									
 		} // Local block closing
@@ -213,6 +246,7 @@ using System;
 				public IContainerOwner Owner ;
 				public InformationSourceCollection InformationSources ;
 				public string[] FormSourceNames ;
+				public NameValueCollection FormSubmitContent ;
 				}
 		
 		public class PerformWebAction 
@@ -223,7 +257,7 @@ using System;
 				public static PerformWebActionReturnValue Execute(PerformWebActionParameters parameters)
 		{
 						PrepareParameters(parameters);
-					bool ExecuteActualOperationOutput = PerformWebActionImplementation.ExecuteMethod_ExecuteActualOperation(parameters.TargetObjectID, parameters.CommandName, parameters.Owner, parameters.InformationSources, parameters.FormSourceNames);		
+					bool ExecuteActualOperationOutput = PerformWebActionImplementation.ExecuteMethod_ExecuteActualOperation(parameters.TargetObjectID, parameters.CommandName, parameters.Owner, parameters.InformationSources, parameters.FormSourceNames, parameters.FormSubmitContent);		
 				PerformWebActionReturnValue returnValue = PerformWebActionImplementation.Get_ReturnValue(ExecuteActualOperationOutput);
 		return returnValue;
 				}
