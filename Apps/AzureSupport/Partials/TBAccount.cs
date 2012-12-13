@@ -40,11 +40,12 @@ namespace AaltoGlobalImpact.OIP
                                                                });
         }
 
-        public void StoreAndPropagate()
+        public void StoreAccountToRoot()
         {
             TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(this.ID);
             accountRoot.Account = this;
             StorageSupport.StoreInformation(accountRoot);
+            return;
             AccountContainer accountContainer = AccountContainer.RetrieveFromOwnerContent(this, "default");
             if(accountContainer == null)
             {
@@ -74,7 +75,7 @@ namespace AaltoGlobalImpact.OIP
                     StorageSupport.StoreInformation(loginGroupRoot);
                 }
             }
-            accountContainer.AccountModule.Security.EmailCollection = this.Emails;
+            //accountContainer.AccountModule.Security.EmailCollection = this.Emails;
             foreach(var emailItem in this.Emails.CollectionContent)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailItem.EmailAddress);

@@ -201,9 +201,6 @@ namespace WebInterface
                 return;
             string actionName = form["RootSourceAction"];
             string objectFieldID = form["ObjectFieldID"];
-            string objectFieldValue = form["Text_Short"];
-            if (objectFieldValue == null)
-                objectFieldValue = form["Text_Long"];
 
             CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
@@ -228,6 +225,17 @@ namespace WebInterface
                 if(result.RenderPageAfterOperation)
                     RenderWebSupport.RefreshContent(webPageBlob);
                 return;
+            }
+
+            string inContextEditFieldID = form["InContextEditFieldID"];
+
+            if (inContextEditFieldID != null)
+            {
+                string objectFieldValue = form["Text_Short"];
+                if (objectFieldValue == null)
+                    objectFieldValue = form["Text_Long"];
+                form = new NameValueCollection();
+                form.Set(inContextEditFieldID, objectFieldValue);
             }
 
             InformationSource[] sourceArray =

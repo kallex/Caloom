@@ -119,6 +119,85 @@ using System.Collections.Specialized;
 		} // Local block closing
 				}
 				}
+				public class UpdateAccountContainerFromAccountRootParameters 
+		{
+				public string AccountID ;
+				}
+		
+		public class UpdateAccountContainerFromAccountRoot 
+		{
+				private static void PrepareParameters(UpdateAccountContainerFromAccountRootParameters parameters)
+		{
+					}
+				public static void Execute(UpdateAccountContainerFromAccountRootParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRAccountRoot AccountRoot = UpdateAccountContainerFromAccountRootImplementation.GetTarget_AccountRoot(parameters.AccountID);	
+				AccountContainer AccountContainer = UpdateAccountContainerFromAccountRootImplementation.GetTarget_AccountContainer(AccountRoot);	
+				UpdateAccountContainerFromAccountRootImplementation.ExecuteMethod_UpdateAccountContainerLogins(AccountRoot, AccountContainer);		
+				UpdateAccountContainerFromAccountRootImplementation.ExecuteMethod_UpdateAccountContainerEmails(AccountRoot, AccountContainer);		
+				UpdateAccountContainerFromAccountRootImplementation.ExecuteMethod_StoreObjects(AccountContainer);		
+				}
+				}
+				public class UnlinkEmailAddressParameters 
+		{
+				public string AccountID ;
+				public AccountContainer AccountContainerBeforeGroupRemoval ;
+				public string EmailAddressID ;
+				}
+		
+		public class UnlinkEmailAddress 
+		{
+				private static void PrepareParameters(UnlinkEmailAddressParameters parameters)
+		{
+					}
+				public static void Execute(UnlinkEmailAddressParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRAccountRoot AccountRootBeforeGroupRemoval = UnlinkEmailAddressImplementation.GetTarget_AccountRootBeforeGroupRemoval(parameters.AccountID);	
+				string EmailAddress = UnlinkEmailAddressImplementation.GetTarget_EmailAddress(parameters.AccountContainerBeforeGroupRemoval, parameters.EmailAddressID);	
+				TBRGroupRoot[] GroupRoots = UnlinkEmailAddressImplementation.GetTarget_GroupRoots(AccountRootBeforeGroupRemoval, EmailAddress);	
+				UnlinkEmailAddressImplementation.ExecuteMethod_RemoveGroupMemberships(EmailAddress, GroupRoots);		
+				TBRAccountRoot AccountRootAfterGroupRemoval = UnlinkEmailAddressImplementation.GetTarget_AccountRootAfterGroupRemoval(parameters.AccountID);	
+				TBREmailRoot EmailRoot = UnlinkEmailAddressImplementation.GetTarget_EmailRoot(EmailAddress);	
+				UnlinkEmailAddressImplementation.ExecuteMethod_RemoveEmailFromAccountRoot(AccountRootAfterGroupRemoval, EmailAddress);		
+				UnlinkEmailAddressImplementation.ExecuteMethod_DeleteEmailRoot(EmailRoot);		
+				UnlinkEmailAddressImplementation.ExecuteMethod_StoreObjects(AccountRootAfterGroupRemoval);		
+				
+		{ // Local block to allow local naming
+			UpdateAccountContainerFromAccountRootParameters operationParameters = UnlinkEmailAddressImplementation.UpdateAccountContainer_GetParameters(parameters.AccountID);
+			UpdateAccountContainerFromAccountRoot.Execute(operationParameters);
+									
+		} // Local block closing
+				
+		{ // Local block to allow local naming
+			UpdateAccountRootToReferencesParameters operationParameters = UnlinkEmailAddressImplementation.UpdateAccountRoot_GetParameters(parameters.AccountID);
+			UpdateAccountRootToReferences.Execute(operationParameters);
+									
+		} // Local block closing
+				}
+				}
+				public class UpdateAccountRootToReferencesParameters 
+		{
+				public string AccountID ;
+				}
+		
+		public class UpdateAccountRootToReferences 
+		{
+				private static void PrepareParameters(UpdateAccountRootToReferencesParameters parameters)
+		{
+					}
+				public static void Execute(UpdateAccountRootToReferencesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRAccountRoot AccountRoot = UpdateAccountRootToReferencesImplementation.GetTarget_AccountRoot(parameters.AccountID);	
+				TBRLoginRoot[] AccountLogins = UpdateAccountRootToReferencesImplementation.GetTarget_AccountLogins(AccountRoot);	
+				TBREmailRoot[] AccountEmails = UpdateAccountRootToReferencesImplementation.GetTarget_AccountEmails(AccountRoot);	
+				UpdateAccountRootToReferencesImplementation.ExecuteMethod_UpdateAccountToLogins(AccountRoot, AccountLogins);		
+				UpdateAccountRootToReferencesImplementation.ExecuteMethod_UpdateAccountToEmails(AccountRoot, AccountEmails);		
+				UpdateAccountRootToReferencesImplementation.ExecuteMethod_StoreObjects(AccountLogins, AccountEmails);		
+				}
+				}
 				public class RefreshAccountGroupMembershipsParameters 
 		{
 				public TBRGroupRoot GroupRoot ;

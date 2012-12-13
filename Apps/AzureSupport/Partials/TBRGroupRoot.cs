@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
@@ -35,13 +36,14 @@ namespace AaltoGlobalImpact.OIP
         public static void DeleteEntireGroup(string groupID)
         {
             TBRGroupRoot groupToDelete = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            throw new NotImplementedException("Call remove group membership for each member, then delete to recycle bin");
             foreach(var member in groupToDelete.Group.Roles.CollectionContent)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(member.Email.EmailAddress);
                 TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
                 emailRoot.Account.GroupRoleCollection.CollectionContent.RemoveAll(
                     candidate => candidate.GroupID == groupToDelete.Group.ID);
-                emailRoot.Account.StoreAndPropagate();
+                emailRoot.Account.StoreAccountToRoot();
             }
             StorageSupport.DeleteInformationObject(groupToDelete);
             //WorkerSupport.DeleteEntireOwner(groupToDelete.Group);

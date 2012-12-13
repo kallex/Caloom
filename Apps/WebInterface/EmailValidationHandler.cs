@@ -100,7 +100,28 @@ namespace WebInterface
                 email.EmailAddress = emailValidation.Email;
                 email.ValidatedAt = DateTime.Now;
                 account.Emails.CollectionContent.Add(email);
-                account.StoreAndPropagate();
+                account.StoreAccountToRoot();
+                // TODO: Move Emailroot storage to account root syncs
+                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress);
+                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                if (emailRoot == null)
+                {
+                    emailRoot = TBREmailRoot.CreateDefault();
+                    emailRoot.ID = emailRootID;
+                    emailRoot.UpdateRelativeLocationFromID();
+                }
+                emailRoot.Account = account;
+                StorageSupport.StoreInformation(emailRoot);
+
+                string accountID = account.ID;
+                UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                                                          {
+                                                              AccountID = accountID
+                                                          });
+                UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
+                                                                  {
+                                                                      AccountID = accountID
+                                                                  });
             }
 
             context.Response.Redirect("/auth/account/website/oip-account/oip-layout-account-welcome.phtml", true);

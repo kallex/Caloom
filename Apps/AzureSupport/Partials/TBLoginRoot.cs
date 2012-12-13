@@ -23,7 +23,18 @@ namespace AaltoGlobalImpact.OIP
 
                 TBRAccountRoot accountRoot = TBRAccountRoot.CreateAndStoreNewAccount();
                 accountRoot.Account.Logins.CollectionContent.Add(loginInfo);
-                accountRoot.Account.StoreAndPropagate();
+                string accountID = accountRoot.ID;
+                accountRoot.StoreInformation();
+
+                UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                {
+                    AccountID = accountID
+                });
+                UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
+                {
+                    AccountID = accountID
+                });
+
                 // If this request is for account, we propagate the pages immediately
                 bool useBackgroundWorker = isAccountRequest == false;
                 RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);

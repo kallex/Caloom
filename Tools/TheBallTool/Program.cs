@@ -349,7 +349,7 @@ namespace TheBallTool
             loginInfo.OpenIDUrl = loginUrlID;
 
             accountRoot.Account.Logins.CollectionContent.Add(loginInfo);
-            accountRoot.Account.StoreAndPropagate();
+            accountRoot.Account.StoreAccountToRoot();
         }
 
         private static void TestDriveDynamicCreation()

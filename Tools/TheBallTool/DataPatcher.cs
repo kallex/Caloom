@@ -23,7 +23,7 @@ namespace TheBallTool
                     if (grpRole.GroupRole == TBCollaboratorRole.ViewerRoleValue)
                         grpRole.GroupRole = TBCollaboratorRole.CollaboratorRoleValue;
                 }
-                account.StoreAndPropagate();
+                account.StoreAccountToRoot();
             }
 
         }
@@ -193,7 +193,7 @@ namespace TheBallTool
             foreach (var accountID in accountIDs)
             {
                 var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
-                accountRoot.Account.StoreAndPropagate();
+                accountRoot.Account.StoreAccountToRoot();
             }
 
         }
@@ -473,6 +473,17 @@ namespace TheBallTool
             }
         }
 
+        private static void PatchAccountsUpToDateWithRoot()
+        {
+            var accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach (var accountID in accountIDs)
+            {
+                UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                                                          {
+                                                              AccountID = accountID
+                                                          });
+            }
+        }
 
         public static bool DoPatching()
         {
@@ -508,7 +519,8 @@ namespace TheBallTool
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
             
-            PatchSubscriptionsToSubmitted();
+            //PatchSubscriptionsToSubmitted();
+            PatchAccountsUpToDateWithRoot();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

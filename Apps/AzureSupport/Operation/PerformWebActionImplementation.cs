@@ -17,9 +17,28 @@ namespace AaltoGlobalImpact.OIP
                     return CallPublishGroupContentToWww(owner);
                 case "AssignCollaboratorRole":
                     return CallAssignCollaboratorRole(targetObjectID, owner, informationSources.GetDefaultSource(typeof(GroupContainer).FullName) ,formSubmitContent);
+                case "UnlinkEmailAddress":
+                    return CallUnlinkEmailAddress(targetObjectID, owner,
+                                                  informationSources.GetDefaultSource(typeof (AccountContainer).FullName));
                 default:
                     throw new NotImplementedException("Operation mapping for command not implemented: " + commandName);
             }
+        }
+
+        private static bool CallUnlinkEmailAddress(string targetObjectID, IContainerOwner owner, InformationSource accountContainerSource)
+        {
+            if(accountContainerSource == null)
+                throw new ArgumentNullException("accountContainerSource");
+            AccountContainer accountContainer = (AccountContainer) accountContainerSource.RetrieveInformationObject();
+            string accountID = owner.LocationPrefix;
+            string emailID = targetObjectID;
+            UnlinkEmailAddress.Execute(new UnlinkEmailAddressParameters
+                                           {
+                                               AccountContainerBeforeGroupRemoval = accountContainer,
+                                               AccountID = accountID,
+                                               EmailAddressID = emailID
+                                           });
+            return true;
         }
 
         private static bool CallAssignCollaboratorRole(string targetObjectID, IContainerOwner owner, InformationSource groupContainerSource, NameValueCollection formSubmitContent)
