@@ -4,6 +4,34 @@ using System;
 using System.Collections.Specialized;
 
 		namespace AaltoGlobalImpact.OIP { 
+				public class CreateGroupParameters 
+		{
+				public string GroupName ;
+				public string AccountID ;
+				}
+		
+		public class CreateGroup 
+		{
+				private static void PrepareParameters(CreateGroupParameters parameters)
+		{
+					}
+				public static void Execute(CreateGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRGroupRoot GroupRoot = CreateGroupImplementation.GetTarget_GroupRoot(parameters.GroupName);	
+				TBRAccountRoot AccountRoot = CreateGroupImplementation.GetTarget_AccountRoot(parameters.AccountID);	
+				TBEmail[] AccountEmails = CreateGroupImplementation.GetTarget_AccountEmails(AccountRoot);	
+				CreateGroupImplementation.ExecuteMethod_AddAsInitiatorToGroupRoot(GroupRoot, AccountEmails);		
+				CreateGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot);		
+				CreateGroupImplementation.ExecuteMethod_InitializeGroupContentAndMasters(GroupRoot);		
+				
+		{ // Local block to allow local naming
+			RefreshAccountGroupMembershipsParameters operationParameters = CreateGroupImplementation.RefreshAccountAndGroupContainers_GetParameters(parameters.AccountID, GroupRoot);
+			RefreshAccountGroupMemberships.Execute(operationParameters);
+									
+		} // Local block closing
+				}
+				}
 				public class InviteMemberToGroupParameters 
 		{
 				public string MemberEmailAddress ;
@@ -216,6 +244,12 @@ using System.Collections.Specialized;
 		{ // Local block to allow local naming
 			UpdateAccountRootGroupMembershipParameters operationParameters = RefreshAccountGroupMembershipsImplementation.UpdateAccountRoot_GetParameters(parameters.GroupRoot, parameters.AccountID);
 			UpdateAccountRootGroupMembership.Execute(operationParameters);
+									
+		} // Local block closing
+				
+		{ // Local block to allow local naming
+			UpdateAccountRootToReferencesParameters operationParameters = RefreshAccountGroupMembershipsImplementation.UpdateAccountRootReferences_GetParameters(parameters.AccountID);
+			UpdateAccountRootToReferences.Execute(operationParameters);
 									
 		} // Local block closing
 				

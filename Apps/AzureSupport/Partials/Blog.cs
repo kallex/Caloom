@@ -27,6 +27,9 @@ namespace AaltoGlobalImpact.OIP
                 ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
             this.ReferenceToInformation.Title = this.Title;
             ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+            this.LocationCollection.IsCollectionFiltered = true;
+            this.CategoryCollection.IsCollectionFiltered = true;
+            this.ImageGroupCollection.IsCollectionFiltered = true;
         }
     }
 #if jsondatetimefixed

@@ -520,7 +520,8 @@ namespace TheBallTool
             //TestSubscriptionChainPick();
             
             //PatchSubscriptionsToSubmitted();
-            PatchAccountsUpToDateWithRoot();
+            //PatchAccountsUpToDateWithRoot();
+            PatchBlogsAndActivitiesSelectedCollections();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");
@@ -530,5 +531,37 @@ namespace TheBallTool
             return true;
         }
 
+        private static void PatchBlogsAndActivitiesSelectedCollections()
+        {
+            var ownerLocations = GetAllOwnerLocations();
+            int totalCount = ownerLocations.Length;
+            int currIX = 0;
+            foreach (var ownerLocation in ownerLocations)
+            {
+                Console.WriteLine("Updating number " + (++currIX) + " out of " + totalCount);
+                VirtualOwner owner = VirtualOwner.FigureOwner(ownerLocation);
+                var informationObjects = StorageSupport.CurrActiveContainer.
+                    GetInformationObjects(ownerLocation,
+                                          iObj =>
+                                          iObj is Blog ||
+                                          iObj is Activity).ToArray();
+                foreach (var iObj in informationObjects)
+                {
+                    try
+                    {
+                        //StorageSupport.StoreInformationMasterFirst(iObj, owner, true);
+                        StorageSupport.StoreInformationMasterFirst(iObj, owner, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        bool letThrow = false;
+                        if (letThrow)
+                            throw;
+                    }
+                }
+            }
+            InformationContext.ProcessAndClearCurrent();
+            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+        }
     }
 }

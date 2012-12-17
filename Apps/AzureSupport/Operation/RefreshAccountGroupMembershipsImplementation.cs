@@ -23,5 +23,10 @@ namespace AaltoGlobalImpact.OIP
         {
             return new UpdateAccountContainersGroupMembershipParameters {AccountID = accountID, GroupRoot = groupRoot};
         }
+
+        public static UpdateAccountRootToReferencesParameters UpdateAccountRootReferences_GetParameters(string accountID)
+        {
+            return new UpdateAccountRootToReferencesParameters {AccountID = accountID};
+        }
     }
 }

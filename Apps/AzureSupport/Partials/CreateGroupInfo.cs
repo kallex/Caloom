@@ -12,24 +12,16 @@ namespace AaltoGlobalImpact.OIP
             if(GroupName == "")
                 throw new InvalidDataException("Group name must be given");
             //throw new NotImplementedException("Old implementation not converted to managed group structures");
-            AccountContainer container = (AccountContainer) sources.GetDefaultSource(typeof(AccountContainer).FullName).RetrieveInformationObject();
-            TBRAccountRoot accountRoot = TBRAccountRoot.GetOwningAccountRoot(container);
+            //AccountContainer container = (AccountContainer) sources.GetDefaultSource(typeof(AccountContainer).FullName).RetrieveInformationObject();
+            VirtualOwner owner = VirtualOwner.FigureOwner(this);
+            if(owner.ContainerName != "acc")
+                throw new NotSupportedException("Group creation only supported from account");
+            string accountID = owner.LocationPrefix;
+            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
             TBAccount account = accountRoot.Account;
-            if(account.Emails.CollectionContent.Count == 0)
+            if (account.Emails.CollectionContent.Count == 0)
                 throw new InvalidDataException("Account needs to have at least one email address to create a group");
-            TBRGroupRoot groupRoot = TBRGroupRoot.CreateNewWithGroup();
-            TBCollaboratingGroup grp = groupRoot.Group;
-            grp.Title = GroupName;
-            StorageSupport.StoreInformation(groupRoot);
-            foreach (var accountEmail in account.Emails.CollectionContent)
-                grp.JoinToGroup(accountEmail.EmailAddress, "Initiator");
-            StorageSupport.StoreInformation(groupRoot);
-            RenderWebSupport.RefreshGroupTemplates(grp.ID, false);
-            grp.EnsureMasterCollections();
-            grp.RefreshMasterCollections();
-            grp.ReconnectMastersAndCollectionsForOwner();
-            RefreshAccountGroupMemberships.Execute(new RefreshAccountGroupMembershipsParameters
-                                                       {AccountID = account.ID, GroupRoot = groupRoot});
+            CreateGroup.Execute(new CreateGroupParameters { AccountID = accountID, GroupName = this.GroupName });
             this.GroupName = "";
             return true;
         }

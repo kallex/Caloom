@@ -59,6 +59,7 @@ namespace TheBall
         // https://theball.blob.core.windows.net/00000000-0000-0000-0000-000000000000/grp/9798daca-afc4-4046-a99b-d0d88bb364e0/AaltoGlobalImpact.OIP/AboutContainer/default
 
         private static Regex ContextRootRegex;
+        private static Regex CollectionRegex;
 
         static RenderWebSupport()
         {
@@ -71,6 +72,9 @@ namespace TheBall
             AtomTagLen = AtomTagBegin.Length;
             AtomTagsTotalLen = AtomTagBegin.Length + AtomTagEnd.Length;
             ContextRootRegex = new Regex(@"THEBALL-CONTEXT-(?<bindingType>DYNAMIC|)ROOT-BEGIN:(?<rootType>[\w_\.]*)(?:\:(?<rootName>[\w_]*)|)", RegexOptions.Compiled);
+            CollectionRegex =
+                new Regex(@"THEBALL-CONTEXT-COLLECTION-BEGIN:(?<memberName>[\w_\.]*)(?:\:(?<bindingOptions>[\w_]*)|)",
+                          RegexOptions.Compiled);
         }
 
         public class ContentItem
@@ -289,11 +293,11 @@ namespace TheBall
                     //string typeName = line.Substring(RootTagLen, line.Length - RootTagsTotalLen).Trim();
                     content = GetOrInitiateContentObject(contentRoots, rootType, rootName, isDynamicRoot);
                     StackContextItem parent = contextStack.Count > 0 ? contextStack.Peek() : null;
-                    rootItem = new StackContextItem(content, parent, content.GetType(), null, true, false, rootName);
+                    rootItem = new StackContextItem(content, parent, content.GetType(), null, StackContextItemType.Root, rootName);
                 }
                 catch
                 {
-                    rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", true, false, "");
+                    rootItem = new StackContextItem("Invalid Stack Root Item", null, typeof(string), "INVALID", StackContextItemType.Root, "");
                     errorList.Add(new ErrorItem(new Exception("Invalid stack root: " + rootType), rootItem, line));
                 }
                 result.AppendLine(GetSpanTag(rootItem.CurrContent, SpanTagItemBeginFormat));
@@ -306,7 +310,19 @@ namespace TheBall
             {
                 result.AppendLine(line);
                 requireExistingContext(contextStack, line);
-                string memberName = line.Substring(CollTagLen, line.Length - CollTagsTotalLen).Trim();
+                Match match = CollectionRegex.Match(line);
+                string memberName = match.Groups["memberName"].Value;
+                string bindingOptions = match.Groups["bindingOptions"].Value;
+                bool isFiltered = true;
+                if(String.IsNullOrEmpty(bindingOptions) == false)
+                {
+                    if (bindingOptions == "Unfiltered")
+                        isFiltered = false;
+                    else
+                        throw new NotSupportedException("Collection binding option unsupported: " + bindingOptions);
+
+                }
+                    
                 Stack<StackContextItem> collStack = new Stack<StackContextItem>();
                 StackContextItem currCtx = contextStack.Peek();
                 StackContextItem collItem = null;
@@ -315,7 +331,10 @@ namespace TheBall
                     Type type = GetMemberType(currCtx, memberName);
                     object contentValue = GetPropertyValue(currCtx, memberName);
                     StackContextItem parent = currCtx;
-                    collItem = new StackContextItem(contentValue, parent, type, memberName, false, true);
+                    StackContextItemType itemType = isFiltered
+                                                        ? StackContextItemType.CollectionFiltered
+                                                        : StackContextItemType.CollectionUnfiltered;
+                    collItem = new StackContextItem(contentValue, parent, type, memberName, itemType);
                 } catch(Exception ex)
                 {
                     StackContextItem item = contextStack.Count > 0 ? contextStack.Peek() : null;
@@ -324,7 +343,7 @@ namespace TheBall
                         errorItem.CurrentContextName = "No active context";
                     errorList.Add(errorItem);
                     if (collItem == null)
-                        collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", false, true);
+                        collItem = new StackContextItem("Invalid Collection Context", contextStack.Peek(), typeof(string), "INVALID", StackContextItemType.CollectionUnfiltered);
                 }
                 collStack.Push(collItem);
                 int scopeStartIx = currLineIx + 1;
@@ -437,11 +456,11 @@ namespace TheBall
                     Type type = GetMemberType(currCtx, memberName);
                     object contentValue = GetPropertyValue(currCtx, memberName);
                     StackContextItem parent = currCtx;
-                    objItem = new StackContextItem(contentValue, parent, type, memberName, false, false);
+                    objItem = new StackContextItem(contentValue, parent, type, memberName, StackContextItemType.Object);
                 } finally
                 {
                     if(objItem == null)
-                        objItem = new StackContextItem("Invalid Context", contextStack.Peek(), typeof(string), "INVALID", false, false);
+                        objItem = new StackContextItem("Invalid Context", contextStack.Peek(), typeof(string), "INVALID", StackContextItemType.Object);
                     contextStack.Push(objItem);
                 }
             }

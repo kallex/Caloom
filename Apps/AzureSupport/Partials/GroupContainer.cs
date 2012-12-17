@@ -15,6 +15,7 @@ namespace AaltoGlobalImpact.OIP
         public void PerformBeforeStoreUpdate()
         {
             this.GroupIndex.Icon = this.GroupProfile.ProfileImage;
+            this.LocationCollection.IsCollectionFiltered = true;
         }
     }
 }
