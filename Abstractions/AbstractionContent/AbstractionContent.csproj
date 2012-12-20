@@ -44,6 +44,9 @@
       <Link>TheBallCore\OIPBallInstance.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\TheBallCore.xml">
+      <Link>TheBallCore\TheBallCore.xml</Link>
+    </Content>
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>
     </Content>

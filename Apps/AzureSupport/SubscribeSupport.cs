@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall.CORE;
 
 namespace TheBall
 {

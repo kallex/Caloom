@@ -12,6 +12,7 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace WebInterface
 {

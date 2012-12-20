@@ -1,6 +1,7 @@
  
 
-using System;
+namespace AaltoGlobalImpact.OIP { 
+		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -9,9 +10,11 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
-namespace AaltoGlobalImpact.OIP { 
-			public interface IInformationCollection
+
+/*
+	public interface IInformationCollection
     {
         string GetItemDirectory();
         void RefreshContent();
@@ -49,6 +52,7 @@ namespace AaltoGlobalImpact.OIP {
 		void FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly);
 		void UpdateCollections(IInformationCollection masterInstance);
     }
+	*/
 
 		public static class DomainInformationSupport
 		{

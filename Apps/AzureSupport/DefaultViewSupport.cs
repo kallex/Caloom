@@ -1,13 +1,27 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Web;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
     public class DefaultViewSupport
     {
+        public static string[] FixedAccountSiteLocations = new string[]
+                                                                {
+                                                                    RenderWebSupport.DefaultAccountViewLocation,
+                                                                };
+
+        public static string[] FixedGroupSiteLocations = new string[]
+                                                              {
+                                                                  RenderWebSupport.DefaultGroupViewLocation,
+                                                                  RenderWebSupport.DefaultPublicGroupViewLocation,
+                                                                  RenderWebSupport.DefaultPublicWwwViewLocation
+                                                              };
+
         public static string GetDefaultViewURL(IInformationObject informationObject)
         {
             return GetDefaultStaticViewURL(informationObject);
@@ -48,20 +62,70 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
+        /// <summary>
+        /// Creates default views and returns the one relative to the requester
+        /// </summary>
+        /// <param name="requesterLocation">Requester relative location</param>
+        /// <param name="informationObject">Information object to create the view for</param>
+        /// <param name="owner">Container owner</param>
+        /// <returns></returns>
         public static CloudBlob CreateDefaultViewRelativeToRequester(string requesterLocation, IInformationObject informationObject, IContainerOwner owner)
         {
-            string viewItemDirectory = StorageSupport.GetLocationParentDirectory(requesterLocation);
-            string viewName = GetDefaultStaticViewName(informationObject);
-            string viewTemplateName = GetDefaultStaticTemplateName(informationObject);
-            // TODO: Relative from xyzsite => xyztemplate; now we only have website - also acct/grp specific
-            //string viewTemplateLocation = "webtemplate/oip-viewtemplate/" + viewTemplateName;
-            string viewTemplateLocation = viewItemDirectory + viewTemplateName;
-            CloudBlob viewTemplate = StorageSupport.CurrActiveContainer.GetBlob(viewTemplateLocation, owner);
-            string renderedViewLocation = viewItemDirectory + viewName;
-            CloudBlob renderTarget = StorageSupport.CurrActiveContainer.GetBlob(renderedViewLocation, owner);
-            InformationSource defaultSource = InformationSource.GetAsDefaultSource(informationObject);
-            RenderWebSupport.RenderTemplateWithContentToBlob(viewTemplate, renderTarget, defaultSource);
-            return renderTarget;
+            bool isAccountOwner = owner.IsAccountContainer();
+            bool isGroupOwner = owner.IsGroupContainer();
+            bool isDeveloperView = owner.ContainerName == "dev";
+            string[] viewLocations;
+            if (isAccountOwner)
+                viewLocations = FixedAccountSiteLocations;
+            else if (isGroupOwner)
+                viewLocations = FixedGroupSiteLocations;
+            else throw new NotSupportedException("Invalid owner container type for default view (non acct, non group): " + owner.ContainerName);
+
+            string requesterDirectory = StorageSupport.GetLocationParentDirectory(requesterLocation);
+            FileInfo fileInfo = new FileInfo(requesterLocation);
+            //string viewRoot = fileInfo.Directory.Parent != null
+            //                      ? fileInfo.Directory.Parent.Name
+            //                      : fileInfo.Directory.Name;
+            CloudBlob relativeViewBlob = null;
+            foreach (string viewLocation in viewLocations)
+            {
+                string viewRoot = isDeveloperView ? "" : GetViewRoot(viewLocation);
+                string viewItemDirectory = Path.Combine(viewRoot, viewLocation).Replace("\\", "/") + "/";
+                string viewName = GetDefaultStaticViewName(informationObject);
+                string viewTemplateName = GetDefaultStaticTemplateName(informationObject);
+                // TODO: Relative from xyzsite => xyztemplate; now we only have website - also acct/grp specific
+                //string viewTemplateLocation = "webtemplate/oip-viewtemplate/" + viewTemplateName;
+                string viewTemplateLocation = viewItemDirectory + viewTemplateName;
+                CloudBlob viewTemplate = StorageSupport.CurrActiveContainer.GetBlob(viewTemplateLocation, owner);
+                string renderedViewLocation = viewItemDirectory + viewName;
+                CloudBlob renderTarget = StorageSupport.CurrActiveContainer.GetBlob(renderedViewLocation, owner);
+                InformationSource defaultSource = InformationSource.GetAsDefaultSource(informationObject);
+                RenderWebSupport.RenderTemplateWithContentToBlob(viewTemplate, renderTarget, defaultSource);
+                if (viewItemDirectory == requesterDirectory)
+                    relativeViewBlob = renderTarget;
+            }
+            if (relativeViewBlob == null)
+                throw new InvalidDataException(
+                    String.Format("Default view with relative location {0} not found for owner type {1}",
+                                  requesterLocation, owner.ContainerName));
+            return relativeViewBlob;
+        }
+
+        private static string GetViewRoot(string viewLocation)
+        {
+            switch(viewLocation)
+            {
+                case RenderWebSupport.DefaultAccountViewLocation:
+                    return "website";
+                case RenderWebSupport.DefaultGroupViewLocation:
+                    return "website";
+                case RenderWebSupport.DefaultPublicGroupViewLocation:
+                    return "publicsite";
+                case RenderWebSupport.DefaultPublicWwwViewLocation:
+                    return "wwwsite";
+                default:
+                    throw new NotSupportedException("Not supported root location for view location: " + viewLocation);
+            }
         }
 
         public static string GetDefaultStaticTemplateName(IInformationObject informationObject)

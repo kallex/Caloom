@@ -308,8 +308,7 @@ using System.Collections.Specialized;
 				DeleteInformationObjectImplementation.ExecuteMethod_DeleteObject(parameters.ObjectToDelete);		
 				}
 				}
-
-		    public class UpdateLoginGroupPermissionsParameters 
+				public class UpdateLoginGroupPermissionsParameters 
 		{
 				public string AccountID ;
 				}
@@ -449,6 +448,28 @@ using System.Collections.Specialized;
 		{
 						PrepareParameters(parameters);
 					UpdatePageContentImplementation.ExecuteMethod_UpdatePage();		
+				}
+				}
+		 }  
+
+using System;
+using System.Collections.Specialized;
+
+		namespace TheBall.CORE { 
+				public class CreateInvoiceForGroupParameters 
+		{
+				public string GroupID ;
+				}
+		
+		public class CreateInvoiceForGroup 
+		{
+				private static void PrepareParameters(CreateInvoiceForGroupParameters parameters)
+		{
+					}
+				public static void Execute(CreateInvoiceForGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TBRGroupRoot GroupRoot = CreateInvoiceForGroupImplementation.GetTarget_GroupRoot(parameters.GroupID);	
 				}
 				}
 		 } 

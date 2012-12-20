@@ -1,4 +1,6 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using TheBall.CORE;
+
+namespace AaltoGlobalImpact.OIP
 {
     partial class TBRLoginGroupRoot : IContainerOwner
     {

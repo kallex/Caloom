@@ -11,6 +11,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace TheBallTool
 {

@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Web;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {

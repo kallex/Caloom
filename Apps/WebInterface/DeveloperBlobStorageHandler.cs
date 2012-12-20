@@ -17,6 +17,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using System.Linq;
+using TheBall.CORE;
 
 namespace WebInterface
 {
@@ -315,13 +316,19 @@ namespace WebInterface
                     MethodInfo retrieveFromDefaultLocation = objectType.GetMethod("RetrieveFromDefaultLocation");
                     IInformationObject iObject = (IInformationObject)retrieveFromDefaultLocation.Invoke(null, new object[] { objectID, containerOwner });
                     string templateName = DefaultViewSupport.GetDefaultStaticTemplateName(iObject);
-                    string templateFileName = Path.Combine(Path.GetDirectoryName(fileName), templateName);
-                    string templateContent = GetFixedContent(templateFileName);
-                    string templateBlobPath = Path.Combine(Path.GetDirectoryName(contentPath), templateName).Replace("\\", "/");
-                    var templateBlob = StorageSupport.UploadOwnerBlobText(containerOwner, templateBlobPath,
-                                                                          templateContent,
-                                                                          StorageSupport.
-                                                                              InformationType_WebTemplateValue);
+                    foreach(string groupTemplateDirectory in DefaultViewSupport.FixedGroupSiteLocations)
+                    {
+                        string filesystemDirectory = Path.Combine(DeveloperWebRootFolder, groupTemplateDirectory);
+                        string templateFileName = Path.Combine(filesystemDirectory, templateName);
+                        string templateContent = GetFixedContent(templateFileName);
+                        string blobDirectory = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(contentPath)),
+                                                            groupTemplateDirectory);
+                        string templateBlobPath = Path.Combine(blobDirectory, templateName).Replace("\\", "/");
+                        var templateBlob = StorageSupport.UploadOwnerBlobText(containerOwner, templateBlobPath,
+                                                                              templateContent,
+                                                                              StorageSupport.
+                                                                                  InformationType_WebTemplateValue);
+                    }
                     var blob = DefaultViewSupport.CreateDefaultViewRelativeToRequester(contentPath, iObject, containerOwner);
                     blob.DownloadToStream(context.Response.OutputStream);
                 }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {

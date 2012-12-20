@@ -12,6 +12,7 @@ using System.Xml;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall.CORE;
 
 namespace TheBall
 {
@@ -931,7 +932,7 @@ namespace TheBall
             CloudBlob storedResult = StoreInformation(informationObject, owner);
             if(reconnectMastersAndLocations)
             {
-                informationObject.ReconnectMastersAndCollections(false);
+                informationObject.ReconnectMastersAndCollections(true);
             }
             return storedResult;
         }

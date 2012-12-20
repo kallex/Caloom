@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 using TheBall;
+using TheBall.CORE;
+using OIPDomain = AaltoGlobalImpact.OIP.DomainInformationSupport;
+using CoreDomain = TheBall.CORE.DomainInformationSupport;
 
 namespace TheBallTool
 {
@@ -68,16 +71,20 @@ namespace TheBallTool
             {
                 string acctLocation = "acc/" + accountID + "/";
                 VirtualOwner owner = VirtualOwner.FigureOwner(acctLocation);
-                owner.EnsureMasterCollections();
-                owner.RefreshMasterCollections();
+                //CoreDomain.EnsureMasterCollections(owner);
+                //CoreDomain.RefreshMasterCollections(owner);
+                OIPDomain.EnsureMasterCollections(owner);
+                OIPDomain.RefreshMasterCollections(owner);
             }
             var groupIDs = TBRGroupRoot.GetAllGroupIDs();
             foreach (string groupID in groupIDs)
             {
                 string grpLocation = "grp/" + groupID + "/";
                 VirtualOwner owner = VirtualOwner.FigureOwner(grpLocation);
-                owner.EnsureMasterCollections();
-                owner.RefreshMasterCollections();
+                //CoreDomain.EnsureMasterCollections(owner);
+                //CoreDomain.RefreshMasterCollections(owner);
+                OIPDomain.EnsureMasterCollections(owner);
+                OIPDomain.RefreshMasterCollections(owner);
             }
         }
 
@@ -201,8 +208,8 @@ namespace TheBallTool
         private static void FixGroupMastersAndCollections(string groupID)
         {
             TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
-            groupRoot.Group.EnsureMasterCollections();
-            groupRoot.Group.RefreshMasterCollections();
+            OIPDomain.EnsureMasterCollections(groupRoot.Group);
+            OIPDomain.RefreshMasterCollections(groupRoot.Group);
             groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
 
@@ -212,8 +219,8 @@ namespace TheBallTool
             groupRoot.Group.JoinToGroup(initiatorEmailAddress, TBCollaboratorRole.InitiatorRoleValue);
             //groupRoot.Group.JoinToGroup("jeroen@caloom.com", "moderator");
             StorageSupport.StoreInformation(groupRoot);
-            groupRoot.Group.EnsureMasterCollections();
-            groupRoot.Group.RefreshMasterCollections();
+            OIPDomain.EnsureMasterCollections(groupRoot.Group);
+            OIPDomain.RefreshMasterCollections(groupRoot.Group);
             groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
 

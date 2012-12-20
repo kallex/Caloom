@@ -362,6 +362,24 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="DeleteInformationObject">
+      <OperationSpec>
+        <Description>Deletes information object</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ObjectToDelete" dataType="TheBall.CORE.IInformationObject" designDesc="Information object to delete" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="DeleteObjectViews" designDesc="Delete all information object views from all template-based sites" state="designApproved">
+            <Parameter name="ObjectToDelete" />
+          </MethodExecute>
+          <MethodExecute name="DeleteObject" designDesc="Delete information object" state="designApproved">
+            <Parameter name="ObjectToDelete" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="UpdateLoginGroupPermissions">
       <OperationSpec>
         <Description>Updates account login permissions per group</Description>
@@ -459,7 +477,7 @@
       <Parameters>
         <Parameter name="TargetObjectID" dataType="string" designDesc="Target object id" state="designApproved" />
         <Parameter name="CommandName" dataType="string" designDesc="Command name" state="designApproved" />
-        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Data owner" state="designApproved" />
+        <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved" />
         <Parameter name="InformationSources" dataType="InformationSourceCollection" designDesc="Information sources of the page" state="designApproved" />
         <Parameter name="FormSourceNames" dataType="string[]" designDesc="Form source names" state="designApproved" />
         <Parameter name="FormSubmitContent" dataType="NameValueCollection" designDesc="Form field collection as-posted" state="designApproved" />

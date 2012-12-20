@@ -56,6 +56,10 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
+      <Link>Abstractions\TheBallCore.designer.cs</Link>
+    </Compile>
+    <Compile Include="Operation\DeleteInformationObjectImplementation.cs" />
     <Compile Include="Operation\CreateGroupImplementation.cs" />
     <Compile Include="Operation\UpdateAccountRootToReferencesImplementation.cs" />
     <Compile Include="Operation\UpdateAccountContainerFromAccountRootImplementation.cs" />
