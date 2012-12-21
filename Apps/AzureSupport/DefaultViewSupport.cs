@@ -87,24 +87,35 @@ namespace AaltoGlobalImpact.OIP
             //                      ? fileInfo.Directory.Parent.Name
             //                      : fileInfo.Directory.Name;
             CloudBlob relativeViewBlob = null;
+            bool hasException = false;
+            bool allException = true;
             foreach (string viewLocation in viewLocations)
             {
-                string viewRoot = isDeveloperView ? "" : GetViewRoot(viewLocation);
-                string viewItemDirectory = Path.Combine(viewRoot, viewLocation).Replace("\\", "/") + "/";
-                string viewName = GetDefaultStaticViewName(informationObject);
-                string viewTemplateName = GetDefaultStaticTemplateName(informationObject);
-                // TODO: Relative from xyzsite => xyztemplate; now we only have website - also acct/grp specific
-                //string viewTemplateLocation = "webtemplate/oip-viewtemplate/" + viewTemplateName;
-                string viewTemplateLocation = viewItemDirectory + viewTemplateName;
-                CloudBlob viewTemplate = StorageSupport.CurrActiveContainer.GetBlob(viewTemplateLocation, owner);
-                string renderedViewLocation = viewItemDirectory + viewName;
-                CloudBlob renderTarget = StorageSupport.CurrActiveContainer.GetBlob(renderedViewLocation, owner);
-                InformationSource defaultSource = InformationSource.GetAsDefaultSource(informationObject);
-                RenderWebSupport.RenderTemplateWithContentToBlob(viewTemplate, renderTarget, defaultSource);
-                if (viewItemDirectory == requesterDirectory)
-                    relativeViewBlob = renderTarget;
+                try
+                {
+                    string viewRoot = isDeveloperView ? "" : GetViewRoot(viewLocation);
+                    string viewItemDirectory = Path.Combine(viewRoot, viewLocation).Replace("\\", "/") + "/";
+                    string viewName = GetDefaultStaticViewName(informationObject);
+                    string viewTemplateName = GetDefaultStaticTemplateName(informationObject);
+                    // TODO: Relative from xyzsite => xyztemplate; now we only have website - also acct/grp specific
+                    //string viewTemplateLocation = "webtemplate/oip-viewtemplate/" + viewTemplateName;
+                    string viewTemplateLocation = viewItemDirectory + viewTemplateName;
+                    CloudBlob viewTemplate = StorageSupport.CurrActiveContainer.GetBlob(viewTemplateLocation, owner);
+                    string renderedViewLocation = viewItemDirectory + viewName;
+                    CloudBlob renderTarget = StorageSupport.CurrActiveContainer.GetBlob(renderedViewLocation, owner);
+                    InformationSource defaultSource = InformationSource.GetAsDefaultSource(informationObject);
+                    RenderWebSupport.RenderTemplateWithContentToBlob(viewTemplate, renderTarget, defaultSource);
+                    if (viewItemDirectory == requesterDirectory)
+                        relativeViewBlob = renderTarget;
+                    allException = false;
+                }
+                catch (Exception ex)
+                {
+                    hasException = true;
+                }
+
             }
-            if (relativeViewBlob == null)
+            if (relativeViewBlob == null && hasException == false && false)
                 throw new InvalidDataException(
                     String.Format("Default view with relative location {0} not found for owner type {1}",
                                   requesterLocation, owner.ContainerName));

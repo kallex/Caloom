@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using TheBall;
 using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
@@ -18,12 +19,31 @@ namespace AaltoGlobalImpact.OIP
                     return CallPublishGroupContentToWww(owner);
                 case "AssignCollaboratorRole":
                     return CallAssignCollaboratorRole(targetObjectID, owner, informationSources.GetDefaultSource(typeof(GroupContainer).FullName) ,formSubmitContent);
+                case "DeleteBlog":
+                    return CallDeleteBlog(targetObjectID, owner);
+                case "DeleteActivity":
+                    return CallDeleteActivity(targetObjectID, owner);
                 case "UnlinkEmailAddress":
                     return CallUnlinkEmailAddress(targetObjectID, owner,
                                                   informationSources.GetDefaultSource(typeof (AccountContainer).FullName));
                 default:
                     throw new NotImplementedException("Operation mapping for command not implemented: " + commandName);
             }
+        }
+
+        private static bool CallDeleteActivity(string targetObjectID, IContainerOwner owner)
+        {
+            Activity activity = Activity.RetrieveFromOwnerContent(owner, targetObjectID); 
+            //Activity.RetrieveFromOwnerContent(owner, )
+            DeleteInformationObject.Execute(new DeleteInformationObjectParameters { ObjectToDelete = activity });
+            return false;
+        }
+
+        private static bool CallDeleteBlog(string targetObjectID, IContainerOwner owner)
+        {
+            Blog blog = Blog.RetrieveFromOwnerContent(owner, targetObjectID);
+            DeleteInformationObject.Execute(new DeleteInformationObjectParameters { ObjectToDelete = blog });
+            return false;
         }
 
         private static bool CallUnlinkEmailAddress(string targetObjectID, IContainerOwner owner, InformationSource accountContainerSource)

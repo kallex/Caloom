@@ -1,4 +1,5 @@
 ﻿using System;
+using TheBall;
 using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
@@ -12,7 +13,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_DeleteObject(IInformationObject objectToDelete)
         {
-            //throw new NotImplementedException();
+            StorageSupport.DeleteInformationObject(objectToDelete);
         }
     }
 }
