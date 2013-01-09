@@ -492,6 +492,14 @@ namespace TheBallTool
             }
         }
 
+        private static void PatchDefaultValues()
+        {
+            // TODO: Something to 
+            // AccountContainer.AccountModule.Introduction
+            // Patch & Fix existing activities, blogs, groups with titles 
+
+        }
+
         public static bool DoPatching()
         {
             return false;
@@ -526,9 +534,9 @@ namespace TheBallTool
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
             
-            //PatchSubscriptionsToSubmitted();
+            PatchSubscriptionsToSubmitted();
             //PatchAccountsUpToDateWithRoot();
-            PatchBlogsAndActivitiesSelectedCollections();
+            //PatchBlogsAndActivitiesSelectedCollections();
 
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@citrus.fi");
             //UpdateAccountAndGroups(accountEmail: "kalle.launiala@gmail.com");

@@ -10,6 +10,10 @@ namespace AaltoGlobalImpact.OIP
                 ReferenceToInformation = ReferenceToInformation.CreateDefault();
             ReferenceToInformation.Title = this.Location.LocationName;
             ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+            if (String.IsNullOrEmpty(Location.Latitude.TextValue))
+                Location.Latitude.TextValue = "0";
+            if (String.IsNullOrEmpty(Location.Longitude.TextValue))
+                Location.Longitude.TextValue = "0";
         }
     }
 }

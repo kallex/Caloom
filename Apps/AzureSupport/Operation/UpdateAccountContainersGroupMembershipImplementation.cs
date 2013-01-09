@@ -52,6 +52,8 @@ namespace AaltoGlobalImpact.OIP
             }
             currRoles.ModeratorInGroups.CollectionContent.Sort(ReferenceToInformation.CompareByReferenceTitle);
             currRoles.MemberInGroups.CollectionContent.Sort(ReferenceToInformation.CompareByReferenceTitle);
+            // TODO: Update account summary
+            //accountContainer.AccountSummary.GroupSummary
         }
 
         public static void ExecuteMethod_UpdateGroupSummaryContainerMemberships(TBRGroupRoot groupRoot, Group currGroup, TBRAccountRoot accountRoot, GroupSummaryContainer groupSummaryContainer)

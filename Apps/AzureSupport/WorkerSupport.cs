@@ -108,6 +108,9 @@ namespace TheBall
             IInformationObject masterCollectionObject = StorageSupport.RetrieveInformation(masterCollectionLocation,
                                                                                            masterCollectionType);
             IInformationCollection masterCollection = (IInformationCollection) masterCollectionObject;
+            // TODO: Revisit why this can be null
+            if (containerObject == null || masterCollection == null)
+                return;
             containerObject.UpdateCollections(masterCollection);
             StorageSupport.StoreInformation(containerObject);
         }
@@ -117,6 +120,9 @@ namespace TheBall
             IInformationObject referenceCollectionObject = StorageSupport.RetrieveInformation(referenceCollectionLocation,
                                                                                         referenceCollectionType);
             IInformationCollection referenceCollection = (IInformationCollection) referenceCollectionObject;
+            // TODO: Revisit why this can be null
+            if (referenceCollection == null)
+                return;
             referenceCollection.RefreshContent();
             StorageSupport.StoreInformation(referenceCollectionObject);
         }
@@ -348,7 +354,7 @@ namespace TheBall
                 WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
         }
 
-        public static void ProcessOwnerSubscriptionChains(IContainerOwner lockedOwner, string acquiredEtag, string containerName)
+        public static bool ProcessOwnerSubscriptionChains(IContainerOwner lockedOwner, string acquiredEtag, string containerName)
         {
             try
             {
@@ -358,7 +364,7 @@ namespace TheBall
                 var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
                 const double invalidSubscriptionSubmissionTimeInSeconds = 600;
                 if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-invalidSubscriptionSubmissionTimeInSeconds)))
-                    return;
+                    return false;
                 WorkerSupport.ExecuteSubscriptionChains(chainContent);
                 foreach (string blob in blobs)
                     StorageSupport.DeleteBlob(blob);
@@ -380,6 +386,7 @@ namespace TheBall
                 QueueSupport.ReportStatistics("Processed " + counter + " messages...");
                 counter = 0;
             }
+            return true;
         }
 
 

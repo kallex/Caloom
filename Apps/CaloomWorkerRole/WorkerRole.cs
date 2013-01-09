@@ -58,7 +58,11 @@ namespace CaloomWorkerRole
                     Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
                     bool handledSubscriptionChain = PollAndHandleSubscriptionChain(tasks, availableIx, availableTask);
                     if (handledSubscriptionChain)
+                    {
+                        // TODO: Fix return value check
+                        Thread.Sleep(1000);
                         continue;
+                    }
                     bool handledMessage = PollAndHandleMessage(tasks, availableIx, availableTask);
                     if (handledMessage)
                         continue;
@@ -117,7 +121,7 @@ namespace CaloomWorkerRole
                     lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
             if (firstLockedOwner == null)
                 return false;
-            Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, CURRENT_HARDCODED_CONTAINER_NAME));
+            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, CURRENT_HARDCODED_CONTAINER_NAME));
             tasks[availableIx] = executing;
             if (availableTask.Exception != null)
                 ErrorSupport.ReportException(availableTask.Exception);
