@@ -84,6 +84,1006 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			public partial class InvoiceFiscalExportSummary : IInformationObject 
+			{
+				public InvoiceFiscalExportSummary()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "InvoiceFiscalExportSummary";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/InvoiceFiscalExportSummary/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceFiscalExportSummary), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "InvoiceFiscalExportSummary", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static InvoiceFiscalExportSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveInvoiceFiscalExportSummary(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceFiscalExportSummary");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceFiscalExportSummary), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static InvoiceFiscalExportSummary RetrieveInvoiceFiscalExportSummary(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (InvoiceFiscalExportSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceFiscalExportSummary), null, owner);
+                    return result;
+                }
+
+				public static InvoiceFiscalExportSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = InvoiceFiscalExportSummary.RetrieveInvoiceFiscalExportSummary("Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName, containerOwner);
+					var result = InvoiceFiscalExportSummary.RetrieveInvoiceFiscalExportSummary("TheBall.CORE/InvoiceFiscalExportSummary/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((InvoiceFiscalExportSummary) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceFiscalExportSummary));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static InvoiceFiscalExportSummary DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceFiscalExportSummary));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (InvoiceFiscalExportSummary) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "InvoiceFiscalExportSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceFiscalExportSummary", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref InvoiceFiscalExportSummary customDemoObject);
+
+
+
+				public static InvoiceFiscalExportSummary CreateDefault()
+				{
+					var result = new InvoiceFiscalExportSummary();
+					result.ExportedInvoices = InvoiceCollection.CreateDefault();
+					return result;
+				}
+
+				public static InvoiceFiscalExportSummary CreateDemoDefault()
+				{
+					InvoiceFiscalExportSummary customDemo = null;
+					InvoiceFiscalExportSummary.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new InvoiceFiscalExportSummary();
+					result.ExportedInvoices = InvoiceCollection.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(masterInstance is InvoiceCollection) {
+						CollectionUpdateImplementation.Update_InvoiceFiscalExportSummary_ExportedInvoices(this, localCollection:ExportedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+					} else if(ExportedInvoices != null) {
+						((IInformationObject) ExportedInvoices).UpdateCollections(masterInstance);
+					}
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ExportedInvoices;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = ExportedInvoices;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) ExportedInvoices;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(FiscalInclusiveStartDate != _unmodified_FiscalInclusiveStartDate)
+							return true;
+						if(FiscalInclusiveEndDate != _unmodified_FiscalInclusiveEndDate)
+							return true;
+						if(ExportedInvoices != _unmodified_ExportedInvoices)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) ExportedInvoices;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(ExportedInvoices != null) {
+						if(ExportedInvoices.ID == replacingObject.ID)
+							ExportedInvoices = (InvoiceCollection) replacingObject;
+						else {
+							IInformationObject iObject = ExportedInvoices;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(InvoiceFiscalExportSummary sourceObject)
+				{
+					FiscalInclusiveStartDate = sourceObject.FiscalInclusiveStartDate;
+					FiscalInclusiveEndDate = sourceObject.FiscalInclusiveEndDate;
+					ExportedInvoices = sourceObject.ExportedInvoices;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_FiscalInclusiveStartDate = FiscalInclusiveStartDate;
+					_unmodified_FiscalInclusiveEndDate = FiscalInclusiveEndDate;
+				
+					_unmodified_ExportedInvoices = ExportedInvoices;
+					if(ExportedInvoices != null)
+						((IInformationObject) ExportedInvoices).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "FiscalInclusiveStartDate":
+							FiscalInclusiveStartDate = DateTime.Parse(value);
+							break;
+						case "FiscalInclusiveEndDate":
+							FiscalInclusiveEndDate = DateTime.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public DateTime FiscalInclusiveStartDate { get; set; }
+			private DateTime _unmodified_FiscalInclusiveStartDate;
+			[DataMember]
+			public DateTime FiscalInclusiveEndDate { get; set; }
+			private DateTime _unmodified_FiscalInclusiveEndDate;
+			[DataMember]
+			public InvoiceCollection ExportedInvoices { get; set; }
+			private InvoiceCollection _unmodified_ExportedInvoices;
+			
+			}
+			[DataContract]
+			public partial class InvoiceSummaryContainer : IInformationObject 
+			{
+				public InvoiceSummaryContainer()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "InvoiceSummaryContainer";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/InvoiceSummaryContainer/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceSummaryContainer), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "InvoiceSummaryContainer", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static InvoiceSummaryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveInvoiceSummaryContainer(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceSummaryContainer");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceSummaryContainer), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static InvoiceSummaryContainer RetrieveInvoiceSummaryContainer(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (InvoiceSummaryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceSummaryContainer), null, owner);
+                    return result;
+                }
+
+				public static InvoiceSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = InvoiceSummaryContainer.RetrieveInvoiceSummaryContainer("Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName, containerOwner);
+					var result = InvoiceSummaryContainer.RetrieveInvoiceSummaryContainer("TheBall.CORE/InvoiceSummaryContainer/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceSummaryContainer/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((InvoiceSummaryContainer) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceSummaryContainer));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static InvoiceSummaryContainer DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceSummaryContainer));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (InvoiceSummaryContainer) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "InvoiceSummaryContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceSummaryContainer", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref InvoiceSummaryContainer customDemoObject);
+
+
+
+				public static InvoiceSummaryContainer CreateDefault()
+				{
+					var result = new InvoiceSummaryContainer();
+					result.OpenInvoices = InvoiceCollection.CreateDefault();
+					result.PredictedInvoices = InvoiceCollection.CreateDefault();
+					result.PaidInvoicesActiveYear = InvoiceCollection.CreateDefault();
+					result.PaidInvoicesLast12Months = InvoiceCollection.CreateDefault();
+					return result;
+				}
+
+				public static InvoiceSummaryContainer CreateDemoDefault()
+				{
+					InvoiceSummaryContainer customDemo = null;
+					InvoiceSummaryContainer.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new InvoiceSummaryContainer();
+					result.OpenInvoices = InvoiceCollection.CreateDemoDefault();
+					result.PredictedInvoices = InvoiceCollection.CreateDemoDefault();
+					result.PaidInvoicesActiveYear = InvoiceCollection.CreateDemoDefault();
+					result.PaidInvoicesLast12Months = InvoiceCollection.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(masterInstance is InvoiceCollection) {
+						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_OpenInvoices(this, localCollection:OpenInvoices, masterCollection:(InvoiceCollection) masterInstance);
+					} else if(OpenInvoices != null) {
+						((IInformationObject) OpenInvoices).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is InvoiceCollection) {
+						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PredictedInvoices(this, localCollection:PredictedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+					} else if(PredictedInvoices != null) {
+						((IInformationObject) PredictedInvoices).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is InvoiceCollection) {
+						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(this, localCollection:PaidInvoicesActiveYear, masterCollection:(InvoiceCollection) masterInstance);
+					} else if(PaidInvoicesActiveYear != null) {
+						((IInformationObject) PaidInvoicesActiveYear).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is InvoiceCollection) {
+						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(this, localCollection:PaidInvoicesLast12Months, masterCollection:(InvoiceCollection) masterInstance);
+					} else if(PaidInvoicesLast12Months != null) {
+						((IInformationObject) PaidInvoicesLast12Months).UpdateCollections(masterInstance);
+					}
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = OpenInvoices;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = PredictedInvoices;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = PaidInvoicesActiveYear;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = PaidInvoicesLast12Months;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = OpenInvoices;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = PredictedInvoices;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = PaidInvoicesActiveYear;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = PaidInvoicesLast12Months;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) OpenInvoices;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) PredictedInvoices;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) PaidInvoicesActiveYear;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) PaidInvoicesLast12Months;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(OpenInvoices != _unmodified_OpenInvoices)
+							return true;
+						if(PredictedInvoices != _unmodified_PredictedInvoices)
+							return true;
+						if(PaidInvoicesActiveYear != _unmodified_PaidInvoicesActiveYear)
+							return true;
+						if(PaidInvoicesLast12Months != _unmodified_PaidInvoicesLast12Months)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) OpenInvoices;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) PredictedInvoices;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) PaidInvoicesActiveYear;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) PaidInvoicesLast12Months;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(OpenInvoices != null) {
+						if(OpenInvoices.ID == replacingObject.ID)
+							OpenInvoices = (InvoiceCollection) replacingObject;
+						else {
+							IInformationObject iObject = OpenInvoices;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(PredictedInvoices != null) {
+						if(PredictedInvoices.ID == replacingObject.ID)
+							PredictedInvoices = (InvoiceCollection) replacingObject;
+						else {
+							IInformationObject iObject = PredictedInvoices;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(PaidInvoicesActiveYear != null) {
+						if(PaidInvoicesActiveYear.ID == replacingObject.ID)
+							PaidInvoicesActiveYear = (InvoiceCollection) replacingObject;
+						else {
+							IInformationObject iObject = PaidInvoicesActiveYear;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(PaidInvoicesLast12Months != null) {
+						if(PaidInvoicesLast12Months.ID == replacingObject.ID)
+							PaidInvoicesLast12Months = (InvoiceCollection) replacingObject;
+						else {
+							IInformationObject iObject = PaidInvoicesLast12Months;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(InvoiceSummaryContainer sourceObject)
+				{
+					OpenInvoices = sourceObject.OpenInvoices;
+					PredictedInvoices = sourceObject.PredictedInvoices;
+					PaidInvoicesActiveYear = sourceObject.PaidInvoicesActiveYear;
+					PaidInvoicesLast12Months = sourceObject.PaidInvoicesLast12Months;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
+					_unmodified_OpenInvoices = OpenInvoices;
+					if(OpenInvoices != null)
+						((IInformationObject) OpenInvoices).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_PredictedInvoices = PredictedInvoices;
+					if(PredictedInvoices != null)
+						((IInformationObject) PredictedInvoices).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_PaidInvoicesActiveYear = PaidInvoicesActiveYear;
+					if(PaidInvoicesActiveYear != null)
+						((IInformationObject) PaidInvoicesActiveYear).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_PaidInvoicesLast12Months = PaidInvoicesLast12Months;
+					if(PaidInvoicesLast12Months != null)
+						((IInformationObject) PaidInvoicesLast12Months).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public InvoiceCollection OpenInvoices { get; set; }
+			private InvoiceCollection _unmodified_OpenInvoices;
+			[DataMember]
+			public InvoiceCollection PredictedInvoices { get; set; }
+			private InvoiceCollection _unmodified_PredictedInvoices;
+			[DataMember]
+			public InvoiceCollection PaidInvoicesActiveYear { get; set; }
+			private InvoiceCollection _unmodified_PaidInvoicesActiveYear;
+			[DataMember]
+			public InvoiceCollection PaidInvoicesLast12Months { get; set; }
+			private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
+			
+			}
+			[DataContract]
 			public partial class InvoiceCollection : IInformationObject , IInformationCollection
 			{
 				public InvoiceCollection()
@@ -833,6 +1833,8 @@ using TheBall.CORE;
 				{
 					var result = new Invoice();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
+					result.InvoiceDetails = InvoiceDetails.CreateDefault();
+					result.InvoiceUsers = InvoiceUserCollection.CreateDefault();
 					return result;
 				}
 
@@ -856,6 +1858,8 @@ using TheBall.CORE;
 
 					result.UnpaidAmount = @"Invoice.UnpaidAmount";
 
+					result.InvoiceDetails = InvoiceDetails.CreateDemoDefault();
+					result.InvoiceUsers = InvoiceUserCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -865,6 +1869,14 @@ using TheBall.CORE;
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
+					if(InvoiceDetails != null) {
+						((IInformationObject) InvoiceDetails).UpdateCollections(masterInstance);
+					}
+
+					if(InvoiceUsers != null) {
+						((IInformationObject) InvoiceUsers).UpdateCollections(masterInstance);
+					}
+
 				}
 
 
@@ -882,6 +1894,22 @@ using TheBall.CORE;
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = InvoiceDetails;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = InvoiceUsers;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 						{
@@ -899,6 +1927,24 @@ using TheBall.CORE;
 				{
 					{
 						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = InvoiceDetails;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = InvoiceUsers;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -931,6 +1977,16 @@ using TheBall.CORE;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) InvoiceDetails;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) InvoiceUsers;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -954,6 +2010,28 @@ using TheBall.CORE;
 							return true;
 						if(UnpaidAmount != _unmodified_UnpaidAmount)
 							return true;
+						if(InvoiceDetails != _unmodified_InvoiceDetails)
+							return true;
+						if(InvoiceUsers != _unmodified_InvoiceUsers)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) InvoiceDetails;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) InvoiceUsers;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
@@ -966,6 +2044,22 @@ using TheBall.CORE;
 							ReferenceToInformation = (ReferenceToInformation) replacingObject;
 						else {
 							IInformationObject iObject = ReferenceToInformation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(InvoiceDetails != null) {
+						if(InvoiceDetails.ID == replacingObject.ID)
+							InvoiceDetails = (InvoiceDetails) replacingObject;
+						else {
+							IInformationObject iObject = InvoiceDetails;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(InvoiceUsers != null) {
+						if(InvoiceUsers.ID == replacingObject.ID)
+							InvoiceUsers = (InvoiceUserCollection) replacingObject;
+						else {
+							IInformationObject iObject = InvoiceUsers;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -983,6 +2077,8 @@ using TheBall.CORE;
 					PaidAmount = sourceObject.PaidAmount;
 					FeesAndInterestAmount = sourceObject.FeesAndInterestAmount;
 					UnpaidAmount = sourceObject.UnpaidAmount;
+					InvoiceDetails = sourceObject.InvoiceDetails;
+					InvoiceUsers = sourceObject.InvoiceUsers;
 				}
 				
 
@@ -1001,6 +2097,14 @@ using TheBall.CORE;
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
 						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_InvoiceDetails = InvoiceDetails;
+					if(InvoiceDetails != null)
+						((IInformationObject) InvoiceDetails).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_InvoiceUsers = InvoiceUsers;
+					if(InvoiceUsers != null)
+						((IInformationObject) InvoiceUsers).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -1067,6 +2171,12 @@ using TheBall.CORE;
 			[DataMember]
 			public string UnpaidAmount { get; set; }
 			private string _unmodified_UnpaidAmount;
+			[DataMember]
+			public InvoiceDetails InvoiceDetails { get; set; }
+			private InvoiceDetails _unmodified_InvoiceDetails;
+			[DataMember]
+			public InvoiceUserCollection InvoiceUsers { get; set; }
+			private InvoiceUserCollection _unmodified_InvoiceUsers;
 			
 			}
 			[DataContract]
@@ -1489,6 +2599,488 @@ using TheBall.CORE;
 			[DataMember]
 			public string TotalFeesTotal { get; set; }
 			private string _unmodified_TotalFeesTotal;
+			
+			}
+			[DataContract]
+			public partial class InvoiceUserCollection : IInformationObject , IInformationCollection
+			{
+				public InvoiceUserCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "InvoiceUserCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/InvoiceUserCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceUserCollection), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "InvoiceUserCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static InvoiceUserCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveInvoiceUserCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceUserCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceUserCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static InvoiceUserCollection RetrieveInvoiceUserCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (InvoiceUserCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceUserCollection), null, owner);
+                    return result;
+                }
+
+				public static InvoiceUserCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = InvoiceUserCollection.RetrieveInvoiceUserCollection("Content/TheBall.CORE/InvoiceUserCollection/" + contentName, containerOwner);
+					var result = InvoiceUserCollection.RetrieveInvoiceUserCollection("TheBall.CORE/InvoiceUserCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceUserCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceUserCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((InvoiceUserCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceUserCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static InvoiceUserCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InvoiceUserCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (InvoiceUserCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "InvoiceUserCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceUserCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref InvoiceUserCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = InvoiceUser.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static InvoiceUserCollection CreateDefault()
+				{
+					var result = new InvoiceUserCollection();
+					return result;
+				}
+
+				public static InvoiceUserCollection CreateDemoDefault()
+				{
+					InvoiceUserCollection customDemo = null;
+					InvoiceUserCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new InvoiceUserCollection();
+					result.CollectionContent.Add(InvoiceUser.CreateDemoDefault());
+					//result.CollectionContent.Add(InvoiceUser.CreateDemoDefault());
+					//result.CollectionContent.Add(InvoiceUser.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<InvoiceUser> CollectionContent = new List<InvoiceUser>();
+				private InvoiceUser[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public InvoiceUser[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					switch(propertyName)
+					{
+						case "SelectedIDCommaSeparated":
+							SelectedIDCommaSeparated = propertyValue;
+							break;
+						case "IsCollectionFiltered":
+							IsCollectionFiltered = bool.Parse(propertyValue);
+							break;
+						default:
+							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					}
+				}
+
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (InvoiceUser )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(InvoiceUserCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
 			
 			}
 			[DataContract]

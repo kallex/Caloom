@@ -308,8 +308,7 @@ using System.Collections.Specialized;
 				DeleteInformationObjectImplementation.ExecuteMethod_DeleteObject(parameters.ObjectToDelete);		
 				}
 				}
-
-		    public class UpdateLoginGroupPermissionsParameters 
+				public class UpdateLoginGroupPermissionsParameters 
 		{
 				public string AccountID ;
 				}

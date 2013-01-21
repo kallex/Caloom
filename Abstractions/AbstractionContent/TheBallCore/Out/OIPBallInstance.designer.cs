@@ -26848,6 +26848,13 @@ ActivityIndex.Summary
 					result.ActivityName = @"Activity.ActivityName";
 
 					result.Introduction = Introduction.CreateDemoDefault();
+					result.Excerpt = @"Activity.Excerpt
+Activity.Excerpt
+Activity.Excerpt
+Activity.Excerpt
+Activity.Excerpt
+";
+
 					result.Description = @"Activity.Description
 Activity.Description
 Activity.Description
@@ -27124,6 +27131,8 @@ Activity.Description
 							return true;
 						if(Introduction != _unmodified_Introduction)
 							return true;
+						if(Excerpt != _unmodified_Excerpt)
+							return true;
 						if(Description != _unmodified_Description)
 							return true;
 						if(Collaborators != _unmodified_Collaborators)
@@ -27260,6 +27269,7 @@ Activity.Description
 					IconImage = sourceObject.IconImage;
 					ActivityName = sourceObject.ActivityName;
 					Introduction = sourceObject.Introduction;
+					Excerpt = sourceObject.Excerpt;
 					Description = sourceObject.Description;
 					Collaborators = sourceObject.Collaborators;
 					ImageGroupCollection = sourceObject.ImageGroupCollection;
@@ -27272,6 +27282,7 @@ Activity.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ActivityName = ActivityName;
+					_unmodified_Excerpt = Excerpt;
 					_unmodified_Description = Description;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
@@ -27319,6 +27330,9 @@ Activity.Description
 						case "ActivityName":
 							ActivityName = value;
 							break;
+						case "Excerpt":
+							Excerpt = value;
+							break;
 						case "Description":
 							Description = value;
 							break;
@@ -27341,6 +27355,9 @@ Activity.Description
 			[DataMember]
 			public Introduction Introduction { get; set; }
 			private Introduction _unmodified_Introduction;
+			[DataMember]
+			public string Excerpt { get; set; }
+			private string _unmodified_Excerpt;
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;

@@ -1,5 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
+namespace TheBall.CORE
+{
+    public static class CollectionUpdateImplementation
+    {
+        public static void Update_InvoiceSummaryContainer_OpenInvoices(InvoiceSummaryContainer invoiceSummaryContainer, InvoiceCollection localCollection, InvoiceCollection masterCollection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Update_InvoiceSummaryContainer_PredictedInvoices(InvoiceSummaryContainer invoiceSummaryContainer, InvoiceCollection localCollection, InvoiceCollection masterCollection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(InvoiceSummaryContainer invoiceSummaryContainer, InvoiceCollection localCollection, InvoiceCollection masterCollection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(InvoiceSummaryContainer invoiceSummaryContainer, InvoiceCollection localCollection, InvoiceCollection masterCollection)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Update_InvoiceFiscalExportSummary_ExportedInvoices(InvoiceFiscalExportSummary invoiceFiscalExportSummary, InvoiceCollection localCollection, InvoiceCollection masterCollection)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
 
 namespace AaltoGlobalImpact.OIP
 {
