@@ -351,9 +351,16 @@ namespace WebInterface
                     }
                     else
                     {
-                        var fileStream = File.OpenRead(fileName);
-                        fileStream.CopyTo(context.Response.OutputStream);
-                        fileStream.Close();
+                        if(File.Exists(fileName))
+                        {
+                            var fileStream = File.OpenRead(fileName);
+                            fileStream.CopyTo(context.Response.OutputStream);
+                            fileStream.Close();
+                        } else
+                        {
+                            var targetBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
+                            targetBlob.DownloadToStream(context.Response.OutputStream);
+                        }
                     }
                 }
             }

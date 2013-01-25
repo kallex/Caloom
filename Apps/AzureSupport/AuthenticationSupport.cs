@@ -8,7 +8,7 @@ namespace TheBall
     public static class AuthenticationSupport
     {
         private const string AuthCookieName = "TheBall_AUTH";
-        private const int TimeoutSeconds = 600;
+        private const int TimeoutSeconds = 3600;
         public static void SetAuthenticationCookie(HttpResponse response, string validUserName)
         {
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);

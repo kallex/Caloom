@@ -246,11 +246,14 @@ namespace WebInterface
             {
                 string oldETag = source.SourceETag;
                 IInformationObject rootObject = source.RetrieveInformationObject();
+                /* Temporarily removed all the version checks - last save wins! 
                 if (oldETag != rootObject.ETag)
                 {
                     RenderWebSupport.RefreshContent(webPageBlob);
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
+                 * */
+                // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
                 rootObject.SetValuesToObjects(form);
                 IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
                 bool skipNormalStoreAfterAdd = false;
