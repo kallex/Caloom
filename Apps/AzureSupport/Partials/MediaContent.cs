@@ -43,6 +43,8 @@ namespace AaltoGlobalImpact.OIP
         {
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
             blob.DeleteWithoutFiringSubscriptions();
+            ClearAdditionalMediaFormats.Execute(new ClearAdditionalMediaFormatsParameters
+                                                    {MasterRelativeLocation = RelativeLocation});
         }
     }
 }
