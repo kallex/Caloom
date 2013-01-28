@@ -20678,6 +20678,15 @@ AccountRoles.OrganizationsImPartOf
 
 					result.LocationText = @"MapMarker.LocationText";
 
+					result.PopupTitle = @"MapMarker.PopupTitle";
+
+					result.PopupContent = @"MapMarker.PopupContent
+MapMarker.PopupContent
+MapMarker.PopupContent
+MapMarker.PopupContent
+MapMarker.PopupContent
+";
+
 					result.Location = Location.CreateDemoDefault();
 				
 					return result;
@@ -20770,6 +20779,10 @@ AccountRoles.OrganizationsImPartOf
 							return true;
 						if(LocationText != _unmodified_LocationText)
 							return true;
+						if(PopupTitle != _unmodified_PopupTitle)
+							return true;
+						if(PopupContent != _unmodified_PopupContent)
+							return true;
 						if(Location != _unmodified_Location)
 							return true;
 						{
@@ -20804,6 +20817,8 @@ AccountRoles.OrganizationsImPartOf
 					IconUrl = sourceObject.IconUrl;
 					MarkerSource = sourceObject.MarkerSource;
 					LocationText = sourceObject.LocationText;
+					PopupTitle = sourceObject.PopupTitle;
+					PopupContent = sourceObject.PopupContent;
 					Location = sourceObject.Location;
 				}
 				
@@ -20814,6 +20829,8 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_IconUrl = IconUrl;
 					_unmodified_MarkerSource = MarkerSource;
 					_unmodified_LocationText = LocationText;
+					_unmodified_PopupTitle = PopupTitle;
+					_unmodified_PopupContent = PopupContent;
 				
 					_unmodified_Location = Location;
 					if(Location != null)
@@ -20838,6 +20855,12 @@ AccountRoles.OrganizationsImPartOf
 						case "LocationText":
 							LocationText = value;
 							break;
+						case "PopupTitle":
+							PopupTitle = value;
+							break;
+						case "PopupContent":
+							PopupContent = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -20851,6 +20874,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public string LocationText { get; set; }
 			private string _unmodified_LocationText;
+			[DataMember]
+			public string PopupTitle { get; set; }
+			private string _unmodified_PopupTitle;
+			[DataMember]
+			public string PopupContent { get; set; }
+			private string _unmodified_PopupContent;
 			[DataMember]
 			public Location Location { get; set; }
 			private Location _unmodified_Location;

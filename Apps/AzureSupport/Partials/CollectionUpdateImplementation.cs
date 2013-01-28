@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TheBall.CORE
 {
@@ -228,9 +229,47 @@ namespace AaltoGlobalImpact.OIP
                     marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-2.png";
                     marker.SetLocationTextFromLocation(loc.Location);
                     return marker;
-
                 }).ToArray();
+            //var groupedMarkers = 
             mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
+        }
+
+        class LocationSpot
+        {
+            public string LocationText;
+            public Location Location;
+            public List<CategoryActivity> CategorizedActivites = new List<CategoryActivity>();
+            public CategoryActivity GetOrInitiateCategoryWithName(string categoryName)
+            {
+                var result = CategorizedActivites.FirstOrDefault(catAct => catAct.CategoryName == categoryName);
+                if (result == null)
+                {
+                    result = new CategoryActivity { CategoryName = categoryName, };
+                    CategorizedActivites.Add(result);
+                }
+                return result;
+            }
+            public void AddActivity(Activity activity)
+            {
+                var categories = activity.CategoryCollection.GetIDSelectedArray();
+                if(categories.Length == 0)
+                {
+                    var defaultCategoryItem = GetOrInitiateCategoryWithName(null);
+                    defaultCategoryItem.Activities.Add(activity);
+                }
+                foreach(var category in categories)
+                {
+                    var categoryItem = GetOrInitiateCategoryWithName(category.CategoryName);
+                    categoryItem.Activities.Add(activity);
+                }
+
+            }
+        }
+
+        class CategoryActivity
+        {
+            public string CategoryName;
+            public List<Activity> Activities = new List<Activity>();
         }
 
         internal static void Update_MapContainer_MarkerSourceActivities(MapContainer mapContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
@@ -248,7 +287,50 @@ namespace AaltoGlobalImpact.OIP
                     return marker;
 
                 }).ToArray();
-            mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
+            var locationActivities =
+                masterCollection.CollectionContent.Select(
+                    activity => new {Activity = activity, Locations = activity.LocationCollection.GetIDSelectedArray()});
+            Dictionary<string, LocationSpot> locDict = new Dictionary<string, LocationSpot>();
+            foreach(var locAct in locationActivities)
+            {
+                foreach(var location in locAct.Locations)
+                {
+                    string key = location.Location.GetLocationText();
+                    LocationSpot locSpot;
+                    locDict.TryGetValue(key, out locSpot);
+                    if(locSpot == null)
+                    {
+                        locSpot = new LocationSpot {LocationText = key, Location = location.Location};
+                        locDict.Add(key, locSpot);
+                    }
+                    locSpot.AddActivity(locAct.Activity);
+                }
+            }
+            List<MapMarker> markers = new List<MapMarker>();
+            foreach(var dictItem in locDict)
+            {
+                var locSpot = dictItem.Value;
+                foreach(var catItem in locSpot.CategorizedActivites)
+                {
+                    MapMarker marker = MapMarker.CreateDefault();
+                    marker.Location = locSpot.Location;
+                    marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
+                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
+                    marker.LocationText = locSpot.LocationText;
+                    marker.SetLocationTextFromLocation(locSpot.Location);
+                    marker.PopupTitle = "Activities";
+                    StringBuilder strBuilder = new StringBuilder();
+                    foreach(var act in catItem.Activities)
+                    {
+                        strBuilder.AppendFormat("<a href=\"{0}\">{1}</a><br>", 
+                            act.ReferenceToInformation.URL, act.ReferenceToInformation.Title.Replace("'", ""));
+                    }
+                    marker.PopupContent = strBuilder.ToString();
+                    markers.Add(marker);
+                }
+            }
+
+            mapContainer.MapMarkers.CollectionContent.AddRange(markers);
         }
 
 

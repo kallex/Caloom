@@ -21,7 +21,7 @@ namespace AaltoGlobalImpact.OIP
         {
             string longitude = String.IsNullOrEmpty(location.Longitude.TextValue) ? "0" : location.Longitude.TextValue;
             string latitude = String.IsNullOrEmpty(location.Latitude.TextValue) ? "0" : location.Latitude.TextValue;
-            LocationText = string.Format("{0},{1}", longitude, latitude);
+            LocationText = string.Format("{0},{1}", latitude, longitude);
         }
     }
 }
