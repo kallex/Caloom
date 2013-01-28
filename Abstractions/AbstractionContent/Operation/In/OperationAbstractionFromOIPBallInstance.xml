@@ -563,5 +563,39 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="CreateAdditionalMediaFormats">
+      <OperationSpec>
+        <Description />
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MasterRelativeLocation" dataType="string" designDesc="Relative location of original" state="underDesign" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="BitmapData" dataType="Bitmap" designDesc="Bitmap image if existing" state="designApproved">
+            <Parameter name="MasterRelativeLocation" />
+          </TargetDefinition>
+          <MethodExecute name="CreateImageMediaFormats" designDesc="Create various media formats" state="underDesign">
+            <Parameter name="MasterRelativeLocation" />
+            <Target name="BitmapData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ClearAdditionalMediaFormats">
+      <OperationSpec>
+        <Description />
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MasterRelativeLocation" dataType="string" designDesc="Relative location of original" state="underDesign" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="ClearImageMediaFormats" designDesc="Clear various image media formats" state="underDesign">
+            <Parameter name="MasterRelativeLocation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

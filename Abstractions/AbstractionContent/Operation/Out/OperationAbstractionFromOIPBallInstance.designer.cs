@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.IO;
 
 		namespace AaltoGlobalImpact.OIP { 
 				public class CreateGroupParameters 
@@ -448,6 +450,39 @@ using System.Collections.Specialized;
 		{
 						PrepareParameters(parameters);
 					UpdatePageContentImplementation.ExecuteMethod_UpdatePage();		
+				}
+				}
+				public class CreateAdditionalMediaFormatsParameters 
+		{
+				public string MasterRelativeLocation ;
+				}
+		
+		public class CreateAdditionalMediaFormats 
+		{
+				private static void PrepareParameters(CreateAdditionalMediaFormatsParameters parameters)
+		{
+					}
+				public static void Execute(CreateAdditionalMediaFormatsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Bitmap BitmapData = CreateAdditionalMediaFormatsImplementation.GetTarget_BitmapData(parameters.MasterRelativeLocation);	
+				CreateAdditionalMediaFormatsImplementation.ExecuteMethod_CreateImageMediaFormats(parameters.MasterRelativeLocation, BitmapData);		
+				}
+				}
+				public class ClearAdditionalMediaFormatsParameters 
+		{
+				public string MasterRelativeLocation ;
+				}
+		
+		public class ClearAdditionalMediaFormats 
+		{
+				private static void PrepareParameters(ClearAdditionalMediaFormatsParameters parameters)
+		{
+					}
+				public static void Execute(ClearAdditionalMediaFormatsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ClearAdditionalMediaFormatsImplementation.ExecuteMethod_ClearImageMediaFormats(parameters.MasterRelativeLocation);		
 				}
 				}
 		 } 

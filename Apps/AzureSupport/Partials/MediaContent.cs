@@ -35,6 +35,8 @@ namespace AaltoGlobalImpact.OIP
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(containerOwner, locationFileName);
             StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream, StorageSupport.InformationType_GenericContentValue);
+            CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters
+                                                     {MasterRelativeLocation = RelativeLocation});
         }
 
         private void ClearCurrentContent(IContainerOwner containerOwner)

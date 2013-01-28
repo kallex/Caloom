@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +60,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="Operation\ClearAdditionalMediaFormatsImplementation.cs" />
+    <Compile Include="Operation\CreateAdditionalMediaFormatsImplementation.cs" />
     <Compile Include="Operation\DeleteInformationObjectImplementation.cs" />
     <Compile Include="Operation\CreateGroupImplementation.cs" />
     <Compile Include="Operation\UpdateAccountRootToReferencesImplementation.cs" />
