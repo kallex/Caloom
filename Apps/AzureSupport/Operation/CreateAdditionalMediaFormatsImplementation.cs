@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -39,12 +40,18 @@ namespace AaltoGlobalImpact.OIP
                                           // Wide screen format
                                           new Size(1280, 720),
                                           new Size(640, 360),
+                                          // .. portrait alternatives, but not the biggest ones
+                                          new Size(360, 640),
                                           // Standard screen format
                                           new Size(1024, 768),
                                           new Size(800, 600),
                                           new Size(640, 480),
                                           new Size(320, 240),
                                           new Size(160, 120),
+                                          // .. portrait alternatives, but not the biggest ones
+                                          new Size(480, 640),
+                                          new Size(240, 320),
+                                          new Size(120, 160),
                                           // Square icon format
                                           new Size(256, 256),
                                           new Size(128, 128),
@@ -70,6 +77,7 @@ namespace AaltoGlobalImpact.OIP
                 bitmap.Save(stream, ImageFormat.Jpeg);
                 stream.Seek(0, SeekOrigin.Begin);
                 blob.UploadFromStream(stream);
+                Debug.WriteLine("Uploaded media blob: " + blobLocation);
             }
         }
 
@@ -139,5 +147,15 @@ namespace AaltoGlobalImpact.OIP
             return bp;
         }
 
+        public static object GetTarget_VideoData(string masterRelativeLocation)
+        {
+            return null;
+        }
+
+        public static void ExecuteMethod_CreateVideoMediaFormats(string masterRelativeLocation, object videoData)
+        {
+            if (videoData == null)
+                return;
+        }
     }
 }

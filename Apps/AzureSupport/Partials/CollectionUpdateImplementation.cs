@@ -220,27 +220,60 @@ namespace AaltoGlobalImpact.OIP
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
                 marker => marker.MarkerSource == MapMarker.MarkerSourceBlogValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(blog => blog.LocationCollection.GetIDSelectedArray()).
-                Select(loc =>
+            var locationBlogs =
+                masterCollection.CollectionContent.Select(
+                    blog => new { Blog = blog, Locations = blog.LocationCollection.GetIDSelectedArray() });
+            Dictionary<string, LocationSpot> locDict = new Dictionary<string, LocationSpot>();
+            foreach (var locBlog in locationBlogs)
+            {
+                foreach (var location in locBlog.Locations)
                 {
-                    MapMarker marker = MapMarker.CreateDefault();
-                    marker.Location = loc.Location;
-                    marker.MarkerSource = MapMarker.MarkerSourceBlogValue;
-                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-2.png";
-                    marker.SetLocationTextFromLocation(loc.Location);
-                    return marker;
-                }).ToArray();
-            //var groupedMarkers = 
-            mapContainer.MapMarkers.CollectionContent.AddRange(mapMarkersFromLocation);
+                    string key = location.Location.GetLocationText();
+                    LocationSpot locSpot;
+                    locDict.TryGetValue(key, out locSpot);
+                    if (locSpot == null)
+                    {
+                        locSpot = new LocationSpot { LocationText = key, Location = location.Location };
+                        locDict.Add(key, locSpot);
+                    }
+                    locSpot.AddBlog(locBlog.Blog);
+                }
+            }
+            List<MapMarker> markers = new List<MapMarker>();
+            foreach (var dictItem in locDict)
+            {
+                var locSpot = dictItem.Value;
+                MapMarker marker = MapMarker.CreateDefault();
+                marker.Location = locSpot.Location;
+                marker.MarkerSource = MapMarker.MarkerSourceBlogValue;
+                marker.IconUrl = GetIconUrlForCategory("News");
+                marker.LocationText = locSpot.LocationText;
+                marker.SetLocationTextFromLocation(locSpot.Location);
+                marker.PopupTitle = "News";
+                StringBuilder strBuilder = new StringBuilder();
+                foreach (var blogItem in locSpot.Blogs)
+                {
+                    strBuilder.AppendFormat("<a href=\"{0}\">{1}</a><br>",
+                        blogItem.ReferenceToInformation.URL, blogItem.ReferenceToInformation.Title.Replace("'", ""));
+                }
+                marker.PopupContent = strBuilder.ToString();
+                markers.Add(marker);
+            }
+
+            mapContainer.MapMarkers.CollectionContent.AddRange(markers);
         }
 
         class LocationSpot
         {
+            public static string[] CategoryNames = new string[] {"Projects", "Events", "Blogs"};
             public string LocationText;
             public Location Location;
+            public List<Blog> Blogs = new List<Blog>();
             public List<CategoryActivity> CategorizedActivites = new List<CategoryActivity>();
             public CategoryActivity GetOrInitiateCategoryWithName(string categoryName)
             {
+                if (CategoryNames.Contains(categoryName) == false)
+                    categoryName = null;
                 var result = CategorizedActivites.FirstOrDefault(catAct => catAct.CategoryName == categoryName);
                 if (result == null)
                 {
@@ -249,6 +282,12 @@ namespace AaltoGlobalImpact.OIP
                 }
                 return result;
             }
+            
+            public void AddBlog(Blog blog)
+            {
+                Blogs.Add(blog);
+            }
+
             public void AddActivity(Activity activity)
             {
                 var categories = activity.CategoryCollection.GetIDSelectedArray();
@@ -270,23 +309,19 @@ namespace AaltoGlobalImpact.OIP
         {
             public string CategoryName;
             public List<Activity> Activities = new List<Activity>();
+
+            public string GetCategoryTitle()
+            {
+                if (String.IsNullOrEmpty(CategoryName) || LocationSpot.CategoryNames.Contains(CategoryName) == false)
+                    return "Activities";
+                return CategoryName;
+            }
         }
 
         internal static void Update_MapContainer_MarkerSourceActivities(MapContainer mapContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
         {
             mapContainer.MapMarkers.CollectionContent.RemoveAll(
                 marker => marker.MarkerSource == MapMarker.MarkerSourceActivityValue);
-            var mapMarkersFromLocation = masterCollection.CollectionContent.SelectMany(activity => activity.LocationCollection.GetIDSelectedArray()).
-                Select(loc =>
-                {
-                    MapMarker marker = MapMarker.CreateDefault();
-                    marker.Location = loc.Location;
-                    marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
-                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
-                    marker.SetLocationTextFromLocation(loc.Location);
-                    return marker;
-
-                }).ToArray();
             var locationActivities =
                 masterCollection.CollectionContent.Select(
                     activity => new {Activity = activity, Locations = activity.LocationCollection.GetIDSelectedArray()});
@@ -315,10 +350,11 @@ namespace AaltoGlobalImpact.OIP
                     MapMarker marker = MapMarker.CreateDefault();
                     marker.Location = locSpot.Location;
                     marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
-                    marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
+                    marker.IconUrl = GetIconUrlForCategory(catItem.CategoryName);
+                    //marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
                     marker.LocationText = locSpot.LocationText;
                     marker.SetLocationTextFromLocation(locSpot.Location);
-                    marker.PopupTitle = "Activities";
+                    marker.PopupTitle = catItem.GetCategoryTitle();
                     StringBuilder strBuilder = new StringBuilder();
                     foreach(var act in catItem.Activities)
                     {
@@ -333,6 +369,12 @@ namespace AaltoGlobalImpact.OIP
             mapContainer.MapMarkers.CollectionContent.AddRange(markers);
         }
 
+        private static string GetIconUrlForCategory(string categoryName)
+        {
+            if (categoryName != "News" && LocationSpot.CategoryNames.Contains(categoryName) == false)
+                categoryName = "Activities";
+            return string.Format("../oip-additions/oip-assets/oip-images/oip-markers/map-marker-{0}.png", categoryName);
+        }
 
 
         internal static void Update_Group_CategoryCollection(Group group, CategoryCollection localCollection, CategoryCollection masterCollection)

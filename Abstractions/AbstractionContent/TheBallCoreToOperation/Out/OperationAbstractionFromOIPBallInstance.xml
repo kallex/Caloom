@@ -575,9 +575,16 @@
           <TargetDefinition name="BitmapData" dataType="Bitmap" designDesc="Bitmap image if existing" state="designApproved">
             <Parameter name="MasterRelativeLocation" />
           </TargetDefinition>
-          <MethodExecute name="CreateImageMediaFormats" designDesc="Create various media formats" state="underDesign">
+          <TargetDefinition name="VideoData" dataType="object" designDesc="Videodata" state="designApproved">
+            <Parameter name="MasterRelativeLocation" />
+          </TargetDefinition>
+          <MethodExecute name="CreateImageMediaFormats" designDesc="Create various media formats (if bitmap is not null)" state="underDesign">
             <Parameter name="MasterRelativeLocation" />
             <Target name="BitmapData" />
+          </MethodExecute>
+          <MethodExecute name="CreateVideoMediaFormats" designDesc="Create various video media formats (if object is not null)" state="designApproved">
+            <Parameter name="MasterRelativeLocation" />
+            <Target name="VideoData" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

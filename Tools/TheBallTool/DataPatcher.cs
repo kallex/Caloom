@@ -126,13 +126,13 @@ namespace TheBallTool
                 ReconnectMastersAndCollections(acctLoc);
         }
 
-        private static IInformationObject[] GetAllInformationObjects(Predicate<IInformationObject> filterIfFalse)
+        private static IInformationObject[] GetAllInformationObjects(Predicate<string> filterByFullName,  Predicate<IInformationObject> filterIfFalse)
         {
             string[] ownerLocations = GetAllOwnerLocations();
             List<IInformationObject> result = new List<IInformationObject>();
             foreach(string ownerLocation in ownerLocations)
             {
-                var ownerObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, filterIfFalse);
+                var ownerObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, filterByFullName,  filterIfFalse);
                 result.AddRange(ownerObjects);
             }
             return result.ToArray();
@@ -145,7 +145,7 @@ namespace TheBallTool
 
             VirtualOwner me = VirtualOwner.FigureOwner(ownerLocation);
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation,
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, null, 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
@@ -169,7 +169,7 @@ namespace TheBallTool
         private static void DoCustomCleanup(string groupLoc)
         {
             var defaultBlogToDelete = StorageSupport.CurrActiveContainer.
-                GetInformationObjects(groupLoc,
+                GetInformationObjects(groupLoc, null,
                                       item => item is Blog && item.RelativeLocation.EndsWith("/default")).ToArray();
             foreach (Blog blog in defaultBlogToDelete)
             {
@@ -226,7 +226,7 @@ namespace TheBallTool
 
         private static void RemoveBlogLocationsOnce()
         {
-            var blogs = GetAllInformationObjects(io => io is Blog).Cast<Blog>().ToArray();
+            var blogs = GetAllInformationObjects(name => name.Contains("Blog"), io => io is Blog).Cast<Blog>().ToArray();
             foreach (var blog in blogs)
             {
                 //blog.Location = null;
@@ -234,9 +234,18 @@ namespace TheBallTool
             }
         }
 
+        private static void UpdateAllMediaFormats()
+        {
+            var mediaContents = GetAllInformationObjects(name => name.Contains("/MediaContent/"), io => io is MediaContent).Cast<MediaContent>().ToArray();
+            foreach(var mediaContent in mediaContents)
+            {
+                mediaContent.UpdateAdditionalMediaFormats();
+            }
+        }
+
         private static void RemoveActivityLocationsOnce()
         {
-            var activities = GetAllInformationObjects(io => io is Activity).Cast<Activity>().ToArray();
+            var activities = GetAllInformationObjects(null, io => io is Activity).Cast<Activity>().ToArray();
             foreach (var activity in activities)
             {
                 //activity.Location = null;
@@ -245,7 +254,7 @@ namespace TheBallTool
         }
         private static void InitBlogGroupActivityImageGroupCollectionsOnce()
         {
-            var blogsGroupsActivities = GetAllInformationObjects(io => io is Activity || io is Blog || io is GroupContainer).ToArray();
+            var blogsGroupsActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog || io is GroupContainer).ToArray();
             var blogs = blogsGroupsActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
             var activities = blogsGroupsActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
             var groupContainers = blogsGroupsActivities.Where(ba => ba is GroupContainer).Cast<GroupContainer>().ToArray();
@@ -273,7 +282,7 @@ namespace TheBallTool
 
         private static void InitBlogAndActivityLocationCollectionsOnce()
         {
-            var blogsAndActivities = GetAllInformationObjects(io => io is Activity || io is Blog).ToArray();
+            var blogsAndActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog).ToArray();
             var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
             var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
             foreach (var blog in blogs.Where(bl => bl.LocationCollection == null))
@@ -292,7 +301,7 @@ namespace TheBallTool
 
         private static void ConnectMapContainerToCollections()
         {
-            var mapContainers = GetAllInformationObjects(io => io is MapContainer).Cast<MapContainer>().ToArray();
+            var mapContainers = GetAllInformationObjects(null, io => io is MapContainer).Cast<MapContainer>().ToArray();
             foreach (var mapContainer in mapContainers)
             {
                 mapContainer.MarkerSourceActivities = ActivityCollection.CreateDefault();
@@ -305,7 +314,7 @@ namespace TheBallTool
         private static void ClearEmptyLocations()
         {
             var locations =
-                GetAllInformationObjects(io => io is AddressAndLocation).Cast<AddressAndLocation>().ToArray();
+                GetAllInformationObjects(null, io => io is AddressAndLocation).Cast<AddressAndLocation>().ToArray();
             foreach(var loc in locations)
             {
                 if(String.IsNullOrEmpty(loc.Location.LocationName))
@@ -327,7 +336,7 @@ namespace TheBallTool
             //var informationObjects = GetAllInformationObjects(io => SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
             long memBefore = GC.GetTotalMemory(false);
             string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, io =>  io is AddressAndLocation && 
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, io =>  io is AddressAndLocation && 
                 SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
 
             int currMaxSubs = 0;
@@ -355,7 +364,7 @@ namespace TheBallTool
         {
             string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
             var informationObjects =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation,
+                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
                                                                          io => io is AddressAndLocation &&
                                                                                SubscribeSupport.GetSubscriptions(
                                                                                    io.RelativeLocation) != null).ToArray
@@ -382,7 +391,7 @@ namespace TheBallTool
         {
             string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
             var informationObjects =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation,
+                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
                                                                          io => io is AddressAndLocation &&
                                                                                SubscribeSupport.GetSubscriptions(
                                                                                    io.RelativeLocation) != null).ToArray
@@ -404,6 +413,15 @@ namespace TheBallTool
             WorkerSupport.ExecuteSubscriptionChain(message);
         }
 
+        private static void ExecuteSubscriptionChain(string groupID)
+        {
+            string interestGroupLocation = SubscribeSupport.ChainRequestDirectory + "grp/" + groupID + "/";
+            var submissions =
+                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null,
+                                                                         io => io is SubscriptionChainRequestContent).
+                    Cast<SubscriptionChainRequestContent>().ToArray();
+            WorkerSupport.ExecuteSubscriptionChains(submissions);
+        }
 
         private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct, Dictionary<string, SubcriptionGraphItem> lookupDictionary)
         {
@@ -470,7 +488,7 @@ namespace TheBallTool
         {
             string subscriptionChainLocation = SubscribeSupport.ChainRequestDirectory;
             var submissions =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(subscriptionChainLocation,
+                StorageSupport.CurrActiveContainer.GetInformationObjects(subscriptionChainLocation, null, 
                                                                          io => io is SubscriptionChainRequestContent).
                     Cast<SubscriptionChainRequestContent>().ToArray();
             foreach(var submission in submissions)
@@ -535,6 +553,7 @@ namespace TheBallTool
             //TestSubscriptionChainPick();
             
             PatchSubscriptionsToSubmitted();
+            //ExecuteSubscriptionChain(RenderWebSupport.DefaultGroupID);
             //PatchAccountsUpToDateWithRoot();
             //PatchBlogsAndActivitiesSelectedCollections();
 

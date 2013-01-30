@@ -1052,7 +1052,7 @@ namespace TheBall
         public static IInformationObject[] RetrieveInformationObjects(string itemDirectory, Type type)
         {
             var result =
-                CurrActiveContainer.GetInformationObjects(itemDirectory, iObj => iObj.GetType() == type).ToArray();
+                CurrActiveContainer.GetInformationObjects(itemDirectory, null,  iObj => iObj.GetType() == type).ToArray();
             return result;
             /*
             var blobList = CurrActiveContainer.GetBlobListing(itemDirectory, withMetaData: true).ToArray();
@@ -1300,12 +1300,14 @@ namespace TheBall
             return blobListing.Cast<CloudBlockBlob>().Where(blob => filterIfFalse(blob));
         }
         
-        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<IInformationObject> filterIfFalse = null)
+        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
         {
             var informationObjectBlobs = GetFilteredBlobListing(container, directoryLocation,
                                                                 blob =>
                                                                 blob.GetBlobInformationType() ==
                                                                 StorageSupport.InformationType_InformationObjectValue);
+            if (filterByFullName != null)
+                informationObjectBlobs = informationObjectBlobs.Where(blob => filterByFullName(blob.Name));
             var result = informationObjectBlobs.Select(blob =>
                                                            {
                                                                string informationObjectLocation = blob.Name;

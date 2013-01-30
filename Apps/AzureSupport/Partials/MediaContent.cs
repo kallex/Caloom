@@ -35,16 +35,23 @@ namespace AaltoGlobalImpact.OIP
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(containerOwner, locationFileName);
             StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream, StorageSupport.InformationType_GenericContentValue);
-            CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters
-                                                     {MasterRelativeLocation = RelativeLocation});
+            UpdateAdditionalMediaFormats();
+        }
+
+        public void UpdateAdditionalMediaFormats()
+        {
+            CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+        }
+
+        public void RemoveAdditionalMediaFormats()
+        {
+            ClearAdditionalMediaFormats.Execute(new ClearAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
         private void ClearCurrentContent(IContainerOwner containerOwner)
         {
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
             blob.DeleteWithoutFiringSubscriptions();
-            ClearAdditionalMediaFormats.Execute(new ClearAdditionalMediaFormatsParameters
-                                                    {MasterRelativeLocation = RelativeLocation});
         }
     }
 }

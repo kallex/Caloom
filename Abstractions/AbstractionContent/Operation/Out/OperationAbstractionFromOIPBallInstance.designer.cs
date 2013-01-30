@@ -466,7 +466,9 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Bitmap BitmapData = CreateAdditionalMediaFormatsImplementation.GetTarget_BitmapData(parameters.MasterRelativeLocation);	
+				object VideoData = CreateAdditionalMediaFormatsImplementation.GetTarget_VideoData(parameters.MasterRelativeLocation);	
 				CreateAdditionalMediaFormatsImplementation.ExecuteMethod_CreateImageMediaFormats(parameters.MasterRelativeLocation, BitmapData);		
+				CreateAdditionalMediaFormatsImplementation.ExecuteMethod_CreateVideoMediaFormats(parameters.MasterRelativeLocation, VideoData);		
 				}
 				}
 				public class ClearAdditionalMediaFormatsParameters 

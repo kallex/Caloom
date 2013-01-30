@@ -15,7 +15,7 @@ namespace AaltoGlobalImpact.OIP
 
             string ownerLocation = owner.ContainerName + "/" + owner.LocationPrefix + "/";
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation,
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, null, 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
