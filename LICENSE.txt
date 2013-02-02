@@ -1,0 +1,28 @@
+Note! There are subcomponents and libraries that may comply with different licensing.
+All the main content in our repositories is licensed with FREEDOM TO DO ANYTHING.
+
+I was happy to find the following outcome that addresses the "license hell" of complete freedom:
+http://www.wtfpl.net/about/
+
+If you need any clarification of this, feel free to contact our team directly.
+
+February 2nd 2013, Helsinki Finland
+Kalle Launiala, "The Ball / Service Operating System" team
+
+
+The license text as full:
+
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+                    Version 2, December 2004 
+
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
+
+ Everyone is permitted to copy and distribute verbatim or modified 
+ copies of this license document, and changing it is allowed as long 
+ as the name is changed. 
+
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+
