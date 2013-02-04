@@ -9718,7 +9718,7 @@ using TheBall.CORE;
 					var result = new InformationOwnerInfo();
 					result.OwnerType = @"InformationOwnerInfo.OwnerType";
 
-					result.OwnerID = @"InformationOwnerInfo.OwnerID";
+					result.OwnerIdentifier = @"InformationOwnerInfo.OwnerIdentifier";
 
 				
 					return result;
@@ -9781,7 +9781,7 @@ using TheBall.CORE;
 					get {
 						if(OwnerType != _unmodified_OwnerType)
 							return true;
-						if(OwnerID != _unmodified_OwnerID)
+						if(OwnerIdentifier != _unmodified_OwnerIdentifier)
 							return true;
 				
 						return false;
@@ -9796,7 +9796,7 @@ using TheBall.CORE;
 				private void CopyContentFrom(InformationOwnerInfo sourceObject)
 				{
 					OwnerType = sourceObject.OwnerType;
-					OwnerID = sourceObject.OwnerID;
+					OwnerIdentifier = sourceObject.OwnerIdentifier;
 				}
 				
 
@@ -9804,7 +9804,7 @@ using TheBall.CORE;
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OwnerType = OwnerType;
-					_unmodified_OwnerID = OwnerID;
+					_unmodified_OwnerIdentifier = OwnerIdentifier;
 				
 				
 				}
@@ -9819,8 +9819,8 @@ using TheBall.CORE;
 						case "OwnerType":
 							OwnerType = value;
 							break;
-						case "OwnerID":
-							OwnerID = value;
+						case "OwnerIdentifier":
+							OwnerIdentifier = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -9830,8 +9830,8 @@ using TheBall.CORE;
 			public string OwnerType { get; set; }
 			private string _unmodified_OwnerType;
 			[DataMember]
-			public string OwnerID { get; set; }
-			private string _unmodified_OwnerID;
+			public string OwnerIdentifier { get; set; }
+			private string _unmodified_OwnerIdentifier;
 			
 			}
 			[DataContract]

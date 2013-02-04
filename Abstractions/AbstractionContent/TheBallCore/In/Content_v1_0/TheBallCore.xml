@@ -150,7 +150,7 @@
       <InformationObject name="InformationOwnerInfo" designDesc="Info about information owner">
         <InformationItems>
           <InformationItem name="OwnerType" logicalDataType="Text_Short"/>
-          <InformationItem name="OwnerID" logicalDataType="Text_Short"/>
+          <InformationItem name="OwnerIdentifier" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="UsageMonitorItem" designDesc="Usage monitor item">
