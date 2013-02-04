@@ -134,6 +134,7 @@
     <Compile Include="Partials\VirtualOwner.cs" />
     <Compile Include="QueueSupport.cs" />
     <Compile Include="RenderWebSupport.cs" />
+    <Compile Include="ResourceUsageSupport.cs" />
     <Compile Include="StackContextItem.cs" />
     <Compile Include="StorageSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
