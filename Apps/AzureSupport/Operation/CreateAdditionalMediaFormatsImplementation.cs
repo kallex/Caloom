@@ -83,17 +83,12 @@ namespace AaltoGlobalImpact.OIP
 
         private static string GetSizedLocation(string masterRelativeLocation, Size size, bool fittingAllIn)
         {
-            string currExtension = Path.GetExtension(masterRelativeLocation);
-            int currExtensionLength = currExtension == null ? 0 : currExtension.Length;
-            string masterLocationWithoutExtension = masterRelativeLocation.Substring(0,
-                                                                                     masterRelativeLocation.Length -
-                                                                                     currExtensionLength);
+            string masterLocationWithoutExtension = RenderWebSupport.GetLocationWithoutExtension(masterRelativeLocation);
             string formatWithExtension = fittingAllIn
                                              ? String.Format("_{0}x{1}_whole.jpg", size.Width, size.Height)
                                              : String.Format("_{0}x{1}_crop.jpg", size.Width, size.Height);
             return masterLocationWithoutExtension + formatWithExtension;
         }
-
 
         private static Bitmap ResizeImage(Bitmap mg, Size newSize, bool maintainRatio = false, bool honorNewSizeWithSorrowBorders = false,
             bool cropInsteadOfFitWithEmpty = false)

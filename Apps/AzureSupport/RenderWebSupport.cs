@@ -89,6 +89,15 @@ namespace TheBall
             public bool WasNeeded = false;
         }
 
+        public static string GetLocationWithoutExtension(string location)
+        {
+            string currExtension = Path.GetExtension(location);
+            int currExtensionLength = currExtension == null ? 0 : currExtension.Length;
+            return location.Substring(0,
+                                                    location.Length -
+                                                    currExtensionLength);
+        }
+
         public static void RenderTemplateWithContentToBlob(CloudBlob template, CloudBlob renderTarget, InformationSource setAsDefaultSource = null)
         {
             InformationSourceCollection sources = renderTarget.GetBlobInformationSources();

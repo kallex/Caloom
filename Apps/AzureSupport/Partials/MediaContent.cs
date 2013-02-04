@@ -15,6 +15,15 @@ namespace AaltoGlobalImpact.OIP
             get { return RenderWebSupport.GetUrlFromRelativeLocation(RelativeLocation); }
         }
 
+        public string ContentUrlBase
+        {
+            get
+            {
+                return RenderWebSupport.GetUrlFromRelativeLocation(
+                    RenderWebSupport.GetLocationWithoutExtension(RelativeLocation));
+            }
+        }
+
         [DataMember]
         public string OriginalFileName { get; set; }
 
@@ -34,6 +43,7 @@ namespace AaltoGlobalImpact.OIP
             ContentLength = postedContent.ContentLength;
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(containerOwner, locationFileName);
+            postedContent.InputStream.Seek(0, SeekOrigin.Begin);
             StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream, StorageSupport.InformationType_GenericContentValue);
             UpdateAdditionalMediaFormats();
         }
