@@ -40,7 +40,7 @@ namespace TheBall
         {
             get { return InformationContext.Current.CurrBlobClient; }
         }
-        private const int AccOrGrpPlusIDPathLength = 41;
+        public const int AccOrGrpPlusIDPathLength = 41;
         private const string ContentFolderName = "Content";
         public const int GuidLength = 36;
 

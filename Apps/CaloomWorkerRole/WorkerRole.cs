@@ -8,8 +8,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using Microsoft.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
@@ -78,6 +76,7 @@ namespace CaloomWorkerRole
                     // or ...
                     // ae.Flatten().Handle((ex) => ex is MyCustomException);
                 }
+                    /*
                 catch (MessagingException e)
                 {
                     if (!e.IsTransient)
@@ -86,7 +85,7 @@ namespace CaloomWorkerRole
                         throw;
                     }
                     Thread.Sleep(10000);
-                }
+                }*/
                 catch (OperationCanceledException e)
                 {
                     if (!IsStopped)

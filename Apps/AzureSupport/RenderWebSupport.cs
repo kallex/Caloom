@@ -877,7 +877,10 @@ namespace TheBall
         public static string GetUrlFromRelativeLocation(string relativeLocation)
         {
             if (relativeLocation.StartsWith("grp/"))
-                return "/auth/" + relativeLocation;
+            {
+                //return "/auth/" + relativeLocation;
+                return "../../" + relativeLocation.Substring(StorageSupport.AccOrGrpPlusIDPathLength);
+            }
             if(relativeLocation.StartsWith("acc/"))
             {
                 string result = "/auth/account" + relativeLocation.Substring(4 + StorageSupport.GuidLength);

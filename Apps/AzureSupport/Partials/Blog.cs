@@ -34,6 +34,18 @@ namespace AaltoGlobalImpact.OIP
                 Excerpt = "";
             if(Excerpt.Length > 200)
                 Excerpt = Excerpt.Substring(0, 200);
+            SetFirstImageGroupImageAsFeaturedImage();
+        }
+
+        private void SetFirstImageGroupImageAsFeaturedImage()
+        {
+            var firstImageGroup = ImageGroupCollection.GetIDSelectedArray().FirstOrDefault();
+            if(firstImageGroup != null)
+            {
+                var firstImage = firstImageGroup.ImagesCollection.GetIDSelectedArray().FirstOrDefault();
+                if (firstImage != null)
+                    FeaturedImage = firstImage;
+            }
         }
     }
 #if jsondatetimefixed

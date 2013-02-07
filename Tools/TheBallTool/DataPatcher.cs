@@ -525,7 +525,9 @@ namespace TheBallTool
             bool skip = false;
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
-            
+
+            PatchSubscriptionsToSubmitted();
+
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
             //ReconnectGroupsMastersAndCollections();
@@ -552,7 +554,6 @@ namespace TheBallTool
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
             
-            PatchSubscriptionsToSubmitted();
             //ExecuteSubscriptionChain(RenderWebSupport.DefaultGroupID);
             //PatchAccountsUpToDateWithRoot();
             //PatchBlogsAndActivitiesSelectedCollections();

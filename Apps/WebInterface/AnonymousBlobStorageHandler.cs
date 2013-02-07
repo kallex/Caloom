@@ -130,8 +130,11 @@ namespace WebInterface
         {
             string hostName = request.Url.DnsSafeHost;
             if (hostName == "localhost")
-                hostName = "demopublicoip.aaltoglobalimpact.org";
-            if(hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
+            {
+                //                hostName = "demopublicoip.aaltoglobalimpact.org";
+                hostName = "demowww.aaltoglobalimpact.org";
+            }
+            if (hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
                 return request.Path.Replace("/public/", "pub/");
             string containerName = hostName.Replace('.', '-');
             return containerName + request.Path;
