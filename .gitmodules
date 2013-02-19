@@ -27,7 +27,7 @@
 	url = git://github.com/abstractiondev/OperationABS
 [submodule "Abstractions/ObjectRelationalABS"]
 	path = Abstractions/ObjectRelationalABS
-	url = git@github.com:abstractiondev/ObjectRelationalABS
+	url = git://github.com/abstractiondev/ObjectRelationalABS
 [submodule "Apps/WorkerTemplate/CaloomUI"]
 	path = Apps/WorkerTemplate/CaloomUI
 	url = git://github.com/kallex/CaloomUI.git
@@ -39,7 +39,7 @@
 	url = git://github.com/abstractiondev/TheBallCoreToOperationTRANS
 [submodule "Apps/workerroleaccelerator"]
 	path = Apps/workerroleaccelerator
-	url = git@github.com:kallex/workerroleaccelerator.git
+	url = git://github.com/kallex/workerroleaccelerator.git
 [submodule "Apps/wa-accelerator-webroles"]
 	path = Apps/wa-accelerator-webroles
 	url = git://github.com/kallex/wa-accelerator-webroles.git
