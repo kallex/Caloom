@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
 
@@ -203,6 +201,7 @@ namespace TheBallTool
                     // or ...
                     // ae.Flatten().Handle((ex) => ex is MyCustomException);
                 }
+                    /*
                 catch (MessagingException e)
                 {
                     if (!e.IsTransient)
@@ -211,7 +210,7 @@ namespace TheBallTool
                         throw;
                     }
                     Thread.Sleep(10000);
-                }
+                }*/
                 catch (OperationCanceledException e)
                 {
                     if (!IsStopped)
