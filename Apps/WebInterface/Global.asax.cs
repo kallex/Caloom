@@ -16,7 +16,7 @@ namespace WebInterface
         protected void Application_Start(object sender, EventArgs e)
         {
             string connStr;
-            const string ConnStrFileName = @"C:\work\abs\ConnectionStringStorage\theballconnstr.txt";
+            const string ConnStrFileName = @"C:\users\kalle\work\ConnectionStringStorage\theballconnstr.txt";
             if(File.Exists(ConnStrFileName))
                 connStr = File.ReadAllText(ConnStrFileName);
             else
