@@ -67,6 +67,46 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
+        internal static void Update_BlogIndexGroup_BlogSourceForSummary(BlogIndexGroup blogIndexGroup, BlogCollection localCollection, BlogCollection masterCollection)
+        {
+            if(localCollection == null)
+                localCollection = BlogCollection.CreateDefault();
+            localCollection.CollectionContent.Clear();
+            var limitDateTime = DateTime.UtcNow.AddMonths(-3);
+            var relevantBlogs =
+                masterCollection.CollectionContent.Where(blog => blog.Published >= limitDateTime).OrderByDescending(blog => blog.Published).Take(10).ToArray();
+            var blogsByAuthor = relevantBlogs.GroupBy(blog => blog.Author).OrderBy(grpItem => grpItem.Key).ToArray();
+            if(blogIndexGroup.GroupedByAuthor == null)
+                blogIndexGroup.GroupedByAuthor = GroupedInformationCollection.CreateDefault();
+            blogIndexGroup.GroupedByAuthor.CollectionContent.Clear();
+            blogIndexGroup.GroupedByAuthor.CollectionContent.AddRange(blogsByAuthor.Select(blogGroupToGroupedInformation));
+
+            if (blogIndexGroup.GroupedByCategory == null)
+                blogIndexGroup.GroupedByCategory = GroupedInformationCollection.CreateDefault();
+            if (blogIndexGroup.GroupedByDate == null)
+                blogIndexGroup.GroupedByDate = GroupedInformationCollection.CreateDefault();
+            if (blogIndexGroup.GroupedByLocation == null)
+                blogIndexGroup.GroupedByLocation = GroupedInformationCollection.CreateDefault();
+
+            var archiveSeq = masterCollection.CollectionContent.OrderByDescending(blog => blog.Published)
+                    .ThenBy(blog => blog.Title)
+                    .Select(blog => blog.ReferenceToInformation);
+            if(blogIndexGroup.FullBlogArchive == null)
+                blogIndexGroup.FullBlogArchive = ReferenceCollection.CreateDefault();
+            blogIndexGroup.FullBlogArchive.CollectionContent.Clear();
+            blogIndexGroup.FullBlogArchive.CollectionContent.AddRange(archiveSeq);
+
+        }
+
+        private static GroupedInformation blogGroupToGroupedInformation(IGrouping<string, Blog> grp)
+        {
+            var result = GroupedInformation.CreateDefault();
+            result.GroupName = grp.Key;
+            result.ReferenceCollection.CollectionContent.AddRange(grp.Select(blog => blog.ReferenceToInformation));
+            return result;
+        }
+
+        /*
         internal static void Update_BlogIndexGroup_BlogByLocation(BlogIndexGroup blogIndexGroup, BlogCollection localCollection, BlogCollection masterCollection)
         {
             localCollection.CollectionContent = masterCollection.CollectionContent;
@@ -88,14 +128,16 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
-        internal static void Update_ActivitySummaryContainer_ActivityCollection(ActivitySummaryContainer activitySummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
+
+        internal static void Update_BlogIndexGroup_BlogByDate(BlogIndexGroup blogIndexGroup, BlogCollection localCollection, BlogCollection masterCollection)
         {
             localCollection.CollectionContent = masterCollection.CollectionContent;
             if (localCollection.OrderFilterIDList == null)
                 localCollection.OrderFilterIDList = new List<string>();
         }
+         */
 
-        internal static void Update_BlogIndexGroup_BlogByDate(BlogIndexGroup blogIndexGroup, BlogCollection localCollection, BlogCollection masterCollection)
+        internal static void Update_ActivitySummaryContainer_ActivityCollection(ActivitySummaryContainer activitySummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
         {
             localCollection.CollectionContent = masterCollection.CollectionContent;
             if (localCollection.OrderFilterIDList == null)
@@ -424,5 +466,6 @@ namespace AaltoGlobalImpact.OIP
             if (localCollection.OrderFilterIDList == null)
                 localCollection.OrderFilterIDList = new List<string>();
         }
+
     }
 }

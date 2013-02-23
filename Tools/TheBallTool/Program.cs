@@ -22,6 +22,7 @@ namespace TheBallTool
             {
                 string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                                                args[0]);
+                //connStr = "UseDevelopmentStorage=true";
                 bool debugMode = false;
 
 

@@ -17692,6 +17692,905 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			public partial class GroupedInformationCollection : IInformationObject , IInformationCollection
+			{
+				public GroupedInformationCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "GroupedInformationCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/GroupedInformationCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GroupedInformationCollection), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupedInformationCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static GroupedInformationCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveGroupedInformationCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupedInformationCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupedInformationCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static GroupedInformationCollection RetrieveGroupedInformationCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (GroupedInformationCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupedInformationCollection), null, owner);
+                    return result;
+                }
+
+				public static GroupedInformationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = GroupedInformationCollection.RetrieveGroupedInformationCollection("Content/AaltoGlobalImpact.OIP/GroupedInformationCollection/" + contentName, containerOwner);
+					var result = GroupedInformationCollection.RetrieveGroupedInformationCollection("AaltoGlobalImpact.OIP/GroupedInformationCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupedInformationCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupedInformationCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupedInformationCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupedInformationCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static GroupedInformationCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupedInformationCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (GroupedInformationCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupedInformationCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupedInformationCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref GroupedInformationCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = GroupedInformation.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static GroupedInformationCollection CreateDefault()
+				{
+					var result = new GroupedInformationCollection();
+					return result;
+				}
+
+				public static GroupedInformationCollection CreateDemoDefault()
+				{
+					GroupedInformationCollection customDemo = null;
+					GroupedInformationCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new GroupedInformationCollection();
+					result.CollectionContent.Add(GroupedInformation.CreateDemoDefault());
+					//result.CollectionContent.Add(GroupedInformation.CreateDemoDefault());
+					//result.CollectionContent.Add(GroupedInformation.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<GroupedInformation> CollectionContent = new List<GroupedInformation>();
+				private GroupedInformation[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public GroupedInformation[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					switch(propertyName)
+					{
+						case "SelectedIDCommaSeparated":
+							SelectedIDCommaSeparated = propertyValue;
+							break;
+						case "IsCollectionFiltered":
+							IsCollectionFiltered = bool.Parse(propertyValue);
+							break;
+						default:
+							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					}
+				}
+
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (GroupedInformation )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(GroupedInformationCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class GroupedInformation : IInformationObject 
+			{
+				public GroupedInformation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "GroupedInformation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/GroupedInformation/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GroupedInformation), null, owner);
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupedInformation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static GroupedInformation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveGroupedInformation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupedInformation");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupedInformation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static GroupedInformation RetrieveGroupedInformation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (GroupedInformation) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupedInformation), null, owner);
+                    return result;
+                }
+
+				public static GroupedInformation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = GroupedInformation.RetrieveGroupedInformation("Content/AaltoGlobalImpact.OIP/GroupedInformation/" + contentName, containerOwner);
+					var result = GroupedInformation.RetrieveGroupedInformation("AaltoGlobalImpact.OIP/GroupedInformation/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupedInformation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/GroupedInformation/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupedInformation) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupedInformation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static GroupedInformation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupedInformation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (GroupedInformation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "GroupedInformation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "GroupedInformation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref GroupedInformation customDemoObject);
+
+
+
+				public static GroupedInformation CreateDefault()
+				{
+					var result = new GroupedInformation();
+					result.ReferenceCollection = ReferenceCollection.CreateDefault();
+					return result;
+				}
+
+				public static GroupedInformation CreateDemoDefault()
+				{
+					GroupedInformation customDemo = null;
+					GroupedInformation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new GroupedInformation();
+					result.GroupName = @"GroupedInformation.GroupName";
+
+					result.ReferenceCollection = ReferenceCollection.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(ReferenceCollection != null) {
+						((IInformationObject) ReferenceCollection).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ReferenceCollection;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = ReferenceCollection;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) ReferenceCollection;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(GroupName != _unmodified_GroupName)
+							return true;
+						if(ReferenceCollection != _unmodified_ReferenceCollection)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) ReferenceCollection;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(ReferenceCollection != null) {
+						if(ReferenceCollection.ID == replacingObject.ID)
+							ReferenceCollection = (ReferenceCollection) replacingObject;
+						else {
+							IInformationObject iObject = ReferenceCollection;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(GroupedInformation sourceObject)
+				{
+					GroupName = sourceObject.GroupName;
+					ReferenceCollection = sourceObject.ReferenceCollection;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_GroupName = GroupName;
+				
+					_unmodified_ReferenceCollection = ReferenceCollection;
+					if(ReferenceCollection != null)
+						((IInformationObject) ReferenceCollection).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupName":
+							GroupName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string GroupName { get; set; }
+			private string _unmodified_GroupName;
+			[DataMember]
+			public ReferenceCollection ReferenceCollection { get; set; }
+			private ReferenceCollection _unmodified_ReferenceCollection;
+			
+			}
+			[DataContract]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
 				public ReferenceToInformation()
@@ -36951,10 +37850,12 @@ Blog.Excerpt
 				{
 					var result = new BlogIndexGroup();
 					result.Icon = Image.CreateDefault();
-					result.BlogByDate = BlogCollection.CreateDefault();
-					result.BlogByLocation = BlogCollection.CreateDefault();
-					result.BlogByAuthor = BlogCollection.CreateDefault();
-					result.BlogByCategory = BlogCollection.CreateDefault();
+					result.GroupedByDate = GroupedInformationCollection.CreateDefault();
+					result.GroupedByLocation = GroupedInformationCollection.CreateDefault();
+					result.GroupedByAuthor = GroupedInformationCollection.CreateDefault();
+					result.GroupedByCategory = GroupedInformationCollection.CreateDefault();
+					result.FullBlogArchive = ReferenceCollection.CreateDefault();
+					result.BlogSourceForSummary = BlogCollection.CreateDefault();
 					return result;
 				}
 
@@ -36975,10 +37876,12 @@ BlogIndexGroup.Introduction
 BlogIndexGroup.Introduction
 ";
 
-					result.BlogByDate = BlogCollection.CreateDemoDefault();
-					result.BlogByLocation = BlogCollection.CreateDemoDefault();
-					result.BlogByAuthor = BlogCollection.CreateDemoDefault();
-					result.BlogByCategory = BlogCollection.CreateDemoDefault();
+					result.GroupedByDate = GroupedInformationCollection.CreateDemoDefault();
+					result.GroupedByLocation = GroupedInformationCollection.CreateDemoDefault();
+					result.GroupedByAuthor = GroupedInformationCollection.CreateDemoDefault();
+					result.GroupedByCategory = GroupedInformationCollection.CreateDemoDefault();
+					result.FullBlogArchive = ReferenceCollection.CreateDemoDefault();
+					result.BlogSourceForSummary = BlogCollection.CreateDemoDefault();
 					result.Summary = @"BlogIndexGroup.Summary
 BlogIndexGroup.Summary
 BlogIndexGroup.Summary
@@ -36995,25 +37898,30 @@ BlogIndexGroup.Summary
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
-					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByDate(this, localCollection:BlogByDate, masterCollection:(BlogCollection) masterInstance);
-					} else if(BlogByDate != null) {
-						((IInformationObject) BlogByDate).UpdateCollections(masterInstance);
+					if(GroupedByDate != null) {
+						((IInformationObject) GroupedByDate).UpdateCollections(masterInstance);
 					}
-					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByLocation(this, localCollection:BlogByLocation, masterCollection:(BlogCollection) masterInstance);
-					} else if(BlogByLocation != null) {
-						((IInformationObject) BlogByLocation).UpdateCollections(masterInstance);
+
+					if(GroupedByLocation != null) {
+						((IInformationObject) GroupedByLocation).UpdateCollections(masterInstance);
 					}
-					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByAuthor(this, localCollection:BlogByAuthor, masterCollection:(BlogCollection) masterInstance);
-					} else if(BlogByAuthor != null) {
-						((IInformationObject) BlogByAuthor).UpdateCollections(masterInstance);
+
+					if(GroupedByAuthor != null) {
+						((IInformationObject) GroupedByAuthor).UpdateCollections(masterInstance);
 					}
+
+					if(GroupedByCategory != null) {
+						((IInformationObject) GroupedByCategory).UpdateCollections(masterInstance);
+					}
+
+					if(FullBlogArchive != null) {
+						((IInformationObject) FullBlogArchive).UpdateCollections(masterInstance);
+					}
+
 					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogByCategory(this, localCollection:BlogByCategory, masterCollection:(BlogCollection) masterInstance);
-					} else if(BlogByCategory != null) {
-						((IInformationObject) BlogByCategory).UpdateCollections(masterInstance);
+						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogSourceForSummary(this, localCollection:BlogSourceForSummary, masterCollection:(BlogCollection) masterInstance);
+					} else if(BlogSourceForSummary != null) {
+						((IInformationObject) BlogSourceForSummary).UpdateCollections(masterInstance);
 					}
 				}
 
@@ -37033,7 +37941,7 @@ BlogIndexGroup.Summary
 					if(filterOnFalse(this))
 						result.Add(this);
 					{ // Scoping block for variable name reusability
-						IInformationObject item = BlogByDate;
+						IInformationObject item = GroupedByDate;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -37041,7 +37949,7 @@ BlogIndexGroup.Summary
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
-						IInformationObject item = BlogByLocation;
+						IInformationObject item = GroupedByLocation;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -37049,7 +37957,7 @@ BlogIndexGroup.Summary
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
-						IInformationObject item = BlogByAuthor;
+						IInformationObject item = GroupedByAuthor;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -37057,7 +37965,23 @@ BlogIndexGroup.Summary
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
-						IInformationObject item = BlogByCategory;
+						IInformationObject item = GroupedByCategory;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = FullBlogArchive;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = BlogSourceForSummary;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -37089,7 +38013,7 @@ BlogIndexGroup.Summary
 						}
 					}
 					{
-						var item = BlogByDate;
+						var item = GroupedByDate;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37098,7 +38022,7 @@ BlogIndexGroup.Summary
 						}
 					}
 					{
-						var item = BlogByLocation;
+						var item = GroupedByLocation;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37107,7 +38031,7 @@ BlogIndexGroup.Summary
 						}
 					}
 					{
-						var item = BlogByAuthor;
+						var item = GroupedByAuthor;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37116,7 +38040,25 @@ BlogIndexGroup.Summary
 						}
 					}
 					{
-						var item = BlogByCategory;
+						var item = GroupedByCategory;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = FullBlogArchive;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = BlogSourceForSummary;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37150,22 +38092,32 @@ BlogIndexGroup.Summary
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) BlogByDate;
+						var item = (IInformationObject) GroupedByDate;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) BlogByLocation;
+						var item = (IInformationObject) GroupedByLocation;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) BlogByAuthor;
+						var item = (IInformationObject) GroupedByAuthor;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) BlogByCategory;
+						var item = (IInformationObject) GroupedByCategory;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) FullBlogArchive;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) BlogSourceForSummary;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -37180,18 +38132,22 @@ BlogIndexGroup.Summary
 							return true;
 						if(Introduction != _unmodified_Introduction)
 							return true;
-						if(BlogByDate != _unmodified_BlogByDate)
+						if(GroupedByDate != _unmodified_GroupedByDate)
 							return true;
-						if(BlogByLocation != _unmodified_BlogByLocation)
+						if(GroupedByLocation != _unmodified_GroupedByLocation)
 							return true;
-						if(BlogByAuthor != _unmodified_BlogByAuthor)
+						if(GroupedByAuthor != _unmodified_GroupedByAuthor)
 							return true;
-						if(BlogByCategory != _unmodified_BlogByCategory)
+						if(GroupedByCategory != _unmodified_GroupedByCategory)
+							return true;
+						if(FullBlogArchive != _unmodified_FullBlogArchive)
+							return true;
+						if(BlogSourceForSummary != _unmodified_BlogSourceForSummary)
 							return true;
 						if(Summary != _unmodified_Summary)
 							return true;
 						{
-							IInformationObject item = (IInformationObject) BlogByDate;
+							IInformationObject item = (IInformationObject) GroupedByDate;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37200,7 +38156,7 @@ BlogIndexGroup.Summary
 							}
 						}
 						{
-							IInformationObject item = (IInformationObject) BlogByLocation;
+							IInformationObject item = (IInformationObject) GroupedByLocation;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37209,7 +38165,7 @@ BlogIndexGroup.Summary
 							}
 						}
 						{
-							IInformationObject item = (IInformationObject) BlogByAuthor;
+							IInformationObject item = (IInformationObject) GroupedByAuthor;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37218,7 +38174,25 @@ BlogIndexGroup.Summary
 							}
 						}
 						{
-							IInformationObject item = (IInformationObject) BlogByCategory;
+							IInformationObject item = (IInformationObject) GroupedByCategory;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) FullBlogArchive;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) BlogSourceForSummary;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37241,35 +38215,51 @@ BlogIndexGroup.Summary
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(BlogByDate != null) {
-						if(BlogByDate.ID == replacingObject.ID)
-							BlogByDate = (BlogCollection) replacingObject;
+					if(GroupedByDate != null) {
+						if(GroupedByDate.ID == replacingObject.ID)
+							GroupedByDate = (GroupedInformationCollection) replacingObject;
 						else {
-							IInformationObject iObject = BlogByDate;
+							IInformationObject iObject = GroupedByDate;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(BlogByLocation != null) {
-						if(BlogByLocation.ID == replacingObject.ID)
-							BlogByLocation = (BlogCollection) replacingObject;
+					if(GroupedByLocation != null) {
+						if(GroupedByLocation.ID == replacingObject.ID)
+							GroupedByLocation = (GroupedInformationCollection) replacingObject;
 						else {
-							IInformationObject iObject = BlogByLocation;
+							IInformationObject iObject = GroupedByLocation;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(BlogByAuthor != null) {
-						if(BlogByAuthor.ID == replacingObject.ID)
-							BlogByAuthor = (BlogCollection) replacingObject;
+					if(GroupedByAuthor != null) {
+						if(GroupedByAuthor.ID == replacingObject.ID)
+							GroupedByAuthor = (GroupedInformationCollection) replacingObject;
 						else {
-							IInformationObject iObject = BlogByAuthor;
+							IInformationObject iObject = GroupedByAuthor;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(BlogByCategory != null) {
-						if(BlogByCategory.ID == replacingObject.ID)
-							BlogByCategory = (BlogCollection) replacingObject;
+					if(GroupedByCategory != null) {
+						if(GroupedByCategory.ID == replacingObject.ID)
+							GroupedByCategory = (GroupedInformationCollection) replacingObject;
 						else {
-							IInformationObject iObject = BlogByCategory;
+							IInformationObject iObject = GroupedByCategory;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(FullBlogArchive != null) {
+						if(FullBlogArchive.ID == replacingObject.ID)
+							FullBlogArchive = (ReferenceCollection) replacingObject;
+						else {
+							IInformationObject iObject = FullBlogArchive;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(BlogSourceForSummary != null) {
+						if(BlogSourceForSummary.ID == replacingObject.ID)
+							BlogSourceForSummary = (BlogCollection) replacingObject;
+						else {
+							IInformationObject iObject = BlogSourceForSummary;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -37281,10 +38271,12 @@ BlogIndexGroup.Summary
 					Icon = sourceObject.Icon;
 					Title = sourceObject.Title;
 					Introduction = sourceObject.Introduction;
-					BlogByDate = sourceObject.BlogByDate;
-					BlogByLocation = sourceObject.BlogByLocation;
-					BlogByAuthor = sourceObject.BlogByAuthor;
-					BlogByCategory = sourceObject.BlogByCategory;
+					GroupedByDate = sourceObject.GroupedByDate;
+					GroupedByLocation = sourceObject.GroupedByLocation;
+					GroupedByAuthor = sourceObject.GroupedByAuthor;
+					GroupedByCategory = sourceObject.GroupedByCategory;
+					FullBlogArchive = sourceObject.FullBlogArchive;
+					BlogSourceForSummary = sourceObject.BlogSourceForSummary;
 					Summary = sourceObject.Summary;
 				}
 				
@@ -37300,21 +38292,29 @@ BlogIndexGroup.Summary
 					if(Icon != null)
 						((IInformationObject) Icon).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_BlogByDate = BlogByDate;
-					if(BlogByDate != null)
-						((IInformationObject) BlogByDate).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_GroupedByDate = GroupedByDate;
+					if(GroupedByDate != null)
+						((IInformationObject) GroupedByDate).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_BlogByLocation = BlogByLocation;
-					if(BlogByLocation != null)
-						((IInformationObject) BlogByLocation).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_GroupedByLocation = GroupedByLocation;
+					if(GroupedByLocation != null)
+						((IInformationObject) GroupedByLocation).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_BlogByAuthor = BlogByAuthor;
-					if(BlogByAuthor != null)
-						((IInformationObject) BlogByAuthor).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_GroupedByAuthor = GroupedByAuthor;
+					if(GroupedByAuthor != null)
+						((IInformationObject) GroupedByAuthor).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_BlogByCategory = BlogByCategory;
-					if(BlogByCategory != null)
-						((IInformationObject) BlogByCategory).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_GroupedByCategory = GroupedByCategory;
+					if(GroupedByCategory != null)
+						((IInformationObject) GroupedByCategory).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_FullBlogArchive = FullBlogArchive;
+					if(FullBlogArchive != null)
+						((IInformationObject) FullBlogArchive).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_BlogSourceForSummary = BlogSourceForSummary;
+					if(BlogSourceForSummary != null)
+						((IInformationObject) BlogSourceForSummary).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -37349,17 +38349,23 @@ BlogIndexGroup.Summary
 			public string Introduction { get; set; }
 			private string _unmodified_Introduction;
 			[DataMember]
-			public BlogCollection BlogByDate { get; set; }
-			private BlogCollection _unmodified_BlogByDate;
+			public GroupedInformationCollection GroupedByDate { get; set; }
+			private GroupedInformationCollection _unmodified_GroupedByDate;
 			[DataMember]
-			public BlogCollection BlogByLocation { get; set; }
-			private BlogCollection _unmodified_BlogByLocation;
+			public GroupedInformationCollection GroupedByLocation { get; set; }
+			private GroupedInformationCollection _unmodified_GroupedByLocation;
 			[DataMember]
-			public BlogCollection BlogByAuthor { get; set; }
-			private BlogCollection _unmodified_BlogByAuthor;
+			public GroupedInformationCollection GroupedByAuthor { get; set; }
+			private GroupedInformationCollection _unmodified_GroupedByAuthor;
 			[DataMember]
-			public BlogCollection BlogByCategory { get; set; }
-			private BlogCollection _unmodified_BlogByCategory;
+			public GroupedInformationCollection GroupedByCategory { get; set; }
+			private GroupedInformationCollection _unmodified_GroupedByCategory;
+			[DataMember]
+			public ReferenceCollection FullBlogArchive { get; set; }
+			private ReferenceCollection _unmodified_FullBlogArchive;
+			[DataMember]
+			public BlogCollection BlogSourceForSummary { get; set; }
+			private BlogCollection _unmodified_BlogSourceForSummary;
 			[DataMember]
 			public string Summary { get; set; }
 			private string _unmodified_Summary;

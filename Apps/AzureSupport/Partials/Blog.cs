@@ -35,6 +35,8 @@ namespace AaltoGlobalImpact.OIP
             if(Excerpt.Length > 200)
                 Excerpt = Excerpt.Substring(0, 200);
             SetFirstImageGroupImageAsFeaturedImage();
+            if (Published == default(DateTime))
+                Published = DateTime.UtcNow.Date;
         }
 
         private void SetFirstImageGroupImageAsFeaturedImage()
