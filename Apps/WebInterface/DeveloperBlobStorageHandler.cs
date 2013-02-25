@@ -152,7 +152,11 @@ namespace WebInterface
             string groupID = GetGroupID(context.Request.Path);
             string roleValue = TBCollaboratorRole.CollaboratorRoleValue;
             InformationContext.Current.CurrentGroupRole = roleValue;
-            string contentPath = requestPath.Substring(AuthDeveloperPrefixLen + GuidIDLen + 1);
+            string contentPath;
+            if(requestPath.Contains("MediaContent"))
+                contentPath = requestPath.Substring(AuthDeveloperPrefixLen);
+            else
+                contentPath = requestPath.Substring(AuthDeveloperPrefixLen + GuidIDLen + 1);
             VirtualOwner owner = new VirtualOwner(DeveloperAuthPrefix, DeveloperGroupID);
             HandleOwnerRequest(owner, context, contentPath, roleValue);
         }
@@ -320,7 +324,15 @@ namespace WebInterface
                     {
                         string filesystemDirectory = Path.Combine(DeveloperWebRootFolder, groupTemplateDirectory);
                         string templateFileName = Path.Combine(filesystemDirectory, templateName);
-                        string templateContent = GetFixedContent(templateFileName);
+                        string templateContent;
+                        try
+                        {
+                            templateContent = GetFixedContent(templateFileName);
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                         string blobDirectory = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(contentPath)),
                                                             groupTemplateDirectory);
                         string templateBlobPath = Path.Combine(blobDirectory, templateName).Replace("\\", "/");
