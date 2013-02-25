@@ -101,6 +101,7 @@
     <Compile Include="Partials\AddBlogPostInfo.cs" />
     <Compile Include="Partials\AddEmailAddressInfo.cs" />
     <Compile Include="Partials\AddAddressAndLocationInfo.cs" />
+    <Compile Include="Partials\AddImageInfo.cs" />
     <Compile Include="Partials\AddressAndLocation.cs" />
     <Compile Include="Partials\Blog.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
