@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 
@@ -35,58 +36,73 @@ namespace AaltoGlobalImpact.OIP
         {
             if (bitmapData == null)
                 return;
-            Size[] desiredSizes = new Size[]
-                                      {
-                                          // Wide screen format
-                                          new Size(1280, 720),
-                                          new Size(640, 360),
-                                          // .. portrait alternatives, but not the biggest ones
-                                          new Size(360, 640),
-                                          // Standard screen format
-                                          new Size(1024, 768),
-                                          new Size(800, 600),
-                                          new Size(640, 480),
-                                          new Size(320, 240),
-                                          new Size(160, 120),
-                                          // .. portrait alternatives, but not the biggest ones
-                                          new Size(480, 640),
-                                          new Size(240, 320),
-                                          new Size(120, 160),
-                                          // Square icon format
-                                          new Size(256, 256),
-                                          new Size(128, 128),
-                                          new Size(64, 64),
-                                          new Size(32, 32),
-                                      };
-            foreach(Size size in desiredSizes)
+            Size[] jpgSizes = new[]
+                {
+                    // Wide screen format
+                    new Size(1280, 720),
+                    new Size(640, 360),
+                    // .. portrait alternatives, but not the biggest ones
+                    new Size(360, 640),
+                    // Standard screen format
+                    new Size(1024, 768),
+                    new Size(800, 600),
+                    new Size(640, 480),
+                    new Size(320, 240),
+                    new Size(160, 120),
+                    // .. portrait alternatives, but not the biggest ones
+                    new Size(480, 640),
+                    new Size(240, 320),
+                    new Size(120, 160),
+                    // Square icon format
+                    new Size(256, 256),
+                    new Size(128, 128),
+                    new Size(64, 64),
+                    new Size(32, 32),
+                };
+            // Photos become still quite large on png => transparency issues need to be dealt with differently
+            Size[] pngSizes = new Size[]
+                {
+                };
+            var sizesWithFormat = jpgSizes.Select(size => new {Format = ImageFormat.Jpeg, Size = size}).
+                                          Union(pngSizes.Select(size => new {Format = ImageFormat.Png, Size = size}));
+            foreach(var sizeWithFormat in sizesWithFormat)
             {
-                string sizedFittingAllInLocation = GetSizedLocation(masterRelativeLocation, size, fittingAllIn: true);
+                var size = sizeWithFormat.Size;
+                var format = sizeWithFormat.Format;
+                string sizedFittingAllInLocation = GetSizedLocation(masterRelativeLocation, size, fittingAllIn: true, format:format);
                 Bitmap fittingBitmap = ResizeImage(bitmapData, size, true, false, false);
-                StoreToBlob(sizedFittingAllInLocation, fittingBitmap);
-                string sizedCroppingLocation = GetSizedLocation(masterRelativeLocation, size, fittingAllIn: false);
+                StoreToBlob(sizedFittingAllInLocation, fittingBitmap, format);
+                string sizedCroppingLocation = GetSizedLocation(masterRelativeLocation, size, fittingAllIn: false, format: format);
                 Bitmap croppedBitmap = ResizeImage(bitmapData, size, true, false, true);
-                StoreToBlob(sizedCroppingLocation, croppedBitmap);
+                StoreToBlob(sizedCroppingLocation, croppedBitmap, format);
             }
         }
 
-        private static void StoreToBlob(string blobLocation, Bitmap bitmap)
+        private static void StoreToBlob(string blobLocation, Bitmap bitmap, ImageFormat format)
         {
             var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobLocation);
             using(MemoryStream stream = new MemoryStream())
             {
-                bitmap.Save(stream, ImageFormat.Jpeg);
+                bitmap.Save(stream, format);
                 stream.Seek(0, SeekOrigin.Begin);
                 blob.UploadFromStream(stream);
                 Debug.WriteLine("Uploaded media blob: " + blobLocation);
             }
         }
 
-        private static string GetSizedLocation(string masterRelativeLocation, Size size, bool fittingAllIn)
+        private static string GetSizedLocation(string masterRelativeLocation, Size size, bool fittingAllIn, ImageFormat format)
         {
             string masterLocationWithoutExtension = RenderWebSupport.GetLocationWithoutExtension(masterRelativeLocation);
+            string fileExtensionWithoutDot;
+            if(format == ImageFormat.Jpeg)
+                fileExtensionWithoutDot = "jpg";
+            else if(format == ImageFormat.Png)                
+                fileExtensionWithoutDot = "png";
+            else
+                throw new NotSupportedException("File format extension not defined for format: " + format.ToString());
             string formatWithExtension = fittingAllIn
-                                             ? String.Format("_{0}x{1}_whole.jpg", size.Width, size.Height)
-                                             : String.Format("_{0}x{1}_crop.jpg", size.Width, size.Height);
+                                             ? String.Format("_{0}x{1}_whole.{2}", size.Width, size.Height, fileExtensionWithoutDot)
+                                             : String.Format("_{0}x{1}_crop.{2}", size.Width, size.Height, fileExtensionWithoutDot);
             return masterLocationWithoutExtension + formatWithExtension;
         }
 

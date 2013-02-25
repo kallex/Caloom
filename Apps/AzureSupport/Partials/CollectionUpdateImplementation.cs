@@ -289,6 +289,7 @@ namespace AaltoGlobalImpact.OIP
                 marker.Location = locSpot.Location;
                 marker.MarkerSource = MapMarker.MarkerSourceBlogValue;
                 marker.IconUrl = GetIconUrlForCategory("News");
+                marker.CategoryName = GetMarkerCategoryName("News");
                 marker.LocationText = locSpot.LocationText;
                 marker.SetLocationTextFromLocation(locSpot.Location);
                 marker.PopupTitle = "News";
@@ -393,6 +394,7 @@ namespace AaltoGlobalImpact.OIP
                     marker.Location = locSpot.Location;
                     marker.MarkerSource = MapMarker.MarkerSourceActivityValue;
                     marker.IconUrl = GetIconUrlForCategory(catItem.CategoryName);
+                    marker.CategoryName = GetMarkerCategoryName(catItem.CategoryName);
                     //marker.IconUrl = "../oip-additions/oip-assets/oip-images/oip-markers/OIP-marker-meeting.png";
                     marker.LocationText = locSpot.LocationText;
                     marker.SetLocationTextFromLocation(locSpot.Location);
@@ -409,6 +411,13 @@ namespace AaltoGlobalImpact.OIP
             }
 
             mapContainer.MapMarkers.CollectionContent.AddRange(markers);
+        }
+
+        private static string GetMarkerCategoryName(string categoryName)
+        {
+            if (categoryName != "News" && LocationSpot.CategoryNames.Contains(categoryName) == false)
+                return "Activities";
+            return categoryName;
         }
 
         private static string GetIconUrlForCategory(string categoryName)

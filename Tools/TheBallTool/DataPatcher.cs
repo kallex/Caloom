@@ -234,15 +234,6 @@ namespace TheBallTool
             }
         }
 
-        private static void UpdateAllMediaFormats()
-        {
-            var mediaContents = GetAllInformationObjects(name => name.Contains("/MediaContent/"), io => io is MediaContent).Cast<MediaContent>().ToArray();
-            foreach(var mediaContent in mediaContents)
-            {
-                mediaContent.UpdateAdditionalMediaFormats();
-            }
-        }
-
         private static void RemoveActivityLocationsOnce()
         {
             var activities = GetAllInformationObjects(null, io => io is Activity).Cast<Activity>().ToArray();
@@ -329,6 +320,25 @@ namespace TheBallTool
                     }
                 }
             }
+        }
+
+        private static void UpdateAllImageFormatsCustomGroup()
+        {
+            //var images =
+            //    GetAllInformationObjects(name => name.Contains("/Image/") && name.Contains("/9798daca-"), io => io is Image).Cast<Image>().ToArray();
+            var ownerLocations = GetAllOwnerLocations();
+            var ownerLocation = ownerLocations.Where(loc => loc.Contains("/9798daca-")).SingleOrDefault();
+            var images = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("/Image/"), io => io is Image).Cast<Image>().ToArray();
+            int currImageIndex = 0;
+            foreach (var image in images)
+            {
+                if (image.ImageData.ID.Contains("a25982") == false)
+                    continue;
+                image.ImageData.UpdateAdditionalMediaFormats();
+                Console.WriteLine("Processed Image: " + ++currImageIndex + " out of " + images.Length);
+            }
+            InformationContext.ProcessAndClearCurrent();
+            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
         private static void ReportAllSubscriptionCounts()
@@ -526,7 +536,9 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-            PatchSubscriptionsToSubmitted();
+
+            UpdateAllImageFormatsCustomGroup();
+            //PatchSubscriptionsToSubmitted();
 
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();

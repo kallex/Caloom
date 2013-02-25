@@ -50,7 +50,13 @@ namespace AaltoGlobalImpact.OIP
 
         public void UpdateAdditionalMediaFormats()
         {
-            CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+            RemoveAdditionalMediaFormats();
+            CreateAdditionalMediaFormats();
+        }
+
+        public void CreateAdditionalMediaFormats()
+        {
+            OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
         public void RemoveAdditionalMediaFormats()

@@ -21575,6 +21575,8 @@ AccountRoles.OrganizationsImPartOf
 
 					result.MarkerSource = @"MapMarker.MarkerSource";
 
+					result.CategoryName = @"MapMarker.CategoryName";
+
 					result.LocationText = @"MapMarker.LocationText";
 
 					result.PopupTitle = @"MapMarker.PopupTitle";
@@ -21676,6 +21678,8 @@ MapMarker.PopupContent
 							return true;
 						if(MarkerSource != _unmodified_MarkerSource)
 							return true;
+						if(CategoryName != _unmodified_CategoryName)
+							return true;
 						if(LocationText != _unmodified_LocationText)
 							return true;
 						if(PopupTitle != _unmodified_PopupTitle)
@@ -21715,6 +21719,7 @@ MapMarker.PopupContent
 				{
 					IconUrl = sourceObject.IconUrl;
 					MarkerSource = sourceObject.MarkerSource;
+					CategoryName = sourceObject.CategoryName;
 					LocationText = sourceObject.LocationText;
 					PopupTitle = sourceObject.PopupTitle;
 					PopupContent = sourceObject.PopupContent;
@@ -21727,6 +21732,7 @@ MapMarker.PopupContent
 				{
 					_unmodified_IconUrl = IconUrl;
 					_unmodified_MarkerSource = MarkerSource;
+					_unmodified_CategoryName = CategoryName;
 					_unmodified_LocationText = LocationText;
 					_unmodified_PopupTitle = PopupTitle;
 					_unmodified_PopupContent = PopupContent;
@@ -21751,6 +21757,9 @@ MapMarker.PopupContent
 						case "MarkerSource":
 							MarkerSource = value;
 							break;
+						case "CategoryName":
+							CategoryName = value;
+							break;
 						case "LocationText":
 							LocationText = value;
 							break;
@@ -21770,6 +21779,9 @@ MapMarker.PopupContent
 			[DataMember]
 			public string MarkerSource { get; set; }
 			private string _unmodified_MarkerSource;
+			[DataMember]
+			public string CategoryName { get; set; }
+			private string _unmodified_CategoryName;
 			[DataMember]
 			public string LocationText { get; set; }
 			private string _unmodified_LocationText;
