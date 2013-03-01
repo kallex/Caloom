@@ -34,20 +34,14 @@ namespace AaltoGlobalImpact.OIP
                 Excerpt = "";
             if(Excerpt.Length > 200)
                 Excerpt = Excerpt.Substring(0, 200);
-            SetFirstImageGroupImageAsFeaturedImage();
+            SetProfileImageAsFeaturedImage();
             if (Published == default(DateTime))
                 Published = DateTime.UtcNow.Date;
         }
 
-        private void SetFirstImageGroupImageAsFeaturedImage()
+        private void SetProfileImageAsFeaturedImage()
         {
-            var firstImageGroup = ImageGroupCollection.GetIDSelectedArray().FirstOrDefault();
-            if(firstImageGroup != null)
-            {
-                var firstImage = firstImageGroup.ImagesCollection.GetIDSelectedArray().FirstOrDefault();
-                if (firstImage != null)
-                    FeaturedImage = firstImage;
-            }
+            FeaturedImage = ProfileImage;
         }
     }
 #if jsondatetimefixed

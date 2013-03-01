@@ -37017,6 +37017,8 @@ Introduction.Body
 				{
 					var result = new Blog();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
+					result.ProfileImage = Image.CreateDefault();
+					result.IconImage = Image.CreateDefault();
 					result.Introduction = Introduction.CreateDefault();
 					result.FeaturedImage = Image.CreateDefault();
 					result.ImageGroupCollection = ImageGroupCollection.CreateDefault();
@@ -37035,6 +37037,8 @@ Introduction.Body
 						return customDemo;
 					var result = new Blog();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
+					result.ProfileImage = Image.CreateDemoDefault();
+					result.IconImage = Image.CreateDemoDefault();
 					result.Title = @"Blog.Title";
 
 					result.SubTitle = @"Blog.SubTitle";
@@ -37173,6 +37177,20 @@ Blog.Excerpt
 							}
 						}
 						{
+							IInformationObject item = ProfileImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = IconImage;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
 							IInformationObject item = FeaturedImage;
 							if(item != null)
 							{
@@ -37187,6 +37205,24 @@ Blog.Excerpt
 				{
 					{
 						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = ProfileImage;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = IconImage;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37283,6 +37319,16 @@ Blog.Excerpt
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) ProfileImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) IconImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) Introduction;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -37323,6 +37369,10 @@ Blog.Excerpt
 				bool IInformationObject.IsInstanceTreeModified {
 					get {
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
+							return true;
+						if(ProfileImage != _unmodified_ProfileImage)
+							return true;
+						if(IconImage != _unmodified_IconImage)
 							return true;
 						if(Title != _unmodified_Title)
 							return true;
@@ -37419,6 +37469,22 @@ Blog.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(ProfileImage != null) {
+						if(ProfileImage.ID == replacingObject.ID)
+							ProfileImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = ProfileImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(IconImage != null) {
+						if(IconImage.ID == replacingObject.ID)
+							IconImage = (Image) replacingObject;
+						else {
+							IInformationObject iObject = IconImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(Introduction != null) {
 						if(Introduction.ID == replacingObject.ID)
 							Introduction = (Introduction) replacingObject;
@@ -37481,6 +37547,8 @@ Blog.Excerpt
 				private void CopyContentFrom(Blog sourceObject)
 				{
 					ReferenceToInformation = sourceObject.ReferenceToInformation;
+					ProfileImage = sourceObject.ProfileImage;
+					IconImage = sourceObject.IconImage;
 					Title = sourceObject.Title;
 					SubTitle = sourceObject.SubTitle;
 					Introduction = sourceObject.Introduction;
@@ -37510,6 +37578,14 @@ Blog.Excerpt
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
 						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ProfileImage = ProfileImage;
+					if(ProfileImage != null)
+						((IInformationObject) ProfileImage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_IconImage = IconImage;
+					if(IconImage != null)
+						((IInformationObject) IconImage).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_Introduction = Introduction;
 					if(Introduction != null)
@@ -37574,6 +37650,12 @@ Blog.Excerpt
 			[DataMember]
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
+			[DataMember]
+			public Image ProfileImage { get; set; }
+			private Image _unmodified_ProfileImage;
+			[DataMember]
+			public Image IconImage { get; set; }
+			private Image _unmodified_IconImage;
 			[DataMember]
 			public string Title { get; set; }
 			private string _unmodified_Title;

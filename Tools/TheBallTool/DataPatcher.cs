@@ -243,6 +243,27 @@ namespace TheBallTool
                 //activity.StoreInformation();
             }
         }
+
+        private static void InitBlogProfileAndIconOnce()
+        {
+            var blogs = GetAllInformationObjects(name => name.Contains("/Blog/"), io => io is Blog).Cast<Blog>().ToArray();
+            try
+            {
+                foreach (var blog in blogs)
+                {
+                    blog.IconImage = Image.CreateDefault();
+                    blog.ProfileImage = Image.CreateDefault();
+                    VirtualOwner owner = VirtualOwner.FigureOwner(blog);
+                    blog.StoreInformationMasterFirst(owner, false);
+                }
+            }
+            finally
+            {
+                InformationContext.ProcessAndClearCurrent();
+                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+            }
+        }
+
         private static void InitBlogGroupActivityImageGroupCollectionsOnce()
         {
             var blogsGroupsActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog || io is GroupContainer).ToArray();
@@ -536,8 +557,7 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-
-            UpdateAllImageFormatsCustomGroup();
+            InitBlogProfileAndIconOnce();
             //PatchSubscriptionsToSubmitted();
 
             //EnsureAndRefreshMasterCollections();

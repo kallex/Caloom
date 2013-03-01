@@ -889,7 +889,7 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
-        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndLocations)
+        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections)
         {
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
             if(beforeStoreHandler != null)
@@ -930,7 +930,7 @@ namespace TheBall
                 referenceInstance.MasterETag = realMaster.ETag;
             }
             CloudBlob storedResult = StoreInformation(informationObject, owner);
-            if(reconnectMastersAndLocations)
+            if(reconnectMastersAndCollections)
             {
                 informationObject.ReconnectMastersAndCollections(true);
             }
