@@ -187,6 +187,8 @@ namespace WebInterface
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
                 HandleOwnerPostRequest(containerOwner, context, contentPath);
+                context.Response.Redirect(context.Request.Url.ToString(), true);
+                return;
             }
             HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
