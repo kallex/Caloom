@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using TheBall;
 using TheBall.CORE;
 
@@ -26,9 +27,24 @@ namespace AaltoGlobalImpact.OIP
                 case "UnlinkEmailAddress":
                     return CallUnlinkEmailAddress(targetObjectID, owner,
                                                   informationSources.GetDefaultSource(typeof (AccountContainer).FullName));
+                case "RemoveImageFromImageGroup":
+                    return CallRemoveImageFromImageGroup(targetObjectID, owner,
+                                                         informationSources.GetDefaultSource(
+                                                             typeof (ImageGroup).FullName));
                 default:
                     throw new NotImplementedException("Operation mapping for command not implemented: " + commandName);
             }
+        }
+
+        private static bool CallRemoveImageFromImageGroup(string targetObjectId, IContainerOwner owner, InformationSource imageGroupSource)
+        {
+            ImageGroup imageGroup = (ImageGroup) imageGroupSource.RetrieveInformationObject();
+            var imageToDelete =
+                imageGroup.ImagesCollection.CollectionContent.FirstOrDefault(img => img.ID == targetObjectId);
+            imageGroup.ImagesCollection.CollectionContent.Remove(imageToDelete);
+            imageToDelete.DeleteInformationObject();
+            imageGroup.StoreInformation();
+            return true;
         }
 
         private static bool CallDeleteActivity(string targetObjectID, IContainerOwner owner)

@@ -39,5 +39,10 @@ namespace AaltoGlobalImpact.OIP
             currImageGroup.StoreInformationMasterFirst(owner, true);
             return true;
         }
+
+        partial void DoPostDeleteExecute(IContainerOwner owner)
+        {
+            ImageData.ClearCurrentContent(owner);
+        }
     }
 }
