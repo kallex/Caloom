@@ -1,11 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TheBall;
 using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
+    public static partial class OwnerInitializer
+    {
+        public static void InitializeAndConnectMastersAndCollections(this IContainerOwner owner)
+        {
+            Type myType = typeof(OwnerInitializer);
+            var myMethods = myType.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+            foreach (var myMethod in myMethods.Where(method => method.Name.StartsWith("DOMAININIT_")))
+            {
+                myMethod.Invoke(null, new object[] { owner });
+            }
+            owner.ReconnectMastersAndCollectionsForOwner();
+        }
+    }
+
     public static class ExtIContainerOwner
     {
         public static void ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)

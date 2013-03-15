@@ -31,9 +31,37 @@ namespace AaltoGlobalImpact.OIP
                     return CallRemoveImageFromImageGroup(targetObjectID, owner,
                                                          informationSources.GetDefaultSource(
                                                              typeof (ImageGroup).FullName));
+                case "DeleteImageGroup":
+                    return CallDeleteImageGroup(targetObjectID, owner);
+                case "DeleteAddressAndLocation":
+                    return CallDeleteAddressAndLocation(targetObjectID, owner);
+                case "DeleteCategory":
+                    return CallDeleteCategory(targetObjectID, owner);
                 default:
                     throw new NotImplementedException("Operation mapping for command not implemented: " + commandName);
             }
+        }
+
+        private static bool CallDeleteCategory(string targetObjectId, IContainerOwner owner)
+        {
+            Category category = Category.RetrieveFromOwnerContent(owner, targetObjectId);
+            category.DeleteInformationObject();
+            return false;
+        }
+
+        private static bool CallDeleteAddressAndLocation(string addressAndLocationID, IContainerOwner owner)
+        {
+            AddressAndLocation addressAndLocation = AddressAndLocation.RetrieveFromOwnerContent(owner,
+                                                                                                addressAndLocationID);
+            addressAndLocation.DeleteInformationObject();
+            return false;
+        }
+
+        private static bool CallDeleteImageGroup(string targetObjectId, IContainerOwner owner)
+        {
+            ImageGroup imageGroup = ImageGroup.RetrieveFromOwnerContent(owner, targetObjectId);
+            imageGroup.DeleteInformationObject();
+            return false;
         }
 
         private static bool CallRemoveImageFromImageGroup(string targetObjectId, IContainerOwner owner, InformationSource imageGroupSource)

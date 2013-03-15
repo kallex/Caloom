@@ -1,5 +1,20 @@
  
 
+
+using DOM=TheBall.CORE;
+
+namespace TheBall.CORE {
+	public static partial class OwnerInitializer
+	{
+		private static void DOMAININIT_TheBall_CORE(IContainerOwner owner)
+		{
+			DOM.DomainInformationSupport.EnsureMasterCollections(owner);
+			DOM.DomainInformationSupport.RefreshMasterCollections(owner);
+		}
+	}
+}
+
+
 namespace TheBall.CORE { 
 		using System;
 using System.Collections.Generic;
@@ -13,50 +28,10 @@ using TheBall;
 using TheBall.CORE;
 
 
-/*
-	public interface IInformationCollection
-    {
-        string GetItemDirectory();
-        void RefreshContent();
-        void SubscribeToContentSource();
-		bool IsMasterCollection { get; }
-		string GetMasterLocation();
-		IInformationCollection GetMasterInstance();
-    }
-
-    public interface IInformationObject
-    {
-        Guid OwnerID { get; set; }
-        string ID { get; set; }
-        string ETag { get; set;  }
-		string MasterETag { get; set; }
-        string RelativeLocation { get; set; }
-        string SemanticDomainName { get; set; }
-        string Name { get; set; }
-		bool IsIndependentMaster { get; }
-		void InitializeDefaultSubscribers(IContainerOwner owner);
-		void SetValuesToObjects(NameValueCollection form);
-		void PostStoringExecute(IContainerOwner owner);
-		void PostDeleteExecute(IContainerOwner owner);
-		void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
-		string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
-		void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
-		void ReplaceObjectInTree(IInformationObject replacingObject);
-		Dictionary<string, List<IInformationObject>> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
-		void CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse = null);
-		IInformationObject RetrieveMaster(bool initiateIfMissing);
-		IInformationObject RetrieveMaster(bool initiateIfMissing, out bool initiated);
-		bool IsInstanceTreeModified { get; }
-		void SetInstanceTreeValuesAsUnmodified();
-		void UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceInstance);
-		void FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly);
-		void UpdateCollections(IInformationCollection masterInstance);
-    }
-	*/
 
 		public static class DomainInformationSupport
 		{
-            public static void EnsureMasterCollections(this IContainerOwner owner)
+            public static void EnsureMasterCollections(IContainerOwner owner)
             {
                 {
                     var masterCollection = InvoiceCollection.GetMasterCollectionInstance(owner);
@@ -72,7 +47,7 @@ using TheBall.CORE;
                 }
             }
 
-            public static void RefreshMasterCollections(this IContainerOwner owner)
+            public static void RefreshMasterCollections(IContainerOwner owner)
             {
                 {
                     IInformationCollection masterCollection = InvoiceCollection.GetMasterCollectionInstance(owner);
@@ -106,6 +81,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceFiscalExportSummary), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -532,6 +508,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceSummaryContainer), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -1106,6 +1083,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -1373,6 +1351,7 @@ using TheBall.CORE;
 					string itemDirectory = GetItemDirectory();
 					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
 																								 typeof(Invoice));
+                    Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
 					CollectionContent.Clear();
 					CollectionContent.AddRange(informationObjects.Select(obj => (Invoice) obj));
             
@@ -1466,7 +1445,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -1609,6 +1588,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Invoice), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -2202,6 +2182,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceDetails), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -2624,6 +2605,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceUserCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -2963,7 +2945,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -3106,6 +3088,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceUser), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -3626,6 +3609,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceRowGroupCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -3965,7 +3949,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -4108,6 +4092,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceEventDetailGroupCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -4447,7 +4432,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -4590,6 +4575,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceRowGroup), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -5043,6 +5029,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceEventDetailGroup), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -5460,6 +5447,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceEventDetailCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -5799,7 +5787,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -5942,6 +5930,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceRowCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -6281,7 +6270,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -6424,6 +6413,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceEventDetail), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -6890,6 +6880,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InvoiceRow), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -7365,6 +7356,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CategoryCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -7704,7 +7696,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -7847,6 +7839,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Category), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -8209,6 +8202,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Process), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -8638,6 +8632,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ReferenceToInformation), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -9012,6 +9007,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ReferenceCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -9346,7 +9342,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -9483,6 +9479,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InformationOwnerInfo), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -9857,6 +9854,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(UsageMonitorItem), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -10482,6 +10480,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ProcessorUsageCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -10821,7 +10820,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -10964,6 +10963,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ProcessorUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -11401,6 +11401,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(StorageTransactionUsageCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -11740,7 +11741,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -11883,6 +11884,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(StorageTransactionUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -12310,6 +12312,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(StorageUsageCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -12649,7 +12652,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -12792,6 +12795,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(StorageUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -13186,6 +13190,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(NetworkUsageCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -13525,7 +13530,7 @@ using TheBall.CORE;
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
 					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).ToArray();
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
 
@@ -13668,6 +13673,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(NetworkUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();
@@ -14095,6 +14101,7 @@ using TheBall.CORE;
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
 						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(TimeRange), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
 					return informationObjects.ToArray();

@@ -56,9 +56,7 @@ namespace AaltoGlobalImpact.OIP
         {
             var grp = groupRoot.Group;
             RenderWebSupport.RefreshGroupTemplates(grp.ID, false);
-            grp.EnsureMasterCollections();
-            grp.RefreshMasterCollections();
-            grp.ReconnectMastersAndCollectionsForOwner();
+            OwnerInitializer.InitializeAndConnectMastersAndCollections(grp);
         }
     }
 }
