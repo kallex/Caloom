@@ -48,9 +48,11 @@ namespace AaltoGlobalImpact.OIP
 
         internal static void Update_RecentBlogSummary_RecentBlogCollection(RecentBlogSummary recentBlogSummary, BlogCollection localCollection, BlogCollection masterCollection)
         {
-            localCollection.CollectionContent = masterCollection.CollectionContent.OrderByDescending(blog => blog.Published).Take(3).ToList();
+            localCollection.CollectionContent = masterCollection.CollectionContent.Where(blog => blog.Published >= DateTime.UtcNow.AddMonths(-3)).OrderByDescending(blog => blog.Published).Take(10).ToList();
+            //localCollection.CollectionContent = masterCollection.CollectionContent;
             if(localCollection.OrderFilterIDList == null)
                 localCollection.OrderFilterIDList = new List<string>();
+            localCollection.IsCollectionFiltered = false;
         }
 
         internal static void Update_LocationContainer_Locations(LocationContainer locationContainer, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
