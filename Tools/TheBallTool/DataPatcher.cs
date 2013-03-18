@@ -112,18 +112,18 @@ namespace TheBallTool
             return accountLocs.ToArray();
         }
 
-        public static void ReconnectGroupsMastersAndCollections()
+        public static void ReconnectGroupsMastersAndCollections(string objectNamePart = null)
         {
             var groupLocs = GetAllGroupLocations();
             foreach(var grpLoc in groupLocs)
-                ReconnectMastersAndCollections(grpLoc);
+                ReconnectMastersAndCollections(grpLoc, objectNamePart);
         }
 
-        public static void ReconnectAccountsMastersAndCollections()
+        public static void ReconnectAccountsMastersAndCollections(string objectNamePart = null)
         {
             var acctLocs = GetAllAccountLocations();
             foreach (var acctLoc in acctLocs)
-                ReconnectMastersAndCollections(acctLoc);
+                ReconnectMastersAndCollections(acctLoc, objectNamePart);
         }
 
         private static IInformationObject[] GetAllInformationObjects(Predicate<string> filterByFullName,  Predicate<IInformationObject> filterIfFalse)
@@ -138,14 +138,14 @@ namespace TheBallTool
             return result.ToArray();
         }
 
-        private static void ReconnectMastersAndCollections(string ownerLocation)
+        private static void ReconnectMastersAndCollections(string ownerLocation, string objectNamePart)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";
             //string acctLoc = "acc/" + myLocalAccountID + "/";
 
             VirtualOwner me = VirtualOwner.FigureOwner(ownerLocation);
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, null, 
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, blobName => blobName.Contains(objectNamePart), 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
@@ -557,12 +557,12 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-            InitBlogProfileAndIconOnce();
+            //InitBlogProfileAndIconOnce();
             //PatchSubscriptionsToSubmitted();
 
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
-            //ReconnectGroupsMastersAndCollections();
+            ReconnectGroupsMastersAndCollections("NodeSummaryContainer");
             //RenderAllPagesInWorker();
 
             //SyncWwwPublicFromDefaultGroup();

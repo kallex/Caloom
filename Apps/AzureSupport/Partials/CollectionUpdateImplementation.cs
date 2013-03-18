@@ -478,5 +478,83 @@ namespace AaltoGlobalImpact.OIP
                 localCollection.OrderFilterIDList = new List<string>();
         }
 
+
+        const string NodeSourceTypeBlog = "BLOG";
+        const string NodeSourceTypeActivity = "ACTIVITY";
+        internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeBlog);
+            var blogNodes = masterCollection.CollectionContent.Select(getNodeFromBlog).ToArray();
+            nodes.CollectionContent.AddRange(blogNodes);
+        }
+
+        internal static RenderedNode getNodeFromBlog(Blog blog)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeBlog;
+            node.Title = blog.Title;
+            node.Excerpt = blog.Excerpt;
+            node.ImageBaseUrl = blog.ProfileImage.ImageData.ContentUrlBase;
+            node.ActualContentUrl = blog.ReferenceToInformation.URL;
+            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection));
+            node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(blog.LocationCollection));
+            node.Authors.CollectionContent.Add(getShortTextObject(blog.Author));
+            node.MainSortableText = blog.Published.ToString("s");
+            return node;
+        }
+
+        internal static ShortTextObject getShortTextObject(string source)
+        {
+            ShortTextObject shortText = ShortTextObject.CreateDefault();
+            shortText.Content = source;
+            return shortText;
+        }
+
+        internal static IEnumerable<ShortTextObject> getCategoryCollectionTexts(CategoryCollection categoryCollection)
+        {
+            return categoryCollection.GetIDSelectedArray()
+                                     .Select(category =>
+                                         {
+                                             var textShort = ShortTextObject.CreateDefault();
+                                             textShort.Content = category.CategoryName;
+                                             return textShort;
+                                         });
+        }
+
+        internal static IEnumerable<ShortTextObject> getLocationCollectionTexts(AddressAndLocationCollection locationCollection)
+        {
+            return locationCollection.GetIDSelectedArray()
+                                     .Select(location =>
+                                     {
+                                         var textShort = ShortTextObject.CreateDefault();
+                                         textShort.Content = location.Location.LocationName;
+                                         return textShort;
+                                     });
+        }
+
+        internal static void Update_NodeSummaryContainer_NodeSourceActivities(NodeSummaryContainer nodeSummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeActivity);
+            var activityNodes = masterCollection.CollectionContent.Select(getNodeFromActivity).ToArray();
+            nodes.CollectionContent.AddRange(activityNodes);
+        }
+
+        internal static RenderedNode getNodeFromActivity(Activity activity)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeActivity;
+            node.Title = activity.ActivityName;
+            node.Excerpt = activity.Excerpt;
+            node.ImageBaseUrl = activity.ProfileImage.ImageData.ContentUrlBase;
+            node.ActualContentUrl = activity.ReferenceToInformation.URL;
+            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(activity.CategoryCollection));
+            node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(activity.LocationCollection));
+            node.Authors.CollectionContent.Add(getShortTextObject(activity.ContactPerson));
+            node.MainSortableText = activity.StartingTime.ToString("s");
+            return node;
+        }
+
     }
 }
