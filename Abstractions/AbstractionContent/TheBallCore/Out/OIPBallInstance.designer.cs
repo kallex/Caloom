@@ -21765,6 +21765,8 @@ RenderedNode.Excerpt
 RenderedNode.Excerpt
 ";
 
+					result.TimestampText = @"RenderedNode.TimestampText";
+
 					result.MainSortableText = @"RenderedNode.MainSortableText";
 
 					result.Categories = ShortTextCollection.CreateDemoDefault();
@@ -21917,6 +21919,8 @@ RenderedNode.Excerpt
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
+						if(TimestampText != _unmodified_TimestampText)
+							return true;
 						if(MainSortableText != _unmodified_MainSortableText)
 							return true;
 						if(Categories != _unmodified_Categories)
@@ -21993,6 +21997,7 @@ RenderedNode.Excerpt
 					Title = sourceObject.Title;
 					ActualContentUrl = sourceObject.ActualContentUrl;
 					Excerpt = sourceObject.Excerpt;
+					TimestampText = sourceObject.TimestampText;
 					MainSortableText = sourceObject.MainSortableText;
 					Categories = sourceObject.Categories;
 					Authors = sourceObject.Authors;
@@ -22008,6 +22013,7 @@ RenderedNode.Excerpt
 					_unmodified_Title = Title;
 					_unmodified_ActualContentUrl = ActualContentUrl;
 					_unmodified_Excerpt = Excerpt;
+					_unmodified_TimestampText = TimestampText;
 					_unmodified_MainSortableText = MainSortableText;
 				
 					_unmodified_Categories = Categories;
@@ -22047,6 +22053,9 @@ RenderedNode.Excerpt
 						case "Excerpt":
 							Excerpt = value;
 							break;
+						case "TimestampText":
+							TimestampText = value;
+							break;
 						case "MainSortableText":
 							MainSortableText = value;
 							break;
@@ -22069,6 +22078,9 @@ RenderedNode.Excerpt
 			[DataMember]
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
+			[DataMember]
+			public string TimestampText { get; set; }
+			private string _unmodified_TimestampText;
 			[DataMember]
 			public string MainSortableText { get; set; }
 			private string _unmodified_MainSortableText;
@@ -31133,6 +31145,13 @@ Activity.Description
 Activity.Description
 ";
 
+					result.IFrameSources = @"Activity.IFrameSources
+Activity.IFrameSources
+Activity.IFrameSources
+Activity.IFrameSources
+Activity.IFrameSources
+";
+
 					result.Collaborators = CollaboratorCollection.CreateDemoDefault();
 					result.ImageGroupCollection = ImageGroupCollection.CreateDemoDefault();
 					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
@@ -31410,6 +31429,8 @@ Activity.Description
 							return true;
 						if(Description != _unmodified_Description)
 							return true;
+						if(IFrameSources != _unmodified_IFrameSources)
+							return true;
 						if(Collaborators != _unmodified_Collaborators)
 							return true;
 						if(ImageGroupCollection != _unmodified_ImageGroupCollection)
@@ -31548,6 +31569,7 @@ Activity.Description
 					StartingTime = sourceObject.StartingTime;
 					Excerpt = sourceObject.Excerpt;
 					Description = sourceObject.Description;
+					IFrameSources = sourceObject.IFrameSources;
 					Collaborators = sourceObject.Collaborators;
 					ImageGroupCollection = sourceObject.ImageGroupCollection;
 					LocationCollection = sourceObject.LocationCollection;
@@ -31563,6 +31585,7 @@ Activity.Description
 					_unmodified_StartingTime = StartingTime;
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_Description = Description;
+					_unmodified_IFrameSources = IFrameSources;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
@@ -31621,6 +31644,9 @@ Activity.Description
 						case "Description":
 							Description = value;
 							break;
+						case "IFrameSources":
+							IFrameSources = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -31652,6 +31678,9 @@ Activity.Description
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;
+			[DataMember]
+			public string IFrameSources { get; set; }
+			private string _unmodified_IFrameSources;
 			[DataMember]
 			public CollaboratorCollection Collaborators { get; set; }
 			private CollaboratorCollection _unmodified_Collaborators;
@@ -40435,6 +40464,13 @@ Blog.Excerpt
 Blog.Excerpt
 ";
 
+					result.IFrameSources = @"Blog.IFrameSources
+Blog.IFrameSources
+Blog.IFrameSources
+Blog.IFrameSources
+Blog.IFrameSources
+";
+
 					result.LocationCollection = AddressAndLocationCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 					result.SocialPanel = SocialPanelCollection.CreateDemoDefault();
@@ -40766,6 +40802,8 @@ Blog.Excerpt
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
+						if(IFrameSources != _unmodified_IFrameSources)
+							return true;
 						if(LocationCollection != _unmodified_LocationCollection)
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
@@ -40931,6 +40969,7 @@ Blog.Excerpt
 					VideoGroup = sourceObject.VideoGroup;
 					Body = sourceObject.Body;
 					Excerpt = sourceObject.Excerpt;
+					IFrameSources = sourceObject.IFrameSources;
 					LocationCollection = sourceObject.LocationCollection;
 					CategoryCollection = sourceObject.CategoryCollection;
 					SocialPanel = sourceObject.SocialPanel;
@@ -40946,6 +40985,7 @@ Blog.Excerpt
 					_unmodified_Author = Author;
 					_unmodified_Body = Body;
 					_unmodified_Excerpt = Excerpt;
+					_unmodified_IFrameSources = IFrameSources;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
@@ -41015,6 +41055,9 @@ Blog.Excerpt
 						case "Excerpt":
 							Excerpt = value;
 							break;
+						case "IFrameSources":
+							IFrameSources = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -41058,6 +41101,9 @@ Blog.Excerpt
 			[DataMember]
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
+			[DataMember]
+			public string IFrameSources { get; set; }
+			private string _unmodified_IFrameSources;
 			[DataMember]
 			public AddressAndLocationCollection LocationCollection { get; set; }
 			private AddressAndLocationCollection _unmodified_LocationCollection;

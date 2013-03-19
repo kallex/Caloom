@@ -487,6 +487,18 @@ namespace AaltoGlobalImpact.OIP
             nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeBlog);
             var blogNodes = masterCollection.CollectionContent.Select(getNodeFromBlog).ToArray();
             nodes.CollectionContent.AddRange(blogNodes);
+            // Note the node1 and node2 are opposite parameters, because we want descending sort
+            nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
+        }
+
+        internal static void Update_NodeSummaryContainer_NodeSourceActivities(NodeSummaryContainer nodeSummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeActivity);
+            var activityNodes = masterCollection.CollectionContent.Select(getNodeFromActivity).ToArray();
+            nodes.CollectionContent.AddRange(activityNodes);
+            // Note the node1 and node2 are opposite parameters, because we want descending sort
+            nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
         }
 
         internal static RenderedNode getNodeFromBlog(Blog blog)
@@ -497,6 +509,7 @@ namespace AaltoGlobalImpact.OIP
             node.Excerpt = blog.Excerpt;
             node.ImageBaseUrl = blog.ProfileImage.ImageData.ContentUrlBase;
             node.ActualContentUrl = blog.ReferenceToInformation.URL;
+            node.TimestampText = getTimeStampText(blog.Published);
             node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection));
             node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(blog.LocationCollection));
             node.Authors.CollectionContent.Add(getShortTextObject(blog.Author));
@@ -519,26 +532,20 @@ namespace AaltoGlobalImpact.OIP
                                              var textShort = ShortTextObject.CreateDefault();
                                              textShort.Content = category.CategoryName;
                                              return textShort;
-                                         });
+                                         })
+                                     .OrderBy(text => text.Content);
         }
 
         internal static IEnumerable<ShortTextObject> getLocationCollectionTexts(AddressAndLocationCollection locationCollection)
         {
             return locationCollection.GetIDSelectedArray()
                                      .Select(location =>
-                                     {
-                                         var textShort = ShortTextObject.CreateDefault();
-                                         textShort.Content = location.Location.LocationName;
-                                         return textShort;
-                                     });
-        }
-
-        internal static void Update_NodeSummaryContainer_NodeSourceActivities(NodeSummaryContainer nodeSummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
-        {
-            var nodes = nodeSummaryContainer.Nodes;
-            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeActivity);
-            var activityNodes = masterCollection.CollectionContent.Select(getNodeFromActivity).ToArray();
-            nodes.CollectionContent.AddRange(activityNodes);
+                                         {
+                                             var textShort = ShortTextObject.CreateDefault();
+                                             textShort.Content = location.Location.LocationName;
+                                             return textShort;
+                                         })
+                                     .OrderBy(text => text.Content);
         }
 
         internal static RenderedNode getNodeFromActivity(Activity activity)
@@ -549,6 +556,7 @@ namespace AaltoGlobalImpact.OIP
             node.Excerpt = activity.Excerpt;
             node.ImageBaseUrl = activity.ProfileImage.ImageData.ContentUrlBase;
             node.ActualContentUrl = activity.ReferenceToInformation.URL;
+            node.TimestampText = getTimeStampText(activity.StartingTime);
             node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(activity.CategoryCollection));
             node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(activity.LocationCollection));
             node.Authors.CollectionContent.Add(getShortTextObject(activity.ContactPerson));
@@ -556,5 +564,11 @@ namespace AaltoGlobalImpact.OIP
             return node;
         }
 
+        private static string getTimeStampText(DateTime dateTime)
+        {
+            if (dateTime.TimeOfDay == TimeSpan.Zero)
+                return dateTime.ToString("D");
+            return dateTime.ToString("f");
+        }
     }
 }

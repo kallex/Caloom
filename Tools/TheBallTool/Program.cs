@@ -65,7 +65,7 @@ namespace TheBallTool
                         ToArray();
                 //UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, wwwTemplates);
                 UploadAndMoveUnused(null, null, null, wwwTemplates);
-                UploadAndMoveUnused(null, null, publicGroupTemplates, null);
+                //UploadAndMoveUnused(null, null, publicGroupTemplates, null);
                 //UploadAndMoveUnused(accountTemplates, null, null);
 
                 //DeleteAllAccountAndGroupContents(true);
