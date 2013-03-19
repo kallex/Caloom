@@ -63,7 +63,9 @@ namespace TheBallTool
                 string[] wwwTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicGroupNamePart) == false && file.StartsWith(accountNamePart) == false).
                         ToArray();
-                UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, wwwTemplates);
+                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, wwwTemplates);
+                UploadAndMoveUnused(null, null, null, wwwTemplates);
+                UploadAndMoveUnused(null, null, publicGroupTemplates, null);
                 //UploadAndMoveUnused(accountTemplates, null, null);
 
                 //DeleteAllAccountAndGroupContents(true);
@@ -270,8 +272,9 @@ namespace TheBallTool
             if(publicTemplates != null)
                 publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicGroupTemplates, true);
             string[] wwwUnusedFiles = null;
-            wwwUnusedFiles = FileSystemSupport.UploadTemplateContent(wwwTemplates, TBSystem.CurrSystem,
-                                                                     RenderWebSupport.DefaultPublicWwwTemplates, true);
+            if(wwwTemplates != null)
+                wwwUnusedFiles = FileSystemSupport.UploadTemplateContent(wwwTemplates, TBSystem.CurrSystem,
+                                                                         RenderWebSupport.DefaultPublicWwwTemplates, true);
             if(accountTemplates != null && groupTemplates != null && publicTemplates != null && wwwUnusedFiles != null)
             {
                 string[] everyWhereUnusedFiles =
