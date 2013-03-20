@@ -89,6 +89,8 @@ namespace TheBall
             public bool WasNeeded = false;
         }
 
+        public const string LastUpdateFileName = ".lastupdated";
+
         public static string GetLocationWithoutExtension(string location)
         {
             string currExtension = Path.GetExtension(location);
@@ -820,7 +822,7 @@ namespace TheBall
             switch(StorageSupport.CurrActiveContainer.Name)
             {
                 case "demooip-aaltoglobalimpact-org":
-                    return "demowww-aaltoglobalimpact-org";
+                    return "www-aaltoglobalimpact-org";
                 default:
                     throw new InvalidDataException("Www container not defined for: " +
                                                    StorageSupport.CurrActiveContainer.Name);

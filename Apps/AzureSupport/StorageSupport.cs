@@ -1129,6 +1129,12 @@ namespace TheBall
             informationObject.PostDeleteExecute(owner);
         }
 
+        public static CloudBlockBlob GetBlob(string containerName, string blobAddress)
+        {
+            var container = CurrBlobClient.GetContainerReference(containerName);
+            return (CloudBlockBlob) container.GetBlob(blobAddress);
+        }
+        
         public static CloudBlob GetBlob(this CloudBlobContainer container, string blobAddress, IContainerOwner owner = null)
         {
             string relativeLocation = blobAddress;

@@ -332,6 +332,8 @@ namespace TheBall
 
         private static void ProcessSingleOperation(OperationRequest operationRequest)
         {
+            if (operationRequest.PublishWebContent != null)
+                ProcessPublishWebContent(operationRequest.PublishWebContent);
             if (operationRequest.UpdateWebContentOperation != null)
                 ProcessUpdateWebContent(operationRequest.UpdateWebContentOperation);
             if (operationRequest.SubscriberNotification != null)
@@ -497,6 +499,42 @@ namespace TheBall
             StorageSupport.DeleteContentsFromOwner(containerOwner);
         }
 
+        public static void ProcessPublishWebContent(PublishWebContentOperation publishWebContent)
+        {
+            // Hardcoded security for now
+            string targetContainerName = publishWebContent.TargetContainerName;
+            if (targetContainerName != "www-aaltoglobalimpact-org")
+                return;
+            DateTime currPublishTimeUtc = DateTime.UtcNow;
+            string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_hh-mm-ss");
+            string sourceOwner = publishWebContent.SourceOwner;
+            string sourceRoot = publishWebContent.SourcePathRoot;
+            string sourceContainerName = publishWebContent.SourceContainerName;
+            // Sync website
+            string targetWebsiteRoot = targetRootFolderName + "/" + sourceRoot;
+            VirtualOwner owner = VirtualOwner.FigureOwner(sourceOwner);
+            string sourceWebsiteRoot = sourceOwner + "/" + sourceRoot;
+            WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,
+                           RenderWebSupport.CopyAsIsSyncHandler);
+            // Copy Media
+            string mediaFolderName = "AaltoGlobalImpact.OIP/MediaContent";
+            string targetMediaRoot = targetRootFolderName + "/" + mediaFolderName;
+            string sourceMediaRoot = sourceOwner + "/" + mediaFolderName;
+            WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
+                           RenderWebSupport.CopyAsIsSyncHandler);
+            // Copy render required data
+            string[] renderRequiredFolders = new string[] {"AaltoGlobalImpact.OIP/NodeSummaryContainer"};
+            foreach (string renderRequiredFolder in renderRequiredFolders)
+            {
+                string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
+                string sourceFolder = sourceOwner + "/" + renderRequiredFolder;
+                WebContentSync(sourceContainerName, sourceFolder, targetContainerName, targetFolder,
+                               RenderWebSupport.CopyAsIsSyncHandler);
+            }
+            var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
+            blob.UploadBlobText(targetRootFolderName);
+        }
+        
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
         {
             string sourceContainerName = operation.SourceContainerName;

@@ -1011,6 +1011,7 @@
           <InformationItem name="RefreshDefaultViewsOperation" logicalDataType="InformationObject" informationObjectName="RefreshDefaultViewsOperation"/>
           <InformationItem name="DeleteEntireOwner" logicalDataType="InformationObject" informationObjectName="DeleteEntireOwnerOperation" />
           <InformationItem name="DeleteOwnerContent" logicalDataType="InformationObject" informationObjectName="DeleteOwnerContentOperation" />
+          <InformationItem name="PublishWebContent" logicalDataType="InformationObject" informationObjectName="PublishWebContentOperation"/>
         </InformationItems>
       </InformationObject>
 
@@ -1110,6 +1111,15 @@
       </InformationObject>
       <InformationObject name="UpdateWebContentHandlerCollection" designDesc="Filter collection">
         <CollectionFor contentInformationObjectName="UpdateWebContentHandlerItem" />
+      </InformationObject>
+      <!-- PublishWebContentOperation -->
+      <InformationObject name="PublishWebContentOperation" designDesc="Publish web content operation">
+        <InformationItems>
+          <InformationItem name="SourceContainerName" logicalDataType="Text_Short" />
+          <InformationItem name="SourcePathRoot" logicalDataType="Text_Short" />
+          <InformationItem name="SourceOwner" logicalDataType="Text_Short" />
+          <InformationItem name="TargetContainerName" logicalDataType="Text_Short" />
+        </InformationItems>
       </InformationObject>
       <InformationObject name="SubscriberInput" designDesc="Parameter for queued operation">
         <InformationItems>

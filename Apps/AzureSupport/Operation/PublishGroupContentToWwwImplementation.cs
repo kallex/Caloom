@@ -18,18 +18,24 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_PublishGroupContentToWww(string groupID, bool useWorker, string currentContainerName, string wwwContainerName)
         {
+            if (groupID != RenderWebSupport.DefaultGroupID) // Only controlled groups can have website/do web publishing
+                return;
             string groupWwwPublicSiteLocation = "grp/" + groupID + "/" + RenderWebSupport.DefaultPublicWwwSiteLocation;
-            List<OperationRequest> operationRequests = new List<OperationRequest>();
-            if (groupID == RenderWebSupport.DefaultGroupID) // Currently also publish www
-            {
-                var publishWww = RenderWebSupport.SyncTemplatesToSite(currentContainerName, groupWwwPublicSiteLocation,
-                                                     wwwContainerName, "", useWorker, false);
-                operationRequests.Add(publishWww);
-            }
+            PublishWebContentOperation operation = PublishWebContentOperation.CreateDefault();
+            operation.SourceContainerName = currentContainerName;
+            operation.TargetContainerName = wwwContainerName;
+            operation.SourceOwner = "grp/" + groupID;
+            operation.SourcePathRoot = "wwwsite";
             if (useWorker)
             {
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
-                QueueSupport.PutToOperationQueue(operationRequests.ToArray());
+                OperationRequest operationRequest = new OperationRequest();
+                operationRequest.PublishWebContent = operation;
+                QueueSupport.PutToOperationQueue(operationRequest);
+            }
+            else
+            {
+                WorkerSupport.ProcessPublishWebContent(operation);
             }
         }
     }
