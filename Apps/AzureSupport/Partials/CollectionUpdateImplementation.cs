@@ -298,14 +298,22 @@ namespace AaltoGlobalImpact.OIP
                 StringBuilder strBuilder = new StringBuilder();
                 foreach (var blogItem in locSpot.Blogs)
                 {
-                    strBuilder.AppendFormat("<a href=\"{0}\">{1}</a><br>",
-                        blogItem.ReferenceToInformation.URL, blogItem.ReferenceToInformation.Title.Replace("'", ""));
+                    ReferenceToInformation referenceToInformation = blogItem.ReferenceToInformation;
+                    appendMarkerLink(strBuilder, referenceToInformation);
                 }
                 marker.PopupContent = strBuilder.ToString();
                 markers.Add(marker);
             }
 
             mapContainer.MapMarkers.CollectionContent.AddRange(markers);
+        }
+
+        private static void appendMarkerLink(StringBuilder strBuilder, ReferenceToInformation referenceToInformation)
+        {
+            strBuilder.AppendFormat("<a class=\"oipmapmarkerlink\" href=\"javascript:void(0)\" onclick=\"OipOpenArticle(\\'{0}\\');\" >{1}</a><br>",
+                                    referenceToInformation.URL, referenceToInformation.Title.Replace("'", ""));
+            //strBuilder.AppendFormat("<a class=\"oipmapmarkerlink\" href=\"javascript:void(0)\">{1}</a><br>",
+            //                        referenceToInformation.URL, referenceToInformation.Title.Replace("'", ""));
         }
 
         class LocationSpot
@@ -404,8 +412,8 @@ namespace AaltoGlobalImpact.OIP
                     StringBuilder strBuilder = new StringBuilder();
                     foreach(var act in catItem.Activities)
                     {
-                        strBuilder.AppendFormat("<a href=\"{0}\">{1}</a><br>", 
-                            act.ReferenceToInformation.URL, act.ReferenceToInformation.Title.Replace("'", ""));
+                        ReferenceToInformation referenceToInformation = act.ReferenceToInformation;
+                        appendMarkerLink(strBuilder, referenceToInformation);
                     }
                     marker.PopupContent = strBuilder.ToString();
                     markers.Add(marker);
@@ -501,14 +509,23 @@ namespace AaltoGlobalImpact.OIP
 
         internal static void Update_NodeSummaryContainer_NodeSourceActivities(NodeSummaryContainer nodeSummaryContainer, ActivityCollection localCollection, ActivityCollection masterCollection)
         {
+            const string DefaultAuthorValue = "Aalto Global Impact";
             var nodes = nodeSummaryContainer.Nodes;
             nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeActivity);
             var activityNodes = masterCollection.CollectionContent.Select(getNodeFromActivity).ToArray();
             nodes.CollectionContent.AddRange(activityNodes);
             nodes.CollectionContent.ForEach(node =>
                 {
-                    if(node.Authors.CollectionContent.Count == 0)
-                        node.Authors.CollectionContent.Add(getShortTextObject("Aalto Global Impact"));
+                    if (node.Authors.CollectionContent.Count == 0)
+                        node.Authors.CollectionContent.Add(getShortTextObject(DefaultAuthorValue));
+                    else
+                    {
+                    var firstAuthorObject = node.Authors.CollectionContent[0];
+                        if (String.IsNullOrWhiteSpace(firstAuthorObject.Content))
+                        {
+                            firstAuthorObject.Content = DefaultAuthorValue;
+                        }
+                    }
                 });
             cleanUpRenderedNodes(nodes);
         }
