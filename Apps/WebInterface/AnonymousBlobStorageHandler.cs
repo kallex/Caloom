@@ -129,15 +129,28 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localhost")
+            if (hostName == "localhost" || hostName == "www.globalimpact.aalto.fi")
             {
                 //                hostName = "demopublicoip.aaltoglobalimpact.org";
-                hostName = "demowww.aaltoglobalimpact.org";
+                hostName = "www.aaltoglobalimpact.org";
             }
             if (hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
                 return request.Path.Replace("/public/", "pub/");
             string containerName = hostName.Replace('.', '-');
-            return containerName + request.Path;
+            string currServingFolder = "";
+            try
+            {
+                // "/2013-03-20_08-27-28";
+                CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+                string currServingPath = containerName + "/.currenttoserve";
+                var currBlob = publicClient.GetBlockBlobReference(currServingPath);
+                currServingFolder = "/" + currBlob.DownloadText();
+            }
+            catch
+            {
+                
+            }
+            return containerName + currServingFolder + request.Path;
         }
 
         private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)

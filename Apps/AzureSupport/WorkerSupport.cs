@@ -511,7 +511,7 @@ namespace TheBall
             string sourceRoot = publishWebContent.SourcePathRoot;
             string sourceContainerName = publishWebContent.SourceContainerName;
             // Sync website
-            string targetWebsiteRoot = targetRootFolderName + "/" + sourceRoot;
+            string targetWebsiteRoot = targetRootFolderName;
             VirtualOwner owner = VirtualOwner.FigureOwner(sourceOwner);
             string sourceWebsiteRoot = sourceOwner + "/" + sourceRoot;
             WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,

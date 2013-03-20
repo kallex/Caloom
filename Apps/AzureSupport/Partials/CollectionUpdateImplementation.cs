@@ -487,6 +487,14 @@ namespace AaltoGlobalImpact.OIP
             nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeBlog);
             var blogNodes = masterCollection.CollectionContent.Select(getNodeFromBlog).ToArray();
             nodes.CollectionContent.AddRange(blogNodes);
+            cleanUpRenderedNodes(nodes);
+        }
+
+        private static void cleanUpRenderedNodes(RenderedNodeCollection nodes)
+        {
+            nodes.CollectionContent.RemoveAll(node => node.ActualContentUrl == null);
+            nodes.CollectionContent.RemoveAll(node => node.Categories.CollectionContent == null ||
+                                                      node.Categories.CollectionContent.Count == 0);
             // Note the node1 and node2 are opposite parameters, because we want descending sort
             nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
         }
@@ -497,8 +505,12 @@ namespace AaltoGlobalImpact.OIP
             nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeActivity);
             var activityNodes = masterCollection.CollectionContent.Select(getNodeFromActivity).ToArray();
             nodes.CollectionContent.AddRange(activityNodes);
-            // Note the node1 and node2 are opposite parameters, because we want descending sort
-            nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
+            nodes.CollectionContent.ForEach(node =>
+                {
+                    if(node.Authors.CollectionContent.Count == 0)
+                        node.Authors.CollectionContent.Add(getShortTextObject("Aalto Global Impact"));
+                });
+            cleanUpRenderedNodes(nodes);
         }
 
         internal static RenderedNode getNodeFromBlog(Blog blog)
