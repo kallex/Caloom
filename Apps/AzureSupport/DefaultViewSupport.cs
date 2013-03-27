@@ -93,7 +93,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 try
                 {
-                    string viewRoot = isDeveloperView ? "" : GetViewRoot(viewLocation);
+                    string viewRoot = isDeveloperView ? "developer-00000000000000000000000000" : GetViewRoot(viewLocation);
                     string viewItemDirectory = Path.Combine(viewRoot, viewLocation).Replace("\\", "/") + "/";
                     string viewName = GetDefaultStaticViewName(informationObject);
                     string viewTemplateName = GetDefaultStaticTemplateName(informationObject);

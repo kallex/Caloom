@@ -153,7 +153,7 @@ namespace WebInterface
             string roleValue = TBCollaboratorRole.CollaboratorRoleValue;
             InformationContext.Current.CurrentGroupRole = roleValue;
             string contentPath;
-            if(requestPath.Contains("MediaContent"))
+            if(requestPath.Contains("MediaContent") || requestPath.Contains("AaltoGlobalImpact.OIP"))
                 contentPath = requestPath.Substring(AuthDeveloperPrefixLen);
             else
                 contentPath = requestPath.Substring(AuthDeveloperPrefixLen + GuidIDLen + 1);
