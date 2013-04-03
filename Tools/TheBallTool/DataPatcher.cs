@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
@@ -241,6 +243,52 @@ namespace TheBallTool
             {
                 //activity.Location = null;
                 //activity.StoreInformation();
+            }
+        }
+
+
+        private static void RemoveIncontextEditingFromBlogsAndActivitiesFromCertainGroup()
+        {
+            Regex regex = new Regex(@"(?<opentag>\<a class=""noteditable [^""]*""[^>]*\>)(?<content>.*?)(?<closetag>\</a\>)");
+            const string contentStr = "${content}";
+            var ownerLocations = GetAllOwnerLocations();
+            var ownerLocation = ownerLocations.Where(loc => loc.Contains("/9798daca-")).SingleOrDefault();
+            var blogsAndActivities = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("/Blog/") || name.Contains("/Activity/"), io => io is Blog || io is Activity).ToArray();
+            var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
+            var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
+            foreach (Blog blog in blogs)
+            {
+                if (blog.Body == null)
+                    continue;
+                string backupPath = Path.Combine(@"c:\tmp\backup", "blog_" + blog.ID);
+                File.WriteAllText(backupPath, "Body:" + Environment.NewLine + blog.Body
+                                              + Environment.NewLine + "Excerpt:" + Environment.NewLine + blog.Excerpt);
+                string body = blog.Body;
+                blog.Body = regex.Replace(body, contentStr);
+                string excerpt = blog.Excerpt;
+                blog.Excerpt = regex.Replace(excerpt, contentStr);
+                bool fixDone = false;
+                if (body != blog.Body || excerpt != blog.Excerpt)
+                {
+                    fixDone = true;
+                }
+            }
+            foreach (Activity activity in activities)
+            {
+                if (activity.Description == null)
+                    continue;
+                string backupPath = Path.Combine(@"c:\tmp\backup", "activity_" + activity.ID);
+                File.WriteAllText(backupPath, "Description:" + Environment.NewLine + activity.Description
+                                              + Environment.NewLine + "Excerpt:" + Environment.NewLine + activity.Excerpt);
+                string description = activity.Description;
+                activity.Description = regex.Replace(description, contentStr);
+                string excerpt = activity.Excerpt;
+                activity.Excerpt = regex.Replace(excerpt, contentStr);
+                bool fixDone = false;
+                if (description != activity.Description || excerpt != activity.Excerpt)
+                {
+                    fixDone = true;
+                }
             }
         }
 
@@ -562,7 +610,8 @@ namespace TheBallTool
 
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
-            ReconnectGroupsMastersAndCollections("NodeSummaryContainer");
+            //RemoveIncontextEditingFromBlogsAndActivitiesFromCertainGroup();
+            //ReconnectGroupsMastersAndCollections("NodeSummaryContainer");
             //RenderAllPagesInWorker();
 
             //SyncWwwPublicFromDefaultGroup();
@@ -608,7 +657,7 @@ namespace TheBallTool
                 Console.WriteLine("Updating number " + (++currIX) + " out of " + totalCount);
                 VirtualOwner owner = VirtualOwner.FigureOwner(ownerLocation);
                 var informationObjects = StorageSupport.CurrActiveContainer.
-                    GetInformationObjects(ownerLocation,
+                    GetInformationObjects(ownerLocation, null,
                                           iObj =>
                                           iObj is Blog ||
                                           iObj is Activity).ToArray();

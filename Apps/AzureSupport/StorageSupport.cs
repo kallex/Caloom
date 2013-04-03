@@ -1308,10 +1308,21 @@ namespace TheBall
         
         public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
         {
-            var informationObjectBlobs = GetFilteredBlobListing(container, directoryLocation,
-                                                                blob =>
-                                                                blob.GetBlobInformationType() ==
-                                                                StorageSupport.InformationType_InformationObjectValue);
+            var informationObjectBlobs =
+                GetFilteredBlobListing(container, directoryLocation,
+                                       blob =>
+                                           {
+                                               bool passFilterByName = false;
+                                               if (filterByFullName != null)
+                                                   passFilterByName =
+                                                       filterByFullName(blob.Name);
+                                               else
+                                                   passFilterByName = true;
+                                               if (passFilterByName == false)
+                                                   return false;
+                                               return blob.GetBlobInformationType() ==
+                                                      StorageSupport.InformationType_InformationObjectValue;
+                                           });
             if (filterByFullName != null)
                 informationObjectBlobs = informationObjectBlobs.Where(blob => filterByFullName(blob.Name));
             var result = informationObjectBlobs.Select(blob =>
