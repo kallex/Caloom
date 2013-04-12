@@ -129,7 +129,7 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localhost" || hostName == "www.globalimpact.aalto.fi")
+            if (hostName == "localhost" || hostName == "www.globalimpact.aalto.fi" || hostName == "globalimpact.aalto.fi")
             {
                 //                hostName = "demopublicoip.aaltoglobalimpact.org";
                 hostName = "www.aaltoglobalimpact.org";

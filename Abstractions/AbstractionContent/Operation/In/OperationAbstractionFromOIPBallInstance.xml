@@ -604,5 +604,60 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="UpdatePublicationInfo">
+      <OperationSpec>
+        <Description>Update publication info in the account/group container</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved" />
+        <Parameter name="ContainerName" dataType="string" designDesc="Container name for publication" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="PublishInfo" dataType="WebPublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+            <Parameter name="Owner" />
+            <Parameter name="ContainerName" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="CleanOldPublications">
+      <OperationSpec>
+        <Description>Cleans up old publications. All that are older than 2 days and not among 5 latest are cleaned up. For 5 latest later than  </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="PublishInfo" dataType="WebPublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+            <Parameter name="Owner" />
+          </TargetDefinition>
+          <MethodExecute name="ClearPublications" designDesc="Clear publications with given operation criteria" state="designApproved">
+            <Target name="PublishInfo" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ChooseActivePublication">
+      <OperationSpec>
+        <Description>Choose active publication</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved" />
+        <Parameter name="PublicationName" dataType="string" designDesc="Publication name" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="PublishInfo" dataType="WebPublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+            <Parameter name="Owner" />
+          </TargetDefinition>
+          <MethodExecute name="SetActivePublicationFromName" designDesc="Set publication active to .currentactive" state="designApproved">
+            <Parameter name="PublicationName" />
+            <Target name="PublishInfo" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

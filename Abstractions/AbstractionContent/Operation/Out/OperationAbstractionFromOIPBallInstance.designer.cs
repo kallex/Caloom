@@ -487,4 +487,56 @@ using System.IO;
 					ClearAdditionalMediaFormatsImplementation.ExecuteMethod_ClearImageMediaFormats(parameters.MasterRelativeLocation);		
 				}
 				}
+				public class UpdatePublicationInfoParameters 
+		{
+				public TheBall.CORE.IContainerOwner Owner ;
+				public string ContainerName ;
+				}
+		
+		public class UpdatePublicationInfo 
+		{
+				private static void PrepareParameters(UpdatePublicationInfoParameters parameters)
+		{
+					}
+				public static void Execute(UpdatePublicationInfoParameters parameters)
+		{
+						PrepareParameters(parameters);
+					WebPublishInfo PublishInfo = UpdatePublicationInfoImplementation.GetTarget_PublishInfo(parameters.Owner, parameters.ContainerName);	
+				}
+				}
+				public class CleanOldPublicationsParameters 
+		{
+				public TheBall.CORE.IContainerOwner Owner ;
+				}
+		
+		public class CleanOldPublications 
+		{
+				private static void PrepareParameters(CleanOldPublicationsParameters parameters)
+		{
+					}
+				public static void Execute(CleanOldPublicationsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					WebPublishInfo PublishInfo = CleanOldPublicationsImplementation.GetTarget_PublishInfo(parameters.Owner);	
+				CleanOldPublicationsImplementation.ExecuteMethod_ClearPublications(PublishInfo);		
+				}
+				}
+				public class ChooseActivePublicationParameters 
+		{
+				public TheBall.CORE.IContainerOwner Owner ;
+				public string PublicationName ;
+				}
+		
+		public class ChooseActivePublication 
+		{
+				private static void PrepareParameters(ChooseActivePublicationParameters parameters)
+		{
+					}
+				public static void Execute(ChooseActivePublicationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					WebPublishInfo PublishInfo = ChooseActivePublicationImplementation.GetTarget_PublishInfo(parameters.Owner);	
+				ChooseActivePublicationImplementation.ExecuteMethod_SetActivePublicationFromName(parameters.PublicationName, PublishInfo);		
+				}
+				}
 		 } 

@@ -60,6 +60,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="Operation\ChooseActivePublicationImplementation.cs" />
+    <Compile Include="Operation\CleanOldPublicationsImplementation.cs" />
+    <Compile Include="Operation\UpdatePublicationInfoImplementation.cs" />
     <Compile Include="Operation\ClearAdditionalMediaFormatsImplementation.cs" />
     <Compile Include="Operation\CreateAdditionalMediaFormatsImplementation.cs" />
     <Compile Include="Operation\DeleteInformationObjectImplementation.cs" />

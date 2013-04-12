@@ -18,7 +18,7 @@ namespace WebInterface
                 Response.Redirect("/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
             else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName == "localhost" )
                 Response.Redirect("/about/oip-public/oip-layout-register.phtml");
-            else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww"))
+            else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww") || hostName.StartsWith("globalimpact.aalto.fi"))
                 Response.Redirect("/www-public/oip-layout-landing.phtml");
         }
     }
