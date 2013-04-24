@@ -133,6 +133,9 @@ namespace WebInterface
             {
                 //                hostName = "demopublicoip.aaltoglobalimpact.org";
                 hostName = "www.aaltoglobalimpact.org";
+            } else if (hostName == "demowww.weconomy.protonit.net")
+            {
+                hostName = "www.weconomy.fi";
             }
             if (hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
                 return request.Path.Replace("/public/", "pub/");

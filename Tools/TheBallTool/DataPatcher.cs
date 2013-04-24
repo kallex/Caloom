@@ -114,9 +114,9 @@ namespace TheBallTool
             return accountLocs.ToArray();
         }
 
-        public static void ReconnectGroupsMastersAndCollections(string objectNamePart = null)
+        public static void ReconnectGroupsMastersAndCollections(string groupID, string objectNamePart = null)
         {
-            var groupLocs = GetAllGroupLocations();
+            var groupLocs = GetAllGroupLocations().Where(grpLoc => grpLoc.Contains(groupID));
             foreach(var grpLoc in groupLocs)
                 ReconnectMastersAndCollections(grpLoc, objectNamePart);
         }
@@ -147,7 +147,7 @@ namespace TheBallTool
 
             VirtualOwner me = VirtualOwner.FigureOwner(ownerLocation);
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, blobName => blobName.Contains(objectNamePart), 
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, blobName => objectNamePart == null || blobName.Contains(objectNamePart), 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
@@ -410,11 +410,12 @@ namespace TheBallTool
             InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
-        private static void ReportAllSubscriptionCounts()
+
+        private static void ReportAllSubscriptionCounts(string groupID)
         {
             //var informationObjects = GetAllInformationObjects(io => SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
             long memBefore = GC.GetTotalMemory(false);
-            string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
+            string interestGroupLocation = "grp/" + groupID + "/";
             var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, io =>  io is AddressAndLocation && 
                 SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
 
@@ -439,9 +440,9 @@ namespace TheBallTool
             long memAfter = GC.GetTotalMemory(false);
         }
 
-        private static void TestWorkerSubscriberChainExecutionPerformance()
+        private static void TestWorkerSubscriberChainExecutionPerformance(string groupID)
         {
-            string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
+            string interestGroupLocation = "grp/" + groupID + "/";
             var informationObjects =
                 StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
                                                                          io => io is AddressAndLocation &&
@@ -466,9 +467,9 @@ namespace TheBallTool
             QueueSupport.PutToOperationQueue(operationRequest);
         }
 
-        private static void TestSubscriptionExecution()
+        private static void TestSubscriptionExecution(string groupID)
         {
-            string interestGroupLocation = "grp/" + RenderWebSupport.DefaultGroupID + "/";
+            string interestGroupLocation = "grp/" + groupID + "/";
             var informationObjects =
                 StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
                                                                          io => io is AddressAndLocation &&
@@ -599,7 +600,7 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
@@ -611,12 +612,14 @@ namespace TheBallTool
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
             //RemoveIncontextEditingFromBlogsAndActivitiesFromCertainGroup();
+            //ReconnectGroupsMastersAndCollections("a0ea605a-1a3e-4424-9807-77b5423d615c");
             //ReconnectGroupsMastersAndCollections("NodeSummaryContainer");
             //RenderAllPagesInWorker();
 
             //SyncWwwPublicFromDefaultGroup();
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
+            //FixGroupMastersAndCollections("a0ea605a-1a3e-4424-9807-77b5423d615c");
 
             
             //InitBlogAndActivityLocationCollectionsOnce();

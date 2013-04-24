@@ -24,7 +24,8 @@ namespace AaltoGlobalImpact.OIP
             List<OperationRequest> operationRequests = new List<OperationRequest>();
             var publishPublicContent = RenderWebSupport.SyncTemplatesToSite(currentContainerName, groupPublicSiteLocation, publicContainerName, groupPublicSiteLocation, useWorker, false);
             operationRequests.Add(publishPublicContent);
-            if (groupID == RenderWebSupport.DefaultGroupID) 
+            string defaultGroupID = "undefinedForNow";
+            if (groupID == defaultGroupID) 
             {
                 OperationRequest publishDefault = RenderWebSupport.SyncTemplatesToSite(currentContainerName, groupPublicSiteLocation, publicContainerName, defaultPublicSiteLocation, useWorker, false);
                 operationRequests.Add(publishDefault);

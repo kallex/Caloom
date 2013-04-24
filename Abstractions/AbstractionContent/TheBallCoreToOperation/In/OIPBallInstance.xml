@@ -4,6 +4,21 @@
 -->
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="PublishSummary" designDesc="Publish content summary">
+          <InterfaceItems>
+            <InterfaceItem name="ActiveItem" logicalDataType="Text_Short"/>
+            <ObjectInstance name="PublishCollection" interfaceObjectName="PublishItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="PublishItem" designDesc="Publish content item - identifies full publication package">
+          <InterfaceItems>
+            <InterfaceItem name="Name" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel>
       <!-- System -->
       <InformationObject name="TBSystem" designDesc="System instance information (singleton class)">

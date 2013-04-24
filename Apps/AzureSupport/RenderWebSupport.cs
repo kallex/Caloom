@@ -56,7 +56,18 @@ namespace TheBall
         public const string DefaultAccountViewLocation = "oip-account";
         public const string DefaultPublicGroupViewLocation = "oip-public";
         public const string DefaultPublicWwwViewLocation = "www-public";
-        public const string DefaultGroupID = "9798daca-afc4-4046-a99b-d0d88bb364e0";
+
+        public static Dictionary<string, string> WwwEnabledGroups = new Dictionary<string, string>()
+            {
+                {"9798daca-afc4-4046-a99b-d0d88bb364e0", "www-aaltoglobalimpact-org"},
+                {"a0ea605a-1a3e-4424-9807-77b5423d615c", "www-weconomy-fi"},
+
+            };
+
+//            {
+//                "9798daca-afc4-4046-a99b-d0d88bb364e0", "a0ea605a-1a3e-4424-9807-77b5423d615c"
+//            };
+        //public const string DefaultGroupID = "9798daca-afc4-4046-a99b-d0d88bb364e0";
         // https://theball.blob.core.windows.net/00000000-0000-0000-0000-000000000000/grp/9798daca-afc4-4046-a99b-d0d88bb364e0/AaltoGlobalImpact.OIP/AboutContainer/default
 
         private static Regex ContextRootRegex;
@@ -745,6 +756,27 @@ namespace TheBall
 
         }
 
+        public static void RenderWebTemplate(string grpID, bool useWorker, params string[] viewTypesToRefresh)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string groupWwwPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWwwTemplateLocation;
+            string groupWwwPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWwwSiteLocation;
+            string groupWwwSiteViewLocation = groupWwwPublicSiteLocation + "/" + DefaultPublicWwwViewLocation;
+
+            List<OperationRequest> operationRequests = new List<OperationRequest>();
+            var renderWwwTemplates = SyncTemplatesToSite(currContainerName, groupWwwPublicTemplateLocation, currContainerName, groupWwwPublicSiteLocation, useWorker, true);
+            operationRequests.Add(renderWwwTemplates);
+            foreach (string viewTypeToRefresh in viewTypesToRefresh)
+            {
+                OperationRequest refreshOp = RefreshDefaultViews(groupWwwSiteViewLocation, viewTypeToRefresh, useWorker);
+                operationRequests.Add(refreshOp);
+            }
+            if (useWorker)
+            {
+                QueueSupport.PutToOperationQueue(operationRequests.ToArray());
+            }
+        }
+
         public static void RefreshGroupTemplates(string grpID, bool useWorker, params string[] viewTypesToRefresh)
         {
             string syscontentRoot = "sys/AAA/";
@@ -758,9 +790,9 @@ namespace TheBall
             string groupPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicGroupSiteLocation;
             string groupPublicViewLocation = groupPublicSiteLocation + "/" + DefaultPublicGroupViewLocation;
             string defaultPublicSiteLocation = "grp/default/" + DefaultPublicGroupSiteLocation;
-            string groupWwwPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWwwTemplateLocation;
-            string groupWwwPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWwwSiteLocation;
-            string groupWwwSiteViewLocation = groupWwwPublicSiteLocation + "/" + DefaultPublicWwwViewLocation;
+            //string groupWwwPublicTemplateLocation = "grp/" + grpID + "/" + DefaultPublicWwwTemplateLocation;
+            //string groupWwwPublicSiteLocation = "grp/" + grpID + "/" + DefaultPublicWwwSiteLocation;
+            //string groupWwwSiteViewLocation = groupWwwPublicSiteLocation + "/" + DefaultPublicWwwViewLocation;
             string aboutAuthTargetLocation = DefaultAboutTargetLocation;
                 
             // Sync to group local template
@@ -772,26 +804,29 @@ namespace TheBall
             var publicGroupTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicGroupTemplates, currContainerName, groupPublicTemplateLocation, useWorker, false);
             // Render local template
             var renderPublicTemplates = SyncTemplatesToSite(currContainerName, groupPublicTemplateLocation, currContainerName, groupPublicSiteLocation, useWorker, true);
+
+            /*
             // Sync public www-pages to group local template
             var publicWwwTemplates = SyncTemplatesToSite(currContainerName, syscontentRoot + DefaultPublicWwwTemplates,
                                                          currContainerName, groupWwwPublicTemplateLocation, useWorker, false);
 
             // Render local template
             var renderWwwTemplates = SyncTemplatesToSite(currContainerName, groupWwwPublicTemplateLocation, currContainerName, groupWwwPublicSiteLocation, useWorker, true);
+             */
             operationRequests.Add(localGroupTemplates);
             operationRequests.Add(renderLocalTemplates);
             operationRequests.Add(publicGroupTemplates);
             operationRequests.Add(renderPublicTemplates);
-            operationRequests.Add(publicWwwTemplates);
-            operationRequests.Add(renderWwwTemplates);
+            //operationRequests.Add(publicWwwTemplates);
+            //operationRequests.Add(renderWwwTemplates);
             foreach(string viewTypeToRefresh in viewTypesToRefresh)
             {
                 OperationRequest refreshOp = RefreshDefaultViews(groupSiteViewLocation, viewTypeToRefresh, useWorker);
                 operationRequests.Add(refreshOp);
                 refreshOp = RefreshDefaultViews(groupPublicViewLocation, viewTypeToRefresh, useWorker);
                 operationRequests.Add(refreshOp);
-                refreshOp = RefreshDefaultViews(groupWwwSiteViewLocation, viewTypeToRefresh, useWorker);
-                operationRequests.Add(refreshOp);
+                //refreshOp = RefreshDefaultViews(groupWwwSiteViewLocation, viewTypeToRefresh, useWorker);
+                //operationRequests.Add(refreshOp);
             }
             // Publish group public content
 #if never // Moved to separate operations to be web-ui activated
@@ -817,15 +852,16 @@ namespace TheBall
             }
         }
 
-        public static string GetCurrentWwwContainerName()
+        public static string GetCurrentWwwContainerName(string groupId)
         {
-            switch(StorageSupport.CurrActiveContainer.Name)
+            switch(groupId)
             {
-                case "demooip-aaltoglobalimpact-org":
+                case "9798daca-afc4-4046-a99b-d0d88bb364e0":
                     return "www-aaltoglobalimpact-org";
+                case "a0ea605a-1a3e-4424-9807-77b5423d615c":
+                    return "www-weconomy-fi";
                 default:
-                    throw new InvalidDataException("Www container not defined for: " +
-                                                   StorageSupport.CurrActiveContainer.Name);
+                    throw new InvalidDataException("Www container not defined for group: " + groupId);
             }
         }
 
