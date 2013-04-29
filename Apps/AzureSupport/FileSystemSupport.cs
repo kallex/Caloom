@@ -2,16 +2,50 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
 using TheBall.CORE;
 
 namespace TheBall
 {
+    public class BlobStorageContent
+    {
+        private byte[] _binaryContent;
+        public string FileName { get; set; }
+
+        public byte[] BinaryContent
+        {
+            get { return _binaryContent;  }
+            set
+            {
+                _binaryContent = value;
+                updateMD5();
+            }
+        }
+
+        public string MD5Hash { get; private set; }
+
+        private void updateMD5()
+        {
+            if (_binaryContent == null)
+                MD5Hash = null;
+            MD5 md5 = MD5.Create();
+            byte[] md5result = md5.ComputeHash(_binaryContent);
+            MD5Hash = Convert.ToBase64String(md5result);
+        }
+    }
+
+    public delegate string InformationTypeResolver(BlobStorageContent blobStorageContent);
+
     public static class FileSystemSupport
     {
-        public static string[] UploadTemplateContent(string[] allFiles, IContainerOwner owner, string targetLocation, bool clearOldTarget)
+        public static string[] UploadTemplateContent(string[] allFiles, IContainerOwner owner, string targetLocation, bool clearOldTarget,
+            Action<BlobStorageContent> preprocessor = null, Predicate<BlobStorageContent> contentFilterer = null, InformationTypeResolver informationTypeResolver = null)
         {
+            if (informationTypeResolver == null)
+                informationTypeResolver = GetBlobInformationType;
             if (clearOldTarget)
             {
                 StorageSupport.DeleteBlobsFromOwnerTarget(owner, targetLocation);
@@ -20,39 +54,37 @@ namespace TheBall
             List<ErrorItem> errorList = new List<ErrorItem>();
             var fixedContent = allFiles.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
-                        new
-                            {
-                                FileName
-                            =
-                            fileName,
-                                TextContent
-                            =
-                            GetFixedContent(fileName, errorList, processedDict),
-                                BinaryContent = GetBinaryContent(fileName)
-
-                            })
+                        new BlobStorageContent {
+                            FileName = fileName, 
+                            BinaryContent = GetBlobContent(fileName, errorList, processedDict)
+                        })
                 .ToArray();
+            if (preprocessor != null)
+            {
+                foreach (var content in fixedContent)
+                {
+                    preprocessor(content);
+                }
+            }
             foreach (var content in fixedContent)
             {
-                if (content.FileName.EndsWith(".txt"))
+                if (contentFilterer != null && contentFilterer(content) == false)
+                {
+                    // TODO: Properly implement delete above
                     continue;
+                }
                 string webtemplatePath = Path.Combine(targetLocation, content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
-                string blobInformationType = GetBlobInformationType(webtemplatePath);
-                if (content.TextContent != null)
-                {
-                    StorageSupport.UploadOwnerBlobText(owner, webtemplatePath, content.TextContent, blobInformationType);
-                }
-                else
-                {
-                    StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
-                }
+                string contentInformationType;
+                contentInformationType = informationTypeResolver(content);
+                StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent, contentInformationType);
             }
             return processedDict.Keys.ToArray();
         }
 
-        private static string GetBlobInformationType(string webtemplatePath)
+        private static string GetBlobInformationType(BlobStorageContent content)
         {
+            string webtemplatePath = content.FileName;
             string blobInformationType;
             if (webtemplatePath.EndsWith(".phtml"))
             {
@@ -92,14 +124,24 @@ namespace TheBall
             }
         }
 
+        private static byte[] GetBlobContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
+        {
+            byte[] fixedContent = GetFixedContent(fileName, errorList, processedDict);
+            if (fixedContent != null)
+                return fixedContent;
+            return GetBinaryContent(fileName);
+        }
+
+
+
         private static byte[] GetBinaryContent(string fileName)
         {
             return File.ReadAllBytes(fileName);
         }
 
-        public static string GetFixedContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
+        public static byte[] GetFixedContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
         {
-            if (fileName.EndsWith(".phtml") == false)
+            if (fileName.EndsWith(".phtml") == false && fileName.EndsWith(".html") == false)
                 //return File.ReadAllText(fileName);
                 return null;
             string fixedContent = FixContent(fileName, errorList, processedDict);
@@ -109,12 +151,12 @@ namespace TheBall
                                fixedContent;
                 errorList.Clear();
             }
-            return fixedContent;
+            return Encoding.UTF8.GetBytes(fixedContent);
         }
 
         private static string FixContent(string fileName, List<ErrorItem> errorList, Dictionary<string, bool> processedDict)
         {
-            string content = File.ReadAllText(fileName);
+            string content = File.ReadAllText(fileName, Encoding.UTF8);
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>.*)'.*\?>";
             //string pattern = @"<\?php\sinclude\s*'(?<incfile>[^']*)'[^>]*\?>";
             string pattern =

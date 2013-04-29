@@ -1092,10 +1092,10 @@ namespace TheBall
             return CurrActiveContainer.UploadBlobText(uploadAddress, content, blobInformationType);
         }
 
-        public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent)
+        public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
             string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
-            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent);
+            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent, contentInformationType);
         }
 
 

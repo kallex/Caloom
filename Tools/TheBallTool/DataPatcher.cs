@@ -607,7 +607,7 @@ namespace TheBallTool
                 throw new NotSupportedException("Skip this with debugger");
 
             //InitBlogProfileAndIconOnce();
-            //PatchSubscriptionsToSubmitted();
+            PatchSubscriptionsToSubmitted();
 
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();

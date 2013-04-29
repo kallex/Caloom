@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Security;
 using System.Security.Policy;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Helpers;
@@ -327,7 +328,7 @@ namespace WebInterface
                         string templateContent;
                         try
                         {
-                            templateContent = GetFixedContent(templateFileName);
+                            templateContent = GetTemplateContent(templateFileName);
                         }
                         catch
                         {
@@ -346,12 +347,12 @@ namespace WebInterface
                 }
                 else
                 {
-                    string fixedContent = GetFixedContent(fileName);
-                    if (fixedContent != null)
+                    string templateContent = GetTemplateContent(fileName);
+                    if (templateContent != null)
                     {
                         string templateBlobPath = Path.Combine("template", contentPath).Replace("\\", "/");
                         var templateBlob = StorageSupport.UploadOwnerBlobText(containerOwner, templateBlobPath,
-                                                                              fixedContent,
+                                                                              templateContent,
                                                                               StorageSupport.
                                                                                   InformationType_WebTemplateValue);
                         var targetBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
@@ -384,12 +385,14 @@ namespace WebInterface
         }
 
 
-        static string GetFixedContent(string fileName)
+        static string GetTemplateContent(string fileName)
         {
             List<ErrorItem> errorList = new List<ErrorItem>();
             Dictionary<string, bool> processedDict = new Dictionary<string, bool>();
-            string fixedContent = FileSystemSupport.GetFixedContent(fileName, errorList, processedDict);
-            return fixedContent;
+            var fixedContent = FileSystemSupport.GetFixedContent(fileName, errorList, processedDict);
+            if (fixedContent == null)
+                return null;
+            return Encoding.UTF8.GetString(fixedContent);
         }
 
         #endregion

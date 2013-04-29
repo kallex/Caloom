@@ -37,13 +37,71 @@ namespace WebTemplateManager
                 string[] allFiles =
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(str => str.Substring(directory.Length)).ToArray();
                 VirtualOwner owner = VirtualOwner.FigureOwner("grp/" + grpID);
-                FileSystemSupport.UploadTemplateContent(allFiles, owner, RenderWebSupport.DefaultPublicWwwTemplateLocation, true);
+                FileSystemSupport.UploadTemplateContent(allFiles, owner, RenderWebSupport.DefaultPublicWwwTemplateLocation, true, 
+                    Preprocessor, ContentFilterer, InformationTypeResolver);
                 RenderWebSupport.RenderWebTemplate(grpID, true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity");
             }
             catch
             {
                 
             }
+        }
+
+        private static void Preprocessor(BlobStorageContent content)
+        {
+            if (content.FileName.EndsWith("_DefaultView.html"))
+                ReplaceHtmlExtensionWithPHtml(content);
+            if(content.FileName.EndsWith("oip-layout-landing.html"))
+                ReplaceHtmlExtensionWithPHtml(content);
+        }
+
+        private static void ReplaceHtmlExtensionWithPHtml(BlobStorageContent content)
+        {
+            content.FileName = content.FileName.Substring(0, content.FileName.LastIndexOf(".html")) + ".phtml";
+        }
+
+        private static bool ContentFilterer(BlobStorageContent content)
+        {
+            string fileName = content.FileName;
+            if (fileName.EndsWith("readme.txt"))
+                return false;
+            if (fileName.Contains("_DefaultView.phtml"))
+            {
+                bool isBlogDefaultView = fileName.EndsWith(".Blog_DefaultView.phtml");
+                bool isActivityDefaultView = fileName.EndsWith(".Activity_DefaultView.phtml");
+                if (isBlogDefaultView == false && isActivityDefaultView == false)
+                    return false;
+            }
+            return true;
+        }
+
+        private static string InformationTypeResolver(BlobStorageContent content)
+        {
+            string webtemplatePath = content.FileName;
+            string blobInformationType;
+            if (webtemplatePath.EndsWith(".phtml"))
+            {
+                //if (webtemplatePath.Contains("/oip-viewtemplate/"))
+                if (webtemplatePath.EndsWith("_DefaultView.phtml"))
+                    blobInformationType = StorageSupport.InformationType_RuntimeWebTemplateValue;
+                else
+                    blobInformationType = StorageSupport.InformationType_WebTemplateValue;
+            }
+            else if (webtemplatePath.EndsWith(".html"))
+            {
+                string htmlContent = Encoding.UTF8.GetString(content.BinaryContent);
+                bool containsMarkup = htmlContent.Contains("THEBALL-CONTEXT");
+                if (containsMarkup == false)
+                    blobInformationType = StorageSupport.InformationType_GenericContentValue;
+                else
+                {
+                    blobInformationType = webtemplatePath.EndsWith("_DefaultView.html")
+                                              ? StorageSupport.InformationType_RuntimeWebTemplateValue
+                                              : StorageSupport.InformationType_WebTemplateValue;
+                }
+            } else
+                blobInformationType = StorageSupport.InformationType_GenericContentValue;
+            return blobInformationType;
         }
     }
 }
