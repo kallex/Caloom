@@ -531,8 +531,10 @@ namespace TheBall
                 WebContentSync(sourceContainerName, sourceFolder, targetContainerName, targetFolder,
                                RenderWebSupport.CopyAsIsSyncHandler);
             }
-            var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
-            blob.UploadBlobText(targetRootFolderName);
+            var lastUpdateFileBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
+            lastUpdateFileBlob.UploadBlobText(targetRootFolderName);
+            var currentToServeBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
+            currentToServeBlob.UploadBlobText(targetRootFolderName);
         }
         
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)

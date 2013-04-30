@@ -133,7 +133,7 @@ namespace WebInterface
             {
                 //                hostName = "demopublicoip.aaltoglobalimpact.org";
                 hostName = "www.aaltoglobalimpact.org";
-            } else if (hostName == "demowww.weconomy.protonit.net")
+            } else if (hostName == "demowww.weconomy.protonit.net" || hostName == "weconomy.aaltoglobalimpact.org")
             {
                 hostName = "www.weconomy.fi";
             }
@@ -145,7 +145,7 @@ namespace WebInterface
             {
                 // "/2013-03-20_08-27-28";
                 CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-                string currServingPath = containerName + "/.currenttoserve";
+                string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
                 var currBlob = publicClient.GetBlockBlobReference(currServingPath);
                 currServingFolder = "/" + currBlob.DownloadText();
             }

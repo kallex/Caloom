@@ -101,6 +101,7 @@ namespace TheBall
         }
 
         public const string LastUpdateFileName = ".lastupdated";
+        public const string CurrentToServeFileName = ".currenttoserve";
 
         public static string GetLocationWithoutExtension(string location)
         {
