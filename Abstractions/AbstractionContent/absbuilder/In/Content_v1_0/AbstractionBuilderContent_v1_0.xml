@@ -4,7 +4,8 @@
     <Abstractions>
       <Abstraction name="TheBallCoreABS">
         <Generator name="AzureCSharpClassGenerator_v1_0"/>
-        <Generator name="BackboneModelTypeScriptGenerator_v1_0"/>
+        <Generator name="KBObservableModelTypeScriptGenerator_v1_0"/>
+        <Generator name="KBDustTemplateViewGenerator_v1_0"/>
       </Abstraction>
       <Abstraction name="OperationABS">
         <Generator name="CSharpCode_v1_0"/>

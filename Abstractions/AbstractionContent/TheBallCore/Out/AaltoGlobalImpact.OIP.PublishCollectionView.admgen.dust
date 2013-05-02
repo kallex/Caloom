@@ -1,0 +1,12 @@
+ 
+
+
+
+<div>
+<div>
+		<label>Name</label>
+		<input data-bind="value: Name" />
+</div>
+</div>
+
+

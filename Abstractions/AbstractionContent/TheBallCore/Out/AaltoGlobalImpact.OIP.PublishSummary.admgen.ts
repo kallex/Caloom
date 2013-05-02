@@ -1,14 +1,14 @@
  
 
+declare var ko: any;
+
 class PublishSummary {
 	ActiveItem: string;
 	PublishCollection: PublishItem[];
-    testItem: Date;
 
     constructor() {
-        var test2 = new Date();
-        this.testItem = test2;
-
+					this.ActiveItem = ko.observable(this.ActiveItem);
+			this.PublishCollection = ko.observableArray(this.PublishCollection);
     }
 }
 
