@@ -1,8 +1,6 @@
  
 
-declare var ko: any;
-
-class PublishItem {
+var PublishItem {
 	Name: string;
 
     constructor() {

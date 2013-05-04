@@ -1,8 +1,6 @@
  
 
-declare var ko: any;
-
-class PublishSummary {
+var PublishSummary {
 	ActiveItem: string;
 	PublishCollection: PublishItem[];
 
