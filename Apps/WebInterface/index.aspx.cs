@@ -21,6 +21,10 @@ namespace WebInterface
             else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww") 
                 || hostName.StartsWith("globalimpact.aalto.fi") || hostName.StartsWith("weconomy.aaltoglobalimpact.org"))
                 Response.Redirect("/www-public/oip-layout-landing.phtml");
+            else if(hostName == "weconomy.fi")
+                Response.Redirect("http://www.weconomy.fi", true);
+            else if(hostName == "aaltoglobalimpact.org")
+                Response.Redirect("http://www.aaltoglobalimpact.org", true);
         }
     }
 }
