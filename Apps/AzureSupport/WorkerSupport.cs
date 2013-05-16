@@ -503,7 +503,9 @@ namespace TheBall
         {
             // Hardcoded security for now
             string targetContainerName = publishWebContent.TargetContainerName;
-            if (targetContainerName != "www-aaltoglobalimpact-org" && targetContainerName != "www-weconomy-fi")
+            if (targetContainerName != "www-aaltoglobalimpact-org" && targetContainerName != "www-weconomy-fi" 
+                && targetContainerName != "hacktheball-protonit-net"
+                && targetContainerName != "www-protonit-net")
                 return;
             DateTime currPublishTimeUtc = DateTime.UtcNow;
             string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_hh-mm-ss");

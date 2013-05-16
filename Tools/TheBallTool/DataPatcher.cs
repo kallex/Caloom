@@ -600,14 +600,14 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
             //InitBlogProfileAndIconOnce();
-            PatchSubscriptionsToSubmitted();
+            //PatchSubscriptionsToSubmitted();
 
             //EnsureAndRefreshMasterCollections();
             //ReconnectAccountsMastersAndCollections();
@@ -620,6 +620,7 @@ namespace TheBallTool
             //AddLegacyGroupWithInitiator("9798daca-afc4-4046-a99b-d0d88bb364e0", "kalle.launiala@citrus.fi");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //FixGroupMastersAndCollections("a0ea605a-1a3e-4424-9807-77b5423d615c");
+            FixGroupMastersAndCollections("705dbb02-ea90-4b4c-b802-085287ca2264");
 
             
             //InitBlogAndActivityLocationCollectionsOnce();

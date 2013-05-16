@@ -310,6 +310,8 @@ namespace AaltoGlobalImpact.OIP
 
         private static void appendMarkerLink(StringBuilder strBuilder, ReferenceToInformation referenceToInformation)
         {
+            if (referenceToInformation == null || referenceToInformation.URL == null || referenceToInformation.Title == null)
+                return;
             strBuilder.AppendFormat("<a class=\"oipmapmarkerlink\" href=\"javascript:void(0)\" onclick=\"OipOpenArticle(\\'{0}\\');\" >{1}</a><br>",
                                     referenceToInformation.URL, referenceToInformation.Title.Replace("'", ""));
             //strBuilder.AppendFormat("<a class=\"oipmapmarkerlink\" href=\"javascript:void(0)\">{1}</a><br>",

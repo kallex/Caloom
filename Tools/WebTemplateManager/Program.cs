@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace WebTemplateManager
                     Console.WriteLine("Usage: WebTemplateManager.exe <groupID> <connection string>");
                     return;
                 }
+                Debugger.Launch();
                 string connStr = args[1];
                 string grpID = args[0];
                 //string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",

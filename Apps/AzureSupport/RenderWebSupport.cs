@@ -61,7 +61,8 @@ namespace TheBall
             {
                 {"9798daca-afc4-4046-a99b-d0d88bb364e0", "www-aaltoglobalimpact-org"},
                 {"a0ea605a-1a3e-4424-9807-77b5423d615c", "www-weconomy-fi"},
-
+                {"fff483ed-f45e-419e-8e3a-99f48d2f4fa8", "hacktheball-protonit-net"},
+                {"705dbb02-ea90-4b4c-b802-085287ca2264", "www-protonit-net"},
             };
 
 //            {
@@ -861,6 +862,10 @@ namespace TheBall
                     return "www-aaltoglobalimpact-org";
                 case "a0ea605a-1a3e-4424-9807-77b5423d615c":
                     return "www-weconomy-fi";
+                case "fff483ed-f45e-419e-8e3a-99f48d2f4fa8":
+                    return "hacktheball-protonit-net";
+                case "705dbb02-ea90-4b4c-b802-085287ca2264":
+                    return "www-protonit-net";
                 default:
                     throw new InvalidDataException("Www container not defined for group: " + groupId);
             }
