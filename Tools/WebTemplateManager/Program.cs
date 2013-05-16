@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
 
@@ -15,6 +16,8 @@ namespace WebTemplateManager
         {
             try
             {
+                //TheBallEKE.TestExecution();
+                //return;
                 //SecurityNegotiationManager.EchoClient().Wait();
                 //return;
                 if (args.Length != 2)

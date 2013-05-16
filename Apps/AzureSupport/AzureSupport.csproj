@@ -60,6 +60,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="EncryptionSupport.cs" />
     <Compile Include="Operation\ChooseActivePublicationImplementation.cs" />
     <Compile Include="Operation\CleanOldPublicationsImplementation.cs" />
     <Compile Include="Operation\UpdatePublicationInfoImplementation.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="AdditionalFormatContent.cs" />
     <Compile Include="AuthenticationSupport.cs" />
     <Compile Include="EmailSupport.cs" />
-    <Compile Include="EncryptionSupport.cs" />
     <Compile Include="ErrorItem.cs" />
     <Compile Include="ErrorSupport.cs" />
     <Compile Include="FileSystemSupport.cs" />
