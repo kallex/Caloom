@@ -9,12 +9,14 @@ using TheBall.CORE;
 
 namespace WebTemplateManager
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
+                //SecurityNegotiationManager.EchoClient().Wait();
+                //return;
                 if (args.Length != 2)
                 {
                     Console.WriteLine("Usage: WebTemplateManager.exe <groupID> <connection string>");
@@ -37,15 +39,19 @@ namespace WebTemplateManager
                 if (directory.EndsWith("\\") == false)
                     directory = directory + "\\";
                 string[] allFiles =
-                    Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(str => str.Substring(directory.Length)).ToArray();
+                    Directory.GetFiles(directory, "*", SearchOption.AllDirectories)
+                             .Select(str => str.Substring(directory.Length))
+                             .ToArray();
                 VirtualOwner owner = VirtualOwner.FigureOwner("grp/" + grpID);
-                FileSystemSupport.UploadTemplateContent(allFiles, owner, RenderWebSupport.DefaultPublicWwwTemplateLocation, true, 
-                    Preprocessor, ContentFilterer, InformationTypeResolver);
-                RenderWebSupport.RenderWebTemplate(grpID, true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity");
+                FileSystemSupport.UploadTemplateContent(allFiles, owner,
+                                                        RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
+                                                        Preprocessor, ContentFilterer, InformationTypeResolver);
+                RenderWebSupport.RenderWebTemplate(grpID, true, "AaltoGlobalImpact.OIP.Blog",
+                                                   "AaltoGlobalImpact.OIP.Activity");
             }
             catch
             {
-                
+
             }
         }
 
@@ -53,7 +59,7 @@ namespace WebTemplateManager
         {
             if (content.FileName.EndsWith("_DefaultView.html"))
                 ReplaceHtmlExtensionWithPHtml(content);
-            if(content.FileName.EndsWith("oip-layout-landing.html"))
+            if (content.FileName.EndsWith("oip-layout-landing.html"))
                 ReplaceHtmlExtensionWithPHtml(content);
         }
 
@@ -101,9 +107,11 @@ namespace WebTemplateManager
                                               ? StorageSupport.InformationType_RuntimeWebTemplateValue
                                               : StorageSupport.InformationType_WebTemplateValue;
                 }
-            } else
+            }
+            else
                 blobInformationType = StorageSupport.InformationType_GenericContentValue;
             return blobInformationType;
         }
+
     }
 }
