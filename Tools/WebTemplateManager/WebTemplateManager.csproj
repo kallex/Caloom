@@ -51,7 +51,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SecurityNegotiationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj">

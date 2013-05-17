@@ -155,6 +155,10 @@
       <Project>{33F04EB2-55DE-4539-8E67-152A6057F100}</Project>
       <Name>AzureSupport</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SecuritySupport\SecuritySupport.csproj">
+      <Project>{fe40fc1c-284e-4f91-b00f-5cca71846208}</Project>
+      <Name>SecuritySupport</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

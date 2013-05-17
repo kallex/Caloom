@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecurityNegotiationManager.cs" />
     <Compile Include="SymmetricSupport.cs" />
     <Compile Include="TheBallEKE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
