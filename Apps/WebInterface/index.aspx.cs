@@ -12,7 +12,7 @@ namespace WebInterface
         protected void Page_Load(object sender, EventArgs e)
         {
             string hostName = Request.Url.DnsSafeHost;
-            if (hostName == "www.protonit.net")
+            if (hostName == "www.protonit.net" || hostName == "www.caloom.com")
             {
                 Response.Redirect("/www-public/index.html", true);
                 return;

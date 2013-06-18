@@ -20,14 +20,23 @@ namespace WebTemplateManager
                 //return;
                 //SecurityNegotiationManager.EchoClient().Wait();
                 //return;
-                if (args.Length != 2)
+                if (args.Length != 4 || args[0].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <groupID> <connection string>");
+                    Console.WriteLine("Usage: WebTemplateManager.exe <-pub name/-pri name> grp<groupID>/acc<acctID> <connection string>");
                     return;
                 }
                 Debugger.Launch();
-                string connStr = args[1];
-                string grpID = args[0];
+                string pubPriPrefixWithDash = args[0];
+                string templateName = args[1];
+                string connStr = args[3];
+                string grpacctID = args[2];
+                if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri")
+                    throw new ArgumentException("-pub or -pri misspelled or missing");
+                string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
+                string ownerPrefix = grpacctID.Substring(0, 3);
+                string ownerID = grpacctID.Substring(3);
+                VirtualOwner owner = VirtualOwner.FigureOwner(ownerPrefix + "/" + ownerID);
+
                 //string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                 //                               args[0]);
                 //connStr = "UseDevelopmentStorage=true";
@@ -45,12 +54,18 @@ namespace WebTemplateManager
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories)
                              .Select(str => str.Substring(directory.Length))
                              .ToArray();
-                VirtualOwner owner = VirtualOwner.FigureOwner("grp/" + grpID);
-                FileSystemSupport.UploadTemplateContent(allFiles, owner,
-                                                        RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
-                                                        Preprocessor, ContentFilterer, InformationTypeResolver);
-                RenderWebSupport.RenderWebTemplate(grpID, true, "AaltoGlobalImpact.OIP.Blog",
-                                                   "AaltoGlobalImpact.OIP.Activity");
+                if (pubPriPrefix == "pub" && templateName == "legacy")
+                {
+                    FileSystemSupport.UploadTemplateContent(allFiles, owner,
+                                                            RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
+                                                            Preprocessor, ContentFilterer, InformationTypeResolver);
+                    RenderWebSupport.RenderWebTemplate(owner.LocationPrefix, true, "AaltoGlobalImpact.OIP.Blog",
+                                                       "AaltoGlobalImpact.OIP.Activity");
+                }
+                else
+                {
+                    FileSystemSupport.UploadTemplateContent(allFiles, owner, pubPriPrefix, true);
+                }
             }
             catch
             {
