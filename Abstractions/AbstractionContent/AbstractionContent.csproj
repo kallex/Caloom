@@ -40,6 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\CaloomCore.xml">
+      <Link>TheBallCore\CaloomCore.xml</Link>
+    </Content>
+    <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\CaloomHousing.xml">
+      <Link>TheBallCore\CaloomHousing.xml</Link>
+    </Content>
+    <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\CaloomSchools.xml">
+      <Link>TheBallCore\CaloomSchools.xml</Link>
+    </Content>
     <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\OIPBallInstance.xml">
       <Link>TheBallCore\OIPBallInstance.xml</Link>
       <SubType>Designer</SubType>
