@@ -40,28 +40,28 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
-			public partial class Product : IInformationObject 
+			public partial class House : IInformationObject 
 			{
-				public Product()
+				public House()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "Caloom.Housing";
-				    this.Name = "Product";
+				    this.Name = "House";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "Caloom.Housing/Product/";
+					string contentTypeName = "Caloom.Housing/House/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Product), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(House), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -70,7 +70,7 @@ using TheBall.CORE;
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("Caloom.Housing", "Product", id).Replace("\\", "/");
+                    return Path.Combine("Caloom.Housing", "House", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -78,20 +78,20 @@ using TheBall.CORE;
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Product RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static House RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProduct(relativeLocation, owner);
+					return RetrieveHouse(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: Product");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: House");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Product), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(House), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -110,23 +110,23 @@ using TheBall.CORE;
 				}
 
 
-                public static Product RetrieveProduct(string relativeLocation, IContainerOwner owner = null)
+                public static House RetrieveHouse(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Product) StorageSupport.RetrieveInformation(relativeLocation, typeof(Product), null, owner);
+                    var result = (House) StorageSupport.RetrieveInformation(relativeLocation, typeof(House), null, owner);
                     return result;
                 }
 
-				public static Product RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static House RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = Product.RetrieveProduct("Content/Caloom.Housing/Product/" + contentName, containerOwner);
-					var result = Product.RetrieveProduct("Caloom.Housing/Product/" + contentName, containerOwner);
+					// var result = House.RetrieveHouse("Content/Caloom.Housing/House/" + contentName, containerOwner);
+					var result = House.RetrieveHouse("Caloom.Housing/House/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.Housing/Product/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.Housing/Product/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.Housing/House/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.Housing/House/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -195,7 +195,7 @@ using TheBall.CORE;
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((Product) sourceMaster);
+					CopyContentFrom((House) sourceMaster);
 				}
 
 
@@ -209,7 +209,7 @@ using TheBall.CORE;
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Product));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(House));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -222,13 +222,13 @@ using TheBall.CORE;
 					}
 				}
 
-				public static Product DeserializeFromXml(string xmlString)
+				public static House DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Product));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(House));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (Product) serializer.ReadObject(xmlReader);
+							return (House) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -261,7 +261,7 @@ using TheBall.CORE;
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("Caloom.Housing", "Product", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("Caloom.Housing", "House", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -275,43 +275,43 @@ using TheBall.CORE;
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "Caloom.Housing", "Product", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "Caloom.Housing", "House", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref Product customDemoObject);
+				static partial void CreateCustomDemo(ref House customDemoObject);
 
 
 
-				public static Product CreateDefault()
+				public static House CreateDefault()
 				{
-					var result = new Product();
+					var result = new House();
 					return result;
 				}
 
-				public static Product CreateDemoDefault()
+				public static House CreateDemoDefault()
 				{
-					Product customDemo = null;
-					Product.CreateCustomDemo(ref customDemo);
+					House customDemo = null;
+					House.CreateCustomDemo(ref customDemo);
 					if(customDemo != null)
 						return customDemo;
-					var result = new Product();
-					result.ImageBaseUrl = @"Product.ImageBaseUrl";
+					var result = new House();
+					result.ImageBaseUrl = @"House.ImageBaseUrl";
 
-					result.Title = @"Product.Title";
+					result.Title = @"House.Title";
 
-					result.Excerpt = @"Product.Excerpt
-Product.Excerpt
-Product.Excerpt
-Product.Excerpt
-Product.Excerpt
+					result.Excerpt = @"House.Excerpt
+House.Excerpt
+House.Excerpt
+House.Excerpt
+House.Excerpt
 ";
 
-					result.Description = @"Product.Description
-Product.Description
-Product.Description
-Product.Description
-Product.Description
+					result.Description = @"House.Description
+House.Description
+House.Description
+House.Description
+House.Description
 ";
 
 				
@@ -391,7 +391,7 @@ Product.Description
 				}
 
 
-				private void CopyContentFrom(Product sourceObject)
+				private void CopyContentFrom(House sourceObject)
 				{
 					ImageBaseUrl = sourceObject.ImageBaseUrl;
 					Title = sourceObject.Title;

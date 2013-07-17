@@ -6,21 +6,14 @@ using System.Drawing;
 using System.IO;
 
 		namespace Caloom.Schools { 
-				public class CreateProductParameters 
-		{
-				public string Title ;
-				}
 		
-		public class CreateProduct 
+		public class CreateTrainingModule 
 		{
-				private static void PrepareParameters(CreateProductParameters parameters)
+				public static void Execute()
 		{
-					}
-				public static void Execute(CreateProductParameters parameters)
-		{
-						PrepareParameters(parameters);
-					Product ProductRoot = CreateProductImplementation.GetTarget_ProductRoot(parameters.Title);	
-				CreateProductImplementation.ExecuteMethod_StoreObjects(ProductRoot);		
+						
+					TrainingModule TrainingModuleRoot = CreateTrainingModuleImplementation.GetTarget_TrainingModuleRoot();	
+				CreateTrainingModuleImplementation.ExecuteMethod_StoreObjects(TrainingModuleRoot);		
 				}
 				}
 		 } 

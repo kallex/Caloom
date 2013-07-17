@@ -345,7 +345,7 @@ TrainingModule.Description
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is TrainingModuleCollection) {
-						CollectionUpdateImplementation.Update_TrainingModule_TrainingModules(this, localCollection:TrainingModules, masterCollection:(TrainingModuleCollection) masterInstance);
+						Caloom.Schools.CollectionUpdateImplementation.Update_TrainingModule_TrainingModules(this, localCollection:TrainingModules, masterCollection:(TrainingModuleCollection) masterInstance);
 					} else if(TrainingModules != null) {
 						((IInformationObject) TrainingModules).UpdateCollections(masterInstance);
 					}

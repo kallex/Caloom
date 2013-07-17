@@ -51,8 +51,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromCaloomCore.designer.cs">
+      <Link>Abstractions\OperationAbstractionFromCaloomCore.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromCaloomHousing.designer.cs">
+      <Link>Abstractions\OperationAbstractionFromCaloomHousing.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromCaloomSchools.designer.cs">
+      <Link>Abstractions\OperationAbstractionFromCaloomSchools.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs">
       <Link>Abstractions\OperationAbstractionFromOIPBallInstance.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\CaloomCore.designer.cs">
+      <Link>Abstractions\CaloomCore.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\CaloomHousing.designer.cs">
+      <Link>Abstractions\CaloomHousing.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\CaloomSchools.designer.cs">
+      <Link>Abstractions\CaloomSchools.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
@@ -60,6 +78,15 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="Caloom.CORE\CollectionUpdateImplementation.cs" />
+    <Compile Include="Caloom.CORE\RemoveSubProductUsageImplementation.cs" />
+    <Compile Include="Caloom.CORE\SetSubProductUsageImplementation.cs" />
+    <Compile Include="Caloom.CORE\UpdateProductImplementation.cs" />
+    <Compile Include="Caloom.CORE\CreateProductImplementation.cs" />
+    <Compile Include="Caloom.Housing\CreateHouseImplementation.cs" />
+    <Compile Include="Caloom.CORE\CreateAndUpdateProductImplementation.cs" />
+    <Compile Include="Caloom.Schools\CollectionUpdateImplementation.cs" />
+    <Compile Include="Caloom.Schools\CreateTrainingModuleImplementation.cs" />
     <Compile Include="EncryptionSupport.cs" />
     <Compile Include="Operation\ChooseActivePublicationImplementation.cs" />
     <Compile Include="Operation\CleanOldPublicationsImplementation.cs" />

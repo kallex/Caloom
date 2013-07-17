@@ -14419,7 +14419,7 @@ AccountIndex.Summary
 					}
 
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_AccountModule_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_AccountModule_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(LocationCollection != null) {
 						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
@@ -14973,7 +14973,7 @@ AccountIndex.Summary
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is ImageGroupCollection) {
-						CollectionUpdateImplementation.Update_ImageGroupContainer_ImageGroups(this, localCollection:ImageGroups, masterCollection:(ImageGroupCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_ImageGroupContainer_ImageGroups(this, localCollection:ImageGroups, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageGroups != null) {
 						((IInformationObject) ImageGroups).UpdateCollections(masterInstance);
 					}
@@ -15380,7 +15380,7 @@ AccountIndex.Summary
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_LocationContainer_Locations(this, localCollection:Locations, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_LocationContainer_Locations(this, localCollection:Locations, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(Locations != null) {
 						((IInformationObject) Locations).UpdateCollections(masterInstance);
 					}
@@ -21643,7 +21643,7 @@ AccountRoles.OrganizationsImPartOf
 					}
 
 					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_RecentBlogSummary_RecentBlogCollection(this, localCollection:RecentBlogCollection, masterCollection:(BlogCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_RecentBlogSummary_RecentBlogCollection(this, localCollection:RecentBlogCollection, masterCollection:(BlogCollection) masterInstance);
 					} else if(RecentBlogCollection != null) {
 						((IInformationObject) RecentBlogCollection).UpdateCollections(masterInstance);
 					}
@@ -22107,12 +22107,12 @@ AccountRoles.OrganizationsImPartOf
 					}
 
 					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceBlogs(this, localCollection:NodeSourceBlogs, masterCollection:(BlogCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceBlogs(this, localCollection:NodeSourceBlogs, masterCollection:(BlogCollection) masterInstance);
 					} else if(NodeSourceBlogs != null) {
 						((IInformationObject) NodeSourceBlogs).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is ActivityCollection) {
-						CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceActivities(this, localCollection:NodeSourceActivities, masterCollection:(ActivityCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceActivities(this, localCollection:NodeSourceActivities, masterCollection:(ActivityCollection) masterInstance);
 					} else if(NodeSourceActivities != null) {
 						((IInformationObject) NodeSourceActivities).UpdateCollections(masterInstance);
 					}
@@ -25438,17 +25438,17 @@ LongTextObject.Content
 					}
 
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceLocations(this, localCollection:MarkerSourceLocations, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_MapContainer_MarkerSourceLocations(this, localCollection:MarkerSourceLocations, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(MarkerSourceLocations != null) {
 						((IInformationObject) MarkerSourceLocations).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceBlogs(this, localCollection:MarkerSourceBlogs, masterCollection:(BlogCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_MapContainer_MarkerSourceBlogs(this, localCollection:MarkerSourceBlogs, masterCollection:(BlogCollection) masterInstance);
 					} else if(MarkerSourceBlogs != null) {
 						((IInformationObject) MarkerSourceBlogs).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is ActivityCollection) {
-						CollectionUpdateImplementation.Update_MapContainer_MarkerSourceActivities(this, localCollection:MarkerSourceActivities, masterCollection:(ActivityCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_MapContainer_MarkerSourceActivities(this, localCollection:MarkerSourceActivities, masterCollection:(ActivityCollection) masterInstance);
 					} else if(MarkerSourceActivities != null) {
 						((IInformationObject) MarkerSourceActivities).UpdateCollections(masterInstance);
 					}
@@ -30445,7 +30445,7 @@ ActivitySummaryContainer.SummaryBody
 					}
 
 					if(masterInstance is ActivityCollection) {
-						CollectionUpdateImplementation.Update_ActivitySummaryContainer_ActivityCollection(this, localCollection:ActivityCollection, masterCollection:(ActivityCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_ActivitySummaryContainer_ActivityCollection(this, localCollection:ActivityCollection, masterCollection:(ActivityCollection) masterInstance);
 					} else if(ActivityCollection != null) {
 						((IInformationObject) ActivityCollection).UpdateCollections(masterInstance);
 					}
@@ -32515,17 +32515,17 @@ Activity.IFrameSources
 					}
 
 					if(masterInstance is ImageGroupCollection) {
-						CollectionUpdateImplementation.Update_Activity_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Activity_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageGroupCollection != null) {
 						((IInformationObject) ImageGroupCollection).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_Activity_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Activity_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(LocationCollection != null) {
 						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is CategoryCollection) {
-						CollectionUpdateImplementation.Update_Activity_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Activity_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
 					} else if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -35679,17 +35679,17 @@ GroupSummaryContainer.SummaryBody
 					}
 
 					if(masterInstance is ActivityCollection) {
-						CollectionUpdateImplementation.Update_GroupContainer_Activities(this, localCollection:Activities, masterCollection:(ActivityCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_GroupContainer_Activities(this, localCollection:Activities, masterCollection:(ActivityCollection) masterInstance);
 					} else if(Activities != null) {
 						((IInformationObject) Activities).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is ImageGroupCollection) {
-						CollectionUpdateImplementation.Update_GroupContainer_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_GroupContainer_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageGroupCollection != null) {
 						((IInformationObject) ImageGroupCollection).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_GroupContainer_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_GroupContainer_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(LocationCollection != null) {
 						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
@@ -40292,7 +40292,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 					}
 
 					if(masterInstance is CategoryCollection) {
-						CollectionUpdateImplementation.Update_Group_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Group_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
 					} else if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -41829,7 +41829,7 @@ Blog.IFrameSources
 					}
 
 					if(masterInstance is ImageGroupCollection) {
-						CollectionUpdateImplementation.Update_Blog_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Blog_ImageGroupCollection(this, localCollection:ImageGroupCollection, masterCollection:(ImageGroupCollection) masterInstance);
 					} else if(ImageGroupCollection != null) {
 						((IInformationObject) ImageGroupCollection).UpdateCollections(masterInstance);
 					}
@@ -41838,12 +41838,12 @@ Blog.IFrameSources
 					}
 
 					if(masterInstance is AddressAndLocationCollection) {
-						CollectionUpdateImplementation.Update_Blog_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Blog_LocationCollection(this, localCollection:LocationCollection, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(LocationCollection != null) {
 						((IInformationObject) LocationCollection).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is CategoryCollection) {
-						CollectionUpdateImplementation.Update_Blog_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Blog_CategoryCollection(this, localCollection:CategoryCollection, masterCollection:(CategoryCollection) masterInstance);
 					} else if(CategoryCollection != null) {
 						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
 					}
@@ -42773,7 +42773,7 @@ BlogIndexGroup.Summary
 					}
 
 					if(masterInstance is BlogCollection) {
-						CollectionUpdateImplementation.Update_BlogIndexGroup_BlogSourceForSummary(this, localCollection:BlogSourceForSummary, masterCollection:(BlogCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_BlogIndexGroup_BlogSourceForSummary(this, localCollection:BlogSourceForSummary, masterCollection:(BlogCollection) masterInstance);
 					} else if(BlogSourceForSummary != null) {
 						((IInformationObject) BlogSourceForSummary).UpdateCollections(masterInstance);
 					}
@@ -56633,7 +56633,7 @@ ImageVideoSoundVectorRaw.Vector
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is CategoryCollection) {
-						CollectionUpdateImplementation.Update_CategoryContainer_Categories(this, localCollection:Categories, masterCollection:(CategoryCollection) masterInstance);
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_CategoryContainer_Categories(this, localCollection:Categories, masterCollection:(CategoryCollection) masterInstance);
 					} else if(Categories != null) {
 						((IInformationObject) Categories).UpdateCollections(masterInstance);
 					}

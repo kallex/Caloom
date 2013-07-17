@@ -6,21 +6,14 @@ using System.Drawing;
 using System.IO;
 
 		namespace Caloom.Housing { 
-				public class CreateProductParameters 
-		{
-				public string Title ;
-				}
 		
-		public class CreateProduct 
+		public class CreateHouse 
 		{
-				private static void PrepareParameters(CreateProductParameters parameters)
+				public static void Execute()
 		{
-					}
-				public static void Execute(CreateProductParameters parameters)
-		{
-						PrepareParameters(parameters);
-					Product ProductRoot = CreateProductImplementation.GetTarget_ProductRoot(parameters.Title);	
-				CreateProductImplementation.ExecuteMethod_StoreObjects(ProductRoot);		
+						
+					House HouseRoot = CreateHouseImplementation.GetTarget_HouseRoot();	
+				CreateHouseImplementation.ExecuteMethod_StoreObjects(HouseRoot);		
 				}
 				}
-		 } 
+		} 

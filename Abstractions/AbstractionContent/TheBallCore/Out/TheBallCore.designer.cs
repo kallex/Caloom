@@ -327,7 +327,7 @@ using TheBall.CORE;
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is InvoiceCollection) {
-						CollectionUpdateImplementation.Update_InvoiceFiscalExportSummary_ExportedInvoices(this, localCollection:ExportedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceFiscalExportSummary_ExportedInvoices(this, localCollection:ExportedInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(ExportedInvoices != null) {
 						((IInformationObject) ExportedInvoices).UpdateCollections(masterInstance);
 					}
@@ -760,22 +760,22 @@ using TheBall.CORE;
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is InvoiceCollection) {
-						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_OpenInvoices(this, localCollection:OpenInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_OpenInvoices(this, localCollection:OpenInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(OpenInvoices != null) {
 						((IInformationObject) OpenInvoices).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PredictedInvoices(this, localCollection:PredictedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PredictedInvoices(this, localCollection:PredictedInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PredictedInvoices != null) {
 						((IInformationObject) PredictedInvoices).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(this, localCollection:PaidInvoicesActiveYear, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(this, localCollection:PaidInvoicesActiveYear, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PaidInvoicesActiveYear != null) {
 						((IInformationObject) PaidInvoicesActiveYear).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(this, localCollection:PaidInvoicesLast12Months, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(this, localCollection:PaidInvoicesLast12Months, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PaidInvoicesLast12Months != null) {
 						((IInformationObject) PaidInvoicesLast12Months).UpdateCollections(masterInstance);
 					}

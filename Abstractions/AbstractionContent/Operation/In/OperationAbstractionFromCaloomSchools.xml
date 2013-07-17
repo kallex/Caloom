@@ -1,20 +1,15 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="Caloom.Schools">
-    <Operation name="CreateProduct">
+    <Operation name="CreateTrainingModule">
       <OperationSpec>
-        <Description>Create product</Description>
+        <Description>Create training module</Description>
       </OperationSpec>
-      <Parameters>
-        <Parameter name="Title" dataType="string" designDesc="Product title to be created" state="designApproved" />
-      </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="ProductRoot" dataType="Product" designDesc="Created product with given title" state="designApproved">
-            <Parameter name="Title" />
-          </TargetDefinition>
+          <TargetDefinition name="TrainingModuleRoot" dataType="TrainingModule" designDesc="Created TrainingModule" state="designApproved" />
           <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
-            <Target name="ProductRoot" />
+            <Target name="TrainingModuleRoot" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

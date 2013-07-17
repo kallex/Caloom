@@ -34,6 +34,18 @@ using TheBall.CORE;
             public static void EnsureMasterCollections(IContainerOwner owner)
             {
                 {
+                    var masterCollection = ProductUsageCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = ProductUsageCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            ProductUsageCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+                {
                     var masterCollection = ProductCollection.GetMasterCollectionInstance(owner);
                     if(masterCollection == null)
                     {
@@ -49,6 +61,13 @@ using TheBall.CORE;
 
             public static void RefreshMasterCollections(IContainerOwner owner)
             {
+                {
+                    IInformationCollection masterCollection = ProductUsageCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection ProductUsageCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
                 {
                     IInformationCollection masterCollection = ProductCollection.GetMasterCollectionInstance(owner);
                     if (masterCollection == null)
@@ -1233,7 +1252,7 @@ ProductForWhom.Description
 				public static Product CreateDefault()
 				{
 					var result = new Product();
-					result.Products = ProductCollection.CreateDefault();
+					result.SubProducts = ProductUsageCollection.CreateDefault();
 					return result;
 				}
 
@@ -1262,7 +1281,7 @@ Product.Description
 Product.Description
 ";
 
-					result.Products = ProductCollection.CreateDemoDefault();
+					result.SubProducts = ProductUsageCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -1272,10 +1291,10 @@ Product.Description
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
-					if(masterInstance is ProductCollection) {
-						CollectionUpdateImplementation.Update_Product_Products(this, localCollection:Products, masterCollection:(ProductCollection) masterInstance);
-					} else if(Products != null) {
-						((IInformationObject) Products).UpdateCollections(masterInstance);
+					if(masterInstance is ProductUsageCollection) {
+						Caloom.CORE.CollectionUpdateImplementation.Update_Product_SubProducts(this, localCollection:SubProducts, masterCollection:(ProductUsageCollection) masterInstance);
+					} else if(SubProducts != null) {
+						((IInformationObject) SubProducts).UpdateCollections(masterInstance);
 					}
 				}
 
@@ -1295,7 +1314,7 @@ Product.Description
 					if(filterOnFalse(this))
 						result.Add(this);
 					{ // Scoping block for variable name reusability
-						IInformationObject item = Products;
+						IInformationObject item = SubProducts;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -1311,7 +1330,7 @@ Product.Description
 				private object FindFromObjectTree(string objectId)
 				{
 					{
-						var item = Products;
+						var item = SubProducts;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -1340,7 +1359,7 @@ Product.Description
 						}
 					}
 					{
-						var item = (IInformationObject) Products;
+						var item = (IInformationObject) SubProducts;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -1357,10 +1376,10 @@ Product.Description
 							return true;
 						if(Description != _unmodified_Description)
 							return true;
-						if(Products != _unmodified_Products)
+						if(SubProducts != _unmodified_SubProducts)
 							return true;
 						{
-							IInformationObject item = (IInformationObject) Products;
+							IInformationObject item = (IInformationObject) SubProducts;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -1375,11 +1394,11 @@ Product.Description
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					if(Products != null) {
-						if(Products.ID == replacingObject.ID)
-							Products = (ProductCollection) replacingObject;
+					if(SubProducts != null) {
+						if(SubProducts.ID == replacingObject.ID)
+							SubProducts = (ProductUsageCollection) replacingObject;
 						else {
-							IInformationObject iObject = Products;
+							IInformationObject iObject = SubProducts;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -1392,7 +1411,7 @@ Product.Description
 					Title = sourceObject.Title;
 					Excerpt = sourceObject.Excerpt;
 					Description = sourceObject.Description;
-					Products = sourceObject.Products;
+					SubProducts = sourceObject.SubProducts;
 				}
 				
 
@@ -1404,9 +1423,9 @@ Product.Description
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_Description = Description;
 				
-					_unmodified_Products = Products;
-					if(Products != null)
-						((IInformationObject) Products).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_SubProducts = SubProducts;
+					if(SubProducts != null)
+						((IInformationObject) SubProducts).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -1447,8 +1466,929 @@ Product.Description
 			public string Description { get; set; }
 			private string _unmodified_Description;
 			[DataMember]
-			public ProductCollection Products { get; set; }
-			private ProductCollection _unmodified_Products;
+			public ProductUsageCollection SubProducts { get; set; }
+			private ProductUsageCollection _unmodified_SubProducts;
+			
+			}
+			[DataContract]
+			public partial class ProductUsageCollection : IInformationObject , IInformationCollection
+			{
+				public ProductUsageCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "Caloom.CORE";
+				    this.Name = "ProductUsageCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "Caloom.CORE/ProductUsageCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ProductUsageCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("Caloom.CORE", "ProductUsageCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ProductUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveProductUsageCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ProductUsageCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProductUsageCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static ProductUsageCollection RetrieveProductUsageCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ProductUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProductUsageCollection), null, owner);
+                    return result;
+                }
+
+				public static ProductUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = ProductUsageCollection.RetrieveProductUsageCollection("Content/Caloom.CORE/ProductUsageCollection/" + contentName, containerOwner);
+					var result = ProductUsageCollection.RetrieveProductUsageCollection("Caloom.CORE/ProductUsageCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductUsageCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ProductUsageCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProductUsageCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ProductUsageCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProductUsageCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ProductUsageCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("Caloom.CORE", "ProductUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "Caloom.CORE", "ProductUsageCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref ProductUsageCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = ProductUsage.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(ProductUsage));
+                    Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (ProductUsage) obj));
+            
+				}
+
+				public static ProductUsageCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return ProductUsageCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
+
+				public void SubscribeToContentSource()
+				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ProductUsageCollection).FullName);
+				}
+
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetBlobOwnerAddress(owner, "Caloom.CORE/ProductUsageCollection/" + "MasterCollection");
+				}
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static ProductUsageCollection CreateDefault()
+				{
+					var result = new ProductUsageCollection();
+					return result;
+				}
+
+				public static ProductUsageCollection CreateDemoDefault()
+				{
+					ProductUsageCollection customDemo = null;
+					ProductUsageCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new ProductUsageCollection();
+					result.CollectionContent.Add(ProductUsage.CreateDemoDefault());
+					//result.CollectionContent.Add(ProductUsage.CreateDemoDefault());
+					//result.CollectionContent.Add(ProductUsage.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<ProductUsage> CollectionContent = new List<ProductUsage>();
+				private ProductUsage[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public ProductUsage[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					switch(propertyName)
+					{
+						case "SelectedIDCommaSeparated":
+							SelectedIDCommaSeparated = propertyValue;
+							break;
+						case "IsCollectionFiltered":
+							IsCollectionFiltered = bool.Parse(propertyValue);
+							break;
+						default:
+							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					}
+				}
+
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (ProductUsage )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(ProductUsageCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
+			
+			}
+			[DataContract]
+			public partial class ProductUsage : IInformationObject 
+			{
+				public ProductUsage()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "Caloom.CORE";
+				    this.Name = "ProductUsage";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "Caloom.CORE/ProductUsage/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ProductUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("Caloom.CORE", "ProductUsage", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static ProductUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveProductUsage(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ProductUsage");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProductUsage), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static ProductUsage RetrieveProductUsage(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (ProductUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProductUsage), null, owner);
+                    return result;
+                }
+
+				public static ProductUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = ProductUsage.RetrieveProductUsage("Content/Caloom.CORE/ProductUsage/" + contentName, containerOwner);
+					var result = ProductUsage.RetrieveProductUsage("Caloom.CORE/ProductUsage/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductUsage/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((ProductUsage) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProductUsage));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static ProductUsage DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProductUsage));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (ProductUsage) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("Caloom.CORE", "ProductUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "Caloom.CORE", "ProductUsage", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref ProductUsage customDemoObject);
+
+
+
+				public static ProductUsage CreateDefault()
+				{
+					var result = new ProductUsage();
+					result.Product = Product.CreateDefault();
+					return result;
+				}
+
+				public static ProductUsage CreateDemoDefault()
+				{
+					ProductUsage customDemo = null;
+					ProductUsage.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new ProductUsage();
+					result.Product = Product.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(Product != null) {
+						((IInformationObject) Product).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Product;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = Product;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) Product;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(Product != _unmodified_Product)
+							return true;
+						if(UsageAmountInDecimal != _unmodified_UsageAmountInDecimal)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) Product;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(Product != null) {
+						if(Product.ID == replacingObject.ID)
+							Product = (Product) replacingObject;
+						else {
+							IInformationObject iObject = Product;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(ProductUsage sourceObject)
+				{
+					Product = sourceObject.Product;
+					UsageAmountInDecimal = sourceObject.UsageAmountInDecimal;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_UsageAmountInDecimal = UsageAmountInDecimal;
+				
+					_unmodified_Product = Product;
+					if(Product != null)
+						((IInformationObject) Product).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "UsageAmountInDecimal":
+							UsageAmountInDecimal = double.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public Product Product { get; set; }
+			private Product _unmodified_Product;
+			[DataMember]
+			public double UsageAmountInDecimal { get; set; }
+			private double _unmodified_UsageAmountInDecimal;
 			
 			}
 			[DataContract]
@@ -2231,7 +3171,7 @@ Product.Description
 					}
 
 					if(masterInstance is ProductCollection) {
-						CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceProducts(this, localCollection:NodeSourceProducts, masterCollection:(ProductCollection) masterInstance);
+						Caloom.CORE.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceProducts(this, localCollection:NodeSourceProducts, masterCollection:(ProductCollection) masterInstance);
 					} else if(NodeSourceProducts != null) {
 						((IInformationObject) NodeSourceProducts).UpdateCollections(masterInstance);
 					}
@@ -3151,6 +4091,7 @@ Product.Description
 					result.Categories = ShortTextCollection.CreateDefault();
 					result.Authors = ShortTextCollection.CreateDefault();
 					result.Locations = ShortTextCollection.CreateDefault();
+					result.Filters = ShortTextCollection.CreateDefault();
 					return result;
 				}
 
@@ -3183,6 +4124,7 @@ RenderedNode.Excerpt
 					result.Categories = ShortTextCollection.CreateDemoDefault();
 					result.Authors = ShortTextCollection.CreateDemoDefault();
 					result.Locations = ShortTextCollection.CreateDemoDefault();
+					result.Filters = ShortTextCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -3202,6 +4144,10 @@ RenderedNode.Excerpt
 
 					if(Locations != null) {
 						((IInformationObject) Locations).UpdateCollections(masterInstance);
+					}
+
+					if(Filters != null) {
+						((IInformationObject) Filters).UpdateCollections(masterInstance);
 					}
 
 				}
@@ -3245,6 +4191,14 @@ RenderedNode.Excerpt
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Filters;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -3273,6 +4227,15 @@ RenderedNode.Excerpt
 					}
 					{
 						var item = Locations;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = Filters;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -3315,6 +4278,11 @@ RenderedNode.Excerpt
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) Filters;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -3340,6 +4308,8 @@ RenderedNode.Excerpt
 							return true;
 						if(Locations != _unmodified_Locations)
 							return true;
+						if(Filters != _unmodified_Filters)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) Categories;
 							if(item != null) 
@@ -3360,6 +4330,15 @@ RenderedNode.Excerpt
 						}
 						{
 							IInformationObject item = (IInformationObject) Locations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Filters;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -3398,6 +4377,14 @@ RenderedNode.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(Filters != null) {
+						if(Filters.ID == replacingObject.ID)
+							Filters = (ShortTextCollection) replacingObject;
+						else {
+							IInformationObject iObject = Filters;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -3413,6 +4400,7 @@ RenderedNode.Excerpt
 					Categories = sourceObject.Categories;
 					Authors = sourceObject.Authors;
 					Locations = sourceObject.Locations;
+					Filters = sourceObject.Filters;
 				}
 				
 
@@ -3438,6 +4426,10 @@ RenderedNode.Excerpt
 					_unmodified_Locations = Locations;
 					if(Locations != null)
 						((IInformationObject) Locations).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Filters = Filters;
+					if(Filters != null)
+						((IInformationObject) Filters).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -3504,6 +4496,9 @@ RenderedNode.Excerpt
 			[DataMember]
 			public ShortTextCollection Locations { get; set; }
 			private ShortTextCollection _unmodified_Locations;
+			[DataMember]
+			public ShortTextCollection Filters { get; set; }
+			private ShortTextCollection _unmodified_Filters;
 			
 			}
 			[DataContract]
