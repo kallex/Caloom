@@ -606,7 +606,9 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-            FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c");
+            FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411");
+
+            //FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c");
             //InitBlogProfileAndIconOnce();
             //PatchSubscriptionsToSubmitted();
 

@@ -64,7 +64,8 @@ namespace TheBall
                 {"fff483ed-f45e-419e-8e3a-99f48d2f4fa8", "hacktheball-protonit-net"},
                 {"705dbb02-ea90-4b4c-b802-085287ca2264", "www-protonit-net"},
                 {"e6001162-fce7-4431-8eff-abaa7a356d89", "www-caloom-com"},
-                {"56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c", "www-earthhouse-fi"}
+                {"56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c", "www-earthhouse-fi"},
+                {"96efee86-36c8-46f9-ab8b-067fd79b8411", "demowww-norssi-protonit-net"}
             };
 
 //            {
