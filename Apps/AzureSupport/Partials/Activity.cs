@@ -17,6 +17,8 @@ namespace AaltoGlobalImpact.OIP
                 Excerpt = "";
             if (Excerpt.Length > 200)
                 Excerpt = Excerpt.Substring(0, 200);
+            if (this.StartingTime == default(DateTime))
+                StartingTime = DateTime.UtcNow.Date;
         }
     }
 }

@@ -35,8 +35,8 @@ using System.IO;
 		} // Local block closing
 				}
 				}
-
-		    public class CreateProduct 
+		
+		public class CreateProduct 
 		{
 				public static CreateProductReturnValue Execute()
 		{
@@ -47,8 +47,7 @@ using System.IO;
 		return returnValue;
 				}
 				}
-
-		    public class CreateProductReturnValue 
+				public class CreateProductReturnValue 
 		{
 				public string ProductID ;
 				}
@@ -75,8 +74,7 @@ using System.IO;
 		return returnValue;
 				}
 				}
-
-		    public class UpdateProductReturnValue 
+				public class UpdateProductReturnValue 
 		{
 				public string ProductID ;
 				}
@@ -101,8 +99,7 @@ using System.IO;
 				SetSubProductUsageImplementation.ExecuteMethod_StoreObjects(UsingProduct, SubProductBeingUsed);		
 				}
 				}
-
-		    public class RemoveSubProductUsageParameters 
+				public class RemoveSubProductUsageParameters 
 		{
 				public string UsingProductID ;
 				public string SubProductBeingUsedID ;
@@ -121,4 +118,4 @@ using System.IO;
 				RemoveSubProductUsageImplementation.ExecuteMethod_StoreObjects(UsingProduct);		
 				}
 				}
-		} 
+		 } 

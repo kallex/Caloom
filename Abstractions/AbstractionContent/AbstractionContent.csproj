@@ -46,6 +46,7 @@
     </Content>
     <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\CaloomHousing.xml">
       <Link>TheBallCore\CaloomHousing.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Apps\WorkerTemplate\CaloomUI\caloomxml\CaloomSchools.xml">
       <Link>TheBallCore\CaloomSchools.xml</Link>

@@ -8,17 +8,6 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class Category : IBeforeStoreHandler
-    {
-        public void PerformBeforeStoreUpdate()
-        {
-            if (ReferenceToInformation == null)
-                ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
-            ReferenceToInformation.Title = this.CategoryName;
-            ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
-        }
-    }
-
     partial class Blog : IBeforeStoreHandler
     {
         public void PerformBeforeStoreUpdate()

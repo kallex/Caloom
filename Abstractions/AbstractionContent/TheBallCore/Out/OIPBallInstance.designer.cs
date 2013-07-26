@@ -57019,6 +57019,8 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					var result = new Category();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
+					result.Image = Image.CreateDefault();
+					result.ParentCategories = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -57032,6 +57034,17 @@ ImageVideoSoundVectorRaw.Vector
 					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.CategoryName = @"Category.CategoryName";
 
+					result.Image = Image.CreateDemoDefault();
+					result.Title = @"Category.Title";
+
+					result.Excerpt = @"Category.Excerpt
+Category.Excerpt
+Category.Excerpt
+Category.Excerpt
+Category.Excerpt
+";
+
+					result.ParentCategories = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -57041,6 +57054,11 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
+					if(masterInstance is CategoryCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Category_ParentCategories(this, localCollection:ParentCategories, masterCollection:(CategoryCollection) masterInstance);
+					} else if(ParentCategories != null) {
+						((IInformationObject) ParentCategories).UpdateCollections(masterInstance);
+					}
 				}
 
 
@@ -57058,10 +57076,25 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ParentCategories;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 						{
 							IInformationObject item = ReferenceToInformation;
+							if(item != null)
+							{
+								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+							}
+						}
+						{
+							IInformationObject item = Image;
 							if(item != null)
 							{
 								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -57075,6 +57108,24 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					{
 						var item = ReferenceToInformation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = Image;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = ParentCategories;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -57107,6 +57158,16 @@ ImageVideoSoundVectorRaw.Vector
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) Image;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) ParentCategories;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -57116,6 +57177,23 @@ ImageVideoSoundVectorRaw.Vector
 							return true;
 						if(CategoryName != _unmodified_CategoryName)
 							return true;
+						if(Image != _unmodified_Image)
+							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Excerpt != _unmodified_Excerpt)
+							return true;
+						if(ParentCategories != _unmodified_ParentCategories)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) ParentCategories;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
@@ -57131,6 +57209,22 @@ ImageVideoSoundVectorRaw.Vector
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(Image != null) {
+						if(Image.ID == replacingObject.ID)
+							Image = (Image) replacingObject;
+						else {
+							IInformationObject iObject = Image;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ParentCategories != null) {
+						if(ParentCategories.ID == replacingObject.ID)
+							ParentCategories = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = ParentCategories;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -57138,6 +57232,10 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					CategoryName = sourceObject.CategoryName;
+					Image = sourceObject.Image;
+					Title = sourceObject.Title;
+					Excerpt = sourceObject.Excerpt;
+					ParentCategories = sourceObject.ParentCategories;
 				}
 				
 
@@ -57145,10 +57243,20 @@ ImageVideoSoundVectorRaw.Vector
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_CategoryName = CategoryName;
+					_unmodified_Title = Title;
+					_unmodified_Excerpt = Excerpt;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
 						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Image = Image;
+					if(Image != null)
+						((IInformationObject) Image).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ParentCategories = ParentCategories;
+					if(ParentCategories != null)
+						((IInformationObject) ParentCategories).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -57163,6 +57271,12 @@ ImageVideoSoundVectorRaw.Vector
 						case "CategoryName":
 							CategoryName = value;
 							break;
+						case "Title":
+							Title = value;
+							break;
+						case "Excerpt":
+							Excerpt = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -57173,6 +57287,18 @@ ImageVideoSoundVectorRaw.Vector
 			[DataMember]
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
+			[DataMember]
+			public Image Image { get; set; }
+			private Image _unmodified_Image;
+			[DataMember]
+			public string Title { get; set; }
+			private string _unmodified_Title;
+			[DataMember]
+			public string Excerpt { get; set; }
+			private string _unmodified_Excerpt;
+			[DataMember]
+			public CategoryCollection ParentCategories { get; set; }
+			private CategoryCollection _unmodified_ParentCategories;
 			
 			}
 			[DataContract]

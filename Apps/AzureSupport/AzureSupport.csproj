@@ -135,6 +135,7 @@
     <Compile Include="Partials\AddressAndLocation.cs" />
     <Compile Include="Partials\Blog.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
+    <Compile Include="Partials\Category.cs" />
     <Compile Include="Partials\CollectionUpdateImplementation.cs" />
     <Compile Include="Partials\AddCategoryInfo.cs" />
     <Compile Include="Partials\CreateGroupInfo.cs" />
