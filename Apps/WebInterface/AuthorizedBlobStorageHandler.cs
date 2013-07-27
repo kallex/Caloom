@@ -295,6 +295,7 @@ namespace WebInterface
             {
                 blob.FetchAttributes();
                 response.ContentType = blob.Properties.ContentType;
+                response.Headers.Add("ETag", blob.Properties.ETag);
                 blob.DownloadToStream(response.OutputStream);
             }
             catch (StorageClientException scEx)
@@ -321,32 +322,33 @@ namespace WebInterface
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
-
+            var response = context.Response;
             // Read blob content to response.
-            context.Response.Clear();
+            response.Clear();
             try
             {
                 blob.FetchAttributes();
-                context.Response.ContentType = blob.Properties.ContentType;
-                blob.DownloadToStream(context.Response.OutputStream);
+                response.ContentType = blob.Properties.ContentType;
+                response.Headers.Add("ETag", blob.Properties.ETag);
+                blob.DownloadToStream(response.OutputStream);
             } catch(StorageClientException scEx)
             {
                 if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
                 {
-                    context.Response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + context.Request.Path + ")");
-                    context.Response.StatusCode = (int)scEx.StatusCode;
+                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + context.Request.Path + ")");
+                    response.StatusCode = (int)scEx.StatusCode;
                 } else
                 {
-                    context.Response.Write("Error code: " + scEx.ErrorCode.ToString() + Environment.NewLine);
-                    context.Response.Write(scEx.ToString());
-                    context.Response.StatusCode = (int)scEx.StatusCode;
+                    response.Write("Error code: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write(scEx.ToString());
+                    response.StatusCode = (int)scEx.StatusCode;
                 }
             }
             catch (Exception ex)
             {
-                context.Response.Write(ex.ToString());
+                response.Write(ex.ToString());
             }
-            context.Response.End();
+            response.End();
         }
 
 
