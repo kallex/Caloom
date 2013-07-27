@@ -198,6 +198,20 @@ namespace WebInterface
             HttpRequest request = context.Request;
             var form = request.Unvalidated().Form;
 
+            bool isAjaxDataRequest = form.Get("AjaxObjectInfo") != null;
+            if (isAjaxDataRequest)
+            {
+                HandlerOwnerAjaxDataPOST(containerOwner, form);
+                return;
+            }
+
+            bool isClientTemplateRequest = form.Get("ContentSourceInfo") != null;
+            if(isClientTemplateRequest)
+            {
+                HandleOwnerClientTemplatePOST(containerOwner, request);
+                return;
+            }
+
             string sourceNamesCommaSeparated = form["RootSourceName"];
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
@@ -282,6 +296,44 @@ namespace WebInterface
             //    StorageSupport.CurrAnonPublicContainer.Name,
             //                    String.Format("grp/default/{0}/", "livepubsite"), true);
 
+        }
+
+        private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
+        {
+            var form = request.Form;
+            string contentSourceInfo = form["ContentSourceInfo"];
+            string[] contentSourceInfos = contentSourceInfo.Split(',');
+            foreach (string sourceInfo in contentSourceInfos)
+            {
+                string[] infoParts = sourceInfo.Split(':');
+                string relativeLocation = infoParts[0];
+                string oldETag = infoParts[1];
+                VirtualOwner verifyOwner = VirtualOwner.FigureOwner(relativeLocation);
+                if (verifyOwner.IsSameOwner(containerOwner) == false)
+                    throw new SecurityException("Mismatch in ownership of data submission");
+                IInformationObject rootObject = StorageSupport.RetrieveInformation(relativeLocation, oldETag,
+                                                                                   containerOwner);
+                if (oldETag != rootObject.ETag)
+                {
+                    throw new InvalidDataException("Information under editing was modified during display and save");
+                }
+                // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
+                rootObject.SetValuesToObjects(form);
+                // If not add operation, set media content to stored object
+                foreach (string contentID in request.Files.AllKeys)
+                {
+                    HttpPostedFile postedFile = request.Files[contentID];
+                    if (String.IsNullOrWhiteSpace(postedFile.FileName))
+                        continue;
+                    rootObject.SetMediaContent(containerOwner, contentID, postedFile);
+                }
+                rootObject.StoreInformationMasterFirst(containerOwner, false);
+            }
+        }
+
+        private void HandlerOwnerAjaxDataPOST(IContainerOwner containerOwner, NameValueCollection form)
+        {
+            throw new NotImplementedException();
         }
 
         private void HandleAboutGetRequest(HttpContext context, string contentPath)

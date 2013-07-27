@@ -990,6 +990,18 @@ namespace TheBall
         }
 
 
+        public static IInformationObject RetrieveInformation(string relativeLocation, string eTag, IContainerOwner owner)
+        {
+            string typeName = resolveTypeNameFromRelativeLocation(relativeLocation);
+            return RetrieveInformation(relativeLocation, typeName, eTag, owner);
+        }
+
+        private static string resolveTypeNameFromRelativeLocation(string relativeLocation)
+        {
+            string[] partsOfLocation = relativeLocation.Split('/');
+            VirtualOwner owner = VirtualOwner.FigureOwner(relativeLocation);
+            return partsOfLocation[2] + "." + partsOfLocation[3];
+        }
 
         public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null, IContainerOwner owner = null)
         {

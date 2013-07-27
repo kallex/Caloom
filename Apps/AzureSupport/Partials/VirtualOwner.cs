@@ -80,5 +80,10 @@ namespace TheBall.CORE
         {
             get { return locationPrefix; }
         }
+
+        public bool IsSameOwner(IContainerOwner containerOwner)
+        {
+            return ContainerName == containerOwner.ContainerName && LocationPrefix == containerOwner.LocationPrefix;
+        }
     }
 }
