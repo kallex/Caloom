@@ -40,7 +40,7 @@ namespace TheBall
                 {
                     CloudBlob cloudBlob =
                         StorageSupport.CurrActiveContainer.GetBlockBlobReference(subscription.SubscriberRelativeLocation);
-                    RenderWebSupport.RefreshContent(cloudBlob, true);
+                    RenderWebSupport.RefreshPHTMLContent(cloudBlob, true);
                 } catch(Exception ex)
                 {
                     StorageClientException storageClientException = ex as StorageClientException;

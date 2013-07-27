@@ -28,6 +28,8 @@ namespace WebTemplateManager
                 Debugger.Launch();
                 string pubPriPrefixWithDash = args[0];
                 string templateName = args[1];
+                if(String.IsNullOrWhiteSpace(templateName))
+                    throw new ArgumentException("Template name must be given");
                 string connStr = args[3];
                 string grpacctID = args[2];
                 if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri")
@@ -64,7 +66,7 @@ namespace WebTemplateManager
                 }
                 else
                 {
-                    FileSystemSupport.UploadTemplateContent(allFiles, owner, pubPriPrefix, true);
+                    FileSystemSupport.UploadTemplateContent(allFiles, owner, templateName, true);
                 }
             }
             catch

@@ -676,8 +676,11 @@ namespace TheBall
             return false;
         }
 
-        public static void RefreshContent(CloudBlob webPageBlob, bool skipIfSourcesIntact = false)
+        public static void RefreshPHTMLContent(CloudBlob webPageBlob, bool skipIfSourcesIntact = false)
         {
+            // Refresh only PHTML blobs
+            if (webPageBlob.Name.EndsWith(".phtml") == false)
+                return;
             InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
             if(sources == null)
                 throw new InvalidDataException("Web page to refresh is missing information sources: " + webPageBlob.Name);

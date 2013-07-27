@@ -226,7 +226,7 @@ namespace WebInterface
                                                               TargetObjectID = objectFieldID
                                                           });
                 if(result.RenderPageAfterOperation)
-                    RenderWebSupport.RefreshContent(webPageBlob);
+                    RenderWebSupport.RefreshPHTMLContent(webPageBlob);
                 return;
             }
 
@@ -251,7 +251,7 @@ namespace WebInterface
                 /* Temporarily removed all the version checks - last save wins! 
                 if (oldETag != rootObject.ETag)
                 {
-                    RenderWebSupport.RefreshContent(webPageBlob);
+                    RenderWebSupport.RefreshPHTMLContent(webPageBlob);
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                  * */
@@ -275,7 +275,7 @@ namespace WebInterface
                     rootObject.StoreInformationMasterFirst(containerOwner, false);
                 }
             }
-            RenderWebSupport.RefreshContent(webPageBlob);
+            RenderWebSupport.RefreshPHTMLContent(webPageBlob);
             // Temporary live to pub sync below, to be removed
             //SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
             //    String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", "livesite"),

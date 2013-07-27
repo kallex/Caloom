@@ -16,7 +16,7 @@ namespace AaltoGlobalImpact.OIP
             return ownerDirectoryLocation;
         }
 
-        public void RefreshContent()
+        public void RefreshPHTMLContent()
         {
             // DirectoryToMaster
             string itemDirectory = GetItemDirectory();
