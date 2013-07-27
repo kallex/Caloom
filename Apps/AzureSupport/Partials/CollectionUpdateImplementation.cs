@@ -601,7 +601,7 @@ namespace AaltoGlobalImpact.OIP
                 return dateTime.ToString("D");
             return dateTime.ToString("f");
         }
-
+        /*
         internal static void Update_Category_ParentCategories(Category category, CategoryCollection localCollection, CategoryCollection masterCollection)
         {
             if (localCollection == null)
@@ -612,6 +612,6 @@ namespace AaltoGlobalImpact.OIP
             localCollection.CollectionContent = masterCollection.CollectionContent;
             if (localCollection.OrderFilterIDList == null)
                 localCollection.OrderFilterIDList = new List<string>();
-        }
+        }*/
     }
 }

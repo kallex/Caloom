@@ -144,6 +144,7 @@
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IAddOperationProvider.cs" />
+    <Compile Include="Partials\IInformationObject.cs" />
     <Compile Include="Partials\Image.cs" />
     <Compile Include="Partials\ImageGroup.cs" />
     <Compile Include="Partials\InformationSource.cs" />

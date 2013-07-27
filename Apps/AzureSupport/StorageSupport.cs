@@ -456,6 +456,7 @@ namespace TheBall
                 case ".jpeg": return "image/jpeg";
                 case ".jpg": return "image/jpeg";
                 case ".js": return "application/x-javascript";
+                case ".json": return "application/json";
                 case ".jsx": return "text/jscript";
                 case ".jsxbin": return "text/plain";
                 case ".latex": return "application/x-latex";

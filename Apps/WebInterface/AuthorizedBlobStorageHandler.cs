@@ -301,8 +301,29 @@ namespace WebInterface
         private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;
+
+            bool isCancelButton = form["btnCancel"] != null;
+            if (isCancelButton)
+                return;
+
             string contentSourceInfo = form["ContentSourceInfo"];
             string[] contentSourceInfos = contentSourceInfo.Split(',');
+            NameValueCollection fileEntries = new NameValueCollection();
+            NameValueCollection fieldEntries = new NameValueCollection();
+            foreach (var key in form.AllKeys)
+            {
+                var value = form[key];
+                if (key.StartsWith("File_"))
+                    fileEntries.Add(key, value);
+                else
+                    fieldEntries.Add(key, value);
+            
+            }
+            foreach (var key in request.Files.AllKeys)
+            {
+                if (key.StartsWith("File_") && fileEntries.AllKeys.Contains(key) == false)
+                    fileEntries.Add(key, "");
+            }
             foreach (string sourceInfo in contentSourceInfos)
             {
                 string[] infoParts = sourceInfo.Split(':');
@@ -318,17 +339,42 @@ namespace WebInterface
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
-                rootObject.SetValuesToObjects(form);
+                rootObject.SetValuesToObjects(fieldEntries);
                 // If not add operation, set media content to stored object
-                foreach (string contentID in request.Files.AllKeys)
+                foreach (string fileKey in fileEntries.AllKeys)
                 {
-                    HttpPostedFile postedFile = request.Files[contentID];
-                    if (String.IsNullOrWhiteSpace(postedFile.FileName))
-                        continue;
-                    rootObject.SetMediaContent(containerOwner, contentID, postedFile);
+                    HttpPostedFile postedFile = null;
+                    if (request.Files.AllKeys.Contains(fileKey))
+                    {
+                        postedFile = request.Files[fileKey];
+                    }
+                    //if (String.IsNullOrWhiteSpace(postedFile.FileName))
+                    //    continue;
+                    string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
+                    SetMediaContent(containerOwner, contentInfo, rootObject, postedFile);
+                }
+                var removeMediaList = form["cmdRemoveMedia"];
+                if (String.IsNullOrWhiteSpace(removeMediaList) == false)
+                {
+                    string[] removeList = removeMediaList.Split(',');
+                    foreach (string contentInfo in removeList)
+                    {
+                        SetMediaContent(containerOwner, contentInfo, rootObject, null);
+                    }
                 }
                 rootObject.StoreInformationMasterFirst(containerOwner, false);
             }
+        }
+
+        private static void SetMediaContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
+                                            HttpPostedFile postedFile)
+        {
+            int firstIX = contentInfo.IndexOf('_');
+            if (firstIX < 0)
+                throw new InvalidDataException("Invalid field data on binary content");
+            string containerID = contentInfo.Substring(0, firstIX);
+            string containerField = contentInfo.Substring(firstIX + 1);
+            rootObject.SetMediaContent(containerOwner, containerID, containerField, postedFile);
         }
 
         private void HandlerOwnerAjaxDataPOST(IContainerOwner containerOwner, NameValueCollection form)
@@ -373,6 +419,11 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            if (context.Request.Url.Host == "localhost" && contentPath.Contains("oipcms/"))
+            {
+                HandleFileSystemGetRequest(containerOwner, context, contentPath);
+                return;
+            }
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
             var response = context.Response;
             // Read blob content to response.
@@ -403,6 +454,27 @@ namespace WebInterface
             response.End();
         }
 
+        private void HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        {
+            var response = context.Response;
+            string contentType = StorageSupport.GetMimeType(Path.GetExtension(contentPath));
+            response.ContentType = contentType;
+            string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+            string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
+            string fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
+            if (File.Exists(fileName))
+            {
+                var fileStream = File.OpenRead(fileName);
+                fileStream.CopyTo(context.Response.OutputStream);
+                fileStream.Close();
+            }
+            else
+            {
+                response.StatusCode = 404;
+            }
+            response.End();
+
+        }
 
         #endregion
     }

@@ -57019,8 +57019,8 @@ ImageVideoSoundVectorRaw.Vector
 				{
 					var result = new Category();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
-					result.Image = Image.CreateDefault();
-					result.ParentCategories = CategoryCollection.CreateDefault();
+					result.ImageData = MediaContent.CreateDefault();
+					result.ParentCategory = Category.CreateDefault();
 					return result;
 				}
 
@@ -57034,7 +57034,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.CategoryName = @"Category.CategoryName";
 
-					result.Image = Image.CreateDemoDefault();
+					result.ImageData = MediaContent.CreateDemoDefault();
 					result.Title = @"Category.Title";
 
 					result.Excerpt = @"Category.Excerpt
@@ -57044,7 +57044,7 @@ Category.Excerpt
 Category.Excerpt
 ";
 
-					result.ParentCategories = CategoryCollection.CreateDemoDefault();
+					result.ParentCategory = Category.CreateDemoDefault();
 				
 					return result;
 				}
@@ -57054,11 +57054,10 @@ Category.Excerpt
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
-					if(masterInstance is CategoryCollection) {
-						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Category_ParentCategories(this, localCollection:ParentCategories, masterCollection:(CategoryCollection) masterInstance);
-					} else if(ParentCategories != null) {
-						((IInformationObject) ParentCategories).UpdateCollections(masterInstance);
+					if(ImageData != null) {
+						((IInformationObject) ImageData).UpdateCollections(masterInstance);
 					}
+
 				}
 
 
@@ -57077,7 +57076,7 @@ Category.Excerpt
 					if(filterOnFalse(this))
 						result.Add(this);
 					{ // Scoping block for variable name reusability
-						IInformationObject item = ParentCategories;
+						IInformationObject item = ImageData;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -57094,7 +57093,7 @@ Category.Excerpt
 							}
 						}
 						{
-							IInformationObject item = Image;
+							IInformationObject item = ParentCategory;
 							if(item != null)
 							{
 								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -57116,7 +57115,7 @@ Category.Excerpt
 						}
 					}
 					{
-						var item = Image;
+						var item = ImageData;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -57125,7 +57124,7 @@ Category.Excerpt
 						}
 					}
 					{
-						var item = ParentCategories;
+						var item = ParentCategory;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -57159,12 +57158,12 @@ Category.Excerpt
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) Image;
+						var item = (IInformationObject) ImageData;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) ParentCategories;
+						var item = (IInformationObject) ParentCategory;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -57177,16 +57176,16 @@ Category.Excerpt
 							return true;
 						if(CategoryName != _unmodified_CategoryName)
 							return true;
-						if(Image != _unmodified_Image)
+						if(ImageData != _unmodified_ImageData)
 							return true;
 						if(Title != _unmodified_Title)
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
-						if(ParentCategories != _unmodified_ParentCategories)
+						if(ParentCategory != _unmodified_ParentCategory)
 							return true;
 						{
-							IInformationObject item = (IInformationObject) ParentCategories;
+							IInformationObject item = (IInformationObject) ImageData;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -57209,19 +57208,19 @@ Category.Excerpt
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(Image != null) {
-						if(Image.ID == replacingObject.ID)
-							Image = (Image) replacingObject;
+					if(ImageData != null) {
+						if(ImageData.ID == replacingObject.ID)
+							ImageData = (MediaContent) replacingObject;
 						else {
-							IInformationObject iObject = Image;
+							IInformationObject iObject = ImageData;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(ParentCategories != null) {
-						if(ParentCategories.ID == replacingObject.ID)
-							ParentCategories = (CategoryCollection) replacingObject;
+					if(ParentCategory != null) {
+						if(ParentCategory.ID == replacingObject.ID)
+							ParentCategory = (Category) replacingObject;
 						else {
-							IInformationObject iObject = ParentCategories;
+							IInformationObject iObject = ParentCategory;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -57232,10 +57231,10 @@ Category.Excerpt
 				{
 					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					CategoryName = sourceObject.CategoryName;
-					Image = sourceObject.Image;
+					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
 					Excerpt = sourceObject.Excerpt;
-					ParentCategories = sourceObject.ParentCategories;
+					ParentCategory = sourceObject.ParentCategory;
 				}
 				
 
@@ -57250,13 +57249,13 @@ Category.Excerpt
 					if(ReferenceToInformation != null)
 						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_Image = Image;
-					if(Image != null)
-						((IInformationObject) Image).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_ImageData = ImageData;
+					if(ImageData != null)
+						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_ParentCategories = ParentCategories;
-					if(ParentCategories != null)
-						((IInformationObject) ParentCategories).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_ParentCategory = ParentCategory;
+					if(ParentCategory != null)
+						((IInformationObject) ParentCategory).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -57288,8 +57287,8 @@ Category.Excerpt
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
 			[DataMember]
-			public Image Image { get; set; }
-			private Image _unmodified_Image;
+			public MediaContent ImageData { get; set; }
+			private MediaContent _unmodified_ImageData;
 			[DataMember]
 			public string Title { get; set; }
 			private string _unmodified_Title;
@@ -57297,8 +57296,8 @@ Category.Excerpt
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
 			[DataMember]
-			public CategoryCollection ParentCategories { get; set; }
-			private CategoryCollection _unmodified_ParentCategories;
+			public Category ParentCategory { get; set; }
+			private Category _unmodified_ParentCategory;
 			
 			}
 			[DataContract]
