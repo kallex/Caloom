@@ -88,6 +88,7 @@
     <Compile Include="Caloom.Schools\CollectionUpdateImplementation.cs" />
     <Compile Include="Caloom.Schools\CreateTrainingModuleImplementation.cs" />
     <Compile Include="EncryptionSupport.cs" />
+    <Compile Include="ModifyInformationSupport.cs" />
     <Compile Include="Operation\ChooseActivePublicationImplementation.cs" />
     <Compile Include="Operation\CleanOldPublicationsImplementation.cs" />
     <Compile Include="Operation\UpdatePublicationInfoImplementation.cs" />
