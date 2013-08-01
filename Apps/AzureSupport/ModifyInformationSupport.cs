@@ -39,9 +39,9 @@ namespace TheBall
             }
             foreach (string sourceInfo in contentSourceInfos)
             {
-                string[] infoParts = sourceInfo.Split(':');
-                string relativeLocation = infoParts[0];
-                string oldETag = infoParts[1];
+                string relativeLocation;
+                string oldETag;
+                retrieveDataSourceInfo(sourceInfo, out relativeLocation, out oldETag);
                 VirtualOwner verifyOwner = VirtualOwner.FigureOwner(relativeLocation);
                 if (verifyOwner.IsSameOwner(containerOwner) == false)
                     throw new SecurityException("Mismatch in ownership of data submission");
@@ -52,20 +52,10 @@ namespace TheBall
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
-                rootObject.SetValuesToObjects(fieldEntries);
-                // If not add operation, set media content to stored object
-                foreach (string fileKey in fileEntries.AllKeys)
-                {
-                    HttpPostedFile postedFile = null;
-                    if (fileContent.AllKeys.Contains(fileKey))
-                    {
-                        postedFile = fileContent[fileKey];
-                    }
-                    //if (String.IsNullOrWhiteSpace(postedFile.FileName))
-                    //    continue;
-                    string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
-                    SetMediaContent(containerOwner, contentInfo, rootObject, postedFile);
-                }
+                SetFieldValues(rootObject, fieldEntries);
+                SetBinaryContent(rootObject, fileEntries, fileContent, containerOwner);
+                SetObjectLinks(rootObject, objectEntries);
+
                 /* Operation bridge model below - not used/needed with field assignment solution */
                 /*
                 var removeMediaList = form["cmdRemoveMedia"];
@@ -74,7 +64,7 @@ namespace TheBall
                     string[] removeList = removeMediaList.Split(',');
                     foreach (string contentInfo in removeList)
                     {
-                        SetMediaContent(containerOwner, contentInfo, rootObject, null);
+                        SetBinaryContent(containerOwner, contentInfo, rootObject, null);
                     }
                 }
                  * */
@@ -83,7 +73,51 @@ namespace TheBall
 
         }
 
-        private static void SetMediaContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
+        private static void SetObjectLinks(IInformationObject rootObject, NameValueCollection objectEntries)
+        {
+            foreach (var objectKey in objectEntries.AllKeys)
+            {
+                string objectInfo = objectKey.Substring(7); // Substring("Object_".Length);
+                int firstIX = objectInfo.IndexOf('_');
+                if (firstIX < 0)
+                    throw new InvalidDataException("Invalid field data on binary content");
+                string containerID = objectInfo.Substring(0, firstIX);
+                string containerField = objectInfo.Substring(firstIX + 1);
+                string objectIDCommaSeparated = objectEntries[objectKey] ?? "";
+                string[] objectIDList = objectIDCommaSeparated.Split(',');
+                rootObject.SetObjectContent(containerID, containerField, objectIDList);
+            }
+        }
+
+        private static void SetBinaryContent(IInformationObject rootObject, NameValueCollection fileEntries, HttpFileCollection fileContent, IContainerOwner containerOwner)
+        {
+            foreach (string fileKey in fileEntries.AllKeys)
+            {
+                HttpPostedFile postedFile = null;
+                if (fileContent.AllKeys.Contains(fileKey))
+                {
+                    postedFile = fileContent[fileKey];
+                }
+                //if (String.IsNullOrWhiteSpace(postedFile.FileName))
+                //    continue;
+                string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
+                SetBinaryContent(containerOwner, contentInfo, rootObject, postedFile);
+            }
+        }
+
+        private static void SetFieldValues(IInformationObject rootObject, NameValueCollection fieldEntries)
+        {
+            rootObject.SetValuesToObjects(fieldEntries);
+        }
+
+        private static void retrieveDataSourceInfo(string sourceInfo, out string relativeLocation, out string oldETag)
+        {
+            string[] infoParts = sourceInfo.Split(':');
+            relativeLocation = infoParts[0];
+            oldETag = infoParts[1];
+        }
+
+        private static void SetBinaryContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
                                 HttpPostedFile postedFile)
         {
             int firstIX = contentInfo.IndexOf('_');

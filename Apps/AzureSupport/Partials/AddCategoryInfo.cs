@@ -12,7 +12,7 @@ namespace AaltoGlobalImpact.OIP
         {
             if(CategoryName == "")
                 throw new InvalidDataException("Category name is mandatory");
-            Category category = Category.CreateDefault();
+            Category category = new Category();
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             category.SetLocationAsOwnerContent(owner, category.ID);
             category.CategoryName = CategoryName;

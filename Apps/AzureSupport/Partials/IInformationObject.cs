@@ -44,6 +44,42 @@ namespace AaltoGlobalImpact.OIP
 
     public static class ExtIInformationObject
     {
+        public static void SetObjectContent(this IInformationObject rootObject, string containerID,
+                                            string containedField, string[] objectIDList)
+        {
+            List<IInformationObject> containerList = new List<IInformationObject>();
+            rootObject.FindObjectsFromTree(containerList, iObj => iObj.ID == containerID, false);
+            foreach (var iObj in containerList)
+            {
+                var type = iObj.GetType();
+                var prop = type.GetProperty(containedField);
+                if (prop == null)
+                    throw new InvalidDataException(String.Format("No property {0} found in type {1}", containedField, type.Name));
+                IInformationObject containedObject = (IInformationObject) prop.GetValue(iObj, null);
+                if(containedObject is IInformationCollection || objectIDList.Length > 1)
+                    throw new NotSupportedException("Information collection setting is not yet supported");
+                if (containedObject == null && objectIDList.Length == 0)
+                    continue;
+                if (objectIDList.Length == 0)
+                {
+                    prop.SetValue(iObj, null, null);
+                }
+                else
+                {
+                    VirtualOwner owner = VirtualOwner.FigureOwner(rootObject.RelativeLocation);
+                    Type contentType = prop.PropertyType;
+                    string contentDomain = contentType.Namespace;
+                    string contentTypeName = contentType.Name;
+                    string contentObjectID = objectIDList[0];
+                    IInformationObject contentObject =
+                        StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
+                                                                                    owner);
+                    prop.SetValue(iObj, contentObject, null);
+                    //RetrieveInformationObjectFromDefaultLocation()
+                }
+            }
+        }
+
         public static void SetMediaContent(this IInformationObject rootObject, IContainerOwner containerOwner,
                                            string containerID, string containedField,
                                            object mediaContent)

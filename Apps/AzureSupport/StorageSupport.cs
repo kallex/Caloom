@@ -1409,6 +1409,13 @@ namespace TheBall
             }
             return true;
         }
+
+        public static IInformationObject RetrieveInformationObjectFromDefaultLocation(string contentDomain, string contentTypeName, string contentObjectId, VirtualOwner owner)
+        {
+            string contentFullTypeName = contentDomain + "." + contentTypeName;
+            string contentLocation = contentDomain + "/" + contentTypeName + "/" + contentObjectId;
+            return RetrieveInformation(contentLocation, contentFullTypeName, null, owner);
+        }
     }
 
     public class ReferenceOutdatedException : Exception
