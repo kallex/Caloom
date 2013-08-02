@@ -12,7 +12,8 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_DeleteObject(IInformationObject objectToDelete)
         {
-            objectToDelete.DeleteInformationObject();
+            if(objectToDelete != null)
+                objectToDelete.DeleteInformationObject();
         }
     }
 }
