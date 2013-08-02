@@ -205,7 +205,8 @@ namespace WebInterface
                 return;
             }
 
-            bool isClientTemplateRequest = form.Get("ContentSourceInfo") != null;
+            bool isClientTemplateRequest = form.Get("ContentSourceInfo") != null ||
+                form.Get("ExecuteOperation") != null;
             if(isClientTemplateRequest)
             {
                 HandleOwnerClientTemplatePOST(containerOwner, request);

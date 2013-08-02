@@ -83,16 +83,17 @@ namespace TheBall
 
         private static void executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
+            var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
-                case "CreateObject":
+                case "CreateSpecifiedInformationObjectWithValues":
                     {
                         CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
                             {
                                 Owner = containerOwner,
                                 ObjectDomainName = form["ObjectDomainName"],
                                 ObjectName = form["ObjectName"],
-                                HttpFormData = form,
+                                HttpFormData = filterForm(form, filterFields),
                                 HttpFileData = fileContent,
                             };
                         CreateSpecifiedInformationObjectWithValues.Execute(parameters);
@@ -113,6 +114,18 @@ namespace TheBall
                 default:
                     throw new NotSupportedException("Operation not (yet) supported: " + operationName);
             }
+        }
+
+        private static NameValueCollection filterForm(NameValueCollection form, params string[] keysToFilter)
+        {
+            var filteredForm = new NameValueCollection();
+            foreach (var key in form.AllKeys)
+            {
+                if (keysToFilter.Contains(key))
+                    continue;
+                filteredForm.Add(key, form[key]);
+            }
+            return filteredForm;
         }
 
         public static void SetObjectLinks(IInformationObject rootObject, NameValueCollection objectEntries)
