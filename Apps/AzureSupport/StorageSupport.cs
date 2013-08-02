@@ -1410,7 +1410,7 @@ namespace TheBall
             return true;
         }
 
-        public static IInformationObject RetrieveInformationObjectFromDefaultLocation(string contentDomain, string contentTypeName, string contentObjectId, VirtualOwner owner)
+        public static IInformationObject RetrieveInformationObjectFromDefaultLocation(string contentDomain, string contentTypeName, string contentObjectId, IContainerOwner owner)
         {
             string contentFullTypeName = contentDomain + "." + contentTypeName;
             string contentLocation = contentDomain + "/" + contentTypeName + "/" + contentObjectId;

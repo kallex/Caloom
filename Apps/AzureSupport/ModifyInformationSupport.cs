@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -15,6 +16,13 @@ namespace TheBall
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
                 return;
+
+            string operationName = form["ExecuteOperation"];
+            if (operationName != null)
+            {
+                executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
+                return;
+            }
 
             string contentSourceInfo = form["ContentSourceInfo"];
             string[] contentSourceInfos = contentSourceInfo.Split(',');
@@ -73,7 +81,41 @@ namespace TheBall
 
         }
 
-        private static void SetObjectLinks(IInformationObject rootObject, NameValueCollection objectEntries)
+        private static void executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        {
+            switch (operationName)
+            {
+                case "CreateObject":
+                    {
+                        CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
+                            {
+                                Owner = containerOwner,
+                                ObjectDomainName = form["ObjectDomainName"],
+                                ObjectName = form["ObjectName"],
+                                HttpFormData = form,
+                                HttpFileData = fileContent,
+                            };
+                        CreateSpecifiedInformationObjectWithValues.Execute(parameters);
+                        break;
+                    }
+                case "DeleteSpecifiedInformationObject":
+                    {
+                        DeleteSpecifiedInformationObjectParameters parameters = new DeleteSpecifiedInformationObjectParameters
+                            {
+                                Owner = containerOwner,
+                                ObjectDomainName = form["ObjectDomainName"],
+                                ObjectName = form["ObjectName"],
+                                ObjectID = form["ObjectID"],
+                            };
+                        DeleteSpecifiedInformationObject.Execute(parameters);
+                        break;
+                    }
+                default:
+                    throw new NotSupportedException("Operation not (yet) supported: " + operationName);
+            }
+        }
+
+        public static void SetObjectLinks(IInformationObject rootObject, NameValueCollection objectEntries)
         {
             foreach (var objectKey in objectEntries.AllKeys)
             {
@@ -89,7 +131,7 @@ namespace TheBall
             }
         }
 
-        private static void SetBinaryContent(IInformationObject rootObject, NameValueCollection fileEntries, HttpFileCollection fileContent, IContainerOwner containerOwner)
+        public static void SetBinaryContent(IInformationObject rootObject, NameValueCollection fileEntries, HttpFileCollection fileContent, IContainerOwner containerOwner)
         {
             foreach (string fileKey in fileEntries.AllKeys)
             {
@@ -105,7 +147,7 @@ namespace TheBall
             }
         }
 
-        private static void SetFieldValues(IInformationObject rootObject, NameValueCollection fieldEntries)
+        public static void SetFieldValues(IInformationObject rootObject, NameValueCollection fieldEntries)
         {
             rootObject.SetValuesToObjects(fieldEntries);
         }
@@ -117,7 +159,7 @@ namespace TheBall
             oldETag = infoParts[1];
         }
 
-        private static void SetBinaryContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
+        public static void SetBinaryContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
                                 HttpPostedFile postedFile)
         {
             int firstIX = contentInfo.IndexOf('_');
@@ -128,7 +170,5 @@ namespace TheBall
             rootObject.SetMediaContent(containerOwner, containerID, containerField, postedFile);
         }
 
-
-        
     }
 }
