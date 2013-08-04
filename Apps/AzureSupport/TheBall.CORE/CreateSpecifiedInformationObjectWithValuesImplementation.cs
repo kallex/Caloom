@@ -68,7 +68,7 @@ namespace TheBall.CORE
                 {
                     string dictKey = key.Replace("File_", "File_" + objectID + "_");
                     if (resultDict.ContainsKey(dictKey) == false)
-                        resultDict.Add(dictKey, null);
+                        resultDict.Add(dictKey, httpFileData[key]);
                 }
             }
             return resultDict;
@@ -92,10 +92,11 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_SetBinaryContent(IContainerOwner owner, IInformationObject createdObject, Dictionary<string, HttpPostedFile> binaryContentFiles)
         {
-            foreach (var contentInfo in binaryContentFiles.Keys)
+            foreach (var fileKey in binaryContentFiles.Keys)
             {
+                string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
                 ModifyInformationSupport.SetBinaryContent(owner, contentInfo, createdObject,
-                                                          binaryContentFiles[contentInfo]);
+                                                          binaryContentFiles[fileKey]);
             }
         }
 
