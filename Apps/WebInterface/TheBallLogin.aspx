@@ -8,6 +8,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
+        <div>Autoforwarding onwards after login.</div>
         <asp:Label ID="Label1" runat="server" Text="OpenID Login" /><asp:TextBox ID="openIdBox"
             runat="server" /><asp:Button ID="loginButton" runat="server" Text="Login" OnClick="loginButton_Click" /><asp:CustomValidator
                 runat="server" ID="openidValidator" ErrorMessage="Invalid OpenID Identifier"

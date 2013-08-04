@@ -1,50 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-10.1.8">
-  <WebRole name="AzureMultiTenantApp.Web" vmsize="ExtraSmall">
-    <Runtime executionContext="elevated" />
-    <Startup>
-      <Task commandLine="Startup\ConfigureIIS.cmd" executionContext="elevated" taskType="simple" />
-    </Startup>
-    <Sites>
-      <Site name="Web">
-        <Bindings>
-          <Binding name="HttpIn" endpointName="HttpIn" />
-          <Binding name="HttpsIn" endpointName="HttpsIn" />
-        </Bindings>
-      </Site>
-    </Sites>
-    <Endpoints>
-      <InputEndpoint name="HttpIn" protocol="http" port="80" />
-      <InputEndpoint name="HttpsIn" protocol="https" port="443" localPort="443" certificate="ProtonITWildcard" />
-      <!-- unused, just there so instance discovery works -->
-      <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
-    </Endpoints>
-    <Imports>
-      <Import moduleName="Diagnostics" />
-      <Import moduleName="RemoteAccess" />
-      <Import moduleName="RemoteForwarder" />
-    </Imports>
-    <LocalResources>
-      <LocalStorage name="Sites" cleanOnRoleRecycle="true" sizeInMB="5000" />
-      <LocalStorage name="TempSites" cleanOnRoleRecycle="true" sizeInMB="5000" />
-      <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
-    </LocalResources>
-    <ConfigurationSettings>
-      <Setting name="DataConnectionString" />
-      <Setting name="AmazonSESAccessInfo" />
-      <Setting name="SitesContainerName" />
-      <Setting name="DirectoriesToExclude" />
-      <Setting name="SyncIntervalInSeconds" />
-      <Setting name="AdminUserName" />
-      <Setting name="AdminUserPassword" />
-    </ConfigurationSettings>
-    <Certificates>
-      <Certificate name="ProtonITWildcard" storeLocation="LocalMachine" storeName="My" />
-    </Certificates>
-  </WebRole>
+  <LoadBalancerProbes>
+    <LoadBalancerProbe name="WebDeploy" protocol="http" port="80" path="Probe.aspx" intervalInSeconds="5" timeoutInSeconds="100" />
+  </LoadBalancerProbes>
   <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
     <Imports>
+      <!--
       <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+      -->
     </Imports>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
@@ -56,4 +20,46 @@
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
   </WorkerRole>
+  <WebRole name="TheBallWebFarm" vmsize="Small">
+    <Runtime executionContext="elevated" />
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="HttpIn" endpointName="HttpIn" />
+          <Binding name="HttpsIn" endpointName="HttpsIn" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="HttpIn" protocol="http" port="80" localPort="80" />
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" localPort="443" certificate="HTTPS" />
+      <InputEndpoint name="Microsoft.WindowsAzure.Plugins.WebDeploy.InputEndpoint" protocol="tcp" port="8172" localPort="8172" loadBalancerProbe="WebDeploy" />
+      <!-- unused, just there so instance discovery works -->
+      <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
+    </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+      <Import moduleName="WebDeploy" />
+    </Imports>
+    <LocalResources>
+      <LocalStorage name="Sites" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="Execution" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
+    </LocalResources>
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" />
+      <Setting name="StorageConnectionString" />
+      <Setting name="SyncEnabled" />
+      <Setting name="SitesContainerName" />
+      <Setting name="DirectoriesToExclude" />
+      <Setting name="SyncIntervalInSeconds" />
+      <Setting name="AmazonSESAccessInfo" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WebRole>
 </ServiceDefinition>

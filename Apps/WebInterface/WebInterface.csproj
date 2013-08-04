@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebInterface</RootNamespace>
     <AssemblyName>WebInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -147,6 +147,7 @@
     <None Include="Properties\PublishProfiles\theball - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Web Role OIPSSL.pubxml" />
     <None Include="Properties\PublishProfiles\oip.msunit.citrus.fi.pubxml" />
+    <None Include="Properties\PublishProfiles\WebFarmTest.pubxml" />
     <None Include="Properties\PublishProfiles\www.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\www.globalimpact.aalto.fi.pubxml" />
   </ItemGroup>

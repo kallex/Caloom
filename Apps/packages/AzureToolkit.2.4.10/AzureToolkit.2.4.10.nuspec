@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>AzureToolkit</id>
+    <version>2.4.10</version>
+    <authors>Jim Zimmerman,  Scott Densmore,  Tom Basnett,  Nathan Totten,  Prabir Shrestha,  Federico Boerr</authors>
+    <owners>Jim Zimmerman,  Scott Densmore,  Tom Basnett,  Nathan Totten,  Prabir Shrestha,  Federico Boerr</owners>
+    <licenseUrl>http://azuretoolkit.codeplex.com/license</licenseUrl>
+    <projectUrl>http://azuretoolkit.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This toolkit is built by Thuzi to give the community a reusable framework developing on Windows Azure.</description>
+    <tags>azure</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="4.5.3" />
+    </dependencies>
+    <references>
+      <reference file="AzureToolkit.dll" />
+    </references>
+  </metadata>
+</package>

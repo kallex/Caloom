@@ -37,13 +37,13 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\wa-accelerator-webroles\code\AzureMultiTenantApp.Web\AzureMultiTenantApp.Web.csproj">
-      <Name>AzureMultiTenantApp.Web</Name>
-      <Project>{ab0c275a-7c67-4d5a-bfc8-52b490ff6516}</Project>
+    <ProjectReference Include="..\TheBallWebFarm\TheBallWebFarm.csproj">
+      <Name>TheBallWebFarm</Name>
+      <Project>{0a89a6a6-241b-4cac-9fea-993802e36b2d}</Project>
       <Private>True</Private>
       <RoleType>Web</RoleType>
-      <RoleName>AzureMultiTenantApp.Web</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>False</UpdateDiagnosticsConnectionStringOnPublish>
+      <RoleName>TheBallWebFarm</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
     <ProjectReference Include="..\workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj">
       <Name>WorkerRoleAccelerator.Core</Name>
@@ -60,4 +60,10 @@
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\1.8\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
+  <PropertyGroup>
+    <WebProjectName>TheBallWebFarm</WebProjectName>
+  </PropertyGroup>
+  <Target Name="CopyAppConfigurationIntoPackage" BeforeTargets="AfterPackageComputeService">
+    <Copy SourceFiles="$(ProjectDir)..\$(WebProjectName)\App.config" DestinationFiles="$(ProjectDir)obj\$(Configuration)\$(WebProjectName)\bin\$(WebProjectName).dll.config" />
+  </Target>
 </Project>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>AzureWebFarm</id>
+    <version>0.9.2.27</version>
+    <title>AzureWebFarm</title>
+    <authors>Robert Moore,  Matt Davies</authors>
+    <owners>Robert Moore,  Matt Davies</owners>
+    <licenseUrl>https://github.com/robdmoore/AzureWebFarm/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/robdmoore/AzureWebFarm</projectUrl>
+    <iconUrl>https://raw.github.com/robdmoore/AzureWebFarm/master/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MsDeploy enabled Web Farm using Web Roles in Azure based on Windows Azure Accelerator for Web Roles and including a background worker execution model.</description>
+    <releaseNotes>Please see https://github.com/robdmoore/AzureWebFarm/blob/master/BREAKING_CHANGES.md for any breaking changes.</releaseNotes>
+    <copyright />
+    <language>en-US</language>
+    <tags>azure iis web farm msdeploy deploy role</tags>
+    <dependencies>
+      <dependency id="WindowsAzure.Storage" version="1.7" />
+      <dependency id="AzureToolkit" version="2.4.10" />
+      <dependency id="Microsoft.WindowsAzure.ConfigurationManager" version="1.8" />
+      <dependency id="Castle.Core" version="3.2" />
+      <dependency id="Autofac" version="3.0.2" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.WindowsAzure.ServiceRuntime" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="Microsoft.WindowsAzure.Diagnostics" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+    <references>
+      <reference file="AzureWebFarm.dll" />
+      <reference file="Microsoft.Web.Administration.dll" />
+      <reference file="Microsoft.Web.Deployment.dll" />
+    </references>
+  </metadata>
+</package>

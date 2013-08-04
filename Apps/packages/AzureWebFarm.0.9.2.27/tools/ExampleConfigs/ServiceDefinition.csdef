@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="AzureWebFarm.Example.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-10.1.8">
+  <LoadBalancerProbes>
+    <LoadBalancerProbe name="WebDeploy" protocol="http" port="80" path="Probe.aspx" intervalInSeconds="5" timeoutInSeconds="100" />
+  </LoadBalancerProbes>
+  <WebRole name="AzureWebFarm.Example.Web" vmsize="Small">
+    <Runtime executionContext="elevated" />
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="HttpIn" endpointName="HttpIn" />
+          <Binding name="HttpsIn" endpointName="HttpsIn" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="HttpIn" protocol="http" port="80" localPort="80" />
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" localPort="443" certificate="HTTPS" />
+      <InputEndpoint name="Microsoft.WindowsAzure.Plugins.WebDeploy.InputEndpoint" protocol="tcp" port="8172" localPort="8172" loadBalancerProbe="WebDeploy" />
+      <!-- unused, just there so instance discovery works -->
+      <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
+    </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+      <Import moduleName="WebDeploy" />
+    </Imports>
+    <LocalResources>
+      <LocalStorage name="Sites" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="Execution" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
+    </LocalResources>
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" />
+      <Setting name="SyncEnabled" />
+      <Setting name="SitesContainerName" />
+      <Setting name="DirectoriesToExclude" />
+      <Setting name="SyncIntervalInSeconds" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WebRole>
+</ServiceDefinition>
