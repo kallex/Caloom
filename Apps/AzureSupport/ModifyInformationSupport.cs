@@ -139,7 +139,7 @@ namespace TheBall
                 string containerID = objectInfo.Substring(0, firstIX);
                 string containerField = objectInfo.Substring(firstIX + 1);
                 string objectIDCommaSeparated = objectEntries[objectKey] ?? "";
-                string[] objectIDList = objectIDCommaSeparated.Split(',');
+                string[] objectIDList = objectIDCommaSeparated.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 rootObject.SetObjectContent(containerID, containerField, objectIDList);
             }
         }

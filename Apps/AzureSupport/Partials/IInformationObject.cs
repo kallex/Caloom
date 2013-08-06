@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -56,8 +57,6 @@ namespace AaltoGlobalImpact.OIP
                 if (prop == null)
                     throw new InvalidDataException(String.Format("No property {0} found in type {1}", containedField, type.Name));
                 IInformationObject containedObject = (IInformationObject) prop.GetValue(iObj, null);
-                if(containedObject is IInformationCollection || objectIDList.Length > 1)
-                    throw new NotSupportedException("Information collection setting is not yet supported");
                 if (containedObject == null && objectIDList.Length == 0)
                     continue;
                 if (objectIDList.Length == 0)
@@ -70,11 +69,51 @@ namespace AaltoGlobalImpact.OIP
                     Type contentType = prop.PropertyType;
                     string contentDomain = contentType.Namespace;
                     string contentTypeName = contentType.Name;
-                    string contentObjectID = objectIDList[0];
-                    IInformationObject contentObject =
-                        StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
-                                                                                    owner);
-                    prop.SetValue(iObj, contentObject, null);
+                    bool isCollectionType = typeof(IInformationCollection).IsAssignableFrom(contentType);
+                    if (isCollectionType)
+                    {
+                        if (containedObject == null)
+                        {
+                            containedObject = (IInformationObject) Activator.CreateInstance(contentType);
+                            prop.SetValue(iObj, containedObject, null);
+                        }
+                        dynamic dynObj = containedObject;
+                        object listObject = dynObj.CollectionContent;
+                        // Note the below works for List<T>, that we know the type is of ;-)
+                        Type collectionItemType = listObject.GetType().GetGenericArguments()[0];
+                        // This is assuming collections are referring within same domain only
+                        contentTypeName = collectionItemType.Name;
+                        IList contentList = (IList) listObject;
+                        IEnumerable<IInformationObject> contentEnum = (IEnumerable<IInformationObject>) listObject;
+                        List<IInformationObject> objectsToRemove = new List<IInformationObject>();
+                        foreach (IInformationObject existingObject in contentList)
+                        {
+                            if(objectIDList.Contains(existingObject.ID) == false)
+                                objectsToRemove.Add(existingObject);
+                        }
+                        objectsToRemove.ForEach(obj => contentList.Remove(obj));
+                        foreach (string contentObjectID in objectIDList)
+                        {
+                            if (contentEnum.Any(item => item.ID == contentObjectID))
+                                continue;
+                            IInformationObject contentObject =
+                                StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
+                                                                                            owner);
+                            if (contentObject == null)
+                                continue;
+                            contentList.Add(contentObject);
+                        }
+                    }
+                    else
+                    {
+                        if(objectIDList.Length > 1)
+                            throw new InvalidDataException("Object link name " + containedField + " of type " + contentTypeName + " does not allow multiple values");
+                        string contentObjectID = objectIDList[0];
+                        IInformationObject contentObject =
+                            StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
+                                                                                        owner);
+                        prop.SetValue(iObj, contentObject, null);
+                    }
                     //RetrieveInformationObjectFromDefaultLocation()
                 }
             }
