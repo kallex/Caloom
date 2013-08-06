@@ -613,5 +613,13 @@ namespace AaltoGlobalImpact.OIP
             if (localCollection.OrderFilterIDList == null)
                 localCollection.OrderFilterIDList = new List<string>();
         }*/
+
+        internal static void Update_TextContent_Locations(TextContent textContent, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+        }
+
+        internal static void Update_TextContent_Categories(TextContent textContent, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+        }
     }
 }
