@@ -134,6 +134,7 @@ namespace TheBallTool
             List<IInformationObject> result = new List<IInformationObject>();
             foreach(string ownerLocation in ownerLocations)
             {
+                Debug.WriteLine("Getting objects for owner: " + ownerLocation);
                 var ownerObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, filterByFullName,  filterIfFalse);
                 result.AddRange(ownerObjects);
             }
@@ -598,6 +599,21 @@ namespace TheBallTool
 
         }
 
+        private static void PatchTextContentCollectionNodeSummarySpecificGroup()
+        {
+            var nodesummaryContainers = GetAllInformationObjects(name => name.Contains("NodeSummaryContainer") && name.Contains("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"),
+                                                                 iObj => iObj is NodeSummaryContainer);
+            foreach (NodeSummaryContainer nodeSummaryContainer in nodesummaryContainers)
+            {
+                if (nodeSummaryContainer.NodeSourceTextContent == null)
+                {
+                    Debug.WriteLine("Fixing nodesummary: " + nodeSummaryContainer.RelativeLocation);
+                    nodeSummaryContainer.NodeSourceTextContent = new TextContentCollection();
+                    nodeSummaryContainer.StoreInformation();
+                }
+            }
+        }
+
         public static bool DoPatching()
         {
             //return false;
@@ -611,6 +627,7 @@ namespace TheBallTool
             //FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411"); // Proj2
 
             FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
+            //PatchTextContentCollectionNodeSummarySpecificGroup();
 
             //InitBlogProfileAndIconOnce();
 

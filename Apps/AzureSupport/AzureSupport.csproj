@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="AdditionalFormatSupport.cs" />
     <Compile Include="Partials\AddressAndLocationCollection.cs" />
+    <Compile Include="Partials\NodeSummaryContainer.cs" />
     <Compile Include="Partials\TextContent.cs" />
     <Compile Include="Partials\TextContentCollection.cs" />
     <Compile Include="TheBall.CORE\CreateSpecifiedInformationObjectWithValuesImplementation.cs" />

@@ -491,6 +491,7 @@ namespace AaltoGlobalImpact.OIP
 
         const string NodeSourceTypeBlog = "BLOG";
         const string NodeSourceTypeActivity = "ACTIVITY";
+        const string NodeSourceTypeTextContent = "TEXTCONTENT";
         internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -616,10 +617,54 @@ namespace AaltoGlobalImpact.OIP
 
         internal static void Update_TextContent_Locations(TextContent textContent, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
         {
+            // TODO: Remove objects, that are no longer available in master
         }
 
         internal static void Update_TextContent_Categories(TextContent textContent, CategoryCollection localCollection, CategoryCollection masterCollection)
         {
+            // TODO: Remove objects, that are no longer available in master
         }
+
+        internal static void Update_NodeSummaryContainer_NodeSourceTextContent(NodeSummaryContainer nodeSummaryContainer, TextContentCollection localCollection, TextContentCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeTextContent);
+            var textContentNodes = masterCollection.CollectionContent.Select(getNodeFromTextContent).ToArray();
+            nodes.CollectionContent.AddRange(textContentNodes);
+            /*
+            nodes.CollectionContent.ForEach(node =>
+            {
+                if (node.Authors.CollectionContent.Count == 0)
+                    node.Authors.CollectionContent.Add(getShortTextObject(DefaultAuthorValue));
+                else
+                {
+                    var firstAuthorObject = node.Authors.CollectionContent[0];
+                    if (String.IsNullOrWhiteSpace(firstAuthorObject.Content))
+                    {
+                        firstAuthorObject.Content = DefaultAuthorValue;
+                    }
+                }
+            });*/
+            cleanUpRenderedNodes(nodes);
+        }
+
+        internal static RenderedNode getNodeFromTextContent(TextContent textContent)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeActivity;
+            node.Title = textContent.Title;
+            node.Excerpt = textContent.Excerpt;
+            if(textContent.ImageData != null)
+                node.ImageBaseUrl = textContent.ImageData.ContentUrlBase;
+            node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.ID;
+            if(textContent.Categories != null)
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories));
+            if(textContent.Locations != null)
+                node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));
+            node.Authors.CollectionContent.Add(getShortTextObject(textContent.Author));
+            node.MainSortableText = textContent.SortOrderNumber.ToString();
+            return node;
+        }
+
     }
 }

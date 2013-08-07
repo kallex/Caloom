@@ -22099,6 +22099,7 @@ AccountRoles.OrganizationsImPartOf
 					result.Nodes = RenderedNodeCollection.CreateDefault();
 					result.NodeSourceBlogs = BlogCollection.CreateDefault();
 					result.NodeSourceActivities = ActivityCollection.CreateDefault();
+					result.NodeSourceTextContent = TextContentCollection.CreateDefault();
 					return result;
 				}
 
@@ -22112,6 +22113,7 @@ AccountRoles.OrganizationsImPartOf
 					result.Nodes = RenderedNodeCollection.CreateDemoDefault();
 					result.NodeSourceBlogs = BlogCollection.CreateDemoDefault();
 					result.NodeSourceActivities = ActivityCollection.CreateDemoDefault();
+					result.NodeSourceTextContent = TextContentCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -22134,6 +22136,11 @@ AccountRoles.OrganizationsImPartOf
 						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceActivities(this, localCollection:NodeSourceActivities, masterCollection:(ActivityCollection) masterInstance);
 					} else if(NodeSourceActivities != null) {
 						((IInformationObject) NodeSourceActivities).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is TextContentCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceTextContent(this, localCollection:NodeSourceTextContent, masterCollection:(TextContentCollection) masterInstance);
+					} else if(NodeSourceTextContent != null) {
+						((IInformationObject) NodeSourceTextContent).UpdateCollections(masterInstance);
 					}
 				}
 
@@ -22176,6 +22183,14 @@ AccountRoles.OrganizationsImPartOf
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = NodeSourceTextContent;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -22204,6 +22219,15 @@ AccountRoles.OrganizationsImPartOf
 					}
 					{
 						var item = NodeSourceActivities;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = NodeSourceTextContent;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -22246,6 +22270,11 @@ AccountRoles.OrganizationsImPartOf
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) NodeSourceTextContent;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -22256,6 +22285,8 @@ AccountRoles.OrganizationsImPartOf
 						if(NodeSourceBlogs != _unmodified_NodeSourceBlogs)
 							return true;
 						if(NodeSourceActivities != _unmodified_NodeSourceActivities)
+							return true;
+						if(NodeSourceTextContent != _unmodified_NodeSourceTextContent)
 							return true;
 						{
 							IInformationObject item = (IInformationObject) Nodes;
@@ -22277,6 +22308,15 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) NodeSourceActivities;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) NodeSourceTextContent;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -22315,6 +22355,14 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(NodeSourceTextContent != null) {
+						if(NodeSourceTextContent.ID == replacingObject.ID)
+							NodeSourceTextContent = (TextContentCollection) replacingObject;
+						else {
+							IInformationObject iObject = NodeSourceTextContent;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -22323,6 +22371,7 @@ AccountRoles.OrganizationsImPartOf
 					Nodes = sourceObject.Nodes;
 					NodeSourceBlogs = sourceObject.NodeSourceBlogs;
 					NodeSourceActivities = sourceObject.NodeSourceActivities;
+					NodeSourceTextContent = sourceObject.NodeSourceTextContent;
 				}
 				
 
@@ -22341,6 +22390,10 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_NodeSourceActivities = NodeSourceActivities;
 					if(NodeSourceActivities != null)
 						((IInformationObject) NodeSourceActivities).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_NodeSourceTextContent = NodeSourceTextContent;
+					if(NodeSourceTextContent != null)
+						((IInformationObject) NodeSourceTextContent).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -22365,6 +22418,9 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public ActivityCollection NodeSourceActivities { get; set; }
 			private ActivityCollection _unmodified_NodeSourceActivities;
+			[DataMember]
+			public TextContentCollection NodeSourceTextContent { get; set; }
+			private TextContentCollection _unmodified_NodeSourceTextContent;
 			
 			}
 			[DataContract]

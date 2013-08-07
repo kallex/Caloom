@@ -526,7 +526,7 @@ namespace TheBall
             WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
                            RenderWebSupport.CopyAsIsSyncHandler);
             // Copy render required data
-            string[] renderRequiredFolders = new string[] {"AaltoGlobalImpact.OIP/NodeSummaryContainer"};
+            string[] renderRequiredFolders = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent" };
             foreach (string renderRequiredFolder in renderRequiredFolders)
             {
                 string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
