@@ -599,9 +599,9 @@ namespace TheBallTool
 
         }
 
-        private static void PatchTextContentCollectionNodeSummarySpecificGroup()
+        private static void PatchTextContentCollectionNodeSummarySpecificGroup(string groupID)
         {
-            var nodesummaryContainers = GetAllInformationObjects(name => name.Contains("NodeSummaryContainer") && name.Contains("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"),
+            var nodesummaryContainers = GetAllInformationObjects(name => name.Contains("NodeSummaryContainer") && name.Contains(groupID),
                                                                  iObj => iObj is NodeSummaryContainer);
             foreach (NodeSummaryContainer nodeSummaryContainer in nodesummaryContainers)
             {
@@ -622,17 +622,24 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
+            //ReconnectAccountsMastersAndCollections();
+
             //PatchSubscriptionsToSubmitted();
 
             //FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411"); // Proj2
 
-            FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
-            //PatchTextContentCollectionNodeSummarySpecificGroup();
+            //FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
+            
+            //PatchTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
+            //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
+
+            // fff483ed-f45e-419e-8e3a-99f48d2f4fa8
+            PatchTextContentCollectionNodeSummarySpecificGroup("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
+            FixGroupMastersAndCollections("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
 
             //InitBlogProfileAndIconOnce();
 
             //EnsureAndRefreshMasterCollections();
-            //ReconnectAccountsMastersAndCollections();
             //RemoveIncontextEditingFromBlogsAndActivitiesFromCertainGroup();
             //ReconnectGroupsMastersAndCollections("a0ea605a-1a3e-4424-9807-77b5423d615c");
             //ReconnectGroupsMastersAndCollections("NodeSummaryContainer");

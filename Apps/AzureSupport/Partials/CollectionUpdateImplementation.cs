@@ -651,12 +651,12 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromTextContent(TextContent textContent)
         {
             RenderedNode node = RenderedNode.CreateDefault();
-            node.TechnicalSource = NodeSourceTypeActivity;
+            node.TechnicalSource = NodeSourceTypeTextContent;
             node.Title = textContent.Title;
             node.Excerpt = textContent.Excerpt;
             if(textContent.ImageData != null)
                 node.ImageBaseUrl = textContent.ImageData.ContentUrlBase;
-            node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.ID;
+            node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.Name + "/" + textContent.ID;
             if(textContent.Categories != null)
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories));
             if(textContent.Locations != null)
