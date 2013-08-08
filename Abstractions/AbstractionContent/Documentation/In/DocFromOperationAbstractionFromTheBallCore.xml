@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromTheBallCore)" title="Operations (OperationAbstractionFromTheBallCore)">
+        <Content>
+          <Header text="CreateSpecifiedInformationObjectWithValues (Owner, ObjectDomainName, ObjectName, HttpFormData, HttpFileData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Creates information object, sets it values and stores it</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ObjectDomainName</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object domain</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ObjectName</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>HttpFormData</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>NameValueCollection</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Http POST data. Unprocessed and unfiltered.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>HttpFileData</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>System.Web.HttpFileCollection</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Http File data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CreatedObject ( Owner, ObjectDomainName, ObjectName )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Object that is created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: FieldValues ( CreatedObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ObjectLinkValues ( CreatedObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: BinaryContentFiles ( CreatedObject, HttpFormData, HttpFileData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetFieldValues ( CreatedObject, FieldValues )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set field values of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetObjectLinks ( CreatedObject, ObjectLinkValues )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set object links of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreInitialObject ( CreatedObject, Owner )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Stores the created object first time - with set values.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetBinaryContent ( CreatedObject, BinaryContentFiles, Owner )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Sets binary content of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreCompleteObject ( CreatedObject, Owner )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Stores the created object - with all set values.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent />
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ObjectDomainName</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object domain</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ObjectName</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ObjectID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Object unique ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ObjectToDelete ( Owner, ObjectDomainName, ObjectName, ObjectID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Object that is created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( ObjectToDelete )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Delete the object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

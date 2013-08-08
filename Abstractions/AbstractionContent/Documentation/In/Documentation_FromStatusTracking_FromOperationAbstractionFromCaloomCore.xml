@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Status Tracking Document (Caloom.CORE)" title="Status Tracking Document (Caloom.CORE)">
+        <Content>
+          <Header text="Summary" level="1">
+            <Header text="CreateAndUpdateProduct (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 5</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="CreateProduct (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 3</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="UpdateProduct (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 8</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="SetSubProductUsage (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 7</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="RemoveSubProductUsage (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 5</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateAndUpdateProduct (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Title</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product title to be updated after creation</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Excerpt</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product excerpt to updated after creation</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Description</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product description to be updated after creation</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>OperationExecuteType: CreateProduct</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Create product</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>OperationExecuteType: UpdateProduct</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Update product</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="CreateProduct (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: ProductRoot</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Created product with given title</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreObjects</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Store modified objects</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ProductID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product id of created product</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="RemoveSubProductUsage (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: UsingProductID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>ID of the product that uses the subproduct</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: SubProductBeingUsedID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>ID of the subproduct that is being used</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: UsingProduct</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Using product</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: RemoveSubProductUsage</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set sub product usage</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreObjects</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Store modified objects</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="SetSubProductUsage (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: UsingProductID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>ID of the product that uses the subproduct</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: SubProductBeingUsedID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>ID of the subproduct that is being used</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: AmountOfUsage</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Amount of usage of subproduct as double precision</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: UsingProduct</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Using product</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: SubProductBeingUsed</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Subproduct being used</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetSubProductUsage</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set sub product usage</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreObjects</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Store modified objects</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="UpdateProduct (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ProductID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>ID of the product to be updated</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Title</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product title to be updated</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Excerpt</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product excerpt to updated</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Description</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product description to be updated</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: ProductRoot</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product to be updated</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: UpdateProductInfo</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Update product info</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreObjects</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Store modified objects</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: UpdatedProductID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Product id of created product</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

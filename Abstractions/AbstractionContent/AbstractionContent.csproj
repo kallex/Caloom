@@ -79,8 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClassModel\Out\" />
+    <Folder Include="Documentation\In\" />
+    <Folder Include="Documentation\Out\" />
     <Folder Include="Operation\In\" />
     <Folder Include="Operation\Out\" />
+    <Folder Include="StatusTracking\In\" />
+    <Folder Include="StatusTracking\Out\" />
     <Folder Include="TheBallCore\In\Content_v1_0\" />
     <Folder Include="TheBallCore\Out\" />
   </ItemGroup>

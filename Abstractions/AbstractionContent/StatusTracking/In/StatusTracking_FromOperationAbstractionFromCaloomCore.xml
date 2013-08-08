@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="Caloom.CORE">
+    <StatusItem name="CreateAndUpdateProduct_Title" displayName="VariableType: Title" description="Product title to be updated after creation">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndUpdateProduct_Excerpt" displayName="VariableType: Excerpt" description="Product excerpt to updated after creation">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndUpdateProduct_Description" displayName="VariableType: Description" description="Product description to be updated after creation">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndUpdateProduct_CreateProduct" displayName="OperationExecuteType: CreateProduct" description="Create product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndUpdateProduct_UpdateProduct" displayName="OperationExecuteType: UpdateProduct" description="Update product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProduct_ProductRoot" displayName="TargetDefinitionType: ProductRoot" description="Created product with given title">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProduct_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProduct_ProductID" displayName="VariableType: ProductID" description="Product id of created product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_ProductID" displayName="VariableType: ProductID" description="ID of the product to be updated">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_Title" displayName="VariableType: Title" description="Product title to be updated">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_Excerpt" displayName="VariableType: Excerpt" description="Product excerpt to updated">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_Description" displayName="VariableType: Description" description="Product description to be updated">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_ProductRoot" displayName="TargetDefinitionType: ProductRoot" description="Product to be updated">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_UpdateProductInfo" displayName="MethodExecuteType: UpdateProductInfo" description="Update product info">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateProduct_UpdatedProductID" displayName="VariableType: UpdatedProductID" description="Product id of created product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_UsingProductID" displayName="VariableType: UsingProductID" description="ID of the product that uses the subproduct">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_SubProductBeingUsedID" displayName="VariableType: SubProductBeingUsedID" description="ID of the subproduct that is being used">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_AmountOfUsage" displayName="VariableType: AmountOfUsage" description="Amount of usage of subproduct as double precision">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_UsingProduct" displayName="TargetDefinitionType: UsingProduct" description="Using product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_SubProductBeingUsed" displayName="TargetDefinitionType: SubProductBeingUsed" description="Subproduct being used">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_SetSubProductUsage" displayName="MethodExecuteType: SetSubProductUsage" description="Set sub product usage">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetSubProductUsage_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveSubProductUsage_UsingProductID" displayName="VariableType: UsingProductID" description="ID of the product that uses the subproduct">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveSubProductUsage_SubProductBeingUsedID" displayName="VariableType: SubProductBeingUsedID" description="ID of the subproduct that is being used">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveSubProductUsage_UsingProduct" displayName="TargetDefinitionType: UsingProduct" description="Using product">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveSubProductUsage_RemoveSubProductUsage" displayName="MethodExecuteType: RemoveSubProductUsage" description="Set sub product usage">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveSubProductUsage_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="CreateAndUpdateProduct">
+      <ItemRef itemName="CreateAndUpdateProduct_Title" />
+      <ItemRef itemName="CreateAndUpdateProduct_Excerpt" />
+      <ItemRef itemName="CreateAndUpdateProduct_Description" />
+      <ItemRef itemName="CreateAndUpdateProduct_CreateProduct" />
+      <ItemRef itemName="CreateAndUpdateProduct_UpdateProduct" />
+      <GroupRef groupName="CreateProduct" />
+      <GroupRef groupName="UpdateProduct" />
+    </Group>
+    <Group name="CreateProduct">
+      <ItemRef itemName="CreateProduct_ProductRoot" />
+      <ItemRef itemName="CreateProduct_StoreObjects" />
+      <ItemRef itemName="CreateProduct_ProductID" />
+    </Group>
+    <Group name="UpdateProduct">
+      <ItemRef itemName="UpdateProduct_ProductID" />
+      <ItemRef itemName="UpdateProduct_Title" />
+      <ItemRef itemName="UpdateProduct_Excerpt" />
+      <ItemRef itemName="UpdateProduct_Description" />
+      <ItemRef itemName="UpdateProduct_ProductRoot" />
+      <ItemRef itemName="UpdateProduct_UpdateProductInfo" />
+      <ItemRef itemName="UpdateProduct_StoreObjects" />
+      <ItemRef itemName="UpdateProduct_UpdatedProductID" />
+    </Group>
+    <Group name="SetSubProductUsage">
+      <ItemRef itemName="SetSubProductUsage_UsingProductID" />
+      <ItemRef itemName="SetSubProductUsage_SubProductBeingUsedID" />
+      <ItemRef itemName="SetSubProductUsage_AmountOfUsage" />
+      <ItemRef itemName="SetSubProductUsage_UsingProduct" />
+      <ItemRef itemName="SetSubProductUsage_SubProductBeingUsed" />
+      <ItemRef itemName="SetSubProductUsage_SetSubProductUsage" />
+      <ItemRef itemName="SetSubProductUsage_StoreObjects" />
+    </Group>
+    <Group name="RemoveSubProductUsage">
+      <ItemRef itemName="RemoveSubProductUsage_UsingProductID" />
+      <ItemRef itemName="RemoveSubProductUsage_SubProductBeingUsedID" />
+      <ItemRef itemName="RemoveSubProductUsage_UsingProduct" />
+      <ItemRef itemName="RemoveSubProductUsage_RemoveSubProductUsage" />
+      <ItemRef itemName="RemoveSubProductUsage_StoreObjects" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>

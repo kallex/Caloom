@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="Caloom.Housing">
+    <StatusItem name="CreateHouse_HouseRoot" displayName="TargetDefinitionType: HouseRoot" description="Created house">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateHouse_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="CreateHouse">
+      <ItemRef itemName="CreateHouse_HouseRoot" />
+      <ItemRef itemName="CreateHouse_StoreObjects" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromCaloomHousing)" title="Operations (OperationAbstractionFromCaloomHousing)">
+        <Content>
+          <Header text="CreateHouse" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create house</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: HouseRoot" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Created house</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( HouseRoot )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

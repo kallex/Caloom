@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromCaloomCore)" title="Operations (OperationAbstractionFromCaloomCore)">
+        <Content>
+          <Header text="CreateAndUpdateProduct (Title, Excerpt, Description)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Creates and updates product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Title</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product title to be updated after creation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Excerpt</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product excerpt to updated after creation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Description</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product description to be updated after creation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: CreateProduct" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Create product</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of created product</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: UpdateProduct ( CreateProductOutput, Title, Excerpt, Description )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Update product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateProduct" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProductRoot" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Created product with given title</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( ProductRoot )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateProductReturnValue" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product id of created product</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RemoveSubProductUsage (UsingProductID, SubProductBeingUsedID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Removes sub product usage within a product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>UsingProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of the product that uses the subproduct</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>SubProductBeingUsedID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of the subproduct that is being used</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UsingProduct ( UsingProductID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Using product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveSubProductUsage ( UsingProduct, SubProductBeingUsedID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set sub product usage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( UsingProduct )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetSubProductUsage (UsingProductID, SubProductBeingUsedID, AmountOfUsage)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set sub product usage within a product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>UsingProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of the product that uses the subproduct</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>SubProductBeingUsedID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of the subproduct that is being used</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>AmountOfUsage</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>double</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Amount of usage of subproduct as double precision</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UsingProduct ( UsingProductID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Using product</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SubProductBeingUsed ( SubProductBeingUsedID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Subproduct being used</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetSubProductUsage ( UsingProduct, SubProductBeingUsed, AmountOfUsage )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set sub product usage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( UsingProduct, SubProductBeingUsed )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateProduct (ProductID, Title, Excerpt, Description)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update product information</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>ID of the product to be updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Title</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product title to be updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Excerpt</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product excerpt to updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Description</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product description to be updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProductRoot ( ProductID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Product to be updated</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateProductInfo ( ProductRoot, Title, Excerpt, Description )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Update product info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( ProductRoot )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : UpdateProductReturnValue" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>UpdatedProductID</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Product id of created product</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

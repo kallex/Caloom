@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="TheBall.CORE">
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_Owner" displayName="VariableType: Owner" description="Object owner">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_ObjectDomainName" displayName="VariableType: ObjectDomainName" description="Object domain">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_ObjectName" displayName="VariableType: ObjectName" description="Object name">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_HttpFormData" displayName="VariableType: HttpFormData" description="Http POST data. Unprocessed and unfiltered.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_HttpFileData" displayName="VariableType: HttpFileData" description="Http File data">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_CreatedObject" displayName="TargetDefinitionType: CreatedObject" description="Object that is created">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_FieldValues" displayName="TargetDefinitionType: FieldValues" description="Filtered field value collection. Filter by non-prefix, add ID to keys.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_ObjectLinkValues" displayName="TargetDefinitionType: ObjectLinkValues" description="Filtered object link value collection. Filter by Object_ prefix, add ID to keys.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_BinaryContentFiles" displayName="TargetDefinitionType: BinaryContentFiles" description="Filtered binary content value collection. Filter by File_ prefix, add ID to keys.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetFieldValues" displayName="MethodExecuteType: SetFieldValues" description="Set field values of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetObjectLinks" displayName="MethodExecuteType: SetObjectLinks" description="Set object links of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" displayName="MethodExecuteType: StoreInitialObject" description="Stores the created object first time - with set values.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetBinaryContent" displayName="MethodExecuteType: SetBinaryContent" description="Sets binary content of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_StoreCompleteObject" displayName="MethodExecuteType: StoreCompleteObject" description="Stores the created object - with all set values.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_Owner" displayName="VariableType: Owner" description="Object owner">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_ObjectDomainName" displayName="VariableType: ObjectDomainName" description="Object domain">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_ObjectName" displayName="VariableType: ObjectName" description="Object name">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_ObjectID" displayName="VariableType: ObjectID" description="Object unique ID">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_ObjectToDelete" displayName="TargetDefinitionType: ObjectToDelete" description="Object that is created">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete the object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="CreateSpecifiedInformationObjectWithValues">
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_Owner" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectDomainName" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectName" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_HttpFormData" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_HttpFileData" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreatedObject" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_FieldValues" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectLinkValues" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_BinaryContentFiles" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetFieldValues" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetObjectLinks" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetBinaryContent" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_StoreCompleteObject" />
+    </Group>
+    <Group name="DeleteSpecifiedInformationObject">
+      <ItemRef itemName="DeleteSpecifiedInformationObject_Owner" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectDomainName" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectName" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectID" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectToDelete" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_DeleteObject" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>

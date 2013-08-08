@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Status Tracking Document (TheBall.CORE)" title="Status Tracking Document (TheBall.CORE)">
+        <Content>
+          <Header text="Summary" level="1">
+            <Header text="CreateSpecifiedInformationObjectWithValues (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 14</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="DeleteSpecifiedInformationObject (0 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 6</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateSpecifiedInformationObjectWithValues (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Owner</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object owner</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ObjectDomainName</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object domain</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ObjectName</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object name</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: HttpFormData</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Http POST data. Unprocessed and unfiltered.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: HttpFileData</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Http File data</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: CreatedObject</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object that is created</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: FieldValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: ObjectLinkValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: BinaryContentFiles</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetFieldValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set field values of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetObjectLinks</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set object links of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreInitialObject</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Stores the created object first time - with set values.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetBinaryContent</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Sets binary content of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreCompleteObject</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Stores the created object - with all set values.</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="DeleteSpecifiedInformationObject (0 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: Owner</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object owner</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ObjectDomainName</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object domain</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ObjectName</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object name</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>VariableType: ObjectID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object unique ID</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: ObjectToDelete</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Object that is created</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: DeleteObject</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Delete the object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

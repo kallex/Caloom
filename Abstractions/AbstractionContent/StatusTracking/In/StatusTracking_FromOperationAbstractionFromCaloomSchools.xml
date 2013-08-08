@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="Caloom.Schools">
+    <StatusItem name="CreateTrainingModule_TrainingModuleRoot" displayName="TargetDefinitionType: TrainingModuleRoot" description="Created TrainingModule">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateTrainingModule_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="CreateTrainingModule">
+      <ItemRef itemName="CreateTrainingModule_TrainingModuleRoot" />
+      <ItemRef itemName="CreateTrainingModule_StoreObjects" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>

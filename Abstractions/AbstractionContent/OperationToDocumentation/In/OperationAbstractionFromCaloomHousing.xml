@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="Caloom.Housing">
+    <Operation name="CreateHouse">
+      <OperationSpec>
+        <Description>Create house</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="HouseRoot" dataType="House" designDesc="Created house" state="designApproved" />
+          <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+            <Target name="HouseRoot" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>
