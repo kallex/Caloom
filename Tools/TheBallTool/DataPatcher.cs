@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
+using CategoryCollection = AaltoGlobalImpact.OIP.CategoryCollection;
 using OIPDomain = AaltoGlobalImpact.OIP.DomainInformationSupport;
 using CoreDomain = TheBall.CORE.DomainInformationSupport;
 
@@ -599,18 +600,27 @@ namespace TheBallTool
 
         }
 
-        private static void PatchTextContentCollectionNodeSummarySpecificGroup(string groupID)
+        private static void PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup(string groupID)
         {
             var nodesummaryContainers = GetAllInformationObjects(name => name.Contains("NodeSummaryContainer") && name.Contains(groupID),
                                                                  iObj => iObj is NodeSummaryContainer);
             foreach (NodeSummaryContainer nodeSummaryContainer in nodesummaryContainers)
             {
+                bool changed = false;
                 if (nodeSummaryContainer.NodeSourceTextContent == null)
                 {
                     Debug.WriteLine("Fixing nodesummary: " + nodeSummaryContainer.RelativeLocation);
                     nodeSummaryContainer.NodeSourceTextContent = new TextContentCollection();
-                    nodeSummaryContainer.StoreInformation();
+                    changed = true;
                 }
+                if (nodeSummaryContainer.NodeSourceCategories == null)
+                {
+                    Debug.WriteLine("Fixing nodesummary: " + nodeSummaryContainer.RelativeLocation);
+                    nodeSummaryContainer.NodeSourceCategories = new CategoryCollection();
+                    changed = true;
+                }
+                if(changed)
+                    nodeSummaryContainer.StoreInformation();
             }
         }
 
@@ -628,14 +638,16 @@ namespace TheBallTool
 
             //FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411"); // Proj2
 
-            //FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
+            //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
+            PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c");
+            FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
             
             //PatchTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
 
             // fff483ed-f45e-419e-8e3a-99f48d2f4fa8
-            PatchTextContentCollectionNodeSummarySpecificGroup("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
-            FixGroupMastersAndCollections("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
+            //PatchTextContentCollectionNodeSummarySpecificGroup("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
+            //FixGroupMastersAndCollections("fff483ed-f45e-419e-8e3a-99f48d2f4fa8");
 
             //InitBlogProfileAndIconOnce();
 

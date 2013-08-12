@@ -22100,6 +22100,7 @@ AccountRoles.OrganizationsImPartOf
 					result.NodeSourceBlogs = BlogCollection.CreateDefault();
 					result.NodeSourceActivities = ActivityCollection.CreateDefault();
 					result.NodeSourceTextContent = TextContentCollection.CreateDefault();
+					result.NodeSourceCategories = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -22114,6 +22115,7 @@ AccountRoles.OrganizationsImPartOf
 					result.NodeSourceBlogs = BlogCollection.CreateDemoDefault();
 					result.NodeSourceActivities = ActivityCollection.CreateDemoDefault();
 					result.NodeSourceTextContent = TextContentCollection.CreateDemoDefault();
+					result.NodeSourceCategories = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -22141,6 +22143,11 @@ AccountRoles.OrganizationsImPartOf
 						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceTextContent(this, localCollection:NodeSourceTextContent, masterCollection:(TextContentCollection) masterInstance);
 					} else if(NodeSourceTextContent != null) {
 						((IInformationObject) NodeSourceTextContent).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is CategoryCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceCategories(this, localCollection:NodeSourceCategories, masterCollection:(CategoryCollection) masterInstance);
+					} else if(NodeSourceCategories != null) {
+						((IInformationObject) NodeSourceCategories).UpdateCollections(masterInstance);
 					}
 				}
 
@@ -22191,6 +22198,14 @@ AccountRoles.OrganizationsImPartOf
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = NodeSourceCategories;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -22228,6 +22243,15 @@ AccountRoles.OrganizationsImPartOf
 					}
 					{
 						var item = NodeSourceTextContent;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = NodeSourceCategories;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -22275,6 +22299,11 @@ AccountRoles.OrganizationsImPartOf
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) NodeSourceCategories;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -22287,6 +22316,8 @@ AccountRoles.OrganizationsImPartOf
 						if(NodeSourceActivities != _unmodified_NodeSourceActivities)
 							return true;
 						if(NodeSourceTextContent != _unmodified_NodeSourceTextContent)
+							return true;
+						if(NodeSourceCategories != _unmodified_NodeSourceCategories)
 							return true;
 						{
 							IInformationObject item = (IInformationObject) Nodes;
@@ -22317,6 +22348,15 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) NodeSourceTextContent;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) NodeSourceCategories;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -22363,6 +22403,14 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(NodeSourceCategories != null) {
+						if(NodeSourceCategories.ID == replacingObject.ID)
+							NodeSourceCategories = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = NodeSourceCategories;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -22372,6 +22420,7 @@ AccountRoles.OrganizationsImPartOf
 					NodeSourceBlogs = sourceObject.NodeSourceBlogs;
 					NodeSourceActivities = sourceObject.NodeSourceActivities;
 					NodeSourceTextContent = sourceObject.NodeSourceTextContent;
+					NodeSourceCategories = sourceObject.NodeSourceCategories;
 				}
 				
 
@@ -22394,6 +22443,10 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_NodeSourceTextContent = NodeSourceTextContent;
 					if(NodeSourceTextContent != null)
 						((IInformationObject) NodeSourceTextContent).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_NodeSourceCategories = NodeSourceCategories;
+					if(NodeSourceCategories != null)
+						((IInformationObject) NodeSourceCategories).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -22421,6 +22474,9 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public TextContentCollection NodeSourceTextContent { get; set; }
 			private TextContentCollection _unmodified_NodeSourceTextContent;
+			[DataMember]
+			public CategoryCollection NodeSourceCategories { get; set; }
+			private CategoryCollection _unmodified_NodeSourceCategories;
 			
 			}
 			[DataContract]
@@ -23153,6 +23209,8 @@ AccountRoles.OrganizationsImPartOf
 				public static RenderedNode CreateDefault()
 				{
 					var result = new RenderedNode();
+					result.CategoryFilters = ShortTextCollection.CreateDefault();
+					result.CategoryNames = ShortTextCollection.CreateDefault();
 					result.Categories = ShortTextCollection.CreateDefault();
 					result.Authors = ShortTextCollection.CreateDefault();
 					result.Locations = ShortTextCollection.CreateDefault();
@@ -23185,6 +23243,8 @@ RenderedNode.Excerpt
 
 					result.MainSortableText = @"RenderedNode.MainSortableText";
 
+					result.CategoryFilters = ShortTextCollection.CreateDemoDefault();
+					result.CategoryNames = ShortTextCollection.CreateDemoDefault();
 					result.Categories = ShortTextCollection.CreateDemoDefault();
 					result.Authors = ShortTextCollection.CreateDemoDefault();
 					result.Locations = ShortTextCollection.CreateDemoDefault();
@@ -23197,6 +23257,14 @@ RenderedNode.Excerpt
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
+					if(CategoryFilters != null) {
+						((IInformationObject) CategoryFilters).UpdateCollections(masterInstance);
+					}
+
+					if(CategoryNames != null) {
+						((IInformationObject) CategoryNames).UpdateCollections(masterInstance);
+					}
+
 					if(Categories != null) {
 						((IInformationObject) Categories).UpdateCollections(masterInstance);
 					}
@@ -23226,6 +23294,22 @@ RenderedNode.Excerpt
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CategoryFilters;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = CategoryNames;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					{ // Scoping block for variable name reusability
 						IInformationObject item = Categories;
 						if(item != null)
@@ -23258,6 +23342,24 @@ RenderedNode.Excerpt
 
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = CategoryFilters;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = CategoryNames;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					{
 						var item = Categories;
 						if(item != null)
@@ -23306,6 +23408,16 @@ RenderedNode.Excerpt
 						}
 					}
 					{
+						var item = (IInformationObject) CategoryFilters;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) CategoryNames;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) Categories;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -23339,12 +23451,36 @@ RenderedNode.Excerpt
 							return true;
 						if(MainSortableText != _unmodified_MainSortableText)
 							return true;
+						if(IsCategoryFilteringNode != _unmodified_IsCategoryFilteringNode)
+							return true;
+						if(CategoryFilters != _unmodified_CategoryFilters)
+							return true;
+						if(CategoryNames != _unmodified_CategoryNames)
+							return true;
 						if(Categories != _unmodified_Categories)
 							return true;
 						if(Authors != _unmodified_Authors)
 							return true;
 						if(Locations != _unmodified_Locations)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) CategoryFilters;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) CategoryNames;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 						{
 							IInformationObject item = (IInformationObject) Categories;
 							if(item != null) 
@@ -23379,6 +23515,22 @@ RenderedNode.Excerpt
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(CategoryFilters != null) {
+						if(CategoryFilters.ID == replacingObject.ID)
+							CategoryFilters = (ShortTextCollection) replacingObject;
+						else {
+							IInformationObject iObject = CategoryFilters;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(CategoryNames != null) {
+						if(CategoryNames.ID == replacingObject.ID)
+							CategoryNames = (ShortTextCollection) replacingObject;
+						else {
+							IInformationObject iObject = CategoryNames;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(Categories != null) {
 						if(Categories.ID == replacingObject.ID)
 							Categories = (ShortTextCollection) replacingObject;
@@ -23415,6 +23567,9 @@ RenderedNode.Excerpt
 					Excerpt = sourceObject.Excerpt;
 					TimestampText = sourceObject.TimestampText;
 					MainSortableText = sourceObject.MainSortableText;
+					IsCategoryFilteringNode = sourceObject.IsCategoryFilteringNode;
+					CategoryFilters = sourceObject.CategoryFilters;
+					CategoryNames = sourceObject.CategoryNames;
 					Categories = sourceObject.Categories;
 					Authors = sourceObject.Authors;
 					Locations = sourceObject.Locations;
@@ -23431,7 +23586,16 @@ RenderedNode.Excerpt
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_TimestampText = TimestampText;
 					_unmodified_MainSortableText = MainSortableText;
+					_unmodified_IsCategoryFilteringNode = IsCategoryFilteringNode;
 				
+					_unmodified_CategoryFilters = CategoryFilters;
+					if(CategoryFilters != null)
+						((IInformationObject) CategoryFilters).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_CategoryNames = CategoryNames;
+					if(CategoryNames != null)
+						((IInformationObject) CategoryNames).SetInstanceTreeValuesAsUnmodified();
+
 					_unmodified_Categories = Categories;
 					if(Categories != null)
 						((IInformationObject) Categories).SetInstanceTreeValuesAsUnmodified();
@@ -23475,6 +23639,9 @@ RenderedNode.Excerpt
 						case "MainSortableText":
 							MainSortableText = value;
 							break;
+						case "IsCategoryFilteringNode":
+							IsCategoryFilteringNode = bool.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -23500,6 +23667,15 @@ RenderedNode.Excerpt
 			[DataMember]
 			public string MainSortableText { get; set; }
 			private string _unmodified_MainSortableText;
+			[DataMember]
+			public bool IsCategoryFilteringNode { get; set; }
+			private bool _unmodified_IsCategoryFilteringNode;
+			[DataMember]
+			public ShortTextCollection CategoryFilters { get; set; }
+			private ShortTextCollection _unmodified_CategoryFilters;
+			[DataMember]
+			public ShortTextCollection CategoryNames { get; set; }
+			private ShortTextCollection _unmodified_CategoryNames;
 			[DataMember]
 			public ShortTextCollection Categories { get; set; }
 			private ShortTextCollection _unmodified_Categories;

@@ -492,6 +492,7 @@ namespace AaltoGlobalImpact.OIP
         const string NodeSourceTypeBlog = "BLOG";
         const string NodeSourceTypeActivity = "ACTIVITY";
         const string NodeSourceTypeTextContent = "TEXTCONTENT";
+        const string NodeSourceTypeCategory = "CATEGORY";
         internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -503,9 +504,9 @@ namespace AaltoGlobalImpact.OIP
 
         private static void cleanUpRenderedNodes(RenderedNodeCollection nodes)
         {
-            nodes.CollectionContent.RemoveAll(node => node.ActualContentUrl == null);
-            nodes.CollectionContent.RemoveAll(node => node.Categories.CollectionContent == null ||
-                                                      node.Categories.CollectionContent.Count == 0);
+            nodes.CollectionContent.RemoveAll(node => node.IsCategoryFilteringNode == false && node.ActualContentUrl == null);
+            nodes.CollectionContent.RemoveAll(node => node.IsCategoryFilteringNode == false && (node.Categories.CollectionContent == null ||
+                                                      node.Categories.CollectionContent.Count == 0));
             // Note the node1 and node2 are opposite parameters, because we want descending sort
             nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
         }
@@ -542,11 +543,19 @@ namespace AaltoGlobalImpact.OIP
             node.ImageBaseUrl = blog.ProfileImage.ImageData.ContentUrlBase;
             node.ActualContentUrl = blog.ReferenceToInformation.URL;
             node.TimestampText = getTimeStampText(blog.Published);
-            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection));
+            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection, getTitleOrNameFromCategory));
+            node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection, cat => cat.CategoryName));
             node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(blog.LocationCollection));
             node.Authors.CollectionContent.Add(getShortTextObject(blog.Author));
             node.MainSortableText = blog.Published.ToString("s");
             return node;
+        }
+
+        private static string getTitleOrNameFromCategory(Category category)
+        {
+            if (String.IsNullOrEmpty(category.Title))
+                return category.CategoryName;
+            return category.Title;
         }
 
         internal static ShortTextObject getShortTextObject(string source)
@@ -556,13 +565,14 @@ namespace AaltoGlobalImpact.OIP
             return shortText;
         }
 
-        internal static IEnumerable<ShortTextObject> getCategoryCollectionTexts(CategoryCollection categoryCollection)
+        internal static IEnumerable<ShortTextObject> getCategoryCollectionTexts(CategoryCollection categoryCollection, Func<Category, string> categoryToStringFunc)
         {
             return categoryCollection.GetIDSelectedArray()
                                      .Select(category =>
                                          {
                                              var textShort = ShortTextObject.CreateDefault();
-                                             textShort.Content = category.CategoryName;
+                                             //textShort.Content = category.CategoryName;
+                                             textShort.Content = categoryToStringFunc(category);
                                              return textShort;
                                          })
                                      .OrderBy(text => text.Content);
@@ -589,7 +599,7 @@ namespace AaltoGlobalImpact.OIP
             node.ImageBaseUrl = activity.ProfileImage.ImageData.ContentUrlBase;
             node.ActualContentUrl = activity.ReferenceToInformation.URL;
             node.TimestampText = getTimeStampText(activity.StartingTime);
-            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(activity.CategoryCollection));
+            node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(activity.CategoryCollection, getTitleOrNameFromCategory));
             node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(activity.LocationCollection));
             node.Authors.CollectionContent.Add(getShortTextObject(activity.ContactPerson));
             node.MainSortableText = activity.StartingTime.ToString("s");
@@ -625,6 +635,48 @@ namespace AaltoGlobalImpact.OIP
             // TODO: Remove objects, that are no longer available in master
         }
 
+        internal static void Update_NodeSummaryContainer_NodeSourceCategories(NodeSummaryContainer nodeSummaryContainer, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeCategory);
+            /*
+            var usedParentCategoryIDs =
+                masterCollection.CollectionContent.Where(cat => cat.ParentCategory != null)
+                                .Select(cat => cat.ParentCategory.ID)
+                                .ToArray();
+            var nodeCategories =
+                masterCollection.CollectionContent.Where(cat => usedParentCategoryIDs.Contains(cat.ID)).ToArray();
+             * */
+            var nodeCategories = masterCollection.CollectionContent.Where(cat => cat.ImageData != null).ToArray();
+            var categoryNodes = nodeCategories.Select(getNodeFromCategory).ToArray();
+            //var categoryNodes = masterCollection.CollectionContent.Select(getNodeFromCategory).ToArray();
+            nodes.CollectionContent.AddRange(categoryNodes);
+            cleanUpRenderedNodes(nodes);
+        }
+
+        internal static RenderedNode getNodeFromCategory(Category category)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeCategory;
+            node.Title = category.Title;
+            node.Excerpt = category.Excerpt;
+            if (category.ImageData != null)
+                node.ImageBaseUrl = category.ImageData.ContentUrlBase;
+            //node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.Name + "/" + textContent.ID;
+            if (category.ParentCategory != null)
+            {
+                node.Categories.CollectionContent.Add(getShortTextObject(category.ParentCategory.Title));
+                node.CategoryNames.CollectionContent.Add(getShortTextObject(category.ParentCategory.CategoryName));
+            }
+            node.IsCategoryFilteringNode = true;
+            node.CategoryFilters.CollectionContent.Add(getShortTextObject(category.CategoryName));
+            //if (textContent.Locations != null)
+            //    node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));
+            //node.Authors.CollectionContent.Add(getShortTextObject(textContent.Author));
+            //node.MainSortableText = textContent.SortOrderNumber.ToString();
+            return node;
+        }
+
         internal static void Update_NodeSummaryContainer_NodeSourceTextContent(NodeSummaryContainer nodeSummaryContainer, TextContentCollection localCollection, TextContentCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -657,14 +709,18 @@ namespace AaltoGlobalImpact.OIP
             if(textContent.ImageData != null)
                 node.ImageBaseUrl = textContent.ImageData.ContentUrlBase;
             node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.Name + "/" + textContent.ID;
-            if(textContent.Categories != null)
-                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories));
+            if (textContent.Categories != null)
+            {
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, getTitleOrNameFromCategory));
+                node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, cat => cat.CategoryName));
+            }
             if(textContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));
             node.Authors.CollectionContent.Add(getShortTextObject(textContent.Author));
             node.MainSortableText = textContent.SortOrderNumber.ToString();
             return node;
         }
+
 
     }
 }
