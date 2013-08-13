@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 //using System.Net.WebSockets;
+using System.Net.WebSockets;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -38,7 +39,6 @@ namespace WebInterface
 
         public void ProcessRequest(HttpContext context)
         {
-#if never
             bool isSocket = false;
             if (context.IsWebSocketRequest)
             {
@@ -61,9 +61,8 @@ namespace WebInterface
             {
                 InformationContext.ProcessAndClearCurrent();
             }*/
-#endif
         }
-#if never
+
         private async Task HandleWebSocket(WebSocketContext wsContext)
         {
             const int maxMessageSize = 1024;
@@ -111,7 +110,6 @@ namespace WebInterface
                 }
             }
         }
-#endif
 
         #endregion
     }

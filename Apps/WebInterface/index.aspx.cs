@@ -21,7 +21,7 @@ namespace WebInterface
                 Response.Redirect("/public/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
             else if (hostName.StartsWith("publicoip.") || hostName.StartsWith("demopublicoip."))
                 Response.Redirect("/grp/default/publicsite/oip-public/oip-layout-landing.phtml", true);
-            else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName == "localhost" )
+            else if(hostName.StartsWith("oip.") || hostName.StartsWith("demooip.") || hostName == "localhost" || hostName == "theball.protonit.net" )
                 Response.Redirect("/about/oip-public/oip-layout-register.phtml", true);
             else if (hostName.StartsWith("www.") || hostName.StartsWith("demowww") 
                 || hostName.StartsWith("globalimpact.aalto.fi") || hostName.StartsWith("weconomy.aaltoglobalimpact.org"))

@@ -348,7 +348,7 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            if (context.Request.Url.Host == "localhost" && contentPath.Contains("oipcms/"))
+            if (context.Request.Url.Host == "localhost" && (contentPath.Contains("oipcms/") || contentPath.Contains("wwwsite/")))
             {
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
@@ -390,7 +390,12 @@ namespace WebInterface
             response.ContentType = contentType;
             string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
             string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
-            string fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
+            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
+            string fileName;
+            if (prefixStrippedContent.Contains("oipcms/"))
+                fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
+            else
+                fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
             if (File.Exists(fileName))
             {
                 var fileStream = File.OpenRead(fileName);
