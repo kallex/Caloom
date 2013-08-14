@@ -12,6 +12,8 @@ namespace SecuritySupport
     {
         //public static async Task EchoClient()
         private static WebSocket socket;
+        private static TheBallEKE.EKEAlice alice;
+        private static int aliceActionIX;
         public static void EchoClient()
         {
             socket = new WebSocket("ws://localhost:50430/websocket/mytest.k");
@@ -19,6 +21,10 @@ namespace SecuritySupport
             socket.OnClose += socket_OnClose;
             socket.OnError += socket_OnError;
             socket.OnMessage += socket_OnMessage;
+            TheBallEKE aliceInstance = new TheBallEKE();
+            aliceInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ");
+            alice = new TheBallEKE.EKEAlice(aliceInstance);
+            alice.SendMessageToBob = bytes => { socket.Send(bytes); };
             socket.Connect();
 #if native45
 
@@ -65,7 +71,8 @@ namespace SecuritySupport
 
         static void socket_OnMessage(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Received message: " + e.Data);
+            //Console.WriteLine("Received message: " + e.Data);
+            ProceedAlice();
         }
 
         static void socket_OnError(object sender, ErrorEventArgs e)
@@ -80,12 +87,28 @@ namespace SecuritySupport
 
         static void socket_OnOpen(object sender, EventArgs e)
         {
+            ProceedAlice();
+            /*
             Console.WriteLine("Opened");
             socket.Send("Pöö");
-            byte[] bigChunk = new byte[1024*1024 + 1];
+            byte[] bigChunk = new byte[1024*1024];
             bigChunk[0] = (byte) 12;
             bigChunk[1024*1024 - 1] = (byte) 23;
             socket.Send(bigChunk);
+            byte[] smallerChunk = new byte[123];
+            socket.Send(smallerChunk);
+             * */
+
+        }
+
+        static void ProceedAlice()
+        {
+            while(alice.IsDoneWithEKE == false && alice.WaitForBob == false)
+            {
+                alice.AlicesActions[aliceActionIX++]();
+            } 
+            if(alice.IsDoneWithEKE)
+                Console.WriteLine("Alice done with EKE!");
         }
 
     }

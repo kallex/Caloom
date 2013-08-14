@@ -182,5 +182,15 @@ namespace TheBall
             }
         }
 
+        private Dictionary<string, object> KeyValueDictionary = new Dictionary<string, object>();
+        public void AccessLockedItems(Action<Dictionary<string, object>> action)
+        {
+            lock (KeyValueDictionary)
+            {
+                action(KeyValueDictionary);
+            }
+        }
+
+
     }
 }

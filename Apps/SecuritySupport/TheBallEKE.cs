@@ -371,7 +371,7 @@ namespace SecuritySupport
         }
 
 
-        private void InitiateCurrentSymmetricFromSecret(string textvalue)
+        public void InitiateCurrentSymmetricFromSecret(string textvalue)
         {
             SharedSecretEnc = new SymmetricSupport();
             SharedSecretEnc.InitializeFromSharedSecret(textvalue);

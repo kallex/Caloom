@@ -13,6 +13,7 @@ using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using SecuritySupport;
 using TheBall;
 
 namespace WebInterface
@@ -69,8 +70,9 @@ namespace WebInterface
             byte[] receiveBuffer = new byte[maxMessageSize];
             WebSocket socket = wsContext.WebSocket;
 
-            Action<WebSocketContext, WebSocket, byte[], string> OnReceiveMessage = HandleReceivedMessage;
+            Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> OnReceiveMessage = HandleReceivedMessage;
             Action<WebSocketContext, WebSocket> OnClose = HandleCloseMessage;
+            InformationContext informationContext = new InformationContext();
 
             while (socket.State == WebSocketState.Open)
             {
@@ -79,6 +81,7 @@ namespace WebInterface
                 if (receiveResult.MessageType == WebSocketMessageType.Close)
                 {
                     await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                    OnClose(wsContext, socket);
                 }
                 else if (receiveResult.MessageType == WebSocketMessageType.Binary)
                 {
@@ -104,13 +107,10 @@ namespace WebInterface
                                                 CancellationToken.None);
                         count += receiveResult.Count;
                     }
-                    var responseString = "First byte: " + receiveBuffer[0].ToString() + " last byte: " +
-                                         receiveBuffer[receiveBuffer.Length - 1];
                     //var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    var echoString = "You sent binary: " + responseString;
-                    ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
-                    await socket.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
-
+                    byte[] binaryMessage = new byte[count];
+                    Array.Copy(receiveBuffer, binaryMessage, count);
+                    await OnReceiveMessage(informationContext, wsContext, socket, binaryMessage, null);
                 }
                 else
                 {
@@ -132,21 +132,70 @@ namespace WebInterface
                                                 CancellationToken.None);
                         count += receiveResult.Count;
                     }
-                    var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    var echoString = "You said something like: " + receivedString;
-                    ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
-                    await socket.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                    var textMessage = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+                    await OnReceiveMessage(informationContext, wsContext, socket, null, textMessage);
                 }
             }
         }
 
-        private void HandleCloseMessage(WebSocketContext wsCtx, WebSocket socket)
+        private static void HandleCloseMessage(WebSocketContext wsCtx, WebSocket socket)
         {
         }
 
-        private static void HandleReceivedMessage(WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
+        private async static Task HandleReceivedMessage(InformationContext iCtx, WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
         {
+            if (binaryMessage != null)
+            {
+                TheBallEKE.EKEBob bob = null;
+                int bobActionIX = 0;
+                iCtx.AccessLockedItems(dict =>
+                    {
+                        if (dict.ContainsKey("EKEINITBOB") == false)
+                        {
+                            TheBallEKE bobInstance = new TheBallEKE();
+                            bobInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ");
+                            bob = new TheBallEKE.EKEBob(bobInstance);
+                            dict.Add("EKEINITBOB", bob);
+                            dict.Add("EKESTATUSBOB", 0);
+                        }
+                        else
+                        {
+                            bob = (TheBallEKE.EKEBob) dict["EKEINITBOB"];
+                            bobActionIX = (int) dict["EKESTATUSBOB"];
+                        }
+                    });
+                if (bob.SendMessageToAlice == null)
+                {
+                    bob.SendMessageToAlice = async bytes => { await SendBinaryMessage(socket, bytes); };
+                }
+                bob.LatestMessageFromAlice = binaryMessage;
+                do
+                {
+                    bob.BobsActions[bobActionIX++]();
+                } while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false);
+                iCtx.AccessLockedItems(dict =>
+                    {
+                        dict["EKESTATUSBOB"] = bobActionIX;
+                    });
 
+            }
+            else
+            {
+                string echoString = "You said: " + textMessage;
+                await SendTextMessage(socket, echoString);
+            }
+        }
+
+        private async static Task SendTextMessage(WebSocket socket, string textMessage)
+        {
+            ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(textMessage));
+            await socket.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+
+        private async static Task SendBinaryMessage(WebSocket socket, byte[] binaryMessage)
+        {
+            ArraySegment<byte> outputBuffer = new ArraySegment<byte>(binaryMessage);
+            await socket.SendAsync(outputBuffer, WebSocketMessageType.Binary, true, CancellationToken.None);
         }
 
         #endregion
