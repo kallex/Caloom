@@ -25,10 +25,13 @@ namespace SecuritySupport
     {
         public static void TestExecution()
         {
-            TheBallEKE instance = new TheBallEKE();
-            instance.InitiateCurrentSymmetricFromSecret("testsecret");
-            EKEAlice alice = new EKEAlice(ekeContext:instance);
-            EKEBob bob = new EKEBob(ekeContext:instance);
+            TheBallEKE bobInstance = new TheBallEKE();
+            bobInstance.InitiateCurrentSymmetricFromSecret("testsecret2");
+            EKEBob bob = new EKEBob(ekeContext: bobInstance);
+
+            TheBallEKE aliceInstance = new TheBallEKE();
+            aliceInstance.InitiateCurrentSymmetricFromSecret("testsecret2");
+            EKEAlice alice = new EKEAlice(ekeContext: aliceInstance);
             // Hook message senders
             alice.SendMessageToBob = msg =>
                 {

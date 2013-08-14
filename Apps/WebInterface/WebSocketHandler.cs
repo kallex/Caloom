@@ -65,9 +65,12 @@ namespace WebInterface
 
         private async Task HandleWebSocket(WebSocketContext wsContext)
         {
-            const int maxMessageSize = 1024;
+            const int maxMessageSize = 1024 * 1024;
             byte[] receiveBuffer = new byte[maxMessageSize];
             WebSocket socket = wsContext.WebSocket;
+
+            Action<WebSocketContext, WebSocket, byte[], string> OnReceiveMessage = HandleReceivedMessage;
+            Action<WebSocketContext, WebSocket> OnClose = HandleCloseMessage;
 
             while (socket.State == WebSocketState.Open)
             {
@@ -79,9 +82,35 @@ namespace WebInterface
                 }
                 else if (receiveResult.MessageType == WebSocketMessageType.Binary)
                 {
-                    await
-                        socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame",
-                                          CancellationToken.None);
+                    //await
+                    //    socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame",
+                    //                      CancellationToken.None);
+
+                    int count = receiveResult.Count;
+
+                    while (receiveResult.EndOfMessage == false)
+                    {
+                        if (count >= maxMessageSize)
+                        {
+                            string closeMessage = string.Format("Maximum message size: {0} bytes.", maxMessageSize);
+                            await
+                                socket.CloseAsync(WebSocketCloseStatus.MessageTooBig, closeMessage,
+                                                  CancellationToken.None);
+                            return;
+                        }
+                        receiveResult =
+                            await
+                            socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count),
+                                                CancellationToken.None);
+                        count += receiveResult.Count;
+                    }
+                    var responseString = "First byte: " + receiveBuffer[0].ToString() + " last byte: " +
+                                         receiveBuffer[receiveBuffer.Length - 1];
+                    //var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+                    var echoString = "You sent binary: " + responseString;
+                    ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
+                    await socket.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
+
                 }
                 else
                 {
@@ -104,11 +133,20 @@ namespace WebInterface
                         count += receiveResult.Count;
                     }
                     var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    var echoString = "You said " + receivedString;
+                    var echoString = "You said something like: " + receivedString;
                     ArraySegment<byte> outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(echoString));
                     await socket.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
                 }
             }
+        }
+
+        private void HandleCloseMessage(WebSocketContext wsCtx, WebSocket socket)
+        {
+        }
+
+        private static void HandleReceivedMessage(WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
+        {
+
         }
 
         #endregion
