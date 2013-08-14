@@ -72,6 +72,7 @@ namespace SecuritySupport
         static void socket_OnMessage(object sender, MessageEventArgs e)
         {
             //Console.WriteLine("Received message: " + e.Data);
+            alice.LatestMessageFromBob = e.RawData;
             ProceedAlice();
         }
 
@@ -103,6 +104,7 @@ namespace SecuritySupport
 
         static void ProceedAlice()
         {
+            alice.WaitForBob = false;
             while(alice.IsDoneWithEKE == false && alice.WaitForBob == false)
             {
                 alice.AlicesActions[aliceActionIX++]();

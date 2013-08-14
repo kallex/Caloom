@@ -146,7 +146,7 @@ namespace WebInterface
         {
             if (binaryMessage != null)
             {
-                TheBallEKE.EKEBob bob = null;
+                TheBallEKE.EKEBobAsync bob = null;
                 int bobActionIX = 0;
                 iCtx.AccessLockedItems(dict =>
                     {
@@ -154,13 +154,13 @@ namespace WebInterface
                         {
                             TheBallEKE bobInstance = new TheBallEKE();
                             bobInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ");
-                            bob = new TheBallEKE.EKEBob(bobInstance);
+                            bob = new TheBallEKE.EKEBobAsync(bobInstance);
                             dict.Add("EKEINITBOB", bob);
                             dict.Add("EKESTATUSBOB", 0);
                         }
                         else
                         {
-                            bob = (TheBallEKE.EKEBob) dict["EKEINITBOB"];
+                            bob = (TheBallEKE.EKEBobAsync)dict["EKEINITBOB"];
                             bobActionIX = (int) dict["EKESTATUSBOB"];
                         }
                     });
@@ -169,10 +169,11 @@ namespace WebInterface
                     bob.SendMessageToAlice = async bytes => { await SendBinaryMessage(socket, bytes); };
                 }
                 bob.LatestMessageFromAlice = binaryMessage;
-                do
+                bob.WaitForAlice = false;
+                while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false)
                 {
-                    bob.BobsActions[bobActionIX++]();
-                } while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false);
+                    await bob.BobsActions[bobActionIX++]();
+                }
                 iCtx.AccessLockedItems(dict =>
                     {
                         dict["EKESTATUSBOB"] = bobActionIX;
