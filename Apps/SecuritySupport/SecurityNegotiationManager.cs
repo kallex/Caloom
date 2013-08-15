@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 //using System.Net.WebSockets;
 using System.Text;
@@ -14,9 +15,11 @@ namespace SecuritySupport
         private static WebSocket socket;
         private static TheBallEKE.EKEAlice alice;
         private static int aliceActionIX;
+        static Stopwatch watch = new Stopwatch();
         public static void EchoClient()
         {
-            socket = new WebSocket("ws://localhost:50430/websocket/mytest.k");
+            Console.WriteLine("Starting EKE WSS connection");
+            socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
             socket.OnOpen += socket_OnOpen;
             socket.OnClose += socket_OnClose;
             socket.OnError += socket_OnError;
@@ -25,6 +28,7 @@ namespace SecuritySupport
             aliceInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ");
             alice = new TheBallEKE.EKEAlice(aliceInstance);
             alice.SendMessageToBob = bytes => { socket.Send(bytes); };
+            watch.Start();
             socket.Connect();
 #if native45
 
@@ -71,7 +75,7 @@ namespace SecuritySupport
 
         static void socket_OnMessage(object sender, MessageEventArgs e)
         {
-            //Console.WriteLine("Received message: " + e.Data);
+            Console.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
             alice.LatestMessageFromBob = e.RawData;
             ProceedAlice();
         }
@@ -88,6 +92,7 @@ namespace SecuritySupport
 
         static void socket_OnOpen(object sender, EventArgs e)
         {
+            Console.WriteLine("Opened");
             ProceedAlice();
             /*
             Console.WriteLine("Opened");
@@ -109,8 +114,11 @@ namespace SecuritySupport
             {
                 alice.AlicesActions[aliceActionIX++]();
             } 
-            if(alice.IsDoneWithEKE)
-                Console.WriteLine("Alice done with EKE!");
+            if (alice.IsDoneWithEKE)
+            {
+                watch.Stop();
+                Console.WriteLine("Alice done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
+            }
         }
 
     }

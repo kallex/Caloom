@@ -111,6 +111,7 @@ namespace SecuritySupport
         public delegate Task NegotiationActionAsync();
 
         private SymmetricSupport SharedSecretEnc;
+        private const int RSAKEYLENGTH = 2048;
 
         public class EKEAliceAsync
         {
@@ -372,7 +373,7 @@ namespace SecuritySupport
 
             private void Alice1_1_GenerateKeyPair()
             {
-                using (var rsa = new RSACryptoServiceProvider(1024))
+                using (var rsa = new RSACryptoServiceProvider(TheBallEKE.RSAKEYLENGTH))
                 {
                     try
                     {

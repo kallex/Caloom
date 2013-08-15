@@ -16,7 +16,9 @@ namespace WebTemplateManager
         {
             try
             {
+                Console.WriteLine("Running test EKE...");
                 TheBallEKE.TestExecution();
+                Console.WriteLine("Running test EKE complete.");
                 //return;
                 //SecurityNegotiationManager.EchoClient().Wait();
                 SecurityNegotiationManager.EchoClient();
@@ -72,9 +74,9 @@ namespace WebTemplateManager
                     FileSystemSupport.UploadTemplateContent(allFiles, owner, templateName, true);
                 }
             }
-            catch
+            catch(Exception exception)
             {
-
+                Console.WriteLine("EXCEPTION: " + exception.ToString());
             }
         }
 
