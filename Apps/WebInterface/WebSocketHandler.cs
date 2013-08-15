@@ -146,38 +146,65 @@ namespace WebInterface
         {
             if (binaryMessage != null)
             {
-                TheBallEKE.EKEBobAsync bob = null;
-                int bobActionIX = 0;
-                iCtx.AccessLockedItems(dict =>
-                    {
-                        if (dict.ContainsKey("EKEINITBOB") == false)
+                bool playBob = false;
+                if (playBob)
+                {
+                    TheBallEKE.EKEBob bob = null;
+                    iCtx.AccessLockedItems(dict =>
                         {
-                            TheBallEKE bobInstance = new TheBallEKE();
-                            bobInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ");
-                            bob = new TheBallEKE.EKEBobAsync(bobInstance);
-                            dict.Add("EKEINITBOB", bob);
-                            dict.Add("EKESTATUSBOB", 0);
+                            if (dict.ContainsKey("EKEINITBOB") == false)
+                            {
+                                TheBallEKE bobInstance = new TheBallEKE();
+                                bobInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ2");
+                                bob = new TheBallEKE.EKEBob(bobInstance, true);
+                                dict.Add("EKEINITBOB", bob);
+                            }
+                            else
+                            {
+                                bob = (TheBallEKE.EKEBob) dict["EKEINITBOB"];
+                            }
+                        });
+                    if (bob.SendMessageToAliceAsync == null)
+                    {
+                        bob.SendMessageToAliceAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
+                    }
+                    bob.LatestMessageFromAlice = binaryMessage;
+                    while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false)
+                    {
+                        await bob.PerformNextActionAsync();
+                    }
+                }
+                else // play alice
+                {
+                    TheBallEKE.EKEAlice alice = null;
+                    iCtx.AccessLockedItems(dict =>
+                    {
+                        if (dict.ContainsKey("EKEINITALICE") == false)
+                        {
+                            TheBallEKE aliceInstance = new TheBallEKE();
+                            aliceInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ2");
+                            alice = new TheBallEKE.EKEAlice(aliceInstance, true);
+                            dict.Add("EKEINITALICE", alice);
                         }
                         else
                         {
-                            bob = (TheBallEKE.EKEBobAsync)dict["EKEINITBOB"];
-                            bobActionIX = (int) dict["EKESTATUSBOB"];
+                            alice = (TheBallEKE.EKEAlice)dict["EKEINITALICE"];
                         }
                     });
-                if (bob.SendMessageToAlice == null)
-                {
-                    bob.SendMessageToAlice = async bytes => { await SendBinaryMessage(socket, bytes); };
-                }
-                bob.LatestMessageFromAlice = binaryMessage;
-                bob.WaitForAlice = false;
-                while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false)
-                {
-                    await bob.BobsActions[bobActionIX++]();
-                }
-                iCtx.AccessLockedItems(dict =>
+                    if (alice.SendMessageToBobAsync == null)
                     {
-                        dict["EKESTATUSBOB"] = bobActionIX;
-                    });
+                        alice.SendMessageToBobAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
+                    }
+                    else
+                    {
+                        // Alice plays first, so only after the second message we start putting messages from Bob
+                        alice.LatestMessageFromBob = binaryMessage;
+                    }
+                    while (alice.IsDoneWithEKE == false && alice.WaitForBob == false)
+                    {
+                        await alice.PerformNextActionAsync();
+                    }
+                }
 
             }
             else
