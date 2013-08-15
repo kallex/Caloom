@@ -13,11 +13,10 @@ namespace SecuritySupport
     {
         //public static async Task EchoClient()
         private static WebSocket socket;
-        private static TheBallEKE.EKEAlice alice;
-        private static TheBallEKE.EKEBob bob;
+        private static INegotiationProtocolMember protocolMember;
         private static int aliceActionIX;
         static Stopwatch watch = new Stopwatch();
-        private static bool playAlice = true;
+        private static bool playAlice = false;
         public static void EchoClient()
         {
             Console.WriteLine("Starting EKE WSS connection");
@@ -27,19 +26,17 @@ namespace SecuritySupport
             socket.OnError += socket_OnError;
             socket.OnMessage += socket_OnMessage;
             TheBallEKE instance = new TheBallEKE();
-            instance.InitiateCurrentSymmetricFromSecret("testsecretXYZ2");
-            playAlice = false;
+            instance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
+            playAlice = true;
             if (playAlice)
             {
-                alice = new TheBallEKE.EKEAlice(instance);
-                alice.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
+                protocolMember = new TheBallEKE.EKEAlice(instance);
             }
             else
             {
-                bob = new TheBallEKE.EKEBob(instance);
-                bob.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
-                
+                protocolMember = new TheBallEKE.EKEBob(instance);
             }
+            protocolMember.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
             watch.Start();
             socket.Connect();
 #if native45
@@ -88,16 +85,8 @@ namespace SecuritySupport
         static void socket_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
-            if (playAlice)
-            {
-                alice.LatestMessageFromOtherParty = e.RawData;
-                ProceedAlice();
-            }
-            else
-            {
-                bob.LatestMessageFromOtherParty = e.RawData;
-                ProceedBob();
-            }
+            protocolMember.LatestMessageFromOtherParty = e.RawData;
+            ProceedProtocol();
         }
 
         static void socket_OnError(object sender, ErrorEventArgs e)
@@ -114,7 +103,7 @@ namespace SecuritySupport
         {
             Console.WriteLine("Opened");
             if (playAlice)
-                ProceedAlice();
+                ProceedProtocol();
             else
                 PingAlice();
             /*
@@ -135,29 +124,16 @@ namespace SecuritySupport
             socket.Send(new byte[0]);
         }
 
-        static void ProceedBob()
+        static void ProceedProtocol()
         {
-            while (bob.IsDoneWithEKE == false && bob.WaitForOtherParty == false)
+            while(protocolMember.IsDoneWithProtocol == false && protocolMember.WaitForOtherParty == false)
             {
-                bob.PerformNextAction();
-            }
-            if (bob.IsDoneWithEKE)
-            {
-                watch.Stop();
-                Console.WriteLine("Bob done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
-            }
-        }
-
-        static void ProceedAlice()
-        {
-            while(alice.IsDoneWithEKE == false && alice.WaitForOtherParty == false)
-            {
-                alice.PerformNextAction();
+                protocolMember.PerformNextAction();
             } 
-            if (alice.IsDoneWithEKE)
+            if (protocolMember.IsDoneWithProtocol)
             {
                 watch.Stop();
-                Console.WriteLine("Alice done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
+                Console.WriteLine((playAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
             }
         }
 

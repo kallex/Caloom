@@ -46,7 +46,7 @@ namespace SecuritySupport
             {
                 alice.PerformNextAction();
                 bob.PerformNextAction();
-                ekeInProgress = alice.IsDoneWithEKE == false || bob.IsDoneWithEKE == false;
+                ekeInProgress = alice.IsDoneWithProtocol == false || bob.IsDoneWithProtocol == false;
             }
             bool ekeSuccess = true;
         }
@@ -57,7 +57,7 @@ namespace SecuritySupport
         private SymmetricSupport SharedSecretEnc;
         private const int RSAKEYLENGTH = 2048;
 
-        public class EKEAlice
+        public class EKEAlice : INegotiationProtocolMember
         {
             private TheBallEKE EKEContext;
 
@@ -101,15 +101,15 @@ namespace SecuritySupport
 
             private void AliceX_DoneWithEKE()
             {
-                IsDoneWithEKE = true;
+                IsDoneWithProtocol = true;
             }
 
             private NegotiationAction[] AlicesActions; 
             private NegotiationActionAsync[] AlicesActionsAsync;
 
 
-            public Action<byte[]> SendMessageToOtherParty;
-            public Func<byte[], Task> SendMessageToOtherPartyAsync;
+            public Action<byte[]> SendMessageToOtherParty { get; set; }
+            public Func<byte[], Task> SendMessageToOtherPartyAsync { get; set; }
             private SymmetricSupport SessionKeyEnc;
 
             //public byte[] SharedSecret;
@@ -123,14 +123,14 @@ namespace SecuritySupport
             private byte[] BobsRandom;
             private byte[] BobsRandomEncrypted;
             public bool WaitForOtherParty { get; private set; }
-            public bool IsDoneWithEKE;
+            public bool IsDoneWithProtocol { get; private set; }
 
             private byte[] latestMessageFromOtherParty;
             private bool IsAsync;
 
             public byte[] LatestMessageFromOtherParty
             {
-                get { return latestMessageFromOtherParty; }
+                private get { return latestMessageFromOtherParty; }
                 set
                 {
                     latestMessageFromOtherParty = value;
@@ -230,7 +230,7 @@ namespace SecuritySupport
             {
                 if (IsAsync)
                     throw new NotSupportedException("PerformNextAction not supported on Async mode, use PerformNextActionAsync instead");
-                if (IsDoneWithEKE || WaitForOtherParty)
+                if (IsDoneWithProtocol || WaitForOtherParty)
                     return;
                 AlicesActions[CurrentActionIndex++]();
             }
@@ -242,14 +242,14 @@ namespace SecuritySupport
             {
                 if (!IsAsync)
                     throw new NotSupportedException("PerformNextActionAsync not supported on non-async mode, use PerformNextAction instead");
-                if (IsDoneWithEKE || WaitForOtherParty)
+                if (IsDoneWithProtocol || WaitForOtherParty)
                     return;
                 await AlicesActionsAsync[CurrentActionIndex++]();
             }
 
             private async Task AliceX_DoneWithEKEAsync()
             {
-                IsDoneWithEKE = true;
+                IsDoneWithProtocol = true;
             }
 
             private async Task Alice5_5_SendEncryptedBobsRandomToBobAsync()
@@ -342,7 +342,7 @@ namespace SecuritySupport
             #endregion
         }
 
-        public class EKEBob
+        public class EKEBob : INegotiationProtocolMember
         {
             private TheBallEKE EKEContext;
             private NegotiationAction[] BobsActions;
@@ -391,11 +391,11 @@ namespace SecuritySupport
 
             private void BobX_DoneWithEKE()
             {
-                IsDoneWithEKE = true;
+                IsDoneWithProtocol = true;
             }
 
-            public Action<byte[]> SendMessageToOtherParty;
-            public Func<byte[], Task> SendMessageToOtherPartyAsync;
+            public Action<byte[]> SendMessageToOtherParty { get; set;  }
+            public Func<byte[], Task> SendMessageToOtherPartyAsync { get; set; }
 
             private SymmetricSupport SessionKeyEnc;
 
@@ -414,7 +414,7 @@ namespace SecuritySupport
             private byte[] latestMessageFromOtherParty;
             public byte[] LatestMessageFromOtherParty
             {
-                get { return latestMessageFromOtherParty; }
+                private get { return latestMessageFromOtherParty; }
                 set
                 {
                     latestMessageFromOtherParty = value;
@@ -423,7 +423,7 @@ namespace SecuritySupport
             }
 
             public bool WaitForOtherParty { get; private set; }
-            public bool IsDoneWithEKE;
+            public bool IsDoneWithProtocol { get; private set; }
             private int CurrentActionIndex;
 
             private void Bob6_2_VerifyBobsRandom()
@@ -501,7 +501,7 @@ namespace SecuritySupport
             {
                 if(IsAsync)
                     throw new NotSupportedException("PerformNextAction not supported on Async mode, use PerformNextActionAsync instead");
-                if (IsDoneWithEKE || WaitForOtherParty)
+                if (IsDoneWithProtocol || WaitForOtherParty)
                     return;
                 BobsActions[CurrentActionIndex++]();
             }
@@ -513,7 +513,7 @@ namespace SecuritySupport
             {
                 if (!IsAsync)
                     throw new NotSupportedException("PerformNextActionAsync not supported on non-async mode, use PerformNextAction instead");
-                if (IsDoneWithEKE || WaitForOtherParty)
+                if (IsDoneWithProtocol || WaitForOtherParty)
                     return;
                 await BobsActionsAsync[CurrentActionIndex++]();
             }
@@ -522,7 +522,7 @@ namespace SecuritySupport
 
             private async Task BobX_DoneWithEKEAsync()
             {
-                IsDoneWithEKE = true;
+                IsDoneWithProtocol = true;
             }
 
             private async Task Bob6_2_VerifyBobsRandomAsync()

@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INegotiationProtocolMember.cs" />
     <Compile Include="ProtectionSupport.cs" />
     <Compile Include="SecurityNegotiationManager.cs" />
     <Compile Include="SymmetricSupport.cs" />
