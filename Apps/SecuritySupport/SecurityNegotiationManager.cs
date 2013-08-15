@@ -20,14 +20,15 @@ namespace SecuritySupport
         public static void EchoClient()
         {
             Console.WriteLine("Starting EKE WSS connection");
-            socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
+            //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
+            socket = new WebSocket("ws://localhost:50430/websocket/mytest.k");
             socket.OnOpen += socket_OnOpen;
             socket.OnClose += socket_OnClose;
             socket.OnError += socket_OnError;
             socket.OnMessage += socket_OnMessage;
             TheBallEKE instance = new TheBallEKE();
             instance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
-            playAlice = true;
+            playAlice = false;
             if (playAlice)
             {
                 protocolMember = new TheBallEKE.EKEAlice(instance);
