@@ -20,8 +20,13 @@ namespace SecuritySupport
         public static void EchoClient()
         {
             Console.WriteLine("Starting EKE WSS connection");
+            //string hostWithProtocolAndPort = "ws://localhost:50430";
+            string hostWithProtocolAndPort = "wss://theball.protonit.net";
+            string idParam = "accountemail=kalle.launiala@gmail.com";
+            //string idParam = "groupID=xyz";
+            string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
-            socket = new WebSocket("ws://localhost:50430/websocket/mytest.k");
+            socket = new WebSocket(deviceConnectionUrl);
             socket.OnOpen += socket_OnOpen;
             socket.OnClose += socket_OnClose;
             socket.OnError += socket_OnError;
@@ -135,6 +140,7 @@ namespace SecuritySupport
             {
                 watch.Stop();
                 Console.WriteLine((playAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
+                socket.Send("Demo device details, rly!");
             }
         }
 

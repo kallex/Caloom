@@ -5,22 +5,22 @@
       <Document name="Status Tracking Document (TheBall.CORE)" title="Status Tracking Document (TheBall.CORE)">
         <Content>
           <Header text="Summary" level="1">
-            <Header text="CreateSpecifiedInformationObjectWithValues (0 %)" level="2">
+            <Header text="CreateSpecifiedInformationObjectWithValues (7 %)" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Being implemented 14</TextContent>
+                  <TextContent>Being implemented 14, Implemented 1</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="DeleteSpecifiedInformationObject (0 %)" level="2">
+            <Header text="DeleteSpecifiedInformationObject (14 %)" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Being implemented 6</TextContent>
+                  <TextContent>Being implemented 6, Implemented 1</TextContent>
                 </Text>
               </Paragraph>
             </Header>
           </Header>
-          <Header text="CreateSpecifiedInformationObjectWithValues (0 %)" level="1">
+          <Header text="CreateSpecifiedInformationObjectWithValues (7 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -82,6 +82,17 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Http File data</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>MethodExecuteType: CatchInvalidDomains</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Catch and throw an exception for invalid domains (system reserved)</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>
@@ -187,7 +198,7 @@
               </Table>
             </Paragraph>
           </Header>
-          <Header text="DeleteSpecifiedInformationObject (0 %)" level="1">
+          <Header text="DeleteSpecifiedInformationObject (14 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -238,6 +249,17 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Object unique ID</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>MethodExecuteType: CatchInvalidDomains</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Catch and throw an exception for invalid domains (system reserved)</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>

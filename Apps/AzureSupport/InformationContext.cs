@@ -7,6 +7,7 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using Amazon.IdentityManagement.Model;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall.CORE;
 
 namespace TheBall
 {
@@ -181,6 +182,8 @@ namespace TheBall
                 _currBlobClient = value;
             }
         }
+
+        public IContainerOwner Owner;
 
         private Dictionary<string, object> KeyValueDictionary = new Dictionary<string, object>();
         public void AccessLockedItems(Action<Dictionary<string, object>> action)

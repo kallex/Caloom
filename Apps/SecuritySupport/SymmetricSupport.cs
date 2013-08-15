@@ -136,6 +136,11 @@ namespace SecuritySupport
             CurrProvider.IV = iv;
         }
 
+        public byte[] CurrentKey
+        {
+            get { return CurrProvider != null ? CurrProvider.Key : null; }
+        }
+
         public void InitializeNew()
         {
             CurrProvider.KeySize = 128;

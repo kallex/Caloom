@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SecuritySupport
@@ -12,5 +13,6 @@ namespace SecuritySupport
         Task PerformNextActionAsync();
         Action<byte[]> SendMessageToOtherParty { get; set; }
         Func<byte[], Task> SendMessageToOtherPartyAsync { get; set; }
+        List<byte[]> NegotiationResults { get; }
     }
 }

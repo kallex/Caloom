@@ -7,6 +7,7 @@ using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using Microsoft.WindowsAzure;
+using TheBall.CORE;
 
 namespace TheBall
 {
@@ -19,7 +20,7 @@ namespace TheBall
         static EmailSupport()
         {
 
-            const string SecretFileName = @"C:\work\abs\ConnectionStringStorage\amazonses.txt";
+            const string SecretFileName = @"C:\users\kalle\work\ConnectionStringStorage\amazonses.txt";
             string configString;
             if (File.Exists(SecretFileName))
                 configString = File.ReadAllText(SecretFileName);
@@ -160,6 +161,26 @@ The link is valid for 14 days, after which you need to request new invitation.";
         {
             string urlLink = "http://demooip.aaltoglobalimpact.org/emailvalidation/" + emailValidationID;
             return urlLink;
+        }
+
+        public static void SendDeviceJoinEmail(TBEmailValidation emailValidation, DeviceMembership deviceMembership, string[] ownerEmailAddresses)
+        {
+            string urlLink = GetUrlLink(emailValidation.ID);
+            bool isAccount = emailValidation.DeviceJoinConfirmation.AccountID != null;
+            string ownerID = isAccount
+                                 ? emailValidation.DeviceJoinConfirmation.AccountID
+                                 : emailValidation.DeviceJoinConfirmation.GroupID;
+            string emailMessageFormat =
+                @"Your confirmation is required to trust the following device '{0}' to be joined to trust within {1} ID {2}. 
+
+Click the following link to confirm this action:
+{3}";
+            string message = String.Format(emailMessageFormat, deviceMembership.DeviceDescription,
+                                           isAccount ? "account" : "collaboration group", ownerID, urlLink);
+            foreach (string emailAddress in ownerEmailAddresses)
+            {
+                SendEmail(FromAddress, emailAddress, "Device Join Confirmation", message);
+            }
         }
     }
 }

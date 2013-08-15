@@ -47,7 +47,7 @@ namespace AaltoGlobalImpact.OIP
             TBEmailValidation emailValidation = new TBEmailValidation();
             emailValidation.AccountID = accountID;
             emailValidation.Email = this.EmailAddress;
-            emailValidation.ValidUntil = DateTime.Now.AddMinutes(30);
+            emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(30);
             StorageSupport.StoreInformation(emailValidation);
             EmailSupport.SendValidationEmail(emailValidation);
         }

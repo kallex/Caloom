@@ -9,6 +9,7 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace WebInterface
 {
@@ -67,7 +68,7 @@ namespace WebInterface
                 return;
             }
             StorageSupport.DeleteInformationObject(emailValidation);
-            if (emailValidation.ValidUntil < DateTime.Now)
+            if (emailValidation.ValidUntil < DateTime.UtcNow)
             {
                 RespondEmailValidationExpired(context, emailValidation);
                 return;
@@ -76,20 +77,56 @@ namespace WebInterface
             {
                 HandleGroupJoinConfirmation(context, account, emailValidation);
             }
-            else
+            else if (emailValidation.DeviceJoinConfirmation != null)
+            {
+                HandleDeviceJoinConfirmation(context, account, emailValidation);
+            }else 
             {
                 HandleAccountEmailValidation(context, account, emailValidation);
             }
         }
 
+        private void HandleDeviceJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            ValidateAccountsEmailAddress(account, emailValidation);
+            VirtualOwner owner;
+            var deviceJoinInfo = emailValidation.DeviceJoinConfirmation;
+            string redirectUrl;
+            if (String.IsNullOrEmpty(deviceJoinInfo.AccountID) == false)
+            {
+                owner = VirtualOwner.FigureOwner("acc/" + deviceJoinInfo.AccountID);
+                redirectUrl = "/auth/account/website/oip-account/oip-layout-account-welcome.phtml";
+            }
+            else
+            {
+                string groupID = deviceJoinInfo.GroupID;
+                owner = VirtualOwner.FigureOwner("grp/" + groupID);
+                redirectUrl = "/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml";
+            }
+            SetDeviceMembershipValidationAndActiveStatus.Execute(new SetDeviceMembershipValidationAndActiveStatusParameters
+                {
+                    Owner = owner,
+                    DeviceMembershipID = deviceJoinInfo.DeviceMembershipID,
+                    IsValidAndActive = true
+                });
+            context.Response.Redirect(redirectUrl, true);
+        }
+
         private void HandleGroupJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
-            if (account.Emails.CollectionContent.Exists(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == false)
-                throw new SecurityException("Login account does not contain email address that was target of validation");
+            ValidateAccountsEmailAddress(account, emailValidation);
             string groupID = emailValidation.GroupJoinConfirmation.GroupID;
             ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
                                                  {GroupID = groupID, MemberEmailAddress = emailValidation.Email});
             context.Response.Redirect("/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml");
+        }
+
+        private static void ValidateAccountsEmailAddress(TBAccount account, TBEmailValidation emailValidation)
+        {
+            if (
+                account.Emails.CollectionContent.Exists(
+                    candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == false)
+                throw new SecurityException("Login account does not contain email address that was target of validation");
         }
 
         private void HandleAccountEmailValidation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)

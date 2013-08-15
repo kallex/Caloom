@@ -16,6 +16,9 @@
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_HttpFileData" displayName="VariableType: HttpFileData" description="Http File data">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_CatchInvalidDomains" displayName="MethodExecuteType: CatchInvalidDomains" description="Catch and throw an exception for invalid domains (system reserved)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_CreatedObject" displayName="TargetDefinitionType: CreatedObject" description="Object that is created">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -55,11 +58,83 @@
     <StatusItem name="DeleteSpecifiedInformationObject_ObjectID" displayName="VariableType: ObjectID" description="Object unique ID">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="DeleteSpecifiedInformationObject_CatchInvalidDomains" displayName="MethodExecuteType: CatchInvalidDomains" description="Catch and throw an exception for invalid domains (system reserved)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="DeleteSpecifiedInformationObject_ObjectToDelete" displayName="TargetDefinitionType: ObjectToDelete" description="Object that is created">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="DeleteSpecifiedInformationObject_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete the object.">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_DeviceDescription" displayName="VariableType: DeviceDescription" description="Description of the device">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_ActiveSymmetricAESKey" displayName="VariableType: ActiveSymmetricAESKey" description="Current active AES-256 key">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_CreatedDeviceMembership" displayName="TargetDefinitionType: CreatedDeviceMembership" description="Created device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store created object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateDeviceMembership_DeviceMembership" displayName="VariableType: DeviceMembership" description="Created device membership ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_DeviceMembershipID" displayName="VariableType: DeviceMembershipID" description="ID of device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_IsValidAndActive" displayName="VariableType: IsValidAndActive" description="Value for validated and active">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_DeviceMembership" displayName="TargetDefinitionType: DeviceMembership" description="Created device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_SetDeviceValidAndActiveValue" displayName="MethodExecuteType: SetDeviceValidAndActiveValue" description="Set device valid and active value">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetDeviceMembershipValidationAndActiveStatus_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store created object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteDeviceMembership_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteDeviceMembership_DeviceMembershipID" displayName="VariableType: DeviceMembershipID" description="ID of device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteDeviceMembership_DeviceMembership" displayName="TargetDefinitionType: DeviceMembership" description="Created device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteDeviceMembership_DeleteDeviceMembership" displayName="MethodExecuteType: DeleteDeviceMembership" description="Delete device membership record">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwningAccount" displayName="VariableType: OwningAccount" description="Security context owner - if an account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwningGroup" displayName="VariableType: OwningGroup" description="Security context owner - if a group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_DeviceMembership" displayName="VariableType: DeviceMembership" description="Device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwnerEmailAddresses" displayName="TargetDefinitionType: OwnerEmailAddresses" description="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_EmailValidation" displayName="TargetDefinitionType: EmailValidation" description="Email validation item for 30 minutes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store email validation object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForDeviceJoinConfirmation_SendEmailConfirmation" displayName="MethodExecuteType: SendEmailConfirmation" description="Create and send email confirmation for joining the devices">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
   </StatusItems>
   <Groups>
@@ -69,6 +144,7 @@
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectName" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_HttpFormData" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_HttpFileData" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CatchInvalidDomains" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreatedObject" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_FieldValues" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectLinkValues" />
@@ -84,8 +160,40 @@
       <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectDomainName" />
       <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectName" />
       <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectID" />
+      <ItemRef itemName="DeleteSpecifiedInformationObject_CatchInvalidDomains" />
       <ItemRef itemName="DeleteSpecifiedInformationObject_ObjectToDelete" />
       <ItemRef itemName="DeleteSpecifiedInformationObject_DeleteObject" />
+    </Group>
+    <Group name="CreateDeviceMembership">
+      <ItemRef itemName="CreateDeviceMembership_Owner" />
+      <ItemRef itemName="CreateDeviceMembership_DeviceDescription" />
+      <ItemRef itemName="CreateDeviceMembership_ActiveSymmetricAESKey" />
+      <ItemRef itemName="CreateDeviceMembership_CreatedDeviceMembership" />
+      <ItemRef itemName="CreateDeviceMembership_StoreObject" />
+      <ItemRef itemName="CreateDeviceMembership_DeviceMembership" />
+    </Group>
+    <Group name="SetDeviceMembershipValidationAndActiveStatus">
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_Owner" />
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_DeviceMembershipID" />
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_IsValidAndActive" />
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_DeviceMembership" />
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_SetDeviceValidAndActiveValue" />
+      <ItemRef itemName="SetDeviceMembershipValidationAndActiveStatus_StoreObject" />
+    </Group>
+    <Group name="DeleteDeviceMembership">
+      <ItemRef itemName="DeleteDeviceMembership_Owner" />
+      <ItemRef itemName="DeleteDeviceMembership_DeviceMembershipID" />
+      <ItemRef itemName="DeleteDeviceMembership_DeviceMembership" />
+      <ItemRef itemName="DeleteDeviceMembership_DeleteDeviceMembership" />
+    </Group>
+    <Group name="CreateAndSendEmailValidationForDeviceJoinConfirmation">
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwningAccount" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwningGroup" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_DeviceMembership" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_OwnerEmailAddresses" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_EmailValidation" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_StoreObject" />
+      <ItemRef itemName="CreateAndSendEmailValidationForDeviceJoinConfirmation_SendEmailConfirmation" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

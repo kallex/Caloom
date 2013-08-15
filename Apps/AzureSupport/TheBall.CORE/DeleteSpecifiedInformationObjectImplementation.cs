@@ -1,3 +1,7 @@
+using System;
+using System.Security;
+using System.Linq;
+
 namespace TheBall.CORE
 {
     public class DeleteSpecifiedInformationObjectImplementation
@@ -14,6 +18,12 @@ namespace TheBall.CORE
         {
             if(objectToDelete != null)
                 objectToDelete.DeleteInformationObject();
+        }
+
+        public static void ExecuteMethod_CatchInvalidDomains(string objectDomainName)
+        {
+            if (SystemSupport.ReservedDomainNames.Contains(objectDomainName))
+                throw new SecurityException("Creation of system namespace objects is not permitted");
         }
     }
 }

@@ -4,6 +4,186 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallCore)" title="Operations (OperationAbstractionFromTheBallCore)">
         <Content>
+          <Header text="CreateAndSendEmailValidationForDeviceJoinConfirmation (OwningAccount, OwningGroup, DeviceMembership)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates and sends email validation for device join confirmation.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if an account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBCollaboratingGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if a group</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeviceMembership</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>DeviceMembership</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerEmailAddresses ( OwningAccount, OwningGroup )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailValidation ( OwnerEmailAddresses, OwningAccount, OwningGroup, DeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email validation item for 30 minutes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( EmailValidation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store email validation object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendEmailConfirmation ( EmailValidation, OwnerEmailAddresses, DeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create and send email confirmation for joining the devices</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateDeviceMembership (Owner, DeviceDescription, ActiveSymmetricAESKey)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates device membership for security context for owner.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeviceDescription</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Description of the device</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ActiveSymmetricAESKey</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>byte[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Current active AES-256 key</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CreatedDeviceMembership ( Owner, DeviceDescription, ActiveSymmetricAESKey )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( CreatedDeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateDeviceMembershipReturnValue ( CreatedDeviceMembership )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeviceMembership</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>DeviceMembership</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created device membership ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateSpecifiedInformationObjectWithValues (Owner, ObjectDomainName, ObjectName, HttpFormData, HttpFileData)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -80,6 +260,13 @@
                 </Table>
               </Paragraph>
             </Header>
+            <Header text="Method Call: CatchInvalidDomains ( ObjectDomainName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Catch and throw an exception for invalid domains (system reserved)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: CreatedObject ( Owner, ObjectDomainName, ObjectName )" level="2">
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
@@ -144,11 +331,73 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteDeviceMembership (Owner, DeviceMembershipID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete device membership record entirely.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeviceMembershipID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeviceMembership ( Owner, DeviceMembershipID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteDeviceMembership ( DeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete device membership record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent />
+                  <TextContent>
+            Deletes specified information object.
+          </TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -209,6 +458,13 @@
                 </Table>
               </Paragraph>
             </Header>
+            <Header text="Method Call: CatchInvalidDomains ( ObjectDomainName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Catch and throw an exception for invalid domains (system reserved)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: ObjectToDelete ( Owner, ObjectDomainName, ObjectName, ObjectID )" level="2">
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
@@ -220,6 +476,84 @@
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
                   <TextContent>Delete the object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Set device membership validation.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeviceMembershipID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IsValidAndActive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Value for validated and active</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeviceMembership ( Owner, DeviceMembershipID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetDeviceValidAndActiveValue ( DeviceMembership, IsValidAndActive )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set device valid and active value</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( DeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

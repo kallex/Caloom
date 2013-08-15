@@ -81,6 +81,10 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.cs" />
+    <Compile Include="TheBall.CORE\DeleteDeviceMembershipImplementation.cs" />
+    <Compile Include="TheBall.CORE\SetDeviceMembershipValidationAndActiveStatusImplementation.cs" />
+    <Compile Include="TheBall.CORE\CreateDeviceMembershipImplementation.cs" />
     <Compile Include="AdditionalFormatSupport.cs" />
     <Compile Include="Partials\AddressAndLocationCollection.cs" />
     <Compile Include="Partials\NodeSummaryContainer.cs" />
@@ -187,6 +191,7 @@
     <Compile Include="Partials\TBAccount.cs" />
     <Compile Include="Partials\TBCollaboratingGroup.cs" />
     <Compile Include="Partials\TBRLoginGroupRoot.cs" />
+    <Compile Include="TheBall.CORE\SystemSupport.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>

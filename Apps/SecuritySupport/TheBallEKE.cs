@@ -110,6 +110,17 @@ namespace SecuritySupport
 
             public Action<byte[]> SendMessageToOtherParty { get; set; }
             public Func<byte[], Task> SendMessageToOtherPartyAsync { get; set; }
+
+            public List<byte[]> NegotiationResults
+            {
+                get
+                {
+                    if (!IsDoneWithProtocol)
+                        return null;
+                    return new List<byte[]>() {SessionKeyEnc.CurrentKey};
+                }
+            }
+
             private SymmetricSupport SessionKeyEnc;
 
             //public byte[] SharedSecret;
@@ -249,7 +260,7 @@ namespace SecuritySupport
 
             private async Task AliceX_DoneWithEKEAsync()
             {
-                IsDoneWithProtocol = true;
+                AliceX_DoneWithEKE();
             }
 
             private async Task Alice5_5_SendEncryptedBobsRandomToBobAsync()
@@ -259,29 +270,27 @@ namespace SecuritySupport
 
             private async Task Alice5_4_EncryptBobsRandomAsync()
             {
-                BobsRandomEncrypted = SessionKeyEnc.EncryptData(BobsRandom);
+                Alice5_4_EncryptBobsRandom();
             }
 
             private async Task Alice5_3_ExtractBobsRandomAsync()
             {
-                BobsRandom = AlicesRandomWithBobsRandom.Skip(16).ToArray();
+                Alice5_3_ExtractBobsRandom();
             }
 
             private async Task Alice5_2_VerifyAliceRandomInCombinedRandomAsync()
             {
-                var alicesRandomExtracted = AlicesRandomWithBobsRandom.Take(16);
-                if (AlicesRandom.SequenceEqual(alicesRandomExtracted) == false)
-                    throw new SecurityException("EKE negotiation failed");
+                Alice5_2_VerifyAliceRandomInCombinedRandom();
             }
 
             private async Task Alice5_0_GetAlicesRandomWithBobsRandomEncryptedFromBobAsync()
             {
-                AlicesRandomWithBobsRandomEncrypted = LatestMessageFromOtherParty;
+                Alice5_0_GetAlicesRandomWithBobsRandomEncryptedFromBob();
             }
 
             private async Task Alice5_1_DecryptBothRandomsAsync()
             {
-                AlicesRandomWithBobsRandom = SessionKeyEnc.DecryptData(AlicesRandomWithBobsRandomEncrypted);
+                Alice5_1_DecryptBothRandoms();
             }
 
             private async Task Alice3_4_SendEncryptedAliceRandomToBobAsync()
@@ -292,24 +301,22 @@ namespace SecuritySupport
 
             private async Task Alice3_3_EncryptAliceRandomValueWithSessionKeyAsync()
             {
-                AlicesRandomEncrypted = SessionKeyEnc.EncryptData(AlicesRandom);
+                Alice3_3_EncryptAliceRandomValueWithSessionKey();
             }
 
             private async Task Alice3_2_GenerateAliceRandomValueAsync()
             {
-                AlicesRandom = SymmetricSupport.GetRandomBytes(16);
+                Alice3_2_GenerateAliceRandomValue();
             }
 
             private async Task Alice3_0_GetEncryptedSessionKeyFromBobAsync()
             {
-                EncryptedSessionKey = LatestMessageFromOtherParty;
+                Alice3_0_GetEncryptedSessionKeyFromBob();
             }
 
             private async Task Alice3_1_DecryptSessionKeyAsync()
             {
-                var sessionKeyAndIV = PublicAndPrivateKeys.Decrypt(EncryptedSessionKey, false);
-                SessionKeyEnc = new SymmetricSupport();
-                SessionKeyEnc.InitializeFromKeyAndIV(sessionKeyAndIV);
+                Alice3_1_DecryptSessionKey();
             }
 
             private async Task Alice1_3_SendEncryptedPublicKeyToBobAsync()
@@ -320,23 +327,12 @@ namespace SecuritySupport
 
             private async Task Alice1_2_EncryptPublicKeyWithSAsync()
             {
-                string rsaPublicKey = PublicAndPrivateKeys.ToXmlString(false);
-                EncryptedPublicKey = EKEContext.SharedSecretEnc.EncryptString(rsaPublicKey);
+                Alice1_2_EncryptPublicKeyWithS();
             }
 
             private async Task Alice1_1_GenerateKeyPairAsync()
             {
-                using (var rsa = new RSACryptoServiceProvider(TheBallEKE.RSAKEYLENGTH))
-                {
-                    try
-                    {
-                        PublicAndPrivateKeys = rsa;
-                    }
-                    finally
-                    {
-                        rsa.PersistKeyInCsp = false;
-                    }
-                }
+                Alice1_1_GenerateKeyPair();
             }
 
             #endregion
@@ -396,6 +392,16 @@ namespace SecuritySupport
 
             public Action<byte[]> SendMessageToOtherParty { get; set;  }
             public Func<byte[], Task> SendMessageToOtherPartyAsync { get; set; }
+
+            public List<byte[]> NegotiationResults
+            {
+                get
+                {
+                    if (!IsDoneWithProtocol)
+                        return null;
+                    return new List<byte[]>() { SessionKeyEnc.CurrentKey };
+                }
+            }
 
             private SymmetricSupport SessionKeyEnc;
 

@@ -15,6 +15,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using SecuritySupport;
 using TheBall;
+using TheBall.CORE;
 
 namespace WebInterface
 {
@@ -40,6 +41,7 @@ namespace WebInterface
 
         public void ProcessRequest(HttpContext context)
         {
+            WebSupport.InitializeContextStorage(context.Request);
             bool isSocket = false;
             if (context.IsWebSocketRequest)
             {
@@ -66,13 +68,30 @@ namespace WebInterface
 
         private async Task HandleWebSocket(WebSocketContext wsContext)
         {
-            const int maxMessageSize = 1024 * 1024;
+            const int maxMessageSize = 16 * 1024;
             byte[] receiveBuffer = new byte[maxMessageSize];
             WebSocket socket = wsContext.WebSocket;
 
-            Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> OnReceiveMessage = HandleReceivedMessage;
+            Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> OnReceiveMessage = HandleDeviceNegotiations;
             Action<WebSocketContext, WebSocket> OnClose = HandleCloseMessage;
             InformationContext informationContext = new InformationContext();
+            var request = HttpContext.Current.Request;
+            string accountEmail = request.Params["accountemail"];
+            string groupID = request.Params["groupID"];
+            if (String.IsNullOrEmpty(accountEmail) == false)
+            {
+                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
+                var emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                if(emailRoot == null)
+                    throw new SecurityException("No such email defined: " + accountEmail);
+                informationContext.Owner = emailRoot.Account;
+            } else if (String.IsNullOrEmpty(groupID) == false)
+            {
+                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+                if(groupRoot == null)
+                    throw new SecurityException("No such groupID defined: " + groupID);
+                informationContext.Owner = groupRoot.Group;
+            }
 
             while (socket.State == WebSocketState.Open)
             {
@@ -142,12 +161,12 @@ namespace WebInterface
         {
         }
 
-        private async static Task HandleReceivedMessage(InformationContext iCtx, WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
+        private async static Task HandleDeviceNegotiations(InformationContext iCtx, WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
         {
+            bool playBob = false;
+            INegotiationProtocolMember protocolParty = null;
             if (binaryMessage != null)
             {
-                bool playBob = false;
-                INegotiationProtocolMember protocolParty = null;
                 iCtx.AccessLockedItems(dict =>
                 {
                     if (dict.ContainsKey("EKENEGOTIATIONPARTY") == false)
@@ -184,9 +203,34 @@ namespace WebInterface
             }
             else
             {
-                string echoString = "You said: " + textMessage;
-                await SendTextMessage(socket, echoString);
+                iCtx.AccessLockedItems(dict =>
+                    {
+                        if (dict.ContainsKey("EKENEGOTIATIONPARTY"))
+                            protocolParty = (INegotiationProtocolMember) dict["EKENEGOTIATIONPARTY"];
+                    });
+                if (protocolParty != null && protocolParty.IsDoneWithProtocol) // Perform POST EKE operations
+                {
+                    iCtx.AccessLockedItems(dict => dict.Remove("EKENEGOTIATIONPARTY"));
+                    FinishDeviceNegotiation(iCtx, protocolParty, textMessage);
+                }
+                //await SendTextMessage(socket, echoString);
             }
+        }
+
+        private static void FinishDeviceNegotiation(InformationContext iCtx, INegotiationProtocolMember protocolParty, string remainingDetails)
+        {
+            var result = CreateDeviceMembership.Execute(new CreateDeviceMembershipParameters
+                {
+                    Owner = iCtx.Owner,
+                    ActiveSymmetricAESKey = protocolParty.NegotiationResults[0],
+                    DeviceDescription = remainingDetails
+                });
+            CreateAndSendEmailValidationForDeviceJoinConfirmation.Execute(new CreateAndSendEmailValidationForDeviceJoinConfirmationParameters
+                {
+                    DeviceMembership = result.DeviceMembership,
+                    OwningAccount = iCtx.Owner as TBAccount,
+                    OwningGroup = iCtx.Owner as TBCollaboratingGroup,
+                });
         }
 
         private async static Task SendTextMessage(WebSocket socket, string textMessage)

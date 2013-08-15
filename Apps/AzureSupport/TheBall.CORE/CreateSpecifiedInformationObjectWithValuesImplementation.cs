@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
+using System.Security;
 using System.Web;
 using System.Linq;
 
@@ -105,5 +106,10 @@ namespace TheBall.CORE
             createdObject.StoreInformationMasterFirst(owner, false);
         }
 
+        public static void ExecuteMethod_CatchInvalidDomains(string objectDomainName)
+        {
+            if (SystemSupport.ReservedDomainNames.Contains(objectDomainName))
+                throw new SecurityException("Creation of system namespace objects is not permitted");
+        }
     }
 }
