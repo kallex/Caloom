@@ -164,12 +164,12 @@ namespace WebInterface
                                 bob = (TheBallEKE.EKEBob) dict["EKEINITBOB"];
                             }
                         });
-                    if (bob.SendMessageToAliceAsync == null)
+                    if (bob.SendMessageToOtherPartyAsync == null)
                     {
-                        bob.SendMessageToAliceAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
+                        bob.SendMessageToOtherPartyAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
                     }
-                    bob.LatestMessageFromAlice = binaryMessage;
-                    while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false)
+                    bob.LatestMessageFromOtherParty = binaryMessage;
+                    while (bob.IsDoneWithEKE == false && bob.WaitForOtherParty == false)
                     {
                         await bob.PerformNextActionAsync();
                     }
@@ -191,16 +191,16 @@ namespace WebInterface
                             alice = (TheBallEKE.EKEAlice)dict["EKEINITALICE"];
                         }
                     });
-                    if (alice.SendMessageToBobAsync == null)
+                    if (alice.SendMessageToOtherPartyAsync == null)
                     {
-                        alice.SendMessageToBobAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
+                        alice.SendMessageToOtherPartyAsync = async bytes => { await SendBinaryMessage(socket, bytes); };
                     }
                     else
                     {
                         // Alice plays first, so only after the second message we start putting messages from Bob
-                        alice.LatestMessageFromBob = binaryMessage;
+                        alice.LatestMessageFromOtherParty = binaryMessage;
                     }
-                    while (alice.IsDoneWithEKE == false && alice.WaitForBob == false)
+                    while (alice.IsDoneWithEKE == false && alice.WaitForOtherParty == false)
                     {
                         await alice.PerformNextActionAsync();
                     }

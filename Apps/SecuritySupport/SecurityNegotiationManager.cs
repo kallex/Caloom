@@ -32,12 +32,12 @@ namespace SecuritySupport
             if (playAlice)
             {
                 alice = new TheBallEKE.EKEAlice(instance);
-                alice.SendMessageToBob = bytes => { socket.Send(bytes); };
+                alice.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
             }
             else
             {
                 bob = new TheBallEKE.EKEBob(instance);
-                bob.SendMessageToAlice = bytes => { socket.Send(bytes); };
+                bob.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
                 
             }
             watch.Start();
@@ -90,12 +90,12 @@ namespace SecuritySupport
             Console.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
             if (playAlice)
             {
-                alice.LatestMessageFromBob = e.RawData;
+                alice.LatestMessageFromOtherParty = e.RawData;
                 ProceedAlice();
             }
             else
             {
-                bob.LatestMessageFromAlice = e.RawData;
+                bob.LatestMessageFromOtherParty = e.RawData;
                 ProceedBob();
             }
         }
@@ -137,7 +137,7 @@ namespace SecuritySupport
 
         static void ProceedBob()
         {
-            while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false)
+            while (bob.IsDoneWithEKE == false && bob.WaitForOtherParty == false)
             {
                 bob.PerformNextAction();
             }
@@ -150,7 +150,7 @@ namespace SecuritySupport
 
         static void ProceedAlice()
         {
-            while(alice.IsDoneWithEKE == false && alice.WaitForBob == false)
+            while(alice.IsDoneWithEKE == false && alice.WaitForOtherParty == false)
             {
                 alice.PerformNextAction();
             } 
