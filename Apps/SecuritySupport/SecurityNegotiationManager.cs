@@ -109,10 +109,9 @@ namespace SecuritySupport
 
         static void ProceedAlice()
         {
-            alice.WaitForBob = false;
             while(alice.IsDoneWithEKE == false && alice.WaitForBob == false)
             {
-                alice.AlicesActions[aliceActionIX++]();
+                alice.PerformNextAction();
             } 
             if (alice.IsDoneWithEKE)
             {

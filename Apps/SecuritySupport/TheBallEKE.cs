@@ -36,34 +36,16 @@ namespace SecuritySupport
             alice.SendMessageToBob = msg =>
                 {
                     bob.LatestMessageFromAlice = msg;
-                    bob.WaitForAlice = false;
                 };
             bob.SendMessageToAlice = msg =>
                 {
                     alice.LatestMessageFromBob = msg;
-                    alice.WaitForBob = false;
                 };
             bool ekeInProgress = true;
-            int aliceActionIX = 0;
-            int bobActionIX = 0;
             while (ekeInProgress)
             {
-                bool alicesTurn = alice.IsDoneWithEKE == false && alice.WaitForBob == false;
-                bool bobsTurn = !alicesTurn;
-                if (alicesTurn)
-                {
-                    do
-                    {
-                        alice.AlicesActions[aliceActionIX++]();
-                    } while (alice.IsDoneWithEKE == false && alice.WaitForBob == false);
-                }
-                else
-                {
-                    do
-                    {
-                        bob.BobsActions[bobActionIX++]();
-                    } while (bob.IsDoneWithEKE == false && bob.WaitForAlice == false);
-                }
+                alice.PerformNextAction();
+                bob.PerformNextAction();
                 ekeInProgress = alice.IsDoneWithEKE == false || bob.IsDoneWithEKE == false;
             }
             bool ekeSuccess = true;
@@ -119,9 +101,8 @@ namespace SecuritySupport
 
             public EKEAliceAsync(TheBallEKE ekeContext)
             {
-                throw new NotImplementedException("Just copy of Alice, not refactored yet");
                 EKEContext = ekeContext;
-                AlicesActions = new NegotiationAction[]
+                AlicesActions = new NegotiationActionAsync[]
                     {
                         Alice1_1_GenerateKeyPair, Alice1_2_EncryptPublicKeyWithS, Alice1_3_SendEncryptedPublicKeyToBob,
 
@@ -135,14 +116,15 @@ namespace SecuritySupport
 
                         AliceX_DoneWithEKE
                     };
+                CurrentActionIndex = 0;
             }
 
-            private void AliceX_DoneWithEKE()
+            private async Task AliceX_DoneWithEKE()
             {
                 IsDoneWithEKE = true;
             }
 
-            public NegotiationAction[] AlicesActions;
+            public NegotiationActionAsync[] AlicesActions;
 
             public Action<byte[]> SendMessageToBob;
             public SymmetricSupport SessionKeyEnc;
@@ -160,80 +142,81 @@ namespace SecuritySupport
             public bool WaitForBob;
             public bool IsDoneWithEKE;
             public byte[] LatestMessageFromBob;
+            private int CurrentActionIndex;
 
-            private void Alice5_5_SendEncryptedBobsRandomToBob()
+            private async Task Alice5_5_SendEncryptedBobsRandomToBob()
             {
                 SendMessageToBob(BobsRandomEncrypted);
             }
 
-            private void Alice5_4_EncryptBobsRandom()
+            private async Task Alice5_4_EncryptBobsRandom()
             {
                 BobsRandomEncrypted = SessionKeyEnc.EncryptData(BobsRandom);
             }
 
-            private void Alice5_3_ExtractBobsRandom()
+            private async Task Alice5_3_ExtractBobsRandom()
             {
                 BobsRandom = AlicesRandomWithBobsRandom.Skip(16).ToArray();
             }
 
-            private void Alice5_2_VerifyAliceRandomInCombinedRandom()
+            private async Task Alice5_2_VerifyAliceRandomInCombinedRandom()
             {
                 var alicesRandomExtracted = AlicesRandomWithBobsRandom.Take(16);
                 if (AlicesRandom.SequenceEqual(alicesRandomExtracted) == false)
                     throw new SecurityException("EKE negotiation failed");
             }
 
-            private void Alice5_0_GetAlicesRandomWithBobsRandomEncryptedFromBob()
+            private async Task Alice5_0_GetAlicesRandomWithBobsRandomEncryptedFromBob()
             {
                 AlicesRandomWithBobsRandomEncrypted = LatestMessageFromBob;
             }
 
-            private void Alice5_1_DecryptBothRandoms()
+            private async Task Alice5_1_DecryptBothRandoms()
             {
                 AlicesRandomWithBobsRandom = SessionKeyEnc.DecryptData(AlicesRandomWithBobsRandomEncrypted);
             }
 
-            private void Alice3_4_SendEncryptedAliceRandomToBob()
+            private async Task Alice3_4_SendEncryptedAliceRandomToBob()
             {
                 SendMessageToBob(AlicesRandomEncrypted);
                 WaitForBob = true;
             }
 
-            private void Alice3_3_EncryptAliceRandomValueWithSessionKey()
+            private async Task Alice3_3_EncryptAliceRandomValueWithSessionKey()
             {
                 AlicesRandomEncrypted = SessionKeyEnc.EncryptData(AlicesRandom);
             }
 
-            private void Alice3_2_GenerateAliceRandomValue()
+            private async Task Alice3_2_GenerateAliceRandomValue()
             {
                 AlicesRandom = SymmetricSupport.GetRandomBytes(16);
             }
 
-            private void Alice3_0_GetEncryptedSessionKeyFromBob()
+            private async Task Alice3_0_GetEncryptedSessionKeyFromBob()
             {
                 EncryptedSessionKey = LatestMessageFromBob;
             }
 
-            private void Alice3_1_DecryptSessionKey()
+            private async Task Alice3_1_DecryptSessionKey()
             {
                 var sessionKeyAndIV = PublicAndPrivateKeys.Decrypt(EncryptedSessionKey, false);
                 SessionKeyEnc = new SymmetricSupport();
                 SessionKeyEnc.InitializeFromKeyAndIV(sessionKeyAndIV);
             }
 
-            private void Alice1_3_SendEncryptedPublicKeyToBob()
+            private async Task Alice1_3_SendEncryptedPublicKeyToBob()
             {
                 SendMessageToBob(EncryptedPublicKey);
                 WaitForBob = true;
             }
 
-            private void Alice1_2_EncryptPublicKeyWithS()
+            private async Task Alice1_2_EncryptPublicKeyWithS()
             {
                 string rsaPublicKey = PublicAndPrivateKeys.ToXmlString(false);
                 EncryptedPublicKey = EKEContext.SharedSecretEnc.EncryptString(rsaPublicKey);
             }
 
-            private void Alice1_1_GenerateKeyPair()
+            private async Task Alice1_1_GenerateKeyPair()
             {
                 using (var rsa = new RSACryptoServiceProvider(1024))
                 {
@@ -256,7 +239,7 @@ namespace SecuritySupport
         {
             public TheBallEKE EKEContext;
 
-            public EKEAlice(TheBallEKE ekeContext)
+            public EKEAlice(TheBallEKE ekeContext, bool isAsync = false)
             {
                 EKEContext = ekeContext;
                 AlicesActions = new NegotiationAction[]
@@ -273,14 +256,18 @@ namespace SecuritySupport
 
                         AliceX_DoneWithEKE
                     };
+                CurrentActionIndex = 0;
+                WaitForBob = false;
             }
+
+            private int CurrentActionIndex;
 
             private void AliceX_DoneWithEKE()
             {
                 IsDoneWithEKE = true;
             }
 
-            public NegotiationAction[] AlicesActions;
+            private NegotiationAction[] AlicesActions;
 
             public Action<byte[]> SendMessageToBob;
             public SymmetricSupport SessionKeyEnc;
@@ -295,9 +282,19 @@ namespace SecuritySupport
             public byte[] AlicesRandomWithBobsRandom;
             public byte[] BobsRandom;
             public byte[] BobsRandomEncrypted;
-            public bool WaitForBob;
+            public bool WaitForBob { get; private set; }
             public bool IsDoneWithEKE;
-            public byte[] LatestMessageFromBob;
+
+            private byte[] latestMessageFromBob;
+            public byte[] LatestMessageFromBob
+            {
+                get { return latestMessageFromBob; }
+                set
+                {
+                    latestMessageFromBob = value;
+                    WaitForBob = false;
+                }
+            }
 
             private void Alice5_5_SendEncryptedBobsRandomToBob()
             {
@@ -387,7 +384,12 @@ namespace SecuritySupport
             }
 
 
-
+            public void PerformNextAction()
+            {
+                if (IsDoneWithEKE || WaitForBob)
+                    return;
+                AlicesActions[CurrentActionIndex++]();
+            }
         }
 
         public class EKEBobAsync
@@ -433,6 +435,7 @@ namespace SecuritySupport
             public byte[] AlicesRandomWithBobsRandomEncrypted;
             public byte[] BobsRandomFromAliceEncrypted;
             public byte[] BobsRandomFromAlice;
+
             public byte[] LatestMessageFromAlice;
             public bool WaitForAlice;
             public bool IsDoneWithEKE;
@@ -511,7 +514,7 @@ namespace SecuritySupport
         public class EKEBob
         {
             public TheBallEKE EKEContext;
-            public NegotiationAction[] BobsActions;
+            private NegotiationAction[] BobsActions;
 
             public EKEBob(TheBallEKE ekeContext)
             {
@@ -530,6 +533,8 @@ namespace SecuritySupport
 
                         BobX_DoneWithEKE
                     };
+                CurrentActionIndex = 0;
+                WaitForAlice = true;
             }
 
             private void BobX_DoneWithEKE()
@@ -551,9 +556,21 @@ namespace SecuritySupport
             public byte[] AlicesRandomWithBobsRandomEncrypted;
             public byte[] BobsRandomFromAliceEncrypted;
             public byte[] BobsRandomFromAlice;
-            public byte[] LatestMessageFromAlice;
-            public bool WaitForAlice;
+            private byte[] latestMessageFromAlice;
+            public byte[] LatestMessageFromAlice
+            {
+                get { return latestMessageFromAlice; }
+                set
+                {
+                    latestMessageFromAlice = value;
+                    WaitForAlice = false;
+                }
+            }
+
+
+            public bool WaitForAlice { get; private set; }
             public bool IsDoneWithEKE;
+            private int CurrentActionIndex;
 
             private void Bob6_2_VerifyBobsRandom()
             {
@@ -626,6 +643,12 @@ namespace SecuritySupport
             }
 
 
+            public void PerformNextAction()
+            {
+                if (IsDoneWithEKE || WaitForAlice)
+                    return;
+                BobsActions[CurrentActionIndex++]();
+            }
         }
 
 
