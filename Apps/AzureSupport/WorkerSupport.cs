@@ -506,7 +506,7 @@ namespace TheBall
             if (targetContainerName != "www-aaltoglobalimpact-org" && targetContainerName != "www-weconomy-fi" 
                 && targetContainerName != "hacktheball-protonit-net"
                 && targetContainerName != "www-protonit-net" && targetContainerName != "www-caloom-com" && targetContainerName != "www-earthhouse-fi"
-                && targetContainerName != "demowww-norssi-protonit-net")
+                && targetContainerName != "demowww-norssi-protonit-net" && targetContainerName != "demowww-foip-protonit-net" && targetContainerName != "b-base-protonit-net")
                 return;
             DateTime currPublishTimeUtc = DateTime.UtcNow;
             string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_hh-mm-ss");
@@ -526,7 +526,8 @@ namespace TheBall
             WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
                            RenderWebSupport.CopyAsIsSyncHandler);
             // Copy render required data
-            string[] renderRequiredFolders = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent" };
+            string[] renderRequiredFolders = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent",
+            "AaltoGlobalImpact.OIP/AddressAndLocationCollection"};
             foreach (string renderRequiredFolder in renderRequiredFolders)
             {
                 string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;

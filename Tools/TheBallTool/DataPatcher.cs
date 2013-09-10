@@ -626,7 +626,7 @@ namespace TheBallTool
 
         public static bool DoPatching()
         {
-            return false;
+            //return false;
             Debugger.Break();
             bool skip = false;
             if (skip == false)
@@ -639,8 +639,10 @@ namespace TheBallTool
             //FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411"); // Proj2
 
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
-            PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c");
-            FixGroupMastersAndCollections("56ab9a5f-eb5a-4745-93cc-ebc5cfb4785c"); // Proj1
+            //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("c229a54c-31fe-4c33-957d-e7b52cdbc06a");
+            //FixGroupMastersAndCollections("c229a54c-31fe-4c33-957d-e7b52cdbc06a"); // Proj1
+            PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("0d687b5f-d032-4f36-a5ea-6ff4fb3c5963");
+            FixGroupMastersAndCollections("0d687b5f-d032-4f36-a5ea-6ff4fb3c5963"); // Proj1
             
             //PatchTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");

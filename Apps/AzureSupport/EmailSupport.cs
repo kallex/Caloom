@@ -129,7 +129,8 @@ namespace TheBall
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat =
+            string emailMessageFormat = InstanceConfiguration.EmailMessageFormat;
+#if never
                 @"Welcome to The Open Innovation Platform!
 
 You have just joined the collaboration platform by Aalto Global Impact. Your email address '{0}' has been registered on the OIP system. Before you start your collaboration we simply need to confirm that you did register your email. Please follow the link below during which you might be redirected to perform the authentication on OIP.
@@ -138,6 +139,7 @@ Use the following link to complete your registration (the link is valid for 30 m
 {1}
 
 Wishing you all the best from OIP team!";
+#endif
             string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
             SendEmail(FromAddress, emailValidation.Email, "Welcome to The Open Innovation Platform!", message);
         }

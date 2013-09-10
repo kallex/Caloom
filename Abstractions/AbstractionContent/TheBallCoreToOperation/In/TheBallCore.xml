@@ -5,6 +5,9 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.CORE">
     <InformationModel>
+      <InformationObject name="DeviceMembershipCollection" designDesc="Collection for device memberships">
+        <CollectionFor contentInformationObjectName="DeviceMembership" collectionType="Master"/>
+      </InformationObject>
       <InformationObject name="DeviceMembership" designDesc="Device membership information">
         <InformationItems>
           <InformationItem name="DeviceDescription" logicalDataType="Text_Short"/>

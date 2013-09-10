@@ -198,9 +198,17 @@ namespace WebInterface
             HttpRequest request = context.Request;
             var form = request.Unvalidated().Form;
 
-            bool isAjaxDataRequest = form.Get("AjaxObjectInfo") != null;
+            bool isAjaxDataRequest = request.ContentType.StartsWith("application/json"); // form.Get("AjaxObjectInfo") != null;
             if (isAjaxDataRequest)
             {
+                // Various data deserialization tests - options need to be properly set
+                // strong type radically faster 151ms over 25sec with flexible type - something ill
+                throw new NotSupportedException("Not supported as-is, implementation for serialization available, not finished");
+                var stream = request.GetBufferedInputStream();
+                var dataX = JSONSupport.GetObjectFromStream<NodeSummaryContainer>(stream);
+                var streamReader = new StreamReader(request.GetBufferedInputStream());
+                string data = streamReader.ReadToEnd();
+                var jsonData = JSONSupport.GetJsonFromStream(data);
                 HandlerOwnerAjaxDataPOST(containerOwner, form);
                 return;
             }
@@ -390,7 +398,8 @@ namespace WebInterface
             response.ContentType = contentType;
             string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
             string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
-            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
+            //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
+            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string fileName;
             if (prefixStrippedContent.Contains("oipcms/"))
                 fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);

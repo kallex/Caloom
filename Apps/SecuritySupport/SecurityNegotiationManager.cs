@@ -22,8 +22,8 @@ namespace SecuritySupport
             Console.WriteLine("Starting EKE WSS connection");
             //string hostWithProtocolAndPort = "ws://localhost:50430";
             string hostWithProtocolAndPort = "wss://theball.protonit.net";
-            string idParam = "accountemail=kalle.launiala@gmail.com";
-            //string idParam = "groupID=xyz";
+            //string idParam = "accountemail=kalle.launiala@gmail.com";
+            string idParam = "groupID=4ddf4bef-0f60-41b6-925d-02721e89d637";
             string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
             socket = new WebSocket(deviceConnectionUrl);

@@ -580,14 +580,13 @@ namespace AaltoGlobalImpact.OIP
 
         internal static IEnumerable<ShortTextObject> getLocationCollectionTexts(AddressAndLocationCollection locationCollection)
         {
-            return locationCollection.GetIDSelectedArray()
+            return locationCollection.GetIDSelectedArray().OrderBy(location => location.Location.LocationName)
                                      .Select(location =>
                                          {
                                              var textShort = ShortTextObject.CreateDefault();
-                                             textShort.Content = location.Location.LocationName;
+                                             textShort.Content = location.ID;
                                              return textShort;
-                                         })
-                                     .OrderBy(text => text.Content);
+                                         });
         }
 
         internal static RenderedNode getNodeFromActivity(Activity activity)
@@ -720,7 +719,6 @@ namespace AaltoGlobalImpact.OIP
             node.MainSortableText = textContent.SortOrderNumber.ToString();
             return node;
         }
-
 
     }
 }
