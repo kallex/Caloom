@@ -306,6 +306,84 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for joining the devices
 		</div>
+		</p><h1>CreateAndSendEmailValidationForInformationInputConfirmation (OwningAccount, OwningGroup, InformationInput)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates and sends email validation for information input confirmation.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwningAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner - if an account
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwningGroup
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBCollaboratingGroup
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner - if a group
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		InformationInput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information input
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: OwnerEmailAddresses ( OwningAccount, OwningGroup )</h2>
+		<p>		<div class="MsoNormal" >
+		Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails
+		</div>
+		</p><h2>Target Definition: EmailValidation ( OwnerEmailAddresses, OwningAccount, OwningGroup, InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Email validation item for 30 minutes
+		</div>
+		</p><h2>Method Call: StoreObject ( EmailValidation )</h2>
+		<p>		<div class="MsoNormal" >
+		Store email validation object
+		</div>
+		</p><h2>Method Call: SendEmailConfirmation ( EmailValidation, OwnerEmailAddresses, InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Create and send email confirmation for joining the devices
+		</div>
 		</p><h1>CreateDeviceMembership (Owner, DeviceDescription, ActiveSymmetricAESKey)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -393,6 +471,97 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Created device membership ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates information input for security context for owner.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InputDescription
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Description of the information input
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LocationURL
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information source location URL
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL )</h2>
+		<p>		<div class="MsoNormal" >
+		Created information input
+		</div>
+		</p><h2>Method Call: StoreObject ( CreatedInformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created object
+		</div>
+		</p><h2>Return Value : CreateInformationInputReturnValue ( CreatedInformationInput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		InformationInput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created information input
 		</div>
 				</td>
 				</tr>
@@ -584,6 +753,59 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete device membership record
 		</div>
+		</p><h1>DeleteInformationInput (Owner, InformationInputID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Delete information input source.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of device membership
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationInput ( Owner, InformationInputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information input to delete
+		</div>
+		</p><h2>Method Call: DeleteInformationInput ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete information input record
+		</div>
 		</p><h1>DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -746,6 +968,80 @@ div.WordSection1
 		Set device valid and active value
 		</div>
 		</p><h2>Method Call: StoreObject ( DeviceMembership )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created object
+		</div>
+		</p><h1>SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Set information input validation and active-statuses.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information input
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IsValidAndActive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Value for validated and active
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationInput ( Owner, InformationInputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information input of which to set the status
+		</div>
+		</p><h2>Method Call: SetInputValidAndActiveValue ( InformationInput, IsValidAndActive )</h2>
+		<p>		<div class="MsoNormal" >
+		Set input valid and active value
+		</div>
+		</p><h2>Method Call: StoreObject ( InformationInput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store created object
 		</div>

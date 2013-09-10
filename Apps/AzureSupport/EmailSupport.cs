@@ -184,5 +184,10 @@ Click the following link to confirm this action:
                 SendEmail(FromAddress, emailAddress, "Device Join Confirmation", message);
             }
         }
+
+        public static void SendInputJoinEmail(TBEmailValidation emailValidation, InformationInput informationInput, string[] ownerEmailAddresses)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

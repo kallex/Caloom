@@ -89,6 +89,91 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateAndSendEmailValidationForInformationInputConfirmation (OwningAccount, OwningGroup, InformationInput)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates and sends email validation for information input confirmation.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if an account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBCollaboratingGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if a group</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>InformationInput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerEmailAddresses ( OwningAccount, OwningGroup )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailValidation ( OwnerEmailAddresses, OwningAccount, OwningGroup, InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email validation item for 30 minutes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( EmailValidation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store email validation object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendEmailConfirmation ( EmailValidation, OwnerEmailAddresses, InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create and send email confirmation for joining the devices</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateDeviceMembership (Owner, DeviceDescription, ActiveSymmetricAESKey)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -177,6 +262,101 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Created device membership ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateInformationInput (Owner, InputDescription, LocationURL)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates information input for security context for owner.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InputDescription</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Description of the information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LocationURL</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information source location URL</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created information input</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( CreatedInformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateInformationInputReturnValue ( CreatedInformationInput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>InformationInput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created information input</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -391,6 +571,66 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteInformationInput (Owner, InformationInputID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete information input source.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationInput ( Owner, InformationInputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information input to delete</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteInformationInput ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete information input record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -551,6 +791,84 @@
               </Paragraph>
             </Header>
             <Header text="Method Call: StoreObject ( DeviceMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Set information input validation and active-statuses.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IsValidAndActive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Value for validated and active</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationInput ( Owner, InformationInputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information input of which to set the status</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetInputValidAndActiveValue ( InformationInput, IsValidAndActive )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set input valid and active value</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( InformationInput )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Store created object</TextContent>

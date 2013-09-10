@@ -199,5 +199,116 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="CreateInformationInput">
+      <OperationSpec>
+        <Description>
+            Creates information input for security context for owner.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InputDescription" dataType="string" designDesc="Description of the information input" state="implemented" />
+        <Parameter name="LocationURL" dataType="string" designDesc="Information source location URL" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="CreatedInformationInput" dataType="InformationInput" designDesc="Created information input" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InputDescription" />
+            <Parameter name="LocationURL" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+            <Target name="CreatedInformationInput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="InformationInput" dataType="InformationInput" designDesc="Created information input" state="implemented" />
+        <Target name="CreatedInformationInput" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="SetInformationInputValidationAndActiveStatus">
+      <OperationSpec>
+        <Description>
+            Set information input validation and active-statuses.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InformationInputID" dataType="string" designDesc="ID of information input" state="implemented" />
+        <Parameter name="IsValidAndActive" dataType="bool" designDesc="Value for validated and active" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input of which to set the status" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InformationInputID" />
+          </TargetDefinition>
+          <MethodExecute name="SetInputValidAndActiveValue" designDesc="Set input valid and active value" state="implemented">
+            <Parameter name="IsValidAndActive" />
+            <Target name="InformationInput" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+            <Target name="InformationInput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="DeleteInformationInput">
+      <OperationSpec>
+        <Description>
+            Delete information input source.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InformationInputID" dataType="string" designDesc="ID of device membership" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input to delete" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InformationInputID" />
+          </TargetDefinition>
+          <MethodExecute name="DeleteInformationInput" designDesc="Delete information input record" state="implemented">
+            <Target name="InformationInput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="CreateAndSendEmailValidationForInformationInputConfirmation">
+      <OperationSpec>
+        <Description>
+            Creates and sends email validation for information input confirmation.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="OwningAccount" dataType="AaltoGlobalImpact.OIP.TBAccount" designDesc="Security context owner - if an account" state="implemented" />
+        <Parameter name="OwningGroup" dataType="AaltoGlobalImpact.OIP.TBCollaboratingGroup" designDesc="Security context owner - if a group" state="implemented" />
+        <Parameter name="InformationInput" dataType="InformationInput" designDesc="Information input" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="OwnerEmailAddresses" dataType="string[]" designDesc="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails" state="implemented">
+            <Parameter name="OwningAccount" />
+            <Parameter name="OwningGroup" />
+          </TargetDefinition>
+          <TargetDefinition name="EmailValidation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation item for 30 minutes" state="implemented">
+            <Parameter name="OwningAccount" />
+            <Parameter name="OwningGroup" />
+            <Parameter name="InformationInput" />
+            <Target name="OwnerEmailAddresses" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+            <Target name="EmailValidation" />
+          </MethodExecute>
+          <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
+            <Parameter name="InformationInput" />
+            <Target name="EmailValidation" />
+            <Target name="OwnerEmailAddresses" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

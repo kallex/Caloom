@@ -84,6 +84,10 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\CreateAndSendEmailValidationForInformationInputConfirmationImplementation.cs" />
+    <Compile Include="TheBall.CORE\DeleteInformationInputImplementation.cs" />
+    <Compile Include="TheBall.CORE\SetInformationInputValidationAndActiveStatusImplementation.cs" />
+    <Compile Include="TheBall.CORE\CreateInformationInputImplementation.cs" />
     <Compile Include="InstanceConfiguration.cs" />
     <Compile Include="JSONSupport.cs" />
     <Compile Include="TheBall.CORE\CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.cs" />
