@@ -975,7 +975,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Name of item to store the fetched input
 		</div>
-		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, QueryParameters )</h2>
+		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, Owner, QueryParameters )</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>

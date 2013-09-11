@@ -244,7 +244,7 @@ using System.IO;
 				FetchInputInformationImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
 				string InputFetchLocation = FetchInputInformationImplementation.GetTarget_InputFetchLocation(InformationInput);	
 				string InputFetchName = FetchInputInformationImplementation.GetTarget_InputFetchName(InformationInput);	
-				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName);		
+				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.Owner, parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName);		
 				}
 				}
 				public class ProcessFetchedInputsParameters 

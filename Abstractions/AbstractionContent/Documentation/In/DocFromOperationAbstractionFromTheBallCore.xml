@@ -804,7 +804,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, QueryParameters )" level="2">
+            <Header text="Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, Owner, QueryParameters )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Fetch input to storage</TextContent>
