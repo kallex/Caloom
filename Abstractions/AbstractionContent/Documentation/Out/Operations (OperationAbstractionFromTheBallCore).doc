@@ -897,6 +897,211 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete the object.
 		</div>
+		</p><h1>FetchInputInformation (Owner, InformationInputID, QueryParameters)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Fetch input information from given source
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information input
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		QueryParameters
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		URL query parameters
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationInput ( Owner, InformationInputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information input to fetch the data for
+		</div>
+		</p><h2>Method Call: VerifyValidInput ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Verify that input is valid and active
+		</div>
+		</p><h2>Target Definition: InputFetchLocation ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Location to fetch the input into
+		</div>
+		</p><h2>Target Definition: InputFetchName ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Name of item to store the fetched input
+		</div>
+		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, QueryParameters )</h2>
+		<p>		<div class="MsoNormal" >
+		Fetch input to storage
+		</div>
+		</p><h1>ProcessFetchedInputs (Owner, InformationInputID, ProcessingOperationName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Process fetched inputs
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationInputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information input
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessingOperationName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Processing operation name
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationInput ( Owner, InformationInputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information input to fetch the data for
+		</div>
+		</p><h2>Method Call: VerifyValidInput ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Verify that input is valid and active
+		</div>
+		</p><h2>Target Definition: InputFetchLocation ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Location to fetch the input into
+		</div>
+		</p><h2>Method Call: ProcessInputFromStorage ( InformationInput, InputFetchLocation, ProcessingOperationName )</h2>
+		<p>		<div class="MsoNormal" >
+		Process input from storage
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessingResultsToStore
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IInformationObject[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information objects to store as result of processing
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessingResultsToDelete
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IInformationObject[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information objects to delete as result of processing
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: StoreObjects ( ProcessInputFromStorageOutput.ProcessingResultsToStore )</h2>
+		<p>		<div class="MsoNormal" >
+		Store processed objects
+		</div>
+		</p><h2>Method Call: DeleteObjects ( ProcessInputFromStorageOutput.ProcessingResultsToDelete )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete obsolete processed objects
+		</div>
 		</p><h1>SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

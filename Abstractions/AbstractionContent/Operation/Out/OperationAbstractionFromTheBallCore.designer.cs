@@ -225,4 +225,54 @@ using System.IO;
 				CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.InformationInput, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
+				public class FetchInputInformationParameters 
+		{
+				public IContainerOwner Owner ;
+				public string InformationInputID ;
+				public string QueryParameters ;
+				}
+		
+		public class FetchInputInformation 
+		{
+				private static void PrepareParameters(FetchInputInformationParameters parameters)
+		{
+					}
+				public static void Execute(FetchInputInformationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationInput InformationInput = FetchInputInformationImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
+				FetchInputInformationImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
+				string InputFetchLocation = FetchInputInformationImplementation.GetTarget_InputFetchLocation(InformationInput);	
+				string InputFetchName = FetchInputInformationImplementation.GetTarget_InputFetchName(InformationInput);	
+				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName);		
+				}
+				}
+				public class ProcessFetchedInputsParameters 
+		{
+				public IContainerOwner Owner ;
+				public string InformationInputID ;
+				public string ProcessingOperationName ;
+				}
+		
+		public class ProcessFetchedInputs 
+		{
+				private static void PrepareParameters(ProcessFetchedInputsParameters parameters)
+		{
+					}
+				public class ProcessInputFromStorageReturnValue 
+		{
+				public IInformationObject[] ProcessingResultsToStore ;
+				public IInformationObject[] ProcessingResultsToDelete ;
+				}
+				public static void Execute(ProcessFetchedInputsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationInput InformationInput = ProcessFetchedInputsImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
+				ProcessFetchedInputsImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
+				string InputFetchLocation = ProcessFetchedInputsImplementation.GetTarget_InputFetchLocation(InformationInput);	
+				ProcessInputFromStorageReturnValue ProcessInputFromStorageOutput = ProcessFetchedInputsImplementation.ExecuteMethod_ProcessInputFromStorage(parameters.ProcessingOperationName, InformationInput, InputFetchLocation);		
+				ProcessFetchedInputsImplementation.ExecuteMethod_StoreObjects(ProcessInputFromStorageOutput.ProcessingResultsToStore);		
+				ProcessFetchedInputsImplementation.ExecuteMethod_DeleteObjects(ProcessInputFromStorageOutput.ProcessingResultsToDelete);		
+				}
+				}
 		 } 

@@ -720,6 +720,230 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="FetchInputInformation (Owner, InformationInputID, QueryParameters)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Fetch input information from given source
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>QueryParameters</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>URL query parameters</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationInput ( Owner, InformationInputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information input to fetch the data for</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: VerifyValidInput ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Verify that input is valid and active</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InputFetchLocation ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Location to fetch the input into</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InputFetchName ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Name of item to store the fetched input</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, QueryParameters )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fetch input to storage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ProcessFetchedInputs (Owner, InformationInputID, ProcessingOperationName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Process fetched inputs
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationInputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessingOperationName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Processing operation name</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationInput ( Owner, InformationInputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information input to fetch the data for</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: VerifyValidInput ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Verify that input is valid and active</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InputFetchLocation ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Location to fetch the input into</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessInputFromStorage ( InformationInput, InputFetchLocation, ProcessingOperationName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process input from storage</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessingResultsToStore</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IInformationObject[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information objects to store as result of processing</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessingResultsToDelete</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IInformationObject[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information objects to delete as result of processing</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( ProcessInputFromStorageOutput.ProcessingResultsToStore )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObjects ( ProcessInputFromStorageOutput.ProcessingResultsToDelete )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete obsolete processed objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
