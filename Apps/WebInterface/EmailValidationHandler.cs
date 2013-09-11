@@ -80,10 +80,42 @@ namespace WebInterface
             else if (emailValidation.DeviceJoinConfirmation != null)
             {
                 HandleDeviceJoinConfirmation(context, account, emailValidation);
-            }else 
+            }
+            else if (emailValidation.InformationInputConfirmation != null)
+            {
+                HandleInputJoinConfirmation(context, account, emailValidation);
+            }
+            else
             {
                 HandleAccountEmailValidation(context, account, emailValidation);
             }
+        }
+
+        private void HandleInputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            ValidateAccountsEmailAddress(account, emailValidation);
+            VirtualOwner owner;
+            var inputJoinInfo = emailValidation.InformationInputConfirmation;
+            string redirectUrl;
+            if (String.IsNullOrEmpty(inputJoinInfo.AccountID) == false)
+            {
+                owner = VirtualOwner.FigureOwner("acc/" + inputJoinInfo.AccountID);
+                redirectUrl = "/auth/account/website/oip-account/oip-layout-account-welcome.phtml";
+            }
+            else
+            {
+                string groupID = inputJoinInfo.GroupID;
+                owner = VirtualOwner.FigureOwner("grp/" + groupID);
+                redirectUrl = "/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml";
+            }
+            SetInformationInputValidationAndActiveStatus.Execute(
+                new SetInformationInputValidationAndActiveStatusParameters
+                    {
+                        Owner = owner,
+                        InformationInputID = inputJoinInfo.InformationInputID,
+                        IsValidAndActive = true
+                    });
+            context.Response.Redirect(redirectUrl, true);
         }
 
         private void HandleDeviceJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
