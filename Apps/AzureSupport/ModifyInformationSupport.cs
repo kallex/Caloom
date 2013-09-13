@@ -86,6 +86,25 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "CreateInformationInput":
+                    {
+                        throw new NotImplementedException("Not implemented the group ownership fetch properly");
+                        CreateInformationInputParameters parameters = new CreateInformationInputParameters
+                            {
+                                InputDescription = form["InputDescription"],
+                                LocationURL = form["LocationURL"],
+                                Owner = containerOwner
+                            };
+                        var createdInformationInput = CreateInformationInput.Execute(parameters);
+                        CreateAndSendEmailValidationForInformationInputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationInputConfirmationParameters
+                            {
+                                OwningAccount = containerOwner as TBAccount,
+                                OwningGroup = containerOwner as TBCollaboratingGroup,
+                                InformationInput = createdInformationInput.InformationInput,
+                            };
+                        CreateAndSendEmailValidationForInformationInputConfirmation.Execute(emailParameters);
+                        break;
+                    }
                 case "CreateSpecifiedInformationObjectWithValues":
                     {
                         CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
