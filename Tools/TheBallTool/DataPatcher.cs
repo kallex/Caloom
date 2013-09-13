@@ -212,9 +212,11 @@ namespace TheBallTool
         private static void FixGroupMastersAndCollections(string groupID)
         {
             TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
-            OIPDomain.EnsureMasterCollections(groupRoot.Group);
-            OIPDomain.RefreshMasterCollections(groupRoot.Group);
-            groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
+            IContainerOwner owner = groupRoot.Group;
+            owner.InitializeAndConnectMastersAndCollections();
+            //OIPDomain.EnsureMasterCollections(groupRoot.Group);
+            //OIPDomain.RefreshMasterCollections(groupRoot.Group);
+            //groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
 
         private static void AddLegacyGroupWithInitiator(string groupID, string initiatorEmailAddress)
@@ -641,7 +643,7 @@ namespace TheBallTool
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("c229a54c-31fe-4c33-957d-e7b52cdbc06a");
             //FixGroupMastersAndCollections("c229a54c-31fe-4c33-957d-e7b52cdbc06a"); // Proj1
-            PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("0d687b5f-d032-4f36-a5ea-6ff4fb3c5963");
+            //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("0d687b5f-d032-4f36-a5ea-6ff4fb3c5963");
             FixGroupMastersAndCollections("0d687b5f-d032-4f36-a5ea-6ff4fb3c5963"); // Proj1
             
             //PatchTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");

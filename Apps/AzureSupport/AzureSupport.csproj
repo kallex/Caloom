@@ -84,6 +84,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\DeviceMembershipCollection.cs" />
+    <Compile Include="TheBall.CORE\InformationInputCollection.cs" />
     <Compile Include="TheBall.CORE\ProcessFetchedInputsImplementation.cs" />
     <Compile Include="TheBall.CORE\FetchInputInformationImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateAndSendEmailValidationForInformationInputConfirmationImplementation.cs" />

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
 
-namespace AaltoGlobalImpact.OIP
+namespace TheBall.CORE
 {
     public static partial class OwnerInitializer
     {
@@ -21,8 +22,18 @@ namespace AaltoGlobalImpact.OIP
         }
     }
 
-    public static class ExtIContainerOwner
+    public static partial class ExtIContainerOwner
     {
+        public static bool IsAccountContainer(this IContainerOwner owner)
+        {
+            return owner.ContainerName == "acc";
+        }
+
+        public static bool IsGroupContainer(this IContainerOwner owner)
+        {
+            return owner.ContainerName == "grp" || owner.ContainerName == "dev";
+        }
+
         public static void ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";
