@@ -88,7 +88,6 @@ namespace TheBall
             {
                 case "CreateInformationInput":
                     {
-                        throw new NotImplementedException("Not implemented the group ownership fetch properly");
                         CreateInformationInputParameters parameters = new CreateInformationInputParameters
                             {
                                 InputDescription = form["InputDescription"],
@@ -96,10 +95,18 @@ namespace TheBall
                                 Owner = containerOwner
                             };
                         var createdInformationInput = CreateInformationInput.Execute(parameters);
+                        var owningAccount = containerOwner as TBAccount;
+                        TBCollaboratingGroup owningGroup = null;
+                        if (owningAccount == null)
+                        {
+                            TBRGroupRoot groupRoot =
+                                TBRGroupRoot.RetrieveFromDefaultLocation(containerOwner.LocationPrefix);
+                            owningGroup = groupRoot.Group;
+                        }
                         CreateAndSendEmailValidationForInformationInputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationInputConfirmationParameters
                             {
-                                OwningAccount = containerOwner as TBAccount,
-                                OwningGroup = containerOwner as TBCollaboratingGroup,
+                                OwningAccount = owningAccount,
+                                OwningGroup = owningGroup,
                                 InformationInput = createdInformationInput.InformationInput,
                             };
                         CreateAndSendEmailValidationForInformationInputConfirmation.Execute(emailParameters);
