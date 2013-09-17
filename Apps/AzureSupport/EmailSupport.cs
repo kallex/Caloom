@@ -13,22 +13,12 @@ namespace TheBall
 {
     public static class EmailSupport
     {
-        private static string AWSAccessKey;
-        private static string AWSSecretKey;
-        private const string FromAddress = "no-reply-theball@msunit.citrus.fi";
+        private static readonly string AWSAccessKey = InstanceConfiguration.AWSAccessKey;
+        private static readonly string AWSSecretKey = InstanceConfiguration.AWSSecretKey;
+        private static readonly string FromAddress = InstanceConfiguration.EmailFromAddress;
 
         static EmailSupport()
         {
-
-            const string SecretFileName = @"C:\users\kalle\work\ConnectionStringStorage\amazonses.txt";
-            string configString;
-            if (File.Exists(SecretFileName))
-                configString = File.ReadAllText(SecretFileName);
-            else
-                configString = CloudConfigurationManager.GetSetting("AmazonSESAccessInfo");
-            string[] strValues = configString.Split(';');
-            AWSAccessKey = strValues[0];
-            AWSSecretKey = strValues[1];
         }
 
         public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
@@ -129,39 +119,26 @@ namespace TheBall
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat = InstanceConfiguration.EmailMessageFormat;
+            string emailMessageFormat = InstanceConfiguration.EmailValidationMessageFormat;
 #if never
-                @"Welcome to The Open Innovation Platform!
-
-You have just joined the collaboration platform by Aalto Global Impact. Your email address '{0}' has been registered on the OIP system. Before you start your collaboration we simply need to confirm that you did register your email. Please follow the link below during which you might be redirected to perform the authentication on OIP.
-
-Use the following link to complete your registration (the link is valid for 30 minutes after which you need to resend the validation):
-{1}
-
-Wishing you all the best from OIP team!";
 #endif
             string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
-            SendEmail(FromAddress, emailValidation.Email, "Welcome to The Open Innovation Platform!", message);
+            SendEmail(FromAddress, emailValidation.Email, InstanceConfiguration.EmailValidationSubjectFormat, message);
         }
 
         public static void SendGroupJoinEmail(TBEmailValidation emailValidation, TBCollaboratingGroup collaboratingGroup)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat =
-                @"You have been invited to join in the collaboration platform by Aalto Global Impact to collaborate in the group: {0}. 
-
-Use the following link to accept the invitation and join the group:
-{1}
-
-The link is valid for 14 days, after which you need to request new invitation.";
+            string emailMessageFormat = InstanceConfiguration.EmailGroupJoinMessageFormat;
             string message = String.Format(emailMessageFormat, collaboratingGroup.Title, urlLink);
             SendEmail(FromAddress, emailValidation.Email,
-                      "Invitation to join collaboration group: " + collaboratingGroup.Title, message);
+                String.Format(InstanceConfiguration.EmailGroupJoinSubjectFormat, collaboratingGroup.Title),
+                      message);
         }
 
         private static string GetUrlLink(string emailValidationID)
         {
-            string urlLink = "http://demooip.aaltoglobalimpact.org/emailvalidation/" + emailValidationID;
+            string urlLink = InstanceConfiguration.EmailValidationURLWithoutID + emailValidationID;
             return urlLink;
         }
 
@@ -172,16 +149,12 @@ The link is valid for 14 days, after which you need to request new invitation.";
             string ownerID = isAccount
                                  ? emailValidation.DeviceJoinConfirmation.AccountID
                                  : emailValidation.DeviceJoinConfirmation.GroupID;
-            string emailMessageFormat =
-                @"Your confirmation is required to trust the following device '{0}' to be joined to trust within {1} ID {2}. 
-
-Click the following link to confirm this action:
-{3}";
+            string emailMessageFormat = InstanceConfiguration.EmailDeviceJoinMessageFormat;
             string message = String.Format(emailMessageFormat, deviceMembership.DeviceDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, "Device Join Confirmation", message);
+                SendEmail(FromAddress, emailAddress, InstanceConfiguration.EmailDeviceJoinSubjectFormat, message);
             }
         }
 
@@ -192,16 +165,12 @@ Click the following link to confirm this action:
             string ownerID = isAccount
                                  ? emailValidation.InformationInputConfirmation.AccountID
                                  : emailValidation.InformationInputConfirmation.GroupID;
-            string emailMessageFormat =
-                @"Your confirmation is required to allow the following information source '{0}' to be fetched within {1} ID {2}. 
-
-Click the following link to confirm this action:
-{3}";
+            string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
             string message = String.Format(emailMessageFormat, informationInput.Description,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, "Information Input Confirmation", message);
+                SendEmail(FromAddress, emailAddress, InstanceConfiguration.EmailInputJoinSubjectFormat, message);
             }
         }
     }

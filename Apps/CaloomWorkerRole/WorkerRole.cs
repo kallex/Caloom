@@ -120,7 +120,7 @@ namespace CaloomWorkerRole
                     lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
             if (firstLockedOwner == null)
                 return false;
-            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, CURRENT_HARDCODED_CONTAINER_NAME));
+            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, InstanceConfiguration.WorkerActiveContainerName));
             tasks[availableIx] = executing;
             if (availableTask.Exception != null)
                 ErrorSupport.ReportException(availableTask.Exception);
@@ -154,7 +154,6 @@ namespace CaloomWorkerRole
         }
 
         protected string CurrWorkerID { get; private set; }
-        public const string CURRENT_HARDCODED_CONTAINER_NAME = "demooip-aaltoglobalimpact-org";
 
         public override bool OnStart()
         {
@@ -162,15 +161,10 @@ namespace CaloomWorkerRole
             CurrWorkerID = DateTime.Now.ToString();
             ServicePointManager.DefaultConnectionLimit = 12;
             ServicePointManager.UseNagleAlgorithm = false;
-            string connStr;
-            const string ConnStrFileName = @"C:\work\abs\ConnectionStringStorage\theballconnstr.txt";
-            if (File.Exists(ConnStrFileName))
-                connStr = File.ReadAllText(ConnStrFileName);
-            else
-                connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            string connStr = InstanceConfiguration.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);
             InformationContext.InitializeFunctionality(3, allowStatic:true);
-            InformationContext.Current.InitializeCloudStorageAccess(CURRENT_HARDCODED_CONTAINER_NAME);
+            InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             IsStopped = false;
             return base.OnStart();
