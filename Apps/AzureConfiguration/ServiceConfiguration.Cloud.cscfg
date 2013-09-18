@@ -7,6 +7,8 @@
       <Setting name="WorkerRoleEntryPointContainerName" value="worker-role-accelerator" />
       <Setting name="StorageConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="AmazonSESAccessInfo" value="" />
+      <Setting name="WorkerActiveContainerName" value="UNINITIALIZEDNAME"/>
+
       <!--
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />

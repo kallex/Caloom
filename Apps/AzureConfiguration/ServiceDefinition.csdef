@@ -15,6 +15,7 @@
       <Setting name="WorkerRoleEntryPointContainerName" />
       <Setting name="StorageConnectionString" />
       <Setting name="AmazonSESAccessInfo" />
+      <Setting name="WorkerActiveContainerName"/>
     </ConfigurationSettings>
     <LocalResources>
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />
