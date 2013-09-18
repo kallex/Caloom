@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class AccountContainer : IBeforeStoreHandler
+    partial class AccountContainer : IBeforeStoreHandler, IAdditionalFormatProvider
     {
         //void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
         //{
@@ -23,6 +23,16 @@ namespace AaltoGlobalImpact.OIP
         {
             this.AccountIndex.Icon = AccountModule.Profile.ProfileImage;
             this.AccountModule.LocationCollection.IsCollectionFiltered = true;
+        }
+
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore()
+        {
+            return this.GetFormattedContentToStore(AdditionalFormatSupport.WebUIFormatExtensions);
+        }
+
+        string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
+        {
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
     }
 }

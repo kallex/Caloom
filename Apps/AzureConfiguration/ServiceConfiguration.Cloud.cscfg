@@ -7,8 +7,7 @@
       <Setting name="WorkerRoleEntryPointContainerName" value="worker-role-accelerator" />
       <Setting name="StorageConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="AmazonSESAccessInfo" value="" />
-      <Setting name="WorkerActiveContainerName" value="UNINITIALIZEDNAME"/>
-
+      <Setting name="WorkerActiveContainerName" value="UNINITIALIZEDNAME" />
       <!--
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />
@@ -16,6 +15,7 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2015-01-31T23:59:59.0000000+02:00" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="" />
       -->
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
     </ConfigurationSettings>
     <!--
     <Certificates>

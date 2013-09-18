@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AzureSupport;
+using TheBall;
 
 namespace WebInterface
 {
@@ -11,7 +13,12 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string hostName = Request.Url.DnsSafeHost;
+            WebSupport.InitializeContextStorage(HttpContext.Current.Request);
+            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference("RedirectFromRoot.txt");
+            string redirectTarget = blob.DownloadText();
+            Response.Redirect(redirectTarget, true);
+
+#if never
             if (hostName == "www.protonit.net" || hostName == "www.caloom.com" || hostName == "demowww.norssi.protonit.net")
             {
                 Response.Redirect("/www-public/index.html", true);
@@ -32,6 +39,7 @@ namespace WebInterface
                 Response.Redirect("http://www.aaltoglobalimpact.org", true);
             else if(hostName == "hacktheball.protonit.net")
                 Response.Redirect("/www-public/index.html", true);
+#endif
         }
     }
 }

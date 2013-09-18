@@ -5,6 +5,7 @@
   </LoadBalancerProbes>
   <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
     <Imports>
+      <Import moduleName="Diagnostics" />
       <!--
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
@@ -21,7 +22,7 @@
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
   </WorkerRole>
-  <WebRole name="TheBallWebFarm" vmsize="Small">
+  <WebRole name="TheBallWebFarm" vmsize="ExtraSmall">
     <Runtime executionContext="elevated" />
     <Sites>
       <Site name="Web">

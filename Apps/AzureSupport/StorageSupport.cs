@@ -235,6 +235,11 @@ namespace TheBall
             blob.UploadFromStream(streamContent);
         }
 
+        public static string GetContainerNameFromHostName(string hostName)
+        {
+            return hostName.Replace(".", "-");
+        }
+
         public static string GetMimeType(string extension)
         {
             if (extension == null)
