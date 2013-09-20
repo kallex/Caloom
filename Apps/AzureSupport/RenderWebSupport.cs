@@ -749,7 +749,7 @@ namespace TheBall
         public static void RefreshAllAccountAndGroupTemplates(bool useWorker, params string[] viewTypesToRefresh)
         {
             refreshAllGroupTemplates(useWorker, viewTypesToRefresh);
-            refreshAllAccountTemplates(useWorker, viewTypesToRefresh);
+            refreshAllAccountTemplatesLegacyOld(useWorker, viewTypesToRefresh);
         }
 
         private static void refreshAllGroupTemplates(bool useWorker, params string[] viewTypesToRefresh)
@@ -881,13 +881,33 @@ namespace TheBall
             }
         }
 
-        private static void refreshAllAccountTemplates(bool useWorker, params string[] viewTypesToRefresh)
+        private static void refreshAllAccountTemplatesLegacyOld(bool useWorker, params string[] viewTypesToRefresh)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach(var acctID in accountIDs)
             {
                 RefreshAccountTemplates(acctID, useWorker, viewTypesToRefresh);
             }
+        }
+
+        public static void RefreshAllAccountTemplates(string systemTemplateName, string accountTemplateName)
+        {
+            string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach (var acctID in accountIDs)
+            {
+                RefreshAccountTemplates(acctID, systemTemplateName, accountTemplateName);
+            }
+        }
+
+        public static void RefreshAccountTemplates(string acctID, string systemTemplateName, string accountTemplateName)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = "sys/AAA/";
+            string acctTemplateLocationTarget = "acc/" + acctID + "/" + accountTemplateName;
+            string sysLocationSource = syscontentRoot + systemTemplateName + "/account";
+            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
+                                true, false);
+            QueueSupport.PutToOperationQueue(accountSync);
         }
 
         public static void RefreshAccountTemplates(string acctID, bool useWorker, params string[] viewTypesToRefresh)

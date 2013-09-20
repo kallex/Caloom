@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using AaltoGlobalImpact.OIP;
 using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
@@ -28,32 +29,51 @@ namespace WebTemplateManager
 
                 if (args.Length != 4 || args[0].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <-pub name/-pri name> grp<groupID>/acc<acctID> <connection string>");
+                    Console.WriteLine("Usage: WebTemplateManager.exe <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
                     return;
                 }
                 Debugger.Launch();
+
                 string pubPriPrefixWithDash = args[0];
                 string templateName = args[1];
                 if(String.IsNullOrWhiteSpace(templateName))
                     throw new ArgumentException("Template name must be given");
                 string connStr = args[3];
-                string grpacctID = args[2];
-                if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri")
+                string grpacctIDorTemplateName = args[2];
+                if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri" && pubPriPrefixWithDash != "-sys")
                     throw new ArgumentException("-pub or -pri misspelled or missing");
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
-                string ownerPrefix = grpacctID.Substring(0, 3);
-                string ownerID = grpacctID.Substring(3);
-                VirtualOwner owner = VirtualOwner.FigureOwner(ownerPrefix + "/" + ownerID);
 
-                //string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
-                //                               args[0]);
-                //connStr = "UseDevelopmentStorage=true";
                 bool debugMode = false;
-
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
                 InformationContext.InitializeFunctionality(3, true);
                 InformationContext.Current.InitializeCloudStorageAccess(
                     Properties.Settings.Default.CurrentActiveContainerName);
+
+                IContainerOwner owner;
+                bool isAccount = false;
+                bool isSystem = false;
+                string sysTemplateOwner = null;
+                if (pubPriPrefix == "pub" || pubPriPrefix == "pri")
+                {
+                    string ownerPrefix = grpacctIDorTemplateName.Substring(0, 3);
+                    string ownerID = grpacctIDorTemplateName.Substring(3);
+                    owner = VirtualOwner.FigureOwner(ownerPrefix + "/" + ownerID);
+                }
+                else // sys
+                {
+                    isSystem = true;
+                    owner = TBSystem.CurrSystem;
+                    sysTemplateOwner = grpacctIDorTemplateName.Substring(3);
+                    if (sysTemplateOwner != "account" && sysTemplateOwner != "group")
+                        throw new NotSupportedException("Other templates than account or group are not supported");
+                    isAccount = sysTemplateOwner == "account";
+                }
+                
+
+                //string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
+                //                               args[0]);
+                //connStr = "UseDevelopmentStorage=true";
 
                 string directory = Directory.GetCurrentDirectory();
                 if (directory.EndsWith("\\") == false)
@@ -72,7 +92,11 @@ namespace WebTemplateManager
                 }
                 else
                 {
-                    FileSystemSupport.UploadTemplateContent(allFiles, owner, templateName, true);
+                    string templateLocation = isSystem ? templateName + "/" + sysTemplateOwner : templateName;
+
+                    FileSystemSupport.UploadTemplateContent(allFiles, owner, templateLocation, true);
+                    if (isAccount)
+                        RenderWebSupport.RefreshAllAccountTemplates(templateName, templateName);
                 }
             }
             catch(Exception exception)
