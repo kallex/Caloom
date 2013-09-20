@@ -4,6 +4,91 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallCore)" title="Operations (OperationAbstractionFromTheBallCore)">
         <Content>
+          <Header text="BeginAccountEmailAddressRegistration (AccountID, EmailAddress, RedirectUrlAfterValidation)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AccountID whose email is to be registered</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address to add to account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RedirectUrlAfterValidation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Redirect url after email validation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateUnexistingEmail ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that the email to add is not already registered</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailValidation ( AccountID, EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email validation object prepared ready to stored and to be sent</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( EmailValidation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendEmailConfirmation ( EmailValidation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create and send email confirmation for validating the email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateAndSendEmailValidationForDeviceJoinConfirmation (OwningAccount, OwningGroup, DeviceMembership)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

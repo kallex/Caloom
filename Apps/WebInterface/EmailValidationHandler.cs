@@ -193,7 +193,8 @@ namespace WebInterface
                                                                   });
             }
 
-            context.Response.Redirect("/auth/account/website/oip-account/oip-layout-account-welcome.phtml", true);
+            if(String.IsNullOrEmpty(emailValidation.RedirectUrlAfterValidation) == false)
+                context.Response.Redirect(emailValidation.RedirectUrlAfterValidation, true);
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)

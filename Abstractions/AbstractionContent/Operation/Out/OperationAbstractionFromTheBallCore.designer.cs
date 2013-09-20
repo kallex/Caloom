@@ -275,4 +275,25 @@ using System.IO;
 				ProcessFetchedInputsImplementation.ExecuteMethod_DeleteObjects(ProcessInputFromStorageOutput.ProcessingResultsToDelete);		
 				}
 				}
+				public class BeginAccountEmailAddressRegistrationParameters 
+		{
+				public string AccountID ;
+				public string EmailAddress ;
+				public string RedirectUrlAfterValidation ;
+				}
+		
+		public class BeginAccountEmailAddressRegistration 
+		{
+				private static void PrepareParameters(BeginAccountEmailAddressRegistrationParameters parameters)
+		{
+					}
+				public static void Execute(BeginAccountEmailAddressRegistrationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_ValidateUnexistingEmail(parameters.EmailAddress);		
+				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = BeginAccountEmailAddressRegistrationImplementation.GetTarget_EmailValidation(parameters.AccountID, parameters.EmailAddress);	
+				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
+				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation);		
+				}
+				}
 		 } 

@@ -8675,6 +8675,8 @@ using TheBall.CORE;
 							return true;
 						if(InformationInputConfirmation != _unmodified_InformationInputConfirmation)
 							return true;
+						if(RedirectUrlAfterValidation != _unmodified_RedirectUrlAfterValidation)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) GroupJoinConfirmation;
 							if(item != null) 
@@ -8744,6 +8746,7 @@ using TheBall.CORE;
 					GroupJoinConfirmation = sourceObject.GroupJoinConfirmation;
 					DeviceJoinConfirmation = sourceObject.DeviceJoinConfirmation;
 					InformationInputConfirmation = sourceObject.InformationInputConfirmation;
+					RedirectUrlAfterValidation = sourceObject.RedirectUrlAfterValidation;
 				}
 				
 
@@ -8753,6 +8756,7 @@ using TheBall.CORE;
 					_unmodified_Email = Email;
 					_unmodified_AccountID = AccountID;
 					_unmodified_ValidUntil = ValidUntil;
+					_unmodified_RedirectUrlAfterValidation = RedirectUrlAfterValidation;
 				
 					_unmodified_GroupJoinConfirmation = GroupJoinConfirmation;
 					if(GroupJoinConfirmation != null)
@@ -8785,6 +8789,9 @@ using TheBall.CORE;
 						case "ValidUntil":
 							ValidUntil = DateTime.Parse(value);
 							break;
+						case "RedirectUrlAfterValidation":
+							RedirectUrlAfterValidation = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -8807,6 +8814,9 @@ using TheBall.CORE;
 			[DataMember]
 			public TBInformationInputConfirmation InformationInputConfirmation { get; set; }
 			private TBInformationInputConfirmation _unmodified_InformationInputConfirmation;
+			[DataMember]
+			public string RedirectUrlAfterValidation { get; set; }
+			private string _unmodified_RedirectUrlAfterValidation;
 			
 			}
 			[DataContract]
