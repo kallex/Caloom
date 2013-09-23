@@ -25,9 +25,9 @@ namespace AaltoGlobalImpact.OIP
             this.AccountModule.LocationCollection.IsCollectionFiltered = true;
         }
 
-        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore()
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
-            return this.GetFormattedContentToStore(AdditionalFormatSupport.WebUIFormatExtensions);
+            return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
         string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()

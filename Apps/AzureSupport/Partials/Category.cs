@@ -5,26 +5,14 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class CategoryCollection : IAdditionalFormatProvider
     {
-        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore()
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
-
-            byte[] dataContent;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                serializer.WriteObject(memoryStream, this);
-                dataContent = memoryStream.ToArray();
-
-            }
-            return new AdditionalFormatContent[]
-                       {
-                           new AdditionalFormatContent {Extension = "json", Content = dataContent}
-                       };
+            return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
         string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
         {
-            return new string[] { "json" };
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
     }
 
@@ -41,26 +29,14 @@ namespace AaltoGlobalImpact.OIP
 
     partial class Category : IAdditionalFormatProvider
     {
-        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore()
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
-
-            byte[] dataContent;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                serializer.WriteObject(memoryStream, this);
-                dataContent = memoryStream.ToArray();
-
-            }
-            return new AdditionalFormatContent[]
-                       {
-                           new AdditionalFormatContent {Extension = "json", Content = dataContent}
-                       };
+            return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
         string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
         {
-            return new string[] { "json" };
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
     }

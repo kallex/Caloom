@@ -977,7 +977,7 @@ namespace TheBall
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if(additionalFormatProvider != null)
             {
-                var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore();
+                var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore(informationObject.ETag);
                 foreach(var additionalContent in additionalContentToStore)
                 {
                     string contentLocation = blob.Name + "." + additionalContent.Extension;

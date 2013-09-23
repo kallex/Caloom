@@ -2,7 +2,7 @@
 {
     public interface IAdditionalFormatProvider
     {
-        AdditionalFormatContent[] GetAdditionalContentToStore();
+        AdditionalFormatContent[] GetAdditionalContentToStore(string masterBlobETag);
         string[] GetAdditionalFormatExtensions();
     }
 }
