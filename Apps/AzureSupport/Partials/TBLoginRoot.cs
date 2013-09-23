@@ -39,7 +39,7 @@ namespace AaltoGlobalImpact.OIP
                 // If this request is for account, we propagate the pages immediately
                 bool useBackgroundWorker = isAccountRequest == false;
                 //RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);
-                RenderWebSupport.RefreshAccountTemplates(accountID, "webui", "webui");
+                RenderWebSupport.RefreshAccountTemplates(accountID, "webui", "webui", useBackgroundWorker: useBackgroundWorker);
                 if(isAccountRequest)
                 {
                     accountRoot.Account.InitializeAndConnectMastersAndCollections();

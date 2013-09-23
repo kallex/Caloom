@@ -86,6 +86,33 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "UnregisterEmailAddress":
+                    {
+                        var owningAccount = containerOwner as TBAccount;
+                        if(owningAccount == null)
+                            throw new NotSupportedException("Unregistering email address is only supported for accounts");
+                        UnregisterEmailAddressParameters parameters = new UnregisterEmailAddressParameters
+                            {
+                                AccountID = owningAccount.ID,
+                                EmailAddress = form["EmailAddress"],
+                            };
+                        UnregisterEmailAddress.Execute(parameters);
+                        break;
+                    }
+                case "BeginAccountEmailAddressRegistration":
+                    {
+                        var owningAccount = containerOwner as TBAccount;
+                        if(owningAccount == null)
+                            throw new NotSupportedException("Email address registration is only supported for accounts");
+                        BeginAccountEmailAddressRegistrationParameters parameters = new BeginAccountEmailAddressRegistrationParameters
+                            {
+                                AccountID = owningAccount.ID,
+                                RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
+                                EmailAddress = form["EmailAddress"],
+                            };
+                        BeginAccountEmailAddressRegistration.Execute(parameters);
+                        break;
+                    }
                 case "CreateInformationInput":
                     {
                         CreateInformationInputParameters parameters = new CreateInformationInputParameters

@@ -356,7 +356,7 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            if (context.Request.Url.Host == "localhost" && (contentPath.Contains("oipcms/") || contentPath.Contains("wwwsite/")))
+            if (context.Request.Url.Host == "localhost" && (contentPath.Contains("oipcms/") || contentPath.Contains("wwwsite/") || (contentPath.Contains("webui/") && containerOwner is TBAccount)))
             {
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
@@ -400,9 +400,12 @@ namespace WebInterface
             string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
             string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
+            string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
             string fileName;
             if (prefixStrippedContent.Contains("oipcms/"))
                 fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
+            else if (prefixStrippedContent.Contains("webui/"))
+                fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
             else
                 fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
             if (File.Exists(fileName))

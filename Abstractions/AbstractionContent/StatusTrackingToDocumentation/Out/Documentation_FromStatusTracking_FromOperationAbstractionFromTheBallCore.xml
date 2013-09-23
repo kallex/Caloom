@@ -19,6 +19,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="UnregisterEmailAddress (40 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 3, Implemented 2</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="CreateSpecifiedInformationObjectWithValues (7 %)" level="1">
             <Paragraph>
@@ -282,6 +289,74 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Delete the object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="UnregisterEmailAddress (40 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: AccountID</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>AccountID whose email is to be registered</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: EmailAddress</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Email address to add to account</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: AccountContainerBeforeGroupRemoval</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>AccountContainer of account</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: EmailAddressID</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Email Address ID within AccountContainer</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: ExecuteUnlinkEmailAddress</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Perform unlink</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>

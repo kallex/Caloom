@@ -67,7 +67,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: EmailValidation ( AccountID, EmailAddress )" level="2">
+            <Header text="Target Definition: EmailValidation ( AccountID, EmailAddress, RedirectUrlAfterValidation )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Email validation object prepared ready to stored and to be sent</TextContent>
@@ -1181,6 +1181,73 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UnregisterEmailAddress (AccountID, EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AccountID whose email is to be registered</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address to add to account</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountContainerBeforeGroupRemoval ( AccountID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>AccountContainer of account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailAddressID ( AccountContainerBeforeGroupRemoval, EmailAddress )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Email Address ID within AccountContainer</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteUnlinkEmailAddress ( AccountContainerBeforeGroupRemoval, EmailAddressID, AccountID )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Perform unlink</TextContent>
                 </Text>
               </Paragraph>
             </Header>

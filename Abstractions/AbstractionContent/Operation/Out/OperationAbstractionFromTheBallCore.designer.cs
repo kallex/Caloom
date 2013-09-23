@@ -291,9 +291,28 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_ValidateUnexistingEmail(parameters.EmailAddress);		
-				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = BeginAccountEmailAddressRegistrationImplementation.GetTarget_EmailValidation(parameters.AccountID, parameters.EmailAddress);	
+				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = BeginAccountEmailAddressRegistrationImplementation.GetTarget_EmailValidation(parameters.AccountID, parameters.EmailAddress, parameters.RedirectUrlAfterValidation);	
 				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
 				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation);		
+				}
+				}
+				public class UnregisterEmailAddressParameters 
+		{
+				public string AccountID ;
+				public string EmailAddress ;
+				}
+		
+		public class UnregisterEmailAddress 
+		{
+				private static void PrepareParameters(UnregisterEmailAddressParameters parameters)
+		{
+					}
+				public static void Execute(UnregisterEmailAddressParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.AccountContainer AccountContainerBeforeGroupRemoval = UnregisterEmailAddressImplementation.GetTarget_AccountContainerBeforeGroupRemoval(parameters.AccountID);	
+				string EmailAddressID = UnregisterEmailAddressImplementation.GetTarget_EmailAddressID(parameters.EmailAddress, AccountContainerBeforeGroupRemoval);	
+				UnregisterEmailAddressImplementation.ExecuteMethod_ExecuteUnlinkEmailAddress(parameters.AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID);		
 				}
 				}
 		 } 

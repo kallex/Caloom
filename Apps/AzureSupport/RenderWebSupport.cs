@@ -895,19 +895,20 @@ namespace TheBall
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach (var acctID in accountIDs)
             {
-                RefreshAccountTemplates(acctID, systemTemplateName, accountTemplateName);
+                RefreshAccountTemplates(acctID, systemTemplateName, accountTemplateName, true);
             }
         }
 
-        public static void RefreshAccountTemplates(string acctID, string systemTemplateName, string accountTemplateName)
+        public static void RefreshAccountTemplates(string acctID, string systemTemplateName, string accountTemplateName, bool useBackgroundWorker)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = "sys/AAA/";
             string acctTemplateLocationTarget = "acc/" + acctID + "/" + accountTemplateName;
             string sysLocationSource = syscontentRoot + systemTemplateName + "/account";
             var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
-                                true, false);
-            QueueSupport.PutToOperationQueue(accountSync);
+                                useBackgroundWorker, false);
+            if(useBackgroundWorker)
+                QueueSupport.PutToOperationQueue(accountSync);
         }
 
         public static void RefreshAccountTemplates(string acctID, bool useWorker, params string[] viewTypesToRefresh)

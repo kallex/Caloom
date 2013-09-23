@@ -14,11 +14,12 @@ namespace TheBall.CORE
                 throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
         }
 
-        public static TBEmailValidation GetTarget_EmailValidation(string accountID, string emailAddress)
+        public static TBEmailValidation GetTarget_EmailValidation(string accountID, string emailAddress, string redirectUrlAfterValidation)
         {
             TBEmailValidation emailValidation = new TBEmailValidation();
             emailValidation.AccountID = accountID;
             emailValidation.Email = emailAddress;
+            emailValidation.RedirectUrlAfterValidation = redirectUrlAfterValidation;
             emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(30);
             return emailValidation;
         }

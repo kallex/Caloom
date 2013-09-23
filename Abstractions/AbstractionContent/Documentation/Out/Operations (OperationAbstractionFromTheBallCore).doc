@@ -294,7 +294,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Validate that the email to add is not already registered
 		</div>
-		</p><h2>Target Definition: EmailValidation ( AccountID, EmailAddress )</h2>
+		</p><h2>Target Definition: EmailValidation ( AccountID, EmailAddress, RedirectUrlAfterValidation )</h2>
 		<p>		<div class="MsoNormal" >
 		Email validation object prepared ready to stored and to be sent
 		</div>
@@ -1327,6 +1327,63 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( InformationInput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store created object
+		</div>
+		</p><h1>UnregisterEmailAddress (AccountID, EmailAddress)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AccountID whose email is to be registered
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address to add to account
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AccountContainerBeforeGroupRemoval ( AccountID )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		AccountContainer of account
+		</div>
+		</p><h2>Target Definition: EmailAddressID ( AccountContainerBeforeGroupRemoval, EmailAddress )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Email Address ID within AccountContainer
+		</div>
+		</p><h2>Method Call: ExecuteUnlinkEmailAddress ( AccountContainerBeforeGroupRemoval, EmailAddressID, AccountID )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Perform unlink
 		</div>
 		</p></div>
 
