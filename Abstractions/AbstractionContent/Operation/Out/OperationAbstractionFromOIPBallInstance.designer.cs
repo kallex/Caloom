@@ -18,7 +18,7 @@ using System.IO;
 				private static void PrepareParameters(CreateGroupParameters parameters)
 		{
 					}
-				public static void Execute(CreateGroupParameters parameters)
+				public static CreateGroupReturnValue Execute(CreateGroupParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TBRGroupRoot GroupRoot = CreateGroupImplementation.GetTarget_GroupRoot(parameters.GroupName);	
@@ -34,7 +34,13 @@ using System.IO;
 			RefreshAccountGroupMemberships.Execute(operationParameters);
 									
 		} // Local block closing
+				CreateGroupReturnValue returnValue = CreateGroupImplementation.Get_ReturnValue(GroupRoot);
+		return returnValue;
 				}
+				}
+				public class CreateGroupReturnValue 
+		{
+				public string GroupID ;
 				}
 				public class InviteMemberToGroupParameters 
 		{

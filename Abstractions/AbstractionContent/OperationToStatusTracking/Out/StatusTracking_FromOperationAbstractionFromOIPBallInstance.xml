@@ -25,10 +25,13 @@
     <StatusItem name="CreateGroup_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateGroup_InitializeGroupContentAndMasters" displayName="MethodExecuteType: InitializeGroupContentAndMasters" description="Initialize group content with templates, initialize subscriptions.">
+    <StatusItem name="CreateGroup_InitializeGroupContentAndMasters" displayName="MethodExecuteType: InitializeGroupContentAndMasters" description="Initialize group core content (with no templates), initialize subscriptions.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateGroup_RefreshAccountAndGroupContainers" displayName="OperationExecuteType: RefreshAccountAndGroupContainers" description="Update account and account and group containers">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateGroup_GroupID" displayName="VariableType: GroupID" description="GroupID of created group">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="InviteMemberToGroup_MemberEmailAddress" displayName="VariableType: MemberEmailAddress" description="Email address of the member">
@@ -455,6 +458,7 @@
       <ItemRef itemName="CreateGroup_StoreObjects" />
       <ItemRef itemName="CreateGroup_InitializeGroupContentAndMasters" />
       <ItemRef itemName="CreateGroup_RefreshAccountAndGroupContainers" />
+      <ItemRef itemName="CreateGroup_GroupID" />
       <GroupRef groupName="RefreshAccountGroupMemberships" />
     </Group>
     <Group name="InviteMemberToGroup">

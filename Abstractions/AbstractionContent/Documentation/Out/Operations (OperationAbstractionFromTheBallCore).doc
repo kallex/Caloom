@@ -553,6 +553,111 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, RedirectUrlAfterCreation)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Create group with templates
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group name to be created
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID of initiator
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TemplateNameList
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Comma separated list of templates to initialize group at creation
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RedirectUrlAfterCreation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Redirect url after group creation
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ExecuteCreateGroup ( GroupName, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform group creation
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		GroupID of created group
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: CopyGroupTemplates ( ExecuteCreateGroupOutput, TemplateNameList )</h2>
+		<p>		<div class="MsoNormal" >
+		Copy group templates
+		</div>
 		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1332,8 +1437,8 @@ div.WordSection1
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
-            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
-          
+              Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+            
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">

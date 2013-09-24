@@ -84,6 +84,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\CreateGroupWithTemplatesImplementation.cs" />
     <Compile Include="TheBall.CORE\UnregisterEmailAddressImplementation.cs" />
     <Compile Include="TheBall.CORE\BeginAccountEmailAddressRegistrationImplementation.cs" />
     <Compile Include="TheBall.CORE\DeviceMembershipCollection.cs" />

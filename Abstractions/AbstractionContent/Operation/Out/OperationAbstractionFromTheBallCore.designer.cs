@@ -315,4 +315,24 @@ using System.IO;
 				UnregisterEmailAddressImplementation.ExecuteMethod_ExecuteUnlinkEmailAddress(parameters.AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID);		
 				}
 				}
+				public class CreateGroupWithTemplatesParameters 
+		{
+				public string GroupName ;
+				public string AccountID ;
+				public string TemplateNameList ;
+				public string RedirectUrlAfterCreation ;
+				}
+		
+		public class CreateGroupWithTemplates 
+		{
+				private static void PrepareParameters(CreateGroupWithTemplatesParameters parameters)
+		{
+					}
+				public static void Execute(CreateGroupWithTemplatesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string ExecuteCreateGroupOutput = CreateGroupWithTemplatesImplementation.ExecuteMethod_ExecuteCreateGroup(parameters.GroupName, parameters.AccountID);		
+				CreateGroupWithTemplatesImplementation.ExecuteMethod_CopyGroupTemplates(parameters.TemplateNameList, ExecuteCreateGroupOutput);		
+				}
+				}
 		 } 

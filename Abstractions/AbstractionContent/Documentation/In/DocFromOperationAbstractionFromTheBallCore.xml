@@ -354,6 +354,108 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, RedirectUrlAfterCreation)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create group with templates</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group name to be created</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID of initiator</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TemplateNameList</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Comma separated list of templates to initialize group at creation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RedirectUrlAfterCreation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Redirect url after group creation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteCreateGroup ( GroupName, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform group creation</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>GroupID of created group</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CopyGroupTemplates ( ExecuteCreateGroupOutput, TemplateNameList )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy group templates</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateInformationInput (Owner, InputDescription, LocationURL)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1190,8 +1292,8 @@
               <Paragraph>
                 <Text>
                   <TextContent>
-            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
-          </TextContent>
+              Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+            </TextContent>
                 </Text>
               </Paragraph>
             </Header>

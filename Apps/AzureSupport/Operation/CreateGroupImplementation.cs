@@ -56,15 +56,21 @@ namespace AaltoGlobalImpact.OIP
         public static void ExecuteMethod_InitializeGroupContentAndMasters(TBRGroupRoot groupRoot)
         {
             var grp = groupRoot.Group;
-            foreach (var templateName in InstanceConfiguration.DefaultGroupTemplateList)
-                RenderWebSupport.RefreshGroupTemplate(grp.ID, templateName, false);
-            OwnerInitializer.InitializeAndConnectMastersAndCollections(grp);
+            // NOTE: No longer updates the templates
+            //foreach (var templateName in InstanceConfiguration.DefaultGroupTemplateList)
+            //    RenderWebSupport.RefreshGroupTemplate(grp.ID, templateName, false);
+            grp.InitializeAndConnectMastersAndCollections();
         }
 
         public static void ExecuteMethod_VerifyAccountEmails(TBEmail[] accountEmails)
         {
             if(accountEmails == null || accountEmails.Any(email => email.ValidatedAt != default(DateTime)) == false)
                 throw new InvalidOperationException("Account without valid emails cannot create group");
+        }
+
+        public static CreateGroupReturnValue Get_ReturnValue(TBRGroupRoot groupRoot)
+        {
+            return new CreateGroupReturnValue {GroupID = groupRoot.ID};
         }
     }
 }

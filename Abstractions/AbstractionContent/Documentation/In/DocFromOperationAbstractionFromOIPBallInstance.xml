@@ -506,7 +506,7 @@
             <Header text="Method Call: InitializeGroupContentAndMasters ( GroupRoot )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Initialize group content with templates, initialize subscriptions.</TextContent>
+                  <TextContent>Initialize group core content (with no templates), initialize subscriptions.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -515,6 +515,30 @@
                 <Text>
                   <TextContent>Update account and account and group containers</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateGroupReturnValue ( GroupRoot )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>GroupID of created group</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>

@@ -630,12 +630,33 @@ div.WordSection1
 		</div>
 		</p><h2>Method Call: InitializeGroupContentAndMasters ( GroupRoot )</h2>
 		<p>		<div class="MsoNormal" >
-		Initialize group content with templates, initialize subscriptions.
+		Initialize group core content (with no templates), initialize subscriptions.
 		</div>
 		</p><h2>Operation Call: RefreshAccountAndGroupContainers ( GroupRoot, AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Update account and account and group containers
 		</div>
+		</p><h2>Return Value : CreateGroupReturnValue ( GroupRoot )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		GroupID of created group
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>DeleteInformationObject (ObjectToDelete)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
