@@ -354,7 +354,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, RedirectUrlAfterCreation)" level="1">
+          <Header text="CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, GroupDefaultRedirect, RedirectUrlAfterCreation)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -406,13 +406,24 @@
                     </Row>
                     <Row>
                       <ColumnData>
+                        <TextContent>GroupDefaultRedirect</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group default redirect location (optional)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
                         <TextContent>RedirectUrlAfterCreation</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Redirect url after group creation</TextContent>
+                        <TextContent>Redirect url after group creation (optional)</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -452,6 +463,20 @@
               <Paragraph>
                 <Text>
                   <TextContent>Copy group templates</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupAsOwner ( ExecuteCreateGroupOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group as container owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: SetDefaultRedirect ( GroupAsOwner, GroupDefaultRedirect )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sets groups default redirect if given</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -1290,6 +1315,59 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetOwnerWebRedirect (Owner, RedirectPath)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Sets owner web redirect. Stores a text file in owner folder with redirector-specific name. Might support parameters and multiple files later on.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner whose redirection is to be set</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RedirectPath</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Redirect path, if null or empty, the redirection is to be removed.</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetRedirection ( Owner, RedirectPath )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sets the redirection file for owner.</TextContent>
                 </Text>
               </Paragraph>
             </Header>

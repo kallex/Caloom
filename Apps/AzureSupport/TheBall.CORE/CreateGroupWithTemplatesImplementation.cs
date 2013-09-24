@@ -31,5 +31,15 @@ namespace TheBall.CORE
                 HttpContext.Current.Response.Redirect(redirectTarget, true);
             }
         }
+
+        public static IContainerOwner GetTarget_GroupAsOwner(string executeCreateGroupOutput)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public static SetOwnerWebRedirectParameters SetDefaultRedirect_GetParameters(string groupDefaultRedirect, IContainerOwner groupAsOwner)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

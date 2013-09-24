@@ -23,8 +23,11 @@ namespace TheBall
         public static readonly string EmailValidationURLWithoutID;
         public static readonly string AzureStorageConnectionString;
         public static readonly string WorkerActiveContainerName;
+        public static readonly string RedirectFromFolderFileName;
         public static readonly string[] DefaultAccountTemplateList;
+        public static readonly string AccountDefaultRedirect;
         public static readonly string[] DefaultGroupTemplateList;
+        public static readonly string GroupDefaultRedirect;
         
 
         static InstanceConfiguration()
@@ -37,6 +40,13 @@ namespace TheBall
             else
                 AzureStorageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
             WorkerActiveContainerName = CloudConfigurationManager.GetSetting("WorkerActiveContainerName");
+            #endregion
+
+            #region System Level
+
+            RedirectFromFolderFileName = CloudConfigurationManager.GetSetting("RedirectFromFolderFileName");
+            AccountDefaultRedirect = CloudConfigurationManager.GetSetting("AccountDefaultRedirect");
+            GroupDefaultRedirect = CloudConfigurationManager.GetSetting("GroupDefaultRedirect");
             #endregion
 
             #region Email
@@ -92,6 +102,8 @@ The link is valid for 14 days, after which you need to request new invitation.";
 
             DefaultAccountTemplateList = CloudConfigurationManager.GetSetting("DefaultAccountTemplateList").Split(',');
             DefaultGroupTemplateList = CloudConfigurationManager.GetSetting("DefaultGroupTemplateList").Split(',');
+
+
         }
 
     }

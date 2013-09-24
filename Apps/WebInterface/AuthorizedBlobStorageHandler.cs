@@ -358,6 +358,29 @@ namespace WebInterface
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
             }
+            if (String.IsNullOrEmpty(contentPath))
+            {
+                CloudBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner,
+                                                                      InstanceConfiguration.RedirectFromFolderFileName);
+                string redirectToUrl = null;
+                try
+                {
+                    redirectToUrl = redirectBlob.DownloadText();
+                }
+                catch
+                {
+                    
+                }
+                if (redirectToUrl == null)
+                {
+                    if (containerOwner.IsAccountContainer())
+                        redirectToUrl = InstanceConfiguration.AccountDefaultRedirect;
+                    else
+                        redirectToUrl = InstanceConfiguration.GroupDefaultRedirect;
+                }
+                context.Response.Redirect(redirectToUrl, true);
+                return;
+            }
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
             var response = context.Response;
             // Read blob content to response.

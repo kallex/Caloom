@@ -553,7 +553,7 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h1>CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, RedirectUrlAfterCreation)</h1>
+		</p><h1>CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, GroupDefaultRedirect, RedirectUrlAfterCreation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Create group with templates
@@ -615,6 +615,23 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
+		GroupDefaultRedirect
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group default redirect location (optional)
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
 		RedirectUrlAfterCreation
 		</div>
 				</td>
@@ -625,7 +642,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Redirect url after group creation
+		Redirect url after group creation (optional)
 		</div>
 				</td>
 				</tr>
@@ -657,6 +674,14 @@ div.WordSection1
 		</p><h2>Method Call: CopyGroupTemplates ( ExecuteCreateGroupOutput, TemplateNameList )</h2>
 		<p>		<div class="MsoNormal" >
 		Copy group templates
+		</div>
+		</p><h2>Target Definition: GroupAsOwner ( ExecuteCreateGroupOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Group as container owner
+		</div>
+		</p><h2>Operation Call: SetDefaultRedirect ( GroupAsOwner, GroupDefaultRedirect )</h2>
+		<p>		<div class="MsoNormal" >
+		Sets groups default redirect if given
 		</div>
 		</p><h2>Method Call: RedirectToGivenUrl ( ExecuteCreateGroupOutput, RedirectUrlAfterCreation )</h2>
 		<p>		<div class="MsoNormal" >
@@ -1436,6 +1461,55 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( InformationInput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store created object
+		</div>
+		</p><h1>SetOwnerWebRedirect (Owner, RedirectPath)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Sets owner web redirect. Stores a text file in owner folder with redirector-specific name. Might support parameters and multiple files later on.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner whose redirection is to be set
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RedirectPath
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Redirect path, if null or empty, the redirection is to be removed.
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: SetRedirection ( Owner, RedirectPath )</h2>
+		<p>		<div class="MsoNormal" >
+		Sets the redirection file for owner.
 		</div>
 		</p><h1>UnregisterEmailAddress (AccountID, EmailAddress)</h1>
 		<h2>Specifications</h2>

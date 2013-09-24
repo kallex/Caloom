@@ -320,6 +320,7 @@ using System.IO;
 				public string GroupName ;
 				public string AccountID ;
 				public string TemplateNameList ;
+				public string GroupDefaultRedirect ;
 				public string RedirectUrlAfterCreation ;
 				}
 		
@@ -333,7 +334,31 @@ using System.IO;
 						PrepareParameters(parameters);
 					string ExecuteCreateGroupOutput = CreateGroupWithTemplatesImplementation.ExecuteMethod_ExecuteCreateGroup(parameters.GroupName, parameters.AccountID);		
 				CreateGroupWithTemplatesImplementation.ExecuteMethod_CopyGroupTemplates(parameters.TemplateNameList, ExecuteCreateGroupOutput);		
+				IContainerOwner GroupAsOwner = CreateGroupWithTemplatesImplementation.GetTarget_GroupAsOwner(ExecuteCreateGroupOutput);	
+				
+		{ // Local block to allow local naming
+			SetOwnerWebRedirectParameters operationParameters = CreateGroupWithTemplatesImplementation.SetDefaultRedirect_GetParameters(parameters.GroupDefaultRedirect, GroupAsOwner);
+			SetOwnerWebRedirect.Execute(operationParameters);
+									
+		} // Local block closing
 				CreateGroupWithTemplatesImplementation.ExecuteMethod_RedirectToGivenUrl(parameters.RedirectUrlAfterCreation, ExecuteCreateGroupOutput);		
 				}
 				}
-		 } 
+				public class SetOwnerWebRedirectParameters 
+		{
+				public IContainerOwner Owner ;
+				public string RedirectPath ;
+				}
+		
+		public class SetOwnerWebRedirect 
+		{
+				private static void PrepareParameters(SetOwnerWebRedirectParameters parameters)
+		{
+					}
+				public static void Execute(SetOwnerWebRedirectParameters parameters)
+		{
+						PrepareParameters(parameters);
+					SetOwnerWebRedirectImplementation.ExecuteMethod_SetRedirection(parameters.Owner, parameters.RedirectPath);		
+				}
+				}
+		} 

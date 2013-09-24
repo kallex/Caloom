@@ -14,7 +14,7 @@ namespace WebInterface
         protected void Page_Load(object sender, EventArgs e)
         {
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
-            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference("RedirectFromRoot.txt");
+            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(InstanceConfiguration.RedirectFromFolderFileName);
             string redirectTarget = blob.DownloadText();
             Response.Redirect(redirectTarget, true);
 
