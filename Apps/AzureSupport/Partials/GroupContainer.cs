@@ -6,7 +6,7 @@ using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class GroupContainer : IBeforeStoreHandler
+    partial class GroupContainer : IBeforeStoreHandler, IAdditionalFormatProvider
     {
         partial void DoPostStoringExecute(IContainerOwner owner)
         {
@@ -17,6 +17,16 @@ namespace AaltoGlobalImpact.OIP
         {
             this.GroupIndex.Icon = this.GroupProfile.ProfileImage;
             this.LocationCollection.IsCollectionFiltered = true;
+        }
+
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
+        {
+            return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
+        }
+
+        string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
+        {
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
     }
 }

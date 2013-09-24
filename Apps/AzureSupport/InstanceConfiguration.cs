@@ -100,8 +100,12 @@ The link is valid for 14 days, after which you need to request new invitation.";
 
             #endregion
 
-            DefaultAccountTemplateList = CloudConfigurationManager.GetSetting("DefaultAccountTemplateList").Split(',');
-            DefaultGroupTemplateList = CloudConfigurationManager.GetSetting("DefaultGroupTemplateList").Split(',');
+            var defaultAccountTemplateList = CloudConfigurationManager.GetSetting("DefaultAccountTemplateList");
+            if(defaultAccountTemplateList != null)
+                DefaultAccountTemplateList = defaultAccountTemplateList.Split(',');
+            var defaultGroupTemplateList = CloudConfigurationManager.GetSetting("DefaultGroupTemplateList");
+            if(defaultGroupTemplateList != null)
+                DefaultGroupTemplateList = defaultGroupTemplateList.Split(',');
 
 
         }
