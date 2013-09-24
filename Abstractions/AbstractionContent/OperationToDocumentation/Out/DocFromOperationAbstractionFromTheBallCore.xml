@@ -480,6 +480,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: InitializeGroupWithDefaultObjects ( GroupAsOwner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Initialize group with default objects (hardcoded for now)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: RedirectToGivenUrl ( ExecuteCreateGroupOutput, RedirectUrlAfterCreation )" level="2">
               <Paragraph>
                 <Text>

@@ -86,6 +86,20 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "InviteMemberToGroup":
+                    {
+                        if (containerOwner.IsGroupContainer() == false)
+                            throw new InvalidOperationException("Group invitation is only supported in group context");
+                        string emailAddress = form["EmailAddress"];
+                        string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
+                        TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                        if(emailRoot == null)
+                            throw new NotSupportedException("Email used for group invitation is not yet registered to the system");
+                        string groupID = containerOwner.LocationPrefix;
+                        InviteMemberToGroup.Execute(new InviteMemberToGroupParameters { GroupID = groupID, MemberEmailAddress = emailAddress });
+                        break;
+                    }
+
                 case "CreateGroupWithTemplates":
                     {
                         var owningAccount = containerOwner as TBAccount;

@@ -1,5 +1,6 @@
 using System.Web;
 using AaltoGlobalImpact.OIP;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall.CORE
 {
@@ -34,12 +35,20 @@ namespace TheBall.CORE
 
         public static IContainerOwner GetTarget_GroupAsOwner(string executeCreateGroupOutput)
         {
-            throw new System.NotImplementedException();
+            return VirtualOwner.FigureOwner("grp/" + executeCreateGroupOutput);
         }
 
         public static SetOwnerWebRedirectParameters SetDefaultRedirect_GetParameters(string groupDefaultRedirect, IContainerOwner groupAsOwner)
         {
-            throw new System.NotImplementedException();
+            return new SetOwnerWebRedirectParameters {Owner = groupAsOwner, RedirectPath = groupDefaultRedirect};
+        }
+
+        public static void ExecuteMethod_InitializeGroupWithDefaultObjects(IContainerOwner groupAsOwner)
+        {
+            // Initialize nodesummarycontainer
+            NodeSummaryContainer nodeSummaryContainer = NodeSummaryContainer.CreateDefault();
+            nodeSummaryContainer.SetLocationAsOwnerContent(groupAsOwner, "default");
+            nodeSummaryContainer.StoreInformationMasterFirst(groupAsOwner, true);
         }
     }
 }

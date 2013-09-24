@@ -341,6 +341,7 @@ using System.IO;
 			SetOwnerWebRedirect.Execute(operationParameters);
 									
 		} // Local block closing
+				CreateGroupWithTemplatesImplementation.ExecuteMethod_InitializeGroupWithDefaultObjects(GroupAsOwner);		
 				CreateGroupWithTemplatesImplementation.ExecuteMethod_RedirectToGivenUrl(parameters.RedirectUrlAfterCreation, ExecuteCreateGroupOutput);		
 				}
 				}
@@ -361,4 +362,4 @@ using System.IO;
 					SetOwnerWebRedirectImplementation.ExecuteMethod_SetRedirection(parameters.Owner, parameters.RedirectPath);		
 				}
 				}
-		} 
+		 } 

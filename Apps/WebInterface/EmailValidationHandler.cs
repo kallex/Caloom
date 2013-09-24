@@ -100,13 +100,13 @@ namespace WebInterface
             if (String.IsNullOrEmpty(inputJoinInfo.AccountID) == false)
             {
                 owner = VirtualOwner.FigureOwner("acc/" + inputJoinInfo.AccountID);
-                redirectUrl = "/auth/account/website/oip-account/oip-layout-account-welcome.phtml";
+                redirectUrl = "/auth/account/";
             }
             else
             {
                 string groupID = inputJoinInfo.GroupID;
                 owner = VirtualOwner.FigureOwner("grp/" + groupID);
-                redirectUrl = "/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml";
+                redirectUrl = "/auth/grp/" + groupID + "/";
             }
             SetInformationInputValidationAndActiveStatus.Execute(
                 new SetInformationInputValidationAndActiveStatusParameters
@@ -127,13 +127,13 @@ namespace WebInterface
             if (String.IsNullOrEmpty(deviceJoinInfo.AccountID) == false)
             {
                 owner = VirtualOwner.FigureOwner("acc/" + deviceJoinInfo.AccountID);
-                redirectUrl = "/auth/account/website/oip-account/oip-layout-account-welcome.phtml";
+                redirectUrl = "/auth/account/";
             }
             else
             {
                 string groupID = deviceJoinInfo.GroupID;
                 owner = VirtualOwner.FigureOwner("grp/" + groupID);
-                redirectUrl = "/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml";
+                redirectUrl = "/auth/grp/" + groupID + "/";
             }
             SetDeviceMembershipValidationAndActiveStatus.Execute(new SetDeviceMembershipValidationAndActiveStatusParameters
                 {
@@ -150,7 +150,7 @@ namespace WebInterface
             string groupID = emailValidation.GroupJoinConfirmation.GroupID;
             ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
                                                  {GroupID = groupID, MemberEmailAddress = emailValidation.Email});
-            context.Response.Redirect("/auth/grp/" + groupID + "/website/oip-group/oip-layout-groups-edit.phtml");
+            context.Response.Redirect("/auth/grp/" + groupID + "/");
         }
 
         private static void ValidateAccountsEmailAddress(TBAccount account, TBEmailValidation emailValidation)

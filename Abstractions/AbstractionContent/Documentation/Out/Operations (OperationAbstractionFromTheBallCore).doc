@@ -683,6 +683,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Sets groups default redirect if given
 		</div>
+		</p><h2>Method Call: InitializeGroupWithDefaultObjects ( GroupAsOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Initialize group with default objects (hardcoded for now)
+		</div>
 		</p><h2>Method Call: RedirectToGivenUrl ( ExecuteCreateGroupOutput, RedirectUrlAfterCreation )</h2>
 		<p>		<div class="MsoNormal" >
 		Redirect to url if given

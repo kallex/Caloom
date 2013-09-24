@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Json;
 
 namespace AaltoGlobalImpact.OIP
@@ -20,10 +22,27 @@ namespace AaltoGlobalImpact.OIP
     {
         public void PerformBeforeStoreUpdate()
         {
-            if (ReferenceToInformation == null)
-                ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
-            ReferenceToInformation.Title = this.CategoryName;
-            ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+            ValidateNonCircularParentLinks();
+            if (Title == null)
+                Title = "";
+            char[] arr = Title.ToCharArray();
+            arr = Array.FindAll<char>(arr, c => char.IsLetterOrDigit(c) && (int)c < 128);
+            CategoryName = "cat" + new string(arr);
+        }
+
+        private void ValidateNonCircularParentLinks()
+        {
+            Dictionary<string, bool> traversedIDDict = new Dictionary<string, bool>();
+            var currCat = this;
+            traversedIDDict.Add(currCat.ID, true);
+            while (currCat.ParentCategory != null)
+            {
+                string parentID = currCat.ParentCategory.ID;
+                if(traversedIDDict.ContainsKey(parentID))
+                    throw new InvalidDataException("Circular reference in parent categories - aborting save");
+                traversedIDDict.Add(parentID, true);
+                currCat = currCat.ParentCategory;
+            }
         }
     }
 

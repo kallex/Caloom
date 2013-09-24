@@ -353,7 +353,11 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            if (context.Request.Url.Host == "localhost" && (contentPath.Contains("oipcms/") || contentPath.Contains("wwwsite/") || (contentPath.Contains("webui/") && containerOwner is TBAccount)))
+            if (context.Request.Url.Host == "localhost" && 
+                (contentPath.Contains("oipcms/") || 
+                contentPath.Contains("wwwsite/") || 
+                (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
+                contentPath.Contains("categoriesandcontent/")))
             {
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
@@ -418,6 +422,7 @@ namespace WebInterface
             response.ContentType = contentType;
             string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
             string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
+            string LocalWebCatConFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
             string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
@@ -426,6 +431,8 @@ namespace WebInterface
                 fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
+            else if (prefixStrippedContent.Contains("categoriesandcontent/"))
+                fileName = prefixStrippedContent.Replace("categoriesandcontent/", LocalWebCatConFolder);
             else
                 fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
             if (File.Exists(fileName))
