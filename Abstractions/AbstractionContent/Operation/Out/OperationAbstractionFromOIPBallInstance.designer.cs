@@ -24,6 +24,7 @@ using System.IO;
 					TBRGroupRoot GroupRoot = CreateGroupImplementation.GetTarget_GroupRoot(parameters.GroupName);	
 				TBRAccountRoot AccountRoot = CreateGroupImplementation.GetTarget_AccountRoot(parameters.AccountID);	
 				TBEmail[] AccountEmails = CreateGroupImplementation.GetTarget_AccountEmails(AccountRoot);	
+				CreateGroupImplementation.ExecuteMethod_VerifyAccountEmails(AccountEmails);		
 				CreateGroupImplementation.ExecuteMethod_AddAsInitiatorToGroupRoot(GroupRoot, AccountEmails);		
 				CreateGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot);		
 				CreateGroupImplementation.ExecuteMethod_InitializeGroupContentAndMasters(GroupRoot);		

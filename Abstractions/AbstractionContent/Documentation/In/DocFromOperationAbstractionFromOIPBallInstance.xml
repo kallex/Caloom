@@ -436,24 +436,24 @@
                   </Columns>
                   <Rows>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>GroupName</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>Group name to be created</TextContent>
                       </ColumnData>
                     </Row>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>AccountID</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>Account ID of initiator</TextContent>
                       </ColumnData>
                     </Row>
@@ -463,49 +463,56 @@
             </Header>
             <Header text="Target Definition: GroupRoot ( GroupName )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Created group with given name</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Target Definition: AccountRoot ( AccountID )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Account root of initiator</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Target Definition: AccountEmails ( AccountRoot )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Account emails</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: VerifyAccountEmails ( AccountEmails )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Verify that account has at least one valid email</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Method Call: AddAsInitiatorToGroupRoot ( GroupRoot, AccountEmails )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Add as initiator group root for every email address</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Method Call: StoreObjects ( GroupRoot )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Store modified objects</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Method Call: InitializeGroupContentAndMasters ( GroupRoot )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Initialize group content with templates, initialize subscriptions.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
             <Header text="Operation Call: RefreshAccountAndGroupContainers ( GroupRoot, AccountID )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
                   <TextContent>Update account and account and group containers</TextContent>
                 </Text>
               </Paragraph>

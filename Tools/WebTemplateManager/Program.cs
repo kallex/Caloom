@@ -92,11 +92,13 @@ namespace WebTemplateManager
                 }
                 else
                 {
-                    string templateLocation = isSystem ? templateName + "/" + sysTemplateOwner : templateName;
+                    string templateLocation = isSystem ? sysTemplateOwner + "/" + templateName : templateName;
 
                     FileSystemSupport.UploadTemplateContent(allFiles, owner, templateLocation, true);
                     if (isAccount)
-                        RenderWebSupport.RefreshAllAccountTemplates(templateName, templateName);
+                        RenderWebSupport.RefreshAllAccountTemplates(templateName);
+                    else
+                        RenderWebSupport.RefreshAllGroupTemplates(templateName);
                 }
             }
             catch(Exception exception)

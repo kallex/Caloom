@@ -890,21 +890,43 @@ namespace TheBall
             }
         }
 
-        public static void RefreshAllAccountTemplates(string systemTemplateName, string accountTemplateName)
+        public static void RefreshAllGroupTemplates(string templateName)
+        {
+            string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            foreach (var groupID in groupIDs)
+            {
+                RefreshGroupTemplate(groupID, templateName, true);
+            }
+        }
+
+        public static void RefreshGroupTemplate(string groupID, string templateName, bool useBackgroundWorker)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = "sys/AAA/group/";
+            string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
+            string sysLocationSource = syscontentRoot + templateName;
+            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
+                                useBackgroundWorker, false);
+            if (useBackgroundWorker)
+                QueueSupport.PutToOperationQueue(accountSync);
+            
+        }
+
+        public static void RefreshAllAccountTemplates(string templateName)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach (var acctID in accountIDs)
             {
-                RefreshAccountTemplates(acctID, systemTemplateName, accountTemplateName, true);
+                RefreshAccountTemplate(acctID, templateName, true);
             }
         }
 
-        public static void RefreshAccountTemplates(string acctID, string systemTemplateName, string accountTemplateName, bool useBackgroundWorker)
+        public static void RefreshAccountTemplate(string acctID, string templateName, bool useBackgroundWorker)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string syscontentRoot = "sys/AAA/";
-            string acctTemplateLocationTarget = "acc/" + acctID + "/" + accountTemplateName;
-            string sysLocationSource = syscontentRoot + systemTemplateName + "/account";
+            string syscontentRoot = "sys/AAA/account/";
+            string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
+            string sysLocationSource = syscontentRoot + templateName;
             var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
                                 useBackgroundWorker, false);
             if(useBackgroundWorker)

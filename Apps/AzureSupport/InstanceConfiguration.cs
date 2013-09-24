@@ -23,6 +23,9 @@ namespace TheBall
         public static readonly string EmailValidationURLWithoutID;
         public static readonly string AzureStorageConnectionString;
         public static readonly string WorkerActiveContainerName;
+        public static readonly string[] DefaultAccountTemplateList;
+        public static readonly string[] DefaultGroupTemplateList;
+        
 
         static InstanceConfiguration()
         {
@@ -86,6 +89,9 @@ The link is valid for 14 days, after which you need to request new invitation.";
 #endif
 
             #endregion
+
+            DefaultAccountTemplateList = CloudConfigurationManager.GetSetting("DefaultAccountTemplateList").Split(',');
+            DefaultGroupTemplateList = CloudConfigurationManager.GetSetting("DefaultGroupTemplateList").Split(',');
         }
 
     }

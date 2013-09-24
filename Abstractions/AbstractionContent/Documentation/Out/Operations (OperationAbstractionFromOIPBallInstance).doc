@@ -571,65 +571,69 @@ div.WordSection1
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		GroupName
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Group name to be created
 		</div>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		AccountID
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Account ID of initiator
 		</div>
 				</td>
 				</tr>
 		</table>
 		</p><h2>Target Definition: GroupRoot ( GroupName )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Created group with given name
 		</div>
 		</p><h2>Target Definition: AccountRoot ( AccountID )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Account root of initiator
 		</div>
 		</p><h2>Target Definition: AccountEmails ( AccountRoot )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Account emails
 		</div>
+		</p><h2>Method Call: VerifyAccountEmails ( AccountEmails )</h2>
+		<p>		<div class="MsoNormal" >
+		Verify that account has at least one valid email
+		</div>
 		</p><h2>Method Call: AddAsInitiatorToGroupRoot ( GroupRoot, AccountEmails )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Add as initiator group root for every email address
 		</div>
 		</p><h2>Method Call: StoreObjects ( GroupRoot )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Store modified objects
 		</div>
 		</p><h2>Method Call: InitializeGroupContentAndMasters ( GroupRoot )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Initialize group content with templates, initialize subscriptions.
 		</div>
 		</p><h2>Operation Call: RefreshAccountAndGroupContainers ( GroupRoot, AccountID )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		<p>		<div class="MsoNormal" >
 		Update account and account and group containers
 		</div>
 		</p><h1>DeleteInformationObject (ObjectToDelete)</h1>

@@ -40,13 +40,6 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="CreateGroup (0 %)" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Being implemented 9</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="InviteMemberToGroup (0 %)" level="2">
               <Paragraph>
                 <Text>
@@ -613,118 +606,6 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Create various video media formats (if object is not null)</TextContent>
-                    </ColumnData>
-                  </Row>
-                </Rows>
-              </Table>
-            </Paragraph>
-          </Header>
-          <Header text="CreateGroup (0 %)" level="1">
-            <Paragraph>
-              <Table>
-                <Columns>
-                  <Column name="Item" />
-                  <Column name="Status" />
-                  <Column name="Description" />
-                </Columns>
-                <Rows>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: GroupName</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Group name to be created</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: AccountID</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Account ID of initiator</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: GroupRoot</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Created group with given name</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: AccountRoot</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Account root of initiator</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: AccountEmails</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Account emails</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: AddAsInitiatorToGroupRoot</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Add as initiator group root for every email address</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: StoreObjects</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Store modified objects</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: InitializeGroupContentAndMasters</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Initialize group content with templates, initialize subscriptions.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>OperationExecuteType: RefreshAccountAndGroupContainers</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Update account and account and group containers</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>
