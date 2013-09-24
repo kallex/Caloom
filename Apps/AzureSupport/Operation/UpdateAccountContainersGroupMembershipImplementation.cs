@@ -47,7 +47,7 @@ namespace AaltoGlobalImpact.OIP
             foreach (var acctRole in accountRoot.Account.GroupRoleCollection.CollectionContent.Where(role => role.GroupID == currRootId))
             {
                 ReferenceToInformation reference = ReferenceToInformation.CreateDefault();
-                reference.URL = string.Format("/auth/grp/{0}/website/oip-group/oip-layout-groups-edit.phtml",
+                reference.URL = string.Format("/auth/grp/{0}/",
                                               currRootId);
                 reference.Title = currGroup.GroupName + " - " + acctRole.GroupRole;
                 switch (acctRole.GroupRole.ToLower())

@@ -63,10 +63,7 @@ namespace WebInterface
             WebSupport.InitializeContextStorage(context.Request);
             if (request.Path.StartsWith(AboutPrefix))
             {
-                if(request.Path.EndsWith("/oip-layout-register.phtml"))
-                    ProcessDynamicRegisterRequest(request, response);
-                else
-                    HandleAboutGetRequest(context, request.Path);
+                HandleAboutGetRequest(context, request.Path);
                 return;
             }
 
