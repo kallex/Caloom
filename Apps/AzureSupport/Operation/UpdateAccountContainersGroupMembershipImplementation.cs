@@ -11,6 +11,12 @@ namespace AaltoGlobalImpact.OIP
         {
             VirtualOwner owner = new VirtualOwner("acc", accountID);
             var accountContainer = AccountContainer.RetrieveFromOwnerContent(owner, "default");
+            if (accountContainer == null)
+            {
+                accountContainer = AccountContainer.CreateDefault();
+                accountContainer.SetLocationAsOwnerContent(owner, "default");
+                accountContainer.StoreInformation();
+            }
             return accountContainer;
         }
 
@@ -18,6 +24,12 @@ namespace AaltoGlobalImpact.OIP
         {
             VirtualOwner owner = new VirtualOwner("acc", accountID);
             var groupSummaryContainer = GroupSummaryContainer.RetrieveFromOwnerContent(owner, "default");
+            if (groupSummaryContainer == null)
+            {
+                groupSummaryContainer = GroupSummaryContainer.CreateDefault();
+                groupSummaryContainer.SetLocationAsOwnerContent(owner, "default");
+                groupSummaryContainer.StoreInformation();
+            }
             return groupSummaryContainer;
         }
 
@@ -88,6 +100,12 @@ namespace AaltoGlobalImpact.OIP
         {
             VirtualOwner groupOwner = new VirtualOwner("grp", groupRoot.Group.ID);
             var groupContainer = GroupContainer.RetrieveFromOwnerContent(groupOwner, "default");
+            if (groupContainer == null)
+            {
+                groupContainer = GroupContainer.CreateDefault();
+                groupContainer.SetLocationAsOwnerContent(groupOwner, "default");
+                groupContainer.StoreInformation();
+            }
             return groupContainer;
         }
 

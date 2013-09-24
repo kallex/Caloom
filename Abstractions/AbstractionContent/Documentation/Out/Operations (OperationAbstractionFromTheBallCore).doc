@@ -658,6 +658,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Copy group templates
 		</div>
+		</p><h2>Method Call: RedirectToGivenUrl ( ExecuteCreateGroupOutput, RedirectUrlAfterCreation )</h2>
+		<p>		<div class="MsoNormal" >
+		Redirect to url if given
+		</div>
 		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

@@ -1,3 +1,4 @@
+using System.Web;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
@@ -20,6 +21,15 @@ namespace TheBall.CORE
             string[] templates = templateNameList.Split(',');
             foreach(var templateName in templates)
                 RenderWebSupport.RefreshGroupTemplate(executeCreateGroupOutput, templateName, false);
+        }
+
+        public static void ExecuteMethod_RedirectToGivenUrl(string redirectUrlAfterCreation, string executeCreateGroupOutput)
+        {
+            if (string.IsNullOrEmpty(redirectUrlAfterCreation) == false)
+            {
+                string redirectTarget = "/auth/grp/" + executeCreateGroupOutput + "/" + redirectUrlAfterCreation;
+                HttpContext.Current.Response.Redirect(redirectTarget, true);
+            }
         }
     }
 }

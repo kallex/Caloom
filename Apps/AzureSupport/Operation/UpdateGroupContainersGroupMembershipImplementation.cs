@@ -20,6 +20,12 @@ namespace AaltoGlobalImpact.OIP
             string groupID = groupRoot.Group.ID;
             VirtualOwner owner = new VirtualOwner("grp", groupID);
             var groupContainer = GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            if (groupContainer == null)
+            {
+                groupContainer = GroupContainer.CreateDefault();
+                groupContainer.SetLocationAsOwnerContent(owner, "default");
+                groupContainer.StoreInformation();
+            }
             return groupContainer;
         }
 

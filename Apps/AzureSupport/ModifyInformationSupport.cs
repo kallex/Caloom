@@ -86,6 +86,21 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "CreateGroupWithTemplates":
+                    {
+                        var owningAccount = containerOwner as TBAccount;
+                        if(owningAccount == null)
+                            throw new NotSupportedException("Creating a group is only supported by account");
+                        CreateGroupWithTemplatesParameters parameters = new CreateGroupWithTemplatesParameters
+                            {
+                                AccountID = owningAccount.ID,
+                                GroupName = form["GroupName"],
+                                RedirectUrlAfterCreation = form["RedirectUrlAfterCreation"],
+                                TemplateNameList = form["TemplateNameList"]
+                            };
+                        CreateGroupWithTemplates.Execute(parameters);
+                        break;
+                    }
                 case "UnregisterEmailAddress":
                     {
                         var owningAccount = containerOwner as TBAccount;
