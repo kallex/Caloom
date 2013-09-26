@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using AaltoGlobalImpact.OIP;
 using SecuritySupport;
@@ -13,7 +14,7 @@ namespace WebTemplateManager
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main(string[] arguments)
         {
             try
             {
@@ -27,19 +28,21 @@ namespace WebTemplateManager
                 Console.ReadLine(); // Enter to exit
                 //return;*/
 
-                if (args.Length != 4 || args[0].Length != 4)
+                if (arguments.Length != 5 || arguments[1].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
+                    Console.WriteLine("Usage: WebTemplateManager.exe <containername> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
                     return;
                 }
                 Debugger.Launch();
 
-                string pubPriPrefixWithDash = args[0];
-                string templateName = args[1];
+                string currContainerName = arguments[0];
+                ValidateContainerName(currContainerName);
+                string pubPriPrefixWithDash = arguments[1];
+                string templateName = arguments[2];
                 if(String.IsNullOrWhiteSpace(templateName))
                     throw new ArgumentException("Template name must be given");
-                string connStr = args[3];
-                string grpacctIDorTemplateName = args[2];
+                string connStr = arguments[4];
+                string grpacctIDorTemplateName = arguments[3];
                 if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri" && pubPriPrefixWithDash != "-sys")
                     throw new ArgumentException("-pub or -pri misspelled or missing");
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
@@ -47,8 +50,7 @@ namespace WebTemplateManager
                 bool debugMode = false;
                 StorageSupport.InitializeWithConnectionString(connStr, debugMode);
                 InformationContext.InitializeFunctionality(3, true);
-                InformationContext.Current.InitializeCloudStorageAccess(
-                    Properties.Settings.Default.CurrentActiveContainerName);
+                InformationContext.Current.InitializeCloudStorageAccess(currContainerName);
 
                 IContainerOwner owner;
                 bool isAccount = false;
@@ -95,16 +97,26 @@ namespace WebTemplateManager
                     string templateLocation = isSystem ? sysTemplateOwner + "/" + templateName : templateName;
 
                     FileSystemSupport.UploadTemplateContent(allFiles, owner, templateLocation, true);
-                    if (isAccount)
-                        RenderWebSupport.RefreshAllAccountTemplates(templateName);
-                    else
-                        RenderWebSupport.RefreshAllGroupTemplates(templateName);
+                    if (isSystem)
+                    {
+                        if (isAccount)
+                            RenderWebSupport.RefreshAllAccountTemplates(templateName);
+                        else
+                            RenderWebSupport.RefreshAllGroupTemplates(templateName);
+                    }
                 }
             }
             catch(Exception exception)
             {
                 Console.WriteLine("EXCEPTION: " + exception.ToString());
             }
+        }
+
+        private static void ValidateContainerName(string currContainerName)
+        {
+            string[] validContainers = Properties.Settings.Default.AllowedContainerNames.Split(',');
+            if(validContainers.Contains(currContainerName) == false)
+                throw new InvalidDataException("Given container name not among app.config approved ones: " + currContainerName);
         }
 
         private static void Preprocessor(BlobStorageContent content)

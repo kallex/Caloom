@@ -25,10 +25,10 @@ namespace WebTemplateManager.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("demooip-aaltoglobalimpact-org")]
-        public string CurrentActiveContainerName {
+        [global::System.Configuration.DefaultSettingValueAttribute("schools-caloom-com,business-caloom-com")]
+        public string AllowedContainerNames {
             get {
-                return ((string)(this["CurrentActiveContainerName"]));
+                return ((string)(this["AllowedContainerNames"]));
             }
         }
     }
