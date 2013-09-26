@@ -123,12 +123,14 @@ namespace TheBall
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
 
         private string initializedContainerName = null;
-        public void InitializeCloudStorageAccess(string containerName)
+        public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)
         {
             if(containerName == null)
                 throw new ArgumentNullException("containerName");
             if(containerName == "")
                 throw new ArgumentException("Invalid container name", "containerName");
+            if (reinitialize)
+                UninitializeCloudStorageAccess();
             if(initializedContainerName != null)
             {
                 if (containerName == initializedContainerName)
@@ -146,6 +148,18 @@ namespace TheBall
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
             initializedContainerName = containerName;
+        }
+
+        public void UninitializeCloudStorageAccess()
+        {
+            CurrBlobClient = null;
+            CurrActiveContainer = null;
+            initializedContainerName = null;
+        }
+
+        public void ReinitializeCloudStorageAccess(string containerName)
+        {
+            UninitializeCloudStorageAccess();
         }
 
         private CloudBlobContainer _currActiveContainer;
@@ -177,7 +191,7 @@ namespace TheBall
             }
             private set
             {
-                if(_currBlobClient != null)
+                if(_currBlobClient != null && value != null)
                     throw new NotSupportedException("CurrBlobClient can only be set once");
                 _currBlobClient = value;
             }

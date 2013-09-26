@@ -142,7 +142,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InstanceSettings.config" />
+    <Content Include="InstanceSettings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="InstanceSettings_CaloomSchools.config" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />

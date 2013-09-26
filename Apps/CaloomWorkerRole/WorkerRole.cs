@@ -29,7 +29,13 @@ namespace CaloomWorkerRole
         private LocalResource LocalStorageResource;
         private CloudBlobContainer AnonWebContainer;
 
+        private string[] ActiveContainerNames;
 
+        private void stepActiveContainerIX(ref int activeContainerIX)
+        {
+            activeContainerIX++;
+            activeContainerIX %= ActiveContainerNames.Length;
+        }
 
         public override void Run()
         {
@@ -45,6 +51,7 @@ namespace CaloomWorkerRole
                                    //Task.Factory.StartNew(() => {}), 
                                };
             QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID, TimeSpan.FromDays(1));
+            int activeContainerIX = 0;
             while (!IsStopped)
             {
                 try
@@ -54,7 +61,11 @@ namespace CaloomWorkerRole
                         break;
                     int availableIx;
                     Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
-                    bool handledSubscriptionChain = PollAndHandleSubscriptionChain(tasks, availableIx, availableTask);
+
+                    stepActiveContainerIX(ref activeContainerIX);
+                    string activeContainerName = ActiveContainerNames[activeContainerIX];
+                    InformationContext.Current.InitializeCloudStorageAccess(activeContainerName, true);
+                    bool handledSubscriptionChain = PollAndHandleSubscriptionChain(tasks, availableIx, availableTask, activeContainerName);
                     if (handledSubscriptionChain)
                     {
                         // TODO: Fix return value check
@@ -109,7 +120,7 @@ namespace CaloomWorkerRole
             GracefullyStopped = true;
         }
 
-        private bool PollAndHandleSubscriptionChain(Task[] tasks, int availableIx, Task availableTask)
+        private bool PollAndHandleSubscriptionChain(Task[] tasks, int availableIx, Task availableTask, string activeContainerName)
         {
             var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
             if (result.Length == 0)
@@ -120,7 +131,7 @@ namespace CaloomWorkerRole
                     lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
             if (firstLockedOwner == null)
                 return false;
-            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, InstanceConfiguration.WorkerActiveContainerName));
+            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, activeContainerName));
             tasks[availableIx] = executing;
             if (availableTask.Exception != null)
                 ErrorSupport.ReportException(availableTask.Exception);
@@ -164,7 +175,8 @@ namespace CaloomWorkerRole
             string connStr = InstanceConfiguration.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);
             InformationContext.InitializeFunctionality(3, allowStatic:true);
-            InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
+            ActiveContainerNames = InstanceConfiguration.WorkerActiveContainerName.Split(',');
+            //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             IsStopped = false;
             return base.OnStart();
