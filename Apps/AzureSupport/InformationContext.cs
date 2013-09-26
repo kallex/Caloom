@@ -172,7 +172,7 @@ namespace TheBall
             }
             private set
             {
-                if(_currActiveContainer != null)
+                if(_currActiveContainer != null && value != null)
                     throw new NotSupportedException("CurrActiveContainer can only be set once");
                 _currActiveContainer = value;
             }
