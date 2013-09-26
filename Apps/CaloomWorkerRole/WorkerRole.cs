@@ -18,6 +18,7 @@ namespace CaloomWorkerRole
 {
     public class WorkerRole : RoleEntryPoint
     {
+        private const int PollCyclePerContainerMilliseconds = 1000;
 
         // QueueClient is thread-safe. Recommended that you cache 
         // rather than recreating it on every request
@@ -52,6 +53,7 @@ namespace CaloomWorkerRole
                                };
             QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID, TimeSpan.FromDays(1));
             int activeContainerIX = 0;
+            int PollCyclePerRound = PollCyclePerContainerMilliseconds/ActiveContainerNames.Length;
             while (!IsStopped)
             {
                 try
@@ -69,13 +71,13 @@ namespace CaloomWorkerRole
                     if (handledSubscriptionChain)
                     {
                         // TODO: Fix return value check
-                        Thread.Sleep(1000);
+                        Thread.Sleep(PollCyclePerRound);
                         continue;
                     }
                     bool handledMessage = PollAndHandleMessage(tasks, availableIx, availableTask);
                     if (handledMessage)
                         continue;
-                    Thread.Sleep(1000);
+                    Thread.Sleep(PollCyclePerRound);
                 }
                 catch (AggregateException ae)
                 {
