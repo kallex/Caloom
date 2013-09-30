@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -200,9 +201,9 @@ namespace WebInterface
             {
                 // Various data deserialization tests - options need to be properly set
                 // strong type radically faster 151ms over 25sec with flexible type - something ill
-                throw new NotSupportedException("Not supported as-is, implementation for serialization available, not finished");
+                //throw new NotSupportedException("Not supported as-is, implementation for serialization available, not finished");
                 var stream = request.GetBufferedInputStream();
-                var dataX = JSONSupport.GetObjectFromStream<NodeSummaryContainer>(stream);
+                var dataX = JSONSupport.GetObjectFromStream<List<ParentToChildren> >(stream);
                 var streamReader = new StreamReader(request.GetBufferedInputStream());
                 string data = streamReader.ReadToEnd();
                 var jsonData = JSONSupport.GetJsonFromStream(data);
@@ -451,4 +452,5 @@ namespace WebInterface
 
         #endregion
     }
+
 }

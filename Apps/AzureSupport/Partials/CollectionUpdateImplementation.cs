@@ -651,6 +651,10 @@ namespace AaltoGlobalImpact.OIP
             //var categoryNodes = masterCollection.CollectionContent.Select(getNodeFromCategory).ToArray();
             nodes.CollectionContent.AddRange(categoryNodes);
             cleanUpRenderedNodes(nodes);
+            if(localCollection == null)
+                localCollection = new CategoryCollection();
+            localCollection.CollectionContent = masterCollection.CollectionContent;
+            localCollection.RefreshOrderAndFilterListFromContent();
         }
 
         internal static RenderedNode getNodeFromCategory(Category category)

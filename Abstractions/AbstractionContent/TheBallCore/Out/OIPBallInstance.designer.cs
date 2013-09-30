@@ -29,6 +29,15 @@ using TheBall.CORE;
 
 
 
+			[DataContract]
+			public class ParentToChildren
+			{
+				[DataMember]
+				public string id { get; set; }
+				[DataMember]
+				public ParentToChildren[] children { get; set; }
+			}
+
 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
@@ -1379,6 +1388,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -5137,6 +5152,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -5983,6 +6004,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -6839,6 +6866,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -7752,6 +7785,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -11206,6 +11245,12 @@ using TheBall.CORE;
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -16810,6 +16855,12 @@ AccountIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -20324,6 +20375,12 @@ AccountRoles.OrganizationsImPartOf
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -21595,6 +21652,12 @@ AccountRoles.OrganizationsImPartOf
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -23735,6 +23798,12 @@ AccountRoles.OrganizationsImPartOf
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -24943,6 +25012,12 @@ RenderedNode.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -25789,6 +25864,12 @@ RenderedNode.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -27972,6 +28053,12 @@ MapMarker.PopupContent
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -33223,6 +33310,12 @@ ActivityIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -34543,6 +34636,12 @@ Activity.IFrameSources
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -35401,6 +35500,12 @@ Activity.IFrameSources
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -41019,6 +41124,12 @@ GroupIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -42530,6 +42641,12 @@ Introduction.Body
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -43627,6 +43744,12 @@ TextContent.Body
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -46988,6 +47111,12 @@ CalendarIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -47834,6 +47963,12 @@ CalendarIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -49294,6 +49429,12 @@ CalendarIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -51532,6 +51673,12 @@ CalendarIndex.Summary
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -52951,6 +53098,12 @@ ImageGroup.Description
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -53428,6 +53581,12 @@ ImageGroup.Description
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -54274,6 +54433,12 @@ ImageGroup.Description
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -56362,6 +56527,12 @@ ImageGroup.Description
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -59278,6 +59449,8 @@ Category.Excerpt
 ";
 
 					result.ParentCategory = Category.CreateDemoDefault();
+					result.ParentCategoryID = @"Category.ParentCategoryID";
+
 				
 					return result;
 				}
@@ -59417,6 +59590,8 @@ Category.Excerpt
 							return true;
 						if(ParentCategory != _unmodified_ParentCategory)
 							return true;
+						if(ParentCategoryID != _unmodified_ParentCategoryID)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) ImageData;
 							if(item != null) 
@@ -59468,6 +59643,7 @@ Category.Excerpt
 					Title = sourceObject.Title;
 					Excerpt = sourceObject.Excerpt;
 					ParentCategory = sourceObject.ParentCategory;
+					ParentCategoryID = sourceObject.ParentCategoryID;
 				}
 				
 
@@ -59477,6 +59653,7 @@ Category.Excerpt
 					_unmodified_CategoryName = CategoryName;
 					_unmodified_Title = Title;
 					_unmodified_Excerpt = Excerpt;
+					_unmodified_ParentCategoryID = ParentCategoryID;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
@@ -59509,6 +59686,9 @@ Category.Excerpt
 						case "Excerpt":
 							Excerpt = value;
 							break;
+						case "ParentCategoryID":
+							ParentCategoryID = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -59531,6 +59711,9 @@ Category.Excerpt
 			[DataMember]
 			public Category ParentCategory { get; set; }
 			private Category _unmodified_ParentCategory;
+			[DataMember]
+			public string ParentCategoryID { get; set; }
+			private string _unmodified_ParentCategoryID;
 			
 			}
 			[DataContract]
@@ -59916,6 +60099,12 @@ Category.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -60393,6 +60582,12 @@ Category.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -61835,6 +62030,12 @@ Category.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -64236,6 +64437,12 @@ Category.Excerpt
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -66332,6 +66539,12 @@ SystemErrorItem.LongDescription
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -67258,6 +67471,12 @@ SystemErrorItem.LongDescription
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{
@@ -68955,6 +69174,12 @@ SystemErrorItem.LongDescription
 						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
 				}
 
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
 
 				public void ParsePropertyValue(string propertyName, string propertyValue)
 				{

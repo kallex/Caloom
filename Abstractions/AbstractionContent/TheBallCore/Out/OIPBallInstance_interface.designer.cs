@@ -16,7 +16,7 @@ using TheBall.CORE;
 
 
 			[DataContract]
-			public partial class PublishSummary 
+			public partial class ParentToChildren 
 			{
 				[DataMember]
 				public string ID { get; set; }
@@ -25,24 +25,10 @@ using TheBall.CORE;
                 public string ETag { get; set; }
 
 			[DataMember]
-			public string ActiveItem;
+			public string id;
 
 			[DataMember]
-			public List<PublishItem> PublishCollection= new List<PublishItem>();
-
-			
-			}
-			[DataContract]
-			public partial class PublishItem 
-			{
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-			[DataMember]
-			public string Name;
+			public List<ParentToChildren> children= new List<ParentToChildren>();
 
 			
 			}
