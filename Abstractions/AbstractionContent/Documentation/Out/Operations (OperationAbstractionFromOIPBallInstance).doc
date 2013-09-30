@@ -1179,6 +1179,21 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>SetCategoryHierarchy</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Sets category hierarchy from request content JSON
+          
+		</div>
+		</p><h2>Target Definition: Hierarchy</h2>
+		<p>		<div class="MsoNormal" >
+		Hierarchy structure deserialized from JSON
+		</div>
+		</p><h2>Method Call: SetParentCategories ( Hierarchy )</h2>
+		<p>		<div class="MsoNormal" >
+		Set parent categories, retry execution for http-async failures
+		</div>
 		</p><h1>UnlinkEmailAddress (AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

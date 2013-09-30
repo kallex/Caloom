@@ -1,6 +1,3 @@
- 
-
-using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Drawing;
@@ -547,4 +544,14 @@ using System.IO;
 				ChooseActivePublicationImplementation.ExecuteMethod_SetActivePublicationFromName(parameters.PublicationName, PublishInfo);		
 				}
 				}
-		 } 
+		
+		public class SetCategoryHierarchy 
+		{
+				public static void Execute()
+		{
+						
+					ParentToChildren[] Hierarchy = SetCategoryHierarchyImplementation.GetTarget_Hierarchy();	
+				SetCategoryHierarchyImplementation.ExecuteMethod_SetParentCategories(Hierarchy);		
+				}
+				}
+		} 

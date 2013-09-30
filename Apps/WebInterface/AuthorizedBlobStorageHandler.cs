@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Web.Helpers;
@@ -202,12 +203,18 @@ namespace WebInterface
                 // Various data deserialization tests - options need to be properly set
                 // strong type radically faster 151ms over 25sec with flexible type - something ill
                 //throw new NotSupportedException("Not supported as-is, implementation for serialization available, not finished");
-                var stream = request.GetBufferedInputStream();
-                var dataX = JSONSupport.GetObjectFromStream<List<ParentToChildren> >(stream);
-                var streamReader = new StreamReader(request.GetBufferedInputStream());
-                string data = streamReader.ReadToEnd();
-                var jsonData = JSONSupport.GetJsonFromStream(data);
-                HandlerOwnerAjaxDataPOST(containerOwner, form);
+//                var stream = request.GetBufferedInputStream();
+  //              var dataX = JSONSupport.GetObjectFromStream<List<ParentToChildren> >(stream);
+//                var streamReader = new StreamReader(request.GetBufferedInputStream());
+//                string data = streamReader.ReadToEnd();
+//                var jsonData = JSONSupport.GetJsonFromStream(data);
+//                HandlerOwnerAjaxDataPOST(containerOwner, request);
+                //SetCategoryHierarchy.Execute();
+                string operationName = request.Params["operation"];
+                
+                Type operationType = TypeSupport.GetTypeByName(operationName);
+                var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
+                method.Invoke(null, null);
                 return;
             }
 
