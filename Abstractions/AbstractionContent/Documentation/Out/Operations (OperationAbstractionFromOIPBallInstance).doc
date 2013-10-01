@@ -1179,7 +1179,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
-		</p><h1>SetCategoryHierarchy</h1>
+		</p><h1>SetCategoryHierarchyAndOrderInNodeSummary</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -1193,6 +1193,18 @@ div.WordSection1
 		</p><h2>Method Call: SetParentCategories ( Hierarchy )</h2>
 		<p>		<div class="MsoNormal" >
 		Set parent categories, retry execution for http-async failures
+		</div>
+		</p><h2>Target Definition: NodeSummaryContainer</h2>
+		<p>		<div class="MsoNormal" >
+		NodeSummaryContainer
+		</div>
+		</p><h2>Method Call: SetCategoryOrder ( Hierarchy, NodeSummaryContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Set order of categories in web content summary
+		</div>
+		</p><h2>Method Call: StoreObject ( NodeSummaryContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store modified objects
 		</div>
 		</p><h1>UnlinkEmailAddress (AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID)</h1>
 		<h2>Specifications</h2>

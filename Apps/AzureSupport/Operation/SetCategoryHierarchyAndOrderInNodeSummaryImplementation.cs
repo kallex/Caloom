@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using AzureSupport;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
-    public class SetCategoryHierarchyImplementation
+    public class SetCategoryHierarchyAndOrderInNodeSummaryImplementation
     {
         public static ParentToChildren[] GetTarget_Hierarchy()
         {
@@ -48,6 +49,40 @@ namespace AaltoGlobalImpact.OIP
                 return;
             foreach(var childItem in parentItem.children)
                 SetParentsRecursively(childItem, parentItem.id);
+        }
+
+        public static NodeSummaryContainer GetTarget_NodeSummaryContainer()
+        {
+            var owner = InformationContext.Current.Owner;
+            return NodeSummaryContainer.RetrieveFromOwnerContent(owner, "default");
+        }
+
+        public static void ExecuteMethod_SetCategoryOrder(ParentToChildren[] hierarchy, NodeSummaryContainer nodeSummaryContainer)
+        {
+            List<string> flattenedIDList = new List<string>();
+            flattenHierarchyIDList(hierarchy, flattenedIDList);
+            var flattenedArray = flattenedIDList.ToArray();
+            string commaSeparatedIDs = String.Join(",", flattenedArray);
+            nodeSummaryContainer.NodeSourceCategories.SelectedIDCommaSeparated = commaSeparatedIDs;
+            var newList =
+                nodeSummaryContainer.NodeSourceCategories.CollectionContent.OrderBy(
+                    cat => flattenedIDList.IndexOf(cat.ID)).ToList();
+            nodeSummaryContainer.NodeSourceCategories.CollectionContent = newList;
+        }
+
+        private static void flattenHierarchyIDList(ParentToChildren[] hierarchy, List<string> flattenedIdList)
+        {
+            foreach (var item in hierarchy)
+            {
+                flattenedIdList.Add(item.id);
+                if(item.children != null)
+                    flattenHierarchyIDList(item.children, flattenedIdList);
+            }
+        }
+
+        public static void ExecuteMethod_StoreObject(NodeSummaryContainer nodeSummaryContainer)
+        {
+            nodeSummaryContainer.StoreInformation();
         }
     }
 }

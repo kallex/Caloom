@@ -1136,7 +1136,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="SetCategoryHierarchy" level="1">
+          <Header text="SetCategoryHierarchyAndOrderInNodeSummary" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -1157,6 +1157,27 @@
               <Paragraph>
                 <Text>
                   <TextContent>Set parent categories, retry execution for http-async failures</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: NodeSummaryContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>NodeSummaryContainer</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetCategoryOrder ( Hierarchy, NodeSummaryContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set order of categories in web content summary</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( NodeSummaryContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store modified objects</TextContent>
                 </Text>
               </Paragraph>
             </Header>

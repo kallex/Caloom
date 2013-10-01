@@ -1,3 +1,6 @@
+ 
+
+using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Drawing;
@@ -545,13 +548,16 @@ using System.IO;
 				}
 				}
 		
-		public class SetCategoryHierarchy 
+		public class SetCategoryHierarchyAndOrderInNodeSummary 
 		{
 				public static void Execute()
 		{
 						
-					ParentToChildren[] Hierarchy = SetCategoryHierarchyImplementation.GetTarget_Hierarchy();	
-				SetCategoryHierarchyImplementation.ExecuteMethod_SetParentCategories(Hierarchy);		
+					ParentToChildren[] Hierarchy = SetCategoryHierarchyAndOrderInNodeSummaryImplementation.GetTarget_Hierarchy();	
+				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_SetParentCategories(Hierarchy);		
+				NodeSummaryContainer NodeSummaryContainer = SetCategoryHierarchyAndOrderInNodeSummaryImplementation.GetTarget_NodeSummaryContainer();	
+				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_SetCategoryOrder(Hierarchy, NodeSummaryContainer);		
+				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_StoreObject(NodeSummaryContainer);		
 				}
 				}
-		} 
+		 } 

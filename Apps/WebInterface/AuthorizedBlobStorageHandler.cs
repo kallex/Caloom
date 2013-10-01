@@ -186,14 +186,15 @@ namespace WebInterface
                 // Do first post, and then get to the same URL
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
-                HandleOwnerPostRequest(containerOwner, context, contentPath);
-                context.Response.Redirect(context.Request.Url.ToString(), true);
+                bool redirectAfter = HandleOwnerPostRequest(containerOwner, context, contentPath);
+                if(redirectAfter)
+                    context.Response.Redirect(context.Request.Url.ToString(), true);
                 return;
             }
             HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
-        private void HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private bool HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             HttpRequest request = context.Request;
             var form = request.Unvalidated().Form;
@@ -210,13 +211,14 @@ namespace WebInterface
 //                string data = streamReader.ReadToEnd();
 //                var jsonData = JSONSupport.GetJsonFromStream(data);
 //                HandlerOwnerAjaxDataPOST(containerOwner, request);
-                //SetCategoryHierarchy.Execute();
+                //SetCategoryHierarchyAndOrderInNodeSummary.Execute();
                 string operationName = request.Params["operation"];
                 
                 Type operationType = TypeSupport.GetTypeByName(operationName);
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
                 method.Invoke(null, null);
-                return;
+                context.Response.End();
+                return false;
             }
 
             bool isClientTemplateRequest = form.Get("ContentSourceInfo") != null ||
@@ -224,13 +226,13 @@ namespace WebInterface
             if(isClientTemplateRequest)
             {
                 HandleOwnerClientTemplatePOST(containerOwner, request);
-                return;
+                return true;
             }
 
             string sourceNamesCommaSeparated = form["RootSourceName"];
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
-                return;
+                return true;
             string actionName = form["RootSourceAction"];
             string objectFieldID = form["ObjectFieldID"];
 
@@ -256,7 +258,7 @@ namespace WebInterface
                                                           });
                 if(result.RenderPageAfterOperation)
                     RenderWebSupport.RefreshPHTMLContent(webPageBlob);
-                return;
+                return true;
             }
 
             string inContextEditFieldID = form["InContextEditFieldID"];
@@ -311,6 +313,7 @@ namespace WebInterface
             //    StorageSupport.CurrAnonPublicContainer.Name,
             //                    String.Format("grp/default/{0}/", "livepubsite"), true);
 
+            return true;
         }
 
         private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
