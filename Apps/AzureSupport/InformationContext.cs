@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -197,7 +198,17 @@ namespace TheBall
             }
         }
 
-        public IContainerOwner Owner;
+        private IContainerOwner _owner;
+        public IContainerOwner Owner
+        {
+            set { _owner = value; }
+            get
+            {
+                if(_owner == null)
+                    throw new InvalidDataException("Owner not set, but still requested in active information context");
+                return _owner;
+            }
+        }
 
         private Dictionary<string, object> KeyValueDictionary = new Dictionary<string, object>();
         public void AccessLockedItems(Action<Dictionary<string, object>> action)

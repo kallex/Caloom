@@ -180,6 +180,7 @@ namespace WebInterface
 
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
         {
+            InformationContext.Current.Owner = containerOwner;
             if (context.Request.RequestType == "POST")
             {
                 // Do first post, and then get to the same URL
