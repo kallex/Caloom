@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
+using Category = AaltoGlobalImpact.OIP.Category;
 using CategoryCollection = AaltoGlobalImpact.OIP.CategoryCollection;
 using OIPDomain = AaltoGlobalImpact.OIP.DomainInformationSupport;
 using CoreDomain = TheBall.CORE.DomainInformationSupport;
@@ -307,6 +308,35 @@ namespace TheBallTool
                     blog.ProfileImage = Image.CreateDefault();
                     VirtualOwner owner = VirtualOwner.FigureOwner(blog);
                     blog.StoreInformationMasterFirst(owner, false);
+                }
+            }
+            finally
+            {
+                InformationContext.ProcessAndClearCurrent();
+                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+            }
+        }
+
+        private static void InitCategoryParentIDFromParentCategory()
+        {
+            var categories =
+                GetAllInformationObjects(name => name.Contains("AaltoGlobalImpact.OIP/Category/"), io => io is Category)
+                    .Cast<Category>()
+                    .ToArray();
+            int totalCats = categories.Length;
+            int currCat = 0;
+            try
+            {
+                foreach (var cat in categories)
+                {
+                    currCat++;
+                    Debug.WriteLine("Current " + currCat + " of total " + totalCats);
+                    if (cat.ParentCategory != null)
+                        cat.ParentCategoryID = cat.ParentCategory.ID;
+                    else
+                        cat.ParentCategoryID = null;
+                    VirtualOwner owner = VirtualOwner.FigureOwner(cat);
+                    cat.StoreInformation(owner);
                 }
             }
             finally
@@ -634,9 +664,11 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
+            InitCategoryParentIDFromParentCategory();
+
             //ReconnectAccountsMastersAndCollections();
 
-            PatchSubscriptionsToSubmitted();
+            //PatchSubscriptionsToSubmitted();
 
             //FixGroupMastersAndCollections("96efee86-36c8-46f9-ab8b-067fd79b8411"); // Proj2
 

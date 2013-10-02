@@ -24205,6 +24205,8 @@ RenderedNode.Excerpt
 					result.CategoryFilters = ShortTextCollection.CreateDemoDefault();
 					result.CategoryNames = ShortTextCollection.CreateDemoDefault();
 					result.Categories = ShortTextCollection.CreateDemoDefault();
+					result.CategoryIDList = @"RenderedNode.CategoryIDList";
+
 					result.Authors = ShortTextCollection.CreateDemoDefault();
 					result.Locations = ShortTextCollection.CreateDemoDefault();
 				
@@ -24418,6 +24420,8 @@ RenderedNode.Excerpt
 							return true;
 						if(Categories != _unmodified_Categories)
 							return true;
+						if(CategoryIDList != _unmodified_CategoryIDList)
+							return true;
 						if(Authors != _unmodified_Authors)
 							return true;
 						if(Locations != _unmodified_Locations)
@@ -24530,6 +24534,7 @@ RenderedNode.Excerpt
 					CategoryFilters = sourceObject.CategoryFilters;
 					CategoryNames = sourceObject.CategoryNames;
 					Categories = sourceObject.Categories;
+					CategoryIDList = sourceObject.CategoryIDList;
 					Authors = sourceObject.Authors;
 					Locations = sourceObject.Locations;
 				}
@@ -24546,6 +24551,7 @@ RenderedNode.Excerpt
 					_unmodified_TimestampText = TimestampText;
 					_unmodified_MainSortableText = MainSortableText;
 					_unmodified_IsCategoryFilteringNode = IsCategoryFilteringNode;
+					_unmodified_CategoryIDList = CategoryIDList;
 				
 					_unmodified_CategoryFilters = CategoryFilters;
 					if(CategoryFilters != null)
@@ -24601,6 +24607,9 @@ RenderedNode.Excerpt
 						case "IsCategoryFilteringNode":
 							IsCategoryFilteringNode = bool.Parse(value);
 							break;
+						case "CategoryIDList":
+							CategoryIDList = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -24638,6 +24647,9 @@ RenderedNode.Excerpt
 			[DataMember]
 			public ShortTextCollection Categories { get; set; }
 			private ShortTextCollection _unmodified_Categories;
+			[DataMember]
+			public string CategoryIDList { get; set; }
+			private string _unmodified_CategoryIDList;
 			[DataMember]
 			public ShortTextCollection Authors { get; set; }
 			private ShortTextCollection _unmodified_Authors;

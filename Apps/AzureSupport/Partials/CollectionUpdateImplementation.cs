@@ -671,6 +671,10 @@ namespace AaltoGlobalImpact.OIP
                 node.Categories.CollectionContent.Add(getShortTextObject(category.ParentCategory.Title));
                 node.CategoryNames.CollectionContent.Add(getShortTextObject(category.ParentCategory.CategoryName));
             }
+            if (category.ParentCategoryID != null)
+            {
+                node.CategoryIDList = category.ParentCategoryID;
+            }
             node.IsCategoryFilteringNode = true;
             node.CategoryFilters.CollectionContent.Add(getShortTextObject(category.CategoryName));
             //if (textContent.Locations != null)
@@ -716,6 +720,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, cat => cat.CategoryName));
+                node.CategoryIDList = textContent.Categories.SelectedIDCommaSeparated;
             }
             if(textContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));
