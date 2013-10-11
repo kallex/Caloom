@@ -1061,6 +1061,7 @@ namespace TheBall
             IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
             informationObject.ETag = blobEtag;
             //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
+            informationObject.RelativeLocation = relativeLocation;
             informationObject.SetInstanceTreeValuesAsUnmodified();
             Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
