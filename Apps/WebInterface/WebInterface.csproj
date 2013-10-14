@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
+    <Compile Include="RESTRequestForwardingHandler.cs" />
     <Compile Include="WebSocketHandler.cs" />
     <Compile Include="DeveloperBlobStorageHandler.cs" />
     <Compile Include="index.aspx.cs">
