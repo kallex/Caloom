@@ -366,7 +366,7 @@ namespace WebInterface
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             if (context.Request.Url.Host == "localhost" && 
-                (contentPath.Contains("oipcms/") || 
+                (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/")))
@@ -439,8 +439,8 @@ namespace WebInterface
             string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
             string fileName;
-            if (prefixStrippedContent.Contains("oipcms/"))
-                fileName = prefixStrippedContent.Replace("oipcms/", LocalWebRootFolder);
+            if (prefixStrippedContent.Contains("groupmanagement/"))
+                fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))

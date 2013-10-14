@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Web;
 using TheBall.CORE;
@@ -244,7 +246,34 @@ namespace TheBall
 
         public static void SetFieldValues(IInformationObject rootObject, NameValueCollection fieldEntries)
         {
-            rootObject.SetValuesToObjects(fieldEntries);
+            NameValueCollection internalObjectFixedEntries = new NameValueCollection();
+            foreach (string key in fieldEntries.AllKeys)
+            {
+                string fieldValue = fieldEntries[key];
+                if (key.Contains("___"))
+                {
+                    int underscoreIndex = key.IndexOf('_');
+                    string containingObjectID = key.Substring(0, underscoreIndex);
+                    List<IInformationObject> foundObjects= new List<IInformationObject>();
+                    rootObject.FindObjectsFromTree(foundObjects, iObj => iObj.ID == containingObjectID, false);
+                    if(foundObjects.Count == 0)
+                        throw new InvalidDataException("Containing object with ID not found: " + containingObjectID);
+                    var containingRootObject = foundObjects[0];
+                    string chainedPropertyName = key.Substring(underscoreIndex + 1);
+                    object actualContainingObject;
+                    string actualPropertyName;
+                    InitializeChainAndReturnPropertyOwningObject(containingRootObject, chainedPropertyName,
+                                                                 out actualContainingObject, out actualPropertyName);
+                    IInformationObject actualIObj = (IInformationObject) actualContainingObject;
+                    string actualKey = actualIObj.ID + "_" + actualPropertyName;
+                    internalObjectFixedEntries.Add(actualKey, fieldValue);
+                }
+                else
+                {
+                    internalObjectFixedEntries.Add(key, fieldValue);
+                }
+            }
+            rootObject.SetValuesToObjects(internalObjectFixedEntries);
         }
 
         private static void retrieveDataSourceInfo(string sourceInfo, out string relativeLocation, out string oldETag)
@@ -265,5 +294,32 @@ namespace TheBall
             rootObject.SetMediaContent(containerOwner, containerID, containerField, postedFile);
         }
 
+        public static void InitializeChainAndReturnPropertyOwningObject(IInformationObject createdObject, string objectProp, out object actualContainingObject, out string fieldPropertyName)
+        {
+            actualContainingObject = null;
+            fieldPropertyName = null;
+            if (objectProp.Contains("___") == false)
+                return;
+            string[] objectChain = objectProp.Split(new[] { "___" }, StringSplitOptions.None);
+            fieldPropertyName = objectChain[objectChain.Length - 1];
+            Stack<string> objectChainStack = new Stack<string>(objectChain.Reverse().Skip(1));
+            actualContainingObject = createdObject;
+            while (objectChainStack.Count > 0)
+            {
+                Type currType = actualContainingObject.GetType();
+                string currObjectProp = objectChainStack.Pop();
+                PropertyInfo prop = currType.GetProperty(currObjectProp);
+                if (prop == null)
+                    throw new InvalidDataException("Property not found by name: " + currObjectProp);
+                var currPropValue = prop.GetValue(actualContainingObject, null);
+                if (currPropValue == null)
+                {
+                    var currPropType = prop.PropertyType;
+                    currPropValue = Activator.CreateInstance(currPropType);
+                    prop.SetValue(actualContainingObject, currPropValue, null);
+                }
+                actualContainingObject = currPropValue;
+            }
+        }
     }
 }

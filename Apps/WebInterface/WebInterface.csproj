@@ -147,6 +147,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="InstanceSettings_CaloomSchools.config" />
+    <Content Include="InstanceSettings_CaloomBusiness.config" />
+    <Content Include="InstanceSettings_CaloomDemo.config" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />

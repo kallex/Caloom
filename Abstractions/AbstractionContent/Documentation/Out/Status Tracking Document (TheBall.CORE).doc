@@ -229,9 +229,9 @@ div.WordSection1
 <p class="MsoTitle">Status Tracking Document (TheBall.CORE)</p>
 </div>
 		<h1>Summary</h1>
-		<h2>CreateSpecifiedInformationObjectWithValues (7 %)</h2>
+		<h2>CreateSpecifiedInformationObjectWithValues (13 %)</h2>
 		<p>		<div class="MsoNormal" >
-		Being implemented 14, Implemented 1
+		Being implemented 14, Implemented 2
 		</div>
 		</p><h2>DeleteSpecifiedInformationObject (14 %)</h2>
 		<p>		<div class="MsoNormal" >
@@ -241,7 +241,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Being implemented 3, Implemented 2
 		</div>
-		</p><h1>CreateSpecifiedInformationObjectWithValues (7 %)</h1>
+		</p><h1>CreateSpecifiedInformationObjectWithValues (13 %)</h1>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
@@ -365,6 +365,23 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
+				<div class="MsoNormal" >
+		MethodExecuteType: CreateInternalObjects
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Create internal objects, whose values will be set after creation.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		TargetDefinitionType: FieldValues
 		</div>
@@ -376,7 +393,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered field value collection. Filter by non-prefix, add ID to keys.
+		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
 		</div>
 				</td>
 				</tr>

@@ -884,9 +884,13 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Object that is created
 		</div>
+		</p><h2>Method Call: CreateInternalObjects ( CreatedObject, HttpFormData )</h2>
+		<p>		<div class="MsoNormal" >
+		Create internal objects, whose values will be set after creation.
+		</div>
 		</p><h2>Target Definition: FieldValues ( CreatedObject, HttpFormData )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered field value collection. Filter by non-prefix, add ID to keys.
+		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
 		</div>
 		</p><h2>Target Definition: ObjectLinkValues ( CreatedObject, HttpFormData )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >

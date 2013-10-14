@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Linq;
@@ -28,7 +30,20 @@ namespace TheBall.CORE
             {
                 var value = httpFormData[key];
                 if (key.StartsWith("File_") == false && key.StartsWith("Object_") == false)
-                    fieldEntries.Add(objectID + "_" + key, value);
+                {
+                    if (key.Contains("___"))
+                    {
+                        object actualContainingObject;
+                        string fieldPropertyName;
+                        ModifyInformationSupport.InitializeChainAndReturnPropertyOwningObject(createdObject, key, out actualContainingObject, out fieldPropertyName);
+                        IInformationObject containingObject = actualContainingObject as IInformationObject;
+                        if(containingObject == null)
+                            throw new NotSupportedException("Object property setting at creation only supported for IInformationObject types");
+                        fieldEntries.Add(containingObject.ID + "_" + fieldPropertyName, value);
+                    }
+                    else
+                        fieldEntries.Add(objectID + "_" + key, value);
+                }
             }
             return fieldEntries;
         }
@@ -111,5 +126,22 @@ namespace TheBall.CORE
             if (SystemSupport.ReservedDomainNames.Contains(objectDomainName))
                 throw new SecurityException("Creation of system namespace objects is not permitted");
         }
+
+        public static void ExecuteMethod_CreateInternalObjects(NameValueCollection httpFormData, IInformationObject createdObject)
+        {
+            var internalObjectProperties = httpFormData.AllKeys.Where(key => key.Contains("___")).ToArray();
+            foreach (var objectProp in internalObjectProperties)
+            {
+                initializeChainObjects(createdObject, objectProp);
+            }
+        }
+
+        private static void initializeChainObjects(IInformationObject createdObject, string objectProp)
+        {
+            object actualContainingObject;
+            string fieldPropertyName;
+            ModifyInformationSupport.InitializeChainAndReturnPropertyOwningObject(createdObject, objectProp, out actualContainingObject, out fieldPropertyName);
+        }
+
     }
 }
