@@ -28,6 +28,8 @@ namespace TheBall.CORE
             string objectID = createdObject.ID;
             foreach (var key in httpFormData.AllKeys)
             {
+                if (String.IsNullOrEmpty(key))
+                    continue;
                 var value = httpFormData[key];
                 if (key.StartsWith("File_") == false && key.StartsWith("Object_") == false)
                 {

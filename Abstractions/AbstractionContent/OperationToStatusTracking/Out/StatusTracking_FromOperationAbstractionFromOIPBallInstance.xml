@@ -232,6 +232,18 @@
     <StatusItem name="UpdateAccountRootToReferences_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="UpdateGroupInformationChangeToMembers_GroupID" displayName="VariableType: GroupID" description="Group ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateGroupInformationChangeToMembers_GroupContainer" displayName="TargetDefinitionType: GroupContainer" description="Group container of given group ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateGroupInformationChangeToMembers_AccountIDs" displayName="TargetDefinitionType: AccountIDs" description="AccountIDs of group memberships">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateGroupInformationChangeToMembers_UpdateAccountGroupSummaryContainers" displayName="MethodExecuteType: UpdateAccountGroupSummaryContainers" description="Update account summary containers with few retries on error">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="RefreshAccountGroupMemberships_GroupRoot" displayName="VariableType: GroupRoot" description="Group root record">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -561,6 +573,12 @@
       <ItemRef itemName="UpdateAccountRootToReferences_UpdateAccountToLogins" />
       <ItemRef itemName="UpdateAccountRootToReferences_UpdateAccountToEmails" />
       <ItemRef itemName="UpdateAccountRootToReferences_StoreObjects" />
+    </Group>
+    <Group name="UpdateGroupInformationChangeToMembers">
+      <ItemRef itemName="UpdateGroupInformationChangeToMembers_GroupID" />
+      <ItemRef itemName="UpdateGroupInformationChangeToMembers_GroupContainer" />
+      <ItemRef itemName="UpdateGroupInformationChangeToMembers_AccountIDs" />
+      <ItemRef itemName="UpdateGroupInformationChangeToMembers_UpdateAccountGroupSummaryContainers" />
     </Group>
     <Group name="RefreshAccountGroupMemberships">
       <ItemRef itemName="RefreshAccountGroupMemberships_GroupRoot" />

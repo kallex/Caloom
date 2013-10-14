@@ -34,7 +34,7 @@ namespace TheBall
         {
             #region Data storage
 
-            const string ConnStrFileName = @"C:\users\kalle\work\ConnectionStringStorage\caloomconnstr.txt";
+            const string ConnStrFileName = @"C:\users\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";
             if (File.Exists(ConnStrFileName))
                 AzureStorageConnectionString = File.ReadAllText(ConnStrFileName);
             else

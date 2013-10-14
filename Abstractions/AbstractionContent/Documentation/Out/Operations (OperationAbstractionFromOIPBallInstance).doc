@@ -1578,6 +1578,44 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Store modified objects
 		</div>
+		</p><h1>UpdateGroupInformationChangeToMembers (GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Refresh group (profile) information change to its members group information summaries
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupContainer ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group container of given group ID
+		</div>
+		</p><h2>Target Definition: AccountIDs ( GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		AccountIDs of group memberships
+		</div>
+		</p><h2>Method Call: UpdateAccountGroupSummaryContainers ( GroupContainer, AccountIDs, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Update account summary containers with few retries on error
+		</div>
 		</p><h1>UpdateLoginGroupPermissions (AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

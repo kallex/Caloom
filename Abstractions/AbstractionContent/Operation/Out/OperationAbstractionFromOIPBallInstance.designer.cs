@@ -236,6 +236,24 @@ using System.IO;
 				UpdateAccountRootToReferencesImplementation.ExecuteMethod_StoreObjects(AccountLogins, AccountEmails);		
 				}
 				}
+				public class UpdateGroupInformationChangeToMembersParameters 
+		{
+				public string GroupID ;
+				}
+		
+		public class UpdateGroupInformationChangeToMembers 
+		{
+				private static void PrepareParameters(UpdateGroupInformationChangeToMembersParameters parameters)
+		{
+					}
+				public static void Execute(UpdateGroupInformationChangeToMembersParameters parameters)
+		{
+						PrepareParameters(parameters);
+					GroupContainer GroupContainer = UpdateGroupInformationChangeToMembersImplementation.GetTarget_GroupContainer(parameters.GroupID);	
+				string[] AccountIDs = UpdateGroupInformationChangeToMembersImplementation.GetTarget_AccountIDs(GroupContainer);	
+				UpdateGroupInformationChangeToMembersImplementation.ExecuteMethod_UpdateAccountGroupSummaryContainers(parameters.GroupID, GroupContainer, AccountIDs);		
+				}
+				}
 				public class RefreshAccountGroupMembershipsParameters 
 		{
 				public TBRGroupRoot GroupRoot ;

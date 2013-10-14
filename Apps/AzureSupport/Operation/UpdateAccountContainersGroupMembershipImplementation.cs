@@ -103,6 +103,7 @@ namespace AaltoGlobalImpact.OIP
             if (groupContainer == null)
             {
                 groupContainer = GroupContainer.CreateDefault();
+                groupContainer.GroupProfile.GroupName = groupRoot.Group.Title;
                 groupContainer.SetLocationAsOwnerContent(groupOwner, "default");
                 groupContainer.StoreInformation();
             }
