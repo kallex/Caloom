@@ -28,7 +28,8 @@ namespace TheBall
         public static readonly string AccountDefaultRedirect;
         public static readonly string[] DefaultGroupTemplateList;
         public static readonly string GroupDefaultRedirect;
-        
+        public static readonly string AzureStorageKey;
+        public static readonly string AzureAccountName;
 
         static InstanceConfiguration()
         {
@@ -39,6 +40,10 @@ namespace TheBall
                 AzureStorageConnectionString = File.ReadAllText(ConnStrFileName);
             else
                 AzureStorageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
+            var connStrSplits = AzureStorageConnectionString.Split(new[] {";AccountKey="}, StringSplitOptions.None);
+            AzureStorageKey = connStrSplits[1];
+            connStrSplits = connStrSplits[0].Split(new[] {";AccountName="}, StringSplitOptions.None);
+            AzureAccountName = connStrSplits[1];
             WorkerActiveContainerName = CloudConfigurationManager.GetSetting("WorkerActiveContainerName");
             #endregion
 
@@ -109,6 +114,5 @@ The link is valid for 14 days, after which you need to request new invitation.";
 
 
         }
-
     }
 }
