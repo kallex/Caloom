@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -30,12 +32,12 @@ namespace WebInterface
         {
             // Return false in case your Managed Handler cannot be reused for another request.
             // Usually this would be false in case you have some state information preserved per request.
-            get { return true; }
+            get { return false; }
         }
 
         public void ProcessRequest(HttpContext context)
         {
-            throw new NotImplementedException("Not securely implemented yet!");
+            throw new NotImplementedException("Not securely implemented yet! - Issues with keepalive by Azure clients");
             string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
             verifySignature(request.Headers);
@@ -86,16 +88,41 @@ namespace WebInterface
                         break;
                 }
             }
-            var newResponse = newRequest.GetResponse();
+            //newRequest.KeepAlive = false; //THIS DOES THE TRICK
+            //newRequest.ProtocolVersion = HttpVersion.Version10;
+            Debug.WriteLine("Starting request with uri: " + path);
+            var newResponse = (HttpWebResponse)newRequest.GetResponse();
             var response = context.Response;
+            response.ClearHeaders();
             response.ContentType = newResponse.ContentType;
+            if(String.IsNullOrEmpty(newResponse.ContentEncoding) == false)
+                response.ContentEncoding = Encoding.GetEncoding(newResponse.ContentEncoding);
+            response.StatusCode = (int) newResponse.StatusCode;
             var newRespStream = newResponse.GetResponseStream();
             var respStream = response.OutputStream;
             foreach (var key in newResponse.Headers.AllKeys)
             {
-                response.AddHeader(key, newResponse.Headers[key]);
+                response.Headers.Set(key, newResponse.Headers[key]);
             }
-            newRespStream.CopyTo(respStream);
+            Debug.Write("Fetching content...");
+//            if(newRequest.KeepAlive)
+//                response.Headers.Set("Connection", "close");
+            MemoryStream memStream = new MemoryStream();
+            newRespStream.CopyTo(memStream);
+            var byteContent = memStream.ToArray();
+            Debug.WriteLine("... fetched: " + byteContent.Length);
+            string strContent = Encoding.UTF8.GetString(byteContent);
+            //newRespStream.CopyTo(respStream);
+            BinaryWriter writer = new BinaryWriter(respStream);
+            writer.Write(byteContent);
+            Debug.WriteLine("Served with keepalive: " + newRequest.KeepAlive);
+            Debug.WriteLine(response.IsClientConnected);
+            response.Flush();
+            Debug.WriteLine(response.IsClientConnected);
+            //response.Close();
+            Thread.Sleep(10000);
+            Debug.WriteLine("Served request... with connection: " + newResponse.Headers["Connection"]);
+            //response.End();
         }
 
         private void constructNewSignature(string method, HttpRequest request, string newUrl, string ifMatch = "", string md5 = "")
