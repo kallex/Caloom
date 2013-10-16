@@ -5,57 +5,79 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Threading;
 using System.Web;
-using System.Web.Security;
-using AaltoGlobalImpact.OIP;
-using DotNetOpenAuth.OpenId.RelyingParty;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
 using Microsoft.WindowsAzure.StorageClient.Protocol;
 using TheBall;
 
 namespace WebInterface
 {
-    public class RESTRequestForwardingHandler : IHttpHandler
+    public class RESTForwarderModule : IHttpModule
     {
         /// <summary>
-        /// You will need to configure this handler in the web.config file of your 
+        /// You will need to configure this module in the Web.config file of your
         /// web and register it with IIS before being able to use it. For more information
         /// see the following link: http://go.microsoft.com/?linkid=8101007
         /// </summary>
-        #region IHttpHandler Members
+        #region IHttpModule Members
 
-        public bool IsReusable
+        public void Dispose()
         {
-            // Return false in case your Managed Handler cannot be reused for another request.
-            // Usually this would be false in case you have some state information preserved per request.
-            get { return false; }
+            //clean-up code here.
+        }
+
+        public void Init(HttpApplication context)
+        {
+            // Below is an example of how you can handle LogRequest event and provide 
+            // custom logging implementation for it
+            context.LogRequest += new EventHandler(OnLogRequest);
+            context.BeginRequest += ContextOnBeginRequest;
+            context.PreSendRequestContent += context_PreSendRequestContent;
+            context.PreSendRequestHeaders += context_PreSendRequestHeaders;
+        }
+
+        void context_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var resp = HttpContext.Current.Response;
+        }
+
+        void context_PreSendRequestContent(object sender, EventArgs e)
+        {
+            var resp = HttpContext.Current.Response;
+        }
+
+        private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
+        {
+            //ProcessRequest((HttpApplication) sender, HttpContext.Current);
+        }
+
+        #endregion
+
+        public void OnLogRequest(Object source, EventArgs e)
+        {
+            //custom logging logic can go here
+            int i = 0;
         }
 
         private bool isInitiated = false;
 
-        public void ProcessRequest(HttpContext context)
+        public void ProcessRequest(HttpApplication app, HttpContext context)
         {
-            return;
             isInitiated = true;
-            string user = context.User.Identity.Name;
+            //string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
             if (request.Url.DnsSafeHost != "localdev") // To safeguard because of direct access to blob storage without credential verification right now
                 return;
             verifySignature(request.Headers);
 
             var urlPathSplit = request.RawUrl.Split(new[] {"/REST/blob/"}, StringSplitOptions.None);
-            string path = urlPathSplit[1];
+            string path = urlPathSplit.Length > 1 ? urlPathSplit[1] : urlPathSplit[0].Substring(1);
             var newUrl = "http://caloomdemo.blob.core.windows.net/" + path;
             HttpWebRequest newRequest = (HttpWebRequest)WebRequest.Create(newUrl);
             constructNewSignature(request.HttpMethod, request, newUrl);
             newRequest.ContentType = request.ContentType;
             newRequest.ContentLength = request.ContentLength;
             newRequest.UserAgent = request.UserAgent;
-            newRequest.KeepAlive = request.Headers["Connection"] == "Keep-Alive";
             if (request.HttpMethod != "GET"
                         && request.HttpMethod != "HEAD"
                         && request.ContentLength > 0)
@@ -93,9 +115,10 @@ namespace WebInterface
                         break;
                 }
             }
-            //newRequest.KeepAlive = false; //THIS DOES THE TRICK
-            //newRequest.ProtocolVersion = HttpVersion.Version10;
             Debug.WriteLine("Starting request with uri: " + path);
+            bool keepAlive = request.Headers["Connection"] == "Keep-Alive";
+            if (keepAlive)
+                newRequest.KeepAlive = true;
             var newResponse = (HttpWebResponse)newRequest.GetResponse();
             var response = context.Response;
             response.ClearHeaders();
@@ -103,32 +126,40 @@ namespace WebInterface
             if(String.IsNullOrEmpty(newResponse.ContentEncoding) == false)
                 response.ContentEncoding = Encoding.GetEncoding(newResponse.ContentEncoding);
             response.StatusCode = (int) newResponse.StatusCode;
-            var newRespStream = newResponse.GetResponseStream();
-            var respStream = response.OutputStream;
             foreach (var key in newResponse.Headers.AllKeys)
             {
-                if(key != "Connection")
+                //if (key != "Connection")
+                if (key != "Transfer-Encoding")
                     response.Headers.Set(key, newResponse.Headers[key]);
             }
+            var newRespStream = newResponse.GetResponseStream();
+            var respStream = response.OutputStream;
             Debug.Write("Fetching content...");
-            if(newRequest.KeepAlive)
-                response.Headers.Set("Connection", "Keep-Alive");
+//            if(newRequest.KeepAlive)
+//                response.Headers.Set("Connection", "Keep-Alive");
             MemoryStream memStream = new MemoryStream();
             newRespStream.CopyTo(memStream);
             var byteContent = memStream.ToArray();
             Debug.WriteLine("... fetched: " + byteContent.Length);
-            string strContent = Encoding.UTF8.GetString(byteContent);
+            //string strContent = Encoding.UTF8.GetString(byteContent);
             //newRespStream.CopyTo(respStream);
             BinaryWriter writer = new BinaryWriter(respStream);
             writer.Write(byteContent);
+            writer.Flush();
+            //response.AddHeader("Content-Length", (byteContent.Length / 2).ToString());
             Debug.WriteLine("Served with keepalive: " + newRequest.KeepAlive);
             Debug.WriteLine(response.IsClientConnected);
-            response.Flush();
+            //response.Flush();
             Debug.WriteLine(response.IsClientConnected);
-            response.Close();
+            //response.Close();
             //Thread.Sleep(10000);
             Debug.WriteLine("Served request... with connection: " + newResponse.Headers["Connection"]);
+            //response.Close();
+            //app.CompleteRequest();
             response.End();
+            //if(newRequest.KeepAlive == false)
+            //response.End();
+            //app.a
         }
 
         private void constructNewSignature(string method, HttpRequest request, string newUrl, string ifMatch = "", string md5 = "")
@@ -242,19 +273,6 @@ namespace WebInterface
         {
         }
 
-        #endregion
     }
 
-    public class MyAzureStrategy : CanonicalizationStrategy
-    {
-        public override string CanonicalizeHttpRequest(HttpWebRequest request, string accountName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static string GetCanonicalizedResourceHelper(string url, string azureAccountName)
-        {
-            return GetCanonicalizedResourceVersion2(new Uri(url), azureAccountName);
-        }
-    }
 }
