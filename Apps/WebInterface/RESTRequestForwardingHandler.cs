@@ -35,16 +35,20 @@ namespace WebInterface
             get { return false; }
         }
 
+        private bool isInitiated = false;
+
         public void ProcessRequest(HttpContext context)
         {
-            throw new NotImplementedException("Not securely implemented yet! - Issues with keepalive by Azure clients");
+            isInitiated = true;
             string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
+            if (request.Url.DnsSafeHost != "localdev") // To safeguard because of direct access to blob storage without credential verification right now
+                return;
             verifySignature(request.Headers);
 
             var urlPathSplit = request.RawUrl.Split(new[] {"/REST/blob/"}, StringSplitOptions.None);
             string path = urlPathSplit[1];
-            var newUrl = "https://caloomdemo.blob.core.windows.net/" + path;
+            var newUrl = "http://caloomdemo.blob.core.windows.net/" + path;
             HttpWebRequest newRequest = (HttpWebRequest)WebRequest.Create(newUrl);
             constructNewSignature(request.HttpMethod, request, newUrl);
             newRequest.ContentType = request.ContentType;
@@ -102,11 +106,12 @@ namespace WebInterface
             var respStream = response.OutputStream;
             foreach (var key in newResponse.Headers.AllKeys)
             {
-                response.Headers.Set(key, newResponse.Headers[key]);
+                if(key != "Connection")
+                    response.Headers.Set(key, newResponse.Headers[key]);
             }
             Debug.Write("Fetching content...");
-//            if(newRequest.KeepAlive)
-//                response.Headers.Set("Connection", "close");
+            if(newRequest.KeepAlive)
+                response.Headers.Set("Connection", "Keep-Alive");
             MemoryStream memStream = new MemoryStream();
             newRespStream.CopyTo(memStream);
             var byteContent = memStream.ToArray();
@@ -119,10 +124,10 @@ namespace WebInterface
             Debug.WriteLine(response.IsClientConnected);
             response.Flush();
             Debug.WriteLine(response.IsClientConnected);
-            //response.Close();
-            Thread.Sleep(10000);
+            response.Close();
+            //Thread.Sleep(10000);
             Debug.WriteLine("Served request... with connection: " + newResponse.Headers["Connection"]);
-            //response.End();
+            response.End();
         }
 
         private void constructNewSignature(string method, HttpRequest request, string newUrl, string ifMatch = "", string md5 = "")
