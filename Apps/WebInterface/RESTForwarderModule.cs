@@ -72,7 +72,7 @@ namespace WebInterface
 
             var urlPathSplit = request.RawUrl.Split(new[] {"/REST/blob/"}, StringSplitOptions.None);
             string path = urlPathSplit.Length > 1 ? urlPathSplit[1] : urlPathSplit[0].Substring(1);
-            var newUrl = "https://caloomdemo.blob.core.windows.net/" + path;
+            var newUrl = "http://caloomdemo.blob.core.windows.net/" + path;
             HttpWebRequest newRequest = (HttpWebRequest)WebRequest.Create(newUrl);
             newRequest.ContentType = request.ContentType;
             newRequest.ContentLength = request.ContentLength;
