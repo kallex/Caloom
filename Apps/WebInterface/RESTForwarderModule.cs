@@ -48,7 +48,7 @@ namespace WebInterface
 
         private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
         {
-            //ProcessRequest((HttpApplication) sender, HttpContext.Current);
+            ProcessRequest((HttpApplication) sender, HttpContext.Current);
         }
 
         #endregion
@@ -66,27 +66,19 @@ namespace WebInterface
             isInitiated = true;
             //string user = context.User.Identity.Name;
             HttpRequest request = context.Request;
-            if (request.Url.DnsSafeHost != "localdev") // To safeguard because of direct access to blob storage without credential verification right now
+            if (request.Url.DnsSafeHost != "localdev" || request.UserHostAddress != "127.0.0.1") // To safeguard because of direct access to blob storage without credential verification right now
                 return;
             verifySignature(request.Headers);
 
             var urlPathSplit = request.RawUrl.Split(new[] {"/REST/blob/"}, StringSplitOptions.None);
             string path = urlPathSplit.Length > 1 ? urlPathSplit[1] : urlPathSplit[0].Substring(1);
-            var newUrl = "http://caloomdemo.blob.core.windows.net/" + path;
+            var newUrl = "https://caloomdemo.blob.core.windows.net/" + path;
             HttpWebRequest newRequest = (HttpWebRequest)WebRequest.Create(newUrl);
-            constructNewSignature(request.HttpMethod, request, newUrl);
             newRequest.ContentType = request.ContentType;
             newRequest.ContentLength = request.ContentLength;
             newRequest.UserAgent = request.UserAgent;
-            if (request.HttpMethod != "GET"
-                        && request.HttpMethod != "HEAD"
-                        && request.ContentLength > 0)
-            {
-                var oldStream = request.GetBufferedInputStream();
-                var newStream = newRequest.GetRequestStream();
-                oldStream.CopyTo(newStream);
-                newStream.Close();
-            }
+            newRequest.Method = request.HttpMethod;
+            newRequest.SendChunked = false;
             foreach (var headerKey in request.Headers.AllKeys)
             {
                 switch (headerKey)
@@ -115,45 +107,75 @@ namespace WebInterface
                         break;
                 }
             }
+            string md5 = newRequest.Headers["Content-MD5"] ?? "";
+            string ifMatch = newRequest.Headers["If-Match"] ?? "";
+            constructNewSignature(request.HttpMethod, newRequest, newUrl, ifMatch, md5);
+            if (request.HttpMethod != "GET"
+                        && request.HttpMethod != "HEAD"
+                        && request.ContentLength > 0)
+            {
+                var oldStream = request.GetBufferedInputStream();
+                var newStream = newRequest.GetRequestStream();
+                oldStream.CopyTo(newStream);
+                newStream.Close();
+            }
             Debug.WriteLine("Starting request with uri: " + path);
-            bool keepAlive = request.Headers["Connection"] == "Keep-Alive";
-            if (keepAlive)
-                newRequest.KeepAlive = true;
-            var newResponse = (HttpWebResponse)newRequest.GetResponse();
+//            bool keepAlive = request.Headers["Connection"] == "Keep-Alive";
+//            if (keepAlive)
+//                newRequest.KeepAlive = true;
+            HttpWebResponse newResponse = null;
+            try
+            {
+                //Debugger.Break();
+                newResponse = (HttpWebResponse) newRequest.GetResponse();
+            }
+            catch (WebException ex)
+            {
+                newResponse = (HttpWebResponse) ex.Response;
+            }
             var response = context.Response;
             response.ClearHeaders();
             response.ContentType = newResponse.ContentType;
-            if(String.IsNullOrEmpty(newResponse.ContentEncoding) == false)
-                response.ContentEncoding = Encoding.GetEncoding(newResponse.ContentEncoding);
+            //if(String.IsNullOrEmpty(newResponse.Con) == false)
+            //    response.ContentEncoding = Encoding.GetEncoding(newResponse.ContentEncoding);
             response.StatusCode = (int) newResponse.StatusCode;
             foreach (var key in newResponse.Headers.AllKeys)
             {
-                //if (key != "Connection")
-                if (key != "Transfer-Encoding")
+                switch (key)
+                {
+                    case "Connection":
+                    case "Content-Length":
+                    case "Date":
+                    case "Expect":
+                    case "Host":
+                    case "If-Modified-Since":
+                    case "Range":
+                    case "Transfer-Encoding":
+                    case "Proxy-Connection":
+                        // Let IIS handle these
+                        break;
+                    default:
                     response.Headers.Set(key, newResponse.Headers[key]);
+                        break;
+                }
+
             }
             var newRespStream = newResponse.GetResponseStream();
             var respStream = response.OutputStream;
-            Debug.Write("Fetching content...");
-//            if(newRequest.KeepAlive)
-//                response.Headers.Set("Connection", "Keep-Alive");
-            MemoryStream memStream = new MemoryStream();
-            newRespStream.CopyTo(memStream);
-            var byteContent = memStream.ToArray();
-            Debug.WriteLine("... fetched: " + byteContent.Length);
+            //Debug.Write("Fetching content...");
+            //MemoryStream memStream = new MemoryStream();
+            //newRespStream.CopyTo(memStream);
+            //var byteContent = memStream.ToArray();
+            //Debug.WriteLine("... fetched: " + byteContent.Length);
             //string strContent = Encoding.UTF8.GetString(byteContent);
-            //newRespStream.CopyTo(respStream);
-            BinaryWriter writer = new BinaryWriter(respStream);
-            writer.Write(byteContent);
-            writer.Flush();
+            //BinaryWriter writer = new BinaryWriter(respStream);
+            //writer.Write(byteContent);
+            //writer.Flush();
             //response.AddHeader("Content-Length", (byteContent.Length / 2).ToString());
-            Debug.WriteLine("Served with keepalive: " + newRequest.KeepAlive);
-            Debug.WriteLine(response.IsClientConnected);
-            //response.Flush();
-            Debug.WriteLine(response.IsClientConnected);
+            newRespStream.CopyTo(respStream);
+            response.Flush();
             //response.Close();
             //Thread.Sleep(10000);
-            Debug.WriteLine("Served request... with connection: " + newResponse.Headers["Connection"]);
             //response.Close();
             //app.CompleteRequest();
             response.End();
@@ -162,7 +184,7 @@ namespace WebInterface
             //app.a
         }
 
-        private void constructNewSignature(string method, HttpRequest request, string newUrl, string ifMatch = "", string md5 = "")
+        private void constructNewSignature(string method, HttpWebRequest request, string newUrl, string ifMatch, string md5)
         {
             var headers = request.Headers;
             string MessageSignature = String.Format("{0}\n\n\n{1}\n{5}\n\n\n\n{2}\n\n\n\n{3}{4}",
