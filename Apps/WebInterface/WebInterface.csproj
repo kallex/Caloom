@@ -150,6 +150,7 @@
     <Content Include="InstanceSettings_CaloomSchools.config" />
     <Content Include="InstanceSettings_CaloomBusiness.config" />
     <Content Include="InstanceSettings_CaloomDemo.config" />
+    <Content Include="InstanceSettings_CaloomTest.config" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />
@@ -159,6 +160,7 @@
     <None Include="Properties\PublishProfiles\FilesystemTest.pubxml" />
     <None Include="Properties\PublishProfiles\globalimpact.aalto.fi.pubxml" />
     <None Include="Properties\PublishProfiles\schools.caloom.com.pubxml" />
+    <None Include="Properties\PublishProfiles\test.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\theball - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\theball - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Web Role OIPSSL.pubxml" />

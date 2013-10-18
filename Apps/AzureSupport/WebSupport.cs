@@ -13,7 +13,7 @@ namespace AzureSupport
         static string GetContainerName(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localhost")
+            if (hostName == "localhost" || hostName == "localdev")
                 return InstanceConfiguration.WorkerActiveContainerName;
             return hostName.Replace('.', '-').ToLower();
         }

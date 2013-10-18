@@ -140,8 +140,6 @@ namespace WebInterface
             }
             else if (hostName == "demowww.ehs.protonit.net")
                 hostName = "www.earthhouse.fi";
-            if (hostName == "localhost" || hostName == "oip.msunit.citrus.fi")
-                return request.Path.Replace("/public/", "pub/");
             string containerName = hostName.Replace('.', '-');
             string currServingFolder = "";
             try
@@ -198,6 +196,7 @@ namespace WebInterface
                 case "demopublicoip.aaltoglobalimpact.org":
                     return "http://demooip.aaltoglobalimpact.org/TheBallLogin.aspx";
                 case "localhost":
+                case "localdev":
                     return null;
                 default:
                     return null;

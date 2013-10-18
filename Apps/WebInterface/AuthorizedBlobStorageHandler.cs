@@ -365,7 +365,7 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            if (context.Request.Url.Host == "localhost" && 
+            if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev") && 
                 (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
