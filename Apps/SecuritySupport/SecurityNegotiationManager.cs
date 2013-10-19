@@ -17,11 +17,10 @@ namespace SecuritySupport
     public class SecurityNegotiationManager
     {
         //public static async Task EchoClient()
-        private static WebSocket socket;
-        private static INegotiationProtocolMember protocolMember;
-        private static int aliceActionIX;
-        static Stopwatch watch = new Stopwatch();
-        private static bool playAlice = false;
+        private WebSocket socket;
+        private INegotiationProtocolMember protocolMember;
+        Stopwatch watch = new Stopwatch();
+        private bool playAlice = false;
 
         public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret)
         {
@@ -48,25 +47,26 @@ namespace SecuritySupport
             string idParam = "groupID=4ddf4bef-0f60-41b6-925d-02721e89d637";
             string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
-            socket = new WebSocket(deviceConnectionUrl);
-            socket.OnOpen += socket_OnOpen;
-            socket.OnClose += socket_OnClose;
-            socket.OnError += socket_OnError;
-            socket.OnMessage += socket_OnMessage;
+            SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
+            securityNegotiationManager.socket = new WebSocket(deviceConnectionUrl);
+            securityNegotiationManager.socket.OnOpen += securityNegotiationManager.socket_OnOpen;
+            securityNegotiationManager.socket.OnClose += securityNegotiationManager.socket_OnClose;
+            securityNegotiationManager.socket.OnError += securityNegotiationManager.socket_OnError;
+            securityNegotiationManager.socket.OnMessage += securityNegotiationManager.socket_OnMessage;
             TheBallEKE instance = new TheBallEKE();
             instance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
-            playAlice = false;
-            if (playAlice)
+            securityNegotiationManager.playAlice = false;
+            if (securityNegotiationManager.playAlice)
             {
-                protocolMember = new TheBallEKE.EKEAlice(instance);
+                securityNegotiationManager.protocolMember = new TheBallEKE.EKEAlice(instance);
             }
             else
             {
-                protocolMember = new TheBallEKE.EKEBob(instance);
+                securityNegotiationManager.protocolMember = new TheBallEKE.EKEBob(instance);
             }
-            protocolMember.SendMessageToOtherParty = bytes => { socket.Send(bytes); };
-            watch.Start();
-            socket.Connect();
+            securityNegotiationManager.protocolMember.SendMessageToOtherParty = bytes => { securityNegotiationManager.socket.Send(bytes); };
+            securityNegotiationManager.watch.Start();
+            securityNegotiationManager.socket.Connect();
 #if native45
 
     //WebSocket socket = new ClientWebSocket();
@@ -110,24 +110,24 @@ namespace SecuritySupport
 #endif
         }
 
-        static void socket_OnMessage(object sender, MessageEventArgs e)
+        void socket_OnMessage(object sender, MessageEventArgs e)
         {
             Console.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
             protocolMember.LatestMessageFromOtherParty = e.RawData;
             ProceedProtocol();
         }
 
-        static void socket_OnError(object sender, ErrorEventArgs e)
+        void socket_OnError(object sender, ErrorEventArgs e)
         {
             Console.WriteLine("ERROR: " + e.Message);
         }
 
-        static void socket_OnClose(object sender, CloseEventArgs e)
+        void socket_OnClose(object sender, CloseEventArgs e)
         {
             Console.WriteLine("Closed");
         }
 
-        static void socket_OnOpen(object sender, EventArgs e)
+        void socket_OnOpen(object sender, EventArgs e)
         {
             Console.WriteLine("Opened");
             if (playAlice)
@@ -147,12 +147,12 @@ namespace SecuritySupport
 
         }
 
-        private static void PingAlice()
+        private void PingAlice()
         {
             socket.Send(new byte[0]);
         }
 
-        static void ProceedProtocol()
+        void ProceedProtocol()
         {
             while(protocolMember.IsDoneWithProtocol == false && protocolMember.WaitForOtherParty == false)
             {
