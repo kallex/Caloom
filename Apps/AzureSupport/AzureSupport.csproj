@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AzureSupport</RootNamespace>
     <AssemblyName>AzureSupport</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AWSSDK, Version=1.4.15.1, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
@@ -84,8 +87,13 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\DeleteAuthenticatedAsActiveDeviceImplementation.cs" />
+    <Compile Include="TheBall.CORE\PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.cs" />
+    <Compile Include="TheBall.CORE\CreateAuthenticatedAsActiveDeviceImplementation.cs" />
     <Compile Include="Operation\UpdateGroupInformationChangeToMembersImplementation.cs" />
     <Compile Include="Operation\SetCategoryHierarchyAndOrderInNodeSummaryImplementation.cs" />
+    <Compile Include="TheBall.CORE\AuthenticatedAsActiveDevice.cs" />
+    <Compile Include="TheBall.CORE\AuthenticatedAsActiveDeviceCollection.cs" />
     <Compile Include="TheBall.CORE\SetOwnerWebRedirectImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateGroupWithTemplatesImplementation.cs" />
     <Compile Include="TheBall.CORE\UnregisterEmailAddressImplementation.cs" />
@@ -214,7 +222,12 @@
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SecuritySupport\SecuritySupport.csproj">
+      <Project>{FE40FC1C-284E-4F91-B00F-5CCA71846208}</Project>
+      <Name>SecuritySupport</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Ext\AWSSDK.dll" />
     <Content Include="Ext\AWSSDK.xml" />

@@ -25,7 +25,7 @@ namespace WebTemplateManager.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("schools-caloom-com,business-caloom-com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("schools-caloom-com,business-caloom-com,demo-caloom-com,test-caloom-com")]
         public string AllowedContainerNames {
             get {
                 return ((string)(this["AllowedContainerNames"]));

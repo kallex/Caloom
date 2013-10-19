@@ -259,6 +259,130 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates device membership FROM the group as authenticated against other group.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AuthenticationDeviceDescription</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Description of the device</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TargetBallHostName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Target Ball instance host name. If not given, using the same host that the call was made from.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TargetGroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Target group ID to which the device membership is established</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>SharedSecret</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Shared secret with the back-end to establish connection</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: NegotiationURL ( TargetBallHostName, TargetGroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Trust negotiation URL</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, Owner, AuthenticationDeviceDescription, SharedSecret )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership client</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateAuthenticatedAsActiveDeviceReturnValue ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CreatedAuthenticatedAsActiveDevice</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AuthenticatedAsActiveDevice</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created device client membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateDeviceMembership (Owner, DeviceDescription, ActiveSymmetricAESKey)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -744,6 +868,66 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteAuthenticatedAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete device membership record entirely.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AuthenticatedAsActiveDeviceID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( Owner, AuthenticatedAsActiveDeviceID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteAuthenticatedAsActiveDevice ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete device membership record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="DeleteDeviceMembership (Owner, DeviceMembershipID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1041,6 +1225,73 @@
               <Paragraph>
                 <Text>
                   <TextContent>Fetch input to storage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PerformNegotiationAndValidateAuthenticationAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Negotiate and validate authentication as active device.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AuthenticatedAsActiveDeviceID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of device membership</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( Owner, AuthenticatedAsActiveDeviceID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created device membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Negotiate with target party. Set validation flag as true if succesfully negotiated.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

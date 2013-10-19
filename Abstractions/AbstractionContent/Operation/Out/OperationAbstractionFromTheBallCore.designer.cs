@@ -142,6 +142,71 @@ using System.IO;
 				CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.DeviceMembership, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
+				public class CreateAuthenticatedAsActiveDeviceParameters 
+		{
+				public IContainerOwner Owner ;
+				public string AuthenticationDeviceDescription ;
+				public string TargetBallHostName ;
+				public string TargetGroupID ;
+				public string SharedSecret ;
+				}
+		
+		public class CreateAuthenticatedAsActiveDevice 
+		{
+				private static void PrepareParameters(CreateAuthenticatedAsActiveDeviceParameters parameters)
+		{
+					}
+				public static CreateAuthenticatedAsActiveDeviceReturnValue Execute(CreateAuthenticatedAsActiveDeviceParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string NegotiationURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_NegotiationURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, parameters.SharedSecret, NegotiationURL);	
+				CreateAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
+				CreateAuthenticatedAsActiveDeviceReturnValue returnValue = CreateAuthenticatedAsActiveDeviceImplementation.Get_ReturnValue(AuthenticatedAsActiveDevice);
+		return returnValue;
+				}
+				}
+				public class CreateAuthenticatedAsActiveDeviceReturnValue 
+		{
+				public AuthenticatedAsActiveDevice CreatedAuthenticatedAsActiveDevice ;
+				}
+				public class PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters 
+		{
+				public IContainerOwner Owner ;
+				public string AuthenticatedAsActiveDeviceID ;
+				}
+		
+		public class PerformNegotiationAndValidateAuthenticationAsActiveDevice 
+		{
+				private static void PrepareParameters(PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters)
+		{
+					}
+				public static void Execute(PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
+				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_NegotiateWithTarget(AuthenticatedAsActiveDevice);		
+				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
+				}
+				}
+				public class DeleteAuthenticatedAsActiveDeviceParameters 
+		{
+				public IContainerOwner Owner ;
+				public string AuthenticatedAsActiveDeviceID ;
+				}
+		
+		public class DeleteAuthenticatedAsActiveDevice 
+		{
+				private static void PrepareParameters(DeleteAuthenticatedAsActiveDeviceParameters parameters)
+		{
+					}
+				public static void Execute(DeleteAuthenticatedAsActiveDeviceParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = DeleteAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
+				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_DeleteAuthenticatedAsActiveDevice(AuthenticatedAsActiveDevice);		
+				}
+				}
 				public class CreateInformationInputParameters 
 		{
 				public IContainerOwner Owner ;

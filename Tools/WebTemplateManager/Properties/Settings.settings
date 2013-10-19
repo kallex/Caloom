@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="AllowedContainerNames" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">schools-caloom-com,business-caloom-com</Value>
+      <Value Profile="(Default)">schools-caloom-com,business-caloom-com,demo-caloom-com,test-caloom-com</Value>
     </Setting>
   </Settings>
 </SettingsFile>

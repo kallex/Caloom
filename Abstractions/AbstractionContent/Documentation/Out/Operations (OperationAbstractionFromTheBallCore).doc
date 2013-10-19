@@ -462,6 +462,135 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for joining the devices
 		</div>
+		</p><h1>CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates device membership FROM the group as authenticated against other group.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticationDeviceDescription
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Description of the device
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TargetBallHostName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Target Ball instance host name. If not given, using the same host that the call was made from.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TargetGroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Target group ID to which the device membership is established
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SharedSecret
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Shared secret with the back-end to establish connection
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: NegotiationURL ( TargetBallHostName, TargetGroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Trust negotiation URL
+		</div>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, Owner, AuthenticationDeviceDescription, SharedSecret )</h2>
+		<p>		<div class="MsoNormal" >
+		Created device membership client
+		</div>
+		</p><h2>Method Call: StoreObject ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created object
+		</div>
+		</p><h2>Return Value : CreateAuthenticatedAsActiveDeviceReturnValue ( AuthenticatedAsActiveDevice )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CreatedAuthenticatedAsActiveDevice
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedAsActiveDevice
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created device client membership
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>CreateDeviceMembership (Owner, DeviceDescription, ActiveSymmetricAESKey)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -920,6 +1049,59 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Stores the created object - with all set values.
 		</div>
+		</p><h1>DeleteAuthenticatedAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Delete device membership record entirely.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedAsActiveDeviceID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of device membership
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( Owner, AuthenticatedAsActiveDeviceID )</h2>
+		<p>		<div class="MsoNormal" >
+		Created device membership
+		</div>
+		</p><h2>Method Call: DeleteAuthenticatedAsActiveDevice ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete device membership record
+		</div>
 		</p><h1>DeleteDeviceMembership (Owner, DeviceMembershipID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1198,6 +1380,63 @@ div.WordSection1
 		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, Owner, QueryParameters )</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
+		</div>
+		</p><h1>PerformNegotiationAndValidateAuthenticationAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Negotiate and validate authentication as active device.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedAsActiveDeviceID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of device membership
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( Owner, AuthenticatedAsActiveDeviceID )</h2>
+		<p>		<div class="MsoNormal" >
+		Created device membership
+		</div>
+		</p><h2>Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Negotiate with target party. Set validation flag as true if succesfully negotiated.
+		</div>
+		</p><h2>Method Call: StoreObject ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created object
 		</div>
 		</p><h1>ProcessFetchedInputs (Owner, InformationInputID, ProcessingOperationName)</h1>
 		<h2>Specifications</h2>

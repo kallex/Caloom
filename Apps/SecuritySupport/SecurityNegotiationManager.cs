@@ -9,6 +9,11 @@ using WebSocketSharp;
 
 namespace SecuritySupport
 {
+    public class SecurityNegotiationResult
+    {
+        
+    }
+
     public class SecurityNegotiationManager
     {
         //public static async Task EchoClient()
@@ -17,6 +22,23 @@ namespace SecuritySupport
         private static int aliceActionIX;
         static Stopwatch watch = new Stopwatch();
         private static bool playAlice = false;
+
+        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret)
+        {
+            return performEkeInitiator(connectionUrl, sharedSecret, true);
+        }
+
+        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, string sharedSecret)
+        {
+            return performEkeInitiator(connectionUrl, sharedSecret, false);
+        }
+
+        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret,
+                                                                     bool playAsAlice)
+        {
+            return null;
+        }
+
         public static void EchoClient()
         {
             Console.WriteLine("Starting EKE WSS connection");
