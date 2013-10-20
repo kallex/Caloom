@@ -11,16 +11,18 @@ namespace SecuritySupport
 {
     public class SecurityNegotiationResult
     {
-        
+        public byte[] AESKey;
     }
 
     public class SecurityNegotiationManager
     {
         //public static async Task EchoClient()
-        private WebSocket socket;
-        private INegotiationProtocolMember protocolMember;
+        private WebSocket Socket;
+        private INegotiationProtocolMember ProtocolMember;
         Stopwatch watch = new Stopwatch();
-        private bool playAlice = false;
+        private bool PlayAsAlice = false;
+        private SemaphoreSlim WaitingSemaphore = new SemaphoreSlim(0);
+        private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 0, 10);
 
         public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret)
         {
@@ -35,7 +37,19 @@ namespace SecuritySupport
         private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret,
                                                                      bool playAsAlice)
         {
-            return null;
+            var securityNegotiationManager = InitSecurityNegotiationManager(connectionUrl, sharedSecret, playAsAlice);
+            // Perform negotiation
+            securityNegotiationManager.PerformNegotiation();
+            var aesKey = securityNegotiationManager.ProtocolMember.NegotiationResults[0];
+            return new SecurityNegotiationResult {AESKey = aesKey};
+        }
+
+
+        private void PerformNegotiation()
+        {
+            watch.Start();
+            Socket.Connect();
+            WaitingSemaphore.Wait(MAX_NEGOTIATION_TIME);
         }
 
         public static void EchoClient()
@@ -47,26 +61,9 @@ namespace SecuritySupport
             string idParam = "groupID=4ddf4bef-0f60-41b6-925d-02721e89d637";
             string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
-            SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
-            securityNegotiationManager.socket = new WebSocket(deviceConnectionUrl);
-            securityNegotiationManager.socket.OnOpen += securityNegotiationManager.socket_OnOpen;
-            securityNegotiationManager.socket.OnClose += securityNegotiationManager.socket_OnClose;
-            securityNegotiationManager.socket.OnError += securityNegotiationManager.socket_OnError;
-            securityNegotiationManager.socket.OnMessage += securityNegotiationManager.socket_OnMessage;
-            TheBallEKE instance = new TheBallEKE();
-            instance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
-            securityNegotiationManager.playAlice = false;
-            if (securityNegotiationManager.playAlice)
-            {
-                securityNegotiationManager.protocolMember = new TheBallEKE.EKEAlice(instance);
-            }
-            else
-            {
-                securityNegotiationManager.protocolMember = new TheBallEKE.EKEBob(instance);
-            }
-            securityNegotiationManager.protocolMember.SendMessageToOtherParty = bytes => { securityNegotiationManager.socket.Send(bytes); };
-            securityNegotiationManager.watch.Start();
-            securityNegotiationManager.socket.Connect();
+            string sharedSecret = "testsecretXYZ33";
+            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, sharedSecret, false);
+            securityNegotiationManager.PerformNegotiation();
 #if native45
 
     //WebSocket socket = new ClientWebSocket();
@@ -110,59 +107,72 @@ namespace SecuritySupport
 #endif
         }
 
+        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, string sharedSecret, bool playAsAlice)
+        {
+            SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
+            securityNegotiationManager.Socket = new WebSocket(deviceConnectionUrl);
+            securityNegotiationManager.Socket.OnOpen += securityNegotiationManager.socket_OnOpen;
+            securityNegotiationManager.Socket.OnClose += securityNegotiationManager.socket_OnClose;
+            securityNegotiationManager.Socket.OnError += securityNegotiationManager.socket_OnError;
+            securityNegotiationManager.Socket.OnMessage += securityNegotiationManager.socket_OnMessage;
+            TheBallEKE instance = new TheBallEKE();
+            instance.InitiateCurrentSymmetricFromSecret(sharedSecret);
+            securityNegotiationManager.PlayAsAlice = playAsAlice;
+            if (securityNegotiationManager.PlayAsAlice)
+            {
+                securityNegotiationManager.ProtocolMember = new TheBallEKE.EKEAlice(instance);
+            }
+            else
+            {
+                securityNegotiationManager.ProtocolMember = new TheBallEKE.EKEBob(instance);
+            }
+            securityNegotiationManager.ProtocolMember.SendMessageToOtherParty =
+                bytes => { securityNegotiationManager.Socket.Send(bytes); };
+            return securityNegotiationManager;
+        }
+
         void socket_OnMessage(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
-            protocolMember.LatestMessageFromOtherParty = e.RawData;
+            Debug.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
+            ProtocolMember.LatestMessageFromOtherParty = e.RawData;
             ProceedProtocol();
         }
 
         void socket_OnError(object sender, ErrorEventArgs e)
         {
-            Console.WriteLine("ERROR: " + e.Message);
+            Debug.WriteLine("ERROR: " + e.Message);
         }
 
         void socket_OnClose(object sender, CloseEventArgs e)
         {
-            Console.WriteLine("Closed");
+            Debug.WriteLine("Closed");
         }
 
         void socket_OnOpen(object sender, EventArgs e)
         {
-            Console.WriteLine("Opened");
-            if (playAlice)
+            Debug.WriteLine("Opened");
+            if (PlayAsAlice)
                 ProceedProtocol();
             else
                 PingAlice();
-            /*
-            Console.WriteLine("Opened");
-            socket.Send("Pöö");
-            byte[] bigChunk = new byte[1024*1024];
-            bigChunk[0] = (byte) 12;
-            bigChunk[1024*1024 - 1] = (byte) 23;
-            socket.Send(bigChunk);
-            byte[] smallerChunk = new byte[123];
-            socket.Send(smallerChunk);
-             * */
-
         }
 
         private void PingAlice()
         {
-            socket.Send(new byte[0]);
+            Socket.Send(new byte[0]);
         }
 
         void ProceedProtocol()
         {
-            while(protocolMember.IsDoneWithProtocol == false && protocolMember.WaitForOtherParty == false)
+            while(ProtocolMember.IsDoneWithProtocol == false && ProtocolMember.WaitForOtherParty == false)
             {
-                protocolMember.PerformNextAction();
+                ProtocolMember.PerformNextAction();
             } 
-            if (protocolMember.IsDoneWithProtocol)
+            if (ProtocolMember.IsDoneWithProtocol)
             {
                 watch.Stop();
-                Console.WriteLine((playAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
-                socket.Send("Demo device details, rly!");
+                Debug.WriteLine((PlayAsAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
+                WaitingSemaphore.Release();
             }
         }
 
