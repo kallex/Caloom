@@ -11,7 +11,11 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_NegotiateWithTarget(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
-            //SecurityNegotiationManager
+            var negotiationResult =
+                SecurityNegotiationManager.PerformEKEInitiatorAsBob(authenticatedAsActiveDevice.NegotiationURL,
+                                                                    authenticatedAsActiveDevice.SharedSecret);
+            authenticatedAsActiveDevice.ActiveSymmetricAESKey = negotiationResult.AESKey;
+            authenticatedAsActiveDevice.IsValidatedAndActive = true;
         }
 
         public static void ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

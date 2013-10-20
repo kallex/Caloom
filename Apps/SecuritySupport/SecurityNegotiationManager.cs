@@ -49,7 +49,9 @@ namespace SecuritySupport
         {
             watch.Start();
             Socket.Connect();
-            WaitingSemaphore.Wait(MAX_NEGOTIATION_TIME);
+            bool negotiationSuccess = WaitingSemaphore.Wait(MAX_NEGOTIATION_TIME);
+            if(!negotiationSuccess)
+                throw new TimeoutException("Trust negotiation timed out");
         }
 
         public static void EchoClient()

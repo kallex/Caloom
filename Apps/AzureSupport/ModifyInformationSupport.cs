@@ -83,11 +83,51 @@ namespace TheBall
 
         }
 
+        private static void requireGroup(IContainerOwner owner, string errorMessage)
+        {
+            if(owner.IsGroupContainer() == false)
+                throw new InvalidOperationException(errorMessage);
+        }
+
         private static void executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "DeleteAuthenticatedAsActiveDevice":
+                    {
+                        DeleteAuthenticatedAsActiveDeviceParameters parameters = new DeleteAuthenticatedAsActiveDeviceParameters
+                            {
+                                Owner = containerOwner,
+                                AuthenticatedAsActiveDeviceID = form["AuthenticatedAsActiveDeviceID"]
+                            };
+                        DeleteAuthenticatedAsActiveDevice.Execute(parameters);
+                        break;
+                    }
+                case "PerformNegotiationAndValidateAuthenticationAsActiveDevice":
+                    {
+                        PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters = new PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters
+                            {
+                                Owner = containerOwner,
+                                AuthenticatedAsActiveDeviceID = form["AuthenticatedAsActiveDeviceID"],
+                            };
+                        PerformNegotiationAndValidateAuthenticationAsActiveDevice.Execute(parameters);
+                        break;
+                    }
+                case "CreateAuthenticatedAsActiveDevice":
+                    {
+                        requireGroup(containerOwner, "Create as authenticated device only supported by group for now");
+                        CreateAuthenticatedAsActiveDeviceParameters parameters = new CreateAuthenticatedAsActiveDeviceParameters
+                            {
+                                Owner = containerOwner,
+                                AuthenticationDeviceDescription = form["AuthenticationDeviceDescription"],
+                                SharedSecret = form["SharedSecret"],
+                                TargetBallHostName = form["TargetBallHostName"],
+                                TargetGroupID = form["TargetGroupID"]
+                            };
+                        CreateAuthenticatedAsActiveDevice.Execute(parameters);
+                        break;
+                    }
                 case "InviteMemberToGroup":
                     {
                         if (containerOwner.IsGroupContainer() == false)
