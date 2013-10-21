@@ -1817,6 +1817,8 @@ InformationInput.AuthenticatedDeviceID
 
 					result.SharedSecret = @"AuthenticatedAsActiveDevice.SharedSecret";
 
+					result.EstablishedTrustID = @"AuthenticatedAsActiveDevice.EstablishedTrustID";
+
 					result.NegotiationURL = @"AuthenticatedAsActiveDevice.NegotiationURL";
 
 				
@@ -1884,6 +1886,8 @@ InformationInput.AuthenticatedDeviceID
 							return true;
 						if(ActiveSymmetricAESKey != _unmodified_ActiveSymmetricAESKey)
 							return true;
+						if(EstablishedTrustID != _unmodified_EstablishedTrustID)
+							return true;
 						if(IsValidatedAndActive != _unmodified_IsValidatedAndActive)
 							return true;
 						if(NegotiationURL != _unmodified_NegotiationURL)
@@ -1903,6 +1907,7 @@ InformationInput.AuthenticatedDeviceID
 					AuthenticationDescription = sourceObject.AuthenticationDescription;
 					SharedSecret = sourceObject.SharedSecret;
 					ActiveSymmetricAESKey = sourceObject.ActiveSymmetricAESKey;
+					EstablishedTrustID = sourceObject.EstablishedTrustID;
 					IsValidatedAndActive = sourceObject.IsValidatedAndActive;
 					NegotiationURL = sourceObject.NegotiationURL;
 				}
@@ -1914,6 +1919,7 @@ InformationInput.AuthenticatedDeviceID
 					_unmodified_AuthenticationDescription = AuthenticationDescription;
 					_unmodified_SharedSecret = SharedSecret;
 					_unmodified_ActiveSymmetricAESKey = ActiveSymmetricAESKey;
+					_unmodified_EstablishedTrustID = EstablishedTrustID;
 					_unmodified_IsValidatedAndActive = IsValidatedAndActive;
 					_unmodified_NegotiationURL = NegotiationURL;
 				
@@ -1932,6 +1938,9 @@ InformationInput.AuthenticatedDeviceID
 							break;
 						case "SharedSecret":
 							SharedSecret = value;
+							break;
+						case "EstablishedTrustID":
+							EstablishedTrustID = value;
 							break;
 						case "IsValidatedAndActive":
 							IsValidatedAndActive = bool.Parse(value);
@@ -1952,6 +1961,9 @@ InformationInput.AuthenticatedDeviceID
 			[DataMember]
 			public byte[] ActiveSymmetricAESKey { get; set; }
 			private byte[] _unmodified_ActiveSymmetricAESKey;
+			[DataMember]
+			public string EstablishedTrustID { get; set; }
+			private string _unmodified_EstablishedTrustID;
 			[DataMember]
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;

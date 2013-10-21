@@ -13,8 +13,9 @@ namespace TheBall.CORE
         {
             var negotiationResult =
                 SecurityNegotiationManager.PerformEKEInitiatorAsBob(authenticatedAsActiveDevice.NegotiationURL,
-                                                                    authenticatedAsActiveDevice.SharedSecret);
+                                                                    authenticatedAsActiveDevice.SharedSecret, authenticatedAsActiveDevice.AuthenticationDescription);
             authenticatedAsActiveDevice.ActiveSymmetricAESKey = negotiationResult.AESKey;
+            authenticatedAsActiveDevice.EstablishedTrustID = negotiationResult.EstablishedTrustID;
             authenticatedAsActiveDevice.IsValidatedAndActive = true;
         }
 

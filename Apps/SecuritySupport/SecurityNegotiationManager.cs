@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 //using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketSharp;
+using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
 namespace SecuritySupport
 {
     public class SecurityNegotiationResult
     {
         public byte[] AESKey;
+        public string EstablishedTrustID;
     }
 
     public class SecurityNegotiationManager
@@ -19,29 +22,32 @@ namespace SecuritySupport
         //public static async Task EchoClient()
         private WebSocket Socket;
         private INegotiationProtocolMember ProtocolMember;
+        private string DeviceDescription;
         Stopwatch watch = new Stopwatch();
         private bool PlayAsAlice = false;
         private SemaphoreSlim WaitingSemaphore = new SemaphoreSlim(0);
         private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 0, 10);
+        private string EstablishedTrustID;
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret, string deviceDescription)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, true);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, true);
         }
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, string sharedSecret)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, string sharedSecret, string deviceDescription)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, false);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, false);
         }
 
-        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret,
+        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret, string deviceDescription,
                                                                      bool playAsAlice)
         {
-            var securityNegotiationManager = InitSecurityNegotiationManager(connectionUrl, sharedSecret, playAsAlice);
+            var securityNegotiationManager = InitSecurityNegotiationManager(connectionUrl, sharedSecret, deviceDescription, playAsAlice);
             // Perform negotiation
             securityNegotiationManager.PerformNegotiation();
             var aesKey = securityNegotiationManager.ProtocolMember.NegotiationResults[0];
-            return new SecurityNegotiationResult {AESKey = aesKey};
+            string deviceID = securityNegotiationManager.EstablishedTrustID;
+            return new SecurityNegotiationResult {AESKey = aesKey, EstablishedTrustID = deviceID};
         }
 
 
@@ -65,7 +71,7 @@ namespace SecuritySupport
             string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
             string sharedSecret = "testsecretXYZ33";
-            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, sharedSecret, false);
+            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, sharedSecret, "test device desc", false);
             securityNegotiationManager.PerformNegotiation();
 #if native45
 
@@ -110,7 +116,7 @@ namespace SecuritySupport
 #endif
         }
 
-        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, string sharedSecret, bool playAsAlice)
+        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, string sharedSecret, string deviceDescription, bool playAsAlice)
         {
             SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
             securityNegotiationManager.Socket = new WebSocket(deviceConnectionUrl);
@@ -121,6 +127,7 @@ namespace SecuritySupport
             TheBallEKE instance = new TheBallEKE();
             instance.InitiateCurrentSymmetricFromSecret(sharedSecret);
             securityNegotiationManager.PlayAsAlice = playAsAlice;
+            securityNegotiationManager.DeviceDescription = deviceDescription;
             if (securityNegotiationManager.PlayAsAlice)
             {
                 securityNegotiationManager.ProtocolMember = new TheBallEKE.EKEAlice(instance);
@@ -137,8 +144,19 @@ namespace SecuritySupport
         void socket_OnMessage(object sender, MessageEventArgs e)
         {
             Debug.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
-            ProtocolMember.LatestMessageFromOtherParty = e.RawData;
-            ProceedProtocol();
+            if (!ProtocolMember.IsDoneWithProtocol)
+            {
+                ProtocolMember.LatestMessageFromOtherParty = e.RawData;
+                ProceedProtocol();
+            }
+            else // Last message after the protocol and then close up
+            {
+                if(String.IsNullOrEmpty(e.Data))
+                    throw new InvalidDataException("Negotiation protocol end requires EstablishedTrustID as text");
+                EstablishedTrustID = e.Data;
+                watch.Stop();
+                WaitingSemaphore.Release();
+            }
         }
 
         void socket_OnError(object sender, ErrorEventArgs e)
@@ -173,10 +191,8 @@ namespace SecuritySupport
             } 
             if (ProtocolMember.IsDoneWithProtocol)
             {
-                Socket.Send("Done with protocol..."); 
-                watch.Stop();
+                Socket.Send(DeviceDescription); 
                 Debug.WriteLine((PlayAsAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
-                WaitingSemaphore.Release();
             }
         }
 

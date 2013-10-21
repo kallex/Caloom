@@ -214,13 +214,14 @@ namespace WebInterface
                 if (protocolParty != null && protocolParty.IsDoneWithProtocol) // Perform POST EKE operations
                 {
                     iCtx.AccessLockedItems(dict => dict.Remove("EKENEGOTIATIONPARTY"));
-                    FinishDeviceNegotiation(iCtx, protocolParty, textMessage);
+                    string deviceID = FinishDeviceNegotiation(iCtx, protocolParty, textMessage);
+                    await SendTextMessage(socket, deviceID);
                 }
                 //await SendTextMessage(socket, echoString);
             }
         }
 
-        private static void FinishDeviceNegotiation(InformationContext iCtx, INegotiationProtocolMember protocolParty, string remainingDetails)
+        private static string FinishDeviceNegotiation(InformationContext iCtx, INegotiationProtocolMember protocolParty, string remainingDetails)
         {
             try
             {
@@ -236,6 +237,7 @@ namespace WebInterface
                         OwningAccount = iCtx.Owner as TBAccount,
                         OwningGroup = iCtx.Owner as TBCollaboratingGroup,
                     });
+                return result.DeviceMembership.ID;
             }
             finally
             {
