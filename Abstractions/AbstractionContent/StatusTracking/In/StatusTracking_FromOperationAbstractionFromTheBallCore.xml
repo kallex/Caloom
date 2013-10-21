@@ -193,6 +193,111 @@
     <StatusItem name="DeleteAuthenticatedAsActiveDevice_DeleteAuthenticatedAsActiveDevice" displayName="MethodExecuteType: DeleteAuthenticatedAsActiveDevice" description="Delete device membership record">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateInformationOutput_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_OutputDescription" displayName="VariableType: OutputDescription" description="Description of the information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_DestinationURL" displayName="VariableType: DestinationURL" description="Information target location URL">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_DestinationContentName" displayName="VariableType: DestinationContentName" description="Destionation content name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_LocalContentURL" displayName="VariableType: LocalContentURL" description="Local content URL">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_AuthenticatedDeviceID" displayName="VariableType: AuthenticatedDeviceID" description="Authenticated device ID for this connection (optional)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_CreatedInformationOutput" displayName="TargetDefinitionType: CreatedInformationOutput" description="Created information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store created object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationOutput_InformationOutput" displayName="VariableType: InformationOutput" description="Created information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_InformationOutputID" displayName="VariableType: InformationOutputID" description="ID of information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_IsValidAndActive" displayName="VariableType: IsValidAndActive" description="Value for validated and active">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_InformationOutput" displayName="TargetDefinitionType: InformationOutput" description="Information output of which to set the status">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_SetInputValidAndActiveValue" displayName="MethodExecuteType: SetInputValidAndActiveValue" description="Set input valid and active value">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetInformationOutputValidationAndActiveStatus_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store modified object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteInformationOutput_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteInformationOutput_InformationOutputID" displayName="VariableType: InformationOutputID" description="ID of information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteInformationOutput_InformationOutput" displayName="TargetDefinitionType: InformationOutput" description="Information output to delete">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteInformationOutput_DeleteInformationOutput" displayName="MethodExecuteType: DeleteInformationOutput" description="Delete information output record">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_OwningAccount" displayName="VariableType: OwningAccount" description="Security context owner - if an account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_OwningGroup" displayName="VariableType: OwningGroup" description="Security context owner - if a group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_InformationOutput" displayName="VariableType: InformationOutput" description="Information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_OwnerEmailAddresses" displayName="TargetDefinitionType: OwnerEmailAddresses" description="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_EmailValidation" displayName="TargetDefinitionType: EmailValidation" description="Email validation item for 30 minutes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store email validation object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAndSendEmailValidationForInformationOutputConfirmation_SendEmailConfirmation" displayName="MethodExecuteType: SendEmailConfirmation" description="Create and send email confirmation for approving information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_Owner" displayName="VariableType: Owner" description="Security context owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_InformationOutputID" displayName="VariableType: InformationOutputID" description="ID of information output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_InformationOutput" displayName="TargetDefinitionType: InformationOutput" description="Information output to push the data to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_VerifyValidOutput" displayName="MethodExecuteType: VerifyValidOutput" description="Verify that output is valid and active">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_DestinationURL" displayName="TargetDefinitionType: DestinationURL" description="Location to push the output to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_DestinationContentName" displayName="TargetDefinitionType: DestinationContentName" description="Destination content name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_LocalContentURL" displayName="TargetDefinitionType: LocalContentURL" description="Local content URL to push the output from">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_AuthenticatedAsActiveDevice" displayName="TargetDefinitionType: AuthenticatedAsActiveDevice" description="Authenticated as device info (if available)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_PushToInformationOutput" displayName="MethodExecuteType: PushToInformationOutput" description="Push information to output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateInformationInput_Owner" displayName="VariableType: Owner" description="Security context owner">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -200,6 +305,9 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateInformationInput_LocationURL" displayName="VariableType: LocationURL" description="Information source location URL">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateInformationInput_LocalContentName" displayName="VariableType: LocalContentName" description="Local content name">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateInformationInput_CreatedInformationInput" displayName="TargetDefinitionType: CreatedInformationInput" description="Created information input">
@@ -280,7 +388,10 @@
     <StatusItem name="FetchInputInformation_InputFetchLocation" displayName="TargetDefinitionType: InputFetchLocation" description="Location to fetch the input into">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="FetchInputInformation_InputFetchName" displayName="TargetDefinitionType: InputFetchName" description="Name of item to store the fetched input">
+    <StatusItem name="FetchInputInformation_InputFetchName" displayName="TargetDefinitionType: InputFetchName" description="Name of item to store the fetched input - derived from local content name.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FetchInputInformation_AuthenticatedAsActiveDevice" displayName="TargetDefinitionType: AuthenticatedAsActiveDevice" description="Authenticated as device info (if available)">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="FetchInputInformation_FetchInputToStorage" displayName="MethodExecuteType: FetchInputToStorage" description="Fetch input to storage">
@@ -475,10 +586,56 @@
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" />
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_DeleteAuthenticatedAsActiveDevice" />
     </Group>
+    <Group name="CreateInformationOutput">
+      <ItemRef itemName="CreateInformationOutput_Owner" />
+      <ItemRef itemName="CreateInformationOutput_OutputDescription" />
+      <ItemRef itemName="CreateInformationOutput_DestinationURL" />
+      <ItemRef itemName="CreateInformationOutput_DestinationContentName" />
+      <ItemRef itemName="CreateInformationOutput_LocalContentURL" />
+      <ItemRef itemName="CreateInformationOutput_AuthenticatedDeviceID" />
+      <ItemRef itemName="CreateInformationOutput_CreatedInformationOutput" />
+      <ItemRef itemName="CreateInformationOutput_StoreObject" />
+      <ItemRef itemName="CreateInformationOutput_InformationOutput" />
+    </Group>
+    <Group name="SetInformationOutputValidationAndActiveStatus">
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_Owner" />
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_InformationOutputID" />
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_IsValidAndActive" />
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_InformationOutput" />
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_SetInputValidAndActiveValue" />
+      <ItemRef itemName="SetInformationOutputValidationAndActiveStatus_StoreObject" />
+    </Group>
+    <Group name="DeleteInformationOutput">
+      <ItemRef itemName="DeleteInformationOutput_Owner" />
+      <ItemRef itemName="DeleteInformationOutput_InformationOutputID" />
+      <ItemRef itemName="DeleteInformationOutput_InformationOutput" />
+      <ItemRef itemName="DeleteInformationOutput_DeleteInformationOutput" />
+    </Group>
+    <Group name="CreateAndSendEmailValidationForInformationOutputConfirmation">
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_OwningAccount" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_OwningGroup" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_InformationOutput" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_OwnerEmailAddresses" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_EmailValidation" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_StoreObject" />
+      <ItemRef itemName="CreateAndSendEmailValidationForInformationOutputConfirmation_SendEmailConfirmation" />
+    </Group>
+    <Group name="PushToInformationOutput">
+      <ItemRef itemName="PushToInformationOutput_Owner" />
+      <ItemRef itemName="PushToInformationOutput_InformationOutputID" />
+      <ItemRef itemName="PushToInformationOutput_InformationOutput" />
+      <ItemRef itemName="PushToInformationOutput_VerifyValidOutput" />
+      <ItemRef itemName="PushToInformationOutput_DestinationURL" />
+      <ItemRef itemName="PushToInformationOutput_DestinationContentName" />
+      <ItemRef itemName="PushToInformationOutput_LocalContentURL" />
+      <ItemRef itemName="PushToInformationOutput_AuthenticatedAsActiveDevice" />
+      <ItemRef itemName="PushToInformationOutput_PushToInformationOutput" />
+    </Group>
     <Group name="CreateInformationInput">
       <ItemRef itemName="CreateInformationInput_Owner" />
       <ItemRef itemName="CreateInformationInput_InputDescription" />
       <ItemRef itemName="CreateInformationInput_LocationURL" />
+      <ItemRef itemName="CreateInformationInput_LocalContentName" />
       <ItemRef itemName="CreateInformationInput_CreatedInformationInput" />
       <ItemRef itemName="CreateInformationInput_StoreObject" />
       <ItemRef itemName="CreateInformationInput_InformationInput" />
@@ -514,6 +671,7 @@
       <ItemRef itemName="FetchInputInformation_VerifyValidInput" />
       <ItemRef itemName="FetchInputInformation_InputFetchLocation" />
       <ItemRef itemName="FetchInputInformation_InputFetchName" />
+      <ItemRef itemName="FetchInputInformation_AuthenticatedAsActiveDevice" />
       <ItemRef itemName="FetchInputInformation_FetchInputToStorage" />
     </Group>
     <Group name="ProcessFetchedInputs">

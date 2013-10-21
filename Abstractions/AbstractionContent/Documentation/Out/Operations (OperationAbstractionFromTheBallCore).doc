@@ -462,6 +462,84 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for joining the devices
 		</div>
+		</p><h1>CreateAndSendEmailValidationForInformationOutputConfirmation (OwningAccount, OwningGroup, InformationOutput)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates and sends email validation for information output confirmation.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwningAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner - if an account
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwningGroup
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBCollaboratingGroup
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner - if a group
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information output
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: OwnerEmailAddresses ( OwningAccount, OwningGroup )</h2>
+		<p>		<div class="MsoNormal" >
+		Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails
+		</div>
+		</p><h2>Target Definition: EmailValidation ( OwnerEmailAddresses, OwningAccount, OwningGroup, InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Email validation item for 30 minutes
+		</div>
+		</p><h2>Method Call: StoreObject ( EmailValidation )</h2>
+		<p>		<div class="MsoNormal" >
+		Store email validation object
+		</div>
+		</p><h2>Method Call: SendEmailConfirmation ( EmailValidation, OwnerEmailAddresses, InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Create and send email confirmation for approving information output
+		</div>
 		</p><h1>CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -820,7 +898,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Redirect to url if given
 		</div>
-		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL)</h1>
+		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL, LocalContentName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -881,8 +959,25 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LocalContentName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Local content name
+		</div>
+				</td>
+				</tr>
 		</table>
-		</p><h2>Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL )</h2>
+		</p><h2>Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL, LocalContentName )</h2>
 		<p>		<div class="MsoNormal" >
 		Created information input
 		</div>
@@ -907,6 +1002,148 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Created information input
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>CreateInformationOutput (Owner, OutputDescription, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedDeviceID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates information output for security context for owner.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OutputDescription
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Description of the information output
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DestinationURL
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Information target location URL
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DestinationContentName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Destionation content name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LocalContentURL
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Local content URL
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedDeviceID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Authenticated device ID for this connection (optional)
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: CreatedInformationOutput ( Owner, OutputDescription, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedDeviceID )</h2>
+		<p>		<div class="MsoNormal" >
+		Created information output
+		</div>
+		</p><h2>Method Call: StoreObject ( CreatedInformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created object
+		</div>
+		</p><h2>Return Value : CreateInformationOutputReturnValue ( CreatedInformationOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutput
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created information output
 		</div>
 				</td>
 				</tr>
@@ -1208,6 +1445,59 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete information input record
 		</div>
+		</p><h1>DeleteInformationOutput (Owner, InformationOutputID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Delete information input source.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information output
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationOutput ( Owner, InformationOutputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information output to delete
+		</div>
+		</p><h2>Method Call: DeleteInformationOutput ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete information output record
+		</div>
 		</p><h1>DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1375,9 +1665,13 @@ div.WordSection1
 		</div>
 		</p><h2>Target Definition: InputFetchName ( InformationInput )</h2>
 		<p>		<div class="MsoNormal" >
-		Name of item to store the fetched input
+		Name of item to store the fetched input - derived from local content name.
 		</div>
-		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, Owner, QueryParameters )</h2>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( InformationInput )</h2>
+		<p>		<div class="MsoNormal" >
+		Authenticated as device info (if available)
+		</div>
+		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice, Owner, QueryParameters )</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>
@@ -1561,6 +1855,79 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete obsolete processed objects
 		</div>
+		</p><h1>PushToInformationOutput (Owner, InformationOutputID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Push information output to given target
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information output
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationOutput ( Owner, InformationOutputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information output to push the data to
+		</div>
+		</p><h2>Method Call: VerifyValidOutput ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Verify that output is valid and active
+		</div>
+		</p><h2>Target Definition: DestinationURL ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Location to push the output to
+		</div>
+		</p><h2>Target Definition: DestinationContentName ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Destination content name
+		</div>
+		</p><h2>Target Definition: LocalContentURL ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Local content URL to push the output from
+		</div>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Authenticated as device info (if available)
+		</div>
+		</p><h2>Method Call: PushToInformationOutput ( InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Push information to output
+		</div>
 		</p><h1>SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1708,6 +2075,80 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( InformationInput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store created object
+		</div>
+		</p><h1>SetInformationOutputValidationAndActiveStatus (Owner, InformationOutputID, IsValidAndActive)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Set information output validation and active-statuses.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Security context owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InformationOutputID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ID of information output
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IsValidAndActive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Value for validated and active
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: InformationOutput ( Owner, InformationOutputID )</h2>
+		<p>		<div class="MsoNormal" >
+		Information output of which to set the status
+		</div>
+		</p><h2>Method Call: SetInputValidAndActiveValue ( InformationOutput, IsValidAndActive )</h2>
+		<p>		<div class="MsoNormal" >
+		Set input valid and active value
+		</div>
+		</p><h2>Method Call: StoreObject ( InformationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Store modified object
 		</div>
 		</p><h1>SetOwnerWebRedirect (Owner, RedirectPath)</h1>
 		<h2>Specifications</h2>

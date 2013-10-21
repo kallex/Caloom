@@ -207,11 +207,122 @@ using System.IO;
 				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_DeleteAuthenticatedAsActiveDevice(AuthenticatedAsActiveDevice);		
 				}
 				}
+				public class CreateInformationOutputParameters 
+		{
+				public IContainerOwner Owner ;
+				public string OutputDescription ;
+				public string DestinationURL ;
+				public string DestinationContentName ;
+				public string LocalContentURL ;
+				public string AuthenticatedDeviceID ;
+				}
+		
+		public class CreateInformationOutput 
+		{
+				private static void PrepareParameters(CreateInformationOutputParameters parameters)
+		{
+					}
+				public static CreateInformationOutputReturnValue Execute(CreateInformationOutputParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationOutput CreatedInformationOutput = CreateInformationOutputImplementation.GetTarget_CreatedInformationOutput(parameters.Owner, parameters.OutputDescription, parameters.DestinationURL, parameters.DestinationContentName, parameters.LocalContentURL, parameters.AuthenticatedDeviceID);	
+				CreateInformationOutputImplementation.ExecuteMethod_StoreObject(CreatedInformationOutput);		
+				CreateInformationOutputReturnValue returnValue = CreateInformationOutputImplementation.Get_ReturnValue(CreatedInformationOutput);
+		return returnValue;
+				}
+				}
+				public class CreateInformationOutputReturnValue 
+		{
+				public InformationOutput InformationOutput ;
+				}
+				public class SetInformationOutputValidationAndActiveStatusParameters 
+		{
+				public IContainerOwner Owner ;
+				public string InformationOutputID ;
+				public bool IsValidAndActive ;
+				}
+		
+		public class SetInformationOutputValidationAndActiveStatus 
+		{
+				private static void PrepareParameters(SetInformationOutputValidationAndActiveStatusParameters parameters)
+		{
+					}
+				public static void Execute(SetInformationOutputValidationAndActiveStatusParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationOutput InformationOutput = SetInformationOutputValidationAndActiveStatusImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
+				SetInformationOutputValidationAndActiveStatusImplementation.ExecuteMethod_SetInputValidAndActiveValue(parameters.IsValidAndActive, InformationOutput);		
+				SetInformationOutputValidationAndActiveStatusImplementation.ExecuteMethod_StoreObject(InformationOutput);		
+				}
+				}
+				public class DeleteInformationOutputParameters 
+		{
+				public IContainerOwner Owner ;
+				public string InformationOutputID ;
+				}
+		
+		public class DeleteInformationOutput 
+		{
+				private static void PrepareParameters(DeleteInformationOutputParameters parameters)
+		{
+					}
+				public static void Execute(DeleteInformationOutputParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationOutput InformationOutput = DeleteInformationOutputImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
+				DeleteInformationOutputImplementation.ExecuteMethod_DeleteInformationOutput(InformationOutput);		
+				}
+				}
+				public class CreateAndSendEmailValidationForInformationOutputConfirmationParameters 
+		{
+				public AaltoGlobalImpact.OIP.TBAccount OwningAccount ;
+				public AaltoGlobalImpact.OIP.TBCollaboratingGroup OwningGroup ;
+				public InformationOutput InformationOutput ;
+				}
+		
+		public class CreateAndSendEmailValidationForInformationOutputConfirmation 
+		{
+				private static void PrepareParameters(CreateAndSendEmailValidationForInformationOutputConfirmationParameters parameters)
+		{
+					}
+				public static void Execute(CreateAndSendEmailValidationForInformationOutputConfirmationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] OwnerEmailAddresses = CreateAndSendEmailValidationForInformationOutputConfirmationImplementation.GetTarget_OwnerEmailAddresses(parameters.OwningAccount, parameters.OwningGroup);	
+				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = CreateAndSendEmailValidationForInformationOutputConfirmationImplementation.GetTarget_EmailValidation(parameters.OwningAccount, parameters.OwningGroup, parameters.InformationOutput, OwnerEmailAddresses);	
+				CreateAndSendEmailValidationForInformationOutputConfirmationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
+				CreateAndSendEmailValidationForInformationOutputConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.InformationOutput, EmailValidation, OwnerEmailAddresses);		
+				}
+				}
+				public class PushToInformationOutputParameters 
+		{
+				public IContainerOwner Owner ;
+				public string InformationOutputID ;
+				}
+		
+		public class PushToInformationOutput 
+		{
+				private static void PrepareParameters(PushToInformationOutputParameters parameters)
+		{
+					}
+				public static void Execute(PushToInformationOutputParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InformationOutput InformationOutput = PushToInformationOutputImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
+				PushToInformationOutputImplementation.ExecuteMethod_VerifyValidOutput(InformationOutput);		
+				string DestinationURL = PushToInformationOutputImplementation.GetTarget_DestinationURL(InformationOutput);	
+				string DestinationContentName = PushToInformationOutputImplementation.GetTarget_DestinationContentName(InformationOutput);	
+				string LocalContentURL = PushToInformationOutputImplementation.GetTarget_LocalContentURL(InformationOutput);	
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PushToInformationOutputImplementation.GetTarget_AuthenticatedAsActiveDevice(InformationOutput);	
+				PushToInformationOutputImplementation.ExecuteMethod_PushToInformationOutput(parameters.Owner, InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice);		
+				}
+				}
 				public class CreateInformationInputParameters 
 		{
 				public IContainerOwner Owner ;
 				public string InputDescription ;
 				public string LocationURL ;
+				public string LocalContentName ;
 				}
 		
 		public class CreateInformationInput 
@@ -222,7 +333,7 @@ using System.IO;
 				public static CreateInformationInputReturnValue Execute(CreateInformationInputParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput CreatedInformationInput = CreateInformationInputImplementation.GetTarget_CreatedInformationInput(parameters.Owner, parameters.InputDescription, parameters.LocationURL);	
+					InformationInput CreatedInformationInput = CreateInformationInputImplementation.GetTarget_CreatedInformationInput(parameters.Owner, parameters.InputDescription, parameters.LocationURL, parameters.LocalContentName);	
 				CreateInformationInputImplementation.ExecuteMethod_StoreObject(CreatedInformationInput);		
 				CreateInformationInputReturnValue returnValue = CreateInformationInputImplementation.Get_ReturnValue(CreatedInformationInput);
 		return returnValue;
@@ -310,7 +421,8 @@ using System.IO;
 				FetchInputInformationImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
 				string InputFetchLocation = FetchInputInformationImplementation.GetTarget_InputFetchLocation(InformationInput);	
 				string InputFetchName = FetchInputInformationImplementation.GetTarget_InputFetchName(InformationInput);	
-				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.Owner, parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName);		
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = FetchInputInformationImplementation.GetTarget_AuthenticatedAsActiveDevice(InformationInput);	
+				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.Owner, parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice);		
 				}
 				}
 				public class ProcessFetchedInputsParameters 

@@ -285,6 +285,165 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="CreateInformationOutput">
+      <OperationSpec>
+        <Description>
+            Creates information output for security context for owner.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="OutputDescription" dataType="string" designDesc="Description of the information output" state="implemented" />
+        <Parameter name="DestinationURL" dataType="string" designDesc="Information target location URL" state="implemented" />
+        <Parameter name="DestinationContentName" dataType="string" designDesc="Destionation content name" state="implemented" />
+        <Parameter name="LocalContentURL" dataType="string" designDesc="Local content URL" state="implemented" />
+        <Parameter name="AuthenticatedDeviceID" dataType="string" designDesc="Authenticated device ID for this connection (optional)" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="CreatedInformationOutput" dataType="InformationOutput" designDesc="Created information output" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="OutputDescription" />
+            <Parameter name="DestinationURL" />
+            <Parameter name="DestinationContentName" />
+            <Parameter name="LocalContentURL" />
+            <Parameter name="AuthenticatedDeviceID" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+            <Target name="CreatedInformationOutput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="InformationOutput" dataType="InformationOutput" designDesc="Created information output" state="implemented" />
+        <Target name="CreatedInformationOutput" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="SetInformationOutputValidationAndActiveStatus">
+      <OperationSpec>
+        <Description>
+            Set information output validation and active-statuses.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InformationOutputID" dataType="string" designDesc="ID of information output" state="implemented" />
+        <Parameter name="IsValidAndActive" dataType="bool" designDesc="Value for validated and active" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InformationOutputID" />
+          </TargetDefinition>
+          <MethodExecute name="SetInputValidAndActiveValue" designDesc="Set input valid and active value" state="implemented">
+            <Parameter name="IsValidAndActive" />
+            <Target name="InformationOutput" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+            <Target name="InformationOutput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="DeleteInformationOutput">
+      <OperationSpec>
+        <Description>
+            Delete information input source.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InformationOutputID" dataType="string" designDesc="ID of information output" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output to delete" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InformationOutputID" />
+          </TargetDefinition>
+          <MethodExecute name="DeleteInformationOutput" designDesc="Delete information output record" state="implemented">
+            <Target name="InformationOutput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="CreateAndSendEmailValidationForInformationOutputConfirmation">
+      <OperationSpec>
+        <Description>
+            Creates and sends email validation for information output confirmation.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="OwningAccount" dataType="AaltoGlobalImpact.OIP.TBAccount" designDesc="Security context owner - if an account" state="implemented" />
+        <Parameter name="OwningGroup" dataType="AaltoGlobalImpact.OIP.TBCollaboratingGroup" designDesc="Security context owner - if a group" state="implemented" />
+        <Parameter name="InformationOutput" dataType="InformationOutput" designDesc="Information output" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="OwnerEmailAddresses" dataType="string[]" designDesc="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails" state="implemented">
+            <Parameter name="OwningAccount" />
+            <Parameter name="OwningGroup" />
+          </TargetDefinition>
+          <TargetDefinition name="EmailValidation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation item for 30 minutes" state="implemented">
+            <Parameter name="OwningAccount" />
+            <Parameter name="OwningGroup" />
+            <Parameter name="InformationOutput" />
+            <Target name="OwnerEmailAddresses" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+            <Target name="EmailValidation" />
+          </MethodExecute>
+          <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for approving information output" state="implemented">
+            <Parameter name="InformationOutput" />
+            <Target name="EmailValidation" />
+            <Target name="OwnerEmailAddresses" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="PushToInformationOutput">
+      <OperationSpec>
+        <Description>
+            Push information output to given target
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
+        <Parameter name="InformationOutputID" dataType="string" designDesc="ID of information output" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output to push the data to" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="InformationOutputID" />
+          </TargetDefinition>
+          <MethodExecute name="VerifyValidOutput" designDesc="Verify that output is valid and active" state="implemented">
+            <Target name="InformationOutput" />
+          </MethodExecute>
+          <TargetDefinition name="DestinationURL" dataType="string" designDesc="Location to push the output to" state="implemented">
+            <Target name="InformationOutput" />
+          </TargetDefinition>
+          <TargetDefinition name="DestinationContentName" dataType="string" designDesc="Destination content name" state="implemented">
+            <Target name="InformationOutput" />
+          </TargetDefinition>
+          <TargetDefinition name="LocalContentURL" dataType="string" designDesc="Local content URL to push the output from" state="implemented">
+            <Target name="InformationOutput" />
+          </TargetDefinition>
+          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+            <Target name="InformationOutput" />
+          </TargetDefinition>
+          <MethodExecute name="PushToInformationOutput" designDesc="Push information to output" state="implemented">
+            <Parameter name="Owner" />
+            <Target name="InformationOutput" />
+            <Target name="DestinationURL" />
+            <Target name="DestinationContentName" />
+            <Target name="LocalContentURL" />
+            <Target name="AuthenticatedAsActiveDevice" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="CreateInformationInput">
       <OperationSpec>
         <Description>
@@ -295,6 +454,7 @@
         <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented" />
         <Parameter name="InputDescription" dataType="string" designDesc="Description of the information input" state="implemented" />
         <Parameter name="LocationURL" dataType="string" designDesc="Information source location URL" state="implemented" />
+        <Parameter name="LocalContentName" dataType="string" designDesc="Local content name" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -302,6 +462,7 @@
             <Parameter name="Owner" />
             <Parameter name="InputDescription" />
             <Parameter name="LocationURL" />
+            <Parameter name="LocalContentName" />
           </TargetDefinition>
           <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
             <Target name="CreatedInformationInput" />
@@ -419,7 +580,10 @@
           <TargetDefinition name="InputFetchLocation" dataType="string" designDesc="Location to fetch the input into" state="implemented">
             <Target name="InformationInput" />
           </TargetDefinition>
-          <TargetDefinition name="InputFetchName" dataType="string" designDesc="Name of item to store the fetched input" state="implemented">
+          <TargetDefinition name="InputFetchName" dataType="string" designDesc="Name of item to store the fetched input - derived from local content name." state="implemented">
+            <Target name="InformationInput" />
+          </TargetDefinition>
+          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
             <Target name="InformationInput" />
           </TargetDefinition>
           <MethodExecute name="FetchInputToStorage" designDesc="Fetch input to storage" state="implemented">
@@ -428,6 +592,7 @@
             <Target name="InformationInput" />
             <Target name="InputFetchLocation" />
             <Target name="InputFetchName" />
+            <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

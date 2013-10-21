@@ -26,10 +26,13 @@ namespace TheBall.CORE
         public static string GetTarget_InputFetchName(InformationInput informationInput)
         {
             // TODO: timestamped, incremental and other options supported, now just bulk
-            return "bulkdump.all";
+            string localContentName = informationInput.LocalContentName;
+            if (string.IsNullOrEmpty(localContentName))
+                return "bulkdump.all";
+            return informationInput.LocalContentName;
         }
 
-        public static void ExecuteMethod_FetchInputToStorage(IContainerOwner owner, string queryParameters, InformationInput informationInput, string inputFetchLocation, string inputFetchName)
+        public static void ExecuteMethod_FetchInputToStorage(IContainerOwner owner, string queryParameters, InformationInput informationInput, string inputFetchLocation, string inputFetchName, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
             string url = string.IsNullOrEmpty(queryParameters)
                              ? informationInput.LocationURL
@@ -39,6 +42,15 @@ namespace TheBall.CORE
             var stream = response.GetResponseStream();
             var targetBlob = StorageSupport.CurrActiveContainer.GetBlob(inputFetchLocation + "/" + inputFetchName, owner);
             targetBlob.UploadFromStream(stream);
+        }
+
+        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(InformationInput informationInput)
+        {
+            var authenticationID = informationInput.AuthenticatedDeviceID;
+            if (string.IsNullOrEmpty(authenticationID))
+                return null;
+            VirtualOwner owner = VirtualOwner.FigureOwner(informationInput);
+            return AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(owner, authenticationID);
         }
     }
 }

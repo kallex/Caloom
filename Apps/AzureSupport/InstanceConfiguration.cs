@@ -20,6 +20,8 @@ namespace TheBall
         public static readonly string EmailGroupJoinMessageFormat;
         public static readonly string EmailInputJoinSubjectFormat;
         public static readonly string EmailInputJoinMessageFormat;
+        public static readonly string EmailOutputJoinSubjectFormat;
+        public static readonly string EmailOutputJoinMessageFormat;
         public static readonly string EmailValidationURLWithoutID;
         public static readonly string AzureStorageConnectionString;
         public static readonly string WorkerActiveContainerName;
@@ -71,6 +73,8 @@ namespace TheBall
             EmailDeviceJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailDeviceJoinSubjectFormat");
             EmailInputJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailInputJoinSubjectFormat");
             EmailInputJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailInputJoinMessageFormat");
+            EmailOutputJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailOutputJoinSubjectFormat");
+            EmailOutputJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailOutputJoinMessageFormat");
             EmailValidationSubjectFormat = CloudConfigurationManager.GetSetting("EmailValidationSubjectFormat");
             EmailValidationMessageFormat = CloudConfigurationManager.GetSetting("EmailValidationMessageFormat");
             EmailGroupJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailGroupJoinSubjectFormat");

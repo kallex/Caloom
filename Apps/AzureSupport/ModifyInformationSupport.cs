@@ -94,6 +94,77 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "CreateInformationOutput":
+                    {
+                        CreateInformationOutputParameters parameters = new CreateInformationOutputParameters
+                            {
+                                Owner = containerOwner,
+                                AuthenticatedDeviceID = form["AuthenticatedDeviceID"],
+                                DestinationContentName = form["DestinationContentName"],
+                                DestinationURL = form["DestinationURL"],
+                                LocalContentURL = form["LocalContentURL"],
+                                OutputDescription = form["OutputDescription"]
+                            };
+                        var createdInformationOutput = CreateInformationOutput.Execute(parameters);
+                        var owningAccount = containerOwner as TBAccount;
+                        TBCollaboratingGroup owningGroup = null;
+                        if (owningAccount == null)
+                        {
+                            TBRGroupRoot groupRoot =
+                                TBRGroupRoot.RetrieveFromDefaultLocation(containerOwner.LocationPrefix);
+                            owningGroup = groupRoot.Group;
+                        }
+                        CreateAndSendEmailValidationForInformationOutputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationOutputConfirmationParameters
+                        {
+                            OwningAccount = owningAccount,
+                            OwningGroup = owningGroup,
+                            InformationOutput = createdInformationOutput.InformationOutput
+                        };
+                        CreateAndSendEmailValidationForInformationOutputConfirmation.Execute(emailParameters);
+                        break;
+                    }
+                case "DeleteInformationOutput":
+                    {
+                        DeleteInformationOutputParameters parameters = new DeleteInformationOutputParameters
+                            {
+                                Owner = containerOwner,
+                                InformationOutputID = form["InformationOutputID"]
+                            };
+                        DeleteInformationOutput.Execute(parameters);
+                        break;
+                    }
+                
+                case "PushToInformationOutput":
+                    {
+                        PushToInformationOutputParameters parameters = new PushToInformationOutputParameters
+                            {
+                                Owner = containerOwner,
+                                InformationOutputID = form["InformationOutputID"]
+                            };
+                        PushToInformationOutput.Execute(parameters);
+                        break;
+                    }
+                case "DeleteInformationInput":
+                    {
+                        DeleteInformationInputParameters parameters = new DeleteInformationInputParameters
+                            {
+                                Owner = containerOwner,
+                                InformationInputID = form["InformationInputID"]
+                            };
+                        DeleteInformationInput.Execute(parameters);
+                        break;
+                    }
+                case "FetchInputInformation":
+                    {
+                        FetchInputInformationParameters parameters = new FetchInputInformationParameters
+                            {
+                                Owner = containerOwner,
+                                InformationInputID = form["InformationInputID"],
+                                QueryParameters = form["QueryParameters"]
+                            };
+                        FetchInputInformation.Execute(parameters);
+                        break;
+                    }
                 case "DeleteDeviceMembership":
                     {
                         DeleteDeviceMembershipParameters parameters = new DeleteDeviceMembershipParameters
@@ -200,6 +271,7 @@ namespace TheBall
                             {
                                 InputDescription = form["InputDescription"],
                                 LocationURL = form["LocationURL"],
+                                LocalContentName = form["LocalContentName"],
                                 Owner = containerOwner
                             };
                         var createdInformationInput = CreateInformationInput.Execute(parameters);

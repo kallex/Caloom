@@ -8586,6 +8586,10 @@ using TheBall.CORE;
 						((IInformationObject) InformationInputConfirmation).UpdateCollections(masterInstance);
 					}
 
+					if(InformationOutputConfirmation != null) {
+						((IInformationObject) InformationOutputConfirmation).UpdateCollections(masterInstance);
+					}
+
 				}
 
 
@@ -8627,6 +8631,14 @@ using TheBall.CORE;
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = InformationOutputConfirmation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -8655,6 +8667,15 @@ using TheBall.CORE;
 					}
 					{
 						var item = InformationInputConfirmation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = InformationOutputConfirmation;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -8697,6 +8718,11 @@ using TheBall.CORE;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) InformationOutputConfirmation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -8713,6 +8739,8 @@ using TheBall.CORE;
 						if(DeviceJoinConfirmation != _unmodified_DeviceJoinConfirmation)
 							return true;
 						if(InformationInputConfirmation != _unmodified_InformationInputConfirmation)
+							return true;
+						if(InformationOutputConfirmation != _unmodified_InformationOutputConfirmation)
 							return true;
 						if(RedirectUrlAfterValidation != _unmodified_RedirectUrlAfterValidation)
 							return true;
@@ -8736,6 +8764,15 @@ using TheBall.CORE;
 						}
 						{
 							IInformationObject item = (IInformationObject) InformationInputConfirmation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) InformationOutputConfirmation;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -8774,6 +8811,14 @@ using TheBall.CORE;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(InformationOutputConfirmation != null) {
+						if(InformationOutputConfirmation.ID == replacingObject.ID)
+							InformationOutputConfirmation = (TBInformationOutputConfirmation) replacingObject;
+						else {
+							IInformationObject iObject = InformationOutputConfirmation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -8785,6 +8830,7 @@ using TheBall.CORE;
 					GroupJoinConfirmation = sourceObject.GroupJoinConfirmation;
 					DeviceJoinConfirmation = sourceObject.DeviceJoinConfirmation;
 					InformationInputConfirmation = sourceObject.InformationInputConfirmation;
+					InformationOutputConfirmation = sourceObject.InformationOutputConfirmation;
 					RedirectUrlAfterValidation = sourceObject.RedirectUrlAfterValidation;
 				}
 				
@@ -8808,6 +8854,10 @@ using TheBall.CORE;
 					_unmodified_InformationInputConfirmation = InformationInputConfirmation;
 					if(InformationInputConfirmation != null)
 						((IInformationObject) InformationInputConfirmation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_InformationOutputConfirmation = InformationOutputConfirmation;
+					if(InformationOutputConfirmation != null)
+						((IInformationObject) InformationOutputConfirmation).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -8853,6 +8903,9 @@ using TheBall.CORE;
 			[DataMember]
 			public TBInformationInputConfirmation InformationInputConfirmation { get; set; }
 			private TBInformationInputConfirmation _unmodified_InformationInputConfirmation;
+			[DataMember]
+			public TBInformationOutputConfirmation InformationOutputConfirmation { get; set; }
+			private TBInformationOutputConfirmation _unmodified_InformationOutputConfirmation;
 			[DataMember]
 			public string RedirectUrlAfterValidation { get; set; }
 			private string _unmodified_RedirectUrlAfterValidation;
@@ -9947,6 +10000,393 @@ using TheBall.CORE;
 
 
 				private void CopyContentFrom(TBInformationInputConfirmation sourceObject)
+				{
+					GroupID = sourceObject.GroupID;
+					AccountID = sourceObject.AccountID;
+					InformationInputID = sourceObject.InformationInputID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_GroupID = GroupID;
+					_unmodified_AccountID = AccountID;
+					_unmodified_InformationInputID = InformationInputID;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupID":
+							GroupID = value;
+							break;
+						case "AccountID":
+							AccountID = value;
+							break;
+						case "InformationInputID":
+							InformationInputID = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string GroupID { get; set; }
+			private string _unmodified_GroupID;
+			[DataMember]
+			public string AccountID { get; set; }
+			private string _unmodified_AccountID;
+			[DataMember]
+			public string InformationInputID { get; set; }
+			private string _unmodified_InformationInputID;
+			
+			}
+			[DataContract]
+			public partial class TBInformationOutputConfirmation : IInformationObject 
+			{
+				public TBInformationOutputConfirmation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBInformationOutputConfirmation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(TBInformationOutputConfirmation), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBInformationOutputConfirmation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBInformationOutputConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBInformationOutputConfirmation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBInformationOutputConfirmation");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBInformationOutputConfirmation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static TBInformationOutputConfirmation RetrieveTBInformationOutputConfirmation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (TBInformationOutputConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBInformationOutputConfirmation), null, owner);
+                    return result;
+                }
+
+				public static TBInformationOutputConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = TBInformationOutputConfirmation.RetrieveTBInformationOutputConfirmation("Content/AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName, containerOwner);
+					var result = TBInformationOutputConfirmation.RetrieveTBInformationOutputConfirmation("AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBInformationOutputConfirmation) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBInformationOutputConfirmation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBInformationOutputConfirmation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBInformationOutputConfirmation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBInformationOutputConfirmation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBInformationOutputConfirmation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBInformationOutputConfirmation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref TBInformationOutputConfirmation customDemoObject);
+
+
+
+				public static TBInformationOutputConfirmation CreateDefault()
+				{
+					var result = new TBInformationOutputConfirmation();
+					return result;
+				}
+
+				public static TBInformationOutputConfirmation CreateDemoDefault()
+				{
+					TBInformationOutputConfirmation customDemo = null;
+					TBInformationOutputConfirmation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new TBInformationOutputConfirmation();
+					result.GroupID = @"TBInformationOutputConfirmation.GroupID";
+
+					result.AccountID = @"TBInformationOutputConfirmation.AccountID";
+
+					result.InformationInputID = @"TBInformationOutputConfirmation.InformationInputID";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(GroupID != _unmodified_GroupID)
+							return true;
+						if(AccountID != _unmodified_AccountID)
+							return true;
+						if(InformationInputID != _unmodified_InformationInputID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBInformationOutputConfirmation sourceObject)
 				{
 					GroupID = sourceObject.GroupID;
 					AccountID = sourceObject.AccountID;

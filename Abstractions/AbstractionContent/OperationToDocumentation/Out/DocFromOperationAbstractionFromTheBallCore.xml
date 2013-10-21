@@ -259,6 +259,91 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateAndSendEmailValidationForInformationOutputConfirmation (OwningAccount, OwningGroup, InformationOutput)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates and sends email validation for information output confirmation.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if an account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwningGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBCollaboratingGroup</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner - if a group</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationOutput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>InformationOutput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information output</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerEmailAddresses ( OwningAccount, OwningGroup )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailValidation ( OwnerEmailAddresses, OwningAccount, OwningGroup, InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email validation item for 30 minutes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( EmailValidation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store email validation object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendEmailConfirmation ( EmailValidation, OwnerEmailAddresses, InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create and send email confirmation for approving information output</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -619,7 +704,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="CreateInformationInput (Owner, InputDescription, LocationURL)" level="1">
+          <Header text="CreateInformationInput (Owner, InputDescription, LocationURL, LocalContentName)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -671,11 +756,22 @@
                         <TextContent>Information source location URL</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LocalContentName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Local content name</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL )" level="2">
+            <Header text="Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL, LocalContentName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Created information input</TextContent>
@@ -707,6 +803,134 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Created information input</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateInformationOutput (Owner, OutputDescription, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedDeviceID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates information output for security context for owner.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OutputDescription</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Description of the information output</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DestinationURL</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Information target location URL</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DestinationContentName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Destionation content name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LocalContentURL</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Local content URL</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AuthenticatedDeviceID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Authenticated device ID for this connection (optional)</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CreatedInformationOutput ( Owner, OutputDescription, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedDeviceID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created information output</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( CreatedInformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateInformationOutputReturnValue ( CreatedInformationOutput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationOutput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>InformationOutput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created information output</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -1048,6 +1272,66 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteInformationOutput (Owner, InformationOutputID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete information input source.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationOutputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information output</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationOutput ( Owner, InformationOutputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information output to delete</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteInformationOutput ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete information output record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="DeleteSpecifiedInformationObject (Owner, ObjectDomainName, ObjectName, ObjectID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1217,11 +1501,18 @@
             <Header text="Target Definition: InputFetchName ( InformationInput )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Name of item to store the fetched input</TextContent>
+                  <TextContent>Name of item to store the fetched input - derived from local content name.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, Owner, QueryParameters )" level="2">
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( InformationInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Authenticated as device info (if available)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice, Owner, QueryParameters )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Fetch input to storage</TextContent>
@@ -1428,6 +1719,101 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="PushToInformationOutput (Owner, InformationOutputID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Push information output to given target
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationOutputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information output</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationOutput ( Owner, InformationOutputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information output to push the data to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: VerifyValidOutput ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Verify that output is valid and active</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DestinationURL ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Location to push the output to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DestinationContentName ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Destination content name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LocalContentURL ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Local content URL to push the output from</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Authenticated as device info (if available)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PushToInformationOutput ( InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Push information to output</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1580,6 +1966,84 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetInformationOutputValidationAndActiveStatus (Owner, InformationOutputID, IsValidAndActive)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Set information output validation and active-statuses.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Security context owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InformationOutputID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ID of information output</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IsValidAndActive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Value for validated and active</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: InformationOutput ( Owner, InformationOutputID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Information output of which to set the status</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetInputValidAndActiveValue ( InformationOutput, IsValidAndActive )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set input valid and active value</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( InformationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store modified object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

@@ -167,9 +167,26 @@ namespace TheBall
                                  ? emailValidation.InformationInputConfirmation.AccountID
                                  : emailValidation.InformationInputConfirmation.GroupID;
             string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
-            string message = String.Format(emailMessageFormat, informationInput.Description,
+            string message = String.Format(emailMessageFormat, informationInput.InputDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
             string subject = String.Format(InstanceConfiguration.EmailInputJoinSubjectFormat, ownerID);
+            foreach (string emailAddress in ownerEmailAddresses)
+            {
+                SendEmail(FromAddress, emailAddress, subject, message);
+            }
+        }
+
+        public static void SendOutputJoinEmail(TBEmailValidation emailValidation, InformationOutput informationOutput, string[] ownerEmailAddresses)
+        {
+            string urlLink = GetUrlLink(emailValidation.ID);
+            bool isAccount = emailValidation.InformationInputConfirmation.AccountID != null;
+            string ownerID = isAccount
+                                 ? emailValidation.InformationInputConfirmation.AccountID
+                                 : emailValidation.InformationInputConfirmation.GroupID;
+            string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
+            string message = String.Format(emailMessageFormat, informationOutput.OutputDescription,
+                                           isAccount ? "account" : "collaboration group", ownerID, urlLink);
+            string subject = String.Format(InstanceConfiguration.EmailOutputJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
                 SendEmail(FromAddress, emailAddress, subject, message);
