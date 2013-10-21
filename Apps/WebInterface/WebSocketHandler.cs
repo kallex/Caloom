@@ -74,7 +74,8 @@ namespace WebInterface
 
             Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> OnReceiveMessage = HandleDeviceNegotiations;
             Action<WebSocketContext, WebSocket> OnClose = HandleCloseMessage;
-            InformationContext informationContext = new InformationContext();
+            //InformationContext informationContext = new InformationContext();
+            InformationContext informationContext = InformationContext.Current;
             var request = HttpContext.Current.Request;
             string accountEmail = request.Params["accountemail"];
             string groupID = request.Params["groupID"];
@@ -163,6 +164,8 @@ namespace WebInterface
 
         private async static Task HandleDeviceNegotiations(InformationContext iCtx, WebSocketContext wsCtx, WebSocket socket, byte[] binaryMessage, string textMessage)
         {
+            if(iCtx != InformationContext.Current)
+                throw new InvalidDataException("InformationContext is mismatched during processing");
             bool playBob = false;
             INegotiationProtocolMember protocolParty = null;
             if (binaryMessage != null)
@@ -219,18 +222,25 @@ namespace WebInterface
 
         private static void FinishDeviceNegotiation(InformationContext iCtx, INegotiationProtocolMember protocolParty, string remainingDetails)
         {
-            var result = CreateDeviceMembership.Execute(new CreateDeviceMembershipParameters
-                {
-                    Owner = iCtx.Owner,
-                    ActiveSymmetricAESKey = protocolParty.NegotiationResults[0],
-                    DeviceDescription = remainingDetails
-                });
-            CreateAndSendEmailValidationForDeviceJoinConfirmation.Execute(new CreateAndSendEmailValidationForDeviceJoinConfirmationParameters
-                {
-                    DeviceMembership = result.DeviceMembership,
-                    OwningAccount = iCtx.Owner as TBAccount,
-                    OwningGroup = iCtx.Owner as TBCollaboratingGroup,
-                });
+            try
+            {
+                var result = CreateDeviceMembership.Execute(new CreateDeviceMembershipParameters
+                    {
+                        Owner = iCtx.Owner,
+                        ActiveSymmetricAESKey = protocolParty.NegotiationResults[0],
+                        DeviceDescription = remainingDetails
+                    });
+                CreateAndSendEmailValidationForDeviceJoinConfirmation.Execute(new CreateAndSendEmailValidationForDeviceJoinConfirmationParameters
+                    {
+                        DeviceMembership = result.DeviceMembership,
+                        OwningAccount = iCtx.Owner as TBAccount,
+                        OwningGroup = iCtx.Owner as TBCollaboratingGroup,
+                    });
+            }
+            finally
+            {
+                iCtx.PerformFinalizingActions();
+            }
         }
 
         private async static Task SendTextMessage(WebSocket socket, string textMessage)

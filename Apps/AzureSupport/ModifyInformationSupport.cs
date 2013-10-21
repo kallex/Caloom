@@ -94,6 +94,16 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "DeleteDeviceMembership":
+                    {
+                        DeleteDeviceMembershipParameters parameters = new DeleteDeviceMembershipParameters
+                            {
+                                Owner = containerOwner,
+                                DeviceMembershipID = form["DeviceMembershipID"]
+                            };
+                        DeleteDeviceMembership.Execute(parameters);
+                        break;
+                    }
                 case "DeleteAuthenticatedAsActiveDevice":
                     {
                         DeleteAuthenticatedAsActiveDeviceParameters parameters = new DeleteAuthenticatedAsActiveDeviceParameters

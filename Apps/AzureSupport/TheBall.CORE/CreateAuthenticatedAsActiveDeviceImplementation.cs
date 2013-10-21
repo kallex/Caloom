@@ -4,8 +4,9 @@ namespace TheBall.CORE
     {
         public static string GetTarget_NegotiationURL(string targetBallHostName, string targetGroupId)
         {
-            return string.Format("wss://{0}/websocket/NegotiateDeviceConnection?groupID={1}", targetBallHostName,
-                                 targetGroupId);
+            string protocol = targetBallHostName.StartsWith("localdev:") || targetBallHostName.StartsWith("localhost:") ? "ws" : "wss";
+            return string.Format("{2}://{0}/websocket/NegotiateDeviceConnection?groupID={1}", targetBallHostName,
+                                 targetGroupId, protocol);
         }
 
         public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticationDeviceDescription, string sharedSecret, string negotiationUrl)

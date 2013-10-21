@@ -152,9 +152,10 @@ namespace TheBall
             string emailMessageFormat = InstanceConfiguration.EmailDeviceJoinMessageFormat;
             string message = String.Format(emailMessageFormat, deviceMembership.DeviceDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
+            string subject = String.Format(InstanceConfiguration.EmailDeviceJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, InstanceConfiguration.EmailDeviceJoinSubjectFormat, message);
+                SendEmail(FromAddress, emailAddress, subject, message);
             }
         }
 
@@ -168,9 +169,10 @@ namespace TheBall
             string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
             string message = String.Format(emailMessageFormat, informationInput.Description,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
+            string subject = String.Format(InstanceConfiguration.EmailInputJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, InstanceConfiguration.EmailInputJoinSubjectFormat, message);
+                SendEmail(FromAddress, emailAddress, subject, message);
             }
         }
     }

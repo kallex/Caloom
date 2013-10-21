@@ -50,6 +50,7 @@ namespace SecuritySupport
             watch.Start();
             Socket.Connect();
             bool negotiationSuccess = WaitingSemaphore.Wait(MAX_NEGOTIATION_TIME);
+            Socket.Close();
             if(!negotiationSuccess)
                 throw new TimeoutException("Trust negotiation timed out");
         }
@@ -172,6 +173,7 @@ namespace SecuritySupport
             } 
             if (ProtocolMember.IsDoneWithProtocol)
             {
+                Socket.Send("Done with protocol..."); 
                 watch.Stop();
                 Debug.WriteLine((PlayAsAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
                 WaitingSemaphore.Release();
