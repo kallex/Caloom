@@ -272,6 +272,7 @@ namespace TheBall
                                 InputDescription = form["InputDescription"],
                                 LocationURL = form["LocationURL"],
                                 LocalContentName = form["LocalContentName"],
+                                AuthenticatedDeviceID = form["AuthenticatedDeviceID"],
                                 Owner = containerOwner
                             };
                         var createdInformationInput = CreateInformationInput.Execute(parameters);

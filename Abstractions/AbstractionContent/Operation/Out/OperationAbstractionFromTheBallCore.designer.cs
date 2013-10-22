@@ -323,6 +323,7 @@ using System.IO;
 				public string InputDescription ;
 				public string LocationURL ;
 				public string LocalContentName ;
+				public string AuthenticatedDeviceID ;
 				}
 		
 		public class CreateInformationInput 
@@ -333,7 +334,7 @@ using System.IO;
 				public static CreateInformationInputReturnValue Execute(CreateInformationInputParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput CreatedInformationInput = CreateInformationInputImplementation.GetTarget_CreatedInformationInput(parameters.Owner, parameters.InputDescription, parameters.LocationURL, parameters.LocalContentName);	
+					InformationInput CreatedInformationInput = CreateInformationInputImplementation.GetTarget_CreatedInformationInput(parameters.Owner, parameters.InputDescription, parameters.LocationURL, parameters.LocalContentName, parameters.AuthenticatedDeviceID);	
 				CreateInformationInputImplementation.ExecuteMethod_StoreObject(CreatedInformationInput);		
 				CreateInformationInputReturnValue returnValue = CreateInformationInputImplementation.Get_ReturnValue(CreatedInformationInput);
 		return returnValue;

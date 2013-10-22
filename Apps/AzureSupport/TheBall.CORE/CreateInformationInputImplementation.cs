@@ -2,13 +2,14 @@ namespace TheBall.CORE
 {
     public class CreateInformationInputImplementation
     {
-        public static InformationInput GetTarget_CreatedInformationInput(IContainerOwner owner, string inputDescription, string locationUrl, string localContentName)
+        public static InformationInput GetTarget_CreatedInformationInput(IContainerOwner owner, string inputDescription, string locationUrl, string localContentName, string authenticatedDeviceId)
         {
             InformationInput informationInput = new InformationInput();
             informationInput.SetLocationAsOwnerContent(owner, informationInput.ID);
             informationInput.InputDescription = inputDescription;
             informationInput.LocationURL = locationUrl;
             informationInput.LocalContentName = localContentName;
+            informationInput.AuthenticatedDeviceID = authenticatedDeviceId;
             return informationInput;
         }
 

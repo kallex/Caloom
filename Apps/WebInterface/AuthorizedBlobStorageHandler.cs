@@ -102,6 +102,7 @@ namespace WebInterface
         private void HandleEncryptedDeviceRequest(HttpContext context)
         {
             var request = context.Request;
+            var response = context.Response;
             var authorization = request.Headers["Authorization"];
             var authTokens = authorization.Split(':');
             IContainerOwner owner = null;
@@ -122,7 +123,20 @@ namespace WebInterface
                 throw new SecurityException("Device membership not valid and active");
             if (request.RequestType == "GET")
             {
-                
+                string contentPath = request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+                var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
+
+                AesManaged aes = new AesManaged();
+                aes.KeySize = 256;
+                aes.GenerateIV();
+                aes.Key = deviceMembership.ActiveSymmetricAESKey;
+                var ivBase64 = Convert.ToBase64String(aes.IV);
+                response.Headers.Add("IV", ivBase64);
+                var responseStream = response.OutputStream;
+                var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                var cryptoStream = new CryptoStream(responseStream, encryptor, CryptoStreamMode.Write);
+                blob.DownloadToStream(cryptoStream);
+                cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
                 string contentRoot = deviceMembership.RelativeLocation + "_Input";
@@ -138,8 +152,8 @@ namespace WebInterface
                 var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                 CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
                 blob.UploadFromStream(cryptoStream);
-                context.Response.StatusCode = 200;
-                context.Response.End();
+                response.StatusCode = 200;
+                response.End();
             }
             else
                 throw new NotSupportedException("Device request type not supported: " + request.RequestType);

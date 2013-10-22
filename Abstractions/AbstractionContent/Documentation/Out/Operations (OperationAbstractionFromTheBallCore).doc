@@ -898,7 +898,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Redirect to url if given
 		</div>
-		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL, LocalContentName)</h1>
+		</p><h1>CreateInformationInput (Owner, InputDescription, LocationURL, LocalContentName, AuthenticatedDeviceID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -976,8 +976,25 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedDeviceID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Authenticated device ID for this connection (optional)
+		</div>
+				</td>
+				</tr>
 		</table>
-		</p><h2>Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL, LocalContentName )</h2>
+		</p><h2>Target Definition: CreatedInformationInput ( Owner, InputDescription, LocationURL, LocalContentName, AuthenticatedDeviceID )</h2>
 		<p>		<div class="MsoNormal" >
 		Created information input
 		</div>
