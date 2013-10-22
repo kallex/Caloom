@@ -174,6 +174,7 @@ namespace WebInterface
                 {
                     if (dict.ContainsKey("EKENEGOTIATIONPARTY") == false)
                     {
+                        // Yes, the shared secret is fixed due to demo. We're fixing it to be separately requested or given by user... :-)
                         TheBallEKE protocolInstance = new TheBallEKE();
                         protocolInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
                         if(playBob)
