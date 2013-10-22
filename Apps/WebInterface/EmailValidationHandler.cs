@@ -85,10 +85,41 @@ namespace WebInterface
             {
                 HandleInputJoinConfirmation(context, account, emailValidation);
             }
+            else if (emailValidation.InformationOutputConfirmation != null)
+            {
+                HandleOutputJoinConfirmation(context, account, emailValidation);
+            }
             else
             {
                 HandleAccountEmailValidation(context, account, emailValidation);
             }
+        }
+
+        private void HandleOutputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            ValidateAccountsEmailAddress(account, emailValidation);
+            VirtualOwner owner;
+            var outputJoinInfo = emailValidation.InformationOutputConfirmation;
+            string redirectUrl;
+            if (String.IsNullOrEmpty(outputJoinInfo.AccountID) == false)
+            {
+                owner = VirtualOwner.FigureOwner("acc/" + outputJoinInfo.AccountID);
+                redirectUrl = "/auth/account/";
+            }
+            else
+            {
+                string groupID = outputJoinInfo.GroupID;
+                owner = VirtualOwner.FigureOwner("grp/" + groupID);
+                redirectUrl = "/auth/grp/" + groupID + "/";
+            }
+            SetInformationOutputValidationAndActiveStatus.Execute(
+                new SetInformationOutputValidationAndActiveStatusParameters
+                {
+                    Owner = owner,
+                    InformationOutputID = outputJoinInfo.InformationOutputID,
+                    IsValidAndActive = true
+                });
+            context.Response.Redirect(redirectUrl, true);
         }
 
         private void HandleInputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
@@ -199,7 +230,8 @@ namespace WebInterface
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)
         {
-            context.Response.Write("Error to be replaced: email validation record does not exist.");
+            context.Response.Redirect("/auth/account/", true);
+            //context.Response.Write("Error to be replaced: email validation record does not exist.");
         }
 
         private void RespondEmailValidationExpired(HttpContext context, TBEmailValidation emailValidation)

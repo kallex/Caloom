@@ -20,16 +20,17 @@ namespace TheBall.CORE
         public static TBEmailValidation GetTarget_EmailValidation(TBAccount owningAccount, TBCollaboratingGroup owningGroup, InformationOutput informationOutput, string[] ownerEmailAddresses)
         {
             TBEmailValidation emailValidation = new TBEmailValidation();
-            emailValidation.InformationInputConfirmation = new TBInformationInputConfirmation();
+            var confirmation = new TBInformationOutputConfirmation();
+            emailValidation.InformationOutputConfirmation = confirmation;
             if (owningAccount != null && owningGroup != null)
                 throw new InvalidDataException("Both owning account and owning group cannot be defined");
             if (owningAccount == null && owningGroup == null)
                 throw new InvalidDataException("Both owning account and owning group must not be null");
             if (owningAccount != null)
-                emailValidation.InformationOutputConfirmation.AccountID = owningAccount.ID;
+                confirmation.AccountID = owningAccount.ID;
             if (owningGroup != null)
-                emailValidation.InformationInputConfirmation.GroupID = owningGroup.ID;
-            emailValidation.InformationInputConfirmation.InformationInputID = informationOutput.ID;
+                confirmation.GroupID = owningGroup.ID;
+            confirmation.InformationOutputID = informationOutput.ID;
             emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(30);
             emailValidation.Email = ownerEmailAddresses.FirstOrDefault();
             if (emailValidation.Email == null)

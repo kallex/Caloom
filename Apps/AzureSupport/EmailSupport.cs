@@ -179,11 +179,12 @@ namespace TheBall
         public static void SendOutputJoinEmail(TBEmailValidation emailValidation, InformationOutput informationOutput, string[] ownerEmailAddresses)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            bool isAccount = emailValidation.InformationInputConfirmation.AccountID != null;
+            var confirmation = emailValidation.InformationOutputConfirmation;
+            bool isAccount = confirmation.AccountID != null;
             string ownerID = isAccount
-                                 ? emailValidation.InformationInputConfirmation.AccountID
-                                 : emailValidation.InformationInputConfirmation.GroupID;
-            string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
+                                 ? confirmation.AccountID
+                                 : confirmation.GroupID;
+            string emailMessageFormat = InstanceConfiguration.EmailOutputJoinMessageFormat;
             string message = String.Format(emailMessageFormat, informationOutput.OutputDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
             string subject = String.Format(InstanceConfiguration.EmailOutputJoinSubjectFormat, ownerID);

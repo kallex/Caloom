@@ -10309,7 +10309,7 @@ using TheBall.CORE;
 
 					result.AccountID = @"TBInformationOutputConfirmation.AccountID";
 
-					result.InformationInputID = @"TBInformationOutputConfirmation.InformationInputID";
+					result.InformationOutputID = @"TBInformationOutputConfirmation.InformationOutputID";
 
 				
 					return result;
@@ -10374,7 +10374,7 @@ using TheBall.CORE;
 							return true;
 						if(AccountID != _unmodified_AccountID)
 							return true;
-						if(InformationInputID != _unmodified_InformationInputID)
+						if(InformationOutputID != _unmodified_InformationOutputID)
 							return true;
 				
 						return false;
@@ -10390,7 +10390,7 @@ using TheBall.CORE;
 				{
 					GroupID = sourceObject.GroupID;
 					AccountID = sourceObject.AccountID;
-					InformationInputID = sourceObject.InformationInputID;
+					InformationOutputID = sourceObject.InformationOutputID;
 				}
 				
 
@@ -10399,7 +10399,7 @@ using TheBall.CORE;
 				{
 					_unmodified_GroupID = GroupID;
 					_unmodified_AccountID = AccountID;
-					_unmodified_InformationInputID = InformationInputID;
+					_unmodified_InformationOutputID = InformationOutputID;
 				
 				
 				}
@@ -10417,8 +10417,8 @@ using TheBall.CORE;
 						case "AccountID":
 							AccountID = value;
 							break;
-						case "InformationInputID":
-							InformationInputID = value;
+						case "InformationOutputID":
+							InformationOutputID = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -10431,8 +10431,8 @@ using TheBall.CORE;
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
 			[DataMember]
-			public string InformationInputID { get; set; }
-			private string _unmodified_InformationInputID;
+			public string InformationOutputID { get; set; }
+			private string _unmodified_InformationOutputID;
 			
 			}
 			[DataContract]
