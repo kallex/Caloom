@@ -35,7 +35,16 @@ namespace WebInterface
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-            AuthenticationSupport.SetUserFromCookieIfExists(HttpContext.Current);
+            var ctx = HttpContext.Current;
+            var request = ctx.Request;
+            var authorization = request.Headers["Authorization"];
+            if (authorization != null && authorization.StartsWith("DeviceAES:"))
+            {
+                string[] parts = authorization.Split(':');
+                string trustID = parts[2];
+                ctx.User = new GenericPrincipal(new GenericIdentity(trustID), new string[] { "DeviceAES"});
+            } else
+                AuthenticationSupport.SetUserFromCookieIfExists(HttpContext.Current);
         }
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)

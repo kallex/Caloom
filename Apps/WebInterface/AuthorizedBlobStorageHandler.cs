@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
@@ -59,6 +60,7 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             string user = context.User.Identity.Name;
+            var userIdentity = context.User;
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             var request = context.Request;
             var response = context.Response;
@@ -75,7 +77,10 @@ namespace WebInterface
             }
             try
             {
-                if (request.Path.StartsWith(AuthPersonalPrefix))
+                if (userIdentity.IsInRole("DeviceAES"))
+                {
+                    HandleEncryptedDeviceRequest(context);
+                } else if (request.Path.StartsWith(AuthPersonalPrefix))
                 {
                     HandlePersonalRequest(context);
                 }
@@ -92,6 +97,53 @@ namespace WebInterface
             {
                 InformationContext.ProcessAndClearCurrent();
             }
+        }
+
+        private void HandleEncryptedDeviceRequest(HttpContext context)
+        {
+            var request = context.Request;
+            var authorization = request.Headers["Authorization"];
+            var authTokens = authorization.Split(':');
+            IContainerOwner owner = null;
+            if (request.Path.StartsWith("/auth/grp/"))
+            {
+                string groupID = GetGroupID(context.Request.Path);
+                owner = new VirtualOwner("grp", groupID);
+            }
+            else
+                throw new NotSupportedException("Account device requests not yet supported");
+            string ivStr = authTokens[1];
+            string trustID = authTokens[2];
+            string contentName = authTokens[3];
+            DeviceMembership deviceMembership = DeviceMembership.RetrieveFromOwnerContent(owner, trustID);
+            if(deviceMembership == null)
+                throw new InvalidDataException("Device membership not found");
+            if(deviceMembership.IsValidatedAndActive == false)
+                throw new SecurityException("Device membership not valid and active");
+            if (request.RequestType == "GET")
+            {
+                
+            } else if (request.RequestType == "POST")
+            {
+                string contentRoot = deviceMembership.RelativeLocation + "_Input";
+                string blobName = contentRoot + "/" + contentName;
+                var blob = StorageSupport.GetOwnerBlobReference(owner, blobName);
+                if(blob.Name != blobName)
+                    throw new InvalidDataException("Invalid content name");
+                var reqStream = request.GetBufferedInputStream();
+                AesManaged aes = new AesManaged();
+                aes.KeySize = 256;
+                aes.IV = Convert.FromBase64String(ivStr);
+                aes.Key = deviceMembership.ActiveSymmetricAESKey;
+                var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
+                blob.UploadFromStream(cryptoStream);
+                context.Response.StatusCode = 200;
+                context.Response.End();
+            }
+            else
+                throw new NotSupportedException("Device request type not supported: " + request.RequestType);
+
         }
 
         private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)

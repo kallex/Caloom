@@ -670,7 +670,7 @@ namespace TheBallTool
 
             //PatchSubscriptionsToSubmitted();
 
-            FixGroupMastersAndCollections("d3a8ee05-dbd7-4ddc-b399-caeff2d3373d"); // Proj2
+            //FixGroupMastersAndCollections("d3a8ee05-dbd7-4ddc-b399-caeff2d3373d"); // Proj2
             FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
 
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
