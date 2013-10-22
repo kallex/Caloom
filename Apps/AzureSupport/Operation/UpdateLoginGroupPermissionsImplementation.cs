@@ -65,7 +65,8 @@ namespace AaltoGlobalImpact.OIP
                     }
                     loginGroupRoot.GroupID = groupRoleItem.GroupID;
                     loginGroupRoot.Role = groupRoleItem.GroupRole;
-                    currentLoginGroupRoots.Add(loginGroupRoot);
+                    if(currentLoginGroupRoots.Any(lgr => lgr.ID == loginGroupID) == false)
+                        currentLoginGroupRoots.Add(loginGroupRoot);
                 }
             }
             var loginRootsToDelete = loginGroupRoots.

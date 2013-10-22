@@ -116,9 +116,11 @@ namespace TheBallTool
             return accountLocs.ToArray();
         }
 
-        public static void ReconnectGroupsMastersAndCollections(string groupID, string objectNamePart = null)
+        public static void ReconnectGroupsMastersAndCollections(string groupID = null, string objectNamePart = null)
         {
-            var groupLocs = GetAllGroupLocations().Where(grpLoc => grpLoc.Contains(groupID));
+            var groupLocs = GetAllGroupLocations();
+            if(groupID != null)
+                groupLocs = groupLocs.Where(grpLoc => grpLoc.Contains(groupID)).ToArray();
             foreach(var grpLoc in groupLocs)
                 ReconnectMastersAndCollections(grpLoc, objectNamePart);
         }
@@ -212,6 +214,7 @@ namespace TheBallTool
 
         private static void FixGroupMastersAndCollections(string groupID)
         {
+            Debug.WriteLine("Fixing group: " + groupID);
             TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
             IContainerOwner owner = groupRoot.Group;
             owner.InitializeAndConnectMastersAndCollections();
@@ -219,6 +222,16 @@ namespace TheBallTool
             //OIPDomain.RefreshMasterCollections(groupRoot.Group);
             //groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
+
+        private static void FixAllGroupsMastersAndCollections()
+        {
+            var groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            foreach (var groupID in groupIDs)
+            {
+                FixGroupMastersAndCollections(groupID);
+            }
+        }
+
 
         private static void AddLegacyGroupWithInitiator(string groupID, string initiatorEmailAddress)
         {
@@ -671,7 +684,8 @@ namespace TheBallTool
             //PatchSubscriptionsToSubmitted();
 
             //FixGroupMastersAndCollections("d3a8ee05-dbd7-4ddc-b399-caeff2d3373d"); // Proj2
-            FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
+            //FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
+            FixAllGroupsMastersAndCollections();
 
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("c229a54c-31fe-4c33-957d-e7b52cdbc06a");
