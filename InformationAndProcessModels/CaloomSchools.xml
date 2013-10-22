@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="Caloom.Schools">
+    <InformationModel>
+      <InformationObject name="TrainingModule" designDesc="Training module">
+        <InformationItems>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="TrainingModules" logicalDataType="InformationObject" informationObjectName="TrainingModuleCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="TrainingModuleCollection" designDesc="Collection of training modules">
+        <CollectionFor contentInformationObjectName="TrainingModule" collectionType="Master"/>
+      </InformationObject>
+
+    </InformationModel>
+    <Operations>
+      <Operation name="CreateTrainingModule">
+        <OperationSpec>
+          <Description>Create training module</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TrainingModule" name="TrainingModuleRoot" designDesc="Created TrainingModule" state="designApproved" />
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="TrainingModuleRoot"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    <Subscriptions>
+      <Subscription triggeredOperationName="UpdatePageContent">
+        <TriggeringInformationItem itemName="BuiltForAnybodyTitle" objectName="AboutAGIApplications" />
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="BuiltForAnybodyTitle" />
+      </Subscription>
+    </Subscriptions>
+    <Monitoring>
+      <Monitor monitoringOperationName="UpdatePageContent">
+        <MonitoredInformationItem objectName="AboutAGIApplications" itemName="ForAllPeopleTitle" />
+        <MonitoringFrequency utcTimeStampToStart="2012-08-13T14:00:00.123456789+02:00">
+          <RegularMonitoringCycle frequencyUnit="Minute" monitorEveryXthOfUnit="15" />
+        </MonitoringFrequency>
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="ForAllPeopleTitle" />
+      </Monitor>
+    </Monitoring>
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

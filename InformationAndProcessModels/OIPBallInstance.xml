@@ -1,0 +1,2084 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="AaltoGlobalImpact.OIP">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="ParentToChildren" designDesc="Parent to children collection data structures">
+          <InterfaceItems>
+            <InterfaceItem name="id" logicalDataType="Text_Short"/>
+            <ObjectInstance name="children" interfaceObjectName="ParentToChildren" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <!--
+        <InterfaceObject name="PublishSummary" designDesc="Publish content summary">
+          <InterfaceItems>
+            <InterfaceItem name="ActiveItem" logicalDataType="Text_Short"/>
+            <ObjectInstance name="PublishCollection" interfaceObjectName="PublishItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="PublishItem" designDesc="Publish content item - identifies full publication package">
+          <InterfaceItems>
+            <InterfaceItem name="Name" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        -->
+      </InterfaceModel>
+      <InterfaceViews>
+        <!--
+        <InterfaceView name="PublishView" rootObjectName="PublishSummary">
+          <ViewField classNames="" fieldType="DropdownList" label="Active Publication" viewItemPath="ActiveItem"/>
+          <SubView name="PublishContent" viewName="PublishCollectionView" viewItemPath="PublishCollection"/>
+        </InterfaceView>
+        <InterfaceView name="PublishCollectionView" rootObjectName="PublishItem">
+          <ViewField classNames="" label="Name" fieldType="TextBox" viewItemPath="Name"/>
+        </InterfaceView>
+        -->
+      </InterfaceViews>
+    </DigitalInterface>
+    <InformationModel>
+      <!-- System -->
+      <InformationObject name="TBSystem" designDesc="System instance information (singleton class)">
+        <InformationItems>
+          <InformationItem name="InstanceName" logicalDataType="Text_Short"/>
+          <InformationItem name="AdminGroupID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="WebPublishInfo" designDesc="Web publishing info">
+        <InformationItems>
+          <InformationItem name="PublishType" logicalDataType="Text_Short"/>
+          <InformationItem name="PublishContainer" logicalDataType="Text_Short"/>
+          <InformationItem name="ActivePublication" logicalDataType="InformationObject" informationObjectName="PublicationPackage" />
+          <InformationItem name="Publications" logicalDataType="InformationObject" informationObjectName="PublicationPackageCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="PublicationPackageCollection" designDesc="Collection of publication packages">
+        <CollectionFor contentInformationObjectName="PublicationPackage" collectionType="Independent" />
+      </InformationObject>
+      <InformationObject name="PublicationPackage" designDesc="Publication package">
+        <InformationItems>
+          <InformationItem name="PackageName" logicalDataType="Text_Short"/>
+          <InformationItem name="PublicationTime" logicalDataType="Time_DateTime"/>
+        </InformationItems>
+      </InformationObject>
+      <!-- Collaborators, Collaboration Groups, Organizations -->
+      <!-- Storage Roots -->
+      <InformationObject name="TBRLoginRoot" designDesc="Login root for LoginID">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRAccountRoot" designDesc="Account root for AccountID">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRGroupRoot" designDesc="Root for Collaboration groups">
+        <InformationItems>
+          <InformationItem name="Group" logicalDataType="InformationObject" informationObjectName="TBCollaboratingGroup" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRLoginGroupRoot" designDesc="Login and group root">
+        <InformationItems>
+          <InformationItem name="Role" logicalDataType="Text_Short" />
+          <InformationItem name="GroupID" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBREmailRoot" designDesc="Root for email address">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount" />
+        </InformationItems>
+      </InformationObject>
+      <!-- Storage Objects-->
+      <InformationObject name="TBAccount" designDesc="Account bringing logins and emails together">
+        <InformationItems>
+          <InformationItem name="Emails" logicalDataType="InformationObject" informationObjectName="TBEmailCollection" />
+          <InformationItem name="Logins" logicalDataType="InformationObject" informationObjectName="TBLoginInfoCollection" />
+          <InformationItem name="GroupRoleCollection" logicalDataType="InformationObject" informationObjectName="TBAccountCollaborationGroupCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBAccountCollaborationGroup" designDesc="Account collaboration group">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short" />
+          <InformationItem name="GroupRole" logicalDataType="Text_Short" />
+          <InformationItem name="RoleStatus" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBAccountCollaborationGroupCollection" designDesc="Account collaborating group collection">
+        <CollectionFor contentInformationObjectName="TBAccountCollaborationGroup" />
+      </InformationObject>
+      <InformationObject name="TBLoginInfo" designDesc="Unique identifying authentication info">
+        <InformationItems>
+          <InformationItem name="OpenIDUrl" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBLoginInfoCollection" designDesc="Collection of login infos">
+        <CollectionFor contentInformationObjectName="TBLoginInfo" />
+      </InformationObject>
+      <InformationObject name="TBEmail" designDesc="Email Address">
+        <InformationItems>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short" />
+          <InformationItem name="ValidatedAt" logicalDataType="Time_DateTime" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBEmailCollection" designDesc="Collection of emails">
+        <CollectionFor contentInformationObjectName="TBEmail" />
+      </InformationObject>
+      <InformationObject name="TBCollaboratorRole" designDesc="Colaborator acting in certain role">
+        <InformationItems>
+          <InformationItem name="Email" logicalDataType="InformationObject" informationObjectName="TBEmail" />
+          <InformationItem name="Role" logicalDataType="Text_Short" />
+          <InformationItem name="RoleStatus" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBCollaboratorRoleCollection" designDesc="Collection of collaborator roles">
+        <CollectionFor contentInformationObjectName="TBCollaboratorRole" />
+      </InformationObject>
+      <InformationObject name="TBCollaboratingGroup" designDesc="Collaborating group">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Roles" logicalDataType="InformationObject" informationObjectName="TBCollaboratorRoleCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBEmailValidation" designDesc="Email validation object, for confirmations as well" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="Email" logicalDataType="Text_Short" />
+          <InformationItem name="AccountID" logicalDataType="Text_Short" />
+          <InformationItem name="ValidUntil" logicalDataType="Time_DateTime" />
+          <InformationItem name="GroupJoinConfirmation" logicalDataType="InformationObject" informationObjectName="TBGroupJoinConfirmation"/>
+          <InformationItem name="DeviceJoinConfirmation" logicalDataType="InformationObject" informationObjectName="TBDeviceJoinConfirmation" />
+          <InformationItem name="InformationInputConfirmation" logicalDataType="InformationObject" informationObjectName="TBInformationInputConfirmation" />
+          <InformationItem name="InformationOutputConfirmation" logicalDataType="InformationObject" informationObjectName="TBInformationOutputConfirmation" />
+          <InformationItem name="RedirectUrlAfterValidation" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBGroupJoinConfirmation" designDesc="Group joining confirmation through email">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short" />
+          <!--
+          <InformationItem name="InvitingAccountID" logicalDataType="Text_Short"/>
+          -->
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBDeviceJoinConfirmation" designDesc="Device joining confirmation through email">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short"/>
+          <InformationItem name="AccountID" logicalDataType="Text_Short" />
+          <InformationItem name="DeviceMembershipID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBInformationInputConfirmation" designDesc="Information input confirmation through email">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short"/>
+          <InformationItem name="AccountID" logicalDataType="Text_Short" />
+          <InformationItem name="InformationInputID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBInformationOutputConfirmation" designDesc="Information output confirmation through email">
+        <InformationItems>
+          <InformationItem name="GroupID" logicalDataType="Text_Short"/>
+          <InformationItem name="AccountID" logicalDataType="Text_Short" />
+          <InformationItem name="InformationOutputID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TBRegisterContainer" designDesc="Registration container (dynamically filled - not stored at any stage) - not postback support needed either">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="ReturnUrl" logicalDataType="Text_Short"/>
+          <InformationItem name="LoginProviderCollection" logicalDataType="InformationObject" informationObjectName="LoginProviderCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="LoginProvider" designDesc="External Login Providers">
+        <InformationItems>
+          <InformationItem name="ProviderName" logicalDataType="Text_Short"/>
+          <InformationItem name="ProviderIconClass" logicalDataType="Text_Short"/>
+          <InformationItem name="ProviderType" logicalDataType="Text_Short"/>
+          <InformationItem name="ProviderUrl" logicalDataType="Text_Short"/>
+          <InformationItem name="ReturnUrl" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="LoginProviderCollection" designDesc="Collection of login providers">
+        <CollectionFor contentInformationObjectName="LoginProvider"/>
+      </InformationObject>
+
+      <InformationObject name="ContactOipContainer" designDesc="Contact OIP Container (dynamically filled - not stored at any stage) - not postback support needed either">
+        <InformationItems>
+          <InformationItem name="OIPModeratorGroupID" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+
+
+      <!-- Process Objects -->
+      <InformationObject name="TBPRegisterEmail" designDesc="Process object for registering email">
+        <InformationItems>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+
+      <!-- Tech Page Level Stuff -->
+      <InformationObject name="JavaScriptContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="JavascriptContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="FooterContainer" designDesc="Java script stuff">
+        <InformationItems>
+          <InformationItem name="HtmlContent" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <!-- Dummy stub containers for now -->
+      <InformationObject name="NavigationContainer" designDesc="Navigation stuff">
+        <InformationItems>
+          <InformationItem name="Dummy" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <!-- Account/Group/Profile Pages -->
+      <InformationObject name="AccountSummary" designDesc="Account summary">
+        <InformationItems>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="ActivitySummary" logicalDataType="InformationObject" informationObjectName="ActivitySummaryContainer"/>
+          <InformationItem name="GroupSummary" logicalDataType="InformationObject" informationObjectName="GroupSummaryContainer"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountContainer" designDesc="User account, centralized point for all">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader" />
+          <InformationItem name="AccountIndex" logicalDataType="InformationObject" informationObjectName="AccountIndex" />
+          <InformationItem name="AccountModule" logicalDataType="InformationObject" informationObjectName="AccountModule" />
+          <InformationItem name="AccountSummary" logicalDataType="InformationObject" informationObjectName="AccountSummary" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountIndex" designDesc="Account index">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountModule" designDesc="Account module level information">
+        <InformationItems>
+          <InformationItem name="Profile" logicalDataType="InformationObject" informationObjectName="AccountProfile" />
+          <InformationItem name="Security" logicalDataType="InformationObject" informationObjectName="AccountSecurity"/>
+          <InformationItem name="Roles" logicalDataType="InformationObject" informationObjectName="AccountRoles" />
+          <InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImageGroupContainer" designDesc="Container of Image Groups">
+        <InformationItems>
+          <InformationItem name="ImageGroups" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="LocationContainer" designDesc="Container of locations">
+        <InformationItems>
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AddressAndLocationCollection" designDesc="Designed later">
+        <CollectionFor contentInformationObjectName="AddressAndLocation" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="AddressAndLocation" designDesc="Street address and location" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="Address" logicalDataType="InformationObject" informationObjectName="StreetAddress"/>
+          <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="StreetAddress" designDesc="Street Address">
+        <InformationItems>
+          <InformationItem name="Street" logicalDataType="Text_Short" />
+          <InformationItem name="ZipCode" logicalDataType="Text_Short" />
+          <InformationItem name="Town" logicalDataType="Text_Short" />
+          <InformationItem name="Country" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountContent" designDesc="Designed later">
+        <InformationItems>
+          <InformationItem name="Dummy" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountProfile" designDesc="Account profile">
+        <InformationItems>
+          <InformationItem name="ProfileImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="FirstName" logicalDataType="Text_Short" />
+          <InformationItem name="LastName" logicalDataType="Text_Short" />
+          <InformationItem name="Address" logicalDataType="InformationObject" informationObjectName="StreetAddress"/>
+          <!--
+					<InformationItem name="PersonalInfoVisibility" logicalDataType="InformationObject" informationObjectName="PersonalInfoVisibility" />
+          -->
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountSecurity" designDesc="Account security">
+        <InformationItems>
+          <InformationItem name="LoginInfoCollection" logicalDataType="InformationObject" informationObjectName="TBLoginInfoCollection" />
+          <InformationItem name="EmailCollection" logicalDataType="InformationObject" informationObjectName="TBEmailCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AccountRoles" designDesc="Account roles">
+        <InformationItems>
+          <InformationItem name="ModeratorInGroups" logicalDataType="InformationObject" informationObjectName="ReferenceCollection" />
+          <InformationItem name="MemberInGroups" logicalDataType="InformationObject" informationObjectName="ReferenceCollection" />
+          <InformationItem name="OrganizationsImPartOf" logicalDataType="Text_Long" />
+          <!--
+					<InformationItem name="MemberInOrganizations" logicalDataType="InformationObject" informationObjectName="ReferenceCollection" />
+					<InformationItem name="FollowingGroups" logicalDataType="InformationObject" informationObjectName="ReferenceCollection" />
+          -->
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="PersonalInfoVisibility" designDesc="Personal information visibility">
+        <InformationItems>
+          <InformationItem name="NoOne_Network_All" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <!-- End of Account/Group/Profile -->
+      <!-- Generic stuff -->
+      <InformationObject name="GroupedInformationCollection" designDesc="Collection of grouped information">
+        <CollectionFor contentInformationObjectName="GroupedInformation"/>
+      </InformationObject>
+      <InformationObject name="GroupedInformation" designDesc="Refenreces to information grouped by">
+        <InformationItems>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+          <InformationItem name="ReferenceCollection" logicalDataType="InformationObject" informationObjectName="ReferenceCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ReferenceToInformation" designDesc="Reference to information" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="URL" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ReferenceCollection" designDesc="Collection of references">
+        <CollectionFor contentInformationObjectName="ReferenceToInformation" />
+      </InformationObject>
+      <!-- Containers -->
+      <InformationObject name="BlogContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="FeaturedBlog" informationObjectName="Blog" logicalDataType="InformationObject" />
+          <InformationItem name="RecentBlogSummary" logicalDataType="InformationObject" informationObjectName="RecentBlogSummary"/>
+          <InformationItem name="BlogIndexGroup" informationObjectName="BlogIndexGroup" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="RecentBlogSummary" designDesc="Recent blog summary">
+        <InformationItems>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="RecentBlogCollection" informationObjectName="BlogCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      
+      <InformationObject name="NodeSummaryContainer" designDesc="Node (=tile) container of everything summarized">
+        <InformationItems>
+          <InformationItem name="Nodes" logicalDataType="InformationObject" informationObjectName="RenderedNodeCollection"/>
+          <InformationItem name="NodeSourceBlogs" informationObjectName="BlogCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="NodeSourceActivities" informationObjectName="ActivityCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="NodeSourceTextContent" informationObjectName="TextContentCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="NodeSourceCategories" informationObjectName="CategoryCollection" logicalDataType="InformationObject"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="RenderedNodeCollection" designDesc="Collection of rendered nodes">
+        <CollectionFor contentInformationObjectName="RenderedNode" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="RenderedNode" designDesc="Node representing information to be presented in Tile-like fashion">
+        <InformationItems>
+          <InformationItem name="TechnicalSource" logicalDataType="Text_Short"/>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="ActualContentUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="TimestampText" logicalDataType="Text_Short"/>
+          <InformationItem name="MainSortableText" logicalDataType="Text_Short"/>
+          <InformationItem name="IsCategoryFilteringNode" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="CategoryFilters" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="CategoryNames" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="CategoryIDList" logicalDataType="Text_Short"/>
+          <InformationItem name="Authors" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ShortTextCollection" designDesc="Collection of short text objects">
+        <CollectionFor collectionType="Independent" contentInformationObjectName="ShortTextObject"/>
+      </InformationObject>
+      <InformationObject name="ShortTextObject" designDesc="Generic short text content">
+        <InformationItems>
+          <InformationItem name="Content" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="LongTextCollection" designDesc="Collection of long text objects">
+        <CollectionFor collectionType="Independent" contentInformationObjectName="LongTextObject"/>
+      </InformationObject>
+      <InformationObject name="LongTextObject" designDesc="Generic short text content">
+        <InformationItems>
+          <InformationItem name="Content" logicalDataType="Text_Long"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="MapContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="MapFeatured" informationObjectName="Map" logicalDataType="InformationObject" />
+          <InformationItem name="MapCollection" informationObjectName="MapCollection" logicalDataType="InformationObject" />
+          <InformationItem name="MapResultCollection" informationObjectName="MapResultCollection" logicalDataType="InformationObject" />
+          <InformationItem name="MapIndexCollection" informationObjectName="MapIndexCollection" logicalDataType="InformationObject" />
+          <InformationItem name="MarkerSourceLocations" informationObjectName="AddressAndLocationCollection" logicalDataType="InformationObject"/>
+          <!-- Uncommented for test of DAG with topology sorting -->
+          <InformationItem name="MarkerSourceBlogs" informationObjectName="BlogCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="MarkerSourceActivities" informationObjectName="ActivityCollection" logicalDataType="InformationObject"/>
+          <!-- uncomment here -->
+          <InformationItem name="MapMarkers" logicalDataType="InformationObject" informationObjectName="MapMarkerCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MapMarker" designDesc="Marker for a map">
+        <InformationItems>
+          <InformationItem name="IconUrl" logicalDataType="Text_Short"/>
+          <InformationItem name="MarkerSource" logicalDataType="Text_Short"/>
+          <InformationItem name="CategoryName" logicalDataType="Text_Short"/>
+          <InformationItem name="LocationText" logicalDataType="Text_Short" />
+          <InformationItem name="PopupTitle" logicalDataType="Text_Short" />
+          <InformationItem name="PopupContent" logicalDataType="Text_Long"/>
+          <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MapMarkerCollection" designDesc="Collection for markers">
+        <CollectionFor contentInformationObjectName="MapMarker" />
+      </InformationObject>
+      <InformationObject name="CalendarContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="CalendarContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="CalendarFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+          <InformationItem name="CalendarCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
+          <InformationItem name="CalendarIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AboutContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="MainImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="Header" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long"/>
+          <InformationItem name="Body" logicalDataType="Text_Long"/>
+          <InformationItem name="Published" logicalDataType="Time_DateTime" />
+          <InformationItem name="Author" logicalDataType="Text_Short" />
+          <!--
+          <InformationItem name="AboutFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+					<InformationItem name="AboutCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
+					<InformationItem name="AboutIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
+          -->
+          <InformationItem name="ImageGroup" logicalDataType="InformationObject" informationObjectName="ImageGroup" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="OBSAccountContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="AccountContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="AccountFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+          <InformationItem name="AccountCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
+          <InformationItem name="AccountIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ProjectContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="ProjectContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="ProjectFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+          <InformationItem name="ProjectCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
+          <InformationItem name="ProjectIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="CourseContainer" designDesc="">
+        <InformationItems>
+          <InformationItem name="CourseContainerHeader" informationObjectName="ContainerHeader" logicalDataType="InformationObject" />
+          <InformationItem name="CourseFeatured" informationObjectName="Calendar" logicalDataType="InformationObject" />
+          <InformationItem name="CourseCollection" informationObjectName="CalendarCollection" logicalDataType="InformationObject" />
+          <InformationItem name="CourseIndexCollection" informationObjectName="CalendarIndex" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <!-- end Containers -->
+      <!-- Atoms and Modules -->
+      <InformationObject name="ContainerHeader" designDesc="">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="SubTitle" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <!-- end Atoms and Modules -->
+
+      <InformationObject name="ActivitySummaryContainer" designDesc="Activity summary container">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="SummaryBody" logicalDataType="Text_Long"/>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="ActivityIndex" logicalDataType="InformationObject" informationObjectName="ActivityIndex" />
+          <InformationItem name="ActivityCollection" logicalDataType="InformationObject" informationObjectName="ActivityCollection" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ActivityIndex" designDesc="Activity index">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
+
+      <InformationObject name="ActivityContainer" designDesc="Activity container">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="ActivityIndex" logicalDataType="InformationObject" informationObjectName="ActivityIndex" />
+          <InformationItem name="ActivityModule" logicalDataType="InformationObject" informationObjectName="Activity"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ActivityCollection" designDesc="Activity collection">
+        <CollectionFor contentInformationObjectName="Activity" collectionType="Master"/>
+      </InformationObject>
+
+      <InformationObject name="Activity" designDesc="Activity">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="ProfileImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="IconImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="ContactPerson" logicalDataType="Text_Short"/>
+          <InformationItem name="StartingTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="Excerpt" logicalDataType="Text_Long"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="IFrameSources" logicalDataType="Text_Long"/>
+          <InformationItem name="Collaborators" logicalDataType="InformationObject" informationObjectName="CollaboratorCollection"/>
+          <InformationItem name="ImageGroupCollection" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection" />
+          <!-- Uncommented for test -->
+          <InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+          <!-- Uncomment ends -->
+          <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ModeratorCollection" designDesc="Collection for moderators">
+        <CollectionFor contentInformationObjectName="Moderator"/>
+      </InformationObject>
+
+      <InformationObject name="Moderator" designDesc="Moderator for anything">
+        <InformationItems>
+          <InformationItem name="ModeratorName" logicalDataType="Text_Short"/>
+          <InformationItem name="ProfileUrl" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="CollaboratorCollection" designDesc="Collection for collaborators">
+        <CollectionFor contentInformationObjectName="Collaborator"/>
+      </InformationObject>
+
+      <InformationObject name="Collaborator" designDesc="Collaborator">
+        <InformationItems>
+          <InformationItem name="AccountID" logicalDataType="Text_Short"/>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
+          <InformationItem name="CollaboratorName" logicalDataType="Text_Short"/>
+          <InformationItem name="Role" logicalDataType="Text_Short"/>
+          <InformationItem name="ProfileUrl" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <!--
+      <InformationObject name="CollaboratingGroup" designDesc="Collaborating group">
+        <InformationItems>
+          <InformationItem name="CollaboratingGroupName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="CollaboratingGroupCollection" designDesc="Collection for collaborating groups">
+        <CollectionFor contentInformationObjectName="CollaboratingGroup"/>
+      </InformationObject>
+
+      <InformationObject name="CollaboratingOrganization" designDesc="Collaborating organization">
+        <InformationItems>
+          <InformationItem name="CollaboratingOrganizationName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="CollaboratingOrganizationCollection" designDesc="Collection for collaborating organizations">
+        <CollectionFor contentInformationObjectName="CollaboratingOrganization"/>
+      </InformationObject>
+      -->
+      <InformationObject name="GroupSummaryContainer" designDesc="Group container">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="SummaryBody" logicalDataType="Text_Long"/>
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="GroupSummaryIndex" logicalDataType="InformationObject" informationObjectName="GroupIndex"/>
+          <InformationItem name="GroupCollection" logicalDataType="InformationObject" informationObjectName="GroupCollection" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="GroupContainer" designDesc="Group container">
+        <InformationItems>
+          <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
+          <InformationItem name="GroupIndex" logicalDataType="InformationObject" informationObjectName="GroupIndex"/>
+          <InformationItem name="GroupProfile" logicalDataType="InformationObject" informationObjectName="Group"/>
+          <InformationItem name="Collaborators" logicalDataType="InformationObject" informationObjectName="CollaboratorCollection"/>
+          <InformationItem name="PendingCollaborators" logicalDataType="InformationObject" informationObjectName="CollaboratorCollection"/>
+          <!--
+          <InformationItem name="CollaboratingGroups" logicalDataType="InformationObject" informationObjectName="CollaboratingGroupCollection"/>
+          <InformationItem name="CollaboratingOrganizations" logicalDataType="InformationObject" informationObjectName="CollaboratingOrganizationCollection"/>
+          -->
+          <InformationItem name="Activities" logicalDataType="InformationObject" informationObjectName="ActivityCollection"/>
+          <InformationItem name="ImageGroupCollection" logicalDataType="InformationObject" informationObjectName="ImageGroupCollection" />
+          <InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="GroupIndex" designDesc="Group index">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
+
+      <InformationObject name="AddAddressAndLocationInfo" designDesc="Add address and location info">
+        <InformationItems>
+          <InformationItem name="LocationName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AddImageInfo" designDesc="Add image info">
+        <InformationItems>
+          <InformationItem name="ImageTitle" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AddImageGroupInfo" designDesc="Add image group info">
+        <InformationItems>
+          <InformationItem name="ImageGroupTitle" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AddEmailAddressInfo" designDesc="Add email address">
+        <InformationItems>
+          <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="CreateGroupInfo" designDesc="Create group">
+        <InformationItems>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AddActivityInfo" designDesc="Add activity">
+        <InformationItems>
+          <InformationItem name="ActivityName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AddBlogPostInfo" designDesc="Add blog post">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AddCategoryInfo" designDesc="Add category">
+        <InformationItems>
+          <InformationItem name="CategoryName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <!--
+      LocationName
+      Town
+      Country
+      Longitude
+      Latitude
+      -->
+
+      <InformationObject name="GroupCollection" designDesc="Group collection">
+        <CollectionFor contentInformationObjectName="Group"/>
+      </InformationObject>
+
+      <InformationObject name="Group" designDesc="Group">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="ProfileImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="IconImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="OrganizationsAndGroupsLinkedToUs" logicalDataType="Text_Long"/>
+          <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="ModeratorCollection"/>
+          <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="Introduction" designDesc="Introduction">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Body" logicalDataType="Text_Long"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="TextContentCollection" designDesc="Collection of text contents">
+        <CollectionFor contentInformationObjectName="TextContent" collectionType="Master" />
+      </InformationObject>
+      <InformationObject name="TextContent" designDesc="Text content" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="SubTitle" logicalDataType="Text_Short" />
+          <InformationItem name="Author" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="Body" logicalDataType="Text_Long" />
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+          <InformationItem name="SortOrderNumber" logicalDataType="Number_ApproxDecimal"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="BlogCollection" designDesc="Collection of blogs">
+        <CollectionFor contentInformationObjectName="Blog" collectionType="Master" />
+      </InformationObject>
+      <InformationObject name="Blog" designDesc="Individual Blog">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="ProfileImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="IconImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="SubTitle" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="InformationObject" informationObjectName="Introduction"/>
+          <InformationItem name="Published" logicalDataType="Time_DateTime" />
+          <InformationItem name="Author" logicalDataType="Text_Short" />
+          <InformationItem name="FeaturedImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="ImageGroupCollection" informationObjectName="ImageGroupCollection" logicalDataType="InformationObject" />
+          <InformationItem name="VideoGroup" informationObjectName="VideoGroup" logicalDataType="InformationObject" />
+          <InformationItem name="Body" logicalDataType="Text_Long" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="IFrameSources" logicalDataType="Text_Long"/>
+          <!-- Uncommented for test -->
+          <InformationItem name="LocationCollection" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+          <!-- Uncomment ends -->
+          <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+          <!-- needed is, category, servicetype description, keywords -->
+          <InformationItem name="SocialPanel" informationObjectName="SocialPanelCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <!-- should this be a Collection? -->
+      <InformationObject name="BlogIndexGroup" designDesc="Index of Blogs by Date, Location, Author">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="GroupedByDate" logicalDataType="InformationObject" informationObjectName="GroupedInformationCollection"/>
+          <InformationItem name="GroupedByLocation" logicalDataType="InformationObject" informationObjectName="GroupedInformationCollection"/>
+          <InformationItem name="GroupedByAuthor" logicalDataType="InformationObject" informationObjectName="GroupedInformationCollection"/>
+          <InformationItem name="GroupedByCategory" logicalDataType="InformationObject" informationObjectName="GroupedInformationCollection"/>
+          <InformationItem name="FullBlogArchive" logicalDataType="InformationObject" informationObjectName="ReferenceCollection"/>
+          <InformationItem name="BlogSourceForSummary" logicalDataType="InformationObject" informationObjectName="BlogCollection"/>
+          <!--
+          <InformationItem name="BlogByDate" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
+          <InformationItem name="BlogByLocation" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
+          <InformationItem name="BlogByAuthor" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
+          <InformationItem name="BlogByCategory" logicalDataType="InformationObject" informationObjectName="BlogCollection" />
+          -->
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <!-- should this be a Collection? -->
+      <!-- end Blog -->
+      <InformationObject name="CalendarIndex" designDesc="">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="InformationObject" informationObjectName="Image" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Introduction" logicalDataType="Text_Long" />
+          <InformationItem name="Summary" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Filter" designDesc="">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Calendar" designDesc="">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="CalendarCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Calendar" />
+      </InformationObject>
+      <InformationObject name="Map" designDesc="">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MapCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Map" />
+      </InformationObject>
+      <!-- Map Services -->
+      <InformationObject name="MapIndexCollection" designDesc="Index of Maps by Date, Location, Author and category">
+        <InformationItems>
+          <InformationItem name="MapByDate" logicalDataType="InformationObject" informationObjectName="MapCollection" />
+          <!-- show me a page of the latest 3 published maps -->
+          <InformationItem name="MapByLocation" logicalDataType="InformationObject" informationObjectName="MapCollection" />
+          <!-- show me a page of maps of either locationA locationB locationC -->
+          <InformationItem name="MapByAuthor" logicalDataType="InformationObject" informationObjectName="MapCollection" />
+          <!-- show me a page of maps where either authorA, authorB, authorC have published something -->
+          <InformationItem name="MapByCategory" logicalDataType="InformationObject" informationObjectName="MapCollection" />
+          <!-- show me a page of maps that include either categoryA, categoryB, categoryC -->
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MapResult" designDesc="Map result data">
+        <InformationItems>
+          <InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MapResultCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="MapResult" />
+      </InformationObject>
+      <InformationObject name="MapResultsCollection" designDesc="Results listed by date, time, author, proximity">
+        <InformationItems>
+          <InformationItem name="ResultByDate" logicalDataType="InformationObject" informationObjectName="MapResultCollection" />
+          <!-- organize the results by date -->
+          <InformationItem name="ResultByAuthor" logicalDataType="InformationObject" informationObjectName="MapResultCollection" />
+          <!-- organize the results by author -->
+          <InformationItem name="ResultByProximity" logicalDataType="InformationObject" informationObjectName="MapResultCollection" />
+          <!-- organize the results by Proximity -->
+        </InformationItems>
+      </InformationObject>
+      <!-- end Map Services -->
+      <!-- Calendar -->
+      <!--
+			<InformationObject name="MapIndexCollection" designDesc="Index of Blogs by Date, Location, Author">
+				<InformationItems>
+					<CollectionFor contentInformationObjectName="CalendarByDate" />
+					<CollectionFor contentInformationObjectName="CalendarByLocation" />
+					<CollectionFor contentInformationObjectName="CalendarByAuthor" />
+					<CollectionFor contentInformationObjectName="CalendarByCategory" />
+				</InformationItems>
+			</InformationObject>
+      -->
+      <!-- end Calendar -->
+      <InformationObject name="Video" designDesc="Video and attributes">
+        <InformationItems>
+          <InformationItem name="VideoData" informationObjectName="MediaContent" logicalDataType="InformationObject" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Caption" logicalDataType="Text_Short" />
+          <!--
+					<InformationItem name="ImageAlt" logicalDataType="Text_Short" />
+					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="Image" designDesc="Image and attributes" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="ImageData" informationObjectName="MediaContent" logicalDataType="InformationObject" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Caption" logicalDataType="Text_Short" />
+          <!--
+					<InformationItem name="ImageAlt" logicalDataType="Text_Short" />
+					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="MediaContent" designDesc="Generic media content">
+        <InformationObjectContent fileExtension="" originalFileName="" />
+      </InformationObject>
+
+      <InformationObject name="ImageGroupCollection" designDesc="Collection of image groups">
+        <CollectionFor contentInformationObjectName="ImageGroup" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="ImageGroup" designDesc="Group of Images" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="FeaturedImage" logicalDataType="InformationObject" informationObjectName="Image"/>
+          <InformationItem name="ImagesCollection" informationObjectName="ImagesCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="VideoGroup" designDesc="Group of Videos">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Short" />
+          <InformationItem name="VideoCollection" informationObjectName="VideoCollection" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImagesCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Image" />
+      </InformationObject>
+      <InformationObject name="VideoCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="Video" />
+      </InformationObject>
+      <InformationObject name="Tooltip" designDesc="Tooltip">
+        <InformationItems>
+          <InformationItem name="TooltipText" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SocialPanelCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="SocialPanel" />
+      </InformationObject>
+      <InformationObject name="SocialPanel" designDesc="SocialPanel">
+        <InformationItems>
+          <InformationItem name="SocialFilter" informationObjectName="Filter" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <!--
+			<InformationObject name="EventCollection" designDesc="">
+				<CollectionFor contentInformationObjectName="Event5W" />
+			</InformationObject>
+      -->
+      <!--
+			<InformationObject name="MapEventCollection" designDesc="">
+				<InformationItems>
+					<InformationItem name="Events" logicalDataType="InformationObject" informationObjectName="EventCollection" />
+				</InformationItems>
+			</InformationObject>
+      -->
+      <InformationObject name="Longitude" designDesc="Longitude">
+        <InformationItems>
+          <InformationItem name="TextValue" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Latitude" designDesc="Latitude">
+        <InformationItems>
+          <InformationItem name="TextValue" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Location" designDesc="Location (Longitude, Latitude)">
+        <InformationItems>
+          <InformationItem name="LocationName" logicalDataType="Text_Short" />
+          <InformationItem name="Longitude" informationObjectName="Longitude" logicalDataType="InformationObject" />
+          <InformationItem name="Latitude" informationObjectName="Latitude" logicalDataType="InformationObject" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="LocationCollection" designDesc="Collection of location">
+        <CollectionFor contentInformationObjectName="Location"/>
+      </InformationObject>
+      <InformationObject name="Date" designDesc="Date (day, Week, Month, Year)">
+        <InformationItems>
+          <InformationItem name="Day" logicalDataType="Time_DateTime" />
+          <InformationItem name="Week" logicalDataType="Time_DateTime" />
+          <InformationItem name="Month" logicalDataType="Time_DateTime" />
+          <InformationItem name="Year" logicalDataType="Time_DateTime" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Sex" designDesc="Sex (male, female, undetermined)">
+        <InformationItems>
+          <InformationItem name="SexText" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="OBSAddress" designDesc="Address">
+        <InformationItems>
+          <InformationItem name="StreetName" logicalDataType="Text_Short" />
+          <InformationItem name="BuildingNumber" logicalDataType="Text_Short" />
+          <InformationItem name="PostOfficeBox" logicalDataType="Text_Short" />
+          <InformationItem name="PostalCode" logicalDataType="Text_Short" />
+          <InformationItem name="Municipality" logicalDataType="Text_Short" />
+          <InformationItem name="Region" logicalDataType="Text_Short" />
+          <InformationItem name="Province" logicalDataType="Text_Short" />
+          <InformationItem name="state" logicalDataType="Text_Short" />
+          <InformationItem name="Country" logicalDataType="Text_Short" />
+          <InformationItem name="Continent" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Identity" designDesc="Identity">
+        <InformationItems>
+          <InformationItem name="FirstName" logicalDataType="Text_Short" />
+          <InformationItem name="LastName" logicalDataType="Text_Short" />
+          <InformationItem name="Initials" logicalDataType="Text_Short" />
+          <InformationItem name="Sex" logicalDataType="InformationObject" informationObjectName="Sex" />
+          <InformationItem name="Birthday" logicalDataType="InformationObject" informationObjectName="Date" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ImageVideoSoundVectorRaw" designDesc="various content types">
+        <InformationItems>
+          <InformationItem name="Image" logicalDataType="Data_Binary" />
+          <InformationItem name="Video" logicalDataType="Data_Binary" />
+          <InformationItem name="Sound" logicalDataType="Data_Binary" />
+          <InformationItem name="Vector" logicalDataType="Text_Long" />
+          <InformationItem name="Raw" logicalDataType="Data_Binary" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="CategoryContainer" designDesc="Container for categories">
+        <InformationItems>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Category" designDesc="Category" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
+          <InformationItem name="CategoryName" logicalDataType="Text_Short" />
+          <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="ParentCategory" logicalDataType="InformationObject" informationObjectName="Category"/>
+          <InformationItem name="ParentCategoryID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="CategoryCollection" designDesc="Collection of categories">
+        <CollectionFor contentInformationObjectName="Category" collectionType="Master"/>
+      </InformationObject>
+      <!--
+			<InformationObject name="What" designDesc="What from 5W core">
+				<InformationItems>
+					<InformationItem name="ServiceName" logicalDataType="Text_Long" />
+					<InformationItem name="Title" logicalDataType="Text_Short" />
+					<InformationItem name="Description" logicalDataType="Text_Long" />
+					<InformationItem name="Illustration" logicalDataType="InformationObject" informationObjectName="ImageVideoSoundVectorRaw" />
+					<InformationItem name="Category1" logicalDataType="InformationObject" informationObjectName="Category" />
+					<InformationItem name="Category2" logicalDataType="InformationObject" informationObjectName="Category" />
+				</InformationItems>
+			</InformationObject>
+			<InformationObject name="When" designDesc="When from 5W core">
+				<InformationItems>
+					<InformationItem name="Title" logicalDataType="Text_Short" />
+					<InformationItem name="Time" logicalDataType="Time_DateTime" />
+				</InformationItems>
+			</InformationObject>
+      -->
+      <!--
+			<InformationObject name="Where" designDesc="Where from 5W core">
+				<InformationItems>
+					<InformationItem name="Title" logicalDataType="Text_Short" />
+					<InformationItem name="Description" logicalDataType="Text_Long" />
+					<InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
+					work location
+					birth place
+					school location
+					home location
+					etc
+					<InformationItem name="Address" logicalDataType="InformationObject" informationObjectName="Address" />
+				</InformationItems>
+			</InformationObject>
+			<InformationObject name="Whom" designDesc="Whom from 5W core">
+				<InformationItems>
+					<InformationItem name="Identity" logicalDataType="InformationObject" informationObjectName="Identity" />
+					<InformationItem name="ProfileImage" logicalDataType="InformationObject" informationObjectName="ImageVideoSoundVectorRaw" />
+					<InformationItem name="BirthDate" logicalDataType="Time_Date" />
+				</InformationItems>
+			</InformationObject>
+			<InformationObject name="Worth" designDesc="Worth from 5W core">
+				<InformationItems>
+					<InformationItem name="Title" logicalDataType="Text_Short" />
+					<InformationItem name="Description" logicalDataType="Text_Long" />
+					<InformationItem name="Location" logicalDataType="InformationObject" informationObjectName="Location" />
+					<InformationItem name="Address" logicalDataType="InformationObject" informationObjectName="Address" />
+				</InformationItems>
+			</InformationObject>
+			<InformationObject name="Event5W" designDesc="Event with 5W representation">
+				<InformationItems>
+					<InformationItem name="What" logicalDataType="InformationObject" informationObjectName="What" />
+					<InformationItem name="When" logicalDataType="InformationObject" informationObjectName="When" />
+					<InformationItem name="Where" logicalDataType="InformationObject" informationObjectName="Where" />
+				</InformationItems>
+			</InformationObject>
+			<InformationObject name="Event5WCollection" designDesc="Collection of events">
+				<CollectionFor contentInformationObjectName="Event5W" />
+			</InformationObject>
+      -->
+      <InformationObject name="SubscriptionCollection" designDesc="Collection for Subscription objects - relatively linked to target of subscriptions">
+        <CollectionFor contentInformationObjectName="Subscription" />
+      </InformationObject>
+      <InformationObject name="Subscription" designDesc="The Ball Core Structure: Subscription content">
+        <InformationItems>
+          <InformationItem name="Priority" logicalDataType="Number_Integer" />
+          <InformationItem name="TargetRelativeLocation" logicalDataType="Text_Short" />
+          <InformationItem name="TargetInformationObjectType" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short" />
+          <InformationItem name="SubscriberInformationObjectType" logicalDataType="Text_Short"/>
+          <InformationItem name="SubscriptionType" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items">
+        <InformationItems>
+          <InformationItem name="ActiveContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="CurrentRetryCount" logicalDataType="Number_Integer"/>
+          <InformationItem name="SingleOperation" logicalDataType="InformationObject" informationObjectName="OperationRequest"/>
+          <InformationItem name="OrderDependentOperationSequence" logicalDataType="InformationObject" informationObjectName="OperationRequestCollection" />
+          <InformationItem name="ErrorContent" logicalDataType="InformationObject" informationObjectName="SystemError" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="OperationRequestCollection" designDesc="Collection of operation requests">
+        <CollectionFor contentInformationObjectName="OperationRequest"/>
+      </InformationObject>
+      <InformationObject name="OperationRequest" designDesc="Operation request">
+        <InformationItems>
+          <InformationItem name="SubscriberNotification" logicalDataType="InformationObject" informationObjectName="Subscription" />
+          <InformationItem name="SubscriptionChainRequest" logicalDataType="InformationObject" informationObjectName="SubscriptionChainRequestMessage" />
+          <InformationItem name="UpdateWebContentOperation" logicalDataType="InformationObject" informationObjectName="UpdateWebContentOperation" />
+          <InformationItem name="RefreshDefaultViewsOperation" logicalDataType="InformationObject" informationObjectName="RefreshDefaultViewsOperation"/>
+          <InformationItem name="DeleteEntireOwner" logicalDataType="InformationObject" informationObjectName="DeleteEntireOwnerOperation" />
+          <InformationItem name="DeleteOwnerContent" logicalDataType="InformationObject" informationObjectName="DeleteOwnerContentOperation" />
+          <InformationItem name="PublishWebContent" logicalDataType="InformationObject" informationObjectName="PublishWebContentOperation"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SubscriptionChainRequestMessage" designDesc="Subscription chain request message">
+        <InformationItems>
+          <InformationItem name="ContentItemID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SubscriptionChainRequestContent" designDesc="Subscription chain request content object">
+        <InformationItems>
+          <InformationItem name="SubmitTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ProcessingStartTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ProcessingEndTimeInformationObjects" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ProcessingEndTimeWebTemplatesRendering" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ProcessingEndTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="SubscriptionTargetCollection" logicalDataType="InformationObject" informationObjectName="SubscriptionTargetCollection" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SubscriptionTarget" designDesc="Subscription target">
+        <InformationItems>
+          <InformationItem name="BlobLocation" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SubscriptionTargetCollection" designDesc="Subscription target collection">
+        <CollectionFor contentInformationObjectName="SubscriptionTarget"/>
+      </InformationObject>
+
+      <InformationObject name="DeleteEntireOwnerOperation" designDesc="Operation for deleting entire owner">
+        <InformationItems>
+          <InformationItem name="ContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="LocationPrefix" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="DeleteOwnerContentOperation" designDesc="Operation for owner content (not system structures)">
+        <InformationItems>
+          <InformationItem name="ContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="LocationPrefix" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="SystemError" designDesc="System error object">
+        <InformationItems>
+          <InformationItem name="ErrorTitle" logicalDataType="Text_Short" />
+          <InformationItem name="OccurredAt" logicalDataType="Time_DateTime" />
+          <InformationItem name="SystemErrorItems" logicalDataType="InformationObject" informationObjectName="SystemErrorItemCollection" />
+          <InformationItem name="MessageContent" logicalDataType="InformationObject" informationObjectName="QueueEnvelope" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SystemErrorItem" designDesc="Error Item">
+        <InformationItems>
+          <InformationItem name="ShortDescription" logicalDataType="Text_Short" />
+          <InformationItem name="LongDescription" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SystemErrorItemCollection" designDesc="Collection for error items">
+        <CollectionFor contentInformationObjectName="SystemErrorItem" />
+      </InformationObject>
+      <InformationObject name="InformationSource" designDesc="Information source info">
+        <InformationItems>
+          <InformationItem name="SourceName" logicalDataType="Text_Short" />
+          <InformationItem name="SourceLocation" logicalDataType="Text_Short" />
+          <InformationItem name="SourceType" logicalDataType="Text_Short" />
+          <InformationItem name="IsDynamic" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="SourceInformationObjectType" logicalDataType="Text_Short" />
+          <InformationItem name="SourceETag" logicalDataType="Text_Short" />
+          <InformationItem name="SourceMD5" logicalDataType="Text_Short" />
+          <InformationItem name="SourceLastModified" logicalDataType="Time_DateTime" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InformationSourceCollection" designDesc="Source collection">
+        <CollectionFor contentInformationObjectName="InformationSource" />
+      </InformationObject>
+      <InformationObject name="RefreshDefaultViewsOperation" designDesc="Refresh default views operation">
+        <InformationItems>
+          <InformationItem name="ViewLocation" logicalDataType="Text_Short"/>
+          <InformationItem name="TypeNameToRefresh" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UpdateWebContentOperation" designDesc="Update web content operation" provideCreateMethod="true">
+        <InformationItems>
+          <InformationItem name="SourceContainerName" logicalDataType="Text_Short" />
+          <InformationItem name="SourcePathRoot" logicalDataType="Text_Short" />
+          <InformationItem name="TargetContainerName" logicalDataType="Text_Short" />
+          <InformationItem name="TargetPathRoot" logicalDataType="Text_Short" />
+          <InformationItem name="RenderWhileSync" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="Handlers" logicalDataType="InformationObject" informationObjectName="UpdateWebContentHandlerCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UpdateWebContentHandlerItem" designDesc="Filter item" provideCreateMethod="true">
+        <InformationItems>
+          <InformationItem name="InformationTypeName" logicalDataType="Text_Short" />
+          <InformationItem name="OptionName" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UpdateWebContentHandlerCollection" designDesc="Filter collection">
+        <CollectionFor contentInformationObjectName="UpdateWebContentHandlerItem" />
+      </InformationObject>
+      <!-- PublishWebContentOperation -->
+      <InformationObject name="PublishWebContentOperation" designDesc="Publish web content operation">
+        <InformationItems>
+          <InformationItem name="SourceContainerName" logicalDataType="Text_Short" />
+          <InformationItem name="SourcePathRoot" logicalDataType="Text_Short" />
+          <InformationItem name="SourceOwner" logicalDataType="Text_Short" />
+          <InformationItem name="TargetContainerName" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SubscriberInput" designDesc="Parameter for queued operation">
+        <InformationItems>
+          <InformationItem name="InputRelativeLocation" logicalDataType="Text_Short" />
+          <InformationItem name="InformationObjectName" logicalDataType="Text_Short" />
+          <InformationItem name="InformationItemName" logicalDataType="Text_Short" />
+          <InformationItem name="SubscriberRelativeLocation" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <!--
+			<InformationObject name="SubscriberUpdateOperation" designDesc="Subscriber update operation call">
+				<InformationItems>
+					<InformationItem name="TargetOwnerID" logicalDataType="Text_Short" />
+					<InformationItem name="SubscriberOwnerID" logicalDataType="Text_Short" />
+					<InformationItem name="OperationParameters" logicalDataType="InformationObject" informationObjectName="SubscriberInput" />
+					<InformationItem name="OperationName" logicalDataType="Text_Short" />
+				</InformationItems>
+			</InformationObject>
+      -->
+      <InformationObject name="Monitor" designDesc="The Ball Core Structure: Monitoring content">
+        <InformationItems>
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short" />
+          <InformationItem name="TargetItemName" logicalDataType="Text_Short" />
+          <InformationItem name="MonitoringUtcTimeStampToStart" logicalDataType="Time_DateTime" />
+          <InformationItem name="MonitoringCycleFrequencyUnit" logicalDataType="Text_Short" />
+          <InformationItem name="MonitoringCycleEveryXthOfUnit" logicalDataType="Number_Integer" />
+          <InformationItem name="CustomMonitoringCycleOperationName" logicalDataType="Text_Short" />
+          <InformationItem name="OperationActionName" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="IconTitleDescription" designDesc="Generic icon, title, description object">
+        <InformationItems>
+          <InformationItem name="Icon" logicalDataType="Data_Binary" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="AboutAGIApplications" designDesc="About Aalto AGI Applications Info Set">
+        <InformationItems>
+          <InformationItem name="BuiltForAnybody" logicalDataType="InformationObject" informationObjectName="IconTitleDescription" />
+          <InformationItem name="ForAllPeople" logicalDataType="InformationObject" informationObjectName="IconTitleDescription" />
+        </InformationItems>
+      </InformationObject>
+      <!--
+			<InformationObject name="Icon" designDesc="Icon image">
+				<InformationObjectContent fileExtension=".png" originalFileName="Icon.png" />
+			</InformationObject>
+			<InformationObject name="WebPageTemplate" designDesc="Web Page Template Content">
+				<InformationObjectContent fileExtension=".html" originalFileName="WebPageTemplate.html" />
+			</InformationObject>
+			<InformationObject name="WebPage" designDesc="Web Page Content">
+				<InformationObjectContent fileExtension=".html" originalFileName="WebPage.html" />
+			</InformationObject>
+      -->
+    </InformationModel>
+    <Operations>
+      <Operation name="CreateGroup">
+        <OperationSpec>
+          <Description>Create group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupName" dataType="string" designDesc="Group name to be created" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID of initiator" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Created group with given name" state="implemented">
+              <Parameter name="GroupName"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root of initiator" state="implemented">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBEmail[]" name="AccountEmails" designDesc="Account emails" state="implemented">
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="VerifyAccountEmails" designDesc="Verify that account has at least one valid email" state="implemented">
+              <Target name="AccountEmails"/>
+            </MethodExecute>
+            <MethodExecute name="AddAsInitiatorToGroupRoot" designDesc="Add as initiator group root for every email address" state="implemented">
+              <Target name="GroupRoot"/>
+              <Target name="AccountEmails"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="implemented">
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <MethodExecute name="InitializeGroupContentAndMasters" designDesc="Initialize group core content (with no templates), initialize subscriptions." state="implemented">
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                  state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupRoot"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="GroupID" dataType="string" designDesc="GroupID of created group" state="implemented" />
+          <Target name="GroupRoot"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="InviteMemberToGroup">
+        <OperationSpec>
+          <Description>Invite member to collaboration group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved"/>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved"/>
+          <Validation name="ValidateInvitorAuthority" designDesc="Validate invitor authorization to invite" state="designApproved">
+            <Target name="GroupID"/>
+          </Validation>
+          <Validation name="ValidateEmailAddress" designDesc="Validate that email address exists" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>
+          <Validation name="ValidateEmailAddressNotAlreadyMember" designDesc="Validate that email address is not already a member" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Group root for given ID" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBEmailValidation" name="EmailValidation" designDesc="Email validation item for 14 days" state="designApproved">
+              <Parameter name="MemberEmailAddress"/>
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="AccountID" designDesc="Account ID of email" state="designApproved">
+              <Parameter name="MemberEmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="AddAsPendingInvitationToGroupRoot" designDesc="Add as pending invitation to group root" state="designApproved">
+              <Parameter name="MemberEmailAddress"/>
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the group" state="designApproved">
+              <Target name="EmailValidation"/>
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                  state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="AccountID"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="RemoveMemberFromGroup">
+        <OperationSpec>
+          <Description>Remove member from collaboration group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="EmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved"/>
+          <Parameter name="AccountID" dataType="string" designDesc="AccountID of the member" state="designApproved"/>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to remove from" state="designApproved"/>
+          <!--
+          <Validation name="ValidateInvitorAuthority" designDesc="Validate invitor authorization to invite" state="designApproved">
+            <Target name="GroupID"/>
+          </Validation>
+          <Validation name="ValidateEmailAddress" designDesc="Validate that email address really " state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>
+          <Validation name="ValidateEmailAddressNotAlreadyMember" designDesc="Validate that email address is not already a member" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>-->
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Group root for given ID" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="AccountIDOfEmail" designDesc="Account ID of email" state="designApproved">
+              <Parameter name="EmailAddress"/>
+              <Parameter name="AccountID" />
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root of member" state="designApproved">
+              <Target name="AccountIDOfEmail"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="MemberEmailAddress" designDesc="Member email address" state="designApproved">
+              <Parameter name="EmailAddress"/>
+              <Target name="AccountRoot"/>
+              <Target name="GroupRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveMemberFromGroup" designDesc="Remove member from group" state="designApproved">
+              <Target name="MemberEmailAddress"/>
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                  state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="AccountIDOfEmail"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ConfirmInviteToJoinGroup">
+        <OperationSpec>
+          <Description>Confirm member joining to collaboration group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved"/>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved"/>
+          <Validation name="ValidateEmailAddressAsPendingMember" designDesc="Validate invitor authorization to invite" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+            <Target name="GroupID"/>
+          </Validation>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Group root for given ID" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="AccountID" designDesc="Account ID of email" state="designApproved">
+              <Parameter name="MemberEmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="ConfirmPendingInvitationToGroupRoot" designDesc="Confirm pending invitation to membership in group root" state="designApproved">
+              <Parameter name="MemberEmailAddress"/>
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                              state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="AccountID"/>
+            </OperationExecute>
+            <!-- Send confirmation email?
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the group" state="designApproved">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            -->
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="AssignCollaboratorRole">
+        <OperationSpec>
+          <Description>Assign collaborator role</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="designApproved"/>
+          <Parameter name="GroupContainer" dataType="GroupContainer" designDesc="Group container" state="designApproved"/>
+          <Parameter name="CollaboratorID" dataType="string" designDesc="Collaborator ID within group" state="designApproved"/>
+          <Parameter name="RoleToAssign" dataType="string" designDesc="Role to assign" state="designApproved"/>
+          <!--
+          <Validation name="ValidateInvitorAuthority" designDesc="Validate invitor authorization to invite" state="designApproved">
+            <Target name="GroupID"/>
+          </Validation>
+          <Validation name="ValidateEmailAddress" designDesc="Validate that email address really " state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>
+          <Validation name="ValidateEmailAddressNotAlreadyMember" designDesc="Validate that email address is not already a member" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>-->
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Group root for given ID" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="Collaborator" name="Collaborator" designDesc="Collaborator for given ID" state="designApproved">
+              <Parameter name="GroupContainer"/>
+              <Parameter name="CollaboratorID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="AccountID" designDesc="Account ID of Collaborator" state="designApproved">
+              <Target name="Collaborator"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root of Collaborator" state="designApproved">
+              <Target name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="EmailAddress" designDesc="Email address of collaborator role" state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBCollaboratorRole" name="TBCollaboratorRole" designDesc="Collaborator role in group root" state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="EmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="AssignCollaboratorRole" designDesc="Assign collaborator role" state="designApproved">
+              <Parameter name="RoleToAssign"/>
+              <Target name="TBCollaboratorRole"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="GroupRoot"/>
+            </MethodExecute>
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                  state="designApproved">
+              <Target name="GroupRoot"/>
+              <Target name="AccountID"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateAccountContainerFromAccountRoot">
+        <OperationSpec>
+          <Description>Update account container from account root</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root " state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AccountContainer" name="AccountContainer" designDesc="Account container. Create if missing." state="designApproved">
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateAccountContainerLogins" designDesc="Update account container logins" state="designApproved">
+              <Target name="AccountRoot"/>
+              <Target name="AccountContainer"/>
+            </MethodExecute>
+            <MethodExecute name="UpdateAccountContainerEmails" designDesc="Update account container emails" state="designApproved">
+              <Target name="AccountRoot"/>
+              <Target name="AccountContainer"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="AccountContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UnlinkEmailAddress">
+        <OperationSpec>
+          <Description>Unlink email address from account</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="designApproved"/>
+          <Parameter name="AccountContainerBeforeGroupRemoval" dataType="AccountContainer" designDesc="Account container" state="designApproved"/>
+          <Parameter name="EmailAddressID" dataType="string" designDesc="Email Address ID within AccountContainer" state="designApproved"/>
+          <!--
+          <Validation name="ValidateInvitorAuthority" designDesc="Validate invitor authorization to invite" state="designApproved">
+            <Target name="GroupID"/>
+          </Validation>
+          <Validation name="ValidateEmailAddress" designDesc="Validate that email address really " state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>
+          <Validation name="ValidateEmailAddressNotAlreadyMember" designDesc="Validate that email address is not already a member" state="designApproved">
+            <Target name="MemberEmailAddress"/>
+          </Validation>-->
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRootBeforeGroupRemoval" designDesc="Account root of Collaborator" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="EmailAddress" designDesc="Email address within the account container" state="designApproved">
+              <Parameter name="AccountContainerBeforeGroupRemoval"/>
+              <Parameter name="EmailAddressID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRGroupRoot[]" name="GroupRoots" designDesc="Group roots for account, having the unlinked email address" state="designApproved">
+              <Target name="AccountRootBeforeGroupRemoval"/>
+              <Target name="EmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveGroupMemberships" designDesc="Assign collaborator role" state="designApproved">
+              <Target name="EmailAddress"/>
+              <Target name="GroupRoots"/>
+            </MethodExecute>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRootAfterGroupRemoval" designDesc="Account root AFTER group removal" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBREmailRoot" name="EmailRoot" designDesc="Email root" state="designApproved">
+              <Target name="EmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveEmailFromAccountRoot" designDesc="Remove email from account root" state="designApproved">
+              <Target name="AccountRootAfterGroupRemoval"/>
+              <Target name="EmailAddress"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteEmailRoot" designDesc="Delete email root" state="designApproved">
+              <Target name="EmailRoot"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified accountcontainer and accountroot" state="designApproved">
+              <Target name="AccountRootAfterGroupRemoval"/>
+            </MethodExecute>
+            <OperationExecute name="UpdateAccountContainer" targetOperationName="UpdateAccountContainerFromAccountRoot" designDesc="Update account container from account root"
+                  state="designApproved">
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+            <OperationExecute name="UpdateAccountRoot" targetOperationName="UpdateAccountRootToReferences" designDesc="Update account root references" state="designApproved">
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+            <!--
+            <MethodExecute name="RemoveEmailFromAccountContainer" designDesc="Remove email address from account container" state="designApproved">
+              <Parameter name="EmailAddressID"/>
+              <Target name="AccountContainerAfterGroupRemoval"/>
+            </MethodExecute>
+            UpdateAccountContainerFromAccountRoot
+            <OperationExecute name="RefreshAccountAndGroupContainers" targetOperationName="RefreshAccountGroupMemberships" designDesc="Update account and account and group containers"
+                  state="designApproved">
+              <Parameter name="AccountID"/>
+              <Target name="GroupRoot"/>
+            </OperationExecute>
+            -->
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateAccountRootToReferences">
+        <OperationSpec>
+          <Description>Update account root to references</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRLoginRoot[]" name="AccountLogins" designDesc="Account logins" state="designApproved">
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBREmailRoot[]" name="AccountEmails" designDesc="Account logins" state="designApproved">
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateAccountToLogins" designDesc="Delete email root" state="designApproved">
+              <Target name="AccountRoot"/>
+              <Target name="AccountLogins"/>
+            </MethodExecute>
+            <MethodExecute name="UpdateAccountToEmails" designDesc="Delete email root" state="designApproved">
+              <Target name="AccountRoot"/>
+              <Target name="AccountEmails"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="AccountLogins"/>
+              <Target name="AccountEmails"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateGroupInformationChangeToMembers">
+        <OperationSpec>
+          <Description>Refresh group (profile) information change to its members group information summaries</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="GroupContainer" name="GroupContainer" designDesc="Group container of given group ID" state="implemented">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string[]" name="AccountIDs" designDesc="AccountIDs of group memberships" state="implemented">
+              <Target name="GroupContainer" />
+            </TargetDefinition>
+            <MethodExecute name="UpdateAccountGroupSummaryContainers" designDesc="Update account summary containers with few retries on error" state="implemented">
+              <Parameter name="GroupID"/>
+              <Target name="GroupContainer"/>
+              <Target name="AccountIDs"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="RefreshAccountGroupMemberships">
+        <OperationSpec>
+          <Description>Refresh account group memberships in logins, group and account containers</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <OperationExecute name="UpdateAccountRoot" targetOperationName="UpdateAccountRootGroupMembership" designDesc="Update account root" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+            <OperationExecute name="UpdateAccountRootReferences" targetOperationName="UpdateAccountRootToReferences" designDesc="Update account root references" state="designApproved">
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+            <OperationExecute name="UpdateAccountLoginGroups" targetOperationName="UpdateLoginGroupPermissions" designDesc="Update login group permissions" state="designApproved">
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+            <OperationExecute name="UpdateGroupContainers" targetOperationName="UpdateGroupContainersGroupMembership" designDesc="Update group containers" state="designApproved">
+              <Parameter name="GroupRoot"/>
+            </OperationExecute>
+            <OperationExecute name="UpdateAccountContainers" targetOperationName="UpdateAccountContainersGroupMembership" designDesc="Update account containers" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Parameter name="AccountID"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateGroupContainersGroupMembership">
+        <OperationSpec>
+          <Description>Updates group container level memberships</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <!-- Group summary is not really active in collaboration group
+            <TargetDefinition dataType="GroupSummaryContainer" name="GroupSummaryContainer" designDesc="Group summary container" state="designApproved">
+              <Parameter name="GroupRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateGroupSummaryContainerMembership" designDesc="Update group summary container memberships" state="designApproved">
+              <Target name="GroupRoot"/>
+            </MethodExecute>-->
+            <TargetDefinition dataType="AccountRootAndContainer[]" name="AccountRootsAndContainers" designDesc="Account roots and containers for profile information" state="designApproved">
+              <Parameter name="GroupRoot"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="GroupContainer" name="GroupContainer" designDesc="Group container in the group" state="designApproved">
+              <Parameter name="GroupRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateGroupContainerMembership" designDesc="Update group container memberships" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Target name="AccountRootsAndContainers"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteInformationObject">
+        <OperationSpec>
+          <Description>Deletes information object</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ObjectToDelete" dataType="TheBall.CORE.IInformationObject" designDesc="Information object to delete" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="DeleteObjectViews" designDesc="Delete all information object views from all template-based sites" state="designApproved">
+              <Parameter name="ObjectToDelete"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteObject" designDesc="Delete information object" state="designApproved">
+              <Parameter name="ObjectToDelete"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateLoginGroupPermissions">
+        <OperationSpec>
+          <Description>Updates account login permissions per group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRLoginGroupRoot[]" name="LoginGroupRoots" designDesc="Account's group login entries" state="designApproved">
+              <Target name="AccountRoot"/>
+            </TargetDefinition>
+            <MethodExecute name="SynchronizeLoginGroupRoots" designDesc="Add missing and remove nonexistent login group roots" state="designApproved">
+              <Target name="AccountRoot"/>
+              <Target name="LoginGroupRoots"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateAccountRootGroupMembership">
+        <OperationSpec>
+          <Description>Updates account root group memberships</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateAccountRootGroupMemberships" designDesc="Update account root group membership" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Target name="AccountRoot"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="AccountRoot"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateAccountContainersGroupMembership">
+        <OperationSpec>
+          <Description>Updates account container level group memberships and summaries based on the values</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupRoot" dataType="TBRGroupRoot" designDesc="Group root record" state="designApproved"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to update" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="GroupContainer" name="GroupContainer" designDesc="Group's group container" state="designApproved">
+              <Parameter name="GroupRoot"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="Group" name="Group" designDesc="Group item" state="designApproved">
+              <Target name="GroupContainer"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TBRAccountRoot" name="AccountRoot" designDesc="Account root" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AccountContainer" name="AccountContainer" designDesc="Account container" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="GroupSummaryContainer" name="GroupSummaryContainer" designDesc="Group summary container of account" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateGroupSummaryContainerMemberships" designDesc="Update group summary container memberships" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Target name="Group"/>
+              <Target name="AccountRoot"/>
+              <Target name="GroupSummaryContainer"/>
+            </MethodExecute>
+            <MethodExecute name="UpdateAccountContainerMemberships" designDesc="Update account container memberships" state="designApproved">
+              <Parameter name="GroupRoot"/>
+              <Target name="Group"/>
+              <Target name="GroupSummaryContainer"/>
+              <Target name="AccountRoot"/>
+              <Target name="AccountContainer"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="AccountContainer"/>
+              <Target name="GroupSummaryContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="PerformWebAction">
+        <OperationSpec>
+          <Description>Perform web action based on action name and ObjectID, given the page information sources in as well</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="TargetObjectID" dataType="string" designDesc="Target object id" state="designApproved"/>
+          <Parameter name="CommandName" dataType="string" designDesc="Command name" state="designApproved"/>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved"/>
+          <Parameter name="InformationSources" dataType="InformationSourceCollection" designDesc="Information sources of the page" state="designApproved"/>
+          <Parameter name="FormSourceNames" dataType="string[]" designDesc="Form source names" state="designApproved"/>
+          <Parameter name="FormSubmitContent" dataType="NameValueCollection" designDesc="Form field collection as-posted" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ExecuteActualOperation" designDesc="Execute actual operation" state="designApproved">
+              <Parameter name="TargetObjectID"/>
+              <Parameter name="CommandName"/>
+              <Parameter name="Owner"/>
+              <Parameter name="InformationSources"/>
+              <Parameter name="FormSourceNames"/>
+              <Parameter name="FormSubmitContent"/>
+              <ReturnValue name="RenderPageAfterOperation" dataType="bool" designDesc="If true, page should be rendered after operation" state="designApproved"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="RenderPageAfterOperation" dataType="bool" designDesc="If true, page should be rendered after operation" state="designApproved"/>
+          <Target name="ExecuteActualOperationOutput"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="PublishGroupContentToPublicArea">
+        <OperationSpec>
+          <Description />
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID of group being published" state="designApproved" />
+          <Parameter name="UseWorker" dataType="bool" designDesc="Use worker as processor" state="designApproved" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string" name="CurrentContainerName" designDesc="Group's content container name" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="PublicContainerName" designDesc="Group's public container name" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <MethodExecute name="PublishGroupContent" designDesc="Do the update page" state="underDesign">
+              <Parameter name="GroupID"/>
+              <Parameter name="UseWorker"/>
+              <Target name="CurrentContainerName"/>
+              <Target name="PublicContainerName"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="PublishGroupContentToWww">
+        <OperationSpec>
+          <Description />
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID of group being published" state="designApproved" />
+          <Parameter name="UseWorker" dataType="bool" designDesc="Use worker as processor" state="designApproved" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string" name="CurrentContainerName" designDesc="Group's content container name" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="WwwContainerName" designDesc="Group's www container name" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <MethodExecute name="PublishGroupContentToWww" designDesc="Do the update page" state="underDesign">
+              <Parameter name="GroupID"/>
+              <Parameter name="UseWorker"/>
+              <Target name="CurrentContainerName"/>
+              <Target name="WwwContainerName"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdatePageContent">
+        <OperationSpec>
+          <Description />
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="string" name="changedInformation" designDesc="Test" state="underDesign" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="UpdatePage" designDesc="Do the update page" state="underDesign" />
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateAdditionalMediaFormats">
+        <OperationSpec>
+          <Description />
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="string" name="MasterRelativeLocation" designDesc="Relative location of original" state="underDesign" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Bitmap" name="BitmapData" designDesc="Bitmap image if existing" state="designApproved">
+              <Parameter name="MasterRelativeLocation"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="object" name="VideoData" designDesc="Videodata" state="designApproved">
+              <Parameter name="MasterRelativeLocation"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateImageMediaFormats" designDesc="Create various media formats (if bitmap is not null)" state="underDesign">
+              <Parameter name="MasterRelativeLocation"/>
+              <Target name="BitmapData"/>
+            </MethodExecute>
+            <MethodExecute name="CreateVideoMediaFormats" designDesc="Create various video media formats (if object is not null)" state="designApproved">
+              <Parameter name="MasterRelativeLocation"/>
+              <Target name="VideoData"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ClearAdditionalMediaFormats">
+        <OperationSpec>
+          <Description />
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="string" name="MasterRelativeLocation" designDesc="Relative location of original" state="underDesign" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ClearImageMediaFormats" designDesc="Clear various image media formats" state="underDesign">
+              <Parameter name="MasterRelativeLocation"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdatePublicationInfo">
+        <OperationSpec>
+          <Description>Update publication info in the account/group container</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved"/>
+          <Parameter name="ContainerName" dataType="string" designDesc="Container name for publication" state="designApproved" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="WebPublishInfo" name="PublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+              <Parameter name="Owner"/>
+              <Parameter name="ContainerName"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CleanOldPublications">
+        <OperationSpec>
+          <Description>Cleans up old publications. All that are older than 2 days and not among 5 latest are cleaned up. For 5 latest later than  </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="WebPublishInfo" name="PublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <MethodExecute name="ClearPublications" designDesc="Clear publications with given operation criteria" state="designApproved">
+              <Target name="PublishInfo"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ChooseActivePublication">
+        <OperationSpec>
+          <Description>Choose active publication</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved"/>
+          <Parameter name="PublicationName" dataType="string" designDesc="Publication name" state="designApproved" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="WebPublishInfo" name="PublishInfo" designDesc="Web publish info to update as 'default'. Create if missing" state="designApproved">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <MethodExecute name="SetActivePublicationFromName" designDesc="Set publication active to .currentactive" state="designApproved">
+              <Parameter name="PublicationName"/>
+              <Target name="PublishInfo"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="SetCategoryHierarchyAndOrderInNodeSummary">
+        <OperationSpec>
+          <Description>
+            Sets category hierarchy from request content JSON
+          </Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="ParentToChildren[]" name="Hierarchy" designDesc="Hierarchy structure deserialized from JSON" state="implemented" />
+            <MethodExecute name="SetParentCategories" designDesc="Set parent categories, retry execution for http-async failures" state="implemented">
+              <Target name="Hierarchy"/>
+            </MethodExecute>
+            <TargetDefinition dataType="NodeSummaryContainer" name="NodeSummaryContainer" designDesc="NodeSummaryContainer" state="implemented" />
+            <MethodExecute name="SetCategoryOrder" designDesc="Set order of categories in web content summary" state="implemented">
+              <Target name="Hierarchy"/>
+              <Target name="NodeSummaryContainer" />
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store modified objects" state="implemented">
+              <Target name="NodeSummaryContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    <Subscriptions>
+      <Subscription triggeredOperationName="UpdatePageContent">
+        <TriggeringInformationItem itemName="BuiltForAnybodyTitle" objectName="AboutAGIApplications" />
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="BuiltForAnybodyTitle" />
+      </Subscription>
+    </Subscriptions>
+    <Monitoring>
+      <Monitor monitoringOperationName="UpdatePageContent">
+        <MonitoredInformationItem objectName="AboutAGIApplications" itemName="ForAllPeopleTitle" />
+        <MonitoringFrequency utcTimeStampToStart="2012-08-13T14:00:00.123456789+02:00">
+          <RegularMonitoringCycle frequencyUnit="Minute" monitorEveryXthOfUnit="15" />
+        </MonitoringFrequency>
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="ForAllPeopleTitle" />
+      </Monitor>
+    </Monitoring>
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

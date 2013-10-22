@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="TheBall.CORE">
+    <InformationModel>
+      <InformationObject name="InformationInputCollection" designDesc="Collection for information inputs">
+        <CollectionFor contentInformationObjectName="InformationInput" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="InformationInput" designDesc="Data source input information">
+        <InformationItems>
+          <InformationItem name="InputDescription" logicalDataType="Text_Short"/>
+          <InformationItem name="LocationURL" logicalDataType="Text_Short"/>
+          <InformationItem name="LocalContentName" logicalDataType="Text_Short"/>
+          <InformationItem name="AuthenticatedDeviceID" logicalDataType="Text_Long"/>
+          <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="InformationOutputCollection" designDesc="Collection for information inputs">
+        <CollectionFor contentInformationObjectName="InformationOutput" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="InformationOutput" designDesc="Target for outputing information">
+        <InformationItems>
+          <InformationItem name="OutputDescription" logicalDataType="Text_Short"/>
+          <InformationItem name="DestinationURL" logicalDataType="Text_Short"/>
+          <InformationItem name="DestinationContentName" logicalDataType="Text_Short"/>
+          <InformationItem name="LocalContentURL" logicalDataType="Text_Short"/>
+          <InformationItem name="AuthenticatedDeviceID" logicalDataType="Text_Short"/>
+          <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="AuthenticatedAsActiveDeviceCollection" designDesc="Collection for active devices">
+        <CollectionFor contentInformationObjectName="AuthenticatedAsActiveDevice" collectionType="Master" />
+      </InformationObject>
+      
+      <InformationObject name="AuthenticatedAsActiveDevice" designDesc="Owner/Group authenticated as active device towards other Owner/Group">
+        <InformationItems>
+          <InformationItem name="AuthenticationDescription" logicalDataType="Text_Short"/>
+          <InformationItem name="SharedSecret" logicalDataType="Text_Short"/>
+          <InformationItem name="ActiveSymmetricAESKey" logicalDataType="Data_Binary"/>
+          <InformationItem name="EstablishedTrustID" logicalDataType="Text_Short"/>
+          <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="NegotiationURL" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      
+      <InformationObject name="DeviceMembershipCollection" designDesc="Collection for device memberships">
+        <CollectionFor contentInformationObjectName="DeviceMembership" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="DeviceMembership" designDesc="Device membership information">
+        <InformationItems>
+          <InformationItem name="DeviceDescription" logicalDataType="Text_Short"/>
+          <InformationItem name="SharedSecret" logicalDataType="Text_Short"/>
+          <InformationItem name="ActiveSymmetricAESKey" logicalDataType="Data_Binary"/>
+          <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceFiscalExportSummary" designDesc="Annual export summary of invoices">
+        <InformationItems>
+          <InformationItem name="FiscalInclusiveStartDate" logicalDataType="Time_Date"/>
+          <InformationItem name="FiscalInclusiveEndDate" logicalDataType="Time_Date"/>
+          <InformationItem name="ExportedInvoices" logicalDataType="InformationObject" informationObjectName="InvoiceCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceSummaryContainer" designDesc="Container for combined invoice data">
+        <InformationItems>
+          <InformationItem name="OpenInvoices" logicalDataType="InformationObject" informationObjectName="InvoiceCollection"/>
+          <InformationItem name="PredictedInvoices" logicalDataType="InformationObject" informationObjectName="InvoiceCollection" />
+          <InformationItem name="PaidInvoicesActiveYear" logicalDataType="InformationObject" informationObjectName="InvoiceCollection" />
+          <InformationItem name="PaidInvoicesLast12Months" logicalDataType="InformationObject" informationObjectName="InvoiceCollection" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceCollection" designDesc="Collection of invoices">
+        <CollectionFor contentInformationObjectName="Invoice" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="Invoice" designDesc="">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject"
+                           informationObjectName="ReferenceToInformation"/>
+          <InformationItem name="InvoiceName" logicalDataType="Text_Short" />
+          <InformationItem name="InvoiceID" logicalDataType="Text_Short" />
+          <InformationItem name="InvoicedAmount" logicalDataType="Text_Short" />
+          <InformationItem name="CreateDate" logicalDataType="Time_Date" />
+          <InformationItem name="DueDate" logicalDataType="Time_Date" />
+          <InformationItem name="PaidAmount" logicalDataType="Text_Short" />
+          <InformationItem name="FeesAndInterestAmount" logicalDataType="Text_Short"/>
+          <InformationItem name="UnpaidAmount" logicalDataType="Text_Short"/>
+          <InformationItem name="InvoiceDetails" logicalDataType="InformationObject" informationObjectName="InvoiceDetails"/>
+          <InformationItem name="InvoiceUsers" logicalDataType="InformationObject" informationObjectName="InvoiceUserCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceDetails" designDesc="Invoice details">
+        <InformationItems>
+          <InformationItem name="MonthlyFeesTotal" logicalDataType="Text_Short"/>
+          <InformationItem name="OneTimeFeesTotal" logicalDataType="Text_Short"/>
+          <InformationItem name="UsageFeesTotal" logicalDataType="Text_Short"/>
+          <InformationItem name="InterestFeesTotal" logicalDataType="Text_Short"/>
+          <InformationItem name="PenaltyFeesTotal" logicalDataType="Text_Short"/>
+          <InformationItem name="TotalFeesTotal" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceUserCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="InvoiceUser"/>
+      </InformationObject>
+      <InformationObject name="InvoiceUser" designDesc="">
+        <InformationItems>
+          <InformationItem name="UserName" logicalDataType="Text_Short"/>
+          <InformationItem name="UserID" logicalDataType="Text_Short"/>
+          <InformationItem name="UserPhoneNumber" logicalDataType="Text_Short"/>
+          <InformationItem name="UserSubscriptionNumber" logicalDataType="Text_Short"/>
+          <InformationItem name="UserInvoiceTotalAmount" logicalDataType="Text_Short"/>
+          <InformationItem name="InvoiceRowGroupCollection" logicalDataType="InformationObject"
+                           informationObjectName="InvoiceRowGroupCollection"/>
+          <InformationItem name="InvoiceEventDetailGroupCollection" logicalDataType="InformationObject"
+                           informationObjectName="InvoiceEventDetailGroupCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceRowGroupCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="InvoiceRowGroup"/>
+      </InformationObject>
+      <InformationObject name="InvoiceEventDetailGroupCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="InvoiceEventDetailGroup"/>
+      </InformationObject>
+
+      <InformationObject name="InvoiceRowGroup" designDesc="">
+        <InformationItems>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+          <InformationItem name="GroupTotalPriceWithoutTaxes" logicalDataType="Text_Short"/>
+          <InformationItem name="GroupTotalTaxes" logicalDataType="Text_Short"/>
+          <InformationItem name="GroupTotalPriceWithTaxes" logicalDataType="Text_Short"/>
+          <InformationItem name="InvoiceRowCollection" logicalDataType="InformationObject"
+                           informationObjectName="InvoiceRowCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceEventDetailGroup" designDesc="">
+        <InformationItems>
+          <InformationItem name="GroupName" logicalDataType="Text_Short"/>
+          <InformationItem name="InvoiceEventDetailCollection" logicalDataType="InformationObject"
+                           informationObjectName="InvoiceEventDetailCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceEventDetailCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="InvoiceEventDetail"/>
+      </InformationObject>
+      <InformationObject name="InvoiceRowCollection" designDesc="">
+        <CollectionFor contentInformationObjectName="InvoiceRow"/>
+      </InformationObject>
+      <InformationObject name="InvoiceEventDetail" designDesc="">
+        <InformationItems>
+          <InformationItem name="IndentMode" logicalDataType="Text_Short"/>
+          <InformationItem name="EventStartDateTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="EventEndDateTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ReceivingParty" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfUnits" logicalDataType="Text_Short"/>
+          <InformationItem name="Duration" logicalDataType="Text_Short"/>
+          <InformationItem name="UnitPrice" logicalDataType="Text_Short"/>
+          <InformationItem name="PriceWithoutTaxes" logicalDataType="Text_Short" />
+          <InformationItem name="Taxes" logicalDataType="Text_Short" />
+          <InformationItem name="PriceWithTaxes" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InvoiceRow" designDesc="">
+        <InformationItems>
+          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject"
+                           informationObjectName="ReferenceToInformation"/>
+          <InformationItem name="IndentMode" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfUnits" logicalDataType="Text_Short" />
+          <InformationItem name="Duration" logicalDataType="Text_Short" />
+          <InformationItem name="UnitPrice" logicalDataType="Text_Short" />
+          <InformationItem name="PriceWithoutTaxes" logicalDataType="Text_Short" />
+          <InformationItem name="Taxes" logicalDataType="Text_Short" />
+          <InformationItem name="PriceWithTaxes" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="CategoryCollection" designDesc="Collection of categories">
+        <CollectionFor contentInformationObjectName="Category"/>
+      </InformationObject>
+      <InformationObject name="Category" designDesc="Category">
+        <InformationItems>
+          <InformationItem name="CategoryName" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Process" designDesc="">
+        <InformationItems>
+          <InformationItem name="ProcessID" logicalDataType="Text_Short"/>
+          <InformationItem name="ProcessName" logicalDataType="Text_Short"/>
+          <InformationItem name="CategoryCollection" logicalDataType="InformationObject"
+                           informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ReferenceToInformation" designDesc="Reference to information" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="URL" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ReferenceCollection" designDesc="Collection of references">
+        <CollectionFor contentInformationObjectName="ReferenceToInformation" />
+      </InformationObject>
+      <InformationObject name="InformationOwnerInfo" designDesc="Info about information owner">
+        <InformationItems>
+          <InformationItem name="OwnerType" logicalDataType="Text_Short"/>
+          <InformationItem name="OwnerIdentifier" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="UsageMonitorItem" designDesc="Usage monitor item">
+        <InformationItems>
+          <InformationItem name="OwnerInfo" logicalDataType="InformationObject" informationObjectName="InformationOwnerInfo"/>
+          <InformationItem name="ProcessorUsages" logicalDataType="InformationObject" informationObjectName="ProcessorUsageCollection"/>
+          <InformationItem name="StorageTransactionUsages" logicalDataType="InformationObject" informationObjectName="StorageTransactionUsageCollection"/>
+          <InformationItem name="StorageUsages" logicalDataType="InformationObject" informationObjectName="StorageUsageCollection"/>
+          <InformationItem name="NetworkUsages" logicalDataType="InformationObject" informationObjectName="NetworkUsageCollection"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="ProcessorUsageCollection" designDesc="Collection of Processor Usages">
+        <CollectionFor contentInformationObjectName="ProcessorUsage" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="ProcessorUsage" designDesc="Processing usage entry">
+        <InformationItems>
+          <InformationItem name="TimeRange" logicalDataType="InformationObject" informationObjectName="TimeRange"/>
+          <InformationItem name="UsageType" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfTicks" logicalDataType="Number_ExactDecimal"/>
+          <InformationItem name="FrequencyTicksPerSecond" logicalDataType="Number_ExactDecimal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="StorageTransactionUsageCollection" designDesc="Collection of Storage Transaction Usages">
+        <CollectionFor contentInformationObjectName="StorageTransactionUsage" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="StorageTransactionUsage" designDesc="Storage transaction usage entry">
+        <InformationItems>
+          <InformationItem name="TimeRange" logicalDataType="InformationObject" informationObjectName="TimeRange"/>
+          <InformationItem name="UsageType" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfTransactions" logicalDataType="Number_Integer"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="StorageUsageCollection" designDesc="Collection of Storage Usages">
+        <CollectionFor contentInformationObjectName="StorageUsage" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="StorageUsage" designDesc="Storage usage entry at given time">
+        <InformationItems>
+          <InformationItem name="SnapshotTime" logicalDataType="Time_DateTime" />
+          <InformationItem name="UsageType" logicalDataType="Text_Short"/>
+          <InformationItem name="UsageUnit" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfUnits" logicalDataType="Number_ExactDecimal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="NetworkUsageCollection" designDesc="Collection of Network Usages">
+        <CollectionFor contentInformationObjectName="NetworkUsage" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="NetworkUsage" designDesc="Network usage entry">
+        <InformationItems>
+          <InformationItem name="TimeRange" logicalDataType="InformationObject" informationObjectName="TimeRange"/>
+          <InformationItem name="UsageType" logicalDataType="Text_Short"/>
+          <InformationItem name="AmountOfBytes" logicalDataType="Number_Integer"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TimeRange" designDesc="Time range of given start and end times">
+        <InformationItems>
+          <InformationItem name="StartTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="EndTime" logicalDataType="Time_DateTime"/>
+        </InformationItems>
+      </InformationObject>
+    </InformationModel>
+    <Operations>
+<!--
+      <Operation name="CreateInvoiceForGroup">
+        <OperationSpec>
+          <Description>Create invoice for group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TBRGroupRoot" name="GroupRoot" designDesc="Group root" state="designApproved">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+      </Operation>-->
+      <Operation name="CreateSpecifiedInformationObjectWithValues">
+        <OperationSpec>
+          <Description>Creates information object, sets it values and stores it</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Object owner" state="designApproved"/>
+          <Parameter dataType="string" name="ObjectDomainName" designDesc="Object domain" state="designApproved"/>
+          <Parameter dataType="string" name="ObjectName" designDesc="Object name" state="designApproved"/>
+          <Parameter dataType="NameValueCollection" name="HttpFormData" designDesc="Http POST data. Unprocessed and unfiltered." state="designApproved"/>
+          <Parameter dataType="System.Web.HttpFileCollection" name="HttpFileData" designDesc="Http File data" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="CatchInvalidDomains" designDesc="Catch and throw an exception for invalid domains (system reserved)" state="implemented">
+              <Parameter name="ObjectDomainName"/>
+            </MethodExecute>
+            <TargetDefinition dataType="IInformationObject" name="CreatedObject" designDesc="Object that is created" state="designApproved">
+              <Parameter name="Owner"/>
+              <Parameter name="ObjectDomainName"/>
+              <Parameter name="ObjectName"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateInternalObjects" designDesc="Create internal objects, whose values will be set after creation." state="implemented">
+              <Parameter name="HttpFormData"/>
+              <Target name="CreatedObject"/>
+            </MethodExecute>
+            <TargetDefinition dataType="NameValueCollection" name="FieldValues" designDesc="Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts." state="designApproved">
+              <Parameter name="HttpFormData"/>
+              <Target name="CreatedObject"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="NameValueCollection" name="ObjectLinkValues" designDesc="Filtered object link value collection. Filter by Object_ prefix, add ID to keys." state="designApproved">
+              <Parameter name="HttpFormData"/>
+              <Target name="CreatedObject"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="Dictionary&lt;string, System.Web.HttpPostedFile&gt;" name="BinaryContentFiles" designDesc="Filtered binary content value collection. Filter by File_ prefix, add ID to keys." state="designApproved">
+              <Parameter name="HttpFormData"/>
+              <Parameter name="HttpFileData"/>
+              <Target name="CreatedObject"/>
+            </TargetDefinition>
+            <MethodExecute name="SetFieldValues" designDesc="Set field values of created object." state="designApproved">
+              <Target name="CreatedObject"/>
+              <Target name="FieldValues"/>
+            </MethodExecute>
+            <MethodExecute name="SetObjectLinks" designDesc="Set object links of created object." state="designApproved">
+              <Target name="CreatedObject"/>
+              <Target name="ObjectLinkValues"/>
+            </MethodExecute>
+            <MethodExecute name="StoreInitialObject" designDesc="Stores the created object first time - with set values." state="designApproved">
+              <Parameter name="Owner"/>
+              <Target name="CreatedObject"/>
+            </MethodExecute>
+            <MethodExecute name="SetBinaryContent" designDesc="Sets binary content of created object." state="designApproved">
+              <Parameter name="Owner"/>
+              <Target name="CreatedObject"/>
+              <Target name="BinaryContentFiles"/>
+            </MethodExecute>
+            <MethodExecute name="StoreCompleteObject" designDesc="Stores the created object - with all set values." state="designApproved">
+              <Parameter name="Owner"/>
+              <Target name="CreatedObject"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteSpecifiedInformationObject">
+        <OperationSpec>
+          <Description>
+            Deletes specified information object.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Object owner" state="designApproved"/>
+          <Parameter dataType="string" name="ObjectDomainName" designDesc="Object domain" state="designApproved"/>
+          <Parameter dataType="string" name="ObjectName" designDesc="Object name" state="designApproved"/>
+          <Parameter dataType="string" name="ObjectID" designDesc="Object unique ID" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="CatchInvalidDomains" designDesc="Catch and throw an exception for invalid domains (system reserved)" state="implemented">
+              <Parameter name="ObjectDomainName"/>
+            </MethodExecute>
+            <TargetDefinition dataType="IInformationObject" name="ObjectToDelete" designDesc="Object that is created" state="designApproved">
+              <Parameter name="Owner"/>
+              <Parameter name="ObjectDomainName"/>
+              <Parameter name="ObjectName"/>
+              <Parameter name="ObjectID"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteObject" designDesc="Delete the object." state="designApproved">
+              <Target name="ObjectToDelete"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateDeviceMembership">
+        <OperationSpec>
+          <Description>
+            Creates device membership for security context for owner.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="DeviceDescription" designDesc="Description of the device" state="implemented"/>
+          <Parameter dataType="byte[]" name="ActiveSymmetricAESKey" designDesc="Current active AES-256 key" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="DeviceMembership" name="CreatedDeviceMembership" designDesc="Created device membership" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="DeviceDescription"/>
+              <Parameter name="ActiveSymmetricAESKey"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="CreatedDeviceMembership"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="DeviceMembership" dataType="DeviceMembership" designDesc="Created device membership ID" state="implemented" />
+          <Target name="CreatedDeviceMembership"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="SetDeviceMembershipValidationAndActiveStatus">
+        <OperationSpec>
+          <Description>
+            Set device membership validation.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="DeviceMembershipID" designDesc="ID of device membership" state="implemented"/>
+          <Parameter dataType="bool" name="IsValidAndActive" designDesc="Value for validated and active" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="DeviceMembership" name="DeviceMembership" designDesc="Created device membership" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="DeviceMembershipID"/>
+            </TargetDefinition>
+            <MethodExecute name="SetDeviceValidAndActiveValue" designDesc="Set device valid and active value" state="implemented">
+              <Parameter name="IsValidAndActive"/>
+              <Target name="DeviceMembership"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="DeviceMembership"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteDeviceMembership">
+        <OperationSpec>
+          <Description>
+            Delete device membership record entirely.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="DeviceMembershipID" designDesc="ID of device membership" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="DeviceMembership" name="DeviceMembership" designDesc="Created device membership" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="DeviceMembershipID"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteDeviceMembership" designDesc="Delete device membership record" state="implemented">
+              <Target name="DeviceMembership"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateAndSendEmailValidationForDeviceJoinConfirmation">
+        <OperationSpec>
+          <Description>
+            Creates and sends email validation for device join confirmation.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBAccount" name="OwningAccount" designDesc="Security context owner - if an account" state="implemented"/>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBCollaboratingGroup" name="OwningGroup" designDesc="Security context owner - if a group" state="implemented"/>
+          <Parameter dataType="DeviceMembership" name="DeviceMembership" designDesc="Device membership" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string[]" name="OwnerEmailAddresses" designDesc="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AaltoGlobalImpact.OIP.TBEmailValidation" name="EmailValidation" designDesc="Email validation item for 30 minutes" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+              <Parameter name="DeviceMembership"/>
+              <Target name="OwnerEmailAddresses" />
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
+              <Parameter name="DeviceMembership"/>
+              <Target name="EmailValidation"/>
+              <Target name="OwnerEmailAddresses"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+
+      <Operation name="CreateAuthenticatedAsActiveDevice">
+        <OperationSpec>
+          <Description>
+            Creates device membership FROM the group as authenticated against other group.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Security context owner" state="implemented"/>
+          <Parameter name="AuthenticationDeviceDescription" dataType="string" designDesc="Description of the device" state="implemented"/>
+          <Parameter name="TargetBallHostName" dataType="string" designDesc="Target Ball instance host name. If not given, using the same host that the call was made from." state="implemented"/>
+          <Parameter name="TargetGroupID" dataType="string" designDesc="Target group ID to which the device membership is established" state="implemented"/>
+          <Parameter name="SharedSecret" dataType="string" designDesc="Shared secret with the back-end to establish connection" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="NegotiationURL" dataType="string" designDesc="Trust negotiation URL" state="implemented">
+              <Parameter name="TargetBallHostName"/>
+              <Parameter name="TargetGroupID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Created device membership client" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="AuthenticationDeviceDescription"/>
+              <Parameter name="SharedSecret"/>
+              <Target name="NegotiationURL"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="CreatedAuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Created device client membership" state="implemented" />
+          <Target name="AuthenticatedAsActiveDevice"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="PerformNegotiationAndValidateAuthenticationAsActiveDevice">
+        <OperationSpec>
+          <Description>
+            Negotiate and validate authentication as active device.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="AuthenticatedAsActiveDeviceID" designDesc="ID of device membership" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="AuthenticatedAsActiveDeviceID"/>
+            </TargetDefinition>
+            <MethodExecute name="NegotiateWithTarget" designDesc="Negotiate with target party. Set validation flag as true if succesfully negotiated." state="implemented">
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteAuthenticatedAsActiveDevice">
+        <OperationSpec>
+          <Description>
+            Delete device membership record entirely.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="AuthenticatedAsActiveDeviceID" designDesc="ID of device membership" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="AuthenticatedAsActiveDeviceID"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteAuthenticatedAsActiveDevice" designDesc="Delete device membership record" state="implemented">
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+
+      <Operation name="CreateInformationOutput">
+        <OperationSpec>
+          <Description>
+            Creates information output for security context for owner.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="OutputDescription" designDesc="Description of the information output" state="implemented"/>
+          <Parameter dataType="string" name="DestinationURL" designDesc="Information target location URL" state="implemented"/>
+          <Parameter dataType="string" name="DestinationContentName" designDesc="Destionation content name" state="implemented"/>
+          <Parameter dataType="string" name="LocalContentURL" designDesc="Local content URL" state="implemented"/>
+          <Parameter dataType="string" name="AuthenticatedDeviceID" designDesc="Authenticated device ID for this connection (optional)" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationOutput" name="CreatedInformationOutput" designDesc="Created information output" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="OutputDescription"/>
+              <Parameter name="DestinationURL"/>
+              <Parameter name="DestinationContentName"/>
+              <Parameter name="LocalContentURL"/>
+              <Parameter name="AuthenticatedDeviceID"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="CreatedInformationOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="InformationOutput" dataType="InformationOutput" designDesc="Created information output" state="implemented" />
+          <Target name="CreatedInformationOutput"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="SetInformationOutputValidationAndActiveStatus">
+        <OperationSpec>
+          <Description>
+            Set information output validation and active-statuses.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationOutputID" designDesc="ID of information output" state="implemented"/>
+          <Parameter dataType="bool" name="IsValidAndActive" designDesc="Value for validated and active" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationOutput" name="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationOutputID"/>
+            </TargetDefinition>
+            <MethodExecute name="SetInputValidAndActiveValue" designDesc="Set input valid and active value" state="implemented">
+              <Parameter name="IsValidAndActive"/>
+              <Target name="InformationOutput"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+              <Target name="InformationOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteInformationOutput">
+        <OperationSpec>
+          <Description>
+            Delete information input source.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationOutputID" designDesc="ID of information output" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationOutput" name="InformationOutput" designDesc="Information output to delete" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationOutputID"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteInformationOutput" designDesc="Delete information output record" state="implemented">
+              <Target name="InformationOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateAndSendEmailValidationForInformationOutputConfirmation">
+        <OperationSpec>
+          <Description>
+            Creates and sends email validation for information output confirmation.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBAccount" name="OwningAccount" designDesc="Security context owner - if an account" state="implemented"/>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBCollaboratingGroup" name="OwningGroup" designDesc="Security context owner - if a group" state="implemented"/>
+          <Parameter dataType="InformationOutput" name="InformationOutput" designDesc="Information output" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string[]" name="OwnerEmailAddresses" designDesc="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AaltoGlobalImpact.OIP.TBEmailValidation" name="EmailValidation" designDesc="Email validation item for 30 minutes" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+              <Parameter name="InformationOutput"/>
+              <Target name="OwnerEmailAddresses" />
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for approving information output" state="implemented">
+              <Parameter name="InformationOutput"/>
+              <Target name="EmailValidation"/>
+              <Target name="OwnerEmailAddresses"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="PushToInformationOutput">
+        <OperationSpec>
+          <Description>
+            Push information output to given target
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationOutputID" designDesc="ID of information output" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationOutput" name="InformationOutput" designDesc="Information output to push the data to" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationOutputID"/>
+            </TargetDefinition>
+            <MethodExecute name="VerifyValidOutput" designDesc="Verify that output is valid and active" state="implemented">
+              <Target name="InformationOutput"/>
+            </MethodExecute>
+            <TargetDefinition dataType="string" name="DestinationURL" designDesc="Location to push the output to" state="implemented">
+              <Target name="InformationOutput"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="DestinationContentName" designDesc="Destination content name" state="implemented">
+              <Target name="InformationOutput"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="LocalContentURL" designDesc="Local content URL to push the output from" state="implemented">
+              <Target name="InformationOutput"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+              <Target name="InformationOutput" />
+            </TargetDefinition>
+            <MethodExecute name="PushToInformationOutput" designDesc="Push information to output" state="implemented">
+              <Parameter name="Owner"/>
+              <Target name="InformationOutput"/>
+              <Target name="DestinationURL"/>
+              <Target name="DestinationContentName"/>
+              <Target name="LocalContentURL"/>
+              <Target name="AuthenticatedAsActiveDevice" />
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+
+
+      <Operation name="CreateInformationInput">
+        <OperationSpec>
+          <Description>
+            Creates information input for security context for owner.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InputDescription" designDesc="Description of the information input" state="implemented"/>
+          <Parameter dataType="string" name="LocationURL" designDesc="Information source location URL" state="implemented"/>
+          <Parameter dataType="string" name="LocalContentName" designDesc="Local content name" state="implemented"/>
+          <Parameter dataType="string" name="AuthenticatedDeviceID" designDesc="Authenticated device ID for this connection (optional)" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationInput" name="CreatedInformationInput" designDesc="Created information input" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InputDescription"/>
+              <Parameter name="LocationURL"/>
+              <Parameter name="LocalContentName"/>
+              <Parameter name="AuthenticatedDeviceID"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="CreatedInformationInput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="InformationInput" dataType="InformationInput" designDesc="Created information input" state="implemented" />
+          <Target name="CreatedInformationInput"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="SetInformationInputValidationAndActiveStatus">
+        <OperationSpec>
+          <Description>
+            Set information input validation and active-statuses.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationInputID" designDesc="ID of information input" state="implemented"/>
+          <Parameter dataType="bool" name="IsValidAndActive" designDesc="Value for validated and active" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationInput" name="InformationInput" designDesc="Information input of which to set the status" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationInputID"/>
+            </TargetDefinition>
+            <MethodExecute name="SetInputValidAndActiveValue" designDesc="Set input valid and active value" state="implemented">
+              <Parameter name="IsValidAndActive"/>
+              <Target name="InformationInput"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+              <Target name="InformationInput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteInformationInput">
+        <OperationSpec>
+          <Description>
+            Delete information input source.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationInputID" designDesc="ID of device membership" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationInput" name="InformationInput" designDesc="Information input to delete" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationInputID"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteInformationInput" designDesc="Delete information input record" state="implemented">
+              <Target name="InformationInput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateAndSendEmailValidationForInformationInputConfirmation">
+        <OperationSpec>
+          <Description>
+            Creates and sends email validation for information input confirmation.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBAccount" name="OwningAccount" designDesc="Security context owner - if an account" state="implemented"/>
+          <Parameter dataType="AaltoGlobalImpact.OIP.TBCollaboratingGroup" name="OwningGroup" designDesc="Security context owner - if a group" state="implemented"/>
+          <Parameter dataType="InformationInput" name="InformationInput" designDesc="Information input" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string[]" name="OwnerEmailAddresses" designDesc="Owner relevant email address(es). For group - the initiator's active group email, for account - all of accounts emails" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AaltoGlobalImpact.OIP.TBEmailValidation" name="EmailValidation" designDesc="Email validation item for 30 minutes" state="implemented">
+              <Parameter name="OwningAccount"/>
+              <Parameter name="OwningGroup"/>
+              <Parameter name="InformationInput"/>
+              <Target name="OwnerEmailAddresses" />
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
+              <Parameter name="InformationInput"/>
+              <Target name="EmailValidation"/>
+              <Target name="OwnerEmailAddresses"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    
+      <Operation name="FetchInputInformation">
+        <OperationSpec>
+          <Description>
+            Fetch input information from given source
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationInputID" designDesc="ID of information input" state="implemented"/>
+          <Parameter dataType="string" name="QueryParameters" designDesc="URL query parameters" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationInput" name="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationInputID"/>
+            </TargetDefinition>
+            <MethodExecute name="VerifyValidInput" designDesc="Verify that input is valid and active" state="implemented">
+              <Target name="InformationInput"/>
+            </MethodExecute>
+            <TargetDefinition dataType="string" name="InputFetchLocation" designDesc="Location to fetch the input into" state="implemented">
+              <Target name="InformationInput"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="string" name="InputFetchName" designDesc="Name of item to store the fetched input - derived from local content name." state="implemented">
+              <Target name="InformationInput"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+              <Target name="InformationInput" />
+            </TargetDefinition>
+            <MethodExecute name="FetchInputToStorage" designDesc="Fetch input to storage" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="QueryParameters"/>
+              <Target name="InformationInput"/>
+              <Target name="InputFetchLocation"/>
+              <Target name="InputFetchName"/>
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ProcessFetchedInputs">
+        <OperationSpec>
+          <Description>
+            Process fetched inputs
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
+          <Parameter dataType="string" name="InformationInputID" designDesc="ID of information input" state="implemented"/>
+          <Parameter dataType="string" name="ProcessingOperationName" designDesc="Processing operation name" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="InformationInput" name="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="InformationInputID"/>
+            </TargetDefinition>
+            <MethodExecute name="VerifyValidInput" designDesc="Verify that input is valid and active" state="implemented">
+              <Target name="InformationInput"/>
+            </MethodExecute>
+            <TargetDefinition dataType="string" name="InputFetchLocation" designDesc="Location to fetch the input into" state="implemented">
+              <Target name="InformationInput"/>
+            </TargetDefinition>
+            <MethodExecute name="ProcessInputFromStorage" designDesc="Process input from storage" state="implemented">
+              <Parameter name="ProcessingOperationName"/>
+              <Target name="InformationInput"/>
+              <Target name="InputFetchLocation"/>
+              <ReturnValue dataType="IInformationObject[]" name="ProcessingResultsToStore" designDesc="Information objects to store as result of processing" state="implemented"/>
+              <ReturnValue dataType="IInformationObject[]" name="ProcessingResultsToDelete" designDesc="Information objects to delete as result of processing" state="implemented"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store processed objects" state="implemented">
+              <Target name="ProcessInputFromStorageOutput.ProcessingResultsToStore"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteObjects" designDesc="Delete obsolete processed objects" state="implemented">
+              <Target name="ProcessInputFromStorageOutput.ProcessingResultsToDelete"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="BeginAccountEmailAddressRegistration">
+        <OperationSpec>
+          <Description>
+            Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="AccountID whose email is to be registered" state="implemented"/>
+          <Parameter name="EmailAddress" dataType="string" designDesc="Email address to add to account" state="implemented"/>
+          <Parameter name="RedirectUrlAfterValidation" dataType="string" designDesc="Redirect url after email validation" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ValidateUnexistingEmail" designDesc="Validate that the email to add is not already registered" state="implemented">
+              <Parameter name="EmailAddress"/>
+            </MethodExecute>
+            <TargetDefinition name="EmailValidation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object prepared ready to stored and to be sent" state="implemented">
+              <Parameter name="AccountID"/>
+              <Parameter name="EmailAddress"/>
+              <Parameter name="RedirectUrlAfterValidation"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store processed objects" state="implemented">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+            <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for validating the email" state="implemented">
+              <Target name="EmailValidation"/>
+            </MethodExecute>
+           </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UnregisterEmailAddress">
+          <OperationSpec>
+            <Description>
+              Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
+            </Description>
+          </OperationSpec>
+          <Parameters>
+            <Parameter name="AccountID" dataType="string" designDesc="AccountID whose email is to be registered" state="implemented"/>
+            <Parameter name="EmailAddress" dataType="string" designDesc="Email address to add to account" state="implemented"/>
+          </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="AccountContainerBeforeGroupRemoval" dataType="AaltoGlobalImpact.OIP.AccountContainer" designDesc="AccountContainer of account" state="designApproved">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="EmailAddressID" dataType="string" designDesc="Email Address ID within AccountContainer" state="designApproved">
+              <Parameter name="EmailAddress"/>
+              <Target name="AccountContainerBeforeGroupRemoval"/>
+            </TargetDefinition>
+            <MethodExecute name="ExecuteUnlinkEmailAddress" designDesc="Perform unlink" state="designApproved">
+              <Parameter name="AccountID"/>
+              <Target name="AccountContainerBeforeGroupRemoval"/>
+              <Target name="EmailAddressID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CreateGroupWithTemplates">
+        <OperationSpec>
+          <Description>Create group with templates</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupName" dataType="string" designDesc="Group name to be created" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID of initiator" state="implemented"/>
+          <Parameter name="TemplateNameList" dataType="string" designDesc="Comma separated list of templates to initialize group at creation" state="implemented"/>
+          <Parameter name="GroupDefaultRedirect" dataType="string" designDesc="Group default redirect location (optional)" state="implemented"/>
+          <Parameter name="RedirectUrlAfterCreation" dataType="string" designDesc="Redirect url after group creation (optional)" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ExecuteCreateGroup" designDesc="Perform group creation" state="implemented">
+              <Parameter name="GroupName"/>
+              <Parameter name="AccountID"/>
+              <ReturnValue dataType="string" name="GroupID" designDesc="GroupID of created group" state="implemented"/>
+            </MethodExecute>
+            <MethodExecute name="CopyGroupTemplates" designDesc="Copy group templates" state="implemented">
+              <Parameter name="TemplateNameList"/>
+              <Target name="ExecuteCreateGroupOutput"/>
+            </MethodExecute>
+            <TargetDefinition name="GroupAsOwner" dataType="IContainerOwner" designDesc="Group as container owner" state="implemented">
+              <Target name="ExecuteCreateGroupOutput"/>
+            </TargetDefinition>
+            <OperationExecute name="SetDefaultRedirect" targetOperationName="SetOwnerWebRedirect" designDesc="Sets groups default redirect if given" state="implemented">
+              <Parameter name="GroupDefaultRedirect"/>
+              <Target name="GroupAsOwner"/>
+            </OperationExecute>
+            <MethodExecute name="InitializeGroupWithDefaultObjects" designDesc="Initialize group with default objects (hardcoded for now)" state="implemented">
+              <Target name="GroupAsOwner"/>
+            </MethodExecute>
+            <MethodExecute name="RedirectToGivenUrl" designDesc="Redirect to url if given" state="implemented">
+              <Parameter name="RedirectUrlAfterCreation"/>
+              <Target name="ExecuteCreateGroupOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="SetOwnerWebRedirect">
+        <OperationSpec>
+          <Description>
+            Sets owner web redirect. Stores a text file in owner folder with redirector-specific name. Might support parameters and multiple files later on.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner whose redirection is to be set" state="implemented"/>
+          <Parameter name="RedirectPath" dataType="string" designDesc="Redirect path, if null or empty, the redirection is to be removed." state="implemented"/>
+        </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="SetRedirection" designDesc="Sets the redirection file for owner." state="implemented">
+            <Parameter name="Owner"/>
+            <Parameter name="RedirectPath"/>
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      </Operation>
+    </Operations>
+    <!--
+    <Subscriptions>
+      <Subscription triggeredOperationName="UpdatePageContent">
+        <TriggeringInformationItem itemName="BuiltForAnybodyTitle" objectName="AboutAGIApplications" />
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="BuiltForAnybodyTitle" />
+      </Subscription>
+    </Subscriptions>
+    -->
+    <!--
+    <Monitoring>
+      <Monitor monitoringOperationName="UpdatePageContent">
+        <MonitoredInformationItem objectName="AboutAGIApplications" itemName="ForAllPeopleTitle" />
+        <MonitoringFrequency utcTimeStampToStart="2012-08-13T14:00:00.123456789+02:00">
+          <RegularMonitoringCycle frequencyUnit="Minute" monitorEveryXthOfUnit="15" />
+        </MonitoringFrequency>
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="ForAllPeopleTitle" />
+      </Monitor>
+    </Monitoring>
+    -->
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

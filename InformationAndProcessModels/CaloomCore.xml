@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="Caloom.CORE">
+    <InformationModel>
+      <InformationObject name="Who" designDesc="Caloom Who(m)">
+        <InformationItems>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ProductForWhom" designDesc="Product for whom perspective">
+        <InformationItems>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="Product" logicalDataType="InformationObject" informationObjectName="Product"/>
+          <InformationItem name="Who" logicalDataType="InformationObject" informationObjectName="Who"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="Product" designDesc="Caloom core product">
+        <InformationItems>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="SubProducts" logicalDataType="InformationObject" informationObjectName="ProductUsageCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ProductUsageCollection" designDesc="Collection of product usages">
+        <CollectionFor contentInformationObjectName="ProductUsage" collectionType="Master"/>
+      </InformationObject>
+
+      <InformationObject name="ProductUsage" designDesc="Usage of product">
+        <InformationItems>
+          <InformationItem name="Product" logicalDataType="InformationObject" informationObjectName="Product"/>
+          <InformationItem name="UsageAmountInDecimal" logicalDataType="Number_ApproxDecimal"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ProductCollection" designDesc="Collection of products">
+        <CollectionFor contentInformationObjectName="Product" collectionType="Master"/>
+      </InformationObject>
+
+      <InformationObject name="NodeSummaryContainer" designDesc="Node (=tile) container of everything summarized">
+        <InformationItems>
+          <InformationItem name="Nodes" logicalDataType="InformationObject" informationObjectName="RenderedNodeCollection"/>
+          <InformationItem name="NodeSourceProducts" informationObjectName="ProductCollection" logicalDataType="InformationObject"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="RenderedNodeCollection" designDesc="Collection of rendered nodes">
+        <CollectionFor contentInformationObjectName="RenderedNode" collectionType="Independent"/>
+      </InformationObject>
+
+      <InformationObject name="RenderedNode" designDesc="Node representing information to be presented in Tile-like fashion">
+        <InformationItems>
+          <InformationItem name="TechnicalSource" logicalDataType="Text_Short"/>
+          <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="ActualContentUrl" logicalDataType="Text_Short" />
+          <InformationItem name="Excerpt" logicalDataType="Text_Long" />
+          <InformationItem name="TimestampText" logicalDataType="Text_Short"/>
+          <InformationItem name="MainSortableText" logicalDataType="Text_Short"/>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="Authors" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+          <InformationItem name="Filters" logicalDataType="InformationObject" informationObjectName="ShortTextCollection"/>
+        </InformationItems>
+      </InformationObject>
+
+      <InformationObject name="ShortTextCollection" designDesc="Collection of short text objects">
+        <CollectionFor collectionType="Independent" contentInformationObjectName="ShortTextObject"/>
+      </InformationObject>
+      <InformationObject name="ShortTextObject" designDesc="Generic short text content">
+        <InformationItems>
+          <InformationItem name="Content" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+
+
+    </InformationModel>
+    <Operations>
+      <Operation name="CreateAndUpdateProduct">
+        <OperationSpec>
+          <Description>Creates and updates product</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Title" dataType="string" designDesc="Product title to be updated after creation" state="designApproved"/>
+          <Parameter name="Excerpt" dataType="string" designDesc="Product excerpt to updated after creation" state="designApproved"/>
+          <Parameter name="Description" dataType="string" designDesc="Product description to be updated after creation" state="designApproved"/>
+        </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <OperationExecute name="CreateProduct" targetOperationName="CreateProduct" designDesc="Create product" state="designApproved">
+            <ReturnValue name="ProductID" dataType="string" designDesc="ID of created product" state="designApproved" />
+          </OperationExecute>
+          <OperationExecute name="UpdateProduct" targetOperationName="UpdateProduct" designDesc="Update product" state="designApproved">
+            <Parameter name="Title"/>
+            <Parameter name="Excerpt"/>
+            <Parameter name="Description"/>
+            <Target name="CreateProductOutput"/>
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+      </Operation>
+      <Operation name="CreateProduct">
+        <OperationSpec>
+          <Description>Create product</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Product" name="ProductRoot" designDesc="Created product with given title" state="designApproved" />
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="ProductRoot"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="ProductID" dataType="string" designDesc="Product id of created product" state="designApproved" />
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="UpdateProduct">
+        <OperationSpec>
+          <Description>Update product information</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProductID" dataType="string" designDesc="ID of the product to be updated" state="designApproved"/>
+          <Parameter name="Title" dataType="string" designDesc="Product title to be updated" state="designApproved"/>
+          <Parameter name="Excerpt" dataType="string" designDesc="Product excerpt to updated" state="designApproved"/>
+          <Parameter name="Description" dataType="string" designDesc="Product description to be updated" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Product" name="ProductRoot" designDesc="Product to be updated" state="designApproved">
+              <Parameter name="ProductID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateProductInfo" designDesc="Update product info" state="designApproved">
+              <Parameter name="Title"/>
+              <Parameter name="Excerpt"/>
+              <Parameter name="Description"/>
+              <Target name="ProductRoot" />
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="ProductRoot"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="UpdatedProductID" dataType="string" designDesc="Product id of created product" state="designApproved" />
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="SetSubProductUsage">
+        <OperationSpec>
+          <Description>Set sub product usage within a product</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="UsingProductID" dataType="string" designDesc="ID of the product that uses the subproduct" state="designApproved"/>
+          <Parameter name="SubProductBeingUsedID" dataType="string" designDesc="ID of the subproduct that is being used" state="designApproved"/>
+          <Parameter name="AmountOfUsage" dataType="double" designDesc="Amount of usage of subproduct as double precision" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Product" name="UsingProduct" designDesc="Using product" state="designApproved">
+              <Parameter name="UsingProductID"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="Product" name="SubProductBeingUsed" designDesc="Subproduct being used" state="designApproved">
+              <Parameter name="SubProductBeingUsedID"/>
+            </TargetDefinition>
+            <MethodExecute name="SetSubProductUsage" designDesc="Set sub product usage" state="designApproved">
+              <Parameter name="AmountOfUsage"/>
+              <Target name="UsingProduct"/>
+              <Target name="SubProductBeingUsed"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="UsingProduct"/>
+              <Target name="SubProductBeingUsed"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="RemoveSubProductUsage">
+        <OperationSpec>
+          <Description>Removes sub product usage within a product</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="UsingProductID" dataType="string" designDesc="ID of the product that uses the subproduct" state="designApproved"/>
+          <Parameter name="SubProductBeingUsedID" dataType="string" designDesc="ID of the subproduct that is being used" state="designApproved"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Product" name="UsingProduct" designDesc="Using product" state="designApproved">
+              <Parameter name="UsingProductID"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveSubProductUsage" designDesc="Set sub product usage" state="designApproved">
+              <Parameter name="SubProductBeingUsedID"/>
+              <Target name="UsingProduct"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
+              <Target name="UsingProduct"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    <Subscriptions>
+      <Subscription triggeredOperationName="UpdatePageContent">
+        <TriggeringInformationItem itemName="BuiltForAnybodyTitle" objectName="AboutAGIApplications" />
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="BuiltForAnybodyTitle" />
+      </Subscription>
+    </Subscriptions>
+    <Monitoring>
+      <Monitor monitoringOperationName="UpdatePageContent">
+        <MonitoredInformationItem objectName="AboutAGIApplications" itemName="ForAllPeopleTitle" />
+        <MonitoringFrequency utcTimeStampToStart="2012-08-13T14:00:00.123456789+02:00">
+          <RegularMonitoringCycle frequencyUnit="Minute" monitorEveryXthOfUnit="15" />
+        </MonitoringFrequency>
+        <OperationParameter name="changedInformation" informationItemSource="TriggeringObject" informationObjectName="AboutAGIApplications" informationItemName="ForAllPeopleTitle" />
+      </Monitor>
+    </Monitoring>
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>
