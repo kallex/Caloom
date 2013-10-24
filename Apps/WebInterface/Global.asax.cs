@@ -31,6 +31,15 @@ namespace WebInterface
             //    Response.RedirectPermanent("anon/default/oip-anon-landing-page.phtml", true);
             //if(Request.Path.ToLower().StartsWith("/theball") == false)
             //    Response.Redirect("/theballanon/oip-layouts/oip-edit-default-layout-jeroen.html", true);
+            if (!Request.IsLocal && !Request.IsSecureConnection)
+            {
+                bool isWebSocket = Request.Path.StartsWith("/websocket/");
+                if (isWebSocket == false)
+                {
+                    string redirectUrl = Request.Url.ToString().Replace("http:", "https:");
+                    Response.Redirect(redirectUrl, true);
+                }
+            }
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
