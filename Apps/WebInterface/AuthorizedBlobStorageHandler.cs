@@ -124,6 +124,8 @@ namespace WebInterface
             if (request.RequestType == "GET")
             {
                 string contentPath = request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+                if(contentPath.Contains("TheBall.CORE"))
+                    throw new SecurityException("Invalid request location");
                 var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
 
                 AesManaged aes = new AesManaged();
