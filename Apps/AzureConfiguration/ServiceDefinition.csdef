@@ -62,6 +62,8 @@
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="CaloomCom" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="ProtonitNet" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>

@@ -655,6 +655,16 @@ namespace AaltoGlobalImpact.OIP
                 localCollection = new CategoryCollection();
             localCollection.CollectionContent = masterCollection.CollectionContent;
             localCollection.RefreshOrderAndFilterListFromContent();
+            
+            // Sort categories based on the collection
+            var flattenedArray = nodeSummaryContainer.NodeSourceCategories.SelectedIDCommaSeparated.Split(',');
+            string commaSeparatedIDs = String.Join(",", flattenedArray);
+            nodeSummaryContainer.NodeSourceCategories.SelectedIDCommaSeparated = commaSeparatedIDs;
+            var newList =
+                nodeSummaryContainer.NodeSourceCategories.CollectionContent.OrderBy(
+                    cat => Array.IndexOf(flattenedArray, cat.ID)).ToList();
+            nodeSummaryContainer.NodeSourceCategories.CollectionContent = newList;
+
         }
 
         internal static RenderedNode getNodeFromCategory(Category category)
