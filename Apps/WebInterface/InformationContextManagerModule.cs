@@ -26,27 +26,33 @@ namespace WebInterface
         {
             // Below is an example of how you can handle LogRequest event and provide 
             // custom logging implementation for it
-            context.LogRequest += new EventHandler(OnLogRequest);
+            //context.LogRequest += new EventHandler(OnLogRequest);
             context.BeginRequest += ContextOnBeginRequest;
             context.EndRequest += ContextOnEndRequest;
         }
 
+        private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
+        {
+            var request = HttpContext.Current.Request;
+            if (request.Path.StartsWith("/websocket/"))
+                return;
+            WebSupport.InitializeContextStorage(HttpContext.Current.Request);
+            InformationContext.StartResourceMeasuringOnCurrent();
+            var application = (HttpApplication)sender;
+            application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
+        }
+
         private void ContextOnEndRequest(object sender, EventArgs eventArgs)
         {
+            var request = HttpContext.Current.Request;
+            if (request.Path.StartsWith("/websocket/"))
+                return;
             var application = (HttpApplication)sender;
             var contentLengthFilter = (ContentLengthFilter)application.Response.Filter;
             var contentLength = contentLengthFilter.BytesWritten;
             Debug.WriteLine("Content length sent: " + contentLength);
             InformationContext.AddNetworkOutputByteAmountToCurrent(contentLength);
             InformationContext.ProcessAndClearCurrent();
-        }
-
-        private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
-        {
-            WebSupport.InitializeContextStorage(HttpContext.Current.Request);
-            InformationContext.StartResourceMeasuringOnCurrent();
-            var application = (HttpApplication)sender;
-            application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
         }
 
         #endregion

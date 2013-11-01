@@ -249,7 +249,7 @@ namespace TheBall
         private bool isResourceMeasuring = false;
         private void StartResourceMeasuring()
         {
-            Debugger.Break();
+            //Debugger.Break();
             startTimeInaccurate = DateTime.UtcNow;
             executionStopwatch.Start();
             realtimeStopwatch.Start();
