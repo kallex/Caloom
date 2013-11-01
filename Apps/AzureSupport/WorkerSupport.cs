@@ -360,8 +360,12 @@ namespace TheBall
         {
             try
             {
-                if(containerName != null)
-                    InformationContext.Current.InitializeCloudStorageAccess(containerName:containerName);
+                if (containerName != null)
+                {
+                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
+                    InformationContext.Current.Owner = lockedOwner;
+                    InformationContext.StartResourceMeasuringOnCurrent();
+                }
                 string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
                 var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
                 const double invalidSubscriptionSubmissionTimeInSeconds = 600;

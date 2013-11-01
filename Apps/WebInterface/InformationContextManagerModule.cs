@@ -44,7 +44,7 @@ namespace WebInterface
         private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
         {
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
-            InformationContext.Current.StartResourceMeasuring();
+            InformationContext.StartResourceMeasuringOnCurrent();
             var application = (HttpApplication)sender;
             application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
         }

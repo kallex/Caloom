@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
@@ -120,19 +122,26 @@ namespace TheBall
                 SubscribeSupport.AddPendingRequests(grpItem.Key, grpItem.Select(item => item.TargetLocation).ToArray());
             }
             FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
-            // Complete resource measuring - add one more transaction because the RRU item is stored itself
-            AddStorageTransactionToCurrent();
-            CompleteResourceMeasuring();
-            //var owner = _owner;
-            //if (owner == null)
-            //    owner = TBSystem.CurrSystem;
-            // Resources usage items need to be under system, because they are handled as a batch
-            // The refined logging/storage is then saved under owner's context
-            var owner = TBSystem.CurrSystem;
-            var now = DateTime.UtcNow;
-            string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + now.Ticks;
-            RequestResourceUsage.SetLocationAsOwnerContent(owner, itemName);
-            //RequestResourceUsage.StoreInformation();
+            if (isResourceMeasuring)
+            {
+                // Complete resource measuring - add one more transaction because the RRU item is stored itself
+                AddStorageTransactionToCurrent();
+                CompleteResourceMeasuring();
+                //var owner = _owner;
+                //if (owner == null)
+                //    owner = TBSystem.CurrSystem;
+                // Resources usage items need to be under system, because they are handled as a batch
+                // The refined logging/storage is then saved under owner's context
+                var measurementOwner = TBSystem.CurrSystem;
+                var resourceUser = _owner ?? measurementOwner;
+                RequestResourceUsage.OwnerInfo.OwnerType = resourceUser.ContainerName;
+                RequestResourceUsage.OwnerInfo.OwnerIdentifier = resourceUser.LocationPrefix;
+                var now = RequestResourceUsage.ProcessorUsage.TimeRange.EndTime;
+                string uniquePostFix = Guid.NewGuid().ToString("N");
+                string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + uniquePostFix;
+                RequestResourceUsage.SetLocationAsOwnerContent(measurementOwner, itemName);
+                //RequestResourceUsage.StoreInformation();
+            }
         }
 
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
@@ -235,20 +244,34 @@ namespace TheBall
 
         public RequestResourceUsage RequestResourceUsage;
         private ExecutionStopwatch executionStopwatch = new ExecutionStopwatch();
-        public void StartResourceMeasuring()
+        private Stopwatch realtimeStopwatch = new Stopwatch();
+        private DateTime startTimeInaccurate;
+        private bool isResourceMeasuring = false;
+        private void StartResourceMeasuring()
         {
+            Debugger.Break();
+            startTimeInaccurate = DateTime.UtcNow;
             executionStopwatch.Start();
+            realtimeStopwatch.Start();
+            isResourceMeasuring = true;
             RequestResourceUsage = new RequestResourceUsage
                 {
-                    ProcessorUsage = new ProcessorUsage(),
+                    ProcessorUsage = new ProcessorUsage
+                        {
+                            TimeRange = new TimeRange()
+                        },
                     OwnerInfo = new InformationOwnerInfo(),NetworkUsage = new NetworkUsage(), RequestDetails = new HTTPActivityDetails()
                 };
         }
 
-        public void CompleteResourceMeasuring()
+        private void CompleteResourceMeasuring()
         {
+            realtimeStopwatch.Stop();
             executionStopwatch.Stop();
-            RequestResourceUsage.ProcessorUsage.Milliseconds = executionStopwatch.Elapsed.Milliseconds;
+            var processorUsage = RequestResourceUsage.ProcessorUsage;
+            processorUsage.TimeRange.StartTime = startTimeInaccurate;
+            processorUsage.TimeRange.EndTime = startTimeInaccurate.AddTicks(realtimeStopwatch.ElapsedTicks);
+            RequestResourceUsage.ProcessorUsage.Milliseconds = (long) executionStopwatch.Elapsed.TotalMilliseconds;
         }
 
         public static void AddStorageTransactionToCurrent()
@@ -265,6 +288,11 @@ namespace TheBall
                 Current.RequestResourceUsage.NetworkUsage == null)
                 return;
             Current.RequestResourceUsage.NetworkUsage.AmountOfBytes += bytes;
+        }
+
+        public static void StartResourceMeasuringOnCurrent()
+        {
+            Current.StartResourceMeasuring();
         }
     }
 }

@@ -1357,6 +1357,7 @@ namespace TheBall
                 InformationSourceSupport.DeleteInformationSources(blob.Name);
             }
             blob.DeleteIfExists();
+            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static void DeleteAndFireSubscriptions(this CloudBlob blob)
@@ -1367,6 +1368,7 @@ namespace TheBall
                 InformationSourceSupport.DeleteInformationSources(targetLocation: blob.Name);
             }
             blob.DeleteIfExists();
+            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static void DeleteBlob(string blobPath)
@@ -1374,6 +1376,7 @@ namespace TheBall
             Console.WriteLine("Deleting: " + blobPath);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(blobPath);
             blob.DeleteIfExists();
+            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static string GetLocationParentDirectory(string location)
@@ -1387,6 +1390,7 @@ namespace TheBall
         {
             CloudBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
             blob.FetchAttributes();
+            InformationContext.AddStorageTransactionToCurrent();
             return blob;
         }
 
@@ -1394,6 +1398,7 @@ namespace TheBall
         {
             string storageListingPrefix = container.Name + "/" + directoryLocation;
             BlobRequestOptions options = new BlobRequestOptions() { UseFlatBlobListing = true, BlobListingDetails = withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None };
+            InformationContext.AddStorageTransactionToCurrent();
             return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
         }
 
@@ -1453,7 +1458,8 @@ namespace TheBall
             string contentListingPrefix = GetBlobOwnerAddress(owner, contentType);
             string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
-            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options );
+            InformationContext.AddStorageTransactionToCurrent();
+            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
         }
 
         public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
@@ -1468,7 +1474,9 @@ namespace TheBall
             try
             {
                 blob.UploadText(blobContent, Encoding.UTF8, options);
-            } catch
+                InformationContext.AddStorageTransactionToCurrent();
+            }
+            catch
             {
                 lockEtag = null;
                 return false;
@@ -1487,7 +1495,9 @@ namespace TheBall
             try
             {
                 blob.Delete(options);
-            } catch
+                InformationContext.AddStorageTransactionToCurrent();
+            }
+            catch
             {
                 return false;
             }

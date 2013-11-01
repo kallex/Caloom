@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*" schemaVersion="2012-10.1.8">
   <Role name="WorkerRoleAccelerator.Core">
-    <Instances count="2" />
+    <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="DataConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="WorkerRoleEntryPointContainerName" value="worker-role-accelerator" />
       <Setting name="StorageConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="AmazonSESAccessInfo" value="" />
+      <Setting name="WorkerActiveContainerName" value="test-caloom-com" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBEwYJKoZIhvcNAQcDoIIBBDCCAQACAQAxgcUwgcICAQAwKzAXMRUwEwYDVQQDEwxUaGVCYWxsQXp1cmUCEOFzzqqZxgqJQlvQUsCQyaYwDQYJKoZIhvcNAQEBBQAEgYB6Owd/PCZNBEYkLkGwu1Hd8UrpThVBH2VHI1Mu4q+fsYxbRXlDEHH56q3t2uHA3WJbnndp1ZQRvt61RS162N+K+gChLIJOp+6agA/fVc590llQLgVPF1mgto8HBr0STMI1FCRMsOR60oCc0yIy0dBKzNYmC4PGX9sYtjcLiKI8tDAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECBgxRDtq+cyggBDenvZNlz5rOc/H0iZSA+PR" />

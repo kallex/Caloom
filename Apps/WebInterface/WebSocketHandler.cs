@@ -223,8 +223,8 @@ namespace WebInterface
 
         private static string FinishDeviceNegotiation(InformationContext iCtx, INegotiationProtocolMember protocolParty, string remainingDetails)
         {
-            try
-            {
+            //try
+            //{
                 var result = CreateDeviceMembership.Execute(new CreateDeviceMembershipParameters
                     {
                         Owner = iCtx.Owner,
@@ -238,11 +238,11 @@ namespace WebInterface
                         OwningGroup = iCtx.Owner as TBCollaboratingGroup,
                     });
                 return result.DeviceMembership.ID;
-            }
-            finally
-            {
-                iCtx.PerformFinalizingActions();
-            }
+            //}
+            //finally
+            //{
+            //    iCtx.PerformFinalizingActions();
+            //}
         }
 
         private async static Task SendTextMessage(WebSocket socket, string textMessage)
