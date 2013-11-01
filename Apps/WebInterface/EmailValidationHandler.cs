@@ -41,17 +41,10 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             HttpRequest request = context.Request;
-            WebSupport.InitializeContextStorage(context.Request);
-            try
+            if (request.Path.StartsWith(AuthEmailValidation))
             {
-                if (request.Path.StartsWith(AuthEmailValidation))
-                {
-                    HandleEmailValidation(context);
-                }        
-            } finally
-            {
-                InformationContext.ProcessAndClearCurrent();
-            }
+                HandleEmailValidation(context);
+            }        
         }
 
         private void HandleEmailValidation(HttpContext context)

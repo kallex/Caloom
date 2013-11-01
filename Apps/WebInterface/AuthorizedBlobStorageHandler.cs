@@ -64,7 +64,6 @@ namespace WebInterface
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             var request = context.Request;
             var response = context.Response;
-            WebSupport.InitializeContextStorage(context.Request);
             if (request.Path.StartsWith(AboutPrefix))
             {
                 HandleAboutGetRequest(context, request.Path);
@@ -75,28 +74,21 @@ namespace WebInterface
             {
                 return;
             }
-            try
+            if (userIdentity.IsInRole("DeviceAES"))
             {
-                if (userIdentity.IsInRole("DeviceAES"))
-                {
-                    HandleEncryptedDeviceRequest(context);
-                } else if (request.Path.StartsWith(AuthPersonalPrefix))
-                {
-                    HandlePersonalRequest(context);
-                }
-                else if (request.Path.StartsWith(AuthGroupPrefix))
-                {
-                    HandleGroupRequest(context);
-                }
-                else if (request.Path.StartsWith(AuthAccountPrefix))
-                {
-                    HandleAccountRequest(context);
-                } 
-                
-            } finally
+                HandleEncryptedDeviceRequest(context);
+            } else if (request.Path.StartsWith(AuthPersonalPrefix))
             {
-                InformationContext.ProcessAndClearCurrent();
+                HandlePersonalRequest(context);
             }
+            else if (request.Path.StartsWith(AuthGroupPrefix))
+            {
+                HandleGroupRequest(context);
+            }
+            else if (request.Path.StartsWith(AuthAccountPrefix))
+            {
+                HandleAccountRequest(context);
+            } 
         }
 
         private void HandleEncryptedDeviceRequest(HttpContext context)

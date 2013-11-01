@@ -109,6 +109,7 @@ namespace TheBall
                 try
                 {
                     blob.FetchAttributes();
+                    InformationContext.AddStorageTransactionToCurrent();
                 } catch(StorageClientException stEx)
                 {
                     if (stEx.ErrorCode == StorageErrorCode.BlobNotFound || stEx.ErrorCode == StorageErrorCode.ResourceNotFound)
@@ -224,6 +225,7 @@ namespace TheBall
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             blob.SetBlobInformationType(blobInformationType);
             blob.UploadByteArray(binaryContent);
+            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static void UploadBlobStream(this CloudBlobContainer container,
@@ -235,6 +237,7 @@ namespace TheBall
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             blob.SetBlobInformationType(blobInformationType);
             blob.UploadFromStream(streamContent);
+            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static string GetContainerNameFromHostName(string hostName)
@@ -967,6 +970,7 @@ namespace TheBall
             blob.SetBlobInformationType(InformationType_InformationObjectValue);
             blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
+            InformationContext.AddStorageTransactionToCurrent();
             informationObject.ETag = blob.Properties.ETag;
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if(additionalFormatProvider != null)
@@ -976,6 +980,7 @@ namespace TheBall
                 {
                     string contentLocation = blob.Name + "." + additionalContent.Extension;
                     CurrActiveContainer.UploadBlobBinary(contentLocation, additionalContent.Content);
+                    InformationContext.AddStorageTransactionToCurrent();
                 }
             }
             if (isNewBlob)
@@ -1040,6 +1045,7 @@ namespace TheBall
                 if (eTag != null)
                     options.AccessCondition = AccessCondition.IfMatch(eTag);
                 blob.DownloadToStream(memoryStream, options);
+                InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }
             catch (StorageClientException stEx)

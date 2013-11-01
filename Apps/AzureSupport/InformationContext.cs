@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using Amazon.IdentityManagement.Model;
+using DiagnosticsUtils;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
 
@@ -119,6 +120,16 @@ namespace TheBall
                 SubscribeSupport.AddPendingRequests(grpItem.Key, grpItem.Select(item => item.TargetLocation).ToArray());
             }
             FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
+            // Complete resource measuring - add one more transaction because the RRU item is stored itself
+            AddStorageTransactionToCurrent();
+            CompleteResourceMeasuring();
+            var owner = _owner;
+            if (owner == null)
+                owner = TBSystem.CurrSystem;
+            var now = DateTime.UtcNow;
+            string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + now.Ticks;
+            RequestResourceUsage.SetLocationAsOwnerContent(owner, itemName);
+            //RequestResourceUsage.StoreInformation();
         }
 
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
@@ -219,6 +230,38 @@ namespace TheBall
             }
         }
 
+        public RequestResourceUsage RequestResourceUsage;
+        private ExecutionStopwatch executionStopwatch = new ExecutionStopwatch();
+        public void StartResourceMeasuring()
+        {
+            executionStopwatch.Start();
+            RequestResourceUsage = new RequestResourceUsage
+                {
+                    ProcessorUsage = new ProcessorUsage(),
+                    OwnerInfo = new InformationOwnerInfo(),NetworkUsage = new NetworkUsage(), RequestDetails = new HTTPActivityDetails()
+                };
+        }
 
+        public void CompleteResourceMeasuring()
+        {
+            executionStopwatch.Stop();
+            RequestResourceUsage.ProcessorUsage.Milliseconds = executionStopwatch.Elapsed.Milliseconds;
+        }
+
+        public static void AddStorageTransactionToCurrent()
+        {
+            if (Current == null || Current.RequestResourceUsage == null ||
+                Current.RequestResourceUsage.StorageTransactionUsage == null)
+                return;
+            Current.RequestResourceUsage.StorageTransactionUsage.AmountOfTransactions++;
+        }
+
+        public static void AddNetworkOutputByteAmountToCurrent(long bytes)
+        {
+            if (Current == null || Current.RequestResourceUsage == null ||
+                Current.RequestResourceUsage.NetworkUsage == null)
+                return;
+            Current.RequestResourceUsage.NetworkUsage.AmountOfBytes += bytes;
+        }
     }
 }

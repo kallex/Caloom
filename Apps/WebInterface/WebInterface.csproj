@@ -117,6 +117,7 @@
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
     <Compile Include="FileUploadHandler.cs" />
+    <Compile Include="InformationContextManagerModule.cs" />
     <Compile Include="RESTForwarderModule.cs" />
     <Compile Include="RESTRequestForwardingHandler.cs" />
     <Compile Include="WebSocketHandler.cs" />

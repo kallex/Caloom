@@ -41,7 +41,6 @@ namespace WebInterface
 
         public void ProcessRequest(HttpContext context)
         {
-            WebSupport.InitializeContextStorage(context.Request);
             bool isSocket = false;
             if (context.IsWebSocketRequest)
             {

@@ -40,6 +40,7 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			[Serializable]
 			public partial class House : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 

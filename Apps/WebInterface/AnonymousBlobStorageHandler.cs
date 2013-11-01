@@ -100,7 +100,7 @@ namespace WebInterface
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
             string blobPath = GetBlobPath(request);
-            CloudBlob blob = publicClient.GetBlobReference(blobPath);
+            CloudBlockBlob blob = publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
             try
             {

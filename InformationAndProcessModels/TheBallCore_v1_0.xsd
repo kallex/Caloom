@@ -102,6 +102,19 @@ Useful to NOT have in system-internal objects such as queue operations where the
 				<xs:documentation>(Opt = false) Is object independent master data object. Independent master is treated master-first-order in data storing and comparison against existing data.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="serializationType" default="XML">
+			<xs:annotation>
+				<xs:documentation>(Opt = "XML") Object storage native serialization style.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="XML"/>
+					<xs:enumeration value="JSON"/>
+					<xs:enumeration value="Binary"/>
+					<xs:enumeration value="Custom"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="InstanceOfTheBallType">
 		<xs:sequence>
@@ -631,6 +644,22 @@ DerivedFromMaster = Derived from master object collection (filter or alike)</xs:
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="displayMode" use="optional" default="Display">
+			<xs:annotation>
+				<xs:documentation>(Opt = "Display") Display mode of information.
+
+Display = Read-only display
+Edit = Editable display
+ToggleEdit = Read-only togglable to edit</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Display"/>
+					<xs:enumeration value="Editable"/>
+					<xs:enumeration value="ToggleEditable"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="classNames" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>Class names in list generated as-is to the result.</xs:documentation>
@@ -651,7 +680,7 @@ DerivedFromMaster = Derived from master object collection (filter or alike)</xs:
 		<xs:attribute name="rootObjectName" type="xs:string" use="required"/>
 		<xs:attribute name="autoRecurseSubViews" type="xs:boolean" use="optional" default="true">
 			<xs:annotation>
-				<xs:documentation>(Opt = true) Automatically creates the missing subviews, based on the name and objectName; and defaulting to "default" name.</xs:documentation>
+				<xs:documentation>(Opt = true) Automatically links object types to the existing subviews, based on the name and objectName; and defaulting to "default" name.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

@@ -59,6 +59,7 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			[Serializable]
 			public partial class TrainingModule : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -530,6 +531,7 @@ TrainingModule.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TrainingModuleCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 

@@ -78,6 +78,7 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			[Serializable]
 			public partial class Who : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -493,6 +494,7 @@ Who.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProductForWhom : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1018,6 +1020,7 @@ ProductForWhom.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Product : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1489,6 +1492,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProductUsageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2006,6 +2010,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProductUsage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2428,6 +2433,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProductCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2945,6 +2951,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class NodeSummaryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3413,6 +3420,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RenderedNodeCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3908,6 +3916,7 @@ Product.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RenderedNode : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -4574,6 +4583,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ShortTextCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -5069,6 +5079,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ShortTextObject : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 

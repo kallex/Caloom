@@ -163,6 +163,7 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			[Serializable]
 			public partial class TBSystem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -544,6 +545,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class WebPublishInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1035,6 +1037,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class PublicationPackageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1530,6 +1533,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class PublicationPackage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1909,6 +1913,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBRLoginRoot : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2321,6 +2326,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBRAccountRoot : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2733,6 +2739,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBRGroupRoot : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3145,6 +3152,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBRLoginGroupRoot : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3526,6 +3534,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBREmailRoot : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3938,6 +3947,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBAccount : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -4460,6 +4470,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBAccountCollaborationGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -4853,6 +4864,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBAccountCollaborationGroupCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -5348,6 +5360,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBLoginInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -5717,6 +5730,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBLoginInfoCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -6212,6 +6226,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBEmail : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -6591,6 +6606,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBEmailCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -7086,6 +7102,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBCollaboratorRole : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -7522,6 +7539,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBCollaboratorRoleCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -8017,6 +8035,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBCollaboratingGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -8441,6 +8460,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBEmailValidation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -9032,6 +9052,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBGroupJoinConfirmation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -9401,6 +9422,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBDeviceJoinConfirmation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -9794,6 +9816,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBInformationInputConfirmation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -10187,6 +10210,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBInformationOutputConfirmation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -10580,6 +10604,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBRegisterContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -11059,6 +11084,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LoginProvider : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -11476,6 +11502,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LoginProviderCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -11971,6 +11998,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ContactOipContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -12340,6 +12368,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TBPRegisterEmail : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -12709,6 +12738,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class JavaScriptContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -13083,6 +13113,7 @@ JavaScriptContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class JavascriptContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -13457,6 +13488,7 @@ JavascriptContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class FooterContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -13831,6 +13863,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class NavigationContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -14200,6 +14233,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountSummary : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -14722,6 +14756,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -15299,6 +15334,7 @@ FooterContainer.HtmlContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountIndex : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -15743,6 +15779,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountModule : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -16321,6 +16358,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ImageGroupContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -16734,6 +16772,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LocationContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -17147,6 +17186,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddressAndLocationCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -17653,6 +17693,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddressAndLocation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -18161,6 +18202,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class StreetAddress : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -18566,6 +18608,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountContent : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -18935,6 +18978,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountProfile : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -19412,6 +19456,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountSecurity : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -19879,6 +19924,7 @@ AccountIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AccountRoles : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -20363,6 +20409,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class PersonalInfoVisibility : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -20732,6 +20779,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupedInformationCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -21227,6 +21275,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupedInformation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -21651,6 +21700,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -22032,6 +22082,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -22516,6 +22567,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class BlogContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -23093,6 +23145,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RecentBlogSummary : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -23561,6 +23614,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class NodeSummaryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -24197,6 +24251,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RenderedNodeCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -24692,6 +24747,7 @@ AccountRoles.OrganizationsImPartOf
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RenderedNode : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -25435,6 +25491,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ShortTextCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -25930,6 +25987,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ShortTextObject : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -26299,6 +26357,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LongTextCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -26794,6 +26853,7 @@ RenderedNode.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LongTextObject : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -27168,6 +27228,7 @@ LongTextObject.Content
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -28023,6 +28084,7 @@ LongTextObject.Content
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapMarker : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -28512,6 +28574,7 @@ MapMarker.PopupContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapMarkerCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -29007,6 +29070,7 @@ MapMarker.PopupContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CalendarContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -29584,6 +29648,7 @@ MapMarker.PopupContent
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AboutContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -30134,6 +30199,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class OBSAccountContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -30711,6 +30777,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProjectContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -31288,6 +31355,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CourseContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -31865,6 +31933,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ContainerHeader : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -32246,6 +32315,7 @@ AboutContainer.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ActivitySummaryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -32841,6 +32911,7 @@ ActivitySummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ActivityIndex : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -33285,6 +33356,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ActivityContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -33807,6 +33879,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ActivityCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -34324,6 +34397,7 @@ ActivityIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Activity : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -35167,6 +35241,7 @@ Activity.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ModeratorCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -35662,6 +35737,7 @@ Activity.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Moderator : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -36043,6 +36119,7 @@ Activity.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CollaboratorCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -36538,6 +36615,7 @@ Activity.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Collaborator : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -36955,6 +37033,7 @@ Activity.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupSummaryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -37549,6 +37628,7 @@ GroupSummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -38349,6 +38429,7 @@ GroupSummaryContainer.SummaryBody
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupIndex : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -38793,6 +38874,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddAddressAndLocationInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -39162,6 +39244,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddImageInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -39531,6 +39614,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddImageGroupInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -39900,6 +39984,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddEmailAddressInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -40269,6 +40354,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CreateGroupInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -40638,6 +40724,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddActivityInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -41007,6 +41094,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddBlogPostInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -41376,6 +41464,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AddCategoryInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -41745,6 +41834,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class GroupCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -42240,6 +42330,7 @@ GroupIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Group : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -42877,6 +42968,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Introduction : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -43263,6 +43355,7 @@ Introduction.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TextContentCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -43769,6 +43862,7 @@ Introduction.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TextContent : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -44373,6 +44467,7 @@ TextContent.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class BlogCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -44890,6 +44985,7 @@ TextContent.Body
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Blog : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -45841,6 +45937,7 @@ Blog.IFrameSources
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class BlogIndexGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -46616,6 +46713,7 @@ BlogIndexGroup.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CalendarIndex : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -47060,6 +47158,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Filter : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -47429,6 +47528,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Calendar : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -47798,6 +47898,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CalendarCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -48293,6 +48394,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Map : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -48662,6 +48764,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -49157,6 +49260,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapIndexCollection : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -49734,6 +49838,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapResult : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -50146,6 +50251,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapResultCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -50641,6 +50747,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MapResultsCollection : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -51163,6 +51270,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Video : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -51599,6 +51707,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Image : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -52076,6 +52185,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class MediaContent : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -52403,6 +52513,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ImageGroupCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -52909,6 +53020,7 @@ CalendarIndex.Summary
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ImageGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -53432,6 +53544,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class VideoGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -53868,6 +53981,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ImagesCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -54352,6 +54466,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class VideoCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -54847,6 +54962,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Tooltip : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -55216,6 +55332,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SocialPanelCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -55711,6 +55828,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SocialPanel : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -56123,6 +56241,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Longitude : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -56492,6 +56611,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Latitude : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -56861,6 +56981,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Location : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -57340,6 +57461,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class LocationCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -57835,6 +57957,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Date : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -58232,6 +58355,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Sex : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -58601,6 +58725,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class OBSAddress : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -59078,6 +59203,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Identity : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -59581,6 +59707,7 @@ ImageGroup.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ImageVideoSoundVectorRaw : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -59983,6 +60110,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CategoryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -60396,6 +60524,7 @@ ImageVideoSoundVectorRaw.Vector
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Category : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -60943,6 +61072,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -61449,6 +61579,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriptionCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -61944,6 +62075,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Subscription : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -62371,6 +62503,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class QueueEnvelope : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -62915,6 +63048,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class OperationRequestCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -63410,6 +63544,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class OperationRequest : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -64152,6 +64287,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriptionChainRequestMessage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -64521,6 +64657,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriptionChainRequestContent : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -64983,6 +65120,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriptionTarget : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -65352,6 +65490,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriptionTargetCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -65847,6 +65986,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class DeleteEntireOwnerOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -66228,6 +66368,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class DeleteOwnerContentOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -66609,6 +66750,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SystemError : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -67098,6 +67240,7 @@ Category.Excerpt
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SystemErrorItem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -67484,6 +67627,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SystemErrorItemCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -67979,6 +68123,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationSource : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -68428,6 +68573,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationSourceCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -68923,6 +69069,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class RefreshDefaultViewsOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -69304,6 +69451,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class UpdateWebContentOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -69774,6 +69922,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class UpdateWebContentHandlerItem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -70155,6 +70304,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class UpdateWebContentHandlerCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -70650,6 +70800,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class PublishWebContentOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -71055,6 +71206,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class SubscriberInput : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -71460,6 +71612,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Monitor : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -71897,6 +72050,7 @@ SystemErrorItem.LongDescription
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class IconTitleDescription : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -72290,6 +72444,7 @@ IconTitleDescription.Description
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AboutAGIApplications : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 

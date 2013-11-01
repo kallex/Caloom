@@ -215,6 +215,15 @@
           <InformationItem name="NetworkUsages" logicalDataType="InformationObject" informationObjectName="NetworkUsageCollection"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="RequestResourceUsage" designDesc="Request resource usage" serializationType="Binary">
+        <InformationItems>
+          <InformationItem name="OwnerInfo" logicalDataType="InformationObject" informationObjectName="InformationOwnerInfo"/>
+          <InformationItem name="ProcessorUsage" logicalDataType="InformationObject" informationObjectName="ProcessorUsage"/>
+          <InformationItem name="StorageTransactionUsage" logicalDataType="InformationObject" informationObjectName="StorageTransactionUsage"/>
+          <InformationItem name="NetworkUsage" logicalDataType="InformationObject" informationObjectName="NetworkUsage"/>
+          <InformationItem name="RequestDetails" logicalDataType="InformationObject" informationObjectName="HTTPActivityDetails"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="ProcessorUsageCollection" designDesc="Collection of Processor Usages">
         <CollectionFor contentInformationObjectName="ProcessorUsage" collectionType="Independent"/>
       </InformationObject>
@@ -224,6 +233,7 @@
           <InformationItem name="UsageType" logicalDataType="Text_Short"/>
           <InformationItem name="AmountOfTicks" logicalDataType="Number_ExactDecimal"/>
           <InformationItem name="FrequencyTicksPerSecond" logicalDataType="Number_ExactDecimal"/>
+          <InformationItem name="Milliseconds" logicalDataType="Number_Integer"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="StorageTransactionUsageCollection" designDesc="Collection of Storage Transaction Usages">
@@ -261,6 +271,20 @@
         <InformationItems>
           <InformationItem name="StartTime" logicalDataType="Time_DateTime"/>
           <InformationItem name="EndTime" logicalDataType="Time_DateTime"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="HTTPActivityDetailsCollection" designDesc="Collection for HTTPActivityDetails">
+        <CollectionFor contentInformationObjectName="HTTPActivityDetails" collectionType="Independent"/>
+      </InformationObject>
+      <InformationObject name="HTTPActivityDetails" designDesc="HTTP activity details that also cover HTTP(S) request details">
+        <InformationItems>
+          <InformationItem name="RemoteIPAddress" logicalDataType="Text_Short"/>
+          <InformationItem name="RemoteEndpointUserName" logicalDataType="Text_Short"/>
+          <InformationItem name="UserID" logicalDataType="Text_Short"/>
+          <InformationItem name="UTCDateTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="RequestLine" logicalDataType="Text_Short"/>
+          <InformationItem name="HTTPStatusCode" logicalDataType="Number_Integer"/>
+          <InformationItem name="ReturnedContentLength" logicalDataType="Number_Integer"/>
         </InformationItems>
       </InformationObject>
     </InformationModel>

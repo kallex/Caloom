@@ -135,6 +135,7 @@ using TheBall.CORE;
             }
 		}
 			[DataContract]
+			[Serializable]
 			public partial class InformationInputCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -652,6 +653,7 @@ using TheBall.CORE;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationInput : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1072,6 +1074,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationOutputCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -1589,6 +1592,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationOutput : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2016,6 +2020,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2533,6 +2538,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class AuthenticatedAsActiveDevice : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -2955,6 +2961,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class DeviceMembershipCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3472,6 +3479,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class DeviceMembership : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -3870,6 +3878,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceFiscalExportSummary : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -4303,6 +4312,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceSummaryContainer : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -4884,6 +4894,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -5401,6 +5412,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Invoice : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -6001,6 +6013,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceDetails : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -6430,6 +6443,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceUserCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -6925,6 +6939,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceUser : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -7452,6 +7467,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceRowGroupCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -7947,6 +7963,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceEventDetailGroupCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -8442,6 +8459,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceRowGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -8902,6 +8920,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceEventDetailGroup : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -9326,6 +9345,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceEventDetailCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -9821,6 +9841,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceRowCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -10316,6 +10337,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceEventDetail : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -10789,6 +10811,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InvoiceRow : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -11271,6 +11294,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -11766,6 +11790,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Category : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -12135,6 +12160,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class Process : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -12571,6 +12597,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -12952,6 +12979,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -13436,6 +13464,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class InformationOwnerInfo : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -13817,6 +13846,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class UsageMonitorItem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -14449,6 +14479,640 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
+			public partial class RequestResourceUsage : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.Binary;
+					}
+				}
+
+				public RequestResourceUsage()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "RequestResourceUsage";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/RequestResourceUsage/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(RequestResourceUsage), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "RequestResourceUsage", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static RequestResourceUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveRequestResourceUsage(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: RequestResourceUsage");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RequestResourceUsage), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static RequestResourceUsage RetrieveRequestResourceUsage(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (RequestResourceUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(RequestResourceUsage), null, owner);
+                    return result;
+                }
+
+				public static RequestResourceUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = RequestResourceUsage.RetrieveRequestResourceUsage("Content/TheBall.CORE/RequestResourceUsage/" + contentName, containerOwner);
+					var result = RequestResourceUsage.RetrieveRequestResourceUsage("TheBall.CORE/RequestResourceUsage/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/RequestResourceUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/RequestResourceUsage/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((RequestResourceUsage) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(RequestResourceUsage));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static RequestResourceUsage DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(RequestResourceUsage));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (RequestResourceUsage) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "RequestResourceUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "RequestResourceUsage", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref RequestResourceUsage customDemoObject);
+
+
+
+				public static RequestResourceUsage CreateDefault()
+				{
+					var result = new RequestResourceUsage();
+					result.OwnerInfo = InformationOwnerInfo.CreateDefault();
+					result.ProcessorUsage = ProcessorUsage.CreateDefault();
+					result.StorageTransactionUsage = StorageTransactionUsage.CreateDefault();
+					result.NetworkUsage = NetworkUsage.CreateDefault();
+					result.RequestDetails = HTTPActivityDetails.CreateDefault();
+					return result;
+				}
+
+				public static RequestResourceUsage CreateDemoDefault()
+				{
+					RequestResourceUsage customDemo = null;
+					RequestResourceUsage.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new RequestResourceUsage();
+					result.OwnerInfo = InformationOwnerInfo.CreateDemoDefault();
+					result.ProcessorUsage = ProcessorUsage.CreateDemoDefault();
+					result.StorageTransactionUsage = StorageTransactionUsage.CreateDemoDefault();
+					result.NetworkUsage = NetworkUsage.CreateDemoDefault();
+					result.RequestDetails = HTTPActivityDetails.CreateDemoDefault();
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(OwnerInfo != null) {
+						((IInformationObject) OwnerInfo).UpdateCollections(masterInstance);
+					}
+
+					if(ProcessorUsage != null) {
+						((IInformationObject) ProcessorUsage).UpdateCollections(masterInstance);
+					}
+
+					if(StorageTransactionUsage != null) {
+						((IInformationObject) StorageTransactionUsage).UpdateCollections(masterInstance);
+					}
+
+					if(NetworkUsage != null) {
+						((IInformationObject) NetworkUsage).UpdateCollections(masterInstance);
+					}
+
+					if(RequestDetails != null) {
+						((IInformationObject) RequestDetails).UpdateCollections(masterInstance);
+					}
+
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = OwnerInfo;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ProcessorUsage;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = StorageTransactionUsage;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = NetworkUsage;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = RequestDetails;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = OwnerInfo;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = ProcessorUsage;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = StorageTransactionUsage;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = NetworkUsage;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = RequestDetails;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					{
+						var item = (IInformationObject) OwnerInfo;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) ProcessorUsage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) StorageTransactionUsage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) NetworkUsage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) RequestDetails;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(OwnerInfo != _unmodified_OwnerInfo)
+							return true;
+						if(ProcessorUsage != _unmodified_ProcessorUsage)
+							return true;
+						if(StorageTransactionUsage != _unmodified_StorageTransactionUsage)
+							return true;
+						if(NetworkUsage != _unmodified_NetworkUsage)
+							return true;
+						if(RequestDetails != _unmodified_RequestDetails)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) OwnerInfo;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ProcessorUsage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) StorageTransactionUsage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) NetworkUsage;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) RequestDetails;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(OwnerInfo != null) {
+						if(OwnerInfo.ID == replacingObject.ID)
+							OwnerInfo = (InformationOwnerInfo) replacingObject;
+						else {
+							IInformationObject iObject = OwnerInfo;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(ProcessorUsage != null) {
+						if(ProcessorUsage.ID == replacingObject.ID)
+							ProcessorUsage = (ProcessorUsage) replacingObject;
+						else {
+							IInformationObject iObject = ProcessorUsage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(StorageTransactionUsage != null) {
+						if(StorageTransactionUsage.ID == replacingObject.ID)
+							StorageTransactionUsage = (StorageTransactionUsage) replacingObject;
+						else {
+							IInformationObject iObject = StorageTransactionUsage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(NetworkUsage != null) {
+						if(NetworkUsage.ID == replacingObject.ID)
+							NetworkUsage = (NetworkUsage) replacingObject;
+						else {
+							IInformationObject iObject = NetworkUsage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(RequestDetails != null) {
+						if(RequestDetails.ID == replacingObject.ID)
+							RequestDetails = (HTTPActivityDetails) replacingObject;
+						else {
+							IInformationObject iObject = RequestDetails;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+
+				private void CopyContentFrom(RequestResourceUsage sourceObject)
+				{
+					OwnerInfo = sourceObject.OwnerInfo;
+					ProcessorUsage = sourceObject.ProcessorUsage;
+					StorageTransactionUsage = sourceObject.StorageTransactionUsage;
+					NetworkUsage = sourceObject.NetworkUsage;
+					RequestDetails = sourceObject.RequestDetails;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+				
+					_unmodified_OwnerInfo = OwnerInfo;
+					if(OwnerInfo != null)
+						((IInformationObject) OwnerInfo).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ProcessorUsage = ProcessorUsage;
+					if(ProcessorUsage != null)
+						((IInformationObject) ProcessorUsage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_StorageTransactionUsage = StorageTransactionUsage;
+					if(StorageTransactionUsage != null)
+						((IInformationObject) StorageTransactionUsage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_NetworkUsage = NetworkUsage;
+					if(NetworkUsage != null)
+						((IInformationObject) NetworkUsage).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_RequestDetails = RequestDetails;
+					if(RequestDetails != null)
+						((IInformationObject) RequestDetails).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public InformationOwnerInfo OwnerInfo { get; set; }
+			private InformationOwnerInfo _unmodified_OwnerInfo;
+			[DataMember]
+			public ProcessorUsage ProcessorUsage { get; set; }
+			private ProcessorUsage _unmodified_ProcessorUsage;
+			[DataMember]
+			public StorageTransactionUsage StorageTransactionUsage { get; set; }
+			private StorageTransactionUsage _unmodified_StorageTransactionUsage;
+			[DataMember]
+			public NetworkUsage NetworkUsage { get; set; }
+			private NetworkUsage _unmodified_NetworkUsage;
+			[DataMember]
+			public HTTPActivityDetails RequestDetails { get; set; }
+			private HTTPActivityDetails _unmodified_RequestDetails;
+			
+			}
+			[DataContract]
+			[Serializable]
 			public partial class ProcessorUsageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -14944,6 +15608,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class ProcessorUsage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -15303,6 +15968,8 @@ InformationInput.AuthenticatedDeviceID
 							return true;
 						if(FrequencyTicksPerSecond != _unmodified_FrequencyTicksPerSecond)
 							return true;
+						if(Milliseconds != _unmodified_Milliseconds)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) TimeRange;
 							if(item != null) 
@@ -15336,6 +16003,7 @@ InformationInput.AuthenticatedDeviceID
 					UsageType = sourceObject.UsageType;
 					AmountOfTicks = sourceObject.AmountOfTicks;
 					FrequencyTicksPerSecond = sourceObject.FrequencyTicksPerSecond;
+					Milliseconds = sourceObject.Milliseconds;
 				}
 				
 
@@ -15345,6 +16013,7 @@ InformationInput.AuthenticatedDeviceID
 					_unmodified_UsageType = UsageType;
 					_unmodified_AmountOfTicks = AmountOfTicks;
 					_unmodified_FrequencyTicksPerSecond = FrequencyTicksPerSecond;
+					_unmodified_Milliseconds = Milliseconds;
 				
 					_unmodified_TimeRange = TimeRange;
 					if(TimeRange != null)
@@ -15369,6 +16038,9 @@ InformationInput.AuthenticatedDeviceID
 						case "FrequencyTicksPerSecond":
 							FrequencyTicksPerSecond = double.Parse(value);
 							break;
+						case "Milliseconds":
+							Milliseconds = long.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -15385,9 +16057,13 @@ InformationInput.AuthenticatedDeviceID
 			[DataMember]
 			public double FrequencyTicksPerSecond { get; set; }
 			private double _unmodified_FrequencyTicksPerSecond;
+			[DataMember]
+			public long Milliseconds { get; set; }
+			private long _unmodified_Milliseconds;
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class StorageTransactionUsageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -15883,6 +16559,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class StorageTransactionUsage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -16317,6 +16994,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class StorageUsageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -16812,6 +17490,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class StorageUsage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -17213,6 +17892,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class NetworkUsageCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -17708,6 +18388,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class NetworkUsage : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -18142,6 +18823,7 @@ InformationInput.AuthenticatedDeviceID
 			
 			}
 			[DataContract]
+			[Serializable]
 			public partial class TimeRange : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -18516,6 +19198,938 @@ InformationInput.AuthenticatedDeviceID
 			[DataMember]
 			public DateTime EndTime { get; set; }
 			private DateTime _unmodified_EndTime;
+			
+			}
+			[DataContract]
+			[Serializable]
+			public partial class HTTPActivityDetailsCollection : IInformationObject , IInformationCollection
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public HTTPActivityDetailsCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "HTTPActivityDetailsCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/HTTPActivityDetailsCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(HTTPActivityDetailsCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "HTTPActivityDetailsCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static HTTPActivityDetailsCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveHTTPActivityDetailsCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetailsCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(HTTPActivityDetailsCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static HTTPActivityDetailsCollection RetrieveHTTPActivityDetailsCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (HTTPActivityDetailsCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(HTTPActivityDetailsCollection), null, owner);
+                    return result;
+                }
+
+				public static HTTPActivityDetailsCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = HTTPActivityDetailsCollection.RetrieveHTTPActivityDetailsCollection("Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName, containerOwner);
+					var result = HTTPActivityDetailsCollection.RetrieveHTTPActivityDetailsCollection("TheBall.CORE/HTTPActivityDetailsCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((HTTPActivityDetailsCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(HTTPActivityDetailsCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static HTTPActivityDetailsCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(HTTPActivityDetailsCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (HTTPActivityDetailsCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "HTTPActivityDetailsCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "HTTPActivityDetailsCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref HTTPActivityDetailsCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return false;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					throw new NotSupportedException("Master collection location only supported for master collections");
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					throw new NotSupportedException("Master collection instance only supported for master collections");
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = HTTPActivityDetails.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+				}
+
+
+				public void SubscribeToContentSource()
+				{
+				}
+
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static HTTPActivityDetailsCollection CreateDefault()
+				{
+					var result = new HTTPActivityDetailsCollection();
+					return result;
+				}
+
+				public static HTTPActivityDetailsCollection CreateDemoDefault()
+				{
+					HTTPActivityDetailsCollection customDemo = null;
+					HTTPActivityDetailsCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new HTTPActivityDetailsCollection();
+					result.CollectionContent.Add(HTTPActivityDetails.CreateDemoDefault());
+					//result.CollectionContent.Add(HTTPActivityDetails.CreateDemoDefault());
+					//result.CollectionContent.Add(HTTPActivityDetails.CreateDemoDefault());
+					return result;
+				}
+
+		
+				[DataMember] public List<HTTPActivityDetails> CollectionContent = new List<HTTPActivityDetails>();
+				private HTTPActivityDetails[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public HTTPActivityDetails[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					switch(propertyName)
+					{
+						case "SelectedIDCommaSeparated":
+							SelectedIDCommaSeparated = propertyValue;
+							break;
+						case "IsCollectionFiltered":
+							IsCollectionFiltered = bool.Parse(propertyValue);
+							break;
+						default:
+							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					}
+				}
+
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (HTTPActivityDetails )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(HTTPActivityDetailsCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
+			
+			}
+			[DataContract]
+			[Serializable]
+			public partial class HTTPActivityDetails : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public HTTPActivityDetails()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "HTTPActivityDetails";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/HTTPActivityDetails/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(HTTPActivityDetails), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "HTTPActivityDetails", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static HTTPActivityDetails RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveHTTPActivityDetails(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetails");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(HTTPActivityDetails), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static HTTPActivityDetails RetrieveHTTPActivityDetails(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (HTTPActivityDetails) StorageSupport.RetrieveInformation(relativeLocation, typeof(HTTPActivityDetails), null, owner);
+                    return result;
+                }
+
+				public static HTTPActivityDetails RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = HTTPActivityDetails.RetrieveHTTPActivityDetails("Content/TheBall.CORE/HTTPActivityDetails/" + contentName, containerOwner);
+					var result = HTTPActivityDetails.RetrieveHTTPActivityDetails("TheBall.CORE/HTTPActivityDetails/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/HTTPActivityDetails/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/HTTPActivityDetails/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((HTTPActivityDetails) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(HTTPActivityDetails));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static HTTPActivityDetails DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(HTTPActivityDetails));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (HTTPActivityDetails) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "HTTPActivityDetails", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "HTTPActivityDetails", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref HTTPActivityDetails customDemoObject);
+
+
+
+				public static HTTPActivityDetails CreateDefault()
+				{
+					var result = new HTTPActivityDetails();
+					return result;
+				}
+
+				public static HTTPActivityDetails CreateDemoDefault()
+				{
+					HTTPActivityDetails customDemo = null;
+					HTTPActivityDetails.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new HTTPActivityDetails();
+					result.RemoteIPAddress = @"HTTPActivityDetails.RemoteIPAddress";
+
+					result.RemoteEndpointUserName = @"HTTPActivityDetails.RemoteEndpointUserName";
+
+					result.UserID = @"HTTPActivityDetails.UserID";
+
+					result.RequestLine = @"HTTPActivityDetails.RequestLine";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(RemoteIPAddress != _unmodified_RemoteIPAddress)
+							return true;
+						if(RemoteEndpointUserName != _unmodified_RemoteEndpointUserName)
+							return true;
+						if(UserID != _unmodified_UserID)
+							return true;
+						if(UTCDateTime != _unmodified_UTCDateTime)
+							return true;
+						if(RequestLine != _unmodified_RequestLine)
+							return true;
+						if(HTTPStatusCode != _unmodified_HTTPStatusCode)
+							return true;
+						if(ReturnedContentLength != _unmodified_ReturnedContentLength)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(HTTPActivityDetails sourceObject)
+				{
+					RemoteIPAddress = sourceObject.RemoteIPAddress;
+					RemoteEndpointUserName = sourceObject.RemoteEndpointUserName;
+					UserID = sourceObject.UserID;
+					UTCDateTime = sourceObject.UTCDateTime;
+					RequestLine = sourceObject.RequestLine;
+					HTTPStatusCode = sourceObject.HTTPStatusCode;
+					ReturnedContentLength = sourceObject.ReturnedContentLength;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_RemoteIPAddress = RemoteIPAddress;
+					_unmodified_RemoteEndpointUserName = RemoteEndpointUserName;
+					_unmodified_UserID = UserID;
+					_unmodified_UTCDateTime = UTCDateTime;
+					_unmodified_RequestLine = RequestLine;
+					_unmodified_HTTPStatusCode = HTTPStatusCode;
+					_unmodified_ReturnedContentLength = ReturnedContentLength;
+				
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "RemoteIPAddress":
+							RemoteIPAddress = value;
+							break;
+						case "RemoteEndpointUserName":
+							RemoteEndpointUserName = value;
+							break;
+						case "UserID":
+							UserID = value;
+							break;
+						case "UTCDateTime":
+							UTCDateTime = DateTime.Parse(value);
+							break;
+						case "RequestLine":
+							RequestLine = value;
+							break;
+						case "HTTPStatusCode":
+							HTTPStatusCode = long.Parse(value);
+							break;
+						case "ReturnedContentLength":
+							ReturnedContentLength = long.Parse(value);
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string RemoteIPAddress { get; set; }
+			private string _unmodified_RemoteIPAddress;
+			[DataMember]
+			public string RemoteEndpointUserName { get; set; }
+			private string _unmodified_RemoteEndpointUserName;
+			[DataMember]
+			public string UserID { get; set; }
+			private string _unmodified_UserID;
+			[DataMember]
+			public DateTime UTCDateTime { get; set; }
+			private DateTime _unmodified_UTCDateTime;
+			[DataMember]
+			public string RequestLine { get; set; }
+			private string _unmodified_RequestLine;
+			[DataMember]
+			public long HTTPStatusCode { get; set; }
+			private long _unmodified_HTTPStatusCode;
+			[DataMember]
+			public long ReturnedContentLength { get; set; }
+			private long _unmodified_ReturnedContentLength;
 			
 			}
  } 
