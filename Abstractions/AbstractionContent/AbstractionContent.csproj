@@ -51,6 +51,7 @@
     </Content>
     <Content Include="..\..\InformationAndProcessModels\OIPBallInstance.xml">
       <Link>TheBallCore\OIPBallInstance.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\InformationAndProcessModels\TheBallCore.xml">
       <Link>TheBallCore\TheBallCore.xml</Link>

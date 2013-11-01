@@ -42,6 +42,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class House : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public House()
 				{
 					this.ID = Guid.NewGuid().ToString();

@@ -61,6 +61,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TrainingModule : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TrainingModule()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -526,6 +532,12 @@ TrainingModule.Description
 			[DataContract]
 			public partial class TrainingModuleCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TrainingModuleCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();

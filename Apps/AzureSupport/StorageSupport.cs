@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
 using System.Security;
 using System.Text;
 using System.Xml;
@@ -951,15 +953,7 @@ namespace TheBall
             // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
             informationObject.RelativeLocation = location;
             Type informationObjectType = informationObject.GetType();
-            DataContractSerializer ser = new DataContractSerializer(informationObjectType);
-            MemoryStream memoryStream = new MemoryStream();
-            byte[] dataContent;
-            using(XmlTextWriter writer = new XmlTextWriter(memoryStream, Encoding.UTF8) { Formatting = Formatting.Indented})
-            {
-                ser.WriteObject(writer, informationObject);
-                writer.Flush();
-                dataContent = memoryStream.ToArray();
-            }
+            var dataContent = SerializeInformationObjectToBuffer(informationObject);
             //memoryStream.Seek(0, SeekOrigin.Begin);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(location);
             BlobRequestOptions options = new BlobRequestOptions();
@@ -1057,8 +1051,7 @@ namespace TheBall
             //if (memoryStream.Length == 0)
             //    return null;
             memoryStream.Seek(0, SeekOrigin.Begin);
-            DataContractSerializer serializer = new DataContractSerializer(typeToRetrieve);
-            IInformationObject informationObject = (IInformationObject)serializer.ReadObject(memoryStream);
+            var informationObject = DeserializeInformationObjectFromStream(typeToRetrieve, memoryStream);
             informationObject.ETag = blobEtag;
             //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
             informationObject.RelativeLocation = relativeLocation;
@@ -1066,6 +1059,85 @@ namespace TheBall
             Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
             return informationObject;
+        }
+
+        private static IInformationObject DeserializeInformationObjectFromStream(Type typeToRetrieve, MemoryStream memoryStream)
+        {
+            StorageSerializationType storageSerializationType = getStorageSerializationType(typeToRetrieve);
+            IInformationObject informationObject = null;
+            if (storageSerializationType == StorageSerializationType.XML)
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeToRetrieve);
+                informationObject = (IInformationObject) serializer.ReadObject(memoryStream);
+            }
+            else if (storageSerializationType == StorageSerializationType.JSON)
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeToRetrieve);
+                informationObject = (IInformationObject) serializer.ReadObject(memoryStream);
+            }
+            else if (storageSerializationType == StorageSerializationType.Binary)
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                informationObject = (IInformationObject) binaryFormatter.Deserialize(memoryStream);
+            }
+            else // if(storageSerializationType == StorageSerializationType.Custom)
+            {
+                throw new NotSupportedException("Custom or unspecified formatting not supported");
+            }
+            return informationObject;
+        }
+
+        private static byte[] SerializeInformationObjectToBuffer(IInformationObject informationObject)
+        {
+            Type informationObjectType = informationObject.GetType();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                byte[] dataContent = null;
+                StorageSerializationType storageSerializationType = getStorageSerializationType(informationObjectType);
+                if (storageSerializationType == StorageSerializationType.XML)
+                {
+                    DataContractSerializer ser = new DataContractSerializer(informationObjectType);
+                    using (
+                        XmlTextWriter writer = new XmlTextWriter(memoryStream, Encoding.UTF8)
+                            {
+                                Formatting = Formatting.Indented
+                            })
+                    {
+                        ser.WriteObject(writer, informationObject);
+                        writer.Flush();
+                        dataContent = memoryStream.ToArray();
+                    }
+                }
+                else if (storageSerializationType == StorageSerializationType.JSON)
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(informationObjectType);
+                    serializer.WriteObject(memoryStream, informationObject);
+                    dataContent = memoryStream.ToArray();
+                } else if (storageSerializationType == StorageSerializationType.Binary)
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(memoryStream, informationObject);
+                    dataContent = memoryStream.ToArray();
+                } else // if (storageSerializationType == StorageSerializationType.Custom)
+                {
+                    throw new NotSupportedException("Custom or unspecified formatting not supported");
+                }
+                return dataContent;
+            }
+        }
+
+
+
+        private static StorageSerializationType getStorageSerializationType(Type type)
+        {
+            PropertyInfo propInfo = type.GetProperty("ClassStorageSerializationType",
+                                                     BindingFlags.Public | BindingFlags.Static);
+            if(propInfo == null)
+                return StorageSerializationType.XML;
+            var propValue = propInfo.GetValue(null);
+            if(propValue == null)
+                return StorageSerializationType.XML;
+            return (StorageSerializationType) propValue;
         }
 
         public static IInformationObject[] RetrieveInformationObjects(string itemDirectory, Type type)

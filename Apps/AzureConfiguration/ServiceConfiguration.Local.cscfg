@@ -45,6 +45,7 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="EFB4AF8CD9B2BF4B4E3AABCCD63AE5FE057C06B0" thumbprintAlgorithm="sha1" />
       <Certificate name="HTTPS" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
       <Certificate name="CaloomCom" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
+      <Certificate name="AaltoglobalimpactOrg" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
       <Certificate name="ProtonitNet" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
     </Certificates>
     <!-- 5F95C3B578192E4FC161AF1A2AA68B9126D96E7D -->

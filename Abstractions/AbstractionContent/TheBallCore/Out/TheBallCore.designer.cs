@@ -137,6 +137,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class InformationInputCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationInputCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -648,6 +654,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class InformationInput : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationInput()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1062,6 +1074,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InformationOutputCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationOutputCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1573,6 +1591,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InformationOutput : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationOutput()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1994,6 +2018,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class AuthenticatedAsActiveDeviceCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AuthenticatedAsActiveDeviceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2505,6 +2535,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class AuthenticatedAsActiveDevice : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AuthenticatedAsActiveDevice()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2921,6 +2957,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class DeviceMembershipCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public DeviceMembershipCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3432,6 +3474,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class DeviceMembership : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public DeviceMembership()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3824,6 +3872,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceFiscalExportSummary : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceFiscalExportSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -4251,6 +4305,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceSummaryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceSummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -4826,6 +4886,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -5337,6 +5403,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class Invoice : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Invoice()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -5931,6 +6003,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceDetails : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceDetails()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -6354,6 +6432,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceUserCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceUserCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -6843,6 +6927,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceUser : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceUser()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -7364,6 +7454,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceRowGroupCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceRowGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -7853,6 +7949,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceEventDetailGroupCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceEventDetailGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -8342,6 +8444,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceRowGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceRowGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -8796,6 +8904,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceEventDetailGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceEventDetailGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -9214,6 +9328,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceEventDetailCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceEventDetailCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -9703,6 +9823,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceRowCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceRowCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -10192,6 +10318,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceEventDetail : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceEventDetail()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -10659,6 +10791,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InvoiceRow : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InvoiceRow()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -11135,6 +11273,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CategoryCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -11624,6 +11768,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class Category : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Category()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -11987,6 +12137,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class Process : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Process()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -12417,6 +12573,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ReferenceToInformation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -12792,6 +12954,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ReferenceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -13270,6 +13438,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class InformationOwnerInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationOwnerInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -13645,6 +13819,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class UsageMonitorItem : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public UsageMonitorItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -14271,6 +14451,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class ProcessorUsageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProcessorUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -14760,6 +14946,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class ProcessorUsage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProcessorUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -15198,6 +15390,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class StorageTransactionUsageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public StorageTransactionUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -15687,6 +15885,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class StorageTransactionUsage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public StorageTransactionUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16115,6 +16319,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class StorageUsageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public StorageUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16604,6 +16814,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class StorageUsage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public StorageUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16999,6 +17215,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class NetworkUsageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public NetworkUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -17488,6 +17710,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class NetworkUsage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public NetworkUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -17916,6 +18144,12 @@ InformationInput.AuthenticatedDeviceID
 			[DataContract]
 			public partial class TimeRange : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TimeRange()
 				{
 					this.ID = Guid.NewGuid().ToString();

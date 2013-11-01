@@ -80,6 +80,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class Who : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Who()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -489,6 +495,12 @@ Who.Description
 			[DataContract]
 			public partial class ProductForWhom : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProductForWhom()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1008,6 +1020,12 @@ ProductForWhom.Description
 			[DataContract]
 			public partial class Product : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Product()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1473,6 +1491,12 @@ Product.Description
 			[DataContract]
 			public partial class ProductUsageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProductUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1984,6 +2008,12 @@ Product.Description
 			[DataContract]
 			public partial class ProductUsage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProductUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2400,6 +2430,12 @@ Product.Description
 			[DataContract]
 			public partial class ProductCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProductCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2911,6 +2947,12 @@ Product.Description
 			[DataContract]
 			public partial class NodeSummaryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public NodeSummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3373,6 +3415,12 @@ Product.Description
 			[DataContract]
 			public partial class RenderedNodeCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RenderedNodeCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3862,6 +3910,12 @@ Product.Description
 			[DataContract]
 			public partial class RenderedNode : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RenderedNode()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -4522,6 +4576,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class ShortTextCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ShortTextCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -5011,6 +5071,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class ShortTextObject : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ShortTextObject()
 				{
 					this.ID = Guid.NewGuid().ToString();

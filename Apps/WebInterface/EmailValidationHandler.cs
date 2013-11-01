@@ -236,7 +236,8 @@ namespace WebInterface
 
         private void RespondEmailValidationExpired(HttpContext context, TBEmailValidation emailValidation)
         {
-            context.Response.Write("Error to be replaced: email validation expired at: " + emailValidation.ValidUntil.ToString());
+            context.Response.Redirect("/auth/account/", true);
+            //context.Response.Write("Error to be replaced: email validation expired at: " + emailValidation.ValidUntil.ToString());
         }
 
         #endregion

@@ -9,6 +9,13 @@ using TheBall.CORE;
 
 namespace TheBall.CORE
 {
+    public enum StorageSerializationType
+    {
+        XML = 0,
+        JSON,
+        Binary,
+        Custom
+    }
     public interface IInformationObject
     {
         Guid OwnerID { get; set; }

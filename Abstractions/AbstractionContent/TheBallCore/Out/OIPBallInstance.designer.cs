@@ -165,6 +165,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBSystem : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBSystem()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -540,6 +546,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class WebPublishInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public WebPublishInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1025,6 +1037,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class PublicationPackageCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public PublicationPackageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1514,6 +1532,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class PublicationPackage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public PublicationPackage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -1887,6 +1911,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBRLoginRoot : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBRLoginRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2293,6 +2323,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBRAccountRoot : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBRAccountRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -2699,6 +2735,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBRGroupRoot : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBRGroupRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3105,6 +3147,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBRLoginGroupRoot : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBRLoginGroupRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3480,6 +3528,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBREmailRoot : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBREmailRoot()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -3886,6 +3940,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBAccount : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBAccount()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -4402,6 +4462,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBAccountCollaborationGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBAccountCollaborationGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -4789,6 +4855,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBAccountCollaborationGroupCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBAccountCollaborationGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -5278,6 +5350,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBLoginInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBLoginInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -5641,6 +5719,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBLoginInfoCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBLoginInfoCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -6130,6 +6214,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBEmail : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBEmail()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -6503,6 +6593,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBEmailCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBEmailCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -6992,6 +7088,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBCollaboratorRole : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBCollaboratorRole()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -7422,6 +7524,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBCollaboratorRoleCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBCollaboratorRoleCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -7911,6 +8019,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBCollaboratingGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBCollaboratingGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -8329,6 +8443,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBEmailValidation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBEmailValidation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -8914,6 +9034,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBGroupJoinConfirmation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBGroupJoinConfirmation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -9277,6 +9403,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBDeviceJoinConfirmation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBDeviceJoinConfirmation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -9664,6 +9796,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBInformationInputConfirmation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBInformationInputConfirmation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -10051,6 +10189,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBInformationOutputConfirmation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBInformationOutputConfirmation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -10438,6 +10582,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBRegisterContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBRegisterContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -10911,6 +11061,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class LoginProvider : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LoginProvider()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -11322,6 +11478,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class LoginProviderCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LoginProviderCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -11811,6 +11973,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class ContactOipContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ContactOipContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -12174,6 +12342,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class TBPRegisterEmail : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TBPRegisterEmail()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -12537,6 +12711,12 @@ using TheBall.CORE;
 			[DataContract]
 			public partial class JavaScriptContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public JavaScriptContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -12905,6 +13085,12 @@ JavaScriptContainer.HtmlContent
 			[DataContract]
 			public partial class JavascriptContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public JavascriptContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -13273,6 +13459,12 @@ JavascriptContainer.HtmlContent
 			[DataContract]
 			public partial class FooterContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public FooterContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -13641,6 +13833,12 @@ FooterContainer.HtmlContent
 			[DataContract]
 			public partial class NavigationContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public NavigationContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -14004,6 +14202,12 @@ FooterContainer.HtmlContent
 			[DataContract]
 			public partial class AccountSummary : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -14520,6 +14724,12 @@ FooterContainer.HtmlContent
 			[DataContract]
 			public partial class AccountContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -15091,6 +15301,12 @@ FooterContainer.HtmlContent
 			[DataContract]
 			public partial class AccountIndex : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountIndex()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -15529,6 +15745,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AccountModule : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountModule()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16101,6 +16323,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class ImageGroupContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ImageGroupContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16508,6 +16736,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class LocationContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LocationContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -16915,6 +17149,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AddressAndLocationCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddressAndLocationCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -17415,6 +17655,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AddressAndLocation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddressAndLocation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -17917,6 +18163,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class StreetAddress : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public StreetAddress()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -18316,6 +18568,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AccountContent : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountContent()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -18679,6 +18937,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AccountProfile : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountProfile()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -19150,6 +19414,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AccountSecurity : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountSecurity()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -19611,6 +19881,12 @@ AccountIndex.Summary
 			[DataContract]
 			public partial class AccountRoles : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AccountRoles()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -20089,6 +20365,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class PersonalInfoVisibility : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public PersonalInfoVisibility()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -20452,6 +20734,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class GroupedInformationCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupedInformationCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -20941,6 +21229,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class GroupedInformation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupedInformation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -21359,6 +21653,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ReferenceToInformation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -21734,6 +22034,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ReferenceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -22212,6 +22518,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class BlogContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public BlogContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -22783,6 +23095,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class RecentBlogSummary : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RecentBlogSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -23245,6 +23563,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class NodeSummaryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public NodeSummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -23875,6 +24199,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class RenderedNodeCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RenderedNodeCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -24364,6 +24694,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataContract]
 			public partial class RenderedNode : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RenderedNode()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -25101,6 +25437,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class ShortTextCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ShortTextCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -25590,6 +25932,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class ShortTextObject : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ShortTextObject()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -25953,6 +26301,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class LongTextCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LongTextCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -26442,6 +26796,12 @@ RenderedNode.Excerpt
 			[DataContract]
 			public partial class LongTextObject : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LongTextObject()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -26810,6 +27170,12 @@ LongTextObject.Content
 			[DataContract]
 			public partial class MapContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -27659,6 +28025,12 @@ LongTextObject.Content
 			[DataContract]
 			public partial class MapMarker : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapMarker()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -28142,6 +28514,12 @@ MapMarker.PopupContent
 			[DataContract]
 			public partial class MapMarkerCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapMarkerCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -28631,6 +29009,12 @@ MapMarker.PopupContent
 			[DataContract]
 			public partial class CalendarContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CalendarContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -29202,6 +29586,12 @@ MapMarker.PopupContent
 			[DataContract]
 			public partial class AboutContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AboutContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -29746,6 +30136,12 @@ AboutContainer.Body
 			[DataContract]
 			public partial class OBSAccountContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public OBSAccountContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -30317,6 +30713,12 @@ AboutContainer.Body
 			[DataContract]
 			public partial class ProjectContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ProjectContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -30888,6 +31290,12 @@ AboutContainer.Body
 			[DataContract]
 			public partial class CourseContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CourseContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -31459,6 +31867,12 @@ AboutContainer.Body
 			[DataContract]
 			public partial class ContainerHeader : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ContainerHeader()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -31834,6 +32248,12 @@ AboutContainer.Body
 			[DataContract]
 			public partial class ActivitySummaryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ActivitySummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -32423,6 +32843,12 @@ ActivitySummaryContainer.SummaryBody
 			[DataContract]
 			public partial class ActivityIndex : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ActivityIndex()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -32861,6 +33287,12 @@ ActivityIndex.Summary
 			[DataContract]
 			public partial class ActivityContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ActivityContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -33377,6 +33809,12 @@ ActivityIndex.Summary
 			[DataContract]
 			public partial class ActivityCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ActivityCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -33888,6 +34326,12 @@ ActivityIndex.Summary
 			[DataContract]
 			public partial class Activity : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Activity()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -34725,6 +35169,12 @@ Activity.IFrameSources
 			[DataContract]
 			public partial class ModeratorCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ModeratorCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -35214,6 +35664,12 @@ Activity.IFrameSources
 			[DataContract]
 			public partial class Moderator : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Moderator()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -35589,6 +36045,12 @@ Activity.IFrameSources
 			[DataContract]
 			public partial class CollaboratorCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CollaboratorCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -36078,6 +36540,12 @@ Activity.IFrameSources
 			[DataContract]
 			public partial class Collaborator : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Collaborator()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -36489,6 +36957,12 @@ Activity.IFrameSources
 			[DataContract]
 			public partial class GroupSummaryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupSummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -37077,6 +37551,12 @@ GroupSummaryContainer.SummaryBody
 			[DataContract]
 			public partial class GroupContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -37871,6 +38351,12 @@ GroupSummaryContainer.SummaryBody
 			[DataContract]
 			public partial class GroupIndex : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupIndex()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -38309,6 +38795,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddAddressAndLocationInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddAddressAndLocationInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -38672,6 +39164,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddImageInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddImageInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -39035,6 +39533,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddImageGroupInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddImageGroupInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -39398,6 +39902,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddEmailAddressInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddEmailAddressInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -39761,6 +40271,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class CreateGroupInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CreateGroupInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -40124,6 +40640,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddActivityInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddActivityInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -40487,6 +41009,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddBlogPostInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddBlogPostInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -40850,6 +41378,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class AddCategoryInfo : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AddCategoryInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -41213,6 +41747,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class GroupCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public GroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -41702,6 +42242,12 @@ GroupIndex.Summary
 			[DataContract]
 			public partial class Group : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Group()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -42333,6 +42879,12 @@ Group.OrganizationsAndGroupsLinkedToUs
 			[DataContract]
 			public partial class Introduction : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Introduction()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -42713,6 +43265,12 @@ Introduction.Body
 			[DataContract]
 			public partial class TextContentCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TextContentCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -43213,6 +43771,12 @@ Introduction.Body
 			[DataContract]
 			public partial class TextContent : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public TextContent()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -43811,6 +44375,12 @@ TextContent.Body
 			[DataContract]
 			public partial class BlogCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public BlogCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -44322,6 +44892,12 @@ TextContent.Body
 			[DataContract]
 			public partial class Blog : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Blog()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -45267,6 +45843,12 @@ Blog.IFrameSources
 			[DataContract]
 			public partial class BlogIndexGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public BlogIndexGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -46036,6 +46618,12 @@ BlogIndexGroup.Summary
 			[DataContract]
 			public partial class CalendarIndex : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CalendarIndex()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -46474,6 +47062,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class Filter : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Filter()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -46837,6 +47431,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class Calendar : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Calendar()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -47200,6 +47800,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class CalendarCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CalendarCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -47689,6 +48295,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class Map : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Map()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -48052,6 +48664,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MapCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -48541,6 +49159,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MapIndexCollection : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapIndexCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -49112,6 +49736,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MapResult : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapResult()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -49518,6 +50148,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MapResultCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapResultCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -50007,6 +50643,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MapResultsCollection : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MapResultsCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -50523,6 +51165,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class Video : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Video()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -50953,6 +51601,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class Image : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Image()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -51424,6 +52078,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class MediaContent : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public MediaContent()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -51745,6 +52405,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class ImageGroupCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ImageGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -52245,6 +52911,12 @@ CalendarIndex.Summary
 			[DataContract]
 			public partial class ImageGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ImageGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -52762,6 +53434,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class VideoGroup : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public VideoGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -53192,6 +53870,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class ImagesCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ImagesCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -53670,6 +54354,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class VideoCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public VideoCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -54159,6 +54849,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Tooltip : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Tooltip()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -54522,6 +55218,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class SocialPanelCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SocialPanelCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -55011,6 +55713,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class SocialPanel : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SocialPanel()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -55417,6 +56125,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Longitude : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Longitude()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -55780,6 +56494,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Latitude : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Latitude()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -56143,6 +56863,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Location : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Location()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -56616,6 +57342,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class LocationCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public LocationCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -57105,6 +57837,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Date : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Date()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -57496,6 +58234,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Sex : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Sex()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -57859,6 +58603,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class OBSAddress : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public OBSAddress()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -58330,6 +59080,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class Identity : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Identity()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -58827,6 +59583,12 @@ ImageGroup.Description
 			[DataContract]
 			public partial class ImageVideoSoundVectorRaw : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public ImageVideoSoundVectorRaw()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -59223,6 +59985,12 @@ ImageVideoSoundVectorRaw.Vector
 			[DataContract]
 			public partial class CategoryContainer : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CategoryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -59630,6 +60398,12 @@ ImageVideoSoundVectorRaw.Vector
 			[DataContract]
 			public partial class Category : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Category()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -60171,6 +60945,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public CategoryCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -60671,6 +61451,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SubscriptionCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriptionCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -61160,6 +61946,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class Subscription : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Subscription()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -61581,6 +62373,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class QueueEnvelope : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public QueueEnvelope()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -62119,6 +62917,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class OperationRequestCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public OperationRequestCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -62608,6 +63412,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class OperationRequest : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public OperationRequest()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -63344,6 +64154,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SubscriptionChainRequestMessage : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriptionChainRequestMessage()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -63707,6 +64523,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SubscriptionChainRequestContent : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriptionChainRequestContent()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -64163,6 +64985,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SubscriptionTarget : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriptionTarget()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -64526,6 +65354,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SubscriptionTargetCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriptionTargetCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -65015,6 +65849,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class DeleteEntireOwnerOperation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public DeleteEntireOwnerOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -65390,6 +66230,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class DeleteOwnerContentOperation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public DeleteOwnerContentOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -65765,6 +66611,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SystemError : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SystemError()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -66248,6 +67100,12 @@ Category.Excerpt
 			[DataContract]
 			public partial class SystemErrorItem : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SystemErrorItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -66628,6 +67486,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class SystemErrorItemCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SystemErrorItemCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -67117,6 +67981,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class InformationSource : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationSource()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -67560,6 +68430,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class InformationSourceCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public InformationSourceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -68049,6 +68925,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class RefreshDefaultViewsOperation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public RefreshDefaultViewsOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -68424,6 +69306,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class UpdateWebContentOperation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public UpdateWebContentOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -68888,6 +69776,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class UpdateWebContentHandlerItem : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public UpdateWebContentHandlerItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -69263,6 +70157,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class UpdateWebContentHandlerCollection : IInformationObject , IInformationCollection
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public UpdateWebContentHandlerCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -69752,6 +70652,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class PublishWebContentOperation : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public PublishWebContentOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -70151,6 +71057,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class SubscriberInput : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public SubscriberInput()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -70550,6 +71462,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class Monitor : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public Monitor()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -70981,6 +71899,12 @@ SystemErrorItem.LongDescription
 			[DataContract]
 			public partial class IconTitleDescription : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public IconTitleDescription()
 				{
 					this.ID = Guid.NewGuid().ToString();
@@ -71368,6 +72292,12 @@ IconTitleDescription.Description
 			[DataContract]
 			public partial class AboutAGIApplications : IInformationObject 
 			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
 				public AboutAGIApplications()
 				{
 					this.ID = Guid.NewGuid().ToString();
