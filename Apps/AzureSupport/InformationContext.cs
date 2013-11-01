@@ -123,9 +123,12 @@ namespace TheBall
             // Complete resource measuring - add one more transaction because the RRU item is stored itself
             AddStorageTransactionToCurrent();
             CompleteResourceMeasuring();
-            var owner = _owner;
-            if (owner == null)
-                owner = TBSystem.CurrSystem;
+            //var owner = _owner;
+            //if (owner == null)
+            //    owner = TBSystem.CurrSystem;
+            // Resources usage items need to be under system, because they are handled as a batch
+            // The refined logging/storage is then saved under owner's context
+            var owner = TBSystem.CurrSystem;
             var now = DateTime.UtcNow;
             string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + now.Ticks;
             RequestResourceUsage.SetLocationAsOwnerContent(owner, itemName);
