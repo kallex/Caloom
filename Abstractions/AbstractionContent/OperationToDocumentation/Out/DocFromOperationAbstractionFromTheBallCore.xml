@@ -1598,6 +1598,153 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ProcessAllResourceUsagesToOwnerCollections (ProcessBatchSize)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process all request usage records to owner collections. Call repeatedly proper batch processing operation(s). Break if operation doesn't process for any reason, such as failing to acquire lock.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessBatchSize</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Batch size to process as a block.</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteBatchProcessor ( ProcessBatchSize )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute batch processor with given batch size until there are less than batch size left</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ProcessBatchOfResourceUsagesToOwnerCollections (ProcessBatchSize, ProcessIfLess)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process request usage records to owner collections. Process given amount at a time, acquire lock to allow parallel launches. Don't process if the minimum number is not met.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessBatchSize</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Batch size to process as a block.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessIfLess</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process if less than requested size</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: BatchToProcess ( ProcessBatchSize, ProcessIfLess )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessBatch ( BatchToProcess )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process batch if not null.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteProcessedItems ( BatchToProcess )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete processed blobs</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ReleaseLock ( BatchToProcess )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Release lock if acquired</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue ( ProcessBatchSize, BatchToProcess )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessedAnything</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Did the operation process anything</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessedFullCount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Did the operation have full batch size to process</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ProcessFetchedInputs (Owner, InformationInputID, ProcessingOperationName)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

@@ -505,6 +505,36 @@
     <StatusItem name="SetOwnerWebRedirect_SetRedirection" displayName="MethodExecuteType: SetRedirection" description="Sets the redirection file for owner.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ProcessAllResourceUsagesToOwnerCollections_ProcessBatchSize" displayName="VariableType: ProcessBatchSize" description="Batch size to process as a block.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessAllResourceUsagesToOwnerCollections_ExecuteBatchProcessor" displayName="MethodExecuteType: ExecuteBatchProcessor" description="Execute batch processor with given batch size until there are less than batch size left">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessBatchSize" displayName="VariableType: ProcessBatchSize" description="Batch size to process as a block.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessIfLess" displayName="VariableType: ProcessIfLess" description="Process if less than requested size">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_BatchToProcess" displayName="TargetDefinitionType: BatchToProcess" description="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessBatch" displayName="MethodExecuteType: ProcessBatch" description="Process batch if not null.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_DeleteProcessedItems" displayName="MethodExecuteType: DeleteProcessedItems" description="Delete processed blobs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ReleaseLock" displayName="MethodExecuteType: ReleaseLock" description="Release lock if acquired">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedAnything" displayName="VariableType: ProcessedAnything" description="Did the operation process anything">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedFullCount" displayName="VariableType: ProcessedFullCount" description="Did the operation have full batch size to process">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateSpecifiedInformationObjectWithValues">
@@ -723,6 +753,20 @@
       <ItemRef itemName="SetOwnerWebRedirect_Owner" />
       <ItemRef itemName="SetOwnerWebRedirect_RedirectPath" />
       <ItemRef itemName="SetOwnerWebRedirect_SetRedirection" />
+    </Group>
+    <Group name="ProcessAllResourceUsagesToOwnerCollections">
+      <ItemRef itemName="ProcessAllResourceUsagesToOwnerCollections_ProcessBatchSize" />
+      <ItemRef itemName="ProcessAllResourceUsagesToOwnerCollections_ExecuteBatchProcessor" />
+    </Group>
+    <Group name="ProcessBatchOfResourceUsagesToOwnerCollections">
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessBatchSize" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessIfLess" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_BatchToProcess" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessBatch" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_DeleteProcessedItems" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ReleaseLock" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedAnything" />
+      <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedFullCount" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

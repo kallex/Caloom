@@ -541,4 +541,48 @@ using System.IO;
 					SetOwnerWebRedirectImplementation.ExecuteMethod_SetRedirection(parameters.Owner, parameters.RedirectPath);		
 				}
 				}
+				public class ProcessAllResourceUsagesToOwnerCollectionsParameters 
+		{
+				public int ProcessBatchSize ;
+				}
+		
+		public class ProcessAllResourceUsagesToOwnerCollections 
+		{
+				private static void PrepareParameters(ProcessAllResourceUsagesToOwnerCollectionsParameters parameters)
+		{
+					}
+				public static void Execute(ProcessAllResourceUsagesToOwnerCollectionsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ProcessAllResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ExecuteBatchProcessor(parameters.ProcessBatchSize);		
+				}
+				}
+
+		    public class ProcessBatchOfResourceUsagesToOwnerCollectionsParameters 
+		{
+				public int ProcessBatchSize ;
+				public bool ProcessIfLess ;
+				}
+		
+		public class ProcessBatchOfResourceUsagesToOwnerCollections 
+		{
+				private static void PrepareParameters(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
+		{
+					}
+				public static ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue Execute(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] BatchToProcess = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.GetTarget_BatchToProcess(parameters.ProcessBatchSize, parameters.ProcessIfLess);	
+				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ProcessBatch(BatchToProcess);		
+				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_DeleteProcessedItems(BatchToProcess);		
+				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ReleaseLock(BatchToProcess);		
+				ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue returnValue = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.Get_ReturnValue(parameters.ProcessBatchSize, BatchToProcess);
+		return returnValue;
+				}
+				}
+				public class ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue 
+		{
+				public bool ProcessedAnything ;
+				public bool ProcessedFullCount ;
+				}
 		 } 

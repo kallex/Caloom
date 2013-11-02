@@ -1287,6 +1287,14 @@ namespace TheBall
             return deleteCount;
         }
 
+        public static ResultSegment<IListBlobItem> ListBlobxWithPrefixSegmented(this CloudBlobContainer container,
+                                                                              string prefix, int maxresults, ResultContinuation continuationToken, BlobRequestOptions options = null)
+        {
+            string searchRoot = container.Name + "/" + prefix;
+            if (options != null)
+                return CurrBlobClient.ListBlobsWithPrefixSegmented(searchRoot, maxresults, continuationToken, options);
+            return CurrBlobClient.ListBlobsWithPrefixSegmented(searchRoot, maxresults, continuationToken);
+        }
 
         public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix, BlobRequestOptions options = null)
         {
@@ -1473,11 +1481,14 @@ namespace TheBall
             options.AccessCondition = AccessCondition.IfNoneMatch("*");
             try
             {
+                Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
                 blob.UploadText(blobContent, Encoding.UTF8, options);
                 InformationContext.AddStorageTransactionToCurrent();
+                Debug.WriteLine("Success!");
             }
             catch
             {
+                Debug.WriteLine("FAILED!");
                 lockEtag = null;
                 return false;
             }
@@ -1494,11 +1505,14 @@ namespace TheBall
                 options.AccessCondition = AccessCondition.IfMatch(lockEtag);
             try
             {
+                Debug.WriteLine("Trying to release lock: " + lockLocation);
                 blob.Delete(options);
                 InformationContext.AddStorageTransactionToCurrent();
+                Debug.WriteLine("Success!");
             }
             catch
             {
+                Debug.WriteLine("FAILED!");
                 return false;
             }
             return true;

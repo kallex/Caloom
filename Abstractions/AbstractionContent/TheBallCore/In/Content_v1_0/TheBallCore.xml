@@ -215,6 +215,9 @@
           <InformationItem name="NetworkUsages" logicalDataType="InformationObject" informationObjectName="NetworkUsageCollection"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="RequestResourceUsageCollection" designDesc="Collection for resource usages" serializationType="Binary">
+        <CollectionFor contentInformationObjectName="RequestResourceUsage" collectionType="Independent"/>
+      </InformationObject>
       <InformationObject name="RequestResourceUsage" designDesc="Request resource usage" serializationType="Binary">
         <InformationItems>
           <InformationItem name="OwnerInfo" logicalDataType="InformationObject" informationObjectName="InformationOwnerInfo"/>
@@ -1061,6 +1064,53 @@
           </MethodExecute>
         </SequentialExecution>
       </Execution>
+      </Operation>
+      <Operation name="ProcessAllResourceUsagesToOwnerCollections">
+        <OperationSpec>
+          <Description>Process all request usage records to owner collections. Call repeatedly proper batch processing operation(s). Break if operation doesn't process for any reason, such as failing to acquire lock.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessBatchSize" dataType="int" designDesc="Batch size to process as a block." state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ExecuteBatchProcessor" designDesc="Execute batch processor with given batch size until there are less than batch size left" state="implemented">
+              <Parameter name="ProcessBatchSize"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ProcessBatchOfResourceUsagesToOwnerCollections">
+        <OperationSpec>
+          <Description>Process request usage records to owner collections. Process given amount at a time, acquire lock to allow parallel launches. Don't process if the minimum number is not met.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessBatchSize" dataType="int" designDesc="Batch size to process as a block." state="implemented"/>
+          <Parameter name="ProcessIfLess" dataType="bool" designDesc="Process if less than requested size" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" name="BatchToProcess" state="implemented" designDesc="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock">
+              <Parameter name="ProcessBatchSize"/>
+              <Parameter name="ProcessIfLess"/>
+            </TargetDefinition>
+            <MethodExecute name="ProcessBatch" designDesc="Process batch if not null." state="implemented">
+              <Target name="BatchToProcess"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteProcessedItems" designDesc="Delete processed blobs" state="implemented">
+              <Target name="BatchToProcess"/>
+            </MethodExecute>
+            <MethodExecute name="ReleaseLock" designDesc="Release lock if acquired" state="implemented">
+              <Target name="BatchToProcess"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue dataType="bool" name="ProcessedAnything" designDesc="Did the operation process anything" state="implemented"/>
+          <ReturnValue dataType="bool" name="ProcessedFullCount" designDesc="Did the operation have full batch size to process" state="implemented"/>
+          <Parameter name="ProcessBatchSize"/>
+          <Target name="BatchToProcess"/>
+        </OperationReturnValues>
       </Operation>
     </Operations>
     <!--

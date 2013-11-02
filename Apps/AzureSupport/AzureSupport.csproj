@@ -87,6 +87,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\ProcessAllResourceUsagesToOwnerCollectionsImplementation.cs" />
+    <Compile Include="TheBall.CORE\ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.cs" />
     <Compile Include="ExecutionStopwatch.cs" />
     <Compile Include="TheBall.CORE\InformationOutputCollection.cs" />
     <Compile Include="TheBall.CORE\PushToInformationOutputImplementation.cs" />

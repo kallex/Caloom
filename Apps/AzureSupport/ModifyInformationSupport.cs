@@ -94,6 +94,15 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "ProcessAllResourceUsagesToOwnerCollections":
+                    {
+                        ProcessAllResourceUsagesToOwnerCollectionsParameters parameters = new ProcessAllResourceUsagesToOwnerCollectionsParameters
+                            {
+                                ProcessBatchSize = 500
+                            };
+                        ProcessAllResourceUsagesToOwnerCollections.Execute(parameters);
+                        break;
+                    }
                 case "CreateInformationOutput":
                     {
                         CreateInformationOutputParameters parameters = new CreateInformationOutputParameters

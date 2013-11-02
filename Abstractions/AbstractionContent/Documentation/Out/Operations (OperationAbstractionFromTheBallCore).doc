@@ -1749,6 +1749,133 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store created object
 		</div>
+		</p><h1>ProcessAllResourceUsagesToOwnerCollections (ProcessBatchSize)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Process all request usage records to owner collections. Call repeatedly proper batch processing operation(s). Break if operation doesn't process for any reason, such as failing to acquire lock.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessBatchSize
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Batch size to process as a block.
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ExecuteBatchProcessor ( ProcessBatchSize )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute batch processor with given batch size until there are less than batch size left
+		</div>
+		</p><h1>ProcessBatchOfResourceUsagesToOwnerCollections (ProcessBatchSize, ProcessIfLess)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Process request usage records to owner collections. Process given amount at a time, acquire lock to allow parallel launches. Don't process if the minimum number is not met.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessBatchSize
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Batch size to process as a block.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessIfLess
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process if less than requested size
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: BatchToProcess ( ProcessBatchSize, ProcessIfLess )</h2>
+		<p>		<div class="MsoNormal" >
+		Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock
+		</div>
+		</p><h2>Method Call: ProcessBatch ( BatchToProcess )</h2>
+		<p>		<div class="MsoNormal" >
+		Process batch if not null.
+		</div>
+		</p><h2>Method Call: DeleteProcessedItems ( BatchToProcess )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete processed blobs
+		</div>
+		</p><h2>Method Call: ReleaseLock ( BatchToProcess )</h2>
+		<p>		<div class="MsoNormal" >
+		Release lock if acquired
+		</div>
+		</p><h2>Return Value : ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue ( ProcessBatchSize, BatchToProcess )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessedAnything
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Did the operation process anything
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessedFullCount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Did the operation have full batch size to process
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>ProcessFetchedInputs (Owner, InformationInputID, ProcessingOperationName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
