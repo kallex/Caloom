@@ -206,8 +206,11 @@
           <InformationItem name="OwnerIdentifier" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="UsageMonitorItemCollection" designDesc="Collection of usage monitor items" serializationType="Binary">
-        <CollectionFor contentInformationObjectName="UsageMonitorItem" collectionType="Independent"/>
+      <InformationObject name="UsageSummary" designDesc="Usage summary " serializationType="Binary">
+        <InformationItems>
+          <InformationItem name="SummaryName" logicalDataType="Text_Short"/>
+          <InformationItem name="SummaryMonitoringItem" logicalDataType="InformationObject" informationObjectName="UsageMonitorItem"/>
+        </InformationItems>
       </InformationObject>
       <InformationObject name="UsageMonitorItem" designDesc="Usage monitor item" serializationType="Binary">
         <InformationItems>
@@ -1117,21 +1120,27 @@
           <Target name="BatchToProcess"/>
         </OperationReturnValues>
       </Operation>
-      <!--
-      <Operation name="UpdateUsageMonitoringCollections">
+      <Operation name="UpdateUsageMonitoringSummaries">
         <OperationSpec>
           <Description>Group usage monitoring to hourly and daily</Description>
         </OperationSpec>
         <Parameters>
           <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner whose usage monitoring is to be updated" state="implemented"/>
+          <Parameter name="AmountOfDays" dataType="int" designDesc="How many days to include from history" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
-            
+            <TargetDefinition name="SourceItems" dataType="UsageMonitorItem[]" designDesc="SourceItems from day range" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="AmountOfDays"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateUsageMonitoringSummaries" designDesc="Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals" state="implemented">
+              <Parameter name="Owner"/>
+              <Target name="SourceItems"/>
+            </MethodExecute>
           </SequentialExecution>
         </Execution>
       </Operation>
-      -->
       <Operation name="UpdateUsageMonitoringItems">
         <OperationSpec>
           <Description>Update usage monitoring of an owner</Description>

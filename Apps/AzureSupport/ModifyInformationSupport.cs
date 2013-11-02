@@ -103,6 +103,12 @@ namespace TheBall
                                 Owner = containerOwner
                             };
                         UpdateUsageMonitoringItems.Execute(parameters);
+                        UpdateUsageMonitoringSummariesParameters summaryParameters = new UpdateUsageMonitoringSummariesParameters
+                            {
+                                AmountOfDays = 30,
+                                Owner = containerOwner
+                            };
+                        UpdateUsageMonitoringSummaries.Execute(summaryParameters);
                         break;
                     }
                 case "ProcessAllResourceUsagesToOwnerCollections":

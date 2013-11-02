@@ -87,6 +87,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\UpdateUsageMonitoringSummariesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringItemsImplementation.cs" />
     <Compile Include="TheBall.CORE\ProcessAllResourceUsagesToOwnerCollectionsImplementation.cs" />
     <Compile Include="TheBall.CORE\ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.cs" />
@@ -230,7 +231,7 @@
     <Compile Include="Partials\TBRLoginGroupRoot.cs" />
     <Compile Include="TheBall.CORE\SystemSupport.cs" />
     <Compile Include="TheBall.CORE\UsageMonitorItem.cs" />
-    <Compile Include="TheBall.CORE\UsageMonitorItemCollection.cs" />
+    <Compile Include="TheBall.CORE\UsageSummary.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>

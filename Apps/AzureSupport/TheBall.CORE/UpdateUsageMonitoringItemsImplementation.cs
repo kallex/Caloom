@@ -159,7 +159,7 @@ namespace TheBall.CORE
         public static DateTime GetTarget_EndingTimeOfCurrentItems(CloudBlockBlob[] currentMonitoringItems)
         {
             if (currentMonitoringItems.Length == 0)
-                return DateTime.MinValue;
+                return DateTime.MinValue.ToUniversalTime();
             var lastBlobName = currentMonitoringItems[currentMonitoringItems.Length - 1].Name;
             DateTime startTime;
             DateTime endTime;

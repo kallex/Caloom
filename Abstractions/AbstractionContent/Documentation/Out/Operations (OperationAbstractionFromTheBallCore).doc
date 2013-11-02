@@ -2500,6 +2500,57 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store new objects
 		</div>
+		</p><h1>UpdateUsageMonitoringSummaries (Owner, AmountOfDays)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Group usage monitoring to hourly and daily
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner whose usage monitoring is to be updated
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AmountOfDays
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		How many days to include from history
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: SourceItems ( Owner, AmountOfDays )</h2>
+		<p>		<div class="MsoNormal" >
+		SourceItems from day range
+		</div>
+		</p><h2>Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals
+		</div>
 		</p></div>
 
 </body>

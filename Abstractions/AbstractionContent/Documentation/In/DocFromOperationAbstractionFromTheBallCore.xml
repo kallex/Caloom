@@ -2451,6 +2451,64 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateUsageMonitoringSummaries (Owner, AmountOfDays)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group usage monitoring to hourly and daily</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner whose usage monitoring is to be updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AmountOfDays</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>How many days to include from history</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SourceItems ( Owner, AmountOfDays )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>SourceItems from day range</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
         </Content>
       </Document>
     </Documents>

@@ -2,7 +2,7 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
 {
-    partial class UsageMonitorItemCollection : IAdditionalFormatProvider
+    partial class UsageSummary : IAdditionalFormatProvider
     {
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {

@@ -13847,7 +13847,7 @@ InformationInput.AuthenticatedDeviceID
 			}
 			[DataContract]
 			[Serializable]
-			public partial class UsageMonitorItemCollection : IInformationObject , IInformationCollection
+			public partial class UsageSummary : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -13855,26 +13855,26 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public UsageMonitorItemCollection()
+				public UsageSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
-				    this.Name = "UsageMonitorItemCollection";
+				    this.Name = "UsageSummary";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/UsageMonitorItemCollection/";
+					string contentTypeName = "TheBall.CORE/UsageSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(UsageMonitorItemCollection), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(UsageSummary), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -13883,7 +13883,7 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "UsageMonitorItemCollection", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.CORE", "UsageSummary", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -13891,20 +13891,20 @@ InformationInput.AuthenticatedDeviceID
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static UsageMonitorItemCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static UsageSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUsageMonitorItemCollection(relativeLocation, owner);
+					return RetrieveUsageSummary(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageMonitorItemCollection");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageSummary");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UsageMonitorItemCollection), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UsageSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -13923,23 +13923,23 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
-                public static UsageMonitorItemCollection RetrieveUsageMonitorItemCollection(string relativeLocation, IContainerOwner owner = null)
+                public static UsageSummary RetrieveUsageSummary(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (UsageMonitorItemCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(UsageMonitorItemCollection), null, owner);
+                    var result = (UsageSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(UsageSummary), null, owner);
                     return result;
                 }
 
-				public static UsageMonitorItemCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static UsageSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = UsageMonitorItemCollection.RetrieveUsageMonitorItemCollection("Content/TheBall.CORE/UsageMonitorItemCollection/" + contentName, containerOwner);
-					var result = UsageMonitorItemCollection.RetrieveUsageMonitorItemCollection("TheBall.CORE/UsageMonitorItemCollection/" + contentName, containerOwner);
+					// var result = UsageSummary.RetrieveUsageSummary("Content/TheBall.CORE/UsageSummary/" + contentName, containerOwner);
+					var result = UsageSummary.RetrieveUsageSummary("TheBall.CORE/UsageSummary/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/UsageMonitorItemCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/UsageMonitorItemCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/UsageSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/UsageSummary/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14008,7 +14008,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((UsageMonitorItemCollection) sourceMaster);
+					CopyContentFrom((UsageSummary) sourceMaster);
 				}
 
 
@@ -14022,7 +14022,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(UsageMonitorItemCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UsageSummary));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -14035,13 +14035,13 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public static UsageMonitorItemCollection DeserializeFromXml(string xmlString)
+				public static UsageSummary DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(UsageMonitorItemCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(UsageSummary));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (UsageMonitorItemCollection) serializer.ReadObject(xmlReader);
+							return (UsageSummary) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -14074,7 +14074,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "UsageMonitorItemCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.CORE", "UsageSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14088,63 +14088,45 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "UsageMonitorItemCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "UsageSummary", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref UsageMonitorItemCollection customDemoObject);
+				static partial void CreateCustomDemo(ref UsageSummary customDemoObject);
 
 
+
+				public static UsageSummary CreateDefault()
+				{
+					var result = new UsageSummary();
+					result.SummaryMonitoringItem = UsageMonitorItem.CreateDefault();
+					return result;
+				}
+
+				public static UsageSummary CreateDemoDefault()
+				{
+					UsageSummary customDemo = null;
+					UsageSummary.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new UsageSummary();
+					result.SummaryName = @"UsageSummary.SummaryName";
+
+					result.SummaryMonitoringItem = UsageMonitorItem.CreateDemoDefault();
 				
+					return result;
+				}
+
+
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+					if(SummaryMonitoringItem != null) {
+						((IInformationObject) SummaryMonitoringItem).UpdateCollections(masterInstance);
 					}
+
 				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = UsageMonitorItem.GetRelativeLocationFromID("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
 
 
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
@@ -14157,170 +14139,45 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
-				
-		
-				public static UsageMonitorItemCollection CreateDefault()
-				{
-					var result = new UsageMonitorItemCollection();
-					return result;
-				}
-
-				public static UsageMonitorItemCollection CreateDemoDefault()
-				{
-					UsageMonitorItemCollection customDemo = null;
-					UsageMonitorItemCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new UsageMonitorItemCollection();
-					result.CollectionContent.Add(UsageMonitorItem.CreateDemoDefault());
-					//result.CollectionContent.Add(UsageMonitorItem.CreateDemoDefault());
-					//result.CollectionContent.Add(UsageMonitorItem.CreateDemoDefault());
-					return result;
-				}
-
-		
-				[DataMember] public List<UsageMonitorItem> CollectionContent = new List<UsageMonitorItem>();
-				private UsageMonitorItem[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public UsageMonitorItem[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (UsageMonitorItem )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(UsageMonitorItemCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = SummaryMonitoringItem;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
 				}
 
+
+				private object FindFromObjectTree(string objectId)
+				{
+					{
+						var item = SummaryMonitoringItem;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					return null;
+				}
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
 							string key = iObject.ID;
 							List<IInformationObject> existingValue;
 							bool keyFound = result.TryGetValue(key, out existingValue);
@@ -14331,14 +14188,86 @@ InformationInput.AuthenticatedDeviceID
 							existingValue.Add(iObject);
 						}
 					}
-					foreach(IInformationObject item in CollectionContent)
 					{
+						var item = (IInformationObject) SummaryMonitoringItem;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						if(SummaryName != _unmodified_SummaryName)
+							return true;
+						if(SummaryMonitoringItem != _unmodified_SummaryMonitoringItem)
+							return true;
+						{
+							IInformationObject item = (IInformationObject) SummaryMonitoringItem;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					if(SummaryMonitoringItem != null) {
+						if(SummaryMonitoringItem.ID == replacingObject.ID)
+							SummaryMonitoringItem = (UsageMonitorItem) replacingObject;
+						else {
+							IInformationObject iObject = SummaryMonitoringItem;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
 					}
 				}
 
 
+				private void CopyContentFrom(UsageSummary sourceObject)
+				{
+					SummaryName = sourceObject.SummaryName;
+					SummaryMonitoringItem = sourceObject.SummaryMonitoringItem;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_SummaryName = SummaryName;
+				
+					_unmodified_SummaryMonitoringItem = SummaryMonitoringItem;
+					if(SummaryMonitoringItem != null)
+						((IInformationObject) SummaryMonitoringItem).SetInstanceTreeValuesAsUnmodified();
+
+				
+				}
+
+
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SummaryName":
+							SummaryName = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string SummaryName { get; set; }
+			private string _unmodified_SummaryName;
+			[DataMember]
+			public UsageMonitorItem SummaryMonitoringItem { get; set; }
+			private UsageMonitorItem _unmodified_SummaryMonitoringItem;
 			
 			}
 			[DataContract]

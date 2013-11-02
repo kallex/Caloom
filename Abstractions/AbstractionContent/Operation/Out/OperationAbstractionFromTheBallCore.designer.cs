@@ -584,6 +584,24 @@ using System.IO;
 				public bool ProcessedAnything ;
 				public bool ProcessedFullCount ;
 				}
+				public class UpdateUsageMonitoringSummariesParameters 
+		{
+				public IContainerOwner Owner ;
+				public int AmountOfDays ;
+				}
+		
+		public class UpdateUsageMonitoringSummaries 
+		{
+				private static void PrepareParameters(UpdateUsageMonitoringSummariesParameters parameters)
+		{
+					}
+				public static void Execute(UpdateUsageMonitoringSummariesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					UsageMonitorItem[] SourceItems = UpdateUsageMonitoringSummariesImplementation.GetTarget_SourceItems(parameters.Owner, parameters.AmountOfDays);	
+				UpdateUsageMonitoringSummariesImplementation.ExecuteMethod_CreateUsageMonitoringSummaries(parameters.Owner, SourceItems);		
+				}
+				}
 				public class UpdateUsageMonitoringItemsParameters 
 		{
 				public IContainerOwner Owner ;

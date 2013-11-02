@@ -948,7 +948,7 @@ namespace TheBall
             return storedResult;
         }
 
-        public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null)
+        public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
         {
             string location = owner != null
                                   ? GetBlobOwnerAddress(owner, informationObject.RelativeLocation)
@@ -963,10 +963,13 @@ namespace TheBall
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
             string etag = informationObject.ETag;
             bool isNewBlob = etag == null;
-            if (etag != null)
-                options.AccessCondition = AccessCondition.IfMatch(etag);
-            else
-                options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            if (!overwriteIfExists)
+            {
+                if (etag != null)
+                    options.AccessCondition = AccessCondition.IfMatch(etag);
+                else
+                    options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            }
             blob.SetBlobInformationType(InformationType_InformationObjectValue);
             blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
