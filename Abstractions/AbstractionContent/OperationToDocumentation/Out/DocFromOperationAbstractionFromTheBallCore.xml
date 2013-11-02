@@ -2326,6 +2326,131 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateUsageMonitoringItems (Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update usage monitoring of an owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner whose usage monitoring is to be updated</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MonitoringItemTimeSpanInMinutes</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Monitoring item timespan in minutes (more than 1 interval in one item)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MonitoringIntervalInMinutes</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Monitoring interval in minutes</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateEqualSplitOfIntervalsInTimeSpan ( MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that monitoring timespan divides equally to interval</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentMonitoringItems ( Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current monitoring item entries</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EndingTimeOfCurrentItems ( CurrentMonitoringItems )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Starting time of new monitoring item(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: NewResourceUsageBlobs ( EndingTimeOfCurrentItems, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Resource usage collections after last monitoring item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StartingTimeOfNewItems ( EndingTimeOfCurrentItems, NewResourceUsageBlobs, MonitoringItemTimeSpanInMinutes )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EndingTimeOfNewItems ( StartingTimeOfNewItems, NewResourceUsageBlobs, MonitoringItemTimeSpanInMinutes )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ResourcesToIncludeInMonitoring ( NewResourceUsageBlobs, EndingTimeOfNewItems )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Resources to include in monitoring</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: NewMonitoringItems ( StartingTimeOfNewItems, EndingTimeOfNewItems, Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>New monitoring items. Empty and to be populated.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PopulateMonitoringItems ( ResourcesToIncludeInMonitoring, NewMonitoringItems )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Populate monitoring items. Inclusive start time, exclusive end time.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( NewMonitoringItems )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store new objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
         </Content>
       </Document>
     </Documents>

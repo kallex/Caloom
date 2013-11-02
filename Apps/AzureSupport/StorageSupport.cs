@@ -1296,6 +1296,14 @@ namespace TheBall
             return CurrBlobClient.ListBlobsWithPrefixSegmented(searchRoot, maxresults, continuationToken);
         }
 
+        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this IContainerOwner owner, string prefix, BlobRequestOptions options = null)
+        {
+            if(options == null)
+                options = new BlobRequestOptions { UseFlatBlobListing = true};
+            string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
+            return CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
+        }
+
         public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix, BlobRequestOptions options = null)
         {
             string searchRoot = container.Name + "/" + prefix;

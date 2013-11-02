@@ -557,8 +557,7 @@ using System.IO;
 					ProcessAllResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ExecuteBatchProcessor(parameters.ProcessBatchSize);		
 				}
 				}
-
-		    public class ProcessBatchOfResourceUsagesToOwnerCollectionsParameters 
+				public class ProcessBatchOfResourceUsagesToOwnerCollectionsParameters 
 		{
 				public int ProcessBatchSize ;
 				public bool ProcessIfLess ;
@@ -584,5 +583,32 @@ using System.IO;
 		{
 				public bool ProcessedAnything ;
 				public bool ProcessedFullCount ;
+				}
+				public class UpdateUsageMonitoringItemsParameters 
+		{
+				public IContainerOwner Owner ;
+				public int MonitoringItemTimeSpanInMinutes ;
+				public int MonitoringIntervalInMinutes ;
+				}
+		
+		public class UpdateUsageMonitoringItems 
+		{
+				private static void PrepareParameters(UpdateUsageMonitoringItemsParameters parameters)
+		{
+					}
+				public static void Execute(UpdateUsageMonitoringItemsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					UpdateUsageMonitoringItemsImplementation.ExecuteMethod_ValidateEqualSplitOfIntervalsInTimeSpan(parameters.MonitoringItemTimeSpanInMinutes, parameters.MonitoringIntervalInMinutes);		
+				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] CurrentMonitoringItems = UpdateUsageMonitoringItemsImplementation.GetTarget_CurrentMonitoringItems(parameters.Owner);	
+				DateTime EndingTimeOfCurrentItems = UpdateUsageMonitoringItemsImplementation.GetTarget_EndingTimeOfCurrentItems(CurrentMonitoringItems);	
+				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] NewResourceUsageBlobs = UpdateUsageMonitoringItemsImplementation.GetTarget_NewResourceUsageBlobs(parameters.Owner, EndingTimeOfCurrentItems);	
+				DateTime StartingTimeOfNewItems = UpdateUsageMonitoringItemsImplementation.GetTarget_StartingTimeOfNewItems(parameters.MonitoringItemTimeSpanInMinutes, EndingTimeOfCurrentItems, NewResourceUsageBlobs);	
+				DateTime EndingTimeOfNewItems = UpdateUsageMonitoringItemsImplementation.GetTarget_EndingTimeOfNewItems(parameters.MonitoringItemTimeSpanInMinutes, StartingTimeOfNewItems, NewResourceUsageBlobs);	
+				RequestResourceUsageCollection[] ResourcesToIncludeInMonitoring = UpdateUsageMonitoringItemsImplementation.GetTarget_ResourcesToIncludeInMonitoring(NewResourceUsageBlobs, EndingTimeOfNewItems);	
+				UsageMonitorItem[] NewMonitoringItems = UpdateUsageMonitoringItemsImplementation.GetTarget_NewMonitoringItems(parameters.Owner, parameters.MonitoringItemTimeSpanInMinutes, parameters.MonitoringIntervalInMinutes, StartingTimeOfNewItems, EndingTimeOfNewItems);	
+				UpdateUsageMonitoringItemsImplementation.ExecuteMethod_PopulateMonitoringItems(ResourcesToIncludeInMonitoring, NewMonitoringItems);		
+				UpdateUsageMonitoringItemsImplementation.ExecuteMethod_StoreObjects(NewMonitoringItems);		
+				}
 				}
 		 } 

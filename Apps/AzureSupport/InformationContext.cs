@@ -260,7 +260,8 @@ namespace TheBall
                         {
                             TimeRange = new TimeRange()
                         },
-                    OwnerInfo = new InformationOwnerInfo(),NetworkUsage = new NetworkUsage(), RequestDetails = new HTTPActivityDetails()
+                    OwnerInfo = new InformationOwnerInfo(),NetworkUsage = new NetworkUsage(), RequestDetails = new HTTPActivityDetails(),
+                    StorageTransactionUsage = new StorageTransactionUsage(), 
                 };
         }
 

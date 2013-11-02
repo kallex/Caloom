@@ -94,6 +94,17 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "UpdateUsageMonitoringItems":
+                    {
+                        UpdateUsageMonitoringItemsParameters parameters = new UpdateUsageMonitoringItemsParameters
+                            {
+                                MonitoringIntervalInMinutes = 5,
+                                MonitoringItemTimeSpanInMinutes = 60,
+                                Owner = containerOwner
+                            };
+                        UpdateUsageMonitoringItems.Execute(parameters);
+                        break;
+                    }
                 case "ProcessAllResourceUsagesToOwnerCollections":
                     {
                         ProcessAllResourceUsagesToOwnerCollectionsParameters parameters = new ProcessAllResourceUsagesToOwnerCollectionsParameters

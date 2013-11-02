@@ -2400,6 +2400,106 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Perform unlink
 		</div>
+		</p><h1>UpdateUsageMonitoringItems (Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update usage monitoring of an owner
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner whose usage monitoring is to be updated
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MonitoringItemTimeSpanInMinutes
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Monitoring item timespan in minutes (more than 1 interval in one item)
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MonitoringIntervalInMinutes
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Monitoring interval in minutes
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ValidateEqualSplitOfIntervalsInTimeSpan ( MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that monitoring timespan divides equally to interval
+		</div>
+		</p><h2>Target Definition: CurrentMonitoringItems ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Current monitoring item entries
+		</div>
+		</p><h2>Target Definition: EndingTimeOfCurrentItems ( CurrentMonitoringItems )</h2>
+		<p>		<div class="MsoNormal" >
+		Starting time of new monitoring item(s)
+		</div>
+		</p><h2>Target Definition: NewResourceUsageBlobs ( EndingTimeOfCurrentItems, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Resource usage collections after last monitoring item
+		</div>
+		</p><h2>Target Definition: StartingTimeOfNewItems ( EndingTimeOfCurrentItems, NewResourceUsageBlobs, MonitoringItemTimeSpanInMinutes )</h2>
+		<p>		<div class="MsoNormal" >
+		Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.
+		</div>
+		</p><h2>Target Definition: EndingTimeOfNewItems ( StartingTimeOfNewItems, NewResourceUsageBlobs, MonitoringItemTimeSpanInMinutes )</h2>
+		<p>		<div class="MsoNormal" >
+		Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.
+		</div>
+		</p><h2>Target Definition: ResourcesToIncludeInMonitoring ( NewResourceUsageBlobs, EndingTimeOfNewItems )</h2>
+		<p>		<div class="MsoNormal" >
+		Resources to include in monitoring
+		</div>
+		</p><h2>Target Definition: NewMonitoringItems ( StartingTimeOfNewItems, EndingTimeOfNewItems, Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes )</h2>
+		<p>		<div class="MsoNormal" >
+		New monitoring items. Empty and to be populated.
+		</div>
+		</p><h2>Method Call: PopulateMonitoringItems ( ResourcesToIncludeInMonitoring, NewMonitoringItems )</h2>
+		<p>		<div class="MsoNormal" >
+		Populate monitoring items. Inclusive start time, exclusive end time.
+		</div>
+		</p><h2>Method Call: StoreObjects ( NewMonitoringItems )</h2>
+		<p>		<div class="MsoNormal" >
+		Store new objects
+		</div>
 		</p></div>
 
 </body>

@@ -800,5 +800,61 @@
         <Target name="BatchToProcess" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="UpdateUsageMonitoringItems">
+      <OperationSpec>
+        <Description>Update usage monitoring of an owner</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner whose usage monitoring is to be updated" state="implemented" />
+        <Parameter name="MonitoringItemTimeSpanInMinutes" dataType="int" designDesc="Monitoring item timespan in minutes (more than 1 interval in one item)" state="implemented" />
+        <Parameter name="MonitoringIntervalInMinutes" dataType="int" designDesc="Monitoring interval in minutes" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="ValidateEqualSplitOfIntervalsInTimeSpan" designDesc="Validate that monitoring timespan divides equally to interval" state="implemented">
+            <Parameter name="MonitoringItemTimeSpanInMinutes" />
+            <Parameter name="MonitoringIntervalInMinutes" />
+          </MethodExecute>
+          <TargetDefinition name="CurrentMonitoringItems" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Current monitoring item entries" state="implemented">
+            <Parameter name="Owner" />
+          </TargetDefinition>
+          <TargetDefinition name="EndingTimeOfCurrentItems" dataType="DateTime" designDesc="Starting time of new monitoring item(s)" state="implemented">
+            <Target name="CurrentMonitoringItems" />
+          </TargetDefinition>
+          <TargetDefinition name="NewResourceUsageBlobs" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Resource usage collections after last monitoring item" state="implemented">
+            <Parameter name="Owner" />
+            <Target name="EndingTimeOfCurrentItems" />
+          </TargetDefinition>
+          <TargetDefinition name="StartingTimeOfNewItems" dataType="DateTime" designDesc="Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval." state="implemented">
+            <Parameter name="MonitoringItemTimeSpanInMinutes" />
+            <Target name="EndingTimeOfCurrentItems" />
+            <Target name="NewResourceUsageBlobs" />
+          </TargetDefinition>
+          <TargetDefinition name="EndingTimeOfNewItems" dataType="DateTime" designDesc="Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval." state="implemented">
+            <Parameter name="MonitoringItemTimeSpanInMinutes" />
+            <Target name="StartingTimeOfNewItems" />
+            <Target name="NewResourceUsageBlobs" />
+          </TargetDefinition>
+          <TargetDefinition name="ResourcesToIncludeInMonitoring" dataType="RequestResourceUsageCollection[]" designDesc="Resources to include in monitoring" state="implemented">
+            <Target name="NewResourceUsageBlobs" />
+            <Target name="EndingTimeOfNewItems" />
+          </TargetDefinition>
+          <TargetDefinition name="NewMonitoringItems" dataType="UsageMonitorItem[]" designDesc="New monitoring items. Empty and to be populated." state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="MonitoringItemTimeSpanInMinutes" />
+            <Parameter name="MonitoringIntervalInMinutes" />
+            <Target name="StartingTimeOfNewItems" />
+            <Target name="EndingTimeOfNewItems" />
+          </TargetDefinition>
+          <MethodExecute name="PopulateMonitoringItems" designDesc="Populate monitoring items. Inclusive start time, exclusive end time." state="implemented">
+            <Target name="ResourcesToIncludeInMonitoring" />
+            <Target name="NewMonitoringItems" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store new objects" state="implemented">
+            <Target name="NewMonitoringItems" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

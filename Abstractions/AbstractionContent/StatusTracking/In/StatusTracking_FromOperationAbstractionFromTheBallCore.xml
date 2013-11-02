@@ -535,6 +535,45 @@
     <StatusItem name="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedFullCount" displayName="VariableType: ProcessedFullCount" description="Did the operation have full batch size to process">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_Owner" displayName="VariableType: Owner" description="Owner whose usage monitoring is to be updated">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_MonitoringItemTimeSpanInMinutes" displayName="VariableType: MonitoringItemTimeSpanInMinutes" description="Monitoring item timespan in minutes (more than 1 interval in one item)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_MonitoringIntervalInMinutes" displayName="VariableType: MonitoringIntervalInMinutes" description="Monitoring interval in minutes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_ValidateEqualSplitOfIntervalsInTimeSpan" displayName="MethodExecuteType: ValidateEqualSplitOfIntervalsInTimeSpan" description="Validate that monitoring timespan divides equally to interval">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_CurrentMonitoringItems" displayName="TargetDefinitionType: CurrentMonitoringItems" description="Current monitoring item entries">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_EndingTimeOfCurrentItems" displayName="TargetDefinitionType: EndingTimeOfCurrentItems" description="Starting time of new monitoring item(s)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_NewResourceUsageBlobs" displayName="TargetDefinitionType: NewResourceUsageBlobs" description="Resource usage collections after last monitoring item">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_StartingTimeOfNewItems" displayName="TargetDefinitionType: StartingTimeOfNewItems" description="Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_EndingTimeOfNewItems" displayName="TargetDefinitionType: EndingTimeOfNewItems" description="Ending time of complete monitoring item(s). Ensuring that resource records go beyond this time interval.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_ResourcesToIncludeInMonitoring" displayName="TargetDefinitionType: ResourcesToIncludeInMonitoring" description="Resources to include in monitoring">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_NewMonitoringItems" displayName="TargetDefinitionType: NewMonitoringItems" description="New monitoring items. Empty and to be populated.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_PopulateMonitoringItems" displayName="MethodExecuteType: PopulateMonitoringItems" description="Populate monitoring items. Inclusive start time, exclusive end time.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateUsageMonitoringItems_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store new objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateSpecifiedInformationObjectWithValues">
@@ -767,6 +806,21 @@
       <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ReleaseLock" />
       <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedAnything" />
       <ItemRef itemName="ProcessBatchOfResourceUsagesToOwnerCollections_ProcessedFullCount" />
+    </Group>
+    <Group name="UpdateUsageMonitoringItems">
+      <ItemRef itemName="UpdateUsageMonitoringItems_Owner" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_MonitoringItemTimeSpanInMinutes" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_MonitoringIntervalInMinutes" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_ValidateEqualSplitOfIntervalsInTimeSpan" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_CurrentMonitoringItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_EndingTimeOfCurrentItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_NewResourceUsageBlobs" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_StartingTimeOfNewItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_EndingTimeOfNewItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_ResourcesToIncludeInMonitoring" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_NewMonitoringItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_PopulateMonitoringItems" />
+      <ItemRef itemName="UpdateUsageMonitoringItems_StoreObjects" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>
