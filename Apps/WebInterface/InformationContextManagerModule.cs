@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using AzureSupport;
 using TheBall;
+using TheBall.CORE;
 
 namespace WebInterface
 {
@@ -29,6 +30,24 @@ namespace WebInterface
             //context.LogRequest += new EventHandler(OnLogRequest);
             context.BeginRequest += ContextOnBeginRequest;
             context.EndRequest += ContextOnEndRequest;
+            context.PreRequestHandlerExecute += ContextOnPreRequestHandlerExecute;
+        }
+
+        private void ContextOnPreRequestHandlerExecute(object sender, EventArgs eventArgs)
+        {
+            var request = HttpContext.Current.Request;
+            if (request.Path.StartsWith("/websocket/"))
+                return;
+            var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
+            if (HttpContext.Current.Request.IsAuthenticated)
+            {
+                reqDetails.UserID =
+                    HttpContext.Current.User.Identity.Name;
+            }
+            else
+            {
+                reqDetails.UserID = "anonymous";
+            }
         }
 
         private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
@@ -38,8 +57,17 @@ namespace WebInterface
                 return;
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
             InformationContext.StartResourceMeasuringOnCurrent();
+            SetRequestLoggingData(request, InformationContext.Current.RequestResourceUsage.RequestDetails);
             var application = (HttpApplication)sender;
             application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
+        }
+
+        private void SetRequestLoggingData(HttpRequest request, HTTPActivityDetails requestDetails)
+        {
+            requestDetails.RemoteIPAddress = request.UserHostAddress;
+            requestDetails.RemoteEndpointUserName = "-";
+            requestDetails.UTCDateTime = DateTime.UtcNow;
+            requestDetails.RequestLine = String.Format("{0} {1} {2}", request.HttpMethod, request.Url.AbsoluteUri, request.ServerVariables["SERVER_PROTOCOL"]);
         }
 
         private void ContextOnEndRequest(object sender, EventArgs eventArgs)
@@ -48,10 +76,14 @@ namespace WebInterface
             if (request.Path.StartsWith("/websocket/"))
                 return;
             var application = (HttpApplication)sender;
-            var contentLengthFilter = (ContentLengthFilter)application.Response.Filter;
+            var response = application.Response;
+            var contentLengthFilter = (ContentLengthFilter)response.Filter;
             var contentLength = contentLengthFilter.BytesWritten;
             Debug.WriteLine("Content length sent: " + contentLength);
             InformationContext.AddNetworkOutputByteAmountToCurrent(contentLength);
+            var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
+            reqDetails.HTTPStatusCode = response.StatusCode;
+            reqDetails.ReturnedContentLength = contentLength;
             InformationContext.ProcessAndClearCurrent();
         }
 

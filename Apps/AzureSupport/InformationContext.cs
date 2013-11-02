@@ -140,7 +140,7 @@ namespace TheBall
                 string uniquePostFix = Guid.NewGuid().ToString("N");
                 string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + uniquePostFix;
                 RequestResourceUsage.SetLocationAsOwnerContent(measurementOwner, itemName);
-                //RequestResourceUsage.StoreInformation();
+                RequestResourceUsage.StoreInformation();
             }
         }
 
