@@ -75,13 +75,13 @@ namespace TheBall.CORE
                                                     "yyyyMMddHHmmssfff"),
                                                 lastRangeItem.ProcessorUsage.TimeRange.EndTime.ToString(
                                                     "yyyyMMddHHmmssfff"));
-                var existing = RequestResourceUsageCollection.RetrieveFromOwnerContent(owner, collName);
-                if (existing != null)
-                    continue;
+                //var existing = RequestResourceUsageCollection.RetrieveFromOwnerContent(owner, collName);
+                //if (existing != null)
+                //    continue;
                 RequestResourceUsageCollection ownerCollection = new RequestResourceUsageCollection();
                 ownerCollection.SetLocationAsOwnerContent(owner, collName);
                 ownerCollection.CollectionContent = ownerContent;
-                ownerCollection.StoreInformation();
+                ownerCollection.StoreInformation(null, true);
             }
         }
 

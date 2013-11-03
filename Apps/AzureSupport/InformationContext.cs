@@ -247,8 +247,10 @@ namespace TheBall
         private Stopwatch realtimeStopwatch = new Stopwatch();
         private DateTime startTimeInaccurate;
         private bool isResourceMeasuring = false;
-        private void StartResourceMeasuring()
+        private string UsageTypeString;
+        private void StartResourceMeasuring(ResourceUsageType usageType)
         {
+            UsageTypeString = usageType.ToString();
             //Debugger.Break();
             startTimeInaccurate = DateTime.UtcNow;
             executionStopwatch.Start();
@@ -258,10 +260,13 @@ namespace TheBall
                 {
                     ProcessorUsage = new ProcessorUsage
                         {
-                            TimeRange = new TimeRange()
+                            TimeRange = new TimeRange(),
+                            UsageType = UsageTypeString,
                         },
-                    OwnerInfo = new InformationOwnerInfo(),NetworkUsage = new NetworkUsage(), RequestDetails = new HTTPActivityDetails(),
-                    StorageTransactionUsage = new StorageTransactionUsage(), 
+                    OwnerInfo = new InformationOwnerInfo(),
+                    NetworkUsage = new NetworkUsage() { UsageType = UsageTypeString},
+                    RequestDetails = new HTTPActivityDetails(),
+                    StorageTransactionUsage = new StorageTransactionUsage { UsageType = UsageTypeString},
                 };
         }
 
@@ -291,9 +296,15 @@ namespace TheBall
             Current.RequestResourceUsage.NetworkUsage.AmountOfBytes += bytes;
         }
 
-        public static void StartResourceMeasuringOnCurrent()
+        public enum ResourceUsageType
         {
-            Current.StartResourceMeasuring();
+            WebRole,
+            WorkerRole
+        }
+
+        public static void StartResourceMeasuringOnCurrent(ResourceUsageType usageType)
+        {
+            Current.StartResourceMeasuring(usageType);
         }
     }
 }

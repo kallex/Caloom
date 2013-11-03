@@ -56,7 +56,7 @@ namespace WebInterface
             if (request.Path.StartsWith("/websocket/"))
                 return;
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
-            InformationContext.StartResourceMeasuringOnCurrent();
+            InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WebRole);
             SetRequestLoggingData(request, InformationContext.Current.RequestResourceUsage.RequestDetails);
             var application = (HttpApplication)sender;
             application.Response.Filter = new ContentLengthFilter(application.Response.Filter);

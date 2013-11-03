@@ -147,7 +147,7 @@ namespace TheBall.CORE
 
             var srcNetworkUsage = resourceItem.NetworkUsage;
             var tgtNetworkUsage = currMonitoringItem.NetworkUsages.CollectionContent[stepIndex];
-            tgtNetworkUsage.AmountOfBytes = srcNetworkUsage.AmountOfBytes;
+            tgtNetworkUsage.AmountOfBytes += srcNetworkUsage.AmountOfBytes;
         }
 
         public static void ExecuteMethod_StoreObjects(UsageMonitorItem[] newMonitoringItems)

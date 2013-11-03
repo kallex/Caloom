@@ -364,7 +364,7 @@ namespace TheBall
                 {
                     InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
                     InformationContext.Current.Owner = lockedOwner;
-                    InformationContext.StartResourceMeasuringOnCurrent();
+                    InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
                 }
                 string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
                 var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
