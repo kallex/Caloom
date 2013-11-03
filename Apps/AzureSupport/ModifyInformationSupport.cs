@@ -105,7 +105,7 @@ namespace TheBall
                         UpdateUsageMonitoringItems.Execute(parameters);
                         UpdateUsageMonitoringSummariesParameters summaryParameters = new UpdateUsageMonitoringSummariesParameters
                             {
-                                AmountOfDays = 30,
+                                AmountOfDays = 31,
                                 Owner = containerOwner
                             };
                         UpdateUsageMonitoringSummaries.Execute(summaryParameters);

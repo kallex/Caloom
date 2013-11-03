@@ -2547,7 +2547,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		SourceItems from day range
 		</div>
-		</p><h2>Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner )</h2>
+		</p><h2>Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner, AmountOfDays )</h2>
 		<p>		<div class="MsoNormal" >
 		Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals
 		</div>

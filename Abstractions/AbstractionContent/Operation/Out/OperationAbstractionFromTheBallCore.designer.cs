@@ -599,7 +599,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					UsageMonitorItem[] SourceItems = UpdateUsageMonitoringSummariesImplementation.GetTarget_SourceItems(parameters.Owner, parameters.AmountOfDays);	
-				UpdateUsageMonitoringSummariesImplementation.ExecuteMethod_CreateUsageMonitoringSummaries(parameters.Owner, SourceItems);		
+				UpdateUsageMonitoringSummariesImplementation.ExecuteMethod_CreateUsageMonitoringSummaries(parameters.Owner, parameters.AmountOfDays, SourceItems);		
 				}
 				}
 				public class UpdateUsageMonitoringItemsParameters 

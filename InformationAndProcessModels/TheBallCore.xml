@@ -1136,6 +1136,7 @@
             </TargetDefinition>
             <MethodExecute name="CreateUsageMonitoringSummaries" designDesc="Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals" state="implemented">
               <Parameter name="Owner"/>
+              <Parameter name="AmountOfDays"/>
               <Target name="SourceItems"/>
             </MethodExecute>
           </SequentialExecution>

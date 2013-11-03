@@ -2501,7 +2501,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner )" level="2">
+            <Header text="Method Call: CreateUsageMonitoringSummaries ( SourceItems, Owner, AmountOfDays )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals</TextContent>
