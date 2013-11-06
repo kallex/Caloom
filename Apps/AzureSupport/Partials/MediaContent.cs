@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
+using System.Linq;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -48,6 +49,8 @@ namespace AaltoGlobalImpact.OIP
             UpdateAdditionalMediaFormats();
         }
 
+        string[] ImageMediaExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp"};
+
         public void UpdateAdditionalMediaFormats()
         {
             RemoveAdditionalMediaFormats();
@@ -56,7 +59,8 @@ namespace AaltoGlobalImpact.OIP
 
         public void CreateAdditionalMediaFormats()
         {
-            OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+            if(ImageMediaExtensions.Contains(FileExt))
+                OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
         public void RemoveAdditionalMediaFormats()

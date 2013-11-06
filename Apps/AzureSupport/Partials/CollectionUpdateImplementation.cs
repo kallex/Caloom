@@ -739,5 +739,10 @@ namespace AaltoGlobalImpact.OIP
             return node;
         }
 
+
+        internal static void Update_ImageGroup_ImagesCollection(ImageGroup imageGroup, ImageCollection localCollection, ImageCollection masterCollection)
+        {
+            // Nothing to do for now
+        }
     }
 }

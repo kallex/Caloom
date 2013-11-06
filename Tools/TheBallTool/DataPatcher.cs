@@ -681,9 +681,9 @@ namespace TheBallTool
 
             //ReconnectAccountsMastersAndCollections();
 
-            PatchSubscriptionsToSubmitted();
+            //PatchSubscriptionsToSubmitted();
 
-            //FixGroupMastersAndCollections("d3a8ee05-dbd7-4ddc-b399-caeff2d3373d"); // Proj2
+            FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
             //FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
             //FixAllGroupsMastersAndCollections();
 

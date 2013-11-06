@@ -25,7 +25,7 @@ namespace TheBallTool.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("betaoip-aaltoglobalimpact-org")]
+        [global::System.Configuration.DefaultSettingValueAttribute("test-caloom-com")]
         public string CurrentActiveContainerName {
             get {
                 return ((string)(this["CurrentActiveContainerName"]));

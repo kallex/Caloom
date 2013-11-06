@@ -874,6 +874,10 @@
         </InformationItems>
       </InformationObject>
 
+      <InformationObject name="ImageCollection" designDesc="Collection of images">
+        <CollectionFor contentInformationObjectName="Image" collectionType="Master" />
+      </InformationObject>
+
       <InformationObject name="Image" designDesc="Image and attributes" isIndependentMaster="true">
         <InformationItems>
           <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject" informationObjectName="ReferenceToInformation" />
@@ -883,6 +887,18 @@
           <!--
 					<InformationItem name="ImageAlt" logicalDataType="Text_Short" />
 					<InformationItem name="Tooltip" informationObjectName="Tooltip" logicalDataType="InformationObject" />-->
+        </InformationItems>
+      </InformationObject>
+
+
+      <InformationObject name="BinaryFileCollection" designDesc="Collection of binary files">
+        <CollectionFor contentInformationObjectName="BinaryFile" collectionType="Master"/>
+      </InformationObject>
+                         
+      <InformationObject name="BinaryFile" designDesc="Generic binary file">
+        <InformationItems>
+          <InformationItem name="OriginalFileName" logicalDataType="Text_Short"/>
+          <InformationItem name="Data" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
         </InformationItems>
       </InformationObject>
 
@@ -899,7 +915,7 @@
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="Description" logicalDataType="Text_Long" />
           <InformationItem name="FeaturedImage" logicalDataType="InformationObject" informationObjectName="Image"/>
-          <InformationItem name="ImagesCollection" informationObjectName="ImagesCollection" logicalDataType="InformationObject" />
+          <InformationItem name="ImagesCollection" informationObjectName="ImageCollection" logicalDataType="InformationObject" />
         </InformationItems>
       </InformationObject>
       <InformationObject name="VideoGroup" designDesc="Group of Videos">
@@ -908,9 +924,6 @@
           <InformationItem name="Description" logicalDataType="Text_Short" />
           <InformationItem name="VideoCollection" informationObjectName="VideoCollection" logicalDataType="InformationObject" />
         </InformationItems>
-      </InformationObject>
-      <InformationObject name="ImagesCollection" designDesc="">
-        <CollectionFor contentInformationObjectName="Image" />
       </InformationObject>
       <InformationObject name="VideoCollection" designDesc="">
         <CollectionFor contentInformationObjectName="Video" />

@@ -29,21 +29,25 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 //using AaltoGlobalImpact.OIP;
+using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
+using Image = System.Drawing.Image;
 
 namespace WebInterface
 {
     public class FileUploadHandler : IHttpHandler
     {
-        private const string AuthGroupPrefix = "/auth/grp/";
-        private const string AuthAccountPrefix = "/auth/acc/";
-        private int AuthGroupPrefixLen;
-        private int AuthAccountPrefixLen;
+        private const string FileuploadGroupPrefix = "/fileupload/grp/";
+        private const string FileuploadPersonalPrefix = "/fileupload/account/";
+        private int GuidIDLen;
+
+        private int FileuploadGroupPrefixLen;
+        private int FileuploadAccountPrefixLen;
         //private const string AuthFileUpload = "/fileupload/grp/";
         //private int AuthEmailValidationLen;
 
@@ -64,26 +68,89 @@ namespace WebInterface
 
         public FileUploadHandler()
         {
-            AuthGroupPrefixLen = AuthGroupPrefix.Length;
-            AuthAccountPrefixLen = AuthAccountPrefix.Length;
+            FileuploadGroupPrefixLen = FileuploadGroupPrefix.Length;
+            FileuploadAccountPrefixLen = FileuploadPersonalPrefix.Length;
+            GuidIDLen = Guid.Empty.ToString().Length;
         }
 
         public void ProcessRequest(HttpContext context)
         {
             HttpRequest request = context.Request;
-            WebSupport.InitializeContextStorage(context.Request);
-            try
+            if (request.IsAuthenticated == false)
+                return;
+            if (request.Path.StartsWith(FileuploadPersonalPrefix))
             {
-                if (request.Path.StartsWith(AuthGroupPrefix))
-                {
-                    //HandleEmailValidation(context);
-                }        
-            } finally
+                HandlePersonalRequest(context);
+            }
+            else if (request.Path.StartsWith(FileuploadGroupPrefix))
             {
-                InformationContext.ProcessAndClearCurrent();
+                HandleGroupRequest(context);
             }
         }
 
+        private void HandlePersonalRequest(HttpContext context)
+        {
+            string loginUrl = WebSupport.GetLoginUrl(context);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true);
+            bool doDelete = false;
+            if (doDelete)
+            {
+                loginRoot.DeleteInformationObject();
+                return;
+            }
+            TBAccount account = loginRoot.Account;
+            string requestPath = context.Request.Path;
+            string contentPath = requestPath.Substring(FileuploadAccountPrefixLen);
+            HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
+        }
+
+        private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
+        {
+            InformationContext.Current.Owner = containerOwner;
+            if (context.Request.RequestType == "POST")
+            {
+                // Do first post, and then get to the same URL
+                if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
+                    throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
+                HandleFileUpload(context);
+                return;
+            }
+            throw new NotImplementedException("File uploader Get request is not implemented");
+        }
+
+
+
+        private void HandleGroupRequest(HttpContext context)
+        {
+            string requestPath = context.Request.Path;
+            string groupID = GetGroupID(context.Request.Path);
+            string loginUrl = WebSupport.GetLoginUrl(context);
+            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
+            string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
+            TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
+            if (loginGroupRoot == null)
+            {
+                // TODO: Polite invitation request
+                throw new SecurityException("No access to requested group: TODO - Polite landing page for the group");
+                return;
+            }
+            InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
+            string contentPath = requestPath.Substring(FileuploadGroupPrefixLen + GuidIDLen + 1);
+            HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
+        }
+
+        private string GetGroupID(string path)
+        {
+            return path.Substring(FileuploadGroupPrefixLen, GuidIDLen);
+        }
+
+
+
+
+        private void HandleFileUpload(HttpContext context)
+        {
+            UploadHandler.HandleUpload(context.Request, context.Response);
+        }
 
         #endregion
     }
@@ -138,7 +205,6 @@ namespace WebInterface
             PropertiesInit(path, url);
         }
 
-
         private void PropertiesInit(string path, string url)
         {
             this.script_url = url;
@@ -155,7 +221,7 @@ namespace WebInterface
             //</system.web>
             this.max_file_size = 10124000;
             this.min_file_size = 1;
-            this.accept_file_types = @"^.+\.((jpg)|(gif)|(jpeg)|(png))$";
+            this.accept_file_types = @"^.+\.((bmp)|(gif)|(jpeg)|(jpg)|(png)|(pptx)|(ppt)|(doc)|(docx)|(xlsx)|(xls)|(pdf))$";
             // The maximum number of files for the upload directory:
             this.max_number_of_files = -1;
             // Image resolution restrictions:
@@ -170,7 +236,8 @@ namespace WebInterface
             // Uncomment the following version to restrict the size of
             // uploaded images. You can also add additional versions with
             // their own upload directories:
-            /*this.image_versions = new Dictionary<string, UploadFileInfo>() {
+            /*
+            this.image_versions = new Dictionary<string, UploadFileInfo>() {
                 {"Large",new UploadFileInfo(){width=250,height=250, dir=this.upload_dir + "Large/", url=this.upload_url + "Large/"}}
                 ,{"Thumbnail",new UploadFileInfo(){width=80,height=80, dir=this.upload_dir + "Thumbnail/", url = this.upload_url + "Thumbnail/"}}
             };*/
@@ -355,25 +422,28 @@ namespace WebInterface
 
             if (File.Exists(this.upload_dir + file.name) && file.size == new FileInfo(this.upload_dir + file.name).Length)
             {
-                using (Image img = Image.FromFile(this.upload_dir + file.name))
+                if (process_images)
                 {
-                    file.width = img.Width;
-                    file.height = img.Height;
-                    img.Dispose();
-                }
+                    using (Image img = Image.FromFile(this.upload_dir + file.name))
+                    {
+                        file.width = img.Width;
+                        file.height = img.Height;
+                        img.Dispose();
+                    }
 
 
-                if ((this.max_width > 0 && file.width > this.max_width) ||
-                    (this.max_height > 0 && file.height > this.max_height))
-                {
-                    file.error = "maxResolution";
-                    return false;
-                }
-                if ((this.min_width > 0 && file.width < this.min_width) ||
-                    (this.min_height > 0 && file.height < this.min_height))
-                {
-                    file.error = "minResolution";
-                    return false;
+                    if ((this.max_width > 0 && file.width > this.max_width) ||
+                        (this.max_height > 0 && file.height > this.max_height))
+                    {
+                        file.error = "maxResolution";
+                        return false;
+                    }
+                    if ((this.min_width > 0 && file.width < this.min_width) ||
+                        (this.min_height > 0 && file.height < this.min_height))
+                    {
+                        file.error = "minResolution";
+                        return false;
+                    }
                 }
             }
 
@@ -408,17 +478,44 @@ namespace WebInterface
                 }
                 else
                 {
-                    using (FileStream fs = File.OpenWrite(file_path))
+                    var owner = InformationContext.Current.Owner;
+                    MediaContent mediaContent = null;
+                    if (isImageFile(name))
                     {
-                        uploaded_file.InputStream.CopyTo(fs);
-                        fs.Flush();
+                        AaltoGlobalImpact.OIP.Image image = new AaltoGlobalImpact.OIP.Image()
+                            {
+                                Title = name,
+                                ImageData = new MediaContent
+                                    {
+                                        OriginalFileName = name,
+                                        ContentLength = (int) size
+                                    }
+                            };
+                        image.SetLocationAsOwnerContent(owner, image.ID);
+                        image.StoreInformation();
+                        mediaContent = image.ImageData;
                     }
-
-
+                    else
+                    {
+                        BinaryFile binaryFile = new BinaryFile
+                            {
+                                OriginalFileName = name,
+                                Data = new MediaContent
+                                    {
+                                        OriginalFileName = name,
+                                        ContentLength = (int) size
+                                    }
+                            };
+                        binaryFile.SetLocationAsOwnerContent(owner, binaryFile.ID);
+                        binaryFile.StoreInformation();
+                        mediaContent = binaryFile.Data;
+                    }
+                    mediaContent.SetMediaContent(owner, mediaContent.ID, uploaded_file);
                 }
 
 
-
+                // For now chunks are not supported, assumed to get full file
+                return file;
 
                 if (file.size == new FileInfo(file_path).Length)
                 {
@@ -432,24 +529,28 @@ namespace WebInterface
                         //Create different versions
                         file.url = this.upload_url + HttpUtility.UrlEncode(file.name);
                         file.image_versions = new Dictionary<string, UploadFileInfo>();
-                        foreach (string version in this.image_versions.Keys)
+                        if (this.image_versions != null)
                         {
-                            file.image_versions.Add(version, new UploadFileInfo()
+                            foreach (string version in this.image_versions.Keys)
                             {
-                                name = file.name
-                                ,
-                                dir = this.image_versions[version].dir
-                                ,
-                                url = this.image_versions[version].url + HttpUtility.UrlEncode(file.name)
-                                ,
-                                width = this.image_versions[version].width
-                                ,
-                                height = this.image_versions[version].height
-                            });
+                                file.image_versions.Add(version, new UploadFileInfo()
+                                    {
+                                        name = file.name
+                                        ,
+                                        dir = this.image_versions[version].dir
+                                        ,
+                                        url = this.image_versions[version].url + HttpUtility.UrlEncode(file.name)
+                                        ,
+                                        width = this.image_versions[version].width
+                                        ,
+                                        height = this.image_versions[version].height
+                                    });
 
 
-                            ScaledImageCreate(file.image_versions[version]);
+                                ScaledImageCreate(file.image_versions[version]);
+                            }
                         }
+
                         if (file.image_versions != null && file.image_versions.ContainsKey("Thumbnail"))
                         {
                             file.thumbnail_url = file.image_versions["Thumbnail"].url;
@@ -472,13 +573,31 @@ namespace WebInterface
             return file;
         }
 
+        private bool isImageFile(string name)
+        {
+            return name.EndsWith(".jpg") || name.EndsWith(".jpeg") || name.EndsWith(".png") ||
+                   name.EndsWith(".bmp") || name.EndsWith(".gif");
+        }
+
 
         private HttpResponse Response;
         private HttpRequest Request;
+        private bool process_images = false;
 
-        protected void Page_Load(object sender, EventArgs e)
+        public static void HandleUpload(HttpRequest request, HttpResponse response)
         {
+            //var currentHandler = new UploadHandler(@"c:\tmp\TEST\", FullUrlGet(request));
+            var currentHandler = new UploadHandler(@"c:\NOSUCHDIR\NORTHIS\", FullUrlGet(request));
+            currentHandler.HandleRequest(request, response);
+        }
+
+        public void HandleRequest(HttpRequest request, HttpResponse response)
+        {
+            Request = request;
+            Response = response;
+            upload_handler = this;
             //upload_handler = new UploadHandler(Server.MapPath("."), FullUrlGet());
+
             Response.Clear();
             Response.AddHeader("Pragma", "no-cache");
             Response.AddHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -487,8 +606,6 @@ namespace WebInterface
             Response.AddHeader("Access-Control-Allow-Origin", "*");
             Response.AddHeader("Access-Control-Allow-Methods", "OPTIONS, HEAD, GET, POST, PUT, DELETE");
             Response.AddHeader("Access-Control-Allow-Headers", "X-File-Name, X-File-Type, X-File-Size");
-
-
             switch (Request.HttpMethod)
             {
                 case "OPTIONS":
@@ -574,7 +691,6 @@ namespace WebInterface
                     fileInfo.size = long.Parse(Request.Headers["X-File-Size"].ToString());
                 }
 
-
                 fileInfo = upload_handler.FileUploadHandle(file, fileInfo.name, fileInfo.size, fileInfo.type, fileInfo.error, i);
                 fileInfoList.Add(fileInfo);
             }
@@ -591,7 +707,7 @@ namespace WebInterface
                 Response.AddHeader("Location,", String.Format(redirect, HttpUtility.UrlEncode(json)));
                 Response.End();
             }
-            if (Request.ServerVariables["HTTP_ACCEPT"] != null && Request.ServerVariables["HTTP_ACCEPT"].ToString().IndexOf("application/json") >= 0)
+            if (Request.ServerVariables["HTTP_ACCEPT"] != null && Request.ServerVariables["HTTP_ACCEPT"].IndexOf("application/json") >= 0)
             {
                 Response.AddHeader("Content-type", "application/json");
             }
@@ -600,16 +716,15 @@ namespace WebInterface
                 Response.AddHeader("Content-type", "text/plain");
             }
 
-
             Response.Write(json);
             Response.End();
-
 
         }
 
 
         private void Delete()
         {
+            throw new NotSupportedException("Delete through this handler not supported");
             string file_name = null;
             if (Request["file"] != null)
             {
@@ -643,17 +758,13 @@ namespace WebInterface
         }
 
 
-        private string FullUrlGet()
+        private static string FullUrlGet(HttpRequest request)
         {
-            string url = Request.Url.AbsoluteUri;
+            string url = request.Url.AbsoluteUri;
             if (url.LastIndexOf("/") > 1)
             {
                 url = url.Substring(0, url.LastIndexOf("/"));
             }
-
-
-
-
             return url;
         }
 
