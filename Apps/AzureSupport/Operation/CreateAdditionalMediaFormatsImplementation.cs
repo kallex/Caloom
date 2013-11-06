@@ -62,13 +62,32 @@ namespace AaltoGlobalImpact.OIP
             // Photos become still quite large on png => transparency issues need to be dealt with differently
             Size[] pngSizes = new Size[]
                 {
+                    new Size(640, 480),
+                    new Size(320, 240),
+                    new Size(160, 120),
+                    new Size(256, 256),
+                    new Size(128, 128),
+                    new Size(64, 64),
+                    new Size(32, 32),
                 };
-            var sizesWithFormat = jpgSizes.Select(size => new {Format = ImageFormat.Jpeg, Size = size}).
-                                          Union(pngSizes.Select(size => new {Format = ImageFormat.Png, Size = size}));
-            foreach(var sizeWithFormat in sizesWithFormat)
+
+            //var sizesWithFormat = jpgSizes.Select(size => new {Format = ImageFormat.Jpeg, Size = size}).
+            //                              Union(pngSizes.Select(size => new {Format = ImageFormat.Png, Size = size}));
+            Size[] sizes;
+            ImageFormat currFormat;
+            if (masterRelativeLocation.EndsWith(".jpg") || masterRelativeLocation.EndsWith(".jpeg"))
             {
-                var size = sizeWithFormat.Size;
-                var format = sizeWithFormat.Format;
+                sizes = jpgSizes;
+                currFormat = ImageFormat.Jpeg;
+            }
+            else
+            {
+                sizes = pngSizes;
+                currFormat = ImageFormat.Png;
+            }
+            foreach(var size in sizes)
+            {
+                var format = currFormat;
                 string sizedFittingAllInLocation = GetSizedLocation(masterRelativeLocation, size, fittingAllIn: true, format:format);
                 Bitmap fittingBitmap = ResizeImage(bitmapData, size, true, false, false);
                 StoreToBlob(sizedFittingAllInLocation, fittingBitmap, format);
