@@ -69,6 +69,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs">
       <Link>Abstractions\OperationAbstractionFromOIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs">
+      <Link>Abstractions\OperationAbstractionFromTheBallAdmin.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallCore.designer.cs">
       <Link>Abstractions\OperationAbstractionFromTheBallCore.designer.cs</Link>
     </Compile>
@@ -84,9 +87,13 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>Abstractions\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallAdmin.designer.cs">
+      <Link>Abstractions\TheBallAdmin.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.Admin\FixGroupMastersAndCollectionsImplementation.cs" />
     <Compile Include="Partials\BinaryFile.cs" />
     <Compile Include="Partials\BinaryFileCollection.cs" />
     <Compile Include="Partials\ImageCollection.cs" />

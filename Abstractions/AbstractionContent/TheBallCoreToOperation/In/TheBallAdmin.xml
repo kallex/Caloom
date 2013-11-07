@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="TheBall.Admin">
+    <InformationModel />
+    <Operations>
+      <Operation name="FixGroupMastersAndCollections">
+        <OperationSpec>
+          <Description>Fix group's masters and collections</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="ID of the group to fix" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="FixMastersAndCollections" designDesc="Fix masters and collections" state="implemented">
+              <Parameter name="GroupID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    <Subscriptions />
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

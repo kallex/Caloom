@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Web;
+using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
 
@@ -23,6 +24,13 @@ namespace TheBall
             if (operationName != null)
             {
                 executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
+                return;
+            }
+
+            string adminOperationName = form["ExecuteAdminOperation"];
+            if (adminOperationName != null)
+            {
+                executeAdminOperationWithFormValues(containerOwner, operationName, form, fileContent);
                 return;
             }
 
@@ -79,6 +87,30 @@ namespace TheBall
                 }
                  * */
                 rootObject.StoreInformationMasterFirst(containerOwner, false);
+            }
+
+        }
+
+        private static void executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        {
+            var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID" };
+            string adminGroupID = InstanceConfiguration.AdminGroupID;
+            if(containerOwner.LocationPrefix != adminGroupID)
+                throw new SecurityException("Only Admin Group can execute these operations");
+            switch (operationName)
+            {
+                case "FixGroupMastersAndCollections":
+                    {
+                        FixGroupMastersAndCollectionsParameters parameters = new FixGroupMastersAndCollectionsParameters
+                            ()
+                            {
+                                GroupID = form["GroupID"]
+                            };
+                        FixGroupMastersAndCollections.Execute(parameters);
+                        break;
+                    }
+                default:
+                    throw new NotSupportedException("Operation not (yet) supported: " + operationName);
             }
 
         }
