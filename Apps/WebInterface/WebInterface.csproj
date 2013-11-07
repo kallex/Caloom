@@ -122,7 +122,6 @@
     <Compile Include="RESTForwarderModule.cs" />
     <Compile Include="RESTRequestForwardingHandler.cs" />
     <Compile Include="WebSocketHandler.cs" />
-    <Compile Include="DeveloperBlobStorageHandler.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

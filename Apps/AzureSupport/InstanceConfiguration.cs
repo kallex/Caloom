@@ -32,6 +32,7 @@ namespace TheBall
         public static readonly string GroupDefaultRedirect;
         public static readonly string AzureStorageKey;
         public static readonly string AzureAccountName;
+        public static readonly string AdminGroupID;
 
         static InstanceConfiguration()
         {
@@ -54,6 +55,8 @@ namespace TheBall
             RedirectFromFolderFileName = CloudConfigurationManager.GetSetting("RedirectFromFolderFileName");
             AccountDefaultRedirect = CloudConfigurationManager.GetSetting("AccountDefaultRedirect");
             GroupDefaultRedirect = CloudConfigurationManager.GetSetting("GroupDefaultRedirect");
+            AdminGroupID = CloudConfigurationManager.GetSetting("AdminGroupID");
+
             #endregion
 
             #region Email
