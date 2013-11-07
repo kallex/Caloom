@@ -38,15 +38,19 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             if (request.Path.StartsWith("/websocket/"))
                 return;
-            var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
-            if (HttpContext.Current.Request.IsAuthenticated)
+            // Don't log local requests
+            if (request.IsLocal == false)
             {
-                reqDetails.UserID =
-                    HttpContext.Current.User.Identity.Name;
-            }
-            else
-            {
-                reqDetails.UserID = "anonymous";
+                var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
+                if (HttpContext.Current.Request.IsAuthenticated)
+                {
+                    reqDetails.UserID =
+                        HttpContext.Current.User.Identity.Name;
+                }
+                else
+                {
+                    reqDetails.UserID = "anonymous";
+                }
             }
         }
 
@@ -56,10 +60,14 @@ namespace WebInterface
             if (request.Path.StartsWith("/websocket/"))
                 return;
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
-            InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WebRole);
-            SetRequestLoggingData(request, InformationContext.Current.RequestResourceUsage.RequestDetails);
-            var application = (HttpApplication)sender;
-            application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
+            // Do resource tracking only on non-local requests
+            if (request.IsLocal == false)
+            {
+                InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WebRole);
+                SetRequestLoggingData(request, InformationContext.Current.RequestResourceUsage.RequestDetails);
+                var application = (HttpApplication)sender;
+                application.Response.Filter = new ContentLengthFilter(application.Response.Filter);
+            }
         }
 
         private void SetRequestLoggingData(HttpRequest request, HTTPActivityDetails requestDetails)
@@ -75,15 +83,19 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             if (request.Path.StartsWith("/websocket/"))
                 return;
-            var application = (HttpApplication)sender;
-            var response = application.Response;
-            var contentLengthFilter = (ContentLengthFilter)response.Filter;
-            var contentLength = contentLengthFilter.BytesWritten;
-            Debug.WriteLine("Content length sent: " + contentLength);
-            InformationContext.AddNetworkOutputByteAmountToCurrent(contentLength);
-            var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
-            reqDetails.HTTPStatusCode = response.StatusCode;
-            reqDetails.ReturnedContentLength = contentLength;
+            // Do resource tracking only on non-local requests
+            if (request.IsLocal == false)
+            {
+                var application = (HttpApplication)sender;
+                var response = application.Response;
+                var contentLengthFilter = (ContentLengthFilter)response.Filter;
+                var contentLength = contentLengthFilter.BytesWritten;
+                Debug.WriteLine("Content length sent: " + contentLength);
+                InformationContext.AddNetworkOutputByteAmountToCurrent(contentLength);
+                var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
+                reqDetails.HTTPStatusCode = response.StatusCode;
+                reqDetails.ReturnedContentLength = contentLength;
+            }
             InformationContext.ProcessAndClearCurrent();
         }
 
