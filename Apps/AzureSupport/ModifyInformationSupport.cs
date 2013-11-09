@@ -30,7 +30,7 @@ namespace TheBall
             string adminOperationName = form["ExecuteAdminOperation"];
             if (adminOperationName != null)
             {
-                executeAdminOperationWithFormValues(containerOwner, operationName, form, fileContent);
+                executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
                 return;
             }
 

@@ -49,8 +49,6 @@ namespace AaltoGlobalImpact.OIP
             UpdateAdditionalMediaFormats();
         }
 
-        string[] ImageMediaExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp"};
-
         public void UpdateAdditionalMediaFormats()
         {
             RemoveAdditionalMediaFormats();
@@ -59,7 +57,7 @@ namespace AaltoGlobalImpact.OIP
 
         public void CreateAdditionalMediaFormats()
         {
-            if(ImageMediaExtensions.Contains(FileExt))
+            if(FileExt == ".jpg" || FileExt == ".jpeg" || FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
                 OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
