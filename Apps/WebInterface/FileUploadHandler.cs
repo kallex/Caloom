@@ -480,6 +480,7 @@ namespace WebInterface
                 {
                     var owner = InformationContext.Current.Owner;
                     MediaContent mediaContent = null;
+                    IInformationObject owningInformationObject = null;
                     if (isImageFile(name))
                     {
                         AaltoGlobalImpact.OIP.Image image = new AaltoGlobalImpact.OIP.Image()
@@ -492,7 +493,7 @@ namespace WebInterface
                                     }
                             };
                         image.SetLocationAsOwnerContent(owner, image.ID);
-                        image.StoreInformation();
+                        owningInformationObject = image;
                         mediaContent = image.ImageData;
                     }
                     else
@@ -507,10 +508,11 @@ namespace WebInterface
                                     }
                             };
                         binaryFile.SetLocationAsOwnerContent(owner, binaryFile.ID);
-                        binaryFile.StoreInformation();
+                        owningInformationObject = binaryFile;
                         mediaContent = binaryFile.Data;
                     }
                     mediaContent.SetMediaContent(owner, mediaContent.ID, uploaded_file);
+                    owningInformationObject.StoreInformation();
                 }
 
 

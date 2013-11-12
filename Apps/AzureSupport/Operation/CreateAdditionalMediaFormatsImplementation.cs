@@ -71,6 +71,18 @@ namespace AaltoGlobalImpact.OIP
                     new Size(32, 32),
                 };
 
+            Size[] gifSizes = new Size[]
+                {
+                    new Size(640, 480),
+                    new Size(320, 240),
+                    new Size(160, 120),
+                    new Size(256, 256),
+                    new Size(128, 128),
+                    new Size(64, 64),
+                    new Size(32, 32),
+                };
+
+
             //var sizesWithFormat = jpgSizes.Select(size => new {Format = ImageFormat.Jpeg, Size = size}).
             //                              Union(pngSizes.Select(size => new {Format = ImageFormat.Png, Size = size}));
             Size[] sizes;
@@ -80,7 +92,11 @@ namespace AaltoGlobalImpact.OIP
                 sizes = jpgSizes;
                 currFormat = ImageFormat.Jpeg;
             }
-            else
+            else if (masterRelativeLocation.EndsWith(".gif"))
+            {
+                sizes = gifSizes;
+                currFormat = ImageFormat.Gif;
+            }else
             {
                 sizes = pngSizes;
                 currFormat = ImageFormat.Png;
@@ -113,10 +129,12 @@ namespace AaltoGlobalImpact.OIP
         {
             string masterLocationWithoutExtension = RenderWebSupport.GetLocationWithoutExtension(masterRelativeLocation);
             string fileExtensionWithoutDot;
-            if(format == ImageFormat.Jpeg)
+            if (format == ImageFormat.Jpeg)
                 fileExtensionWithoutDot = "jpg";
-            else if(format == ImageFormat.Png)                
+            else if (format == ImageFormat.Png)
                 fileExtensionWithoutDot = "png";
+            else if (format == ImageFormat.Gif)
+                fileExtensionWithoutDot = "gif";
             else
                 throw new NotSupportedException("File format extension not defined for format: " + format.ToString());
             string formatWithExtension = fittingAllIn

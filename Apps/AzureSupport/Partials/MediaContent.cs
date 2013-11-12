@@ -39,8 +39,10 @@ namespace AaltoGlobalImpact.OIP
                 string additionalFormatFileExt;
                 if (FileExt == ".jpg" || FileExt == ".jpeg")
                     additionalFormatFileExt = ".jpg";
-                else if (FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
+                else if (FileExt == ".png" || FileExt == ".bmp")
                     additionalFormatFileExt = ".png";
+                else if (FileExt == ".gif")
+                    additionalFormatFileExt = ".gif";
                 else
                     additionalFormatFileExt = null;
                 return additionalFormatFileExt;
