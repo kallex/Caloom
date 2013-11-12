@@ -390,6 +390,7 @@
         <InformationItems>
           <InformationItem name="TechnicalSource" logicalDataType="Text_Short"/>
           <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
+          <InformationItem name="ImageExt" logicalDataType="Text_Short" />
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="ActualContentUrl" logicalDataType="Text_Short" />
           <InformationItem name="Excerpt" logicalDataType="Text_Long" />

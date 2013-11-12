@@ -32,6 +32,26 @@ namespace AaltoGlobalImpact.OIP
         public string FileExt { get; set; }
 
         [DataMember]
+        public string AdditionalFormatFileExt
+        {
+            get
+            {
+                string additionalFormatFileExt;
+                if (FileExt == ".jpg" || FileExt == ".jpeg")
+                    additionalFormatFileExt = ".jpg";
+                else if (FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
+                    additionalFormatFileExt = ".png";
+                else
+                    additionalFormatFileExt = null;
+                return additionalFormatFileExt;
+            }
+            set
+            {
+                // Empty body to please the (de)serialization
+            }
+        }
+
+        [DataMember]
         public int ContentLength { get; set; }
 
         public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
@@ -57,7 +77,7 @@ namespace AaltoGlobalImpact.OIP
 
         public void CreateAdditionalMediaFormats()
         {
-            if(FileExt == ".jpg" || FileExt == ".jpeg" || FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
+            if (FileExt == ".jpg" || FileExt == ".jpeg" || FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
                 OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 

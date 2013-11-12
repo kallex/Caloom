@@ -541,6 +541,7 @@ namespace AaltoGlobalImpact.OIP
             node.Title = blog.Title;
             node.Excerpt = blog.Excerpt;
             node.ImageBaseUrl = blog.ProfileImage.ImageData.ContentUrlBase;
+            node.ImageExt = blog.ProfileImage.ImageData.AdditionalFormatFileExt;
             node.ActualContentUrl = blog.ReferenceToInformation.URL;
             node.TimestampText = getTimeStampText(blog.Published);
             node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(blog.CategoryCollection, getTitleOrNameFromCategory));
@@ -596,6 +597,7 @@ namespace AaltoGlobalImpact.OIP
             node.Title = activity.ActivityName;
             node.Excerpt = activity.Excerpt;
             node.ImageBaseUrl = activity.ProfileImage.ImageData.ContentUrlBase;
+            node.ImageExt = activity.ProfileImage.ImageData.AdditionalFormatFileExt;
             node.ActualContentUrl = activity.ReferenceToInformation.URL;
             node.TimestampText = getTimeStampText(activity.StartingTime);
             node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(activity.CategoryCollection, getTitleOrNameFromCategory));
@@ -674,7 +676,10 @@ namespace AaltoGlobalImpact.OIP
             node.Title = category.Title;
             node.Excerpt = category.Excerpt;
             if (category.ImageData != null)
+            {
                 node.ImageBaseUrl = category.ImageData.ContentUrlBase;
+                node.ImageExt = category.ImageData.AdditionalFormatFileExt;
+            }
             //node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.Name + "/" + textContent.ID;
             if (category.ParentCategory != null)
             {
@@ -723,8 +728,11 @@ namespace AaltoGlobalImpact.OIP
             node.TechnicalSource = NodeSourceTypeTextContent;
             node.Title = textContent.Title;
             node.Excerpt = textContent.Excerpt;
-            if(textContent.ImageData != null)
+            if (textContent.ImageData != null)
+            {
                 node.ImageBaseUrl = textContent.ImageData.ContentUrlBase;
+                node.ImageExt = textContent.ImageData.AdditionalFormatFileExt;
+            }
             node.ActualContentUrl = "../" + textContent.SemanticDomainName + "/" + textContent.Name + "/" + textContent.ID;
             if (textContent.Categories != null)
             {
