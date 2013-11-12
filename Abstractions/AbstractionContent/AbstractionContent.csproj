@@ -55,6 +55,7 @@
     </Content>
     <Content Include="..\..\InformationAndProcessModels\TheBallAdmin.xml">
       <Link>TheBallCore\TheBallAdmin.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\InformationAndProcessModels\TheBallCore.xml">
       <Link>TheBallCore\TheBallCore.xml</Link>

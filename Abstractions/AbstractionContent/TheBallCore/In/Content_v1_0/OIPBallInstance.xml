@@ -711,6 +711,7 @@
           <InformationItem name="GroupName" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long"/>
           <InformationItem name="OrganizationsAndGroupsLinkedToUs" logicalDataType="Text_Long"/>
+          <InformationItem name="WwwSiteToPublishTo" logicalDataType="Text_Short"/>
           <InformationItem name="Moderators" logicalDataType="InformationObject" informationObjectName="ModeratorCollection"/>
           <InformationItem name="CategoryCollection" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
         </InformationItems>

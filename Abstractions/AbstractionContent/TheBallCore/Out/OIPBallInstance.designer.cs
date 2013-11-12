@@ -42655,6 +42655,8 @@ Group.OrganizationsAndGroupsLinkedToUs
 Group.OrganizationsAndGroupsLinkedToUs
 ";
 
+					result.WwwSiteToPublishTo = @"Group.WwwSiteToPublishTo";
+
 					result.Moderators = ModeratorCollection.CreateDemoDefault();
 					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
 				
@@ -42844,6 +42846,8 @@ Group.OrganizationsAndGroupsLinkedToUs
 							return true;
 						if(OrganizationsAndGroupsLinkedToUs != _unmodified_OrganizationsAndGroupsLinkedToUs)
 							return true;
+						if(WwwSiteToPublishTo != _unmodified_WwwSiteToPublishTo)
+							return true;
 						if(Moderators != _unmodified_Moderators)
 							return true;
 						if(CategoryCollection != _unmodified_CategoryCollection)
@@ -42924,6 +42928,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 					GroupName = sourceObject.GroupName;
 					Description = sourceObject.Description;
 					OrganizationsAndGroupsLinkedToUs = sourceObject.OrganizationsAndGroupsLinkedToUs;
+					WwwSiteToPublishTo = sourceObject.WwwSiteToPublishTo;
 					Moderators = sourceObject.Moderators;
 					CategoryCollection = sourceObject.CategoryCollection;
 				}
@@ -42935,6 +42940,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 					_unmodified_GroupName = GroupName;
 					_unmodified_Description = Description;
 					_unmodified_OrganizationsAndGroupsLinkedToUs = OrganizationsAndGroupsLinkedToUs;
+					_unmodified_WwwSiteToPublishTo = WwwSiteToPublishTo;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
@@ -42975,6 +42981,9 @@ Group.OrganizationsAndGroupsLinkedToUs
 						case "OrganizationsAndGroupsLinkedToUs":
 							OrganizationsAndGroupsLinkedToUs = value;
 							break;
+						case "WwwSiteToPublishTo":
+							WwwSiteToPublishTo = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -42997,6 +43006,9 @@ Group.OrganizationsAndGroupsLinkedToUs
 			[DataMember]
 			public string OrganizationsAndGroupsLinkedToUs { get; set; }
 			private string _unmodified_OrganizationsAndGroupsLinkedToUs;
+			[DataMember]
+			public string WwwSiteToPublishTo { get; set; }
+			private string _unmodified_WwwSiteToPublishTo;
 			[DataMember]
 			public ModeratorCollection Moderators { get; set; }
 			private ModeratorCollection _unmodified_Moderators;

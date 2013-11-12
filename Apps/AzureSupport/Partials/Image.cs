@@ -42,7 +42,8 @@ namespace AaltoGlobalImpact.OIP
 
         partial void DoPostDeleteExecute(IContainerOwner owner)
         {
-            ImageData.ClearCurrentContent(owner);
+            if(ImageData != null)
+                ImageData.ClearCurrentContent(owner);
         }
     }
 }
