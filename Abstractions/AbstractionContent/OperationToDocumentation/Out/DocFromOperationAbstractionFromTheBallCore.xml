@@ -1877,6 +1877,74 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="PublishGroupToWww (Owner)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Publish group content to Www-site</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group as a owner. Used to retrieve required data to publish</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupContainer ( Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group container of the group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: TargetContainerName ( GroupContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Target container name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: TargetContainerOwnerString ( TargetContainerName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>GroupID of targetcontainer owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidatePublishParameters ( TargetContainerOwnerString, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate publish pre-requisites and parameters</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PublishWithWorker ( TargetContainerName, TargetContainerOwnerString, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Publish website with worker call</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PushToInformationOutput (Owner, InformationOutputID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

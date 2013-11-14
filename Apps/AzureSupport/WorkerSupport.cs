@@ -505,15 +505,15 @@ namespace TheBall
 
         public static void ProcessPublishWebContent(PublishWebContentOperation publishWebContent)
         {
-            // Hardcoded security for now
             string targetContainerName = publishWebContent.TargetContainerName;
-            if (targetContainerName != "www-aaltoglobalimpact-org" && targetContainerName != "www-weconomy-fi" 
-                && targetContainerName != "hacktheball-protonit-net"
-                && targetContainerName != "www-protonit-net" && targetContainerName != "www-caloom-com" && targetContainerName != "www-earthhouse-fi"
-                && targetContainerName != "demowww-norssi-protonit-net" && targetContainerName != "demowww-foip-protonit-net" && targetContainerName != "b-base-protonit-net")
+            // Hardcoded double-verify for valid container
+            var blob = StorageSupport.GetBlob(targetContainerName, ".currenttoserve");
+            var blobData = blob.DownloadText();
+            string[] contentArr = blobData.Split(':');
+            if (contentArr.Length < 2 || contentArr[1] != publishWebContent.SourceOwner)
                 return;
             DateTime currPublishTimeUtc = DateTime.UtcNow;
-            string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_hh-mm-ss");
+            string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_HH-mm-ss");
             string sourceOwner = publishWebContent.SourceOwner;
             string sourceRoot = publishWebContent.SourcePathRoot;
             string sourceContainerName = publishWebContent.SourceContainerName;
@@ -524,15 +524,17 @@ namespace TheBall
             WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,
                            RenderWebSupport.CopyAsIsSyncHandler);
             // Copy Media
+            /*
             string mediaFolderName = "AaltoGlobalImpact.OIP/MediaContent";
             string targetMediaRoot = targetRootFolderName + "/" + mediaFolderName;
             string sourceMediaRoot = sourceOwner + "/" + mediaFolderName;
             WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
                            RenderWebSupport.CopyAsIsSyncHandler);
-            // Copy render required data
-            string[] renderRequiredFolders = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent",
-            "AaltoGlobalImpact.OIP/AddressAndLocationCollection"};
-            foreach (string renderRequiredFolder in renderRequiredFolders)
+             */
+            // Copy required data to go with website stuff
+            string[] foldersToCopy = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent",
+            "AaltoGlobalImpact.OIP/AddressAndLocationCollection", "AaltoGlobalImpact.OIP/MediaContent", "AaltoGlobalImpact.OIP/GroupContainer"};
+            foreach (string renderRequiredFolder in foldersToCopy)
             {
                 string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
                 string sourceFolder = sourceOwner + "/" + renderRequiredFolder;
@@ -542,7 +544,7 @@ namespace TheBall
             var lastUpdateFileBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
             lastUpdateFileBlob.UploadBlobText(targetRootFolderName);
             var currentToServeBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            currentToServeBlob.UploadBlobText(targetRootFolderName);
+            currentToServeBlob.UploadBlobText(targetRootFolderName + ":" + sourceOwner);
         }
         
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)

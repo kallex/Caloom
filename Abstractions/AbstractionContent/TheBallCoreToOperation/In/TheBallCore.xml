@@ -1198,6 +1198,36 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="PublishGroupToWww">
+        <OperationSpec>
+          <Description>Publish group content to Www-site</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Group as a owner. Used to retrieve required data to publish" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container of the group" state="implemented">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <TargetDefinition name="TargetContainerName" dataType="string" designDesc="Target container name" state="implemented">
+              <Target name="GroupContainer"/>
+            </TargetDefinition>
+            <TargetDefinition name="TargetContainerOwnerString" dataType="string" designDesc="GroupID of targetcontainer owner" state="implemented">
+              <Target name="TargetContainerName"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidatePublishParameters" designDesc="Validate publish pre-requisites and parameters" state="implemented">
+              <Parameter name="Owner"/>
+              <Target name="TargetContainerOwnerString"/>
+            </MethodExecute>
+            <MethodExecute name="PublishWithWorker" designDesc="Publish website with worker call" state="implemented">
+              <Parameter name="Owner"/>
+              <Target name="TargetContainerName"/>
+              <Target name="TargetContainerOwnerString"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     </Operations>
     <!--
     <Subscriptions>

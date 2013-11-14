@@ -93,6 +93,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\PublishGroupToWwwImplementation.cs" />
     <Compile Include="TheBall.Admin\FixGroupMastersAndCollectionsImplementation.cs" />
     <Compile Include="Partials\BinaryFile.cs" />
     <Compile Include="Partials\BinaryFileCollection.cs" />

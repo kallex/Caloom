@@ -9,6 +9,7 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 
 namespace WebInterface
 {
@@ -129,24 +130,17 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localhost" || hostName == "www.globalimpact.aalto.fi" || hostName == "globalimpact.aalto.fi")
-            {
-                //                hostName = "demopublicoip.aaltoglobalimpact.org";
-                hostName = "www.aaltoglobalimpact.org";
-            }
-            else if (hostName == "demowww.weconomy.protonit.net" || hostName == "weconomy.aaltoglobalimpact.org")
-            {
-                hostName = "www.weconomy.fi";
-            }
-            else if (hostName == "demowww.ehs.protonit.net")
-                hostName = "www.earthhouse.fi";
             string containerName = hostName.Replace('.', '-');
             string currServingFolder = "";
             try
             {
                 // "/2013-03-20_08-27-28";
                 CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-                string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
+                string currServingData = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
+                string[] currServeArr = currServingData.Split(':');
+                string currServingPath = currServeArr[0];
+                var currOwner = VirtualOwner.FigureOwner(currServeArr[1]);
+                InformationContext.Current.Owner = currOwner;
                 var currBlob = publicClient.GetBlockBlobReference(currServingPath);
                 currServingFolder = "/" + currBlob.DownloadText();
             }

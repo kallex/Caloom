@@ -629,4 +629,24 @@ using System.IO;
 				UpdateUsageMonitoringItemsImplementation.ExecuteMethod_StoreObjects(NewMonitoringItems);		
 				}
 				}
+				public class PublishGroupToWwwParameters 
+		{
+				public IContainerOwner Owner ;
+				}
+		
+		public class PublishGroupToWww 
+		{
+				private static void PrepareParameters(PublishGroupToWwwParameters parameters)
+		{
+					}
+				public static void Execute(PublishGroupToWwwParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = PublishGroupToWwwImplementation.GetTarget_GroupContainer(parameters.Owner);	
+				string TargetContainerName = PublishGroupToWwwImplementation.GetTarget_TargetContainerName(GroupContainer);	
+				string TargetContainerOwnerString = PublishGroupToWwwImplementation.GetTarget_TargetContainerOwnerString(TargetContainerName);	
+				PublishGroupToWwwImplementation.ExecuteMethod_ValidatePublishParameters(parameters.Owner, TargetContainerOwnerString);		
+				PublishGroupToWwwImplementation.ExecuteMethod_PublishWithWorker(parameters.Owner, TargetContainerName, TargetContainerOwnerString);		
+				}
+				}
 		 } 

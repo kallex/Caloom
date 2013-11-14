@@ -1999,6 +1999,52 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete obsolete processed objects
 		</div>
+		</p><h1>PublishGroupToWww (Owner)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Publish group content to Www-site
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group as a owner. Used to retrieve required data to publish
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupContainer ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Group container of the group
+		</div>
+		</p><h2>Target Definition: TargetContainerName ( GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Target container name
+		</div>
+		</p><h2>Target Definition: TargetContainerOwnerString ( TargetContainerName )</h2>
+		<p>		<div class="MsoNormal" >
+		GroupID of targetcontainer owner
+		</div>
+		</p><h2>Method Call: ValidatePublishParameters ( TargetContainerOwnerString, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate publish pre-requisites and parameters
+		</div>
+		</p><h2>Method Call: PublishWithWorker ( TargetContainerName, TargetContainerOwnerString, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Publish website with worker call
+		</div>
 		</p><h1>PushToInformationOutput (Owner, InformationOutputID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

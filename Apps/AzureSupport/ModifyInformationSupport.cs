@@ -126,6 +126,15 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "PublishGroupToWww":
+                    {
+                        PublishGroupToWwwParameters parameters = new PublishGroupToWwwParameters
+                            {
+                                Owner = containerOwner
+                            };
+                        PublishGroupToWww.Execute(parameters);
+                        break;
+                    }
                 case "UpdateUsageMonitoringItems":
                     {
                         UpdateUsageMonitoringItemsParameters parameters = new UpdateUsageMonitoringItemsParameters
