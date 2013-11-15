@@ -99,7 +99,7 @@ namespace WebInterface
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
-            CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
+            CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
             string blobPath = GetBlobPath(request);
             CloudBlockBlob blob = publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
@@ -130,19 +130,24 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
+            if (hostName == "localdev")
+            {
+                hostName = "www.protonit.net";
+            }
             string containerName = hostName.Replace('.', '-');
             string currServingFolder = "";
             try
             {
                 // "/2013-03-20_08-27-28";
-                CloudBlobClient publicClient = new CloudBlobClient("http://theball.blob.core.windows.net/");
-                string currServingData = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
+                CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
+                string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
+                var currBlob = publicClient.GetBlockBlobReference(currServingPath);
+                string currServingData = currBlob.DownloadText();
                 string[] currServeArr = currServingData.Split(':');
-                string currServingPath = currServeArr[0];
+                string currActiveFolder = currServeArr[0];
                 var currOwner = VirtualOwner.FigureOwner(currServeArr[1]);
                 InformationContext.Current.Owner = currOwner;
-                var currBlob = publicClient.GetBlockBlobReference(currServingPath);
-                currServingFolder = "/" + currBlob.DownloadText();
+                currServingFolder = "/" + currActiveFolder;
             }
             catch
             {
