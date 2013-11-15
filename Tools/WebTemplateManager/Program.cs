@@ -33,7 +33,7 @@ namespace WebTemplateManager
                     Console.WriteLine("Usage: WebTemplateManager.exe <containername> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
                     return;
                 }
-                Debugger.Launch();
+                //Debugger.Launch();
 
                 string currContainerName = arguments[0];
                 ValidateContainerName(currContainerName);

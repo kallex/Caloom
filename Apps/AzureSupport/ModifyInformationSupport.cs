@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -99,6 +100,21 @@ namespace TheBall
                 throw new SecurityException("Only Admin Group can execute these operations");
             switch (operationName)
             {
+                case "FixAllGroupsMastersAndCollections":
+                    {
+                        var allGroupIDs = TBRGroupRoot.GetAllGroupIDs();
+                        foreach (var groupID in allGroupIDs)
+                        {
+                            Debug.WriteLine("Fixing group: " + groupID);
+                            FixGroupMastersAndCollectionsParameters parameters = new FixGroupMastersAndCollectionsParameters
+                                ()
+                            {
+                                GroupID = groupID
+                            };
+                            FixGroupMastersAndCollections.Execute(parameters);
+                        }
+                        break;
+                    }
                 case "FixGroupMastersAndCollections":
                     {
                         FixGroupMastersAndCollectionsParameters parameters = new FixGroupMastersAndCollectionsParameters

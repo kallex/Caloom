@@ -507,7 +507,7 @@ namespace TheBall
         {
             string targetContainerName = publishWebContent.TargetContainerName;
             // Hardcoded double-verify for valid container
-            var blob = StorageSupport.GetBlob(targetContainerName, ".currenttoserve");
+            var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
             var blobData = blob.DownloadText();
             string[] contentArr = blobData.Split(':');
             if (contentArr.Length < 2 || contentArr[1] != publishWebContent.SourceOwner)

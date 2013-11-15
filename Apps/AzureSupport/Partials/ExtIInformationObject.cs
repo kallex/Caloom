@@ -41,7 +41,7 @@ namespace TheBall.CORE
 
             string ownerLocation = owner.ContainerName + "/" + owner.LocationPrefix + "/";
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, null, 
+            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("TheBall.CORE/RequestResourceUsage") == false, 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==

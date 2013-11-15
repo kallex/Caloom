@@ -19,7 +19,7 @@ namespace TheBall.CORE
 
         public static string GetTarget_TargetContainerOwnerString(string targetContainerName)
         {
-            CloudBlockBlob blob = StorageSupport.GetBlob(targetContainerName, ".currenttoserve");
+            CloudBlockBlob blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
             string contents = blob.DownloadText();
             string[] contentArr = contents.Split(':');
             if (contentArr.Length < 2)
