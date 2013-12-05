@@ -142,6 +142,25 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "AddCategories":
+                    {
+                        string categoryNames = form["CategoryList"];
+                        string[] categoryList = categoryNames.Split(new string[] { Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries); 
+                        foreach (string categoryName in categoryList)
+                        {
+                            NameValueCollection values = new NameValueCollection();
+                            values.Add("Title", categoryName);
+                            CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
+                                {
+                                    ObjectDomainName = "AaltoGlobalImpact.OIP",
+                                    ObjectName = "Category",
+                                    HttpFormData = values,
+                                    Owner = containerOwner
+                                };
+                            CreateSpecifiedInformationObjectWithValues.Execute(parameters);
+                        }
+                        break;
+                    }
                 case "PublishGroupToWww":
                     {
                         PublishGroupToWwwParameters parameters = new PublishGroupToWwwParameters

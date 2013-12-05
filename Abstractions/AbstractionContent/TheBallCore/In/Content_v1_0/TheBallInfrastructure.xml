@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
+-->
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="TheBall.Infrastructure">
+    <InformationModel />
+    <Operations>
+      <Operation name="CreateCloudDrive">
+        <OperationSpec>
+          <Description>Create cloud drive</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="DriveName" dataType="string" designDesc="Name of the drive - is used as blob name by adding .vhd" state="implemented"/>
+          <Parameter name="SizeInMegabytes" dataType="int" designDesc="Size of drive in megabytes" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="DriveBlobName" dataType="string" designDesc="Blob name derived from drive name with adding .vhd extension." state="implemented">
+              <Parameter name="DriveName"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateDrive" designDesc="Create cloud drive" state="implemented">
+              <Parameter name="SizeInMegabytes"/>
+              <Target name="DriveBlobName"/>
+              <ReturnValue dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" name="CreatedDrive" designDesc="Created drive" state="implemented"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="CloudDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented"/>
+          <Target name="CreateDriveOutput"/>
+        </OperationReturnValues>
+      </Operation>
+    </Operations>
+    <Subscriptions />
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

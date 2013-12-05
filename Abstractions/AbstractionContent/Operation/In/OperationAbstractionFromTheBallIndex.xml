@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="TheBall.Index">
+    <Operation name="IndexInformationObject">
+      <OperationSpec>
+        <Description>Index information object </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner of the object" state="designApproved" />
+        <Parameter name="InformationObject" dataType="IInformationObject" designDesc="Object to be indexed" state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="designApproved">
+            <Parameter name="Owner" />
+            <Parameter name="InformationObject" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

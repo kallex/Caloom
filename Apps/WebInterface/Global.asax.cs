@@ -36,7 +36,7 @@ namespace WebInterface
                 bool isWebSocket = Request.Path.StartsWith("/websocket/");
                 bool isIndexAspx = Request.Path.StartsWith("index.aspx");
                 // TODO: Line below is a hack, that's assuming www.prefix
-                bool isWww = Request.Url.DnsSafeHost.StartsWith("www.");
+                bool isWww = Request.Url.DnsSafeHost.StartsWith("www.") || Request.Url.DnsSafeHost.StartsWith("teaching.");
                 if (isWebSocket == false && isIndexAspx == false && isWww == false)
                 {
                     string redirectUrl = Request.Url.ToString().Replace("http:", "https:");

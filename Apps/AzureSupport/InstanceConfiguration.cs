@@ -34,8 +34,15 @@ namespace TheBall
         public static readonly string AzureAccountName;
         public static readonly string AdminGroupID;
 
+        // Infrastructure content/fields
+        public static readonly string CloudDriveContainerName;
+
         static InstanceConfiguration()
         {
+            # region Infrastructure
+
+            CloudDriveContainerName = "CloudDrives";
+            #endregion
             #region Data storage
 
             const string ConnStrFileName = @"C:\users\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";

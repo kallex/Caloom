@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="TheBall.Infrastructure">
+    <Operation name="CreateCloudDrive">
+      <OperationSpec>
+        <Description>Create cloud drive</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="DriveName" dataType="string" designDesc="Name of the drive - is used as blob name by adding .vhd" state="implemented" />
+        <Parameter name="SizeInMegabytes" dataType="int" designDesc="Size of drive in megabytes" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="DriveBlobName" dataType="string" designDesc="Blob name derived from drive name with adding .vhd extension." state="implemented">
+            <Parameter name="DriveName" />
+          </TargetDefinition>
+          <MethodExecute name="CreateDrive" designDesc="Create cloud drive" state="implemented">
+            <Parameter name="SizeInMegabytes" />
+            <Target name="DriveBlobName" />
+            <ReturnValue name="CreatedDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="CloudDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented" />
+        <Target name="CreateDriveOutput" />
+      </OperationReturnValues>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

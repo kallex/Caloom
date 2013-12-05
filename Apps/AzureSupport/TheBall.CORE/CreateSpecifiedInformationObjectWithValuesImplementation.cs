@@ -53,6 +53,8 @@ namespace TheBall.CORE
         public static NameValueCollection GetTarget_ObjectLinkValues(NameValueCollection httpFormData, IInformationObject createdObject)
         {
             NameValueCollection objectEntries = new NameValueCollection();
+            if (httpFormData == null)
+                return objectEntries;
             string objectID = createdObject.ID;
             foreach (var key in httpFormData.AllKeys)
             {
@@ -65,6 +67,8 @@ namespace TheBall.CORE
 
         public static Dictionary<string, HttpPostedFile> GetTarget_BinaryContentFiles(NameValueCollection httpFormData, HttpFileCollection httpFileData, IInformationObject createdObject)
         {
+            if(httpFileData == null)
+                return new Dictionary<string, HttpPostedFile>();
             Dictionary<string, HttpPostedFile> resultDict = new Dictionary<string, HttpPostedFile>(httpFileData.Count);
             string objectID = createdObject.ID;
 

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="TheBall.Index">
+    <StatusItem name="IndexInformationObject_Owner" displayName="VariableType: Owner" description="Owner of the object">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformationObject_InformationObject" displayName="VariableType: InformationObject" description="Object to be indexed">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformationObject_PerformIndexing" displayName="MethodExecuteType: PerformIndexing" description="Perform indexing of the object">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="IndexInformationObject">
+      <ItemRef itemName="IndexInformationObject_Owner" />
+      <ItemRef itemName="IndexInformationObject_InformationObject" />
+      <ItemRef itemName="IndexInformationObject_PerformIndexing" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>
