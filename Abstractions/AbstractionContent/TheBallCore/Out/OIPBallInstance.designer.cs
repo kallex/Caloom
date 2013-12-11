@@ -44213,6 +44213,20 @@ TextContent.Body
 
 					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
 					result.Categories = CategoryCollection.CreateDemoDefault();
+					result.IFrameSources = @"TextContent.IFrameSources
+TextContent.IFrameSources
+TextContent.IFrameSources
+TextContent.IFrameSources
+TextContent.IFrameSources
+";
+
+					result.RawHtmlContent = @"TextContent.RawHtmlContent
+TextContent.RawHtmlContent
+TextContent.RawHtmlContent
+TextContent.RawHtmlContent
+TextContent.RawHtmlContent
+";
+
 				
 					return result;
 				}
@@ -44358,6 +44372,8 @@ TextContent.Body
 							return true;
 						if(SubTitle != _unmodified_SubTitle)
 							return true;
+						if(Published != _unmodified_Published)
+							return true;
 						if(Author != _unmodified_Author)
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
@@ -44369,6 +44385,10 @@ TextContent.Body
 						if(Categories != _unmodified_Categories)
 							return true;
 						if(SortOrderNumber != _unmodified_SortOrderNumber)
+							return true;
+						if(IFrameSources != _unmodified_IFrameSources)
+							return true;
+						if(RawHtmlContent != _unmodified_RawHtmlContent)
 							return true;
 						{
 							IInformationObject item = (IInformationObject) ImageData;
@@ -44436,12 +44456,15 @@ TextContent.Body
 					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
 					SubTitle = sourceObject.SubTitle;
+					Published = sourceObject.Published;
 					Author = sourceObject.Author;
 					Excerpt = sourceObject.Excerpt;
 					Body = sourceObject.Body;
 					Locations = sourceObject.Locations;
 					Categories = sourceObject.Categories;
 					SortOrderNumber = sourceObject.SortOrderNumber;
+					IFrameSources = sourceObject.IFrameSources;
+					RawHtmlContent = sourceObject.RawHtmlContent;
 				}
 				
 
@@ -44450,10 +44473,13 @@ TextContent.Body
 				{
 					_unmodified_Title = Title;
 					_unmodified_SubTitle = SubTitle;
+					_unmodified_Published = Published;
 					_unmodified_Author = Author;
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_Body = Body;
 					_unmodified_SortOrderNumber = SortOrderNumber;
+					_unmodified_IFrameSources = IFrameSources;
+					_unmodified_RawHtmlContent = RawHtmlContent;
 				
 					_unmodified_ImageData = ImageData;
 					if(ImageData != null)
@@ -44483,6 +44509,9 @@ TextContent.Body
 						case "SubTitle":
 							SubTitle = value;
 							break;
+						case "Published":
+							Published = DateTime.Parse(value);
+							break;
 						case "Author":
 							Author = value;
 							break;
@@ -44494,6 +44523,12 @@ TextContent.Body
 							break;
 						case "SortOrderNumber":
 							SortOrderNumber = double.Parse(value);
+							break;
+						case "IFrameSources":
+							IFrameSources = value;
+							break;
+						case "RawHtmlContent":
+							RawHtmlContent = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -44508,6 +44543,9 @@ TextContent.Body
 			[DataMember]
 			public string SubTitle { get; set; }
 			private string _unmodified_SubTitle;
+			[DataMember]
+			public DateTime Published { get; set; }
+			private DateTime _unmodified_Published;
 			[DataMember]
 			public string Author { get; set; }
 			private string _unmodified_Author;
@@ -44526,6 +44564,12 @@ TextContent.Body
 			[DataMember]
 			public double SortOrderNumber { get; set; }
 			private double _unmodified_SortOrderNumber;
+			[DataMember]
+			public string IFrameSources { get; set; }
+			private string _unmodified_IFrameSources;
+			[DataMember]
+			public string RawHtmlContent { get; set; }
+			private string _unmodified_RawHtmlContent;
 			
 			}
 			[DataContract]

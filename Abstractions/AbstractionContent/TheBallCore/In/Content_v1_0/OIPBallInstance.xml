@@ -733,12 +733,15 @@
           <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
           <InformationItem name="Title" logicalDataType="Text_Short" />
           <InformationItem name="SubTitle" logicalDataType="Text_Short" />
+          <InformationItem name="Published" logicalDataType="Time_DateTime" />
           <InformationItem name="Author" logicalDataType="Text_Short" />
           <InformationItem name="Excerpt" logicalDataType="Text_Long" />
           <InformationItem name="Body" logicalDataType="Text_Long" />
           <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
           <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
           <InformationItem name="SortOrderNumber" logicalDataType="Number_ApproxDecimal"/>
+          <InformationItem name="IFrameSources" logicalDataType="Text_Long"/>
+          <InformationItem name="RawHtmlContent" logicalDataType="Text_Long"/>
         </InformationItems>
       </InformationObject>
 
