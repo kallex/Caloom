@@ -68,15 +68,23 @@ namespace TheBall
 
             #region Email
 
-            const string SecretFileName = @"C:\users\kalle\work\ConnectionStringStorage\amazonses.txt";
-            string configString;
-            if (File.Exists(SecretFileName))
-                configString = File.ReadAllText(SecretFileName);
-            else
-                configString = CloudConfigurationManager.GetSetting("AmazonSESAccessInfo");
-            string[] strValues = configString.Split(';');
-            AWSAccessKey = strValues[0];
-            AWSSecretKey = strValues[1];
+            try
+            {
+                const string SecretFileName = @"C:\users\kalle\work\ConnectionStringStorage\amazonses.txt";
+                string configString;
+                if (File.Exists(SecretFileName))
+                    configString = File.ReadAllText(SecretFileName);
+                else
+                    configString = CloudConfigurationManager.GetSetting("AmazonSESAccessInfo");
+                string[] strValues = configString.Split(';');
+                AWSAccessKey = strValues[0];
+                AWSSecretKey = strValues[1];
+            }
+            catch // Neutral credentials - will revert to queue put when message send is failing at EmailSupport
+            {
+                AWSAccessKey = "";
+                AWSSecretKey = "";
+            }
 
             EmailFromAddress = CloudConfigurationManager.GetSetting("EmailFromAddress"); // "no-reply-theball@msunit.citrus.fi"
             EmailDeviceJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailDeviceJoinMessageFormat");

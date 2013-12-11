@@ -7,6 +7,7 @@ using Amazon;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
 
 namespace TheBall
@@ -25,74 +26,76 @@ namespace TheBall
         {
             if (Text != null || HTML != null)
             {
-                String from = From;
-
-                List<String> to
-                    = To
-                        .Replace(", ", ",")
-                        .Split(',')
-                        .ToList();
-
-                Destination destination = new Destination();
-                destination.WithToAddresses(to);
-                //destination.WithCcAddresses(cc);
-                //destination.WithBccAddresses(bcc);
-
-                Content subject = new Content();
-                subject.WithCharset("UTF-8");
-                subject.WithData(Subject);
-
-                Body body = new Body();
-
-
-                if (HTML != null)
+                try
                 {
-                    Content html = new Content();
-                    html.WithCharset("UTF-8");
-                    html.WithData(HTML);
-                    body.WithHtml(html);
-                }
 
-                if(Text != null)
-                {
-                    Content text = new Content();
-                    text.WithCharset("UTF-8");
-                    text.WithData(Text);
-                    body.WithText(text);
-                }
+                    String from = From;
 
-                Message message = new Message();
-                message.WithBody(body);
-                message.WithSubject(subject);
-
-                string awsAccessKey = AWSAccessKey;
-                string awsSecretKey = AWSSecretKey;
-                //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
-                AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(awsAccessKey, awsSecretKey);
-
-                SendEmailRequest request = new SendEmailRequest();
-                request.WithDestination(destination);
-                request.WithMessage(message);
-                request.WithSource(from);
-
-                if (emailReplyTo != null)
-                {
-                    List<String> replyto
-                        = emailReplyTo
+                    List<String> to
+                        = To
                             .Replace(", ", ",")
                             .Split(',')
                             .ToList();
 
-                    request.WithReplyToAddresses(replyto);
-                }
+                    Destination destination = new Destination();
+                    destination.WithToAddresses(to);
+                    //destination.WithCcAddresses(cc);
+                    //destination.WithBccAddresses(bcc);
 
-                if (returnPath != null)
-                {
-                    request.WithReturnPath(returnPath);
-                }
+                    Content subject = new Content();
+                    subject.WithCharset("UTF-8");
+                    subject.WithData(Subject);
 
-                try
-                {
+                    Body body = new Body();
+
+
+                    if (HTML != null)
+                    {
+                        Content html = new Content();
+                        html.WithCharset("UTF-8");
+                        html.WithData(HTML);
+                        body.WithHtml(html);
+                    }
+
+                    if (Text != null)
+                    {
+                        Content text = new Content();
+                        text.WithCharset("UTF-8");
+                        text.WithData(Text);
+                        body.WithText(text);
+                    }
+
+                    Message message = new Message();
+                    message.WithBody(body);
+                    message.WithSubject(subject);
+
+                    string awsAccessKey = AWSAccessKey;
+                    string awsSecretKey = AWSSecretKey;
+                    //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
+                    AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(awsAccessKey,
+                                                                                                         awsSecretKey);
+
+                    SendEmailRequest request = new SendEmailRequest();
+                    request.WithDestination(destination);
+                    request.WithMessage(message);
+                    request.WithSource(from);
+
+                    if (emailReplyTo != null)
+                    {
+                        List<String> replyto
+                            = emailReplyTo
+                                .Replace(", ", ",")
+                                .Split(',')
+                                .ToList();
+
+                        request.WithReplyToAddresses(replyto);
+                    }
+
+                    if (returnPath != null)
+                    {
+                        request.WithReturnPath(returnPath);
+                    }
+
                     SendEmailResponse response = ses.SendEmail(request);
 
                     SendEmailResult result = response.SendEmailResult;
@@ -106,8 +109,14 @@ namespace TheBall
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    throw;
+                    //throw;
                     return false;
+                }
+                finally
+                {
+                    String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
+                                                        Environment.NewLine, From, To, Subject, Text ?? HTML);
+                    QueueSupport.CurrStatisticsQueue.AddMessage(new CloudQueueMessage(queueMessage));
                 }
             }
 
