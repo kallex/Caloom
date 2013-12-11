@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Config replacement
+<storageconnstr-http> = connstr (http can be used-local datacenter calls)
+<storageconnstr-https> = connstr, https required (diagnostics for example)
+<amazonses-access> = access credentials for Amazon SES (email services)
+<active-container-names> = active containers which worker will poll for requests (list, comma separated)
+<remote-access-account> = account user name for deployments
+<remote-access-encpass> = Visual Studio account encrypted password
+<remote-access-expiration> = Visual Studio assisted, validate that it's sensible
+<remote-access-cert-thumbprint> = Remote access certificate thumbprint (Visual Studio assisted)
+<cert-thumbprints> = Various cert thumbprints, used in actual serving domains (can be multiple, can be reused, one valid required)
+-->
+<ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2012-10.1.8">
+  <Role name="WorkerRoleAccelerator.Core">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="<storageconnstr-http>" />
+      <Setting name="DataConnectionString" value="<storageconnstr-http>" />
+      <Setting name="AmazonSESAccessInfo" value="<amazonses-access>" />
+      <Setting name="WorkerRoleEntryPointContainerName" value="worker-role-accelerator" />
+      <Setting name="WorkerActiveContainerName" value="<active-container-names>"/>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="<storageconnstr-https>" />
+    </ConfigurationSettings>
+  </Role>
+  <Role name="TheBallWebFarm">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="<storageconnstr-http>" />
+      <Setting name="DataConnectionString" value="<storageconnstr-http>" />
+      <Setting name="AmazonSESAccessInfo" value="<amazonses-access>" />
+      <Setting name="SyncEnabled" value="true" />
+      <Setting name="SitesContainerName" value="sites" />
+      <Setting name="DirectoriesToExclude" value="App_Data/TEMP;TEMP" />
+      <Setting name="SyncIntervalInSeconds" value="60" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="<storageconnstr-https>" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="<remote-access-account>" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="<remote-access-encpass>" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="<remote-access-expiration>" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="<remote-access-cert-thumbprint>" thumbprintAlgorithm="sha1" />
+      <Certificate name="HTTPS" thumbprint="<cert-thumbprints>" thumbprintAlgorithm="sha1" />
+      <Certificate name="AaltoglobalimpactOrg" thumbprint="<cert-thumbprints>" thumbprintAlgorithm="sha1" />
+      <Certificate name="CaloomCom" thumbprint="<cert-thumbprints>" thumbprintAlgorithm="sha1" />
+      <Certificate name="ProtonitNet" thumbprint="<cert-thumbprints>" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
