@@ -1,0 +1,12 @@
+
+{! Fix Group Masters & Collections !}
+
+{>"executeoperation_button.dust" form_name="fixgroupmastersandcollections" button_label="Fix Group Masters And Collections" icon_class_name="icon-plus-sign" /}
+
+
+
+{>"modal_executeadminoperation_begin.dust" form_name="fixgroupmastersandcollections" header_title="Fix Group Masters And Collections"
+    admin_operation_name="FixGroupMastersAndCollections" /}
+{>"textinput_singleline.dust" field_id="FixGroupMastersAndCollections_GroupID"
+field_name="GroupID" field_label="Group ID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Fix Group!" /}

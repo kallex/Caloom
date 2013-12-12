@@ -1,0 +1,73 @@
+{#GroupContainerSource.GroupContainer}
+    <form id="form-id-1" method="post" class="form-horizontal" enctype="multipart/form-data">
+        {#GroupContainerSource}
+            <input name="ContentSourceInfo" value="{GroupContainer.RelativeLocation}:{MasterETag}" type="hidden" />
+        {/GroupContainerSource}
+        {#GroupProfile}
+            <fieldset id="profile">
+                <!-- group profile image and group icon image -->
+                <div class="span12">
+                    <div style="float:left">
+                        <div class="control-group">
+                            <label class="control-label">Group Profile Image</label>
+                            <div class="controls">
+                                {#ProfileImage}
+                                {?ImageData.ID}
+                                    {>"fileupload.dust" initial_class_mode="fileupload-exists" container_id="{ID}" field_name="ImageData" content_id="{ImageData.ID}"
+                                        imagesuffix="256x256_crop{ImageData.FileExt}" /}
+                                {:else}
+                                    {>"fileupload.dust" initial_class_mode="fileupload-new" container_id="{ID}" field_name="ImageData" /}
+                                {/ImageData.ID}
+                                {/ProfileImage}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix" style="float:left">
+                        <div class="control-group">
+                            <label class="control-label">Group Icon Image</label>
+                            <div class="controls">
+                                {#IconImage}
+                                    {?ImageData.ID}
+                                        {>"fileupload.dust" initial_class_mode="fileupload-exists" container_id="{ID}" field_name="ImageData" content_id="{ImageData.ID}"
+                                        imagesuffix="64x64_crop{ImageData.FileExt}" /}
+                                    {:else}
+                                        {>"fileupload.dust" initial_class_mode="fileupload-new" container_id="{ID}" field_name="ImageData" /}
+                                    {/ImageData.ID}
+                                {/IconImage}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end group profile image and group icon image -->
+                <div class="control-group">
+                    <label class="control-label" for="{ID}_GroupName">Group name</label>
+                    <div class="controls">
+                        <input name="{ID}_GroupName"  id="{ID}_GroupName" type="text" value="{GroupName}">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="{ID}_Description">Description</label>
+                    <div class="controls">
+                        <textarea id="{ID}_Description" name="{ID}_Description" rows="6">{Description}</textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="{ID}_OrganizationsAndGroupsLinkedToUs">Organisations and groups linked to us</label>
+                    <div class="controls">
+                        <textarea id="{ID}_OrganizationsAndGroupsLinkedToUs" name="{ID}_OrganizationsAndGroupsLinkedToUs" rows="6">{OrganizationsAndGroupsLinkedToUs}</textarea>
+                    </div>
+                </div>
+                {>"textinput_singleline.dust" field_id="{ID}_WwwSiteToPublishTo" field_label="Www site name to publish content" field_name="{ID}_WwwSiteToPublishTo"
+                    field_value="{WwwSiteToPublishTo}" /}
+                <footer>
+                    <div class="control-group controls pull-right">
+                        <div class="form-actions" style="padding:0;margin:0;border-top:0;background-color: transparent">
+                            <button value="true" name="btnCancel"  class="btn">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="RootSourceAction" id="RootSourceAction" value="Save">Save changes</button>
+                        </div>
+                    </div>
+                </footer>
+            </fieldset>
+        {/GroupProfile}
+    </form>
+{/GroupContainerSource.GroupContainer}

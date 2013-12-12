@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+    <title>The Ball - Instance Admin</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- For sample logo only-->
+    <!--Remove if you no longer need this font-->
+    <link href="https://fonts.googleapis.com/css?family=Aguafina+Script" rel="stylesheet" type="text/css" >
+    <!--For sample logo only-->
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    <!-- MarkdownDeep Editor -->
+    <link rel="stylesheet" href="../assets/lib/markdowndeep/mdd_styles.css">
+    <script type="text/javascript" src="../assets/lib/markdowndeep/MarkdownDeepLib.min.js"></script>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Dust + xml -->
+    <script src="../assets/js/dust-core-1.2.3.min.js"></script>
+    <script src="../assets/js/xml2json.js"></script>
+
+
+</head>
+
+<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body>
+<!--<![endif]-->
+
+<div class="dustph" id="content_placeholder"><i class="icon-refresh icon-spin"></i>Loading content...</div>
+
+<script>
+
+    var fixContentUrl = function(originalUrl)
+    {
+        if(window.location.host != "localhost:63342")
+            return originalUrl;
+        return originalUrl.replace("/auth/account/", "../../../ExtContent/auth/account/");
+    };
+    $("#content_placeholder").data({
+        datasource: {
+            GroupContainerSource: ["../../AaltoGlobalImpact.OIP/GroupContainer/default.json", null, "GroupContainer"],
+        }
+    });
+
+</script>
+
+<script language="javascript">
+
+    var xml2JSObj = function(xmlResponse) {
+        var dom;
+        if (window.DOMParser) {
+            parser = new DOMParser();
+            dom = parser.parseFromString(xmlResponse, "text/xml");
+        }
+        else // Internet Explorer
+        {
+            dom = new ActiveXObject("Microsoft.XMLDOM");
+            dom.async = false;
+            dom.loadXML(xmlResponse);
+        }
+        var json = xml2json(dom, "  ");
+        //alert(json);
+        var jsonResult = jQuery.parseJSON(json);
+        return jsonResult;
+    };
+    var renderDustFromResponse = function(placeholderID, dusttemplatename, templateContent, dataObject) {
+        //var templateID = placeholderID.replace("_placeholder", "");
+        //var templateCompiled = dust.compile(templateContent, templateID);
+        //dust.loadSource(templateCompiled);
+        dust.loadSource(templateContent);
+        dust.render(dusttemplatename, dataObject, function(err, out) {
+            $("#" + placeholderID).html(out);
+        });
+    };
+
+    String.prototype.replaceAll = function(strReplace, strWith) {
+        var reg = new RegExp(strReplace, 'ig');
+        return this.replace(reg, strWith);
+    };
+
+    dustifyph = function() {
+        var placeholderID = $(this).attr("id");
+        var dataSources = $(this).data("datasource");
+        //alert(placeholderID);
+        var fetchContentPromises = [];
+        var dataSourceKeys = [];
+        if(dataSources != null) {
+            for(var key in dataSources)
+            {
+                dataSourceKeys.push(key);
+                fetchContentPromises.push(dataSources[key][1]);
+            }
+        }
+        var templateID = placeholderID.replace("_placeholder", "");
+        var dustfilename = templateID + ".dust";
+        var dustcompiled = templateID + "_dust.js";
+        var dusttemplatename = dustfilename;
+        fetchContentPromises.push($.ajax({ url: dustcompiled,cache:false}));
+        $.when.apply($, fetchContentPromises).then(function() {
+            var dataObject = {};
+            var dustTemplateContent;
+            if(dataSourceKeys.length > 0) {
+                for(var argumentIx = 0; argumentIx < arguments.length - 1; argumentIx++)
+                {
+                    var key = dataSourceKeys[argumentIx];
+                    var ds = dataSources[key];
+                    var url = ds[0];
+                    var jsonRootObjectName = ds[2];
+                    var isJSON = url.endsWith(".json");
+                    var response = arguments[argumentIx][0];
+                    var status = arguments[argumentIx][1];
+                    var request = arguments[argumentIx][2];
+                    var jsonObj;
+                    if(isJSON)
+                    {
+                        jsonObj = { };
+                        jsonObj[jsonRootObjectName] = response;
+                    } else {
+                        jsonObj = xml2JSObj(response);
+                    }
+                    var eTag = request.getResponseHeader("ETag")
+                    if(eTag == null)
+                        eTag = "DefaultUndefined";
+                    jsonObj["ETag"] = eTag;
+                    dataObject[key] = jsonObj;
+                }
+                dustTemplateContent = arguments[arguments.length - 1][0];
+            } else
+                dustTemplateContent = arguments[0];
+            renderDustFromResponse(placeholderID, dusttemplatename, dustTemplateContent, dataObject);
+
+        });
+        //var dataObject = null;
+    };
+    var DataPromiseCache = {};
+    var replaceDatasourceUrlsWithAjaxPromises = function()
+    {
+        var dataSources = $(this).data("datasource");
+        if(dataSources == null)
+            return;
+        for(var key in dataSources)
+        {
+            var url = dataSources[key][0];
+            var urlPromise = DataPromiseCache[url];
+            if(urlPromise == null)
+            {
+                urlPromise = $.ajax({ url: url, cache:false});
+                DataPromiseCache[url] = urlPromise;
+            }
+            dataSources[key][1] = urlPromise;
+        }
+    };
+    $(function() {
+
+        $(".dustph").each(replaceDatasourceUrlsWithAjaxPromises).each(dustifyph);
+    });
+</script>
+
+<script src="../assets/dust/modal_addobject_begin_dust.js"></script>
+<script src="../assets/dust/modal_addobject_end_dust.js"></script>
+<script src="../assets/dust/modal_executeadminoperation_begin_dust.js"></script>
+<script src="../assets/dust/modal_executeoperation_end_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_begin_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_end_dust.js"></script>
+<script src="../assets/dust/fileupload_dust.js"></script>
+<script src="../assets/dust/textinput_singleline_dust.js"></script>
+<script src="../assets/dust/hiddeninput_dust.js"></script>
+<script src="../assets/dust/textinput_multiline_dust.js"></script>
+<script src="../assets/dust/textinput_multiline_markdown_dust.js"></script>
+<script src="../assets/dust/objectdeleteicon_dust.js"></script>
+<script src="../assets/dust/dropdown_select_dust.js"></script>
+
+<script>
+    function getData( val ){
+
+        // Return a promise from the cache (if available)
+        // or create a new one (a jqXHR object) and store it in the cache.
+        var promise = cache[val];
+        if (!promise) {
+            promise = $.ajax('/foo/', {
+                data: { value: val },
+                dataType: 'json'
+            });
+            cache[val] = promise;
+        }
+        return promise;
+    }
+
+</script>
+
+<script type="text/javascript">
+    if (typeof String.prototype.endsWith !== 'function') {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+</script>
+
+<script type="text/javascript">
+    /* Final initialization, hopefully after Dusting */
+    function InitializeModalClasses() {
+        $("textarea.mdd_editor").MarkdownDeep({
+            help_location: "../assets/lib/markdowndeep/mdd_help.html",
+            disableTabHandling:true
+        });
+    }
+
+/*
+    $(".open-objectdelete").on("click", function() {
+        var me = $(this);
+        ConnectInputField(me, "objectid", "ObjectDelete", "ObjectID", "", true);
+        ConnectInputField(me, "domainname", "ObjectDelete", "ObjectDomainName", "", true);
+        ConnectInputField(me, "objectname", "ObjectDelete", "ObjectName", "", true);
+        $("#DeleteObjectFormHeader").html("Delete " + me.data("objectname") + ": '" + me.data("deletetitle") + "'?");
+        $('#delete-object').modal('show');
+    });
+*/
+</script>
+
+
+<script src="../assets/dust/common_modals_dust.js"></script>
+<div id="common_modals_ph">
+
+</div>
+<script type="text/javascript">
+    dust.render("common_modals.dust", null, function(err, out) {
+        $("#common_modals_ph").html(out);
+    });
+</script>
+</body>
+</html>

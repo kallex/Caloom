@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Caloom Web Presence</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Caloom for Schools">
+	<meta name="author" content="Caloom">
+
+<!-- Le styles -->
+	<link href="../assets/css/www-style.css" rel="stylesheet">
+    <link href="../assets/css/www-responsive.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+	<link href="../assets/css/leaflet.css" rel="stylesheet"/>
+<!-- get a fresh copy live at 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />-->
+	<link rel="stylesheet" href="../assets/css/MarkerCluster.Default.css" />
+	<!--[if lte IE 8]>
+        <link href="../assets/css/leaflet.css" rel="stylesheet"/>
+		<link href="../assets/css/MarkerCluster.Default.ie.css" rel="stylesheet" />
+	<![endif]-->
+
+<!-- Le fav and touch icons -->
+	<link rel="shortcut icon" href="../assets/img/icons/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/img/icons/favicon-OIP-144x144.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/img/icons/favicon-OIP-114x114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/img/icons/favicon-OIP-72x72.png">
+	<link rel="apple-touch-icon-precomposed" href="../assets/img/icons/favicon-OIP-57x57.png">
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+    <![endif]-->
+
+<!-- other javascript -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <!-- or get a fresh copy at <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+	<!-- get a fresh live version from <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>-->
+	<script src="../assets/js/leaflet.js"></script>
+	<script src="../assets/js/leaflet.markercluster.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+
+    <!-- Markdown on browser -->
+    <link rel="stylesheet" href="../assets/lib/markdowndeep/mdd_styles.css">
+    <script type="text/javascript" src="../assets/lib/markdowndeep/MarkdownDeepLib.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+<script src="../assets/js/dust-core-1.2.3.min.js"></script>
+<script src="../assets/js/dust-helpers-1.1.1.js"></script>
+<script src="nodetiles_dust.js"></script>
+<script src="textcontent_detailpane_dust.js"></script>
+<script src="../assets/js/xml2json.js"></script>
+<script src="../assets/js/rgbcolor.js"></script>
+
+<div class="navbar navbar-static-top">
+    <div>
+        <div class="subnavbar-inner" style="background-color: white">
+            <div id="logocontainer" class="container logo-only">
+            </div>
+        </div>
+        <div class="container powered-by">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function GetLayerLabelText(textvalue, iconUrl)
+    {
+        if(iconUrl != null)
+            return "<img src='" + iconUrl + "' height='16' width='16'></img> " + textvalue;
+        return textvalue;
+    }
+
+    var getActiveMarkers = function(locations, nodes)
+    {
+        if(locations == null || nodes == null)
+            return [];
+        var locationIX;
+        var nodeIX;
+        var locationNodes;
+        var nodesLocations;
+        var currNode;
+        var currLocation;
+        var isInCurrentLocation;
+        var markers = [];
+        var currMarker;
+        var currIcon;
+        var popupIndex;
+        for(locationIX = 0; locationIX < locations.CollectionContent.length; locationIX++)
+        {
+            currLocation = locations.CollectionContent[locationIX];
+            locationNodes = [];
+            for(nodeIX = 0; nodeIX < nodes.Nodes.CollectionContent.length; nodeIX++)
+            {
+                currNode = nodes.Nodes.CollectionContent[nodeIX];
+                if(currNode.Locations.CollectionContent.length == 0)
+                    continue;
+                nodesLocations = [];
+                $.each(currNode.Locations.CollectionContent, function(index, value) {
+                    nodesLocations.push(value.Content);
+                });
+                isInCurrentLocation = $.inArray(currLocation.ID, nodesLocations) > -1;
+                if(isInCurrentLocation)
+                {
+                    locationNodes.push(currNode);
+                }
+            }
+            if(locationNodes.length == 0)
+                continue;
+
+            var popupText = "<h2>" + currLocation.Location.LocationName + "</h2>";
+            for(nodeIX = 0; nodeIX < locationNodes.length; nodeIX++)
+            {
+                currNode = locationNodes[nodeIX];
+                /*
+                popupText += "<br><a class=\"oipclicktoview\" href=\"#\" data-contenturl=\"" + currNode.ActualContentUrl + ".json\">" + currNode.Title + "</a>";
+                 popupText += "<br><a href=\"javascript:OipOpenArticle('"+ currNode.ActualContentUrl +".json', true);\">"  + currNode.Title + "</a>";
+                */
+                popupText += "<br><a href='javascript:void(0)' onclick=\"OipOpenArticle('"+ currNode.ActualContentUrl +".json', true);\">"  + currNode.Title + "</a>";
+
+            }
+            currMarker =  L.marker([
+                parseFloat(currLocation.Location.Latitude.TextValue),
+                parseFloat(currLocation.Location.Longitude.TextValue)
+                ]).bindPopup(popupText);
+            markers.push(currMarker);
+        }
+        return markers;
+    };
+
+    var OipSetupDefaultMap = function(mapid, isMiniMap, locations, nodes) {
+        if(isMiniMap == null)
+            isMiniMap = true;
+        var showcredit = isMiniMap == false;
+        var showlayers = isMiniMap == false;
+        var enableWheelScroll = isMiniMap == false;
+        var zoomControl = isMiniMap == false;
+        var initialZoomLevel = isMiniMap ? 0 : 2;
+        var mapOptions = { };
+        mapOptions["scrollWheelZoom"] = enableWheelScroll;
+        mapOptions["zoomControl"] = zoomControl;
+
+        var map = L.map(mapid, mapOptions).setView([0, 0], initialZoomLevel);
+
+        // add an OpenStreetMap tile layer
+        var tileUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+        var tileAttribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+        if(showcredit == true)
+        {
+            L.tileLayer(tileUrl, {
+                attribution: tileAttribution
+            }).addTo(map);
+        } else {
+            L.tileLayer(tileUrl, { }).addTo(map);
+        }
+
+        if(locations == null)
+            locations = CurrLocations;
+        if(nodes == null)
+            nodes = CurrNodeSummary;
+        var activeMarkers = getActiveMarkers(locations, nodes);
+
+        // Marker arrays
+        /*
+        var ActivitiesMarkers = new Array();
+        var ActivitiesMarkerIcon;
+        var NewsMarkers = new Array();
+        var NewsMarkerIcon;
+        var ProjectsMarkers = new Array();
+        var ProjectsMarkerIcon;
+        var EventsMarkers = new Array();
+        var EventsMarkerIcon;
+        var BlogsMarkers = new Array();
+        var BlogsMarkerIcon;
+        */
+
+        // Cluster markers - only thing that has actual map-visible markers
+        var markers = new L.MarkerClusterGroup();
+        var allMarkers = new Array();
+        // Layers (empty per themselves, but control the toggling)
+
+        /*
+        var ActivitiesLayer = L.layerGroup();
+        ActivitiesLayer.addTo(map);
+        var NewsLayer = L.layerGroup();
+        NewsLayer.addTo(map);
+        var ProjectsLayer = L.layerGroup();
+        ProjectsLayer.addTo(map);
+        var EventsLayer = L.layerGroup();
+        EventsLayer.addTo(map);
+        var BlogsLayer = L.layerGroup();
+        BlogsLayer.addTo(map);
+        */
+
+        {
+            var myIcon = L.icon({
+                iconUrl: '../assets/img/oip-markers/Cyn_bMarker.png',
+                //iconRetinaUrl: 'my-icon@2x.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 40],
+                popupAnchor: [-3, -76],
+                shadowUrl: '../assets/img/oip-markers/marker-shadow.png',
+                // shadowRetinaUrl: 'my-icon-shadow@2x.png',
+                shadowSize: [41, 41],
+                shadowAnchor: [12, 40]
+            });
+
+            /*
+            var myMarker = L.marker([[!ATOM]LocationText[ATOM!]], {icon: myIcon })
+        .bindPopup('<h2>[!ATOM]PopupTitle[ATOM!]</h2><br>[!ATOM]PopupContent[ATOM!]');
+            [!ATOM]CategoryName[ATOM!]Markers.push(myMarker);
+            [!ATOM]CategoryName[ATOM!]MarkerIcon = "[!ATOM]IconUrl[ATOM!]";*/
+        }
+
+        $.each(activeMarkers, function(index, value) {
+            value.setIcon(myIcon);
+            allMarkers.push(value);
+        });
+
+        /*
+        var activitiesText = GetLayerLabelText("Activities", ActivitiesMarkerIcon);
+        var newsText = GetLayerLabelText("News", NewsMarkerIcon);
+        var projectsText = GetLayerLabelText("Projects", ProjectsMarkerIcon);
+        var eventsText = GetLayerLabelText("Events", EventsMarkerIcon);
+        var blogsText = GetLayerLabelText("Blogs", BlogsMarkerIcon);
+
+        var overlayMaps = { };
+        if(showlayers == true) {
+            overlayMaps[activitiesText] = ActivitiesLayer;
+            overlayMaps[newsText] = NewsLayer;
+            overlayMaps[projectsText] = ProjectsLayer;
+            overlayMaps[eventsText] = EventsLayer;
+            overlayMaps[blogsText] = BlogsLayer;
+        }
+
+
+        // Adding marker arrays
+        markers.addLayers(ActivitiesMarkers);
+        markers.addLayers(NewsMarkers);
+        markers.addLayers(ProjectsMarkers);
+        markers.addLayers(EventsMarkers);
+        markers.addLayers(BlogsMarkers);
+          */
+        markers.addLayers(allMarkers);
+        map.addLayer(markers);
+        markers.addTo(map);
+
+        /*
+        map.on("layeradd", function(e) {
+            if(e.layer == ActivitiesLayer)
+                markers.addLayers(ActivitiesMarkers);
+            if(e.layer == NewsLayer)
+                markers.addLayers(NewsMarkers);
+            if(e.layer == ProjectsLayer)
+                markers.addLayers(ProjectsMarkers);
+            if(e.layer == EventsLayer)
+                markers.addLayers(EventsMarkers);
+            if(e.layer == BlogsLayer)
+                markers.addLayers(BlogsMarkers);
+        });
+        map.on("layerremove", function(e) {
+            if(e.layer == ActivitiesLayer)
+                markers.removeLayers(ActivitiesMarkers);
+            if(e.layer == NewsLayer)
+                markers.removeLayers(NewsMarkers);
+            if(e.layer == ProjectsLayer)
+                markers.removeLayers(ProjectsMarkers);
+            if(e.layer == EventsLayer)
+                markers.removeLayers(EventsMarkers);
+            if(e.layer == BlogsLayer)
+                markers.removeLayers(BlogsMarkers);
+        });
+         if(showlayers == true)
+         L.control.layers(null, overlayMaps).addTo(map);
+        */
+
+        map.invalidateSize(false);
+    };
+        /*OipSetupDefaultMap('map');*/
+
+</script> 
+
+<!-- start reading-pane -->
+<div id="SelectedContentContainer" class="container reading-pane">
+</div>
+<!-- end reading-pane -->
+
+<div class="container masonry" id="TileSection">
+    <img src="../assets/img/ajax-loader.gif">
+</div>
+<script type="text/javascript">
+
+	$(function() {
+		OipCloseDetailPane = function() {
+			$("#SelectedContentContainer").html('');
+		};
+		$(".oipmenuselector").on("click", function() {
+			var filterName = $(this).data("filtername");
+			var navigateto = $(this).data("locateto");
+			//alert(navigateto);
+			//var scrollPos = $(navigateto).offset().top;
+			//$(document).animate({ scrollTop : $(navigateto).offset().top}, 'slow');
+			//$(document).scrollTop($(navigateto).offset().top);
+			OipCloseDetailPane();
+			$("a[data-filter='" + filterName + "']").trigger('click');
+			$('[data-toggle="dropdown"]').parent().removeClass('open');
+			return true;
+		});
+
+        OipShowHtmlInDetailPaneWithClose = function(htmlContent) {
+			$("#SelectedContentContainer").html('<button id="paneclosebutton" type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>' +
+				htmlContent + '</div>' + '</div>' );
+			$("#paneclosebutton").off("click");
+			$("#paneclosebutton").click(OipCloseDetailPane);
+		};
+        OipShowTextContentInDetailPaneWithClose = function(textContentObject) {
+            dust.render("textcontent_detailpane.dust", textContentObject, function (err, out) {
+                $("#SelectedContentContainer").html('<button id="paneclosebutton" type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>' +
+                        out + '</div>' + '</div>' );
+                $("#paneclosebutton").off("click");
+                $("#paneclosebutton").click(OipCloseDetailPane);
+            });
+        };
+	});
+
+    var CurrNodeSummary;
+    var CurrLocations;
+    var CurrGroupContainer;
+
+    var getCategoriesOrderedAndFiltered = function(categoryCollection)
+    {
+        var categories = categoryCollection.CollectionContent;
+        var orderFilterIDList = categoryCollection.OrderFilterIDList;
+        var orderedCategories = [];
+        for(i = 0; i < orderFilterIDList.length; i++)
+        {
+            var currID = orderFilterIDList[i];
+            var result = $.grep(categories, function(candidate) { return candidate.ID == currID });
+            if(result.length == 0)
+                continue;
+            var cat = result[0];
+            orderedCategories.push(cat);
+        }
+        return orderedCategories;
+    };
+
+    var getRootCategories = function(categoryCollection)
+    {
+        var orderedCategories = getCategoriesOrderedAndFiltered(categoryCollection);
+        var rootCategories = $.grep(orderedCategories, function(candidate) { return !candidate.ParentCategoryID; });
+        return rootCategories;
+    };
+    var getCategoriesBasedByNamesOrIDs = function(categoryCollection, nameShortTextCollection, categoryIDList)
+    {
+        var orderedCategories = getCategoriesOrderedAndFiltered(categoryCollection);
+        var filteredCategories;
+        if(categoryIDList)
+        {
+            var categoryIDArray = categoryIDList.split(",");
+            filteredCategories = $.grep(orderedCategories,
+                    function(candidate) {
+                        var foundList = $.grep(categoryIDArray, function(idCandidate) {
+                            return idCandidate === candidate.ID;
+                        });
+                        return foundList.length > 0;
+                    });
+        } else {
+            filteredCategories = $.grep(orderedCategories,
+                    function(candidate) {
+                        var foundList = $.grep(nameShortTextCollection.CollectionContent, function(nameCandidate) {
+                            return nameCandidate.Content == candidate.CategoryName;
+                        });
+                        return foundList.length > 0;
+                    });
+        }
+        return filteredCategories;
+    }
+
+    var calcBrightness = function (color) {
+        return Math.sqrt(
+                color.r * color.r * .299 +
+                        color.g * color.g * .587 +
+                        color.b * color.b * .114);
+    }
+
+    var blackOrWhiteTextColorOnBGColor = function(bgColor)
+    {
+        var rgbColor = new RGBColor(bgColor);
+        var brightness = calcBrightness(rgbColor);
+        if(brightness < 130)
+            return "#FFFFFF";
+        return "#000000";
+    };
+
+    var stringToColour = function(str) {
+        // str to hash
+        for (var i = 0, hash = 0; i < str.length; hash = str.charCodeAt(i++) + ((hash << 5) - hash));
+        // int/hash to hex
+        for (var i = 0, colour = "#"; i < 3; colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2));
+        return colour;
+    }
+
+
+    $(function () {
+        var fetchDatas = [
+                "../../AaltoGlobalImpact.OIP/NodeSummaryContainer/default.json",
+                "../../AaltoGlobalImpact.OIP/AddressAndLocationCollection/MasterCollection.json",
+                "../../AaltoGlobalImpact.OIP/GroupContainer/default.json"
+            ];
+        $.each(fetchDatas, function(index, value) {
+            fetchDatas[index] = $.ajax({ url: value, cache:false });
+        });
+        /*$.get("../../AaltoGlobalImpact.OIP/NodeSummaryContainer/default.json", function ()jsonObject) {*/
+        $.when.apply($, fetchDatas).then(function() {
+
+            var nodeSummary = arguments[0][0];
+            CurrNodeSummary = nodeSummary;
+            CurrLocations = arguments[1][0];
+            CurrGroupContainer = arguments[2][0];
+
+            var imageData = CurrGroupContainer.GroupProfile.ProfileImage.ImageData;
+            if(imageData != null)
+            {
+                $("#logocontainer").html("<img src='../../AaltoGlobalImpact.OIP/MediaContent/" + imageData.ID + imageData.FileExt + "' />");
+            }
+
+            var myObj = nodeSummary;
+            nodeSummary.RootCategories = getRootCategories(nodeSummary.NodeSourceCategories);
+            for(var nodeIX = 0; nodeIX < myObj.Nodes.CollectionContent.length; nodeIX++)
+            {
+                var nodeObj = myObj.Nodes.CollectionContent[nodeIX];
+                nodeObj.Categories = getCategoriesBasedByNamesOrIDs(nodeSummary.NodeSourceCategories, nodeObj.CategoryNames, nodeObj.CategoryIDList);
+                ReplaceWithMarkdownRender(nodeObj, "Excerpt", "ExcerptRendered");
+            }
+            var base = dust.makeBase(
+                    {
+                        catTagColor: function(chunk, context) { return chunk.write(stringToColour(context.get("CategoryName")));},
+                        catFilterTagColor: function(chunk, context) { return chunk.write(stringToColour(context.get("Content")));},
+                        catTagTextColor: function(chunk, context) {
+                            var bgColor = stringToColour(context.get("CategoryName"));
+                            var textColor = blackOrWhiteTextColorOnBGColor(bgColor);
+                            chunk.write(textColor);
+                        },
+                        catFilterTagTextColor: function(chunk, context) {
+                            var bgColor = stringToColour(context.get("Content"));
+                            var textColor = blackOrWhiteTextColorOnBGColor(bgColor);
+                            chunk.write(textColor);
+                        },
+                        catName: function(chunk, context) {
+                            context.get("CategoryName");
+                        }
+                    });
+            dust.render("nodetiles.dust", base.push(myObj), function (err, out) {
+                $("#TileSection").html(out);
+            });
+        });
+    });
+</script>
+
+<!--<div class="container clearfix">-->
+    <!--<section class="well">-->
+        <!--&lt;!&ndash; '../oip-containers/oip-container-contact-oip.txt' &ndash;&gt;&lt;!&ndash; UseInformationObjectAsRoot:AaltoGlobalImpact.OIP.ContactOipContainer  &ndash;&gt;-->
+    <!--</section>-->
+<!--</div>-->
+<footer class="footer" style="background-color:white;">
+    <div class="container">
+        <div class="span12" style="text-align: center;font-weight: 200;margin-bottom: 20px;color:black">
+            <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
+            <p style="text-align: center;font-style: oblique;font-size: 24px;font-family: Georgia">Enabling Your Business</p>
+            <div style="text-align: center; color: lightseagreen"><a href="https://schools.caloom.com/" style="color: lightseagreen">Caloom for Business - Powered by The Ball</a></div>
+        </div>
+    </div>
+</footer>
+<!-- end oip-modal-collection.txt -->
+<!-- ========== End: www-public\..\oip-containers\../oip-modals/oip-modal-collection.txt ========== -->
+
+<!-- OIP specific -->
+<script src="../assets/js/modal-id-actions.js"></script>
+</body>
+
+<script type="text/javascript">
+
+    String.prototype.replaceAll = function(strReplace, strWith) {
+        var reg = new RegExp(strReplace, 'ig');
+        return this.replace(reg, strWith);
+    };
+
+    var ReplaceWithMarkdownRender = function(containingObj, sourceField, targetField)
+    {
+        var markdown = new MarkdownDeep.Markdown();
+        markdown.SafeMode = true;
+        if(containingObj == false)
+            return;
+        var sourceData = containingObj[sourceField];
+        var renderedData;
+        if(sourceData)
+            renderedData = markdown.Transform(sourceData.replaceAll("javascript:", ""));
+        else
+            renderedData = "";
+        containingObj[targetField] = renderedData;
+    };
+
+    OipOpenArticle = function(urlarg, addRelativePath) {
+        var targeturl = $(this).data('contenturl');
+        if (targeturl == null) {
+            targeturl = urlarg;
+            if(addRelativePath)
+                targeturl = "../" + targeturl;
+        }
+        else
+            targeturl = "../" + targeturl;
+        if (targeturl == null) {
+            return;
+        }
+        $.ajax({
+            url: targeturl,
+            cache: false,
+            success: function (jsonContent) {
+                /*
+                var markdown = new MarkdownDeep.Markdown();
+                markdown.SafeMode = true;
+                if(jsonContent.Body == undefined)
+                    jsonContent.Body = "";
+                var rendered = markdown.Transform(jsonContent.Body.replaceAll("javascript:", ""));
+                jsonContent.BodyRendered = rendered;
+                */
+                ReplaceWithMarkdownRender(jsonContent, "Body", "BodyRendered");
+                OipShowTextContentInDetailPaneWithClose(jsonContent);
+                $(document).scrollTop(0);
+            }
+        });
+        return;
+    };
+    $(function() {
+        /*$(".oipclicktoview").on('click', OipOpenArticle);*/
+        $(document).on("click", ".oipclicktoview", OipOpenArticle);
+    });
+</script>
+
+</html>
+

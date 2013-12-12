@@ -1,0 +1,1 @@
+(function(){dust.register("hiddeninput.dust",body_0);function body_0(chk,ctx){return chk.write("<input name=\"").exists(ctx.get("field_name"),ctx,{"block":body_1},null).write("\"  id=\"").reference(ctx.get("field_id"),ctx,"h").write("\" type=\"hidden\">");}function body_1(chk,ctx){return chk.reference(ctx.get("field_name"),ctx,"h");}return body_0;})();

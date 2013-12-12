@@ -1,0 +1,19 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <ul class="nav pull-left">
+            <li id="group-menu" class="dropdown">
+{#AccountContainer.AccountContainer.AccountModule.Profile}
+                <a href="#" role="button" class="dropdown-toggle active" data-toggle="dropdown">
+                    <i class="icon-user"></i>{?FirstName}{FirstName} {LastName}{:else}My Profile{/FirstName}
+                    <i class="icon-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+{/AccountContainer.AccountContainer.AccountModule.Profile}
+                    <li><a tabindex="-1" href="/TheBallLogin.aspx?SignOut=true">Logout</a></li>
+                </ul>
+            </li>
+            <li class="hidden-phone"><a class="brand" href="account.html">@ Caloom for Demo/Testing!</a></li>
+        </ul>
+    </div>
+</div><!-- .navbar change-->
+

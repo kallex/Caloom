@@ -1,0 +1,30 @@
+{#CategoriesSource.CategoryCollection.CollectionContent}
+<div class="category-card cards-profile pull-left texts">
+    <fieldset id="current-categories">
+        <div class="gallery" style="clear: both;">
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                {?ImageData}
+                    <div style="max-width: 220px">
+                        <img src="../../AaltoGlobalImpact.OIP/MediaContent/{ImageData.ID}_64x64_crop{ImageData.AdditionalFormatFileExt}" />
+                    </div>
+                    <div>({CategoryName})</div>
+                {/ImageData}
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"objectdeleteicon.dust" object_delete_title="{Title}" /}
+                        </span>
+                        <span class="pull-right"><a data-toggle="modal" role="button" class="open-categoryeditor" href="#" data-contentinfo="{RelativeLocation}:{MasterETag}"
+                                                    {?ImageData}data-imageid="{ImageData.ID}" {/ImageData}
+                                                    data-id="{ID}" data-categoryname="{CategoryName}" {?Title}data-title="{Title}"{/Title}
+                                                    {?ParentCategory}data-parentcategory="{ParentCategory.ID}"{/ParentCategory}
+                                                    {?Excerpt}data-excerpt="{Excerpt}"{/Excerpt}><i class="icon-edit"></i></a></span>
+                        {?Title}<span class="title">{Title}</span>{/Title}
+                        {?ExcerptRendered}<span class="title">{ExcerptRendered|s}</span>{/ExcerptRendered}
+                    </div>
+                </div>
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+{/CategoriesSource.CategoryCollection.CollectionContent}

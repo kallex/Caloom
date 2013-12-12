@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caloom Personal Account New</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- bootstrap -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets-new/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="../assets-new/css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/layout.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/elements.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/icons.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/personal-info.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/user-list.css">
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="../assets-new/css/compiled/index.css" type="text/css" media="screen" />
+
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- lato font -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- from account.html -->
+    <!-- Dust + xml -->
+    <script src="../assets/js/dust-core-1.2.3.min.js"></script>
+    <script src="../assets/js/xml2json.js"></script>
+
+</head>
+<body>
+<!-- navbar -->
+<header class="navbar navbar-inverse" role="banner">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" id="menu-toggler">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="account-new.html"><img src="../assets-new/img/caloom-logo-trans.png" width="116px" height="40px"></a>
+    </div>
+    <ul class="nav navbar-nav pull-right hidden-xs">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
+                Your account
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="account-new.html">My Account</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </li>
+        <li class="settings hidden-xs hidden-sm">
+            <a href="signin.html" role="button">
+                <i class="icon-share-alt"></i>
+            </a>
+        </li>
+    </ul>
+</header>
+<!-- end navbar -->
+
+<!-- sidebar -->
+<div id="sidebar-nav">
+    <ul id="dashboard-menu">
+        <li class="active">
+            <div class="pointer">
+                <div class="arrow"></div>
+                <div class="arrow_border"></div>
+            </div>
+            <a href="index.html">
+                <i class="icon-home"></i>
+                <span>My Identity</span>
+            </a>
+        </li>
+        <li>
+            <a href="groups.html">
+                <i class="icon-cog"></i>
+                <span>My Groups</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+
+
+<!-- main container -->
+<div class="content">
+<div id="pad-wrapper" class="settings-wrapper">
+    <div class="row"><!-- avatar column -->
+        <div class="col-md-3 col-md-offset-1 avatar-box">
+            <img src="../assets-new/img/personal-info.png" class="avatar img-circle">
+            <div class="personal-image"><p>Upload a different photo...</p>
+                <input type="file">
+            </div>
+        </div>
+        <!-- edit form column -->
+        <div class="col-md-7 personal-info">
+
+            <h5 class="personal-title">Personal info</h5>
+
+            <form class="form-horizontal" role="form">
+                <div class="form-group"><label class="col-lg-2 control-label">First name:</label>
+
+                    <div class="col-lg-8"><input class="form-control" value="First Name" type="text"></div>
+                </div>
+                <div class="form-group"><label class="col-lg-2 control-label">Last name:</label>
+
+                    <div class="col-lg-8"><input class="form-control" value="Last Name" type="text"></div>
+                </div>
+
+                <div class="actions">
+                    <input class="btn-glow primary" value="Save Changes"type="button"><span>OR</span>
+                    <input value="Cancel" class="reset"type="reset">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- scripts -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<!-- from account.html -->
+<script src="identity_dust.js"></script>
+
+
+<!--
+<script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+-->
+</body>
+</html>

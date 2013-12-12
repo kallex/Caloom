@@ -1,0 +1,37 @@
+{?AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+    <h2>Your Registered Emails</h2>
+<ul>
+{/AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+{#AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+    <li>{EmailAddress} {>"executeoperation_button_begin.dust" form_name="unregisteremail"/} data-EmailAddress="{EmailAddress}" {>"executeoperation_button_end.dust" icon_class_name="icon-remove-sign" button_label="Unregister" /} </li>
+{/AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+{?AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+</ul>
+{:else}
+    <h1 style="color:green">Please register at least one email :-)!</h1>
+    <p>Registering at least one email is required to be able to collaborate.</p>
+    <p>
+        <h3 style="color:green">The registration process goes as following:</h3>
+        <ul>
+
+            <li>Click on Register New Email</li>
+            <li>Enter your desired email to field</li>
+            <li>Click "Send Validation Email"</li>
+            <li>Go to your email inbox and click through the validation link to verify the email address.</li>
+        </ul>
+        <h3>Note! System needs to be sure that its YOUR email.</h3>
+    </p>
+{/AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+
+{>"executeoperation_button.dust" form_name="registeremail" button_label="Register New Email Address" icon_class_name="icon-plus-sign" /}
+
+{>"modal_executeoperation_begin.dust" form_name="registeremail" header_title="Register Email Address" operation_name="BeginAccountEmailAddressRegistration" /}
+{>"textinput_singleline.dust" field_id="RegisterEmail_EmailAddress"
+field_name="EmailAddress" field_label="Email Address" /}
+{>"hiddeninput_namevalue.dust" input_name="RedirectUrlAfterValidation" input_value="/auth/account/webui/html/account.html" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Send Validation Email" /}
+
+{>"modal_executeoperation_begin.dust" form_name="unregisteremail" header_title="Unregister Email Address" operation_name="UnregisterEmailAddress"
+    map_data_values="EmailAddress" /}
+{>"labelhiddeninput_singleline.dust" input_name="EmailAddress" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Unregister" /}

@@ -1,0 +1,9 @@
+<div class="control-group">
+    <label class="control-label" for="{field_id}">{field_label}</label>
+    <div class="controls">
+        <div class="mdd_toolbar"></div>
+        <textarea name="{?field_name}{field_name}{/field_name}" id="{field_id}" cols=50 rows=10 class="mdd_editor" data-mdd-preview="#{field_id}_preview"></textarea>
+        <div class="mdd_resizer"></div>
+        <div id="{field_id}_preview"></div>
+    </div>
+</div>

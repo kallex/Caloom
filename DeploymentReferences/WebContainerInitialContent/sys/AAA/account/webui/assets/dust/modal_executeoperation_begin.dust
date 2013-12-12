@@ -1,0 +1,32 @@
+<script type="text/javascript">
+    $(function() {
+        $(document).on('click', '.open-{form_name}', function() {
+            InitializeModalClasses();
+            {?map_data_values}
+            var dataValues = "{map_data_values}".split(",");
+            var valueIX;
+            for(valueIX = 0; valueIX < dataValues.length; valueIX++)
+            {
+                var name = dataValues[valueIX];
+                var dataName = name.toLowerCase();
+                var value = $(this).data(dataName);
+                $("#execute-{form_name} input.[name='" + name + "']").val(value);
+                $("#execute-{form_name} label.[name='" + name + "']").text(value);
+            }
+            {/map_data_values}
+            $('#execute-{form_name}').modal('show');
+        });
+    });
+</script>
+
+<div id="execute-{form_name}" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            {header_title}
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form method="post" class="form-horizontal" enctype="multipart/form-data">
+            <fieldset>
+                <input type="hidden" name="ExecuteOperation" value="{operation_name}" />

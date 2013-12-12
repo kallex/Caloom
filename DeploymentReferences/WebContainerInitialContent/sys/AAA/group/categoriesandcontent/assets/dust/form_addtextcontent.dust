@@ -1,0 +1,32 @@
+{>"modal_addobject_begin.dust" form_name="textcontent" header_title="Add Text Content" object_domain="AaltoGlobalImpact.OIP" object_type="TextContent" /}
+{>"fileupload.dust" initial_class_mode="fileupload-new" field_name="ImageData" /}
+{>"textinput_singleline.dust" field_id="AddTextContent_Title"
+field_name="Title" field_label="Title {form_name}" /}
+{>"textinput_singleline.dust" field_id="AddTextContent_SubTitle"
+field_name="SubTitle" field_label="SubTitle" /}
+{>"textinput_singleline.dust" field_id="AddTextContent_Author"
+field_name="Author" field_label="Author" /}
+{>"textinput_datetime.dust" field_id="AddTextContent_Published"
+field_name="Published" field_label="Published at" /}
+{>"textinput_multiline_markdown.dust" field_id="AddTextContent_Excerpt"
+field_name="Excerpt" field_label="Excerpt" /}
+{>"textinput_multiline_markdown.dust" field_id="AddTextContent_Body"
+field_name="Body" field_label="Body" /}
+{>"dropdown_select.dust" field_id="AddTextContent_Categories" is_multiple="true"
+item_collection=CategoriesSource.CategoryCollection.CollectionContent item_type="category"
+field_label="Categories" field_name="Object_Categories" /}
+{>"dropdown_select.dust" field_id="AddTextContent_Locations" is_multiple="true"
+item_collection=Locations.AddressAndLocationCollection.CollectionContent item_type="location"
+field_label="Locations" field_name="Object_Locations" /}
+{>"modal_addobject_end.dust" /}
+
+<script type="text/javascript">
+    $(function() {
+        $(".open-addtextcontent").on("click", function() {
+            InitializeModalClasses();
+            $("#AddTextContent_Published").val(new Date().toISOString());
+            $('#add-textcontent').modal('show');
+        });
+    });
+</script>
+

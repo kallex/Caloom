@@ -1,0 +1,53 @@
+{?AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+    {#AccountContainerSource.AccountContainer}
+    <form id="form-id-1" method="post" class="form-horizontal" enctype="multipart/form-data">
+        {#AccountContainerSource}
+            <input name="ContentSourceInfo" value="{AccountContainer.RelativeLocation}:{MasterETag}" type="hidden" />
+        {/AccountContainerSource}
+        {#AccountModule.Profile}
+            <fieldset id="profile">
+                <!-- group profile image and group icon image -->
+                <div class="span12">
+                    <div style="float:left">
+                        <div class="control-group">
+                            <label class="control-label">My Profile Image</label>
+                            <div class="controls">
+                                {#ProfileImage}
+                                {?ImageData.ID}
+                                    {>"fileupload.dust" initial_class_mode="fileupload-exists" container_id="{ID}" field_name="ImageData" content_id="{ImageData.ID}"
+                                        imagesuffix="256x256_crop.jpg" /}
+                                {:else}
+                                    {>"fileupload.dust" initial_class_mode="fileupload-new" container_id="{ID}" field_name="ImageData" /}
+                                {/ImageData.ID}
+                                {/ProfileImage}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end group profile image and group icon image -->
+                <div class="control-group">
+                    <label class="control-label" for="{ID}_FirstName">First Name</label>
+                    <div class="controls">
+                        <input name="{ID}_FirstName"  id="{ID}_FirstName" type="text" value="{FirstName}">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="{ID}_LastName">Last Name</label>
+                    <div class="controls">
+                        <input name="{ID}_LastName"  id="{ID}_LastName" type="text" value="{LastName}">
+                    </div>
+                </div>
+                <footer>
+                    <div class="control-group controls pull-right">
+                        <div class="form-actions" style="padding:0;margin:0;border-top:0;background-color: transparent">
+                            <button value="true" name="btnCancel"  class="btn">Cancel</button>
+                            <button type="submit" class="btn btn-primary" name="RootSourceAction" id="RootSourceAction" value="Save">Save changes</button>
+                        </div>
+                    </div>
+                </footer>
+            </fieldset>
+        {/AccountModule.Profile}
+    </form>
+    {/AccountContainerSource.AccountContainer}
+{/AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+{>"emails.dust" /}

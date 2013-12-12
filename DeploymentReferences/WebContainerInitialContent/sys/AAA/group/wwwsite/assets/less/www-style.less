@@ -1,0 +1,89 @@
+  /* Start Weconomy Visual Identity Additions */
+
+  // Core variables and mixins
+  @import "earthhouse-variables"; // Modify this for custom colors, font-sizes, etc
+  @import "earthhouse-mixins";
+
+    // CSS Reset
+  // @import "earthhouse-reset.-less";
+
+    // Grid system and page structure
+  // @import "earthhouse-scaffolding.-less";
+  // @import "earthhouse-grid.-less";
+  // @import "earthhouse-layouts.-less";
+
+    // Base CSS
+  // @import "earthhouse-type.-less";
+  // @import "earthhouse-code.-less";
+  // @import "earthhouse-forms.-less";
+  // @import "earthhouse-tables.-less";
+
+    // Components: common
+  // @import "earthhouse-sprites.-less";
+  // @import "earthhouse-dropdowns.-less";
+  // @import "earthhouse-wells.-less";
+  // @import "earthhouse-component-animations.-less";
+  // @import "earthhouse-close.-less";
+
+    // Components: Buttons & Alerts
+  // @import "earthhouse-buttons.-less";
+  // @import "earthhouse-button-groups.-less";
+  // @import "earthhouse-alerts.-less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.-less
+
+    // Components: Nav
+  // @import "earthhouse-navs.-less";
+  // @import "earthhouse-navbar.-less";
+  // @import "earthhouse-breadcrumbs.-less";
+  // @import "earthhouse-pagination.-less";
+  // @import "earthhouse-pager.-less";
+
+    // Components: Popovers
+  @import "earthhouse-modals";
+  // @import "earthhouse-tooltip.-less";
+  // @import "earthhouse-popovers.-less";
+
+    // Components: Misc
+  // @import "earthhouse-thumbnails.-less";
+  // @import "earthhouse-media.-less";
+  // @import "earthhouse-labels-badges.-less";
+  // @import "earthhouse-progress-bars.-less";
+  // @import "earthhouse-accordion.-less";
+  // @import "earthhouse-carousel.-less";
+  // @import "earthhouse-hero-unit.-less";
+
+
+    // earthhouse or OIP specific
+  @import "font-awesome";
+  @import "font-awesome-ie7";
+  @import "www-fonts";
+
+  @import "earthhouse-type";
+  @import "earthhouse-navbar";
+  @import "earthhouse-footer";
+  @import "earthhouse-isotope";
+  @import "earthhouse-masonry";
+  @import "earthhouse-reading-pane";
+  @import "earthhouse-sharing-panel";
+  @import "earthhouse-multicolumn";
+  @import "earthhouse-video";
+  @import "www-categories";
+
+    // Utility classes
+  //@import "earthhouse-utilities.-less"; // Has to be last to override when necessary
+
+  p.truncate {
+    word-wrap:break-word ;
+    height: @baseLineHeight * 3 !important;
+    overflow: hidden !important;
+  }
+
+  //thumbnails and images
+
+  a.wide-flat img{
+    position:absolute;
+    clip:rect(250px,800px,350px,0px);
+  }
+
+  a:focus{
+    outline: none;
+  }

@@ -1,0 +1,38 @@
+  /*
+  * admin-responsive-480ps-max
+  */
+
+    /* Landscape phones and down */
+  @media (max-width: 480px) {
+    .item-summary li {
+      padding-left: 0em;
+    }
+    .stats .stat .main-detail {
+      font-size: 1.25em;
+      margin-bottom: 0em;
+    }
+    .fc-header-left {
+      display: none;
+    }
+    .gallery .thumbnail {
+      width: 100%;
+      box-sizing: border-box;
+      img {
+        width: 100%;
+      }
+    }
+    .blog-post {
+      .thumbnail, .thumbnail:hover {
+        max-width: 400px;
+        width: auto;
+        margin-bottom: 1em;
+        float: none;
+        //.box-shadow(0 0 0 #fff);
+        border: none;
+      }
+
+      .post-summary {
+        clear: both;
+      }
+    }
+  }

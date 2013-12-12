@@ -1,0 +1,2 @@
+<a data-toggle="modal" role="button" class="open-objectdelete" href="#"
+   data-objectid="{ID}" data-objectname="{Name}" data-domainname="{SemanticDomainName}" data-deletetitle="{object_delete_title}"><i class="icon-remove-sign"></i></a>

@@ -1,0 +1,25 @@
+{#BinaryFileContentsSource.BinaryFileCollection.CollectionContent}
+    <div class="cards cards-profile pull-left files">
+        <fieldset>
+            <div class="gallery" style="clear: both;">
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                    <span class="pull-right">
+                        {>"objectdeleteicon.dust" object_delete_title="{OriginalFileName}" /}
+                    </span>
+                    <span class="pull-right">
+                        <a data-toggle="modal" role="button" class="open-binaryfilecontenteditor" href="#" data-contentinfo="{RelativeLocation}:{MasterETag}"
+                           data-id="{ID}"
+                            data-originalfilename="{OriginalFileName}"
+                           data-categories="{?Categories}{#Categories}{#CollectionContent}{ID},{/CollectionContent}{/Categories}{/Categories}"
+                                ><i class="icon-edit"></i></a></span>
+                        <span class="title">{OriginalFileName}</span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </fieldset>
+    </div>
+{/BinaryFileContentsSource.BinaryFileCollection.CollectionContent}
+

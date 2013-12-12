@@ -1,0 +1,53 @@
+  /*
+  * admin-navbar
+  */
+
+
+    /*Navbar*/
+  .brand,.navbar .brand {
+    color: @navbarBrandColor;
+    text-shadow: 0px 0px 1px lighten(@navbarLinkColorHover, 10%);
+    font-size: 2em;
+    margin-left: .5em;
+    padding-left: 0px;
+    font-family: 'imprima', serif;
+    //line-height: 1em;
+    //margin-bottom: -1em;
+  }
+
+  .navbar {
+    position: relative;
+    z-index: 20;
+    margin: 0px;
+    padding: 0px;
+    .box-shadow(0px 1px 3px fade(#000, 20%));
+/*groupmanagement-navbar.less*/
+    .navbar-inner {
+      .gradient(@navbarBackgroundHighlight, @navbarBackgroundHighlight, lighten(@navbarBackgroundHighlight, 10%));
+      padding: 1em 1em;
+      margin: 0px;
+      .rounded(0px);
+      border: 0px;
+      border-bottom: 1px solid darken(@navbarBackgroundColor, 25%);
+    }
+
+    .nav {
+      margin: 0em;
+      margin-right: -1em;
+
+      & > li > a {
+        color: lighten(@navbarText, 30%);
+        text-shadow: 0 1px 0 darken(@navbarText, 30%);
+      }
+      & > li > a:hover {
+        color: @navbarLinkColorHover;
+       // text-shadow: 0px 0px 10px lighten(@navbarLinkColorHover, 30%);
+      }
+      & > li.dropdown.open > .dropdown-toggle {
+        background-color: transparent;
+        color: lighten(@navbarLinkColorHover, 30%);
+      }
+    }
+  }
+
+    /*Nav Tabs*/

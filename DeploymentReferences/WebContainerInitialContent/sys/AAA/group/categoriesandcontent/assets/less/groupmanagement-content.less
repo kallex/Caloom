@@ -1,0 +1,86 @@
+  /*
+  * admin-content
+  */
+.content {
+  min-width: 400px;
+  position: relative;
+  background: lighten(@grayLighter, 17%);
+  margin-left:200px;
+  margin-top: 21px;
+  padding-bottom: 20px;
+  border-top: 1px solid lighten(@linkBackgroundActive, 5%);
+  border-bottom: 1px solid lighten(@linkBackgroundActive, 5%);
+  border-left: 1px solid lighten(@linkBackgroundActive, 5%);
+}
+
+.content .actionbar.btn-toolbar {
+  font-size: 1em;
+  padding: 1em 1.5em;
+  margin: 0em -1.5em 1em -1.5em;
+  border-bottom: 1px solid darken(@navbarBackgroundColor, 5%);
+
+  a {
+    border-left: 1px solid #ccc;
+    padding-left: 1em;
+    margin-right: 1em;
+    &:first-child { padding-left: 0px; border-left: none; }
+  }
+
+  .content .actionbar.btn-toolbar a {
+    border-left: 1px solid #ccc;
+    padding-left: 1em;
+    margin-right: 1em;
+  }
+  .content .actionbar.btn-toolbar a:first-child {
+    padding-left: 0px;
+    border-left: none;
+  }
+  .header {
+    background: #dddde2;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dddde2), color-stop(1, #f0f0f2));
+    background: -ms-linear-gradient(bottom, #dddde2, #f0f0f2);
+    background: -moz-linear-gradient(center bottom, #dddde2 0%, #f0f0f2 100%);
+    background: -o-linear-gradient(bottom, #dddde2, #f0f0f2);
+    filter: progid:dximagetransform.microsoft.gradient(startColorStr='#dddde2', EndColorStr='#f9f9f9');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f0f0f2',EndColorStr='#dddde2')";
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #bcbcc6;
+    padding: 1em 1.25em;
+    margin: 0px;
+  }
+  .header h1 {
+    margin: 0em 0em;
+    padding: 0em;
+    line-height: 1em;
+    font-size: 1.25em;
+    font-size: 1em;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #585868;
+    text-shadow: 1px 1px 0px #fff;
+  }
+}
+.tab-content {
+  background: #fff;
+  .rounded(5px);
+  padding: .5em 1em 1em 1em;
+  & form{
+    margin-bottom: 0;
+  }
+
+  & footer {
+    height: 64px;
+    padding: 0;
+    .gradient;
+    border: none;
+    .rounded(0px);
+    margin-left: -14px;
+    margin-right: -14px;
+    margin-bottom: -14px;
+    & .control-group {
+      margin: 0;
+      padding: 17px;
+      margin-bottom: -14px;
+    }
+  }
+}

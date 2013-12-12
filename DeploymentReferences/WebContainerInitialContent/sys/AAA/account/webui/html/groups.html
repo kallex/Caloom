@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caloom Groups Account New</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- bootstrap -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets-new/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="../assets-new/css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/layout.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/elements.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/icons.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/personal-info.css">
+    <link rel="stylesheet" type="text/css" href="../assets-new/css/compiled/user-list.css">
+
+    <!-- this page specific styles -->
+    <!--<link rel="stylesheet" href="../assets-new/css/compiled/index.css" type="text/css" media="screen" />-->
+
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- lato font -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- from account.html -->
+    <!-- Dust + xml -->
+    <script src="../assets/js/dust-core-1.2.3.min.js"></script>
+    <script src="../assets/js/xml2json.js"></script>
+
+</head>
+<body>
+<!-- navbar -->
+<header class="navbar navbar-inverse" role="banner">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" id="menu-toggler">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="account-new.html"><img src="../assets-new/img/caloom-logo-trans.png" height="24px"></a>
+    </div>
+    <ul class="nav navbar-nav pull-right hidden-xs">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
+                Your account
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="account-new.html">My Account</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </li>
+        <li class="settings hidden-xs hidden-sm">
+            <a href="signin.html" role="button">
+                <i class="icon-share-alt"></i>
+            </a>
+        </li>
+    </ul>
+</header>
+<!-- end navbar -->
+
+<!-- sidebar -->
+<div id="sidebar-nav">
+    <ul id="dashboard-menu">
+        <li>
+            <a href="account-new.html">
+                <i class="icon-home"></i>
+                <span>My Identity</span>
+            </a>
+        </li>
+        <li class="active">
+            <div class="pointer">
+                <div class="arrow"></div>
+                <div class="arrow_border"></div>
+            </div>
+            <a href="groups.html">
+                <i class="icon-cog"></i>
+                <span>My Groups</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+
+<!-- main container -->
+<div class="content">
+<div id="pad-wrapper" class="users-list">
+    <div class="row">
+
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="col-md-4 sortable">
+                        Name
+                    </th>
+                    <th class="col-md-3 sortable">
+                        <span class="line"></span>Signed up
+                    </th>
+                    <th class="col-md-2 sortable">
+                        <span class="line"></span>Total spent
+                    </th>
+                    <th class="col-md-3 sortable align-right">
+                        <span class="line"></span>Email
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- row -->
+                <tr class="first">
+                    <td>
+                        <img src="../assets-new/img/contact-img.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Mar 13, 2012
+                    </td>
+                    <td>
+                        $ 4,500.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img2.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Jun 03, 2012
+                    </td>
+                    <td>
+                        $ 549.99
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Mar 01, 2013
+                    </td>
+                    <td>
+                        $ 30.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img2.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Jan 28, 2012
+                    </td>
+                    <td>
+                        $ 1,320.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        May 16, 2012
+                    </td>
+                    <td>
+                        $ 89.99
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img2.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Sep 06, 2012
+                    </td>
+                    <td>
+                        $ 344.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Jul 13, 2012
+                    </td>
+                    <td>
+                        $ 800.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img2.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Feb 13, 2013
+                    </td>
+                    <td>
+                        $ 250.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                <!-- row -->
+                <tr>
+                    <td>
+                        <img src="../assets-new/img/contact-img.png" class="img-circle avatar hidden-phone">
+                        <a href="user-profile.html" class="name">Alejandra Galvan Castillo</a>
+                        <span class="subtext">Graphic Design</span>
+                    </td>
+                    <td>
+                        Feb 27, 2013
+                    </td>
+                    <td>
+                        $ 1,300.00
+                    </td>
+                    <td class="align-right">
+                        <a href="#">alejandra@canvas.com</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- scripts -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<!-- from template -->
+<script src="../assets-new/js/theme.js"></script>
+
+<!-- from account.html -->
+<script src="identity_dust.js"></script>
+
+
+<!--
+<script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+-->
+</body>
+</html>

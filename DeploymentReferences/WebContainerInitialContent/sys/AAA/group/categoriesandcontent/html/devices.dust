@@ -1,0 +1,83 @@
+<div> Device Memberships (Connected to this group)
+    <fieldset id="current-devices">
+        <div id="gallery-3" class="gallery" style="clear: both;">
+            {#DeviceMembershipsSource.DeviceMembershipCollection.CollectionContent}
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"executeoperation_button_begin.dust" form_name="DeleteDeviceMembership" /}
+                            data-devicemembershipiD="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-remove-sign" /}
+                        </span>
+                        <p class="title">{DeviceDescription}</p>
+                        <p class="title">Secret: {SharedSecret}</p>
+                        <p class="title">DeviceID: {ID}</p>
+                        <p class="title">Is validated: {IsValidatedAndActive}</p>
+                    </div>
+                </div>
+            {/DeviceMembershipsSource.DeviceMembershipCollection.CollectionContent}
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+<div> Authenticated As Device (this group connected to other group)
+    <fieldset id="current-devices">
+        <div id="gallery-3" class="gallery" style="clear: both;">
+            {#AuthenticatedAsDevicesSource.AuthenticatedAsActiveDeviceCollection.CollectionContent}
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"executeoperation_button_begin.dust" form_name="PerformNegotiation" /}
+                                data-authenticatedasactivedeviceid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-comments" /}
+                            {>"executeoperation_button_begin.dust" form_name="DeleteAuthenticatedAsActiveDevice" /}
+                            data-authenticatedasactivedeviceid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-remove-sign" /}
+
+                        </span>
+                        <p class="title">{AuthenticationDescription}</p>
+                        <p class="title">Location: {NegotiationURL}</p>
+                        <p class="title">TrustID: {EstablishedTrustID}</p>
+                        <p class="title">Is validated: {IsValidatedAndActive}</p>
+                    </div>
+                </div>
+            {/AuthenticatedAsDevicesSource.AuthenticatedAsActiveDeviceCollection.CollectionContent}
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+{>"executeoperation_button.dust" form_name="addauthencitatedasdevice" button_label="Add Authenticated as Device" icon_class_name="icon-plus-sign" /}
+
+{>"modal_executeoperation_begin.dust" form_name="addauthencitatedasdevice" header_title="Add Authenticated as Device" operation_name="CreateAuthenticatedAsActiveDevice" /}
+{>"textinput_singleline.dust" field_id="AddAuthenticated_AuthenticationDeviceDescription"
+field_name="AuthenticationDeviceDescription" field_label="Description" /}
+
+<input name="SharedSecret" value="testsecretXYZ33" type="hidden" />
+{>"textinput_singleline.dust" field_id="AddAuthenticated_TargetBallHostName"
+field_name="TargetBallHostName" field_label="TargetBallHostName" /}
+{>"textinput_singleline.dust" field_id="AddAuthenticated_TargetGroupID"
+field_name="TargetGroupID" field_label="TargetGroupID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Create Authentication Details" /}
+
+{>"modal_executeoperation_begin.dust" form_name="PerformNegotiation"
+header_title="Perform Negotiation with Target" map_data_values="AuthenticatedAsActiveDeviceID"
+operation_name="PerformNegotiationAndValidateAuthenticationAsActiveDevice" /}
+{>"hiddeninput.dust" field_id="PerformNegotiation_AuthenticatedAsActiveDeviceID"
+field_name="AuthenticatedAsActiveDeviceID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Perform Negotiation" /}
+
+{>"modal_executeoperation_begin.dust" form_name="DeleteAuthenticatedAsActiveDevice"
+header_title="Delete Authentication as Device" map_data_values="AuthenticatedAsActiveDeviceID"
+operation_name="DeleteAuthenticatedAsActiveDevice" /}
+{>"hiddeninput.dust" field_id="DeleteAuthenticatedAsActiveDevice_AuthenticatedAsActiveDeviceID"
+field_name="AuthenticatedAsActiveDeviceID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Delete" /}
+
+{>"modal_executeoperation_begin.dust" form_name="DeleteDeviceMembership"
+header_title="Delete Device Membership" map_data_values="DeviceMembershipID"
+operation_name="DeleteDeviceMembership" /}
+{>"hiddeninput.dust" field_id="DeleteDeviceMembership_DeviceMembershipID"
+field_name="DeviceMembershipID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Delete" /}

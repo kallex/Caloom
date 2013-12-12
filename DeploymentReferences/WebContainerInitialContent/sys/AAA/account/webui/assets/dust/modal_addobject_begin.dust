@@ -1,0 +1,14 @@
+<div id="add-{form_name}" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            {header_title}
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form method="post" class="form-horizontal" enctype="multipart/form-data">
+            <fieldset>
+                <input type="hidden" name="ObjectDomainName" value="{object_domain}" />
+                <input type="hidden" name="ObjectName" value="{object_type}" />
+                <input type="hidden" name="ExecuteOperation" value="CreateSpecifiedInformationObjectWithValues" />
+

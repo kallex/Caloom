@@ -1,0 +1,128 @@
+/*!
+ * Bootstrap Responsive v2.3.1
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+@media (max-width: 1020px) {
+  .content {
+    margin-left: 50px;
+  }
+  #sidebar-nav .nav {
+    margin-left: 0em;
+  }
+  #sidebar-nav .nav li a,
+  #sidebar-nav .nav li a:hover {
+    padding: .75em;
+    font-size: 1.25em;
+  }
+  #sidebar-nav .nav > li > a span {
+    display: none;
+  }
+  .cards .large-stat {
+    font-size: 1em;
+  }
+  .cards .title,
+  .cards .info,
+  .cards .info-text,
+  .cards .stats {
+    font-size: .9em;
+  }
+  .cards .time {
+    font-size: .9em;
+  }
+  .cards .btn.btn-mini.pull-right {
+    margin-top: -0.5em;
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .content {
+    padding-left: 1em;
+    padding-right: 1em;
+    min-width: 0px;
+  }
+  .cards .title,
+  .cards .info,
+  .cards .info-text {
+    font-size: .9em;
+  }
+  .product {
+    margin-top: 2em;
+  }
+}
+#sidebar-nav {
+  width: 50px;
+}
+@media (max-width: 600px) {
+  /*Adjust this if you have more or less tabs in the main menu*/
+  #phone-navigation {
+    display: block;
+  }
+  #main-menu .nav-tabs {
+    display: none;
+  }
+  #sidebar-nav {
+    display: none;
+  }
+  .content {
+    margin-left: 0em;
+    border-left-width: 0px;
+  }
+  body {
+    background: #fff;
+  }
+}
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  .item-summary li {
+    padding-left: 0em;
+  }
+  .stats .stat .main-detail {
+    font-size: 1.25em;
+    margin-bottom: 0em;
+  }
+  .fc-header-left {
+    display: none;
+  }
+  .gallery .thumbnail {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .gallery .thumbnail img {
+    width: 100%;
+  }
+  .blog-post .thumbnail,
+  .blog-post .thumbnail:hover {
+    max-width: 400px;
+    width: auto;
+    margin-bottom: 1em;
+    float: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: none;
+  }
+  .blog-post .post-summary {
+    clear: both;
+  }
+}
+#phone-navigation {
+  display: none;
+  padding: .5em 0em;
+}
+#phone-navigation #phone-menu {
+  margin: 0em auto;
+  display: block;
+}
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  
+}

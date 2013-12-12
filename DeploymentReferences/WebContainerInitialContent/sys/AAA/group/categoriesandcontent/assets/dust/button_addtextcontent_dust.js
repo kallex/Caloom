@@ -1,0 +1,1 @@
+(function(){dust.register("button_addtextcontent.dust",body_0);function body_0(chk,ctx){return chk.write("<a data-toggle=\"modal\" role=\"button\" href=\"#\" class=\"open-addtextcontent\" ><i class=\"icon-plus-sign\"></i> <span>Add New Text Content</span></a>");}return body_0;})();

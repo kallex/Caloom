@@ -1,0 +1,26 @@
+<div class="content">
+<div class="container-fluid">
+<div class="row-fluid">
+<div class="span12">
+<div class="fancy-tab-container">
+<div class="tab-content">
+    <div class="tab-pane fade in active" id="tab-groups">
+    {>"groups.dust"/}
+    </div>
+
+    <div class="tab-pane fade" id="tab-identity">
+    {>"identity.dust"/}
+    </div>
+</div><!--.tab-content-->
+</div><!--.fancy-tab-content-->
+</div><!-- .span12-->
+</div><!-- .row-fluid-->
+<footer>
+    <hr>
+    <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Caloom Ltd</a></p>
+    <p>&copy; 2013 <a href="#">Caloom / OIP / Aalto Global Impact</a></p>
+</footer>
+</div><!--.container-fluid-->
+</div><!--.content-->
+
+{>"common_modals.dust" /}

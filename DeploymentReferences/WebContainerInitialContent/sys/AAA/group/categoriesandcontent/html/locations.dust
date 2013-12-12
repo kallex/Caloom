@@ -1,0 +1,40 @@
+{#Locations.AddressAndLocationCollection.CollectionContent}
+    <div class="location-card cards-profile pull-left texts">
+        <fieldset id="current-locations">
+            <div class="gallery" style="clear: both;">
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div id="filter-demo" style="max-width: 220px">
+                        <div class="filter-map-item"><img src="../assets/img/dummy/map-images/map-1.png"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"objectdeleteicon.dust" object_delete_title="{Location.LocationName}" /}
+                        </span>
+                        <span class="pull-right"><a data-toggle="modal" role="button" class="open-locationeditor" href="#" data-contentinfo="{RelativeLocation}:{MasterETag}"
+                            data-id="{ID}"
+                            data-location___locationname="{Location.LocationName}"
+                            data-location___latitude___textvalue="{Location.Latitude.TextValue}"
+                            data-location___longitude___textvalue="{Location.Longitude.TextValue}"
+                            data-address___street="{Address.Street}"
+                            data-address___zipcode="{Address.ZipCode}"
+                            data-address___town="{Address.Town}"
+                            data-address___country="{Address.Country}">
+                            <i class="icon-edit"></i></a></span>
+                        {?Location.LocationName}<span class="title">{Location.LocationName}</span>{/Location.LocationName}
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </fieldset>
+    </div>
+
+{/Locations.AddressAndLocationCollection.CollectionContent}
+{!
+            ConnectInputField(me, "location___latitude___textvalue", "LocationEditor", "Location___Latitude___TextValue", "");
+            ConnectInputField(me, "location___longitude___textvalue", "LocationEditor", "Location___Longitude___TextValue", "");
+            ConnectInputField(me, "address___street", "LocationEditor", "Address___Street", "");
+            ConnectInputField(me, "address___zipcode", "LocationEditor", "Address___ZipCode", "");
+            ConnectInputField(me, "address___town", "LocationEditor", "Address___Town", "");
+            ConnectInputField(me, "address___country", "LocationEditor", "Address___Country", "");
+!}

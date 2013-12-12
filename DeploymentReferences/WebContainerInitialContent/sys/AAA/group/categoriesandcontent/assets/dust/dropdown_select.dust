@@ -1,0 +1,11 @@
+<div class="control-group">
+    <label class="control-label" for="{field_id}">{field_label}</label>
+    <div class="controls">
+        <select name="{field_name}" id="{field_id}" {?is_multiple}multiple="true"{/is_multiple}>
+            <option value="" selected>(None)</option>
+{#item_collection}
+    <option name="{ID}" value="{ID}">{?item_type}{>"option_display_{item_type}.dust" /}{:else}{Title}{/item_type}</option>
+{/item_collection}
+        </select>
+    </div>
+</div>

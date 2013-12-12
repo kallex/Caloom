@@ -1,0 +1,26 @@
+{>"modal_addobject_begin.dust" form_name="location" header_title="Add Location" object_domain="AaltoGlobalImpact.OIP" object_type="AddressAndLocation" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Location___LocationName"
+field_name="Location___LocationName" field_label="Location Name" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Location___Latitude___TextValue"
+field_name="Location___Latitude___TextValue" field_label="Latitude" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Location___Longitude___TextValue"
+field_name="Location___Longitude___TextValue" field_label="Longitude" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Address___Street"
+field_name="Address___Street" field_label="Street Address" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Address___ZipCode"
+field_name="Address___ZipCode" field_label="Zip Code" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Address___Town"
+field_name="Address___Town" field_label="Town" /}
+{>"textinput_singleline.dust" field_id="AddLocation_Address___Country"
+field_name="Address___Country" field_label="Country" /}
+{>"modal_addobject_end.dust" /}
+
+<script type="text/javascript">
+    $(function() {
+        $(".open-addlocation").on("click", function() {
+            InitializeModalClasses();
+            $('#add-location').modal('show');
+        });
+    });
+</script>
+

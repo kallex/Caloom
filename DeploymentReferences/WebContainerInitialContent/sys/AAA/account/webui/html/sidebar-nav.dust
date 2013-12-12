@@ -1,0 +1,6 @@
+<div id="sidebar-nav">
+    <ul id="dashboard-menu" class="nav nav-list">
+        <li class="active"><a href="#tab-groups" data-toggle="tab"><i class="icon-film"></i> <span>My Groups</span></a></li>
+        <li class=""><a href="#tab-identity" data-toggle="tab"><i class="icon-home"></i> <span>My Identity</span></a></li>
+    </ul>
+</div><!-- .sidebar-nav-->

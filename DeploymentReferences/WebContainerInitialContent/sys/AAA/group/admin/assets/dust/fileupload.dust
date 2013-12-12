@@ -1,0 +1,12 @@
+<div class="fileupload {initial_class_mode}" data-provides="fileupload" data-name="File_{?container_id}{container_id}_{/container_id}{field_name}">
+    <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;"><img src="../assets/img/no_image.gif" /></div>
+    <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+        {?content_id}
+            <img src="../../AaltoGlobalImpact.OIP/MediaContent/{content_id}_{imagesuffix}">
+        {/content_id}
+    </div>
+    <div>
+        <span class="btn btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+    </div>
+</div>

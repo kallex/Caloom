@@ -1,0 +1,52 @@
+  /*
+  * admin-pricing
+  */
+
+  .pricing {
+  .product {
+    &.popular {
+    }
+    .rounded(5px);
+    border: 1px solid #ccc;
+    overflow: hidden;
+    text-align: center;
+    p {
+      text-align: left;
+      padding: 1em 0em;
+    }
+    h2 {
+      font-size: 1.25em;
+      padding: 0em .5em;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      border-bottom: 1px solid darken(@navbarBackgroundColor, 15%);
+      .box-shadow(inset 0px 1px lighten(@navbarBackgroundColor, 100%));
+      //.headerGradient();
+      text-shadow: 1px 1px 0px #fff;
+      .border-radius(5px, 0px, 0px, 5px);
+    }
+    ul {
+      padding-left: 0em;
+      margin-left: 1em;
+      margin-right: 1em;
+      margin-bottom: 0em;
+      list-style: none;
+      li {
+        border-bottom: 1px solid #eee;
+        padding: 1em 0em;
+      }
+    }
+    .price {
+      text-align: center;
+      font-weight: bold;
+      margin: 1em 0px;
+    }
+    .call-to-action {
+      text-align: center;
+      margin: 0px;
+      .border-radius(0px, 5px, 5px, 0px);
+      background: lighten(@navbarBackgroundColor, 10%);
+      border-top: 1px solid darken(@navbarBackgroundColor, 5%);
+    }
+  }
+}

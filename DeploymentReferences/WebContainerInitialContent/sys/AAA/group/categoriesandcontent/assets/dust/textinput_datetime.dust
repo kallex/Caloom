@@ -1,0 +1,8 @@
+<div class="control-group">
+    <label class="control-label" for="{field_id}">{field_label}</label>
+    <div class="controls">
+            <input name="{?field_name}{field_name}{/field_name}"  id="{field_id}" type="text" {?field_value}value="{field_value}"{/field_value} />
+    </div>
+</div>
+
+

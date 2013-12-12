@@ -1,0 +1,1 @@
+(function(){dust.register("option_display_authenticatedasactivedevice.dust",body_0);function body_0(chk,ctx){return chk.reference(ctx.get("AuthenticationDescription"),ctx,"h").write(" ").reference(ctx.get("NegotiationURL"),ctx,"h");}return body_0;})();

@@ -1,0 +1,92 @@
+  /*
+  * admin-sidenav
+  */
+
+  #sidebar-nav {
+  position: absolute; //Needed to make sure content is positioned correctly
+  width: 200px;
+  float: left;
+  margin: 0em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+
+  .nav-list {
+    padding: 0px;
+
+    li
+    {
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px;
+
+      &.active {
+        background: @linkBackgroundActive;
+        border-right: 0px;
+        border-top: 1px solid lighten(@linkBackgroundActive, 5%);
+        border-bottom: 1px solid lighten(@linkBackgroundActive, 5%);
+      }
+      &.active:hover {
+        //background: lighten(@navbarBackgroundColor, 4%);
+      }
+
+      a, a:hover {
+        //color: @linkColorHover;
+        //text-shadow: 1px 1px 0px #fff;
+        padding: .5em 2em;
+        border:0px;
+        margin: 0px 1px;
+        background: none;
+
+      }
+
+      &.active a {
+        border:0px;
+      }
+
+      &:hover {
+        //background: lighten(@navbarBackgroundColor, 4%);
+        //border-top: 1px solid darken(@navbarBackgroundColor, 5%);
+        //border-bottom: 1px solid darken(@navbarBackgroundColor, 5%);
+      }
+
+    }
+  .nav-sub {
+    font-size: 0.85em;
+    margin-left: 1.5em;
+    li {
+      line-height: 1em;
+    }
+    }
+  }
+}
+
+.sidebar {
+
+  .widget {
+    margin-top: 1.5em;
+    overflow: hidden;
+
+    .header() {
+      & > a {
+        .headerText();
+      }
+      //.headerGradient();
+      border-bottom: 1px solid darken(@navbarBackgroundColor, 15%);
+      .headerText();
+    }
+
+    h2 {
+      margin-top: 0em;
+      .header;
+      border-top: 1px solid #fff;
+      margin-bottom: 0px;
+      padding-left: 1em;
+      .border-radius(5px, 0px, 0px, 5px);
+    }
+
+    .cards {
+      margin: 0em;
+    }
+
+  }
+}

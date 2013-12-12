@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+
+    <script>
+
+        var SaveCategoryHierarchy = function()
+        {
+            UpdateOutputTest($("#nesttest"));
+        };
+
+        var UpdateOutputTest = function(e)
+        {
+            var list   = e.length ? e : $(e.target);
+            /*output = list.data('output');*/
+            var jsonData;
+            if (window.JSON) {
+                jsonData = window.JSON.stringify(list.nestable('serialize'));
+                /*alert(jsonData);*/
+            } else {
+                /*output.val('JSON browser support required for this demo.');*/
+            }
+            $.ajax(
+                    { type: "POST",
+                    url: "?operation=AaltoGlobalImpact.OIP.SetCategoryHierarchyAndOrderInNodeSummary",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: jsonData,
+                    success: function() {
+                        window.location.reload(true);
+                    },
+                    error: function(){
+                        alert("Error Occurred at Save");
+                        window.location.reload(true);
+                    }
+                }
+            );
+        };
+    </script>
+
+
+    <meta charset="utf-8">
+    <title>Group - Categories and Content</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- For sample logo only-->
+    <!--Remove if you no longer need this font-->
+    <link href="https://fonts.googleapis.com/css?family=Aguafina+Script" rel="stylesheet" type="text/css" >
+    <!--For sample logo only-->
+
+    <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap/css/bootstrap.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <script src="../assets/js/site.js" type="text/javascript"></script>
+    <link href="../assets/css/bootstrap-fileupload.css" rel="stylesheet">
+    <link href="../assets/css/isotope.css" rel="stylesheet">
+    <link href="../assets/css/custom.css" rel="stylesheet">
+    <link href="../assets/lib/jquery-nestable/jquery-nestable.css" rel="stylesheet">
+
+
+
+    <script src="../assets/lib/jquery.isotope.min.js"></script>
+    <script src="../assets/lib/jquery-nestable/jquery.nestable.js"></script>
+    <script src="../assets/js/bootstrap-fileupload.js" type="text/javascript"></script>
+
+
+    <!-- MarkdownDeep Editor -->
+    <link rel="stylesheet" href="../assets/lib/markdowndeep/mdd_styles.css">
+    <script type="text/javascript" src="../assets/lib/markdowndeep/MarkdownDeepLib.min.js"></script>
+
+    <!-- jQuery Upload-->
+    <link rel="stylesheet" href="../assets/lib/jQuery-File-Upload/css/jquery.fileupload.css">
+
+    <!--
+	<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+	<script src="../assets/js/leaflet.markercluster.js"></script>
+	<link rel="stylesheet" href="../assets/css/MarkerCluster.css" />
+	<link rel="stylesheet" href="../assets/css/MarkerCluster.Default.css" />
+	-->
+
+    <!-- Before any other scripts, include the common definitions -->
+    <script src="../assets/js/common_ui_functions.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/admin-theme.css">
+
+    <style type="text/css">
+            /*h2 { margin-top: 2em; }*/
+        #dropdown-buttons .btn-group:first-child { margin-left: 0px; }
+        #dropdown-buttons .btn-group { margin-left: 31px; }
+        #dropdown-buttons2 .btn-group:first-child { margin-left: 0px; }
+        #dropdown-buttons2 .btn-group { margin-left: 18px; }
+        .sample-buttons .btn-group {
+            width: 115px;
+            height: 40px;
+            margin: 0em;
+        }
+        .filter-demo-item {
+            /*float: left;*/
+            width: 50px;
+            height: 50px;
+            margin: .5em;
+            background: #667;
+            overflow: hidden;
+        }
+            /**** Isotope Filtering ****/
+
+        .isotope-item {
+            z-index: 2;
+        }
+
+        .isotope-hidden.isotope-item {
+            pointer-events: none;
+            z-index: 1;
+        }
+
+            /**** Isotope CSS3 transitions ****/
+        .isotope {
+            margin-bottom: 30px;
+        }
+        .isotope,
+        .isotope .isotope-item {
+            -webkit-transition-duration: 0.8s;
+            -moz-transition-duration: 0.8s;
+            -ms-transition-duration: 0.8s;
+            -o-transition-duration: 0.8s;
+            transition-duration: 0.8s;
+        }
+
+        .isotope {
+            -webkit-transition-property: height, width;
+            -moz-transition-property: height, width;
+            -ms-transition-property: height, width;
+            -o-transition-property: height, width;
+            transition-property: height, width;
+        }
+
+        .isotope .isotope-item {
+            -webkit-transition-property: -webkit-transform, opacity;
+            -moz-transition-property:    -moz-transform, opacity;
+            -ms-transition-property:     -ms-transform, opacity;
+            -o-transition-property:      -o-transform, opacity;
+            transition-property:         transform, opacity;
+        }
+
+            /**** disabling Isotope CSS3 transitions ****/
+
+        .isotope.no-transition,
+        .isotope.no-transition .isotope-item,
+        .isotope .isotope-item.no-transition {
+            -webkit-transition-duration: 0s;
+            -moz-transition-duration: 0s;
+            -ms-transition-duration: 0s;
+            -o-transition-duration: 0s;
+            transition-duration: 0s;
+        }
+
+        .loading {
+            margin-right: .25em;
+        }
+        #location-map{
+            height: 400px;
+        }
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Dust + xml -->
+    <script src="../assets/js/dust-core-1.2.3.min.js"></script>
+    <script src="../assets/js/dust-helpers-1.1.2.js"></script>
+    <script src="../assets/js/xml2json.js"></script>
+
+
+    <style type='text/css'>
+
+        #calendar {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+    </style>
+    <style type="text/css">
+        .group-management .navbar .navbar-inner {
+            padding: 0;
+            border-top: darkblue solid 3px;
+        }
+    </style>
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<!--[if lt IE 7 ]> <body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]> <body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]> <body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="group-management">
+<!--<![endif]-->
+
+<div class="dustph" id="navbar_placeholder"><i class="icon-refresh icon-spin"></i>Loading navbar...</div>
+<div class="dustph" id="main-menu_placeholder"><i class="icon-refresh icon-spin"></i>Loading main menu...</div>
+<div class="dustph" id="sidebar-nav_placeholder"><i class="icon-refresh icon-spin"></i>Loading sidebar...</div>
+<div class="dustph" id="content_placeholder"><i class="icon-refresh icon-spin"></i>Loading content...</div>
+
+<script>
+
+    var fixContentUrl = function(originalUrl)
+    {
+        if(window.location.host != "localhost:63342")
+            return originalUrl;
+        return originalUrl.replace("/auth/account/", "../../../ExtContent/auth/account/");
+    };
+    $("#content_placeholder").data({
+        datasource: {
+            GroupContainerSource: ["../../AaltoGlobalImpact.OIP/GroupContainer/default.json", null, "GroupContainer"],
+            Locations: ["../../AaltoGlobalImpact.OIP/AddressAndLocationCollection/MasterCollection.json", null, "AddressAndLocationCollection"],
+            CategoriesSource: ["../../AaltoGlobalImpact.OIP/CategoryCollection/MasterCollection.json", null, "CategoryCollection"] ,
+            /*
+            TextContentsSource: ["../../AaltoGlobalImpact.OIP/TextContentCollection/MasterCollection", null],
+             */
+            TextContentsSource: ["../../AaltoGlobalImpact.OIP/TextContentCollection/MasterCollection.json", null, "TextContentCollection"],
+            ImageContentsSource: ["../../AaltoGlobalImpact.OIP/ImageCollection/MasterCollection.json", null, "ImageCollection"],
+            BinaryFileContentsSource: ["../../AaltoGlobalImpact.OIP/BinaryFileCollection/MasterCollection.json", null, "BinaryFileCollection"],
+
+            NodeSummarySource: ["../../AaltoGlobalImpact.OIP/NodeSummaryContainer/default.json", null, "NodeSummaryContainer"],
+            /* NOTE! The direct TheBall.CORE sources are here for demonstration/trustable deployment purposes only.
+             * They contain AES keys as-is  */
+            DeviceMembershipsSource: ["../../TheBall.CORE/DeviceMembershipCollection/MasterCollection.json", null, "DeviceMembershipCollection"],
+            AuthenticatedAsDevicesSource: ["../../TheBall.CORE/AuthenticatedAsActiveDeviceCollection/MasterCollection.json", null, "AuthenticatedAsActiveDeviceCollection"],
+            InputsSource: ["../../TheBall.CORE/InformationInputCollection/MasterCollection.json", null, "InformationInputCollection"],
+            OutputsSource: ["../../TheBall.CORE/InformationOutputCollection/MasterCollection.json", null, "InformationOutputCollection"]
+        }
+    });
+    $("#navbar_placeholder").data({
+        datasource: {
+            GroupContainerSource: ["../../AaltoGlobalImpact.OIP/GroupContainer/default.json", null, "GroupContainer"],
+            AccountContainer: [fixContentUrl("/auth/account/AaltoGlobalImpact.OIP/AccountContainer/default"), null]
+        }
+    });
+
+</script>
+
+<script language="javascript">
+
+    var xml2JSObj = function(xmlResponse) {
+        var dom;
+        if (window.DOMParser) {
+            parser = new DOMParser();
+            dom = parser.parseFromString(xmlResponse, "text/xml");
+        }
+        else // Internet Explorer
+        {
+            dom = new ActiveXObject("Microsoft.XMLDOM");
+            dom.async = false;
+            dom.loadXML(xmlResponse);
+        }
+        var json = xml2json(dom, "  ");
+        //alert(json);
+        var jsonResult = jQuery.parseJSON(json);
+        return jsonResult;
+    };
+    dust.helpers.formatDate = function (chunk, context, bodies, params) {
+        var value = dust.helpers.tap(params.value, chunk, context),
+                timestamp,
+                month,
+                date,
+                year;
+        timestamp = new Date(value);
+        if(isNaN(timestamp))
+            timestamp = new Date(parseInt(value.substr(6)));
+//        month = timestamp.getMonth() + 1;
+//        date = timestamp.getDate();
+//        year = timestamp.getFullYear();
+
+//        return chunk.write(date + '.' + month + '.' + year);
+        return chunk.write(timestamp.toISOString());
+    };
+    var renderDustFromResponse = function(placeholderID, dusttemplatename, templateContent, dataObject) {
+        //var templateID = placeholderID.replace("_placeholder", "");
+        //var templateCompiled = dust.compile(templateContent, templateID);
+        //dust.loadSource(templateCompiled);
+        dust.loadSource(templateContent);
+        dust.render(dusttemplatename, dataObject, function(err, out) {
+            $("#" + placeholderID).html(out);
+        });
+    };
+
+    String.prototype.replaceAll = function(strReplace, strWith) {
+        var reg = new RegExp(strReplace, 'ig');
+        return this.replace(reg, strWith);
+    };
+
+    var CategoriesWithChildren;
+    dustifyph = function() {
+        var placeholderID = $(this).attr("id");
+        var dataSources = $(this).data("datasource");
+        //alert(placeholderID);
+        var fetchContentPromises = [];
+        var dataSourceKeys = [];
+        if(dataSources != null) {
+            for(var key in dataSources)
+            {
+                dataSourceKeys.push(key);
+                fetchContentPromises.push(dataSources[key][1]);
+            }
+        }
+        var templateID = placeholderID.replace("_placeholder", "");
+        var dustfilename = templateID + ".dust";
+        var dustcompiled = templateID + "_dust.js";
+        var dusttemplatename = dustfilename;
+        fetchContentPromises.push($.ajax({ url: dustcompiled,cache:false}));
+        $.when.apply($, fetchContentPromises).then(function() {
+            var dataObject = {};
+            var dustTemplateContent;
+            if(dataSourceKeys.length > 0) {
+                for(var argumentIx = 0; argumentIx < arguments.length - 1; argumentIx++)
+                {
+                    var key = dataSourceKeys[argumentIx];
+                    var ds = dataSources[key];
+                    var url = ds[0];
+                    var jsonRootObjectName = ds[2];
+                    var isJSON = url.endsWith(".json");
+                    var response = arguments[argumentIx][0];
+                    var status = arguments[argumentIx][1];
+                    var request = arguments[argumentIx][2];
+                    var jsonObj;
+                    if(isJSON)
+                    {
+                        jsonObj = { };
+                        if(response.Name == "CategoryCollection" || response.Name == "TextContentCollection")
+                        {
+                            var markdown = new MarkdownDeep.Markdown();
+                            markdown.SafeMode = true;
+                            for(var markdownRenderIx = 0; markdownRenderIx < response.CollectionContent.length; markdownRenderIx++)
+                            {
+                                var category = response.CollectionContent[markdownRenderIx];
+                                if(category.Excerpt == undefined)
+                                    category.Excerpt = "";
+                                var rendered = markdown.Transform(category.Excerpt.replaceAll("javascript:", ""));
+                                category.ExcerptRendered = rendered;
+                            }
+                        }
+                        if(response.Name == "NodeSummaryContainer")
+                        {
+                            CategoriesWithChildren = ConvertCategoriesFromParentToChildren(response.NodeSourceCategories.CollectionContent);
+                            jsonObj["CategoriesWithChildren"] = CategoriesWithChildren;
+                        }
+                        jsonObj[jsonRootObjectName] = response;
+                    } else {
+                        jsonObj = xml2JSObj(response);
+                    }
+                    var eTag = request.getResponseHeader("ETag")
+                    if(eTag == null)
+                        eTag = "DefaultUndefined";
+                    jsonObj["ETag"] = eTag;
+                    dataObject[key] = jsonObj;
+                }
+                dustTemplateContent = arguments[arguments.length - 1][0];
+            } else
+                dustTemplateContent = arguments[0];
+            renderDustFromResponse(placeholderID, dusttemplatename, dustTemplateContent, dataObject);
+
+        });
+        //var dataObject = null;
+    };
+    var DataPromiseCache = {};
+    var replaceDatasourceUrlsWithAjaxPromises = function()
+    {
+        var dataSources = $(this).data("datasource");
+        if(dataSources == null)
+            return;
+        for(var key in dataSources)
+        {
+            var url = dataSources[key][0];
+            var urlPromise = DataPromiseCache[url];
+            if(urlPromise == null)
+            {
+                urlPromise = $.ajax({ url: url, cache:false});
+                DataPromiseCache[url] = urlPromise;
+            }
+            dataSources[key][1] = urlPromise;
+        }
+    };
+    $(function() {
+
+        $(".dustph").each(replaceDatasourceUrlsWithAjaxPromises).each(dustifyph);
+    });
+</script>
+
+<script src="categories_dust.js"></script>
+<script src="category_treeeditor_dust.js"></script>
+<script src="category_treeitem_dust.js"></script>
+<script src="textcontents_dust.js"></script>
+<script src="imagecontent_dust.js"></script>
+<script src="binaryfilecontent_dust.js"></script>
+<script src="collaborators_dust.js"></script>
+<script src="devices_dust.js"></script>
+<script src="inputs_dust.js"></script>
+<script src="identity_dust.js"></script>
+<script src="completefileupload_dust.js"></script>
+<script src="locations_dust.js"></script>
+
+<script src="../assets/dust/form_editlocation_dust.js"></script>
+<script src="../assets/dust/form_addlocation_dust.js"></script>
+<script src="../assets/dust/button_addlocation_dust.js"></script>
+<script src="../assets/dust/form_editcategory_dust.js"></script>
+<script src="../assets/dust/form_addcategory_dust.js"></script>
+<script src="../assets/dust/button_addcategory_dust.js"></script>
+<script src="../assets/dust/form_addcategories_dust.js"></script>
+<script src="../assets/dust/button_addcategories_dust.js"></script>
+<script src="../assets/dust/form_edittextcontent_dust.js"></script>
+<script src="../assets/dust/form_addtextcontent_dust.js"></script>
+<script src="../assets/dust/button_addtextcontent_dust.js"></script>
+<script src="../assets/dust/option_display_authenticatedasactivedevice_dust.js"></script>
+
+<script src="../assets/dust/modal_addobject_begin_dust.js"></script>
+<script src="../assets/dust/modal_addobject_end_dust.js"></script>
+<script src="../assets/dust/modal_executeoperation_begin_dust.js"></script>
+<script src="../assets/dust/modal_executeoperation_end_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_begin_dust.js"></script>
+<script src="../assets/dust/executeoperation_button_end_dust.js"></script>
+<script src="../assets/dust/fileupload_dust.js"></script>
+<script src="../assets/dust/textinput_singleline_dust.js"></script>
+<script src="../assets/dust/textinput_datetime_dust.js"></script>
+<script src="../assets/dust/hiddeninput_dust.js"></script>
+<script src="../assets/dust/textinput_multiline_dust.js"></script>
+<script src="../assets/dust/textinput_multiline_markdown_dust.js"></script>
+<script src="../assets/dust/objectdeleteicon_dust.js"></script>
+<script src="../assets/dust/dropdown_select_dust.js"></script>
+<script src="../assets/dust/option_display_category_dust.js"></script>
+<script src="../assets/dust/option_display_location_dust.js"></script>
+
+<script>
+    function getData( val ){
+
+        // Return a promise from the cache (if available)
+        // or create a new one (a jqXHR object) and store it in the cache.
+        var promise = cache[val];
+        if (!promise) {
+            promise = $.ajax('/foo/', {
+                data: { value: val },
+                dataType: 'json'
+            });
+            cache[val] = promise;
+        }
+        return promise;
+    }
+
+</script>
+
+<script src="../assets/lib/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function() {
+        $('.demo-cancel-click').click(function(){return false;});
+    });
+</script>
+
+<script type="text/javascript">
+    if (typeof String.prototype.endsWith !== 'function') {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+</script>
+
+<script type="text/javascript">
+    /* Final initialization, hopefully after Dusting */
+    function InitializeModalClasses() {
+        $("textarea.mdd_editor").MarkdownDeep({
+            help_location: "../assets/lib/markdowndeep/mdd_help.html",
+            disableTabHandling:true
+        });
+    }
+
+/*
+    $(".open-objectdelete").on("click", function() {
+        var me = $(this);
+        ConnectInputField(me, "objectid", "ObjectDelete", "ObjectID", "", true);
+        ConnectInputField(me, "domainname", "ObjectDelete", "ObjectDomainName", "", true);
+        ConnectInputField(me, "objectname", "ObjectDelete", "ObjectName", "", true);
+        $("#DeleteObjectFormHeader").html("Delete " + me.data("objectname") + ": '" + me.data("deletetitle") + "'?");
+        $('#delete-object').modal('show');
+    });
+*/
+</script>
+
+
+<script src="../assets/dust/common_modals_dust.js"></script>
+<div id="common_modals_ph">
+
+</div>
+<script type="text/javascript">
+    dust.render("common_modals.dust", null, function(err, out) {
+        $("#common_modals_ph").html(out);
+    });
+</script>
+
+</body>
+</html>

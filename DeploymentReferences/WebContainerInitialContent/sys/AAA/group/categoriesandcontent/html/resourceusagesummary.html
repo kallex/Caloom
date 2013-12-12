@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<span>CPU Req Time (0..1)</span>
+<canvas id="myChart" width="600" height="300"></canvas>
+<span>
+    <!--
+    <canvas id="myChart2" width="600" height="400"></canvas>
+    <span id="myChart2Details"></span>
+    -->
+</span>
+<span>Net MB</span>
+<canvas id="myChart3" width="600" height="300"></canvas>
+<div id="MonthlySummaries"><h2>Monthly Summary</h2>
+    <p>Total Computing Seconds: <span class="TotalComputingSeconds"></span> Total Network Bytes: <span class="TotalNetworkBytes"></span></p>
+    <p>Pricing instance sizes as following: XS = $0.02, S = $0.08 </p>
+    <p>Network pricing is based as $0.12/GB</p>
+</div>
+
+<table border="1" style="padding: 2">
+    <thead><h2>Small Instance Size Comparison</h2>
+    <tr>
+        <th>Item</th>
+        <th>The Ball S</th>
+        <th>Traditional (Single) - S</th>
+        <th>Traditional (Redundant) - S</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Network Outbound GB</td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+    </tr>
+    <tr>
+        <td>Network Price</td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+    </tr>
+    <tr>
+        <td>Computing Hours</td>
+        <td><span class="BallTotalCPUHoursMonth"></span></td>
+        <td><span class="TradSingleTotalCPUHoursMonth"></span></td>
+        <td><span class="TradRedundantTotalCPUHoursMonth"></span></td>
+    </tr>
+    <tr>
+        <td>Computing Hours Price</td>
+        <td><span class="SmallBallTotalCPUPriceMonth"></span></td>
+        <td><span class="SmallTradSingleTotalCPUPriceMonth"></span></td>
+        <td><span class="SmallTradRedundantTotalCPUPriceMonth"></span></td>
+    </tr>
+    <tr style="font-weight: bolder">
+        <td>Total Price</td>
+        <td><span class="SmallTotalBallPrice"></span></td>
+        <td><span class="SmallTotalSinglePrice"></span></td>
+        <td><span class="SmallTotalRedundantPrice"></span></td>
+    </tr>
+    <tr>
+        <td>Cost compared to most expensive</td>
+        <td><span class="SmallBallRelativeToSmallRedundant"></span></td>
+        <td><span class="SmallSingleRelativeToSmallRedundant"></span></td>
+        <td><span class="SmallRedundantSmallRedundantRelativeToSelf"></span></td>
+    </tr>
+    <tr>
+        <td>Relative cost saving</td>
+        <td><span class="SmallBallRelativeToSmallRedundantSaving"></span></td>
+        <td><span class="SmallSingleRelativeToSmallRedundantSaving"></span></td>
+        <td><span class="SmallRedundantSmallRedundantRelativeToSelfSaving"></span></td>
+    </tr>
+
+    </tbody>
+</table>
+<table border="1" style="padding: 2">
+    <thead><h2>XS Instance Size Comparison</h2>
+    <tr>
+        <th>Item</th>
+        <th>The Ball XS</th>
+        <th>Traditional (Single) - XS</th>
+        <th>Traditional (Redundant) - XS</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Network Outbound GB</td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+        <td><span class="TotalNetworkOutboundGB"></span></td>
+    </tr>
+    <tr>
+        <td>Network Price</td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+        <td><span class="TotalNetworkPriceMonth"></span></td>
+    </tr>
+    <tr>
+        <td>Computing Hours</td>
+        <td><span class="BallTotalCPUHoursMonth"></span></td>
+        <td><span class="TradSingleTotalCPUHoursMonth"></span></td>
+        <td><span class="TradRedundantTotalCPUHoursMonth"></span></td>
+    </tr>
+    <tr>
+        <td>Computing Hours Price</td>
+        <td><span class="BallTotalCPUPriceMonth"></span></td>
+        <td><span class="TradSingleTotalCPUPriceMonth"></span></td>
+        <td><span class="TradRedundantTotalCPUPriceMonth"></span></td>
+    </tr>
+    <tr style="font-weight: bolder">
+        <td>Total Price</td>
+        <td><span class="TotalXSBallPrice"></span></td>
+        <td><span class="TotalXSSinglePrice"></span></td>
+        <td><span class="TotalXSRedundantPrice"></span></td>
+    </tr>
+    <tr>
+        <td>Cost compared to most expensive</td>
+        <td><span class="XSBallRelativeToXSRedundant"></span></td>
+        <td><span class="XSSingleRelativeToXSRedundant"></span></td>
+        <td><span class="XSRedundantXSRedundantRelativeToSelf"></span></td>
+    </tr>
+    <tr>
+        <td>Relative cost saving</td>
+        <td><span class="XSBallRelativeToXSRedundantSaving"></span></td>
+        <td><span class="XSSingleRelativeToXSRedundantSaving"></span></td>
+        <td><span class="XSRedundantXSRedundantRelativeToSelfSaving"></span></td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+
+<script type="text/javascript">
+    //Get context with jQuery - using jQuery's .get() method.
+    var ctx = $("#myChart").get(0).getContext("2d");
+    //var pieCtx = $("#myChart2").get(0).getContext("2d");
+    var networkBar = $("#myChart3").get(0).getContext("2d");
+    //This will get the first returned node in the jQuery collection.
+    //var myNewChart = new Chart(ctx);
+
+    Date.prototype.yyyymmdd = function() {
+        var yyyy = this.getFullYear().toString();
+        var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+        var dd  = this.getDate().toString();
+        return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+    };
+
+    function convertDateToUTC(date) {
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+    }
+
+    var getTotalMsFromNETDateTimes = function(startTime, endTime)
+    {
+        var startDate = eval ("new " + ("\\" + startTime + "/").replace( /[\\/]/g, ""));
+        var endDate = eval ("new " + ("\\" + endTime + "/").replace( /[\\/]/g, ""));
+        var totalMilliseconds = endDate - startDate;
+        return totalMilliseconds;
+    };
+
+    $(function () {
+        var today = convertDateToUTC(new Date());
+        // To test yesterday, uncomment below
+        //today.setDate(today.getDate() - 1);
+        var todayStr = today.yyyymmdd();
+        var fetchDatas = [
+            "../../TheBall.CORE/UsageSummary/" + todayStr +"_Hourly.json",
+            "../../TheBall.CORE/UsageSummary/" + todayStr + "_Detailed.json",
+            "../../TheBall.CORE/UsageSummary/LastMonthSummary_Daily.json"
+            //"../../AaltoGlobalImpact.OIP/AddressAndLocationCollection/MasterCollection.json",
+            //"../../AaltoGlobalImpact.OIP/GroupContainer/default.json"
+        ];
+        $.each(fetchDatas, function(index, value) {
+            fetchDatas[index] = $.ajax({ url: value, cache:false });
+        });
+        /*$.get("../../AaltoGlobalImpact.OIP/NodeSummaryContainer/default.json", function ()jsonObject) {*/
+        $.when.apply($, fetchDatas).then(function() {
+            var usageSummary = arguments[0][0];
+            var detailedSummary = arguments[1][0];
+            var lastMonthSummary = arguments[2][0];
+            //var nodeSummary = arguments[0][0];
+            //CurrNodeSummary = nodeSummary;
+            //CurrLocations = arguments[1][0];
+            //CurrGroupContainer = arguments[2][0];
+            hourCPUTimes = [];
+            hourRealWorldtimes = [];
+            networkBytes = [];
+            var totalCPUms = 0;
+            var totalRealworldms = 0;
+            var totalNetworkBytes = 0;
+            var totalNetworkBytesMonth = 0;
+            var totalRealworldSecondsMonth = 0;
+
+            // Montly summaries
+
+            $.each(lastMonthSummary.SummaryMonitoringItem.ProcessorUsages.CollectionContent, function(index, value) {
+                var totalMilliseconds = getTotalMsFromNETDateTimes(value.TimeRange.StartTime, value.TimeRange.EndTime);
+                totalRealworldSecondsMonth += totalMilliseconds;
+            });
+            totalRealworldSecondsMonth = totalRealworldSecondsMonth / 1000;
+            $.each(lastMonthSummary.SummaryMonitoringItem.NetworkUsages.CollectionContent, function(index, value) {
+                totalNetworkBytesMonth += value.AmountOfBytes;
+            });
+
+
+            $.each(usageSummary.SummaryMonitoringItem.ProcessorUsages.CollectionContent, function(index, value) {
+                hourCPUTimes.push(value.Milliseconds / (1000 * 3600));
+                //var deltaDiff = value.
+                totalCPUms += value.Milliseconds
+                var totalMilliseconds = getTotalMsFromNETDateTimes(value.TimeRange.StartTime, value.TimeRange.EndTime);
+                hourRealWorldtimes.push(totalMilliseconds / (1000.0 * 3600));
+                totalRealworldms += totalMilliseconds;
+            });
+            $.each(usageSummary.SummaryMonitoringItem.NetworkUsages.CollectionContent, function(index, value) {
+                networkBytes.push(value.AmountOfBytes / (1024.0 * 1024.0));
+                totalNetworkBytes += value.AmountOfBytes;
+            });
+            var data = {
+                labels : ["0:00","1:00","2:00","3:00","4:00","5:00","6:00",
+                    "7:00","8:00","9:00","10:00","11:00","12:00",
+                    "13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
+                    "21:00","22:00","23:00"],
+                datasets : [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,220,220,1)",
+                        data : hourCPUTimes
+                    },
+                    {
+                        fillColor : "rgba(151,187,205,0.5)",
+                        strokeColor : "rgba(151,187,205,1)",
+                        data : hourRealWorldtimes
+                    }
+                ]
+            }
+            //options = {};
+            new Chart(ctx).Bar(data);
+            var totalDayMs = 86400000;
+            var remainingMs = totalDayMs - totalRealworldms;
+            var pieData = [
+                {
+                    value: remainingMs,
+                    color:"#F38630"
+                },
+                {
+                    value : totalRealworldms,
+                    color : "#E0E4CC"
+                }
+            ];
+            //new Chart(pieCtx).Pie(pieData);
+            //$("#myChart2Details").html("Usage: " + Math.round(totalRealworldms * 10000 / totalDayMs) / 100 + "%");
+            //new Chart(pieCtx).PolarArea(pieData);
+
+            var networkData = {
+                labels : ["0:00","1:00","2:00","3:00","4:00","5:00","6:00",
+                    "7:00","8:00","9:00","10:00","11:00","12:00",
+                    "13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
+                    "21:00","22:00","23:00"],
+                datasets : [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,220,220,1)",
+                        data : networkBytes
+                    }
+                ]
+            };
+            new Chart(networkBar).Bar(networkData);
+
+            // Fill Monthly Summary
+            var networkGBOut = Math.round(totalNetworkBytesMonth * 1000 / (1024 * 1024 * 1024)) / 1000;
+                    //TotalNetworkPriceMonth
+            var networkPrice = Math.round(networkGBOut * 0.12 * 100) / 100;
+            var totalCPUHoursMonth = Math.round(totalRealworldSecondsMonth * 1000 / 3600) / 1000;
+            var tradSingleCPUHoursMonth = 750;
+            var tradReduntantCPUHoursMonth = 1500;
+
+            $(".TotalNetworkBytes").html(totalNetworkBytesMonth);
+            $(".TotalComputingSeconds").html(totalRealworldSecondsMonth);
+
+            $(".TotalNetworkOutboundGB").html(networkGBOut);
+            $(".TotalNetworkPriceMonth").html("$" + networkPrice);
+            $(".BallTotalCPUHoursMonth").html(totalCPUHoursMonth);
+
+            var xsPrice = 0.02;
+            var totalCPUPriceMonth = Math.round(totalCPUHoursMonth * xsPrice * 100) / 100;
+            $(".BallTotalCPUPriceMonth").html("$" + totalCPUPriceMonth);
+            $(".TradSingleTotalCPUHoursMonth").html(tradSingleCPUHoursMonth);
+            var tradSingleCPUPriceMonth = Math.round(tradSingleCPUHoursMonth * xsPrice * 100) / 100;
+            $(".TradSingleTotalCPUPriceMonth").html("$" + tradSingleCPUPriceMonth);
+
+            $(".TradRedundantTotalCPUHoursMonth").html(tradReduntantCPUHoursMonth);
+            var tradRedundantCPUPriceMonth = Math.round(tradReduntantCPUHoursMonth * xsPrice * 100) / 100;
+            $(".TradRedundantTotalCPUPriceMonth").html("$" + tradRedundantCPUPriceMonth);
+
+            var ballXSTotalPrice = networkPrice + totalCPUPriceMonth;
+            ballXSTotalPrice = Math.round(ballXSTotalPrice * 100) / 100;
+            $(".TotalXSBallPrice").html("$" + ballXSTotalPrice);
+            var tradSingleTotalPrice = networkPrice + tradSingleCPUPriceMonth;
+            $(".TotalXSSinglePrice").html("$" + tradSingleTotalPrice);
+            var tradRedundantTotalPrice = networkPrice + tradRedundantCPUPriceMonth;
+            $(".TotalXSRedundantPrice").html("$" + tradRedundantTotalPrice);
+
+            var ballPriceRelativeToXSRedundant = ballXSTotalPrice / tradRedundantTotalPrice;
+            var tradSinglePriceRelativeToXSReduntant = tradSingleTotalPrice / tradRedundantTotalPrice;
+            var ballSavingsRelativeToXSRedundant = 1 - ballPriceRelativeToXSRedundant;
+            var tradSingleSavingsRelativeToXSRedundant = 1 - tradSinglePriceRelativeToXSReduntant;
+            $(".XSBallRelativeToXSRedundant").html(Math.round(ballPriceRelativeToXSRedundant * 10000) / 100 + "%");
+            $(".XSSingleRelativeToXSRedundant").html(Math.round(tradSinglePriceRelativeToXSReduntant * 10000) / 100 + "%");
+            $(".XSBallRelativeToXSRedundantSaving").html(Math.round(ballSavingsRelativeToXSRedundant * 10000) / 100 + "%");
+            $(".XSSingleRelativeToXSRedundantSaving").html(Math.round(tradSingleSavingsRelativeToXSRedundant * 10000) / 100 + "%");
+
+
+            var smallPrice = 0.08;
+            var smallTotalCPUPriceMonth = Math.round(totalCPUHoursMonth * smallPrice * 100) / 100;
+            $(".SmallBallTotalCPUPriceMonth").html("$" + smallTotalCPUPriceMonth);
+            var smallTradSingleCPUPriceMonth = Math.round(tradSingleCPUHoursMonth * smallPrice * 100) / 100;
+            $(".SmallTradSingleTotalCPUPriceMonth").html("$" + smallTradSingleCPUPriceMonth);
+
+            var smallTradRedundantCPUPriceMonth = Math.round(tradReduntantCPUHoursMonth * smallPrice * 100) / 100;
+            $(".SmallTradRedundantTotalCPUPriceMonth").html("$" + smallTradRedundantCPUPriceMonth);
+
+            var smallBallTotalPrice = networkPrice + smallTotalCPUPriceMonth;
+            smallBallTotalPrice = Math.round(smallBallTotalPrice * 100) / 100;
+            $(".SmallTotalBallPrice").html("$" + smallBallTotalPrice);
+            var smallTradSingleTotalPrice = networkPrice + smallTradSingleCPUPriceMonth;
+            $(".SmallTotalSinglePrice").html("$" + smallTradSingleTotalPrice);
+            var smallTradRedundantTotalPrice = networkPrice + smallTradRedundantCPUPriceMonth;
+            $(".SmallTotalRedundantPrice").html("$" + smallTradRedundantTotalPrice);
+
+            var smallBallPriceRelativeToSmallRedundant = smallBallTotalPrice / smallTradRedundantTotalPrice;
+            var smallTradSinglePriceRelativeToSmallReduntant = smallTradSingleTotalPrice / smallTradRedundantTotalPrice;
+            var smallBallSavingsRelativeToSmallRedundant = 1 - smallBallPriceRelativeToSmallRedundant;
+            var smallTradSingleSavingsRelativeToSmallRedundant = 1 - smallTradSinglePriceRelativeToSmallReduntant;
+            $(".SmallBallRelativeToSmallRedundant").html(Math.round(smallBallPriceRelativeToSmallRedundant * 10000) / 100 + "%");
+            $(".SmallSingleRelativeToSmallRedundant").html(Math.round(smallTradSinglePriceRelativeToSmallReduntant * 10000) / 100 + "%");
+            $(".SmallBallRelativeToSmallRedundantSaving").html(Math.round(smallBallSavingsRelativeToSmallRedundant * 10000) / 100 + "%");
+            $(".SmallSingleRelativeToSmallRedundantSaving").html(Math.round(smallTradSingleSavingsRelativeToSmallRedundant * 10000) / 100 + "%");
+
+        });
+
+    });
+
+</script>
+</html>

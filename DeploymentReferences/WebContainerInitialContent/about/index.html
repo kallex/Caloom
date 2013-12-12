@@ -1,0 +1,123 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en" dir="ltr"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en" dir="ltr"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en" dir="ltr"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" dir="ltr"><!--<![endif]-->
+<head>
+    <title>Caloom Public Landing</title>
+    <!-- Meta Data ================ -->
+    <meta charset="UTF-8" />
+    <meta name="description" content="Fill this in with your information" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- CSS ================ -->
+    <link rel="stylesheet" href="../assets/css/font-awesome.css" type="text/css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <link rel="stylesheet" href="assets/css/caloom.css" type="text/css"/>
+    <link rel="stylesheet" href="assets/css/caloom-responsive.css" type="text/css"/>
+   <!-- Icons ================ -->
+    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon.png" />
+    <!-- For first- and second-generation iPad: -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72x72-precomposed.png" />
+    <!-- For iPhone with high-resolution Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114x114-precomposed.png" />
+    <!-- For third-generation iPad with high-resolution Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144x144-precomposed.png" />
+    <link rel="shortcut icon" href="ico/favicon.ico" />
+    <!-- JS JQuery in the head you can use ajax if you want ================ -->
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="assets/js/purl.js"></script>
+</head>
+<body>
+<header>
+    <!-- begin .navbar -->
+    <!-- begin /.navbar -->
+    <div class="navbar inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="">
+                    <img src="assets/img/caloom-logo.png" class="print logo" alt="Caloom" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- /.navbar-->
+    <!--close .navbar -->
+</header>
+<div class="container">
+    <!-- begin #page - the container for everything but header -->
+    <div id="page">
+        <div class="page-header" style="padding-top: 60px">
+        </div><!--close page-header-->
+        <div class="container clearfix" id="main-content">
+            <section class="body-background">
+                <h4 class="well" style="opacity:0.5;width:50%;margin-left: auto;margin-right:auto">We're working day and night...</h4>
+                <h1 style="color:red">NOTE! Data on demo/test environment regularly wiped out without warning. For actual piloting, please contact us :-)</h1>
+                <div style="text-align: center">
+                    <h5>Sign in to Caloom for Demo/Testing! Pilot Prototype</h5>
+                    <p><h5>
+                    ... with your existing Google or Yahoo account by simply clicking either:</h5>
+                    <em></em><a href="/TheBallLogin.aspx?idProviderUrl=https%3a%2f%2fwww.google.com%2faccounts%2fo8%2fid" class="authbtn btn btn-large"><i class="icon-oip-google"></i>Google</a>
+                        or
+                    <em></em><a href="/TheBallLogin.aspx?idProviderUrl=https%3a%2f%2fme.yahoo.com" class="authbtn btn btn-large"><i class="icon-oip-yahoo"></i>Yahoo</a>
+                    </p>
+                </div>
+            </section>
+            <footer id="footer" class="clearfix">
+                <h4 style="text-align: center">Contact Us</h4>
+                        <div class="span4">
+                            <section>
+                                <p>Caloom Oy<br>
+                                    Laukkaniementie 1 E 29<br>
+                                    00200 Helsinki, Finland<br>
+                            </section>
+                            <!--close section-->
+                        </div>
+                        <!-- close .span4 -->
+
+                        <!--section containing newsletter signup and recent images-->
+                        <div class="span4">
+                            <section>
+                                <strong>skype:</strong> caloom.com<br>
+                                <strong>email:</strong> <a href="mailto:kustaa at caloom.com">kustaa at caloom.com</a> </p>
+                            </section>
+                        </div>
+                        <!-- close .span4 -->
+
+                        <!--section containing blog posts-->
+                        <div class="span4">
+                        </div>
+                        <!-- close .span4 -->
+                <section class="footerCredits">
+                    <div class="container">
+                        <ul class="clearfix">
+                            <li>© 2013 Caloom Ltd. All rights reserved.</li>
+                            <!--<li><a href="sitemap.html">Site Map</a></li>
+                            <li><a href="privacy.html">Privacy</a></li>-->
+                        </ul>
+                    </div>
+                    <!--footerCredits container-->
+                </section>
+                <!--close section-->
+            </footer>
+        </div><!-- close #page-->
+    </div><!-- close #site_wrapper the entire page-->
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        var currReturnUrl = $.url().param("ReturnUrl");
+
+        if(!currReturnUrl)
+            currReturnUrl = "/auth/account/webui/html/account.html";
+        currReturnUrl = "&ReturnUrl=" + encodeURIComponent(currReturnUrl);
+        $(".authbtn").each(function() {
+            $(this).attr("href", $(this).attr("href") + currReturnUrl );
+        });
+    });
+</script>
+</html>

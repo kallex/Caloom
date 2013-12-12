@@ -1,0 +1,73 @@
+// test run to sync with Codekit.app
+/*!
+ * Bootstrap Responsive v2.3.1
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+
+
+// Responsive.less
+// For phone and tablet devices
+// -------------------------------------------------------------
+
+
+// REPEAT VARIABLES & MIXINS
+// -------------------------
+// Required since we compile the responsive stuff separately
+
+@import "groupmanagement-variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "groupmanagement-mixins";
+
+
+// RESPONSIVE CLASSES
+// ------------------
+
+@import "groupmanagement-responsive-utilities.less";
+
+
+// MEDIA QUERIES
+// ------------------
+
+// Large desktops
+@import "groupmanagement-responsive-1200px-min.less";
+
+  // Large desktops (groupmanagement)
+@import "groupmanagement-responsive-1020px-max.less";
+
+// Tablets to regular desktops
+@import "groupmanagement-responsive-768px-979px.less";
+
+// Phones to portrait tablets and narrow desktops
+@import "groupmanagement-responsive-767px-max.less";
+
+// Phones to portrait tablets and narrow desktops
+@import "groupmanagement-responsive-600px-max.less";
+
+// Phones (groupmanagement)
+@import "groupmanagement-responsive-480px-max.less";
+
+
+// RESPONSIVE NAVBAR
+// ------------------
+
+// From 979px and below, show a button to toggle navbar contents
+@import "groupmanagement-responsive-navbar.less";
+
+
+#phone-navigation {
+  display: none;
+  padding: .5em 0em;
+}
+#phone-navigation #phone-menu {
+  margin: 0em auto;
+  display: block;
+}
+
+  /* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+}

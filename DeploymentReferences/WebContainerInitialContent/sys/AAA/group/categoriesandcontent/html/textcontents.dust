@@ -1,0 +1,39 @@
+{#TextContentsSource.TextContentCollection.CollectionContent}
+    <div class="cards cards-profile pull-left texts">
+    <fieldset>
+        <div class="gallery" style="clear: both;">
+    <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+            {?ImageData}
+                <div style="max-width: 220px">
+                    <img src="../../AaltoGlobalImpact.OIP/MediaContent/{ImageData.ID}_64x64_crop{ImageData.AdditionalFormatFileExt}" />
+                </div>
+            {/ImageData}
+                <div class="clearfix"></div>
+                <div class="image-data">
+                    <span class="pull-right">
+                        {>"objectdeleteicon.dust" object_delete_title="{Title}" /}
+                    </span>
+                    <span class="pull-right">
+                        <a data-toggle="modal" role="button" class="open-textcontenteditor" href="#" data-contentinfo="{RelativeLocation}:{MasterETag}"
+                            data-id="{ID}"
+                            {?ImageData}data-imageid="{ImageData.ID}" data-imageext="{ImageData.AdditionalFormatFileExt}" {/ImageData}
+                            {?Title}data-title="{Title}" {/Title}
+                            {?SubTitle}data-subtitle="{SubTitle}" {/SubTitle}
+                            {?Author}data-author="{Author}" {/Author}
+                            {?Published}data-published="{@formatDate value="{Published}" /}" {/Published}
+                            {?Excerpt}data-excerpt="{Excerpt}" {/Excerpt}
+                            {?Body}data-body="{Body}" {/Body}
+                            data-categories="{?Categories}{#Categories}{#CollectionContent}{ID},{/CollectionContent}{/Categories}{/Categories}"
+                            data-locations="{?Locations}{#Locations}{#CollectionContent}{ID},{/CollectionContent}{/Locations}{/Locations}"
+                            ><i class="icon-edit"></i></a></span>
+                    <span class="title">{Title}</span>
+                    {?SubTitle}<span class="title">{SubTitle}</span>{/SubTitle}
+                    {?ExcerptRendered}<span class="title">{ExcerptRendered|s}</span>{/ExcerptRendered}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+{/TextContentsSource.TextContentCollection.CollectionContent}
+

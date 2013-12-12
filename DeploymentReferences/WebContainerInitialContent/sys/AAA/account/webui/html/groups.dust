@@ -1,0 +1,35 @@
+{?AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+    <h2>Your Current Group Memberships</h2>
+    <ul>
+        {#AccountContainerSource.AccountContainer.AccountModule.Roles}
+            {?ModeratorInGroups.CollectionContent}
+            <h3>Moderator in Groups</h3>
+            {/ModeratorInGroups.CollectionContent}
+            {#ModeratorInGroups.CollectionContent}
+                <li>{Title} <a href="{URL}">{URL}</a></li>
+            {/ModeratorInGroups.CollectionContent}
+            {?MemberInGroups.CollectionContent}
+            <h3>Normal Member in Groups</h3>
+            {/MemberInGroups.CollectionContent}
+            {#MemberInGroups.CollectionContent}
+                <li>{Title} <a href="{URL}">{URL}</a></li>
+            {/MemberInGroups.CollectionContent}
+        {/AccountContainerSource.AccountContainer.AccountModule.Roles}
+    </ul>
+    {>"executeoperation_button.dust" form_name="creategroup" button_label="Create New Group" icon_class_name="icon-plus-sign" /}
+
+    {>"modal_executeoperation_begin.dust" form_name="creategroup" header_title="Create New Group" operation_name="CreateGroupWithTemplates" /}
+    {>"textinput_singleline.dust" field_id="CreateGroup_GroupName"
+    field_name="GroupName" field_label="Group Name" /}
+    {>"hiddeninput_namevalue.dust" input_name="RedirectUrlAfterCreation" input_value="categoriesandcontent/html/group.html" /}
+    {>"hiddeninput_namevalue.dust" input_name="TemplateNameList" input_value="categoriesandcontent,wwwsite" /}
+    {>"modal_executeoperation_end.dust" /}
+{:else}
+    <h1 style="color:green">Please register at least one email :-)!</h1>
+    <p>Registering at least one email is required to be able to collaborate.</p>
+    <p>Register one through "My Identity" tab.</p>
+{/AccountContainerSource.AccountContainer.AccountModule.Security.EmailCollection.CollectionContent}
+
+
+
+

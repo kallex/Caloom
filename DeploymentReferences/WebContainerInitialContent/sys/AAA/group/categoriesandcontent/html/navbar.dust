@@ -1,0 +1,61 @@
+{#GroupContainerSource.GroupContainer.GroupProfile}
+<div class="navbar">
+    <div class="navbar-inner">
+        <ul class="nav pull-left">
+            <li id="group-menu" class="dropdown">
+                <a href="#" role="button" class="dropdown-toggle active" data-toggle="dropdown">
+                    <i class="icon-user"></i> {GroupName}
+                    <i class="icon-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a tabindex="-1" target="_blank" href="../../wwwsite/html/index.html">{GroupName}'s web presence preview</a></li>
+{?WwwSiteToPublishTo}
+                    <li>
+                        {>"executeoperation_button_begin.dust" form_name="PublishToWww" /}
+                        {>"executeoperation_button_end.dust" button_label="Publish To: {WwwSiteToPublishTo}" icon_class_name="icon-cloud-upload" /}
+                    </li>
+{/WwwSiteToPublishTo}
+                    <li class="divider"></li>
+                    <li class="divider visible-phone"></li>
+                    <li><a tabindex="-1" href="resourceusagesummary.html"><i class="icon-bar-chart"></i>Resource Usage Summary</a></li>
+{!
+                    <li>
+                        {>"executeoperation_button_begin.dust" form_name="UpdateGroupUsage" /}
+                        {>"executeoperation_button_end.dust" button_label="Update Group Usage Monitoring" icon_class_name="icon-bar-chart" /}
+                    </li>
+                    <li>
+                        {>"executeoperation_button_begin.dust" form_name="UpdateAllGroupsRawUsage" /}
+                        {>"executeoperation_button_end.dust" button_label="Update All Groups Raw Usage" icon_class_name="icon-bar-chart" /}
+                    </li>
+!}
+                    <li class="divider"></li>
+                    <li class="divider visible-phone"></li>
+{/GroupContainerSource.GroupContainer.GroupProfile}
+{#AccountContainer.AccountContainer.AccountModule.Profile}
+                    <li><a tabindex="-1" href="/auth/account/">{FirstName} {LastName}'s Account Home</a></li>
+                    <li class="divider"></li>
+{/AccountContainer.AccountContainer.AccountModule.Profile}
+                    <li><a tabindex="-1" href="/TheBallLogin.aspx?SignOut=true">Logout</a></li>
+                </ul>
+            </li>
+            <li class="hidden-phone"><a class="brand" href="#">@ Caloom & Open Innovation Platform</a></li>
+       </ul>
+    </div>
+</div><!-- .navbar change-->
+
+{>"modal_executeoperation_begin.dust" form_name="UpdateAllGroupsRawUsage"
+header_title="Update Group Platform Usage Statistics"
+operation_name="ProcessAllResourceUsagesToOwnerCollections" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Perform Update!" /}
+
+{>"modal_executeoperation_begin.dust" form_name="UpdateGroupUsage"
+header_title="Update Group Usage Monitoring"
+operation_name="UpdateUsageMonitoringItems" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Perform Update!" /}
+
+{#GroupContainerSource.GroupContainer.GroupProfile}
+{>"modal_executeoperation_begin.dust" form_name="PublishToWww"
+header_title="Publish Group to {WwwSiteToPublishTo}"
+operation_name="PublishGroupToWww" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Publish!" /}
+{/GroupContainerSource.GroupContainer.GroupProfile}

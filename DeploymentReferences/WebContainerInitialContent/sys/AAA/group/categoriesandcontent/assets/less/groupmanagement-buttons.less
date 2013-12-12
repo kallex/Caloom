@@ -1,0 +1,199 @@
+  /*
+  * admin-buttons
+  */
+
+    /*Buttons*/
+  @button-color1: @btnBackground;
+  @button-color2: darken(@btnBackground, 5%);
+  @button-primary-color1: #54a0f6;
+  @button-primary-color2: lighten(@button-primary-color1, 10%);
+  @button-danger-color1: #a93018;
+  @button-danger-color2: lighten(@button-danger-color1, 10%);
+  @button-success-color1: darken(#90c654, 10%);
+  @button-success-color2: lighten(@button-success-color1, 10%);
+  @button-warning-color1: #A97518;
+  @button-warning-color2: lighten(@button-warning-color1, 10%);
+  @button-info-color1: #41B3DF;
+  @button-info-color2: lighten(@button-info-color1, 10%);
+  @button-inverse-color1: #333333;
+  @button-inverse-color2: lighten(@button-inverse-color1, 10%);
+  @button-add-image1:@grayLighter;
+  @button-add-image2: lighten(@button-add-image1, 10%);
+
+  .btn-m(@button-color1, @button-color2) {
+    background-color: @button-color1;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@button-color2), to(@button-color1));
+    background-image: -webkit-linear-gradient(top, @button-color2, @button-color1);
+    background-image: -o-linear-gradient(top, @button-color2, @button-color1);
+    background-image: linear-gradient(to bottom, @button-color2, @button-color1);
+    background-image: -moz-linear-gradient(top, @button-color2, @button-color1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='@{button-color2}',EndColorStr='@{button-color1}');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='@{button-color2}',EndColorStr='@{button-color1}')";
+
+    &:hover {
+      background-color: @button-color1;
+      *background-color: @button-color1;
+    }
+    &.btn-link {
+      background-color: transparent;
+      background-image: none;
+    }
+  }
+
+  @button-radius: 2px;
+
+  .day.active {
+    .btn-m(@button-color1, @button-color2);
+  }
+  .fc-state-highlight {
+    background: lighten(@navbarBackgroundColor, 5%);
+  }
+  .fc-button.fc-state-active {
+    border-color: darken(@button-primary-color1, 10%);
+  }
+  .fc-button-effect {
+    display: none;
+  }
+  .fc-corner-left .fc-button-inner {
+    .btn-m(@button-color1, @button-color2);
+    color: #333;
+  }
+  .fc-state-default .fc-button-inner {
+    .btn-m(@button-color1, @button-color2);
+  }
+  .fc-state-active .fc-button-inner {
+    .btn-m(@button-primary-color1, @button-primary-color2);
+    color: #fff;
+    border-color: darken(@button-primary-color1, 10%);
+    .box-shadow(inset 0px 1px 0px lighten(@button-primary-color1, 20%));
+  }
+
+.btn {
+  -webkit-border-radius: @button-radius;
+  -moz-border-radius: @button-radius;
+  border-radius: @button-radius;
+  .btn-m(@button-color1, @button-color2);
+}
+
+.btn-primary {
+  .btn-m(@button-primary-color1, @button-primary-color2);
+}
+
+.btn-danger {
+  .btn-m(@button-danger-color1, @button-danger-color2);
+}
+
+.btn-success {
+  .btn-m(@button-success-color1, @button-success-color2);
+}
+
+.btn-warning {
+  .btn-m(@button-warning-color1, @button-warning-color2);
+}
+
+.btn-info {
+  .btn-m(@button-info-color1, @button-info-color2);
+}
+
+.btn-inverse {
+  .btn-m(@button-inverse-color1, @button-inverse-color2);
+}
+.btn-add-image {
+  .btn-m(@button-add-image1, @button-add-image2);
+  height: 35px;
+  width: 59px;
+  font-size: 43px;
+  margin-left: 7px;
+  margin-right: 7px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.fancy.pagination {
+  ul {
+    .box-shadow(none);
+  }
+  li, li:first-child, li:last-child {
+    a {
+      .btn-m(#fff, #fff);
+      -webkit-border-radius: @button-radius;
+      -moz-border-radius: @button-radius;
+      border-radius: @button-radius;
+      margin: 1px;
+      border-left-width: 1px;
+    }
+  }
+  li.active {
+    a {
+      .btn-m(@button-primary-color1, @button-primary-color2);
+      color: #fff;
+      border: 1px solid darken(@button-primary-color2, 10%);
+    }
+  }
+}
+
+.toggle-button(@color1, @color2) {
+  .gradient(@color2, @color2, @color1);
+}
+
+.btn .dropdown-toggle {
+  -webkit-border-radius: @button-radius;
+  -moz-border-radius: @button-radius;
+  border-radius: @button-radius;
+}
+
+.btn-group > .btn:first-child {
+  -webkit-border-top-left-radius: @button-radius;
+  -moz-border-top-left-radius: @button-radius;
+  border-top-left-radius: @button-radius;
+  -webkit-border-bottom-left-radius: @button-radius;
+  -moz-border-bottom-left-radius: @button-radius;
+  border-bottom-left-radius: @button-radius;
+}
+.btn-group > .btn:last-child, .btn-group > .dropdown-toggle {
+  -webkit-border-top-right-radius: @button-radius;
+  -moz-border-top-right-radius: @button-radius;
+  border-top-right-radius: @button-radius;
+  -webkit-border-bottom-right-radius: @button-radius;
+  -moz-border-bottom-right-radius: @button-radius;
+  border-bottom-right-radius: @button-radius;
+}
+
+.btn-group.open .btn.dropdown-toggle {
+  background: darken(@button-color1, 10%);
+}
+.btn-group.open .btn-primary.dropdown-toggle {
+  background: darken(@button-primary-color1, 10%);
+}
+.btn-group.open .btn-success.dropdown-toggle, .label.label-success, .badge.badge-success {
+  background: darken(@button-success-color1, 3%);
+}
+.btn-group.open .btn-warning.dropdown-toggle, .label.label-warning, .badge.badge-warning {
+  background: darken(@button-warning-color1, 3%);
+}
+.btn-group.open .btn-info.dropdown-toggle, .label.label-info, .badge.badge-info {
+  background: darken(@button-info-color1, 10%);
+}
+.btn-group.open .btn-inverse.dropdown-toggle, .label.label-inverse, .badge.badge-inverse {
+  background: darken(@button-inverse-color1, 2%);
+}
+.btn-group.open .btn-danger.dropdown-toggle {
+  background: darken(@button-danger-color1, 2%);
+}
+.label.label-important, .badge.badge-important {
+  background: @button-danger-color1;
+}
+
+.toggle-button {
+  span.info {
+    .toggle-button(@button-info-color1, lighten(@button-info-color1, 15%));
+  }
+  span.warning {
+    .toggle-button(@button-warning-color1, lighten(@button-warning-color1, 15%));
+  }
+  span.success {
+    .toggle-button(@button-success-color1, lighten(@button-success-color1, 15%));
+  }
+  span.danger {
+    .toggle-button(@button-danger-color1, lighten(@button-danger-color1, 20%));
+  }
+}

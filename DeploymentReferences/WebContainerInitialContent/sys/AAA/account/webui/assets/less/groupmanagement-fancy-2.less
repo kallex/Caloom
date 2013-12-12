@@ -1,0 +1,88 @@
+  /*
+* admin-fancy
+*/
+
+  .fancy-tab-container {
+    border: 1px solid lighten(@bodyBackground, 15%);
+    .rounded(5px);
+    margin-bottom:30px;
+    margin-top: 20px;
+  }
+
+  .nav-tabs .dropdown-menu {
+    .rounded(0px);
+  }
+
+  .dropdown-menu .active > a {
+    color: #fff;
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  ul.nav.nav-tabs.fancy {
+    @tabBorderColor: darken(@navbarBackgroundColor, 5%);
+
+    margin-bottom: 0px;
+    //.headerGradient();
+    border-bottom-width: 0px;
+    .border-radius(5px, 0px, 0px, 5px);
+
+    &.three-tabs > li { width: 33.333333333333%; text-align: center; }
+    &.two-tabs > li { width: 50%; }
+    & > li {
+      text-overflow: ellipsis;
+      -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+      box-sizing: border-box;         /* Opera/IE 8+ */
+      margin-bottom: 0px;
+      border: 0px;
+      border-left: 1px solid @tabBorderColor;
+      border-bottom: 1px solid @tabBorderColor;
+
+      & > a {
+        .headerText();
+        border: 0px;
+        .rounded(0px);
+        .box-shadow(inset 1px 0px 0px lighten(@tabBorderColor, 14%));
+        margin:0px;
+        .border-radius(5px, 0px, 0px, 0px);
+      }
+
+      &:first-child {
+        margin-left: -1px;
+        &, a, a:hover {
+          .border-radius(0px, 0px, 0px, 5px);
+        }
+      }
+
+      &.dropdown.open.active > a:hover {
+        .headerText();
+      }
+
+      &.dropdown .caret {
+        .headerText();
+        border-top-color: darken(@navbarBackgroundColor, 50%);
+        border-botom-color: darken(@navbarBackgroundColor, 50%);
+      }
+
+      & > a:hover, &.dropdown.open > a {
+        //.headerGradient(4%);
+      }
+
+      &.active {
+        border-bottom: 0px;
+        background: #fff;
+
+        & > a {
+          &:hover {
+            background: transparent;
+          }
+          .box-shadow(none);
+          border-left: 0px solid #fff;
+          margin-left: 0px;
+          border-bottom: 1px solid transparent;
+        }
+      }
+    }
+  }

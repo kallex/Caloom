@@ -1,0 +1,89 @@
+  /* Start Weconomy Visual Identity Additions */
+
+  // Core variables and mixins
+  @import "weconomy-variables.less"; // Modify this for custom colors, font-sizes, etc
+  @import "weconomy-mixins.less";
+
+    // CSS Reset
+  // @import "weconomy-reset";
+
+    // Grid system and page structure
+  // @import "weconomy-scaffolding";
+  // @import "weconomy-grid";
+  // @import "weconomy-layouts";
+
+    // Base CSS
+  // @import "weconomy-type";
+  // @import "weconomy-code";
+  // @import "weconomy-forms";
+  // @import "weconomy-tables";
+
+    // Components: common
+  // @import "weconomy-sprites";
+  // @import "weconomy-dropdowns";
+  // @import "weconomy-wells";
+  // @import "weconomy-component-animations";
+  // @import "weconomy-close";
+
+    // Components: Buttons & Alerts
+  // @import "weconomy-buttons";
+  // @import "weconomy-button-groups";
+  // @import "weconomy-alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
+
+    // Components: Nav
+  // @import "weconomy-navs";
+  // @import "weconomy-navbar";
+  // @import "weconomy-breadcrumbs";
+  // @import "weconomy-pagination";
+  // @import "weconomy-pager";
+
+    // Components: Popovers
+  @import "weconomy-modals";
+  // @import "weconomy-tooltip";
+  // @import "weconomy-popovers";
+
+    // Components: Misc
+  // @import "weconomy-thumbnails";
+  // @import "weconomy-media";
+ @import "weconomy-labels-badges";
+  // @import "weconomy-progress-bars";
+  // @import "weconomy-accordion";
+  // @import "weconomy-carousel";
+  // @import "weconomy-hero-unit";
+
+
+    // weconomy or OIP specific
+  @import "font-awesome";
+  @import "font-awesome-ie7";
+  @import "weconomy-fonts";
+
+  @import "weconomy-type";
+  @import "weconomy-navbar";
+  @import "weconomy-footer";
+  @import "weconomy-isotope";
+  @import "weconomy-masonry";
+  @import "weconomy-reading-pane";
+  @import "weconomy-sharing-panel";
+  @import "weconomy-multicolumn";
+  @import "weconomy-video";
+  @import "weconomy-categories";
+
+    // Utility classes
+  //@import "weconomy-utilities"; // Has to be last to override when necessary
+
+  p.truncate {
+    word-wrap:break-word ;
+    height: @baseLineHeight * 3 !important;
+    overflow: hidden !important;
+  }
+
+  //thumbnails and images
+
+  a.wide-flat img{
+    position:absolute;
+    clip:rect(250px,800px,350px,0px);
+  }
+
+  a:focus{
+    outline: none;
+  }

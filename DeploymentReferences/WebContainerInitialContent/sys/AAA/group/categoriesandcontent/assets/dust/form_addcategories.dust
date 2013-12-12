@@ -1,0 +1,4 @@
+{>"modal_executeoperation_begin.dust" form_name="addcategories" operation_name="AddCategories" header_title="Add Categories" /}
+{>"textinput_multiline.dust" field_id="AddCategories_CategoryList"
+field_name="CategoryList" field_label="Categories (each on their own line)" /}
+{>"modal_executeoperation_end.dust" accept_button_label="Add Categories!" /}

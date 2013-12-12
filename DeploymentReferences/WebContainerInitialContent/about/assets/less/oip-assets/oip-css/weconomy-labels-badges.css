@@ -1,0 +1,12 @@
+/* weconomy-labels-badges.less*/
+ul.category li {
+  display: inline;
+}
+ul .isotope-sort .label {
+  margin-right: 4px;
+}
+p.w5 a span.label {
+  text-shadow: none;
+  margin-right: 4px;
+}
+/* end weconomy-labels-badges.less*/

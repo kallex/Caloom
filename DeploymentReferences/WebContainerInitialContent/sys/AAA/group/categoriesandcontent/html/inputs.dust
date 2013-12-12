@@ -1,0 +1,119 @@
+<div>Input Information Sources
+    <fieldset id="current-inputs">
+        <div id="gallery-3" class="gallery" style="clear: both;">
+            {#InputsSource.InformationInputCollection.CollectionContent}
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"executeoperation_button_begin.dust" form_name="FetchInputInformation" /}
+                            data-informationinputid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-download-alt" /}
+                            {>"executeoperation_button_begin.dust" form_name="DeleteInformationInput" /}
+                            data-informationinputid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-remove-sign" /}
+
+                        </span>
+                        <p class="title">{InputDescription} ({ID})</p>
+                        <p class="title">URL: {LocationURL}</p>
+                        <p class="title">Local Content Name: {LocalContentName}</p>
+                        <p class="title">Authentication ID: {AuthenticatedDeviceID}</p>
+                        <p class="title">Is Validated: {IsValidatedAndActive}</p>
+                    </div>
+                </div>
+            {/InputsSource.InformationInputCollection.CollectionContent}
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+{>"executeoperation_button.dust" form_name="addinformationinput" button_label="Add Information Input" icon_class_name="icon-plus-sign" /}
+<div>Output Information Targets
+    <fieldset id="current-inputs">
+        <div id="gallery-3" class="gallery" style="clear: both;">
+            {#OutputsSource.InformationOutputCollection.CollectionContent}
+                <div class="element thumbnail pull-left sampleFilterOnefalse sampleFilterTwofalse">
+                    <div class="clearfix"></div>
+                    <div class="image-data">
+                        <span class="pull-right">
+                            {>"executeoperation_button_begin.dust" form_name="PushToInformationOutput" /}
+                            data-informationoutputid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-upload-alt" /}
+                            {>"executeoperation_button_begin.dust" form_name="DeleteInformationOutput" /}
+                            data-informationoutputid="{ID}"
+                            {>"executeoperation_button_end.dust" icon_class_name="icon-remove-sign" /}
+
+                        </span>
+                        <p class="title">{OutputDescription}</p>
+                        <p class="title">Destination URL: {DestinationURL}</p>
+                        <p class="title">Destination Content Name: {DestinationContentName}</p>
+                        <p class="title">Local Content URL: {LocalContentURL}</p>
+                        <p class="title">Authentication ID: {AuthenticatedDeviceID}</p>
+                        <p class="title">Is Validated: {IsValidatedAndActive}</p>
+                    </div>
+                </div>
+            {/OutputsSource.InformationOutputCollection.CollectionContent}
+            <div class="clearfix"></div>
+        </div>
+    </fieldset>
+</div>
+{>"executeoperation_button.dust" form_name="addinformationoutput" button_label="Add Information Output" icon_class_name="icon-plus-sign" /}
+
+
+
+{>"modal_executeoperation_begin.dust" form_name="addinformationinput" header_title="Add Information Input" operation_name="CreateInformationInput" /}
+{>"textinput_singleline.dust" field_id="AddInput_InputDescription"
+field_name="InputDescription" field_label="Input Description" /}
+{>"textinput_singleline.dust" field_id="AddInput_LocationURL"
+field_name="LocationURL" field_label="Location URL" /}
+{>"textinput_singleline.dust" field_id="AddInput_LocalContentName"
+field_name="LocalContentName" field_label="Local Content Name" /}
+{>"dropdown_select.dust" field_id="AddInput_AuthenticatedDeviceID"
+item_collection=AuthenticatedAsDevicesSource.AuthenticatedAsActiveDeviceCollection.CollectionContent item_type="authenticatedasactivedevice"
+field_label="Authentication (optional)" field_name="AuthenticatedDeviceID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Create Information Input" /}
+
+{>"modal_executeoperation_begin.dust" form_name="FetchInputInformation"
+header_title="Fetch Input" map_data_values="InformationInputID"
+operation_name="FetchInputInformation" /}
+{>"hiddeninput.dust" field_id="FetchInputInformation_InformationInputID"
+field_name="InformationInputID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Fetch Input" /}
+
+{>"modal_executeoperation_begin.dust" form_name="DeleteInformationInput"
+header_title="Delete Information Input" map_data_values="InformationInputID"
+operation_name="DeleteInformationInput" /}
+{>"hiddeninput.dust" field_id="DeleteInformationInput_InformationInputID"
+field_name="InformationInputID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Delete" /}
+
+{! Outputs !}
+
+{>"modal_executeoperation_begin.dust" form_name="addinformationoutput" header_title="Add Information Output" operation_name="CreateInformationOutput" /}
+{>"textinput_singleline.dust" field_id="AddOutput_OutputDescription"
+field_name="OutputDescription" field_label="Output Description" /}
+{>"textinput_singleline.dust" field_id="AddOutput_DestinationURL"
+field_name="DestinationURL" field_label="Destination URL" /}
+{>"textinput_singleline.dust" field_id="AddOutput_DestinationContentName"
+field_name="DestinationContentName" field_label="Destination Content Name" /}
+{>"textinput_singleline.dust" field_id="AddOutput_LocalContentURL"
+field_name="LocalContentURL" field_label="Local Content URL (from owner root)" /}
+{>"dropdown_select.dust" field_id="AddOutput_AuthenticatedDeviceID"
+item_collection=AuthenticatedAsDevicesSource.AuthenticatedAsActiveDeviceCollection.CollectionContent item_type="authenticatedasactivedevice"
+field_label="Authentication (optional)" field_name="AuthenticatedDeviceID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Create Information Output" /}
+
+{>"modal_executeoperation_begin.dust" form_name="PushToInformationOutput"
+header_title="Push to Output" map_data_values="InformationOutputID"
+operation_name="PushToInformationOutput" /}
+{>"hiddeninput.dust" field_id="PushToInformationOutput_InformationOutputID"
+field_name="InformationOutputID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Push to Output" /}
+
+{>"modal_executeoperation_begin.dust" form_name="DeleteInformationOutput"
+header_title="Delete Information Output" map_data_values="InformationOutputID"
+operation_name="DeleteInformationOutput" /}
+{>"hiddeninput.dust" field_id="DeleteInformationOutput_InformationOutputID"
+field_name="InformationOutputID" /}
+{>"modal_executeoperation_end.dust" cancel_button_label="Cancel" accept_button_label="Delete" /}
+
+

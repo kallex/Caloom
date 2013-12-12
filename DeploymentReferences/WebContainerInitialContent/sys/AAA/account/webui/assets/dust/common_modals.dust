@@ -1,0 +1,49 @@
+<div id="delete-object" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3 id="DeleteObjectFormHeader">
+            Delete Object
+        </h3>
+    </div>
+    <form id="ObjectDeleteForm" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="modal-body">
+            <input id="ObjectDelete_ExecuteOperation" name="ExecuteOperation"
+                   value="DeleteSpecifiedInformationObject" type="hidden" />
+            <input id="ObjectDelete_ObjectDomainName" name="ObjectDomainName"
+                   value="" type="hidden" />
+            <input id="ObjectDelete_ObjectName" name="ObjectName"
+                   value="" type="hidden" />
+            <input id="ObjectDelete_ObjectID" name="ObjectID"
+                   value="" type="hidden" />
+            <fieldset>
+                <div class="control-group">
+                    <!-- Text input-->
+                    <label class="control-label">Delete...</label>
+                    <div class="controls">
+                        <!--
+                        <input type="checkbox">
+                        -->
+                        <p class="help-block">If you delete this object the links and tags to it will be <em>removed</em> from other objects.</p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+            <button class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $(document).on('click', '.open-objectdelete', function() {
+            var me = $(this);
+            ConnectInputField(me, "objectid", "ObjectDelete", "ObjectID", "", true);
+            ConnectInputField(me, "domainname", "ObjectDelete", "ObjectDomainName", "", true);
+            ConnectInputField(me, "objectname", "ObjectDelete", "ObjectName", "", true);
+            $("#DeleteObjectFormHeader").html("Delete " + me.data("objectname") + ": '" + me.data("deletetitle") + "'?");
+            $('#delete-object').modal('show');
+        });
+    });
+</script>

@@ -1,0 +1,41 @@
+  /*
+  * admin-alerts
+  */
+
+    /*Alerts*/
+  .alert (@color: #cccccc) {
+    border: 1px solid darken(@color, 20%);
+    border-bottom: 1px solid darken(@color, 24%);
+    .gradient(darken(@color, 10%), darken(@color, 10%), lighten(@color, 10%));
+  }
+
+  .alert {
+    .rounded(0px);
+    padding: .5em 1em;
+    margin-top: 1em;
+    .alert(#f7ecb5);
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .7);
+    color: darken(#f7ecb5, 60%);
+
+    .close {
+      right: -.25em;
+    }
+
+
+    &.alert-error {
+      .alert(lighten(@button-danger-color1, 5%));
+      color: white;
+      text-shadow: 1px 1px 1px darken(@button-danger-color1, 10%);
+      box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .1);
+    }
+    &.alert-info {
+      .alert(darken(@button-info-color1, 0%));
+      color: darken(@button-info-color1, 40%);
+      box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .3);
+    }
+    &.alert-success {
+      .alert(lighten(@button-success-color1, 20%));
+      color: darken(@button-success-color1, 30%);
+      box-shadow: inset 0px 1px 0px rgba(255, 255, 255, .4);
+    }
+  }

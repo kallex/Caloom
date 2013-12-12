@@ -1,0 +1,6 @@
+<div class="control-group">
+    <div class="controls">
+        <label class="control-label" name="{input_name}" {?label_id}id="{label_id}"{/label_id} >{?input_value}{input_value}{/input_value}</label>
+        <input type="hidden" name="{input_name}" {?input_value}value="{input_value}"{/input_value} />
+    </div>
+</div>

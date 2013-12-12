@@ -1,0 +1,61 @@
+<div class="header clearfix">
+    <h2 class="clearfix">
+        {Title}
+        <br>
+        {?ImageData}
+            <img src="../../AaltoGlobalImpact.OIP/MediaContent/{ImageData.ID}_320x240_crop{ImageData.AdditionalFormatFileExt}" />
+        {/ImageData}
+        {?SubTitle}
+            <small>
+                {SubTitle}
+            </small>
+        {/SubTitle}
+    </h2>
+
+    <div class="border border-news clearfix">
+        {?Categories}
+        <span class="label label-news">{#Categories.CollectionContent}{Title}{/Categories.CollectionContent}</span>
+        {/Categories}
+    </div>
+</div>
+
+<div class="content">
+    <div class="multicolumnElement" style="padding-left:15px;padding-right:15px;">
+        {BodyRendered|s}
+    </div>
+</div>
+<div class="dusttest">
+    {?Categories}
+        {#Categories.CollectionContent}
+            {@eq key=CategoryName value="catTuleOppimaan"}
+                <a id="ShowOrderFormButton" data-toggle="modal" role="button" href="javascript:ShowOrderForm();" class="btn btn-primary">Tule mukaan oppimaan!</a>
+            {/eq}
+        {/Categories.CollectionContent}
+    {/Categories}
+</div>
+
+<div id="OrderForm" style="display: none">
+    <h3>Ilmoittaudu mukaan!</h3>
+    <label for="OrderEmailAddress">Sähköpostiosoitteesi</label>
+    <input id="OrderEmailAddress" type="text">
+    <a data-toggle="modal" role="button" href="#" class="btn btn-primary">Lähetä tilaus!</a>
+</div>
+
+<script>
+    var ShowOrderForm = function() {
+        $("#ShowOrderFormButton").hide();
+        $("#OrderForm").show();
+    }
+</script>
+
+
+
+<div class="reading-pane-footer">
+    <p></p>
+    <p>
+        <i class="icon-user"></i>  <a href="#">{?Author}{Author}{/Author}</a>
+        | <i class="icon-calendar"></i>
+        | <i class="icon-bookmark"></i> <input class="text input-xxlarge " name="share_url" value="https://schools.caloom.com/html/index.html?type=textcontent&id={ID}">
+    </p>
+</div>
+

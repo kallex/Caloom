@@ -1,0 +1,73 @@
+  /*
+  * admin-type
+  */
+
+  /*Standard Elements*/
+  body {
+    background: @bodyBackground;
+    color: @textColor;
+    font-weight: 200;
+    letter-spacing: 1px;
+    margin: 0px;
+    padding: 0px;
+    //background-image: url("../img/lighten-bedge-grunge.png");
+    //background-repeat: repeat;
+  }
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and    (-moz-min-device-pixel-ratio: 2),
+  only screen and      (-o-min-device-pixel-ratio: 2),
+  only screen and         (min-device-pixel-ratio: 2) {
+    .ninjas-image {
+      //background-image: image-url('../img/lighten-bedge-grunge-@2x.png');
+      //background-repeat: repeat;
+      background: lighten(@bodyBackground,20%);
+    }
+  }
+
+  a {
+    color: @linkColor;
+    text-shadow: 0px 0px 1px lighten(@navbarLinkColorHover, 10%);
+  }
+  a:hover {
+    text-decoration: none;
+    //color: @navbarLinkColorHover;
+    //text-shadow: 0px 0px 10px lighten(@navbarLinkColorHover, 30%)
+  }
+  a:focus {
+    outline: none;
+    outline-offset: none;
+  }
+  h1,h2,h3,h4,h5,h6,p{
+    color: @textColor;
+  }
+
+  h1 {
+    color: @headerColor;
+    margin-top: 0px;
+    color: #eee;
+  }
+
+  h2 {
+    color: @headerColor;
+    font-size: 1.25em;
+    font-weight: normal;
+  }
+
+  h3 {
+    color: @headerColor;
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+  h2 span.info {
+    margin-top: -1em;
+    font-size: .75em;
+    display: block;
+    font-weight: normal;
+    color: #333;
+  }
+
+  hr {
+    border-top: 1px solid #dddde2;
+  }

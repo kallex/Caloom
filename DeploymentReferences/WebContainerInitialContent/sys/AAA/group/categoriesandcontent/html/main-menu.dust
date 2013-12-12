@@ -1,0 +1,164 @@
+<div id="main-menu">
+    <div id="phone-navigation">
+        <select class="selectnav" id="phone-menu">
+            <option value="#tab-identity"  data-toggle="tab"> Identity</option>
+            <option value="#tab-content" data-toggle="tab" a href="#tab-content"> Content</option>
+            <option value="#tab-categories" data-toggle="tab" a href="#tab-categories"> Categories</option>
+            <option value="#tab-collaborators" data-toggle="tab"  a href="#tab-collaborators"> Collaborators</option>
+            <option value="#tab-locations-current" data-toggle="tab"  a href="#tab-locations-current"> Locations</option>
+            <option value="#tab-devices" data-toggle="tab"  a href="#tab-devices"> Device Connections</option>
+            <option value="#tab-delete" data-toggle="tab" style="color:red"  a href="#tab-delete"> Delete</option>
+        </select>
+    </div>
+    <ul class="nav nav-tabs">
+    </ul>
+</div><!-- .main-menu -->
+<!-- main-menu modals -->
+<div id="add-image" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Add an image
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+            <div class="input-append">
+                <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+<div id="add-file" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Add a file
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+            <div class="input-append">
+                <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+<div id="add-activity" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Add an activity
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form method="post" class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="">Activity name</label>
+                    <div class="controls">
+                        <input name="" class="span4"  type="text" value="">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+<div id="add-story" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Add News
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form method="post" class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="">Location Name</label>
+                    <div class="controls">
+                        <input name="" class="span4"  type="text" value="">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+<div id="old-add-location" class="modal hide fade">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Add a location
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form method="post" class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="">Location Name</label>
+                    <div class="controls">
+                        <input name="" class="span4"  type="text" value="">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+{>"modal_executeoperation_begin.dust" form_name="informationinput" header_title="Add Information Input" operation_name="CreateInformationInput" /}
+    {>"textinput_singleline.dust" field_id="AddInformationInput_LocationURL"
+    field_name="LocationURL" field_label="Location URL" /}
+    {>"textinput_multiline.dust" field_id="AddInformationInput_InputDescription"
+    field_name="InputDescription" field_label="Input Description" /}
+{>"modal_executeoperation_end.dust" /}
+
+<div id="invite-collaborator" class="modal hide fade well">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">&times;</button>
+        <h3>
+            Invite person to this group
+        </h3>
+    </div>
+    <div class="modal-body well">
+        <form method="post" class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="[!ATOM]ID[ATOM!]_EmailAddress">Email address</label>
+                    <div class="controls">
+                        <!--<input name="[!ATOM]ID[ATOM!]_EmailAddress" id="[!ATOM]ID[ATOM!]_EmailAddress" type="input" value="[!ATOM]EmailAddress[ATOM!]">-->
+                        <input type="text" data-source="[&quot;sujil@aalto.fi&quot;,&quot;teija@aalto.fi&quot;,&quot;anne@aalto.fi&quot;,&quot;andrew@aalto.fi&quot;]" data-items="4" data-provide="typeahead" style="margin: 0 auto;">
+                        <ul class="typeahead dropdown-menu" style="top: 2950px; left: 595.433px; display: none;">
+                            <li data-value="Ssujil@aalto.fi" class="active"><a href="#"><strong>S</strong>outh Carolina</a></li>
+                            <li data-value="teija@aalto.fi"><a href="#"><strong>S</strong>outh Dakota</a></li>
+                            <li data-value="anne@aalto.fi"><a href="#">Ala<strong>s</strong>ka</a></li>
+                            <li data-value="andrew@aalto.fi"><a href="#">Arkan<strong>s</strong>a<strong>s</strong></a></li>
+                        </ul>
+                        <p class="helptext">
+                            Use only valid email address that you trust to belong to that person.
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- end main-menu modals -->

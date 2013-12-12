@@ -1,0 +1,17 @@
+{>"modal_addobject_begin.dust" form_name="category" header_title="Add Category" object_domain="AaltoGlobalImpact.OIP" object_type="Category" /}
+{>"fileupload.dust" initial_class_mode="fileupload-new" field_name="ImageData" /}
+{>"textinput_singleline.dust" field_id="AddCategory_Title"
+field_name="Title" field_label="Title" /}
+{>"textinput_multiline_markdown.dust" field_id="AddCategory_Excerpt"
+field_name="Excerpt" field_label="Excerpt" /}
+{>"modal_addobject_end.dust" /}
+
+<script type="text/javascript">
+    $(function() {
+        $(".open-addcategory").on("click", function() {
+            InitializeModalClasses();
+            $('#add-category').modal('show');
+        });
+    });
+</script>
+
