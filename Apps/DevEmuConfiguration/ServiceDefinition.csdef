@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-10.1.8">
+<ServiceDefinition name="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
   <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
     <Imports>
       <Import moduleName="RemoteAccess" />
@@ -9,7 +9,7 @@
       <Setting name="WorkerRoleEntryPointContainerName" />
       <Setting name="StorageConnectionString" />
       <Setting name="AmazonSESAccessInfo" />
-      <Setting name="WorkerActiveContainerName"/>
+      <Setting name="WorkerActiveContainerName" />
     </ConfigurationSettings>
     <LocalResources>
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />

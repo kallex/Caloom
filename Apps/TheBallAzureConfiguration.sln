@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRoleAccelerator.Core", "workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj", "{4A04FE1B-840A-4EF4-810A-834300F9675F}"
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "WorkerRoleAccelerator.Cloud", "workerroleaccelerator\src\WorkerRoleAccelerator.Cloud\WorkerRoleAccelerator.Cloud.ccproj", "{0B118BDD-5879-475B-B4A0-E7642C86229F}"
