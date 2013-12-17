@@ -213,8 +213,14 @@ namespace WebInterface
                 return;
             }
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
-            string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+            var contentPath = GetGroupContentPath(requestPath);
             HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
+        }
+
+        private string GetGroupContentPath(string requestPath)
+        {
+            string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+            return contentPath;
         }
 
         private string GetGroupID(string path)
@@ -234,8 +240,14 @@ namespace WebInterface
             }
             TBAccount account = loginRoot.Account;
             string requestPath = context.Request.Path;
-            string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
+            var contentPath = GetAccountContentPath(requestPath);
             HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
+        }
+
+        private string GetAccountContentPath(string requestPath)
+        {
+            string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
+            return contentPath;
         }
 
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
@@ -256,6 +268,7 @@ namespace WebInterface
 
         private bool HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            validateThatOwnerPostComesFromSameReferrer(context);
             HttpRequest request = context.Request;
             var form = request.Unvalidated().Form;
 
@@ -376,6 +389,15 @@ namespace WebInterface
             return true;
         }
 
+        private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
+        {
+            var request = context.Request;
+            var requestUrl = request.Url;
+            var referrerUrl = request.UrlReferrer;
+            if(referrerUrl == null || requestUrl.AbsolutePath != referrerUrl.AbsolutePath)
+                throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
+        }
+
         private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;
@@ -425,6 +447,8 @@ namespace WebInterface
 
         private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
+                validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
             if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev") && 
                 (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
@@ -485,6 +509,63 @@ namespace WebInterface
                 response.Write(ex.ToString());
             }
             response.End();
+        }
+
+        private void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
+        {
+            bool isGroupRequest = containerOwner.IsGroupContainer();
+            string requestGroupID = isGroupRequest ? containerOwner.LocationPrefix : null;
+            bool isAccountRequest = !isGroupRequest;
+            var urlReferrer = request.UrlReferrer;
+            string[] groupTemplates = InstanceConfiguration.DefaultGroupTemplateList;
+            string[] accountTemplates = InstanceConfiguration.DefaultAccountTemplateList;
+            var refererPath = urlReferrer != null ? urlReferrer.AbsolutePath : "";
+            bool refererIsAccount = refererPath.StartsWith("/auth/account/");
+            bool refererIsGroup = refererPath.StartsWith("/auth/grp/");
+
+            if (isGroupRequest)
+            {
+                bool defaultMatch = groupTemplates.Any(contentPath.StartsWith);
+                if (defaultMatch && (refererIsAccount == false && refererIsGroup == false))
+                    return;
+            }
+            else
+            {
+                bool defaultMatch = accountTemplates.Any(contentPath.StartsWith);
+                if (defaultMatch && (refererIsAccount == false && refererIsGroup == false))
+                    return;
+            }
+            if (urlReferrer == null)
+            {
+                if (contentPath.StartsWith("customui_"))
+                    return;
+                throw new SecurityException("Url referer required for non-default template requests, that target other than customui_ folder");
+            }
+            if (refererIsAccount && isAccountRequest)
+                return;
+            if (refererPath.StartsWith("/about/"))
+                return;
+            string refererOwnerPath = refererIsAccount
+                                          ? GetAccountContentPath(refererPath)
+                                          : GetGroupContentPath(refererPath);
+            // Accept account and group referers of default templates
+            if (refererIsAccount && accountTemplates.Any(refererOwnerPath.StartsWith))
+                return;
+            if (refererIsGroup && groupTemplates.Any(refererOwnerPath.StartsWith))
+                return;
+            // Custom referers
+            if (refererIsAccount)
+            {
+                throw new SecurityException("Non-default account referer accessing non-account content");
+            } 
+            else // Referer is group
+            {
+                if(isAccountRequest)
+                    throw new SecurityException("Non-default group referer accessing account content");
+                string refererGroupID = GetGroupID(refererPath);
+                if(refererGroupID != requestGroupID)
+                    throw new SecurityException("Non-default group referer accessing other group content");
+            }
         }
 
         private void HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
