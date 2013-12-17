@@ -18,7 +18,7 @@ namespace TheBall.CORE
         {
             if(string.IsNullOrWhiteSpace(customUiName))
                 throw new ArgumentException("Invalid custom UI name", customUiName);
-            return StorageSupport.GetOwnerRootAddress(owner) + "customui/" + customUiName + "/";
+            return StorageSupport.GetOwnerRootAddress(owner) + "customui_" + customUiName + "/";
         }
 
         public static void ExecuteMethod_SetCustomUIName(string customUiName, GroupContainer groupContainer)

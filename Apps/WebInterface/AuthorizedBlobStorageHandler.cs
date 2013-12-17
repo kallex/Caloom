@@ -434,9 +434,9 @@ namespace WebInterface
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
             }
-            if (String.IsNullOrEmpty(contentPath))
+            if (String.IsNullOrEmpty(contentPath) || contentPath.EndsWith("/"))
             {
-                CloudBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner,
+                CloudBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath +
                                                                       InstanceConfiguration.RedirectFromFolderFileName);
                 string redirectToUrl = null;
                 try

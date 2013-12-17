@@ -13,7 +13,7 @@ namespace TheBall.CORE
 
         public static string GetTarget_CustomUIFolder(IContainerOwner owner, string customUiName)
         {
-            return StorageSupport.GetOwnerRootAddress(owner) + "customui/" + customUiName + "/";
+            return StorageSupport.GetOwnerRootAddress(owner) + "customui_" + customUiName + "/";
         }
 
         public static void ExecuteMethod_RemoveCustomUIName(string customUiName, GroupContainer groupContainer)
