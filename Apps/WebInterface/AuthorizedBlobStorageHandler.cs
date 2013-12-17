@@ -74,21 +74,30 @@ namespace WebInterface
             {
                 return;
             }
-            if (userIdentity.IsInRole("DeviceAES"))
+            try
             {
-                HandleEncryptedDeviceRequest(context);
-            } else if (request.Path.StartsWith(AuthPersonalPrefix))
-            {
-                HandlePersonalRequest(context);
+                if (userIdentity.IsInRole("DeviceAES"))
+                {
+                    HandleEncryptedDeviceRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthPersonalPrefix))
+                {
+                    HandlePersonalRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthGroupPrefix))
+                {
+                    HandleGroupRequest(context);
+                }
+                else if (request.Path.StartsWith(AuthAccountPrefix))
+                {
+                    HandleAccountRequest(context);
+                }
             }
-            else if (request.Path.StartsWith(AuthGroupPrefix))
+            catch (SecurityException securityException)
             {
-                HandleGroupRequest(context);
+                response.StatusCode = 403;
+                response.Write(securityException.ToString());
             }
-            else if (request.Path.StartsWith(AuthAccountPrefix))
-            {
-                HandleAccountRequest(context);
-            } 
         }
 
         private void HandleEncryptedDeviceRequest(HttpContext context)
