@@ -949,6 +949,105 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateOrUpdateCustomUI (Owner, CustomUIName, ZipArchiveStream)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Create custom web UI from given package and name.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group for whom to create the custom UI</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CustomUIName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Custom UI name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ZipArchiveStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Zip archive stream</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupContainer ( Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group container to store the custom UI info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateCustomUIName ( CustomUIName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate CustomUI name to be valid. Allow only alphanumeric characters.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomUIFolder ( Owner, CustomUIName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>CustomUI folder prefix with trailing /</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetCustomUIName ( GroupContainer, CustomUIName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set custom UI name within the list of custom UIs</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CopyUIContentsFromZipArchive ( CustomUIFolder, ZipArchiveStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy UI contents from zip archive. Replace existing and delete old files.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( GroupContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store modified object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateSpecifiedInformationObjectWithValues (Owner, ObjectDomainName, ObjectName, HttpFormData, HttpFileData)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1159,6 +1258,87 @@
               <Paragraph>
                 <Text>
                   <TextContent>Delete device membership record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="DeleteCustomUI (Owner, CustomUIName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete custom web UI that matches the given name
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group for whom to create the custom UI</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CustomUIName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Custom UI name</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupContainer ( Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group container to store the custom UI info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomUIFolder ( Owner, CustomUIName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>CustomUI folder prefix with trailing /</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveCustomUIName ( GroupContainer, CustomUIName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove custom UI name within the list of custom UIs</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveCustomUIContents ( CustomUIFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove UI contents from custom ui folder</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( GroupContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store modified object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

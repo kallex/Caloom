@@ -1228,6 +1228,75 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="CreateOrUpdateCustomUI">
+        <OperationSpec>
+          <Description>
+            Create custom web UI from given package and name.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Group for whom to create the custom UI" state="implemented"/>
+          <Parameter name="CustomUIName" dataType="string" designDesc="Custom UI name" state="implemented"/>
+          <Parameter name="ZipArchiveStream" dataType="Stream" designDesc="Zip archive stream" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateCustomUIName" designDesc="Validate CustomUI name to be valid. Allow only alphanumeric characters." state="implemented">
+              <Parameter name="CustomUIName"/>
+            </MethodExecute>
+            <TargetDefinition name="CustomUIFolder" dataType="string" designDesc="CustomUI folder prefix with trailing /" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="CustomUIName"/>
+            </TargetDefinition>
+            <MethodExecute name="SetCustomUIName" designDesc="Set custom UI name within the list of custom UIs" state="implemented">
+              <Parameter name="CustomUIName"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <MethodExecute name="CopyUIContentsFromZipArchive" designDesc="Copy UI contents from zip archive. Replace existing and delete old files." state="implemented">
+              <Parameter name="ZipArchiveStream" />
+              <Target name="CustomUIFolder"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteCustomUI">
+        <OperationSpec>
+          <Description>
+            Delete custom web UI that matches the given name
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Group for whom to create the custom UI" state="implemented"/>
+          <Parameter name="CustomUIName" dataType="string" designDesc="Custom UI name" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <TargetDefinition name="CustomUIFolder" dataType="string" designDesc="CustomUI folder prefix with trailing /" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="CustomUIName"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveCustomUIName" designDesc="Remove custom UI name within the list of custom UIs" state="implemented">
+              <Parameter name="CustomUIName"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <MethodExecute name="RemoveCustomUIContents" designDesc="Remove UI contents from custom ui folder" state="implemented">
+              <Target name="CustomUIFolder"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     </Operations>
     <!--
     <Subscriptions>

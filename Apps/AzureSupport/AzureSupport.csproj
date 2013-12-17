@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -94,6 +95,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\DeleteCustomUIImplementation.cs" />
+    <Compile Include="TheBall.CORE\CreateOrUpdateCustomUIImplementation.cs" />
     <Compile Include="TheBall.CORE\PublishGroupToWwwImplementation.cs" />
     <Compile Include="TheBall.Admin\FixGroupMastersAndCollectionsImplementation.cs" />
     <Compile Include="Partials\BinaryFile.cs" />

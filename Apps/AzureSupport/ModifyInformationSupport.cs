@@ -142,6 +142,34 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "DeleteCustomUI":
+                    {
+                        if (containerOwner.IsGroupContainer() == false)
+                            throw new NotSupportedException("CreateOrUpdateCustomUI is only supported for groups");
+                        DeleteCustomUIParameters parameters = new DeleteCustomUIParameters
+                            {
+                                CustomUIName = form["CustomUIName"],
+                                Owner = containerOwner
+                            };
+                        DeleteCustomUI.Execute(parameters);
+                        break;
+                    }
+                case "CreateOrUpdateCustomUI":
+                    {
+                        if(containerOwner.IsGroupContainer() == false)
+                            throw new NotSupportedException("CreateOrUpdateCustomUI is only supported for groups");
+                        var customUIContent = fileContent["CustomUIContents"];
+                        if(customUIContent == null)
+                            throw new ArgumentException("CustomUIContent field is required to contain the zip contents of custom UI.");
+                        CreateOrUpdateCustomUIParameters parameters = new CreateOrUpdateCustomUIParameters
+                            {
+                                CustomUIName = form["CustomUIName"],
+                                Owner = containerOwner,
+                                ZipArchiveStream = customUIContent.InputStream,
+                            };
+                        CreateOrUpdateCustomUI.Execute(parameters);
+                        break;
+                    }
                 case "AddCategories":
                     {
                         string categoryNames = form["CategoryList"];

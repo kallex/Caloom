@@ -649,4 +649,48 @@ using System.IO;
 				PublishGroupToWwwImplementation.ExecuteMethod_PublishWithWorker(parameters.Owner, TargetContainerName, TargetContainerOwnerString);		
 				}
 				}
+				public class CreateOrUpdateCustomUIParameters 
+		{
+				public IContainerOwner Owner ;
+				public string CustomUIName ;
+				public Stream ZipArchiveStream ;
+				}
+		
+		public class CreateOrUpdateCustomUI 
+		{
+				private static void PrepareParameters(CreateOrUpdateCustomUIParameters parameters)
+		{
+					}
+				public static void Execute(CreateOrUpdateCustomUIParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = CreateOrUpdateCustomUIImplementation.GetTarget_GroupContainer(parameters.Owner);	
+				CreateOrUpdateCustomUIImplementation.ExecuteMethod_ValidateCustomUIName(parameters.CustomUIName);		
+				string CustomUIFolder = CreateOrUpdateCustomUIImplementation.GetTarget_CustomUIFolder(parameters.Owner, parameters.CustomUIName);	
+				CreateOrUpdateCustomUIImplementation.ExecuteMethod_SetCustomUIName(parameters.CustomUIName, GroupContainer);		
+				CreateOrUpdateCustomUIImplementation.ExecuteMethod_CopyUIContentsFromZipArchive(parameters.ZipArchiveStream, CustomUIFolder);		
+				CreateOrUpdateCustomUIImplementation.ExecuteMethod_StoreObject(GroupContainer);		
+				}
+				}
+				public class DeleteCustomUIParameters 
+		{
+				public IContainerOwner Owner ;
+				public string CustomUIName ;
+				}
+		
+		public class DeleteCustomUI 
+		{
+				private static void PrepareParameters(DeleteCustomUIParameters parameters)
+		{
+					}
+				public static void Execute(DeleteCustomUIParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = DeleteCustomUIImplementation.GetTarget_GroupContainer(parameters.Owner);	
+				string CustomUIFolder = DeleteCustomUIImplementation.GetTarget_CustomUIFolder(parameters.Owner, parameters.CustomUIName);	
+				DeleteCustomUIImplementation.ExecuteMethod_RemoveCustomUIName(parameters.CustomUIName, GroupContainer);		
+				DeleteCustomUIImplementation.ExecuteMethod_RemoveCustomUIContents(CustomUIFolder);		
+				DeleteCustomUIImplementation.ExecuteMethod_StoreObject(GroupContainer);		
+				}
+				}
 		 } 

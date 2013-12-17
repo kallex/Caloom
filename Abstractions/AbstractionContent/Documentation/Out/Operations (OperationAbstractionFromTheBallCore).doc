@@ -1165,6 +1165,92 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>CreateOrUpdateCustomUI (Owner, CustomUIName, ZipArchiveStream)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Create custom web UI from given package and name.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group for whom to create the custom UI
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CustomUIName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Custom UI name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ZipArchiveStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Zip archive stream
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupContainer ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Group container to store the custom UI info
+		</div>
+		</p><h2>Method Call: ValidateCustomUIName ( CustomUIName )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate CustomUI name to be valid. Allow only alphanumeric characters.
+		</div>
+		</p><h2>Target Definition: CustomUIFolder ( Owner, CustomUIName )</h2>
+		<p>		<div class="MsoNormal" >
+		CustomUI folder prefix with trailing /
+		</div>
+		</p><h2>Method Call: SetCustomUIName ( GroupContainer, CustomUIName )</h2>
+		<p>		<div class="MsoNormal" >
+		Set custom UI name within the list of custom UIs
+		</div>
+		</p><h2>Method Call: CopyUIContentsFromZipArchive ( CustomUIFolder, ZipArchiveStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Copy UI contents from zip archive. Replace existing and delete old files.
+		</div>
+		</p><h2>Method Call: StoreObject ( GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store modified object
+		</div>
 		</p><h1>CreateSpecifiedInformationObjectWithValues (Owner, ObjectDomainName, ObjectName, HttpFormData, HttpFileData)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1355,6 +1441,71 @@ div.WordSection1
 		</p><h2>Method Call: DeleteAuthenticatedAsActiveDevice ( AuthenticatedAsActiveDevice )</h2>
 		<p>		<div class="MsoNormal" >
 		Delete device membership record
+		</div>
+		</p><h1>DeleteCustomUI (Owner, CustomUIName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Delete custom web UI that matches the given name
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group for whom to create the custom UI
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CustomUIName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Custom UI name
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupContainer ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Group container to store the custom UI info
+		</div>
+		</p><h2>Target Definition: CustomUIFolder ( Owner, CustomUIName )</h2>
+		<p>		<div class="MsoNormal" >
+		CustomUI folder prefix with trailing /
+		</div>
+		</p><h2>Method Call: RemoveCustomUIName ( GroupContainer, CustomUIName )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove custom UI name within the list of custom UIs
+		</div>
+		</p><h2>Method Call: RemoveCustomUIContents ( CustomUIFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove UI contents from custom ui folder
+		</div>
+		</p><h2>Method Call: StoreObject ( GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store modified object
 		</div>
 		</p><h1>DeleteDeviceMembership (Owner, DeviceMembershipID)</h1>
 		<h2>Specifications</h2>

@@ -604,6 +604,54 @@
     <StatusItem name="PublishGroupToWww_PublishWithWorker" displayName="MethodExecuteType: PublishWithWorker" description="Publish website with worker call">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_Owner" displayName="VariableType: Owner" description="Group for whom to create the custom UI">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_CustomUIName" displayName="VariableType: CustomUIName" description="Custom UI name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_ZipArchiveStream" displayName="VariableType: ZipArchiveStream" description="Zip archive stream">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_GroupContainer" displayName="TargetDefinitionType: GroupContainer" description="Group container to store the custom UI info">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_ValidateCustomUIName" displayName="MethodExecuteType: ValidateCustomUIName" description="Validate CustomUI name to be valid. Allow only alphanumeric characters.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_CustomUIFolder" displayName="TargetDefinitionType: CustomUIFolder" description="CustomUI folder prefix with trailing /">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_SetCustomUIName" displayName="MethodExecuteType: SetCustomUIName" description="Set custom UI name within the list of custom UIs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_CopyUIContentsFromZipArchive" displayName="MethodExecuteType: CopyUIContentsFromZipArchive" description="Copy UI contents from zip archive. Replace existing and delete old files.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateOrUpdateCustomUI_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store modified object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_Owner" displayName="VariableType: Owner" description="Group for whom to create the custom UI">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_CustomUIName" displayName="VariableType: CustomUIName" description="Custom UI name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_GroupContainer" displayName="TargetDefinitionType: GroupContainer" description="Group container to store the custom UI info">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_CustomUIFolder" displayName="TargetDefinitionType: CustomUIFolder" description="CustomUI folder prefix with trailing /">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_RemoveCustomUIName" displayName="MethodExecuteType: RemoveCustomUIName" description="Remove custom UI name within the list of custom UIs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_RemoveCustomUIContents" displayName="MethodExecuteType: RemoveCustomUIContents" description="Remove UI contents from custom ui folder">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteCustomUI_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store modified object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateSpecifiedInformationObjectWithValues">
@@ -865,6 +913,26 @@
       <ItemRef itemName="PublishGroupToWww_TargetContainerOwnerString" />
       <ItemRef itemName="PublishGroupToWww_ValidatePublishParameters" />
       <ItemRef itemName="PublishGroupToWww_PublishWithWorker" />
+    </Group>
+    <Group name="CreateOrUpdateCustomUI">
+      <ItemRef itemName="CreateOrUpdateCustomUI_Owner" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_CustomUIName" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_ZipArchiveStream" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_GroupContainer" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_ValidateCustomUIName" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_CustomUIFolder" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_SetCustomUIName" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_CopyUIContentsFromZipArchive" />
+      <ItemRef itemName="CreateOrUpdateCustomUI_StoreObject" />
+    </Group>
+    <Group name="DeleteCustomUI">
+      <ItemRef itemName="DeleteCustomUI_Owner" />
+      <ItemRef itemName="DeleteCustomUI_CustomUIName" />
+      <ItemRef itemName="DeleteCustomUI_GroupContainer" />
+      <ItemRef itemName="DeleteCustomUI_CustomUIFolder" />
+      <ItemRef itemName="DeleteCustomUI_RemoveCustomUIName" />
+      <ItemRef itemName="DeleteCustomUI_RemoveCustomUIContents" />
+      <ItemRef itemName="DeleteCustomUI_StoreObject" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>
