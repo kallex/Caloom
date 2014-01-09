@@ -493,6 +493,7 @@ namespace AaltoGlobalImpact.OIP
         const string NodeSourceTypeActivity = "ACTIVITY";
         const string NodeSourceTypeTextContent = "TEXTCONTENT";
         const string NodeSourceTypeCategory = "CATEGORY";
+        private const string NodeSourceTypeLinkToContent = "LINKTOCONTENT";
         internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -699,6 +700,40 @@ namespace AaltoGlobalImpact.OIP
             return node;
         }
 
+        internal static void Update_NodeSummaryContainer_NodeSourceLinkToContent(NodeSummaryContainer nodeSummaryContainer, LinkToContentCollection localCollection, LinkToContentCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeLinkToContent);
+            var linkToContentNodes = masterCollection.CollectionContent.Select(getNodeFromLinkToContent).ToArray();
+            nodes.CollectionContent.AddRange(linkToContentNodes);
+            cleanUpRenderedNodes(nodes);
+        }
+
+        internal static RenderedNode getNodeFromLinkToContent(LinkToContent linkToContent)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeTextContent;
+            node.Title = linkToContent.Title;
+            node.Excerpt = linkToContent.Description;
+            if (linkToContent.ImageData != null)
+            {
+                node.ImageBaseUrl = linkToContent.ImageData.ContentUrlBase;
+                node.ImageExt = linkToContent.ImageData.AdditionalFormatFileExt;
+            }
+            node.ActualContentUrl = linkToContent.URL;
+            if (linkToContent.Categories != null)
+            {
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(linkToContent.Categories, getTitleOrNameFromCategory));
+                node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(linkToContent.Categories, cat => cat.CategoryName));
+                node.CategoryIDList = linkToContent.Categories.SelectedIDCommaSeparated;
+            }
+            if (linkToContent.Locations != null)
+                node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(linkToContent.Locations));
+            return node;
+        }
+
+
+
         internal static void Update_NodeSummaryContainer_NodeSourceTextContent(NodeSummaryContainer nodeSummaryContainer, TextContentCollection localCollection, TextContentCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -752,5 +787,16 @@ namespace AaltoGlobalImpact.OIP
         {
             // Nothing to do for now
         }
+
+        internal static void Update_LinkToContent_Locations(LinkToContent linkToContent, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
+        internal static void Update_LinkToContent_Categories(LinkToContent linkToContent, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
     }
 }

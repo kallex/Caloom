@@ -379,6 +379,7 @@
           <InformationItem name="NodeSourceBlogs" informationObjectName="BlogCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceActivities" informationObjectName="ActivityCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceTextContent" informationObjectName="TextContentCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="NodeSourceLinkToContent" informationObjectName="LinkToContentCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceCategories" informationObjectName="CategoryCollection" logicalDataType="InformationObject"/>
         </InformationItems>
       </InformationObject>
@@ -588,27 +589,6 @@
         </InformationItems>
       </InformationObject>
 
-      <!--
-      <InformationObject name="CollaboratingGroup" designDesc="Collaborating group">
-        <InformationItems>
-          <InformationItem name="CollaboratingGroupName" logicalDataType="Text_Short"/>
-        </InformationItems>
-      </InformationObject>
-
-      <InformationObject name="CollaboratingGroupCollection" designDesc="Collection for collaborating groups">
-        <CollectionFor contentInformationObjectName="CollaboratingGroup"/>
-      </InformationObject>
-
-      <InformationObject name="CollaboratingOrganization" designDesc="Collaborating organization">
-        <InformationItems>
-          <InformationItem name="CollaboratingOrganizationName" logicalDataType="Text_Short"/>
-        </InformationItems>
-      </InformationObject>
-
-      <InformationObject name="CollaboratingOrganizationCollection" designDesc="Collection for collaborating organizations">
-        <CollectionFor contentInformationObjectName="CollaboratingOrganization"/>
-      </InformationObject>
-      -->
       <InformationObject name="GroupSummaryContainer" designDesc="Group container">
         <InformationItems>
           <InformationItem name="Header" logicalDataType="InformationObject" informationObjectName="ContainerHeader"/>
@@ -644,7 +624,6 @@
           <InformationItem name="Summary" logicalDataType="Text_Long" />
         </InformationItems>
       </InformationObject>
-
 
       <InformationObject name="AddAddressAndLocationInfo" designDesc="Add address and location info">
         <InformationItems>
@@ -740,6 +719,20 @@
         </InformationItems>
       </InformationObject>
         
+      <InformationObject name="LinkToContentCollection" designDesc="Collection of link to content">
+        <CollectionFor contentInformationObjectName="LinkToContent" collectionType="Master" />
+      </InformationObject>
+      <InformationObject name="LinkToContent" designDesc="Link to existing content" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="URL" logicalDataType="Text_Short"/>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+  
       <InformationObject name="TextContentCollection" designDesc="Collection of text contents">
         <CollectionFor contentInformationObjectName="TextContent" collectionType="Master" />
       </InformationObject>
