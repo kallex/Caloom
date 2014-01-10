@@ -95,6 +95,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="Partials\EmbeddedContentCollection.cs" />
     <Compile Include="Partials\LinkToContentCollection.cs" />
     <Compile Include="TheBall.CORE\DeleteCustomUIImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateOrUpdateCustomUIImplementation.cs" />
