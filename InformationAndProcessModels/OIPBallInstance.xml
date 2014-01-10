@@ -380,6 +380,7 @@
           <InformationItem name="NodeSourceActivities" informationObjectName="ActivityCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceTextContent" informationObjectName="TextContentCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceLinkToContent" informationObjectName="LinkToContentCollection" logicalDataType="InformationObject"/>
+          <InformationItem name="NodeSourceEmbeddedContent" informationObjectName="EmbeddedContentCollection" logicalDataType="InformationObject"/>
           <InformationItem name="NodeSourceCategories" informationObjectName="CategoryCollection" logicalDataType="InformationObject"/>
         </InformationItems>
       </InformationObject>
@@ -728,6 +729,19 @@
           <InformationItem name="Title" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long" />
           <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
+          <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
+          <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
+        </InformationItems>
+      </InformationObject>
+      
+      <InformationObject name="EmbeddedContentCollection" designDesc="Collection of embedded content">
+        <CollectionFor contentInformationObjectName="EmbeddedContent" collectionType="Master" />
+      </InformationObject>
+      <InformationObject name="EmbeddedContent" designDesc="Embedded existing content" isIndependentMaster="true">
+        <InformationItems>
+          <InformationItem name="IFrameTagContents" logicalDataType="Text_Short"/>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long" />
           <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
           <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
         </InformationItems>

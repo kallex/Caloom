@@ -386,7 +386,6 @@ namespace TheBallTool
 
         }
 
-
         private static void InitBlogAndActivityLocationCollectionsOnce()
         {
             var blogsAndActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog).ToArray();
@@ -645,6 +644,31 @@ namespace TheBallTool
 
         }
 
+        private static void PatchEmbeddedAndLinkToContentToGroupNodeSummaries()
+        {
+            var groupLocations = GetAllGroupLocations();
+            foreach (var groupLocation in groupLocations)
+            {
+                Debug.WriteLine("Patching group: " + groupLocation);
+                var nodeSummaryContainers = StorageSupport.CurrActiveContainer.GetInformationObjects(groupLocation,
+                                                                                                     name =>
+                                                                                                     name.Contains(
+                                                                                                         "/NodeSummaryContainer/"));
+                foreach (NodeSummaryContainer nodeSummaryContainer in nodeSummaryContainers)
+                {
+                    if (nodeSummaryContainer.NodeSourceEmbeddedContent != null &&
+                        nodeSummaryContainer.NodeSourceLinkToContent != null)
+                        continue;
+                    Debug.WriteLine("Patched either...");
+                    if(nodeSummaryContainer.NodeSourceEmbeddedContent == null)
+                        nodeSummaryContainer.NodeSourceEmbeddedContent = new EmbeddedContentCollection();
+                    if(nodeSummaryContainer.NodeSourceLinkToContent == null)
+                        nodeSummaryContainer.NodeSourceLinkToContent  = new LinkToContentCollection();
+                    nodeSummaryContainer.StoreInformation();
+                }
+            }
+        }
+
         private static void PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup(string groupID)
         {
             var nodesummaryContainers = GetAllInformationObjects(name => name.Contains("NodeSummaryContainer") && name.Contains(groupID),
@@ -682,8 +706,8 @@ namespace TheBallTool
             //ReconnectAccountsMastersAndCollections();
 
             //PatchSubscriptionsToSubmitted();
-
-            FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
+            PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
+            //FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
             //FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
             //FixAllGroupsMastersAndCollections();
 

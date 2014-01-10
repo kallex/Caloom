@@ -493,7 +493,9 @@ namespace AaltoGlobalImpact.OIP
         const string NodeSourceTypeActivity = "ACTIVITY";
         const string NodeSourceTypeTextContent = "TEXTCONTENT";
         const string NodeSourceTypeCategory = "CATEGORY";
-        private const string NodeSourceTypeLinkToContent = "LINKTOCONTENT";
+        const string NodeSourceTypeLinkToContent = "LINKTOCONTENT";
+        const string NodeSourceTypeEmbeddedContent = "EMBEDDEDCONTENT";
+        
         internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -700,6 +702,35 @@ namespace AaltoGlobalImpact.OIP
             return node;
         }
 
+        internal static void Update_NodeSummaryContainer_NodeSourceEmbeddedContent(NodeSummaryContainer nodeSummaryContainer, EmbeddedContentCollection localCollection, EmbeddedContentCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeEmbeddedContent);
+            var embeddedContentNodes = masterCollection.CollectionContent.Select(getNodeFromEmbeddedContent).ToArray();
+            nodes.CollectionContent.AddRange(embeddedContentNodes);
+            cleanUpRenderedNodes(nodes);
+
+        }
+
+        internal static RenderedNode getNodeFromEmbeddedContent(EmbeddedContent embeddedContent)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeEmbeddedContent;
+            node.Title = embeddedContent.Title;
+            node.Excerpt = embeddedContent.Description;
+            node.ActualContentUrl = embeddedContent.IFrameTagContents;
+            if (embeddedContent.Categories != null)
+            {
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(embeddedContent.Categories, getTitleOrNameFromCategory));
+                node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(embeddedContent.Categories, cat => cat.CategoryName));
+                node.CategoryIDList = embeddedContent.Categories.SelectedIDCommaSeparated;
+            }
+            if (embeddedContent.Locations != null)
+                node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(embeddedContent.Locations));
+            return node;
+        }
+
+
         internal static void Update_NodeSummaryContainer_NodeSourceLinkToContent(NodeSummaryContainer nodeSummaryContainer, LinkToContentCollection localCollection, LinkToContentCollection masterCollection)
         {
             var nodes = nodeSummaryContainer.Nodes;
@@ -712,7 +743,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromLinkToContent(LinkToContent linkToContent)
         {
             RenderedNode node = RenderedNode.CreateDefault();
-            node.TechnicalSource = NodeSourceTypeTextContent;
+            node.TechnicalSource = NodeSourceTypeLinkToContent;
             node.Title = linkToContent.Title;
             node.Excerpt = linkToContent.Description;
             if (linkToContent.ImageData != null)
@@ -798,5 +829,15 @@ namespace AaltoGlobalImpact.OIP
             // TODO: Remove objects, that are no longer available in master
         }
 
+
+        internal static void Update_EmbeddedContent_Locations(EmbeddedContent embeddedContent, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
+        internal static void Update_EmbeddedContent_Categories(EmbeddedContent embeddedContent, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
     }
 }
