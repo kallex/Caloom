@@ -461,6 +461,7 @@ namespace WebInterface
             if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev") && 
                 (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
+                contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/")))
             {
@@ -596,8 +597,10 @@ namespace WebInterface
                 fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))
                 fileName = prefixStrippedContent.Replace("categoriesandcontent/", LocalWebCatConFolder);
-            else
+            else if (prefixStrippedContent.Contains("wwwsite/"))
                 fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
+            else
+                fileName = prefixStrippedContent.Replace("webview/", LocalWwwSiteFolder);
             if (File.Exists(fileName))
             {
                 var fileStream = File.OpenRead(fileName);

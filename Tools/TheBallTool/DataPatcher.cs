@@ -644,7 +644,7 @@ namespace TheBallTool
 
         }
 
-        private static void PatchEmbeddedAndLinkToContentToGroupNodeSummaries()
+        private static void PatchCollectionsToNodeSummaries()
         {
             var groupLocations = GetAllGroupLocations();
             foreach (var groupLocation in groupLocations)
@@ -657,13 +657,19 @@ namespace TheBallTool
                 foreach (NodeSummaryContainer nodeSummaryContainer in nodeSummaryContainers)
                 {
                     if (nodeSummaryContainer.NodeSourceEmbeddedContent != null &&
-                        nodeSummaryContainer.NodeSourceLinkToContent != null)
+                        nodeSummaryContainer.NodeSourceLinkToContent != null &&
+                        nodeSummaryContainer.NodeSourceImages != null &&
+                        nodeSummaryContainer.NodeSourceBinaryFiles != null)
                         continue;
-                    Debug.WriteLine("Patched either...");
+                    Debug.WriteLine("Patched something...");
                     if(nodeSummaryContainer.NodeSourceEmbeddedContent == null)
                         nodeSummaryContainer.NodeSourceEmbeddedContent = new EmbeddedContentCollection();
                     if(nodeSummaryContainer.NodeSourceLinkToContent == null)
                         nodeSummaryContainer.NodeSourceLinkToContent  = new LinkToContentCollection();
+                    if(nodeSummaryContainer.NodeSourceImages == null)
+                        nodeSummaryContainer.NodeSourceImages = new ImageCollection();
+                    if(nodeSummaryContainer.NodeSourceBinaryFiles == null)
+                        nodeSummaryContainer.NodeSourceBinaryFiles = new BinaryFileCollection();
                     nodeSummaryContainer.StoreInformation();
                 }
             }
@@ -706,7 +712,8 @@ namespace TheBallTool
             //ReconnectAccountsMastersAndCollections();
 
             //PatchSubscriptionsToSubmitted();
-            PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
+            PatchCollectionsToNodeSummaries();
+            //PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
             //FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
             //FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2
             //FixAllGroupsMastersAndCollections();

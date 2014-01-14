@@ -495,6 +495,8 @@ namespace AaltoGlobalImpact.OIP
         const string NodeSourceTypeCategory = "CATEGORY";
         const string NodeSourceTypeLinkToContent = "LINKTOCONTENT";
         const string NodeSourceTypeEmbeddedContent = "EMBEDDEDCONTENT";
+        const string NodeSourceTypeImage = "IMAGE";
+        const string NodeSourceTypeBinaryFile = "BINARYFILE";
         
         internal static void Update_NodeSummaryContainer_NodeSourceBlogs(NodeSummaryContainer nodeSummaryContainer, BlogCollection localCollection, BlogCollection masterCollection)
         {
@@ -763,6 +765,66 @@ namespace AaltoGlobalImpact.OIP
             return node;
         }
 
+        internal static void Update_NodeSummaryContainer_NodeSourceImages(NodeSummaryContainer nodeSummaryContainer, ImageCollection localCollection, ImageCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeImage);
+            var imageNodes = masterCollection.CollectionContent.Select(getNodeFromImage).ToArray();
+            nodes.CollectionContent.AddRange(imageNodes);
+            cleanUpRenderedNodes(nodes);
+        }
+
+        internal static RenderedNode getNodeFromImage(Image image)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeImage;
+            node.Title = image.Title;
+            if (!String.IsNullOrEmpty(image.Description))
+                node.Excerpt = image.Description;
+            else
+                node.Excerpt = image.Caption;
+            if (image.ImageData != null)
+            {
+                node.ImageBaseUrl = image.ImageData.ContentUrlBase;
+                node.ImageExt = image.ImageData.AdditionalFormatFileExt;
+                node.ActualContentUrl = image.ImageData.ContentUrl;
+            }
+            if (image.Categories != null)
+            {
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(image.Categories, getTitleOrNameFromCategory));
+                node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(image.Categories, cat => cat.CategoryName));
+                node.CategoryIDList = image.Categories.SelectedIDCommaSeparated;
+            }
+            if (image.Locations != null)
+                node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(image.Locations));
+            return node;
+        }
+
+
+        internal static void Update_NodeSummaryContainer_NodeSourceBinaryFiles(NodeSummaryContainer nodeSummaryContainer, BinaryFileCollection localCollection, BinaryFileCollection masterCollection)
+        {
+            var nodes = nodeSummaryContainer.Nodes;
+            nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeBinaryFile);
+            var binaryFileNodes = masterCollection.CollectionContent.Select(getNodeFromBinaryFile).ToArray();
+            nodes.CollectionContent.AddRange(binaryFileNodes);
+            cleanUpRenderedNodes(nodes);
+        }
+
+        internal static RenderedNode getNodeFromBinaryFile(BinaryFile binaryFile)
+        {
+            RenderedNode node = RenderedNode.CreateDefault();
+            node.TechnicalSource = NodeSourceTypeBinaryFile;
+            node.Title = binaryFile.Title;
+            node.Excerpt = binaryFile.Description;
+            node.ActualContentUrl = binaryFile.Data.ContentUrl;
+            if (binaryFile.Categories != null)
+            {
+                node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(binaryFile.Categories, getTitleOrNameFromCategory));
+                node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(binaryFile.Categories, cat => cat.CategoryName));
+                node.CategoryIDList = binaryFile.Categories.SelectedIDCommaSeparated;
+            }
+            return node;
+        }
 
 
         internal static void Update_NodeSummaryContainer_NodeSourceTextContent(NodeSummaryContainer nodeSummaryContainer, TextContentCollection localCollection, TextContentCollection masterCollection)
@@ -771,20 +833,6 @@ namespace AaltoGlobalImpact.OIP
             nodes.CollectionContent.RemoveAll(node => node.TechnicalSource == NodeSourceTypeTextContent);
             var textContentNodes = masterCollection.CollectionContent.Select(getNodeFromTextContent).ToArray();
             nodes.CollectionContent.AddRange(textContentNodes);
-            /*
-            nodes.CollectionContent.ForEach(node =>
-            {
-                if (node.Authors.CollectionContent.Count == 0)
-                    node.Authors.CollectionContent.Add(getShortTextObject(DefaultAuthorValue));
-                else
-                {
-                    var firstAuthorObject = node.Authors.CollectionContent[0];
-                    if (String.IsNullOrWhiteSpace(firstAuthorObject.Content))
-                    {
-                        firstAuthorObject.Content = DefaultAuthorValue;
-                    }
-                }
-            });*/
             cleanUpRenderedNodes(nodes);
         }
 
@@ -839,5 +887,21 @@ namespace AaltoGlobalImpact.OIP
         {
             // TODO: Remove objects, that are no longer available in master
         }
+
+        internal static void Update_Image_Locations(Image image, AddressAndLocationCollection localCollection, AddressAndLocationCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
+        internal static void Update_Image_Categories(Image image, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
+        internal static void Update_BinaryFile_Categories(BinaryFile binaryFile, CategoryCollection localCollection, CategoryCollection masterCollection)
+        {
+            // TODO: Remove objects, that are no longer available in master
+        }
+
     }
 }

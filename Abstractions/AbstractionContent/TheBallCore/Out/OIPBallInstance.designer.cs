@@ -23968,6 +23968,8 @@ AccountRoles.OrganizationsImPartOf
 					result.NodeSourceTextContent = TextContentCollection.CreateDefault();
 					result.NodeSourceLinkToContent = LinkToContentCollection.CreateDefault();
 					result.NodeSourceEmbeddedContent = EmbeddedContentCollection.CreateDefault();
+					result.NodeSourceImages = ImageCollection.CreateDefault();
+					result.NodeSourceBinaryFiles = BinaryFileCollection.CreateDefault();
 					result.NodeSourceCategories = CategoryCollection.CreateDefault();
 					return result;
 				}
@@ -23985,6 +23987,8 @@ AccountRoles.OrganizationsImPartOf
 					result.NodeSourceTextContent = TextContentCollection.CreateDemoDefault();
 					result.NodeSourceLinkToContent = LinkToContentCollection.CreateDemoDefault();
 					result.NodeSourceEmbeddedContent = EmbeddedContentCollection.CreateDemoDefault();
+					result.NodeSourceImages = ImageCollection.CreateDemoDefault();
+					result.NodeSourceBinaryFiles = BinaryFileCollection.CreateDemoDefault();
 					result.NodeSourceCategories = CategoryCollection.CreateDemoDefault();
 				
 					return result;
@@ -24023,6 +24027,16 @@ AccountRoles.OrganizationsImPartOf
 						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceEmbeddedContent(this, localCollection:NodeSourceEmbeddedContent, masterCollection:(EmbeddedContentCollection) masterInstance);
 					} else if(NodeSourceEmbeddedContent != null) {
 						((IInformationObject) NodeSourceEmbeddedContent).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is ImageCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceImages(this, localCollection:NodeSourceImages, masterCollection:(ImageCollection) masterInstance);
+					} else if(NodeSourceImages != null) {
+						((IInformationObject) NodeSourceImages).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is BinaryFileCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceBinaryFiles(this, localCollection:NodeSourceBinaryFiles, masterCollection:(BinaryFileCollection) masterInstance);
+					} else if(NodeSourceBinaryFiles != null) {
+						((IInformationObject) NodeSourceBinaryFiles).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is CategoryCollection) {
 						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_NodeSummaryContainer_NodeSourceCategories(this, localCollection:NodeSourceCategories, masterCollection:(CategoryCollection) masterInstance);
@@ -24088,6 +24102,22 @@ AccountRoles.OrganizationsImPartOf
 
 					{ // Scoping block for variable name reusability
 						IInformationObject item = NodeSourceEmbeddedContent;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = NodeSourceImages;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = NodeSourceBinaryFiles;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -24165,6 +24195,24 @@ AccountRoles.OrganizationsImPartOf
 						}
 					}
 					{
+						var item = NodeSourceImages;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = NodeSourceBinaryFiles;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
 						var item = NodeSourceCategories;
 						if(item != null)
 						{
@@ -24224,6 +24272,16 @@ AccountRoles.OrganizationsImPartOf
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) NodeSourceImages;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) NodeSourceBinaryFiles;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) NodeSourceCategories;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -24244,6 +24302,10 @@ AccountRoles.OrganizationsImPartOf
 						if(NodeSourceLinkToContent != _unmodified_NodeSourceLinkToContent)
 							return true;
 						if(NodeSourceEmbeddedContent != _unmodified_NodeSourceEmbeddedContent)
+							return true;
+						if(NodeSourceImages != _unmodified_NodeSourceImages)
+							return true;
+						if(NodeSourceBinaryFiles != _unmodified_NodeSourceBinaryFiles)
 							return true;
 						if(NodeSourceCategories != _unmodified_NodeSourceCategories)
 							return true;
@@ -24294,6 +24356,24 @@ AccountRoles.OrganizationsImPartOf
 						}
 						{
 							IInformationObject item = (IInformationObject) NodeSourceEmbeddedContent;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) NodeSourceImages;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) NodeSourceBinaryFiles;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -24365,6 +24445,22 @@ AccountRoles.OrganizationsImPartOf
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(NodeSourceImages != null) {
+						if(NodeSourceImages.ID == replacingObject.ID)
+							NodeSourceImages = (ImageCollection) replacingObject;
+						else {
+							IInformationObject iObject = NodeSourceImages;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(NodeSourceBinaryFiles != null) {
+						if(NodeSourceBinaryFiles.ID == replacingObject.ID)
+							NodeSourceBinaryFiles = (BinaryFileCollection) replacingObject;
+						else {
+							IInformationObject iObject = NodeSourceBinaryFiles;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(NodeSourceCategories != null) {
 						if(NodeSourceCategories.ID == replacingObject.ID)
 							NodeSourceCategories = (CategoryCollection) replacingObject;
@@ -24384,6 +24480,8 @@ AccountRoles.OrganizationsImPartOf
 					NodeSourceTextContent = sourceObject.NodeSourceTextContent;
 					NodeSourceLinkToContent = sourceObject.NodeSourceLinkToContent;
 					NodeSourceEmbeddedContent = sourceObject.NodeSourceEmbeddedContent;
+					NodeSourceImages = sourceObject.NodeSourceImages;
+					NodeSourceBinaryFiles = sourceObject.NodeSourceBinaryFiles;
 					NodeSourceCategories = sourceObject.NodeSourceCategories;
 				}
 				
@@ -24415,6 +24513,14 @@ AccountRoles.OrganizationsImPartOf
 					_unmodified_NodeSourceEmbeddedContent = NodeSourceEmbeddedContent;
 					if(NodeSourceEmbeddedContent != null)
 						((IInformationObject) NodeSourceEmbeddedContent).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_NodeSourceImages = NodeSourceImages;
+					if(NodeSourceImages != null)
+						((IInformationObject) NodeSourceImages).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_NodeSourceBinaryFiles = NodeSourceBinaryFiles;
+					if(NodeSourceBinaryFiles != null)
+						((IInformationObject) NodeSourceBinaryFiles).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_NodeSourceCategories = NodeSourceCategories;
 					if(NodeSourceCategories != null)
@@ -24452,6 +24558,12 @@ AccountRoles.OrganizationsImPartOf
 			[DataMember]
 			public EmbeddedContentCollection NodeSourceEmbeddedContent { get; set; }
 			private EmbeddedContentCollection _unmodified_NodeSourceEmbeddedContent;
+			[DataMember]
+			public ImageCollection NodeSourceImages { get; set; }
+			private ImageCollection _unmodified_NodeSourceImages;
+			[DataMember]
+			public BinaryFileCollection NodeSourceBinaryFiles { get; set; }
+			private BinaryFileCollection _unmodified_NodeSourceBinaryFiles;
 			[DataMember]
 			public CategoryCollection NodeSourceCategories { get; set; }
 			private CategoryCollection _unmodified_NodeSourceCategories;
@@ -55826,6 +55938,8 @@ CalendarIndex.Summary
 					var result = new Image();
 					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.ImageData = MediaContent.CreateDefault();
+					result.Locations = AddressAndLocationCollection.CreateDefault();
+					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -55842,6 +55956,15 @@ CalendarIndex.Summary
 
 					result.Caption = @"Image.Caption";
 
+					result.Description = @"Image.Description
+Image.Description
+Image.Description
+Image.Description
+Image.Description
+";
+
+					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
+					result.Categories = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -55855,6 +55978,16 @@ CalendarIndex.Summary
 						((IInformationObject) ImageData).UpdateCollections(masterInstance);
 					}
 
+					if(masterInstance is AddressAndLocationCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Image_Locations(this, localCollection:Locations, masterCollection:(AddressAndLocationCollection) masterInstance);
+					} else if(Locations != null) {
+						((IInformationObject) Locations).UpdateCollections(masterInstance);
+					}
+					if(masterInstance is CategoryCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_Image_Categories(this, localCollection:Categories, masterCollection:(CategoryCollection) masterInstance);
+					} else if(Categories != null) {
+						((IInformationObject) Categories).UpdateCollections(masterInstance);
+					}
 				}
 
 
@@ -55874,6 +56007,22 @@ CalendarIndex.Summary
 						result.Add(this);
 					{ // Scoping block for variable name reusability
 						IInformationObject item = ImageData;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Locations;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Categories;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -55913,6 +56062,24 @@ CalendarIndex.Summary
 								return result;
 						}
 					}
+					{
+						var item = Locations;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = Categories;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					return null;
 				}
 
@@ -55943,6 +56110,16 @@ CalendarIndex.Summary
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) Locations;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
+						var item = (IInformationObject) Categories;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -55956,8 +56133,32 @@ CalendarIndex.Summary
 							return true;
 						if(Caption != _unmodified_Caption)
 							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(Locations != _unmodified_Locations)
+							return true;
+						if(Categories != _unmodified_Categories)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) ImageData;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Locations;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Categories;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -55988,6 +56189,22 @@ CalendarIndex.Summary
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(Locations != null) {
+						if(Locations.ID == replacingObject.ID)
+							Locations = (AddressAndLocationCollection) replacingObject;
+						else {
+							IInformationObject iObject = Locations;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+					if(Categories != null) {
+						if(Categories.ID == replacingObject.ID)
+							Categories = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = Categories;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -55997,6 +56214,9 @@ CalendarIndex.Summary
 					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
 					Caption = sourceObject.Caption;
+					Description = sourceObject.Description;
+					Locations = sourceObject.Locations;
+					Categories = sourceObject.Categories;
 				}
 				
 
@@ -56005,6 +56225,7 @@ CalendarIndex.Summary
 				{
 					_unmodified_Title = Title;
 					_unmodified_Caption = Caption;
+					_unmodified_Description = Description;
 				
 					_unmodified_ReferenceToInformation = ReferenceToInformation;
 					if(ReferenceToInformation != null)
@@ -56013,6 +56234,14 @@ CalendarIndex.Summary
 					_unmodified_ImageData = ImageData;
 					if(ImageData != null)
 						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Locations = Locations;
+					if(Locations != null)
+						((IInformationObject) Locations).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Categories = Categories;
+					if(Categories != null)
+						((IInformationObject) Categories).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -56030,6 +56259,9 @@ CalendarIndex.Summary
 						case "Caption":
 							Caption = value;
 							break;
+						case "Description":
+							Description = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -56046,6 +56278,15 @@ CalendarIndex.Summary
 			[DataMember]
 			public string Caption { get; set; }
 			private string _unmodified_Caption;
+			[DataMember]
+			public string Description { get; set; }
+			private string _unmodified_Description;
+			[DataMember]
+			public AddressAndLocationCollection Locations { get; set; }
+			private AddressAndLocationCollection _unmodified_Locations;
+			[DataMember]
+			public CategoryCollection Categories { get; set; }
+			private CategoryCollection _unmodified_Categories;
 			
 			}
 			[DataContract]
@@ -56821,6 +57062,7 @@ CalendarIndex.Summary
 				{
 					var result = new BinaryFile();
 					result.Data = MediaContent.CreateDefault();
+					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
 
@@ -56834,6 +57076,16 @@ CalendarIndex.Summary
 					result.OriginalFileName = @"BinaryFile.OriginalFileName";
 
 					result.Data = MediaContent.CreateDemoDefault();
+					result.Title = @"BinaryFile.Title";
+
+					result.Description = @"BinaryFile.Description
+BinaryFile.Description
+BinaryFile.Description
+BinaryFile.Description
+BinaryFile.Description
+";
+
+					result.Categories = CategoryCollection.CreateDemoDefault();
 				
 					return result;
 				}
@@ -56847,6 +57099,11 @@ CalendarIndex.Summary
 						((IInformationObject) Data).UpdateCollections(masterInstance);
 					}
 
+					if(masterInstance is CategoryCollection) {
+						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_BinaryFile_Categories(this, localCollection:Categories, masterCollection:(CategoryCollection) masterInstance);
+					} else if(Categories != null) {
+						((IInformationObject) Categories).UpdateCollections(masterInstance);
+					}
 				}
 
 
@@ -56872,6 +57129,14 @@ CalendarIndex.Summary
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = Categories;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -56882,6 +57147,15 @@ CalendarIndex.Summary
 				{
 					{
 						var item = Data;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = Categories;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -56914,6 +57188,11 @@ CalendarIndex.Summary
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) Categories;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -56923,8 +57202,23 @@ CalendarIndex.Summary
 							return true;
 						if(Data != _unmodified_Data)
 							return true;
+						if(Title != _unmodified_Title)
+							return true;
+						if(Description != _unmodified_Description)
+							return true;
+						if(Categories != _unmodified_Categories)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) Data;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) Categories;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -56947,6 +57241,14 @@ CalendarIndex.Summary
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(Categories != null) {
+						if(Categories.ID == replacingObject.ID)
+							Categories = (CategoryCollection) replacingObject;
+						else {
+							IInformationObject iObject = Categories;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -56954,6 +57256,9 @@ CalendarIndex.Summary
 				{
 					OriginalFileName = sourceObject.OriginalFileName;
 					Data = sourceObject.Data;
+					Title = sourceObject.Title;
+					Description = sourceObject.Description;
+					Categories = sourceObject.Categories;
 				}
 				
 
@@ -56961,10 +57266,16 @@ CalendarIndex.Summary
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OriginalFileName = OriginalFileName;
+					_unmodified_Title = Title;
+					_unmodified_Description = Description;
 				
 					_unmodified_Data = Data;
 					if(Data != null)
 						((IInformationObject) Data).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_Categories = Categories;
+					if(Categories != null)
+						((IInformationObject) Categories).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -56979,6 +57290,12 @@ CalendarIndex.Summary
 						case "OriginalFileName":
 							OriginalFileName = value;
 							break;
+						case "Title":
+							Title = value;
+							break;
+						case "Description":
+							Description = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -56989,6 +57306,15 @@ CalendarIndex.Summary
 			[DataMember]
 			public MediaContent Data { get; set; }
 			private MediaContent _unmodified_Data;
+			[DataMember]
+			public string Title { get; set; }
+			private string _unmodified_Title;
+			[DataMember]
+			public string Description { get; set; }
+			private string _unmodified_Description;
+			[DataMember]
+			public CategoryCollection Categories { get; set; }
+			private CategoryCollection _unmodified_Categories;
 			
 			}
 			[DataContract]
