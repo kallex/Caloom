@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
+  <StatusItems scopeName="TheBall.Infrastructure">
+    <StatusItem name="ExecuteOperation_OwnerLocation" displayName="VariableType: OwnerLocation" description="Owner location of the operation context">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteOperation_OperationDomain" displayName="VariableType: OperationDomain" description="Operation namespace">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteOperation_OperationName" displayName="VariableType: OperationName" description="Operation name">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteOperation_OperationParameters" displayName="VariableType: OperationParameters" description="Operation parameters binary serialized.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
+  <Groups>
+    <Group name="ExecuteOperation">
+      <ItemRef itemName="ExecuteOperation_OwnerLocation" />
+      <ItemRef itemName="ExecuteOperation_OperationDomain" />
+      <ItemRef itemName="ExecuteOperation_OperationName" />
+      <ItemRef itemName="ExecuteOperation_OperationParameters" />
+    </Group>
+  </Groups>
+</StatusTrackingAbstraction>

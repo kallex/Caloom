@@ -157,7 +157,9 @@
     <Content Include="InstanceSettings_CaloomTest.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="InstanceSettings_OIPTest.config" />
+    <Content Include="InstanceSettings_OIPTest.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="InstanceSettings_OIPBeta.config">
       <SubType>Designer</SubType>
     </Content>

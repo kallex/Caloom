@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromTheBallInterface)" title="Operations (OperationAbstractionFromTheBallInterface)">
+        <Content>
+          <Header text="ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute given operation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>OwnerLocation</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Owner location of the operation context</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>OperationDomain</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Operation namespace</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>OperationName</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Operation name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>OperationParameters</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>byte[]</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                        <TextContent>Operation parameters binary serialized.</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

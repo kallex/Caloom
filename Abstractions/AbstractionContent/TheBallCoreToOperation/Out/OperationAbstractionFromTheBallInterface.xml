@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="TheBall.Infrastructure">
+    <Operation name="ExecuteOperation">
+      <OperationSpec>
+        <Description>Execute given operation</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="OwnerLocation" dataType="string" designDesc="Owner location of the operation context" state="designApproved" />
+        <Parameter name="OperationDomain" dataType="string" designDesc="Operation namespace" state="designApproved" />
+        <Parameter name="OperationName" dataType="string" designDesc="Operation name" state="designApproved" />
+        <Parameter name="OperationParameters" dataType="byte[]" designDesc="Operation parameters binary serialized." state="designApproved" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution />
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>
