@@ -30,8 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.WindowsAzure.CloudDrive, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,12 +42,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallIndex.designer.cs">
+      <Link>OperationAbstractionFromTheBallIndex.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallIndex.designer.cs">
+      <Link>TheBallIndex.designer.cs</Link>
+    </Compile>
+    <Compile Include="AttemptToBecomeInfrastructureIndexerImplementation.cs" />
+    <Compile Include="IndexInformationImplementation.cs" />
+    <Compile Include="IndexSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryIndexedInformationImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\InformationAndProcessModels\TheBallIndex.xml">
       <Link>TheBallIndex.xml</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj">
+      <Project>{33f04eb2-55de-4539-8e67-152a6057f100}</Project>
+      <Name>AzureSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheBall.Infrastructure\TheBall.Infrastructure.csproj">
+      <Project>{5b408149-6555-4b32-984c-11b1f82dfd8b}</Project>
+      <Name>TheBall.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

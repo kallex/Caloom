@@ -1757,6 +1757,98 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete the object.
 		</div>
+		</p><h1>ExportOwnerContentToZip (Owner, PackageRootFolder)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Export Owner content to zip. Excluding system/core namespaces.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner from whom to export.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PackageRootFolder
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Root folder to package from the group root.
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: IncludedFolders ( Owner, PackageRootFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Package included folders. Filtered by SystemSupport namespace restrictions.
+		</div>
+		</p><h2>Operation Call: PackageOwnerContentToZip ( IncludedFolders, Owner, PackageRootFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Package group current content
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ContentPackageObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentPackage
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package object created
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Return Value : ExportOwnerContentToZipReturnValue ( PackageOwnerContentToZipOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ContentPackageID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package ID of the zip package
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>FetchInputInformation (Owner, InformationInputID, QueryParameters)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1843,6 +1935,182 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>
+		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Package group content to zip from given group location
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group for whom to create the custom UI
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PackageType
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package type
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PackageName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Description
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package description
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PackageRootFolder
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Root folder to package from the group root.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IncludedFolders
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Folders to include in the package
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ContentPackageObject ( Owner, PackageType, PackageName, Description, PackageRootFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Create content package information object
+		</div>
+		</p><h2>Method Call: StoreObject ( ContentPackageObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Store content package object
+		</div>
+		</p><h2>Target Definition: ArchiveBlob ( ContentPackageObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Initiate archive blob for zip block updates. Same ID, same location, .zip extension
+		</div>
+		</p><h2>Target Definition: ArchiveSourceBlobs ( Owner, PackageRootFolder, IncludedFolders )</h2>
+		<p>		<div class="MsoNormal" >
+		Source blobs for archiving
+		</div>
+		</p><h2>Method Call: CreateZipPackageContent ( ContentPackageObject, ArchiveSourceBlobs, ArchiveBlob, IncludedFolders )</h2>
+		<p>		<div class="MsoNormal" >
+		Create zip package to match the content object
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		UploadedBlockList
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Uploaded block ID list
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: CommitArchiveBlob ( ArchiveBlob, CreateZipPackageContentOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Commit archive blob
+		</div>
+		</p><h2>Return Value : PackageOwnerContentReturnValue ( ContentPackageObject )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ContentPackage
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentPackage
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content package object created and packed
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>PerformNegotiationAndValidateAuthenticationAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

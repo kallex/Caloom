@@ -5,15 +5,15 @@
       <Document name="Status Tracking Document (TheBall.Index)" title="Status Tracking Document (TheBall.Index)">
         <Content>
           <Header text="Summary" level="1">
-            <Header text="IndexInformationObject (0 %)" level="2">
+            <Header text="IndexInformation (50 %)" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Being implemented 3</TextContent>
+                  <TextContent>Being implemented 1, Implemented 1</TextContent>
                 </Text>
               </Paragraph>
             </Header>
           </Header>
-          <Header text="IndexInformationObject (0 %)" level="1">
+          <Header text="IndexInformation (50 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -24,34 +24,23 @@
                 <Rows>
                   <Row>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: Owner</TextContent>
+                      <TextContent>VariableType: IndexingRequest</TextContent>
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Being implemented</TextContent>
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Owner of the object</TextContent>
+                      <TextContent>Indexing request object</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: InformationObject</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Object to be indexed</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>MethodExecuteType: PerformIndexing</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>Perform indexing of the object</TextContent>
                     </ColumnData>
                   </Row>

@@ -57,6 +57,7 @@
   <ItemGroup>
     <Content Include="..\..\InformationAndProcessModels\TheBallInfrastructure.xml">
       <Link>TheBallInfrastructure.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

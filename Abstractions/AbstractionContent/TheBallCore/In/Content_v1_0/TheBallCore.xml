@@ -5,6 +5,18 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.CORE">
     <InformationModel>
+      <InformationObject name="ContentPackageCollection" designDesc="Collection for content packages">
+        <CollectionFor contentInformationObjectName="ContentPackage" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="ContentPackage" designDesc="Content package">
+        <InformationItems>
+          <InformationItem name="PackageType" logicalDataType="Text_Short"/>
+          <InformationItem name="PackageName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="PackageRootFolder" logicalDataType="Text_Short"/>
+          <InformationItem name="CreationTime" logicalDataType="Time_DateTime"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="InformationInputCollection" designDesc="Collection for information inputs">
         <CollectionFor contentInformationObjectName="InformationInput" collectionType="Master"/>
       </InformationObject>
@@ -17,7 +29,6 @@
           <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
         </InformationItems>
       </InformationObject>
-
       <InformationObject name="InformationOutputCollection" designDesc="Collection for information inputs">
         <CollectionFor contentInformationObjectName="InformationOutput" collectionType="Master"/>
       </InformationObject>
@@ -1296,6 +1307,83 @@
             </MethodExecute>
           </SequentialExecution>
         </Execution>
+      </Operation>
+      <Operation name="ExportOwnerContentToZip">
+        <OperationSpec>
+          <Description>Export Owner content to zip. Excluding system/core namespaces.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner from whom to export." state="implemented"/>
+          <Parameter name="PackageRootFolder" dataType="string" designDesc="Root folder to package from the group root." state="implemented" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="IncludedFolders" dataType="string[]" designDesc="Package included folders. Filtered by SystemSupport namespace restrictions." state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="PackageRootFolder"/>
+            </TargetDefinition>
+            <OperationExecute name="PackageOwnerContentToZip" targetOperationName="PackageOwnerContent" designDesc="Package group current content" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="PackageRootFolder"/>
+              <Target name="IncludedFolders"/>
+              <ReturnValue dataType="ContentPackage" name="ContentPackageObject" designDesc="Content package object created" state="implemented"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue dataType="string" name="ContentPackageID" designDesc="Content package ID of the zip package" state="implemented"/>
+          <Target name="PackageOwnerContentToZipOutput"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="PackageOwnerContent">
+        <OperationSpec>
+          <Description>Package group content to zip from given group location</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Group for whom to create the custom UI" state="implemented"/>
+          <Parameter name="PackageType" dataType="string" designDesc="Content package type" state="implemented"/>
+          <Parameter name="PackageName" dataType="string" designDesc="Content package name" state="implemented"/>
+          <Parameter name="Description" dataType="string" designDesc="Content package description" state="implemented"/>
+          <Parameter name="PackageRootFolder" dataType="string" designDesc="Root folder to package from the group root." state="implemented" />
+          <Parameter name="IncludedFolders" dataType="string[]" designDesc="Folders to include in the package" state="implemented" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="ContentPackage" name="ContentPackageObject" designDesc="Create content package information object" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="PackageType"/>
+              <Parameter name="PackageName"/>
+              <Parameter name="Description"/>
+              <Parameter name="PackageRootFolder"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store content package object" state="implemented">
+              <Target name="ContentPackageObject"/>
+            </MethodExecute>
+            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob" name="ArchiveBlob" designDesc="Initiate archive blob for zip block updates. Same ID, same location, .zip extension" state="implemented">
+              <Target name="ContentPackageObject"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" name="ArchiveSourceBlobs" designDesc="Source blobs for archiving" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="PackageRootFolder"/>
+              <Parameter name="IncludedFolders"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateZipPackageContent" designDesc="Create zip package to match the content object" state="implemented">
+              <Parameter name="IncludedFolders"/>
+              <Target name="ContentPackageObject"/>
+              <Target name="ArchiveSourceBlobs"/>
+              <Target name="ArchiveBlob"/>
+              <ReturnValue dataType="string[]" name="UploadedBlockList" designDesc="Uploaded block ID list" state="implemented" />
+            </MethodExecute>
+            <MethodExecute name="CommitArchiveBlob" designDesc="Commit archive blob" state="implemented">
+              <Target name="ArchiveBlob"/>
+              <Target name="CreateZipPackageContentOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="ContentPackage" dataType="ContentPackage" designDesc="Content package object created and packed" state="implemented"/>
+          <Target name="ContentPackageObject"/>
+        </OperationReturnValues>
       </Operation>
     </Operations>
     <!--

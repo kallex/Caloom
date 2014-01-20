@@ -31,4 +31,19 @@ using System.IO;
 		{
 				public Microsoft.WindowsAzure.StorageClient.CloudDrive CloudDrive ;
 				}
+				public class MountCloudDriveParameters 
+		{
+				public Microsoft.WindowsAzure.StorageClient.CloudDrive DriveReference ;
+				}
+		
+		public class MountCloudDrive 
+		{
+				private static void PrepareParameters(MountCloudDriveParameters parameters)
+		{
+					}
+				public static void Execute(MountCloudDriveParameters parameters)
+		{
+						PrepareParameters(parameters);
+					}
+				}
 		 } 

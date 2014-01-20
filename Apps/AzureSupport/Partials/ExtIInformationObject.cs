@@ -24,6 +24,14 @@ namespace TheBall.CORE
 
     public static partial class ExtIContainerOwner
     {
+        public static string PrefixWithOwnerLocation(this IContainerOwner owner, string location)
+        {
+            string ownerLocationPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
+            if (location.StartsWith(ownerLocationPrefix))
+                return location;
+            return ownerLocationPrefix + location;
+        }
+
         public static bool IsAccountContainer(this IContainerOwner owner)
         {
             return owner.ContainerName == "acc";

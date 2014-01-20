@@ -26,5 +26,16 @@
         <Target name="CreateDriveOutput" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="MountCloudDrive">
+      <OperationSpec>
+        <Description>Mount cloud drive</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="DriveReference" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Platform drive reference" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution />
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

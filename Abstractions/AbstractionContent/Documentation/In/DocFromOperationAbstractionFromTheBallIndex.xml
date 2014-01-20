@@ -4,7 +4,121 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallIndex)" title="Operations (OperationAbstractionFromTheBallIndex)">
         <Content>
-          <Header text="IndexInformationObject (Owner, InformationObject)" level="1">
+          <Header text="AttemptToBecomeInfrastructureIndexer (IndexName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Attempt to claim indexer role. Mounting indexing db/storage read-write as the claim.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IndexName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Infrastructure wide indexing name</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IndexDriveName ( IndexName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Index drive name to be  mounted (using CloudDriveSupport class)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: MountIndexDrive ( IndexDriveName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Index drive</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MountedDrive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Mounted drive if succeeded, otherwise null</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueryQueueName ( IndexName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Query queue name for search requests</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IndexRequestQueueName ( IndexName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Query queue name for search requests</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput, QueryQueueName, IndexRequestQueueName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create queues if mount succeeded</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : AttemptToBecomeInfrastructureIndexerReturnValue ( MountIndexDriveOutput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Success</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Success, if attempt to claim indexing was succesful</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="IndexInformation (IndexingRequest)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -23,33 +137,62 @@
                   <Rows>
                     <Row>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>Owner</TextContent>
+                        <TextContent>IndexingRequest</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>IContainerOwner</TextContent>
+                        <TextContent>IndexingRequest</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>Owner of the object</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>InformationObject</TextContent>
-                      </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>IInformationObject</TextContent>
-                      </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>Object to be indexed</TextContent>
+                        <TextContent>Indexing request object</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: PerformIndexing ( Owner, InformationObject )" level="2">
+            <Header text="Method Call: PerformIndexing ( IndexingRequest )" level="2">
               <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                <Text>
+                  <TextContent>Perform indexing of the object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="QueryIndexedInformation (QueryRequest)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Index information object </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>QueryRequest</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>QueryRequest</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Query request object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformIndexing ( QueryRequest )" level="2">
+              <Paragraph>
+                <Text>
                   <TextContent>Perform indexing of the object</TextContent>
                 </Text>
               </Paragraph>

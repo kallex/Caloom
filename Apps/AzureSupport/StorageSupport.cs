@@ -1535,6 +1535,20 @@ namespace TheBall
             string contentLocation = contentDomain + "/" + contentTypeName + "/" + contentObjectId;
             return RetrieveInformation(contentLocation, contentFullTypeName, null, owner);
         }
+
+        public static string[] GetLogicalDirectories(IContainerOwner owner, string rootLocation)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+            var blobListing =
+                ListBlobsWithPrefix(owner, rootLocation,
+                                                        new BlobRequestOptions {UseFlatBlobListing = false}).ToArray();
+            string[] directories = blobListing.Where(item => item is CloudBlobDirectory)
+                                              .Select(
+                                                  item => item.Uri.LocalPath.Substring(item.Parent.Uri.LocalPath.Length))
+                                              .ToArray();
+            return directories;
+        }
     }
 
     public class ReferenceOutdatedException : Exception

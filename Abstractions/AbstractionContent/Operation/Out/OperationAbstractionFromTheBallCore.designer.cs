@@ -693,4 +693,65 @@ using System.IO;
 				DeleteCustomUIImplementation.ExecuteMethod_StoreObject(GroupContainer);		
 				}
 				}
+				public class ExportOwnerContentToZipParameters 
+		{
+				public IContainerOwner Owner ;
+				public string PackageRootFolder ;
+				}
+		
+		public class ExportOwnerContentToZip 
+		{
+				private static void PrepareParameters(ExportOwnerContentToZipParameters parameters)
+		{
+					}
+				public static ExportOwnerContentToZipReturnValue Execute(ExportOwnerContentToZipParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] IncludedFolders = ExportOwnerContentToZipImplementation.GetTarget_IncludedFolders(parameters.Owner, parameters.PackageRootFolder);	
+				ContentPackage PackageOwnerContentToZipOutput;
+		{ // Local block to allow local naming
+			PackageOwnerContentParameters operationParameters = ExportOwnerContentToZipImplementation.PackageOwnerContentToZip_GetParameters(parameters.Owner, parameters.PackageRootFolder, IncludedFolders);
+			var operationReturnValue = PackageOwnerContent.Execute(operationParameters);
+			PackageOwnerContentToZipOutput = ExportOwnerContentToZipImplementation.PackageOwnerContentToZip_GetOutput(operationReturnValue, parameters.Owner, parameters.PackageRootFolder, IncludedFolders);						
+		} // Local block closing
+				ExportOwnerContentToZipReturnValue returnValue = ExportOwnerContentToZipImplementation.Get_ReturnValue(PackageOwnerContentToZipOutput);
+		return returnValue;
+				}
+				}
+				public class ExportOwnerContentToZipReturnValue 
+		{
+				public string ContentPackageID ;
+				}
+				public class PackageOwnerContentParameters 
+		{
+				public IContainerOwner Owner ;
+				public string PackageType ;
+				public string PackageName ;
+				public string Description ;
+				public string PackageRootFolder ;
+				public string[] IncludedFolders ;
+				}
+		
+		public class PackageOwnerContent 
+		{
+				private static void PrepareParameters(PackageOwnerContentParameters parameters)
+		{
+					}
+				public static PackageOwnerContentReturnValue Execute(PackageOwnerContentParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ContentPackage ContentPackageObject = PackageOwnerContentImplementation.GetTarget_ContentPackageObject(parameters.Owner, parameters.PackageType, parameters.PackageName, parameters.Description, parameters.PackageRootFolder);	
+				PackageOwnerContentImplementation.ExecuteMethod_StoreObject(ContentPackageObject);		
+				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob ArchiveBlob = PackageOwnerContentImplementation.GetTarget_ArchiveBlob(ContentPackageObject);	
+				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] ArchiveSourceBlobs = PackageOwnerContentImplementation.GetTarget_ArchiveSourceBlobs(parameters.Owner, parameters.PackageRootFolder, parameters.IncludedFolders);	
+				string[] CreateZipPackageContentOutput = PackageOwnerContentImplementation.ExecuteMethod_CreateZipPackageContent(parameters.IncludedFolders, ContentPackageObject, ArchiveSourceBlobs, ArchiveBlob);		
+				PackageOwnerContentImplementation.ExecuteMethod_CommitArchiveBlob(ArchiveBlob, CreateZipPackageContentOutput);		
+				PackageOwnerContentReturnValue returnValue = PackageOwnerContentImplementation.Get_ReturnValue(ContentPackageObject);
+		return returnValue;
+				}
+				}
+				public class PackageOwnerContentReturnValue 
+		{
+				public ContentPackage ContentPackage ;
+				}
 		 } 

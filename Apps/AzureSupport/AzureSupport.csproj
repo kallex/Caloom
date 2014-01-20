@@ -39,6 +39,9 @@
       <HintPath>Ext\AWSSDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\packages\DotNetZip.1.9.2\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="JsonFx">
       <HintPath>..\..\Tools\Ext\JsonFx.dll</HintPath>
     </Reference>
@@ -95,6 +98,8 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
+    <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />
     <Compile Include="Partials\EmbeddedContentCollection.cs" />
     <Compile Include="Partials\LinkToContentCollection.cs" />
     <Compile Include="TheBall.CORE\DeleteCustomUIImplementation.cs" />
@@ -263,6 +268,9 @@
     <Content Include="Ext\AWSSDK.xml" />
     <Content Include="Ext\AWS_license.txt" />
     <Content Include="Ext\AWS_notice.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

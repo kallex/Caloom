@@ -588,7 +588,7 @@ namespace WebInterface
             string LocalWebCatConFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
-            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence\"; ;
+            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\"; ;
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))

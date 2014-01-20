@@ -320,6 +320,32 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>MountCloudDrive (DriveReference)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Mount cloud drive
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DriveReference
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Microsoft.WindowsAzure.StorageClient.CloudDrive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Platform drive reference
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p></div>
 
 </body>

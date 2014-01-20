@@ -1,19 +1,66 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Index">
-    <Operation name="IndexInformationObject">
+    <Operation name="AttemptToBecomeInfrastructureIndexer">
+      <OperationSpec>
+        <Description>Attempt to claim indexer role. Mounting indexing db/storage read-write as the claim.</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="IndexName" dataType="string" designDesc="Infrastructure wide indexing name" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="IndexDriveName" dataType="string" designDesc="Index drive name to be  mounted (using CloudDriveSupport class)" state="implemented">
+            <Parameter name="IndexName" />
+          </TargetDefinition>
+          <MethodExecute name="MountIndexDrive" designDesc="Index drive" state="implemented">
+            <Target name="IndexDriveName" />
+            <ReturnValue name="MountedDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Mounted drive if succeeded, otherwise null" state="implemented" />
+          </MethodExecute>
+          <TargetDefinition name="QueryQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
+            <Parameter name="IndexName" />
+          </TargetDefinition>
+          <TargetDefinition name="IndexRequestQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
+            <Parameter name="IndexName" />
+          </TargetDefinition>
+          <MethodExecute name="EnsureQueuesIfMountSucceeded" designDesc="Create queues if mount succeeded" state="implemented">
+            <Target name="MountIndexDriveOutput" />
+            <Target name="QueryQueueName" />
+            <Target name="IndexRequestQueueName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="Success" dataType="bool" designDesc="Success, if attempt to claim indexing was succesful" state="implemented" />
+        <Target name="MountIndexDriveOutput" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="IndexInformation">
       <OperationSpec>
         <Description>Index information object </Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner of the object" state="designApproved" />
-        <Parameter name="InformationObject" dataType="IInformationObject" designDesc="Object to be indexed" state="designApproved" />
+        <Parameter name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object" state="designApproved" />
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="designApproved">
-            <Parameter name="Owner" />
-            <Parameter name="InformationObject" />
+          <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
+            <Parameter name="IndexingRequest" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="QueryIndexedInformation">
+      <OperationSpec>
+        <Description>Index information object </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="QueryRequest" dataType="QueryRequest" designDesc="Query request object" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
+            <Parameter name="QueryRequest" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

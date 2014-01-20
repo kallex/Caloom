@@ -61,6 +61,13 @@
       <Link>TheBallCore\TheBallCore.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\InformationAndProcessModels\TheBallIndex.xml">
+      <Link>TheBallCore\TheBallIndex.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\InformationAndProcessModels\TheBallInfrastructure.xml">
+      <Link>TheBallCore\TheBallInfrastructure.xml</Link>
+    </Content>
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>
     </Content>

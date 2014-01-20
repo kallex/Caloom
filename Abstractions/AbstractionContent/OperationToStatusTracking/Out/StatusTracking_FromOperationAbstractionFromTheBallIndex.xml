@@ -1,21 +1,57 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Index">
-    <StatusItem name="IndexInformationObject_Owner" displayName="VariableType: Owner" description="Owner of the object">
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_IndexName" displayName="VariableType: IndexName" description="Infrastructure wide indexing name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_IndexDriveName" displayName="TargetDefinitionType: IndexDriveName" description="Index drive name to be  mounted (using CloudDriveSupport class)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_MountIndexDrive" displayName="MethodExecuteType: MountIndexDrive" description="Index drive">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_QueryQueueName" displayName="TargetDefinitionType: QueryQueueName" description="Query queue name for search requests">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_IndexRequestQueueName" displayName="TargetDefinitionType: IndexRequestQueueName" description="Query queue name for search requests">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_EnsureQueuesIfMountSucceeded" displayName="MethodExecuteType: EnsureQueuesIfMountSucceeded" description="Create queues if mount succeeded">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AttemptToBecomeInfrastructureIndexer_Success" displayName="VariableType: Success" description="Success, if attempt to claim indexing was succesful">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_IndexingRequest" displayName="VariableType: IndexingRequest" description="Indexing request object">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="IndexInformationObject_InformationObject" displayName="VariableType: InformationObject" description="Object to be indexed">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    <StatusItem name="IndexInformation_PerformIndexing" displayName="MethodExecuteType: PerformIndexing" description="Perform indexing of the object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="IndexInformationObject_PerformIndexing" displayName="MethodExecuteType: PerformIndexing" description="Perform indexing of the object">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    <StatusItem name="QueryIndexedInformation_QueryRequest" displayName="VariableType: QueryRequest" description="Query request object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="QueryIndexedInformation_PerformIndexing" displayName="MethodExecuteType: PerformIndexing" description="Perform indexing of the object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
   </StatusItems>
   <Groups>
-    <Group name="IndexInformationObject">
-      <ItemRef itemName="IndexInformationObject_Owner" />
-      <ItemRef itemName="IndexInformationObject_InformationObject" />
-      <ItemRef itemName="IndexInformationObject_PerformIndexing" />
+    <Group name="AttemptToBecomeInfrastructureIndexer">
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_IndexName" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_IndexDriveName" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_MountIndexDrive" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_QueryQueueName" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_IndexRequestQueueName" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_EnsureQueuesIfMountSucceeded" />
+      <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_Success" />
+    </Group>
+    <Group name="IndexInformation">
+      <ItemRef itemName="IndexInformation_IndexingRequest" />
+      <ItemRef itemName="IndexInformation_PerformIndexing" />
+    </Group>
+    <Group name="QueryIndexedInformation">
+      <ItemRef itemName="QueryIndexedInformation_QueryRequest" />
+      <ItemRef itemName="QueryIndexedInformation_PerformIndexing" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

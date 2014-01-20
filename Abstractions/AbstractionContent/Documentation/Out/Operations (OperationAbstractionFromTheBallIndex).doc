@@ -228,7 +228,94 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallIndex)</p>
 </div>
-		<h1>IndexInformationObject (Owner, InformationObject)</h1>
+		<h1>AttemptToBecomeInfrastructureIndexer (IndexName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Attempt to claim indexer role. Mounting indexing db/storage read-write as the claim.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IndexName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Infrastructure wide indexing name
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: IndexDriveName ( IndexName )</h2>
+		<p>		<div class="MsoNormal" >
+		Index drive name to be  mounted (using CloudDriveSupport class)
+		</div>
+		</p><h2>Method Call: MountIndexDrive ( IndexDriveName )</h2>
+		<p>		<div class="MsoNormal" >
+		Index drive
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MountedDrive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Microsoft.WindowsAzure.StorageClient.CloudDrive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Mounted drive if succeeded, otherwise null
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: QueryQueueName ( IndexName )</h2>
+		<p>		<div class="MsoNormal" >
+		Query queue name for search requests
+		</div>
+		</p><h2>Target Definition: IndexRequestQueueName ( IndexName )</h2>
+		<p>		<div class="MsoNormal" >
+		Query queue name for search requests
+		</div>
+		</p><h2>Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput, QueryQueueName, IndexRequestQueueName )</h2>
+		<p>		<div class="MsoNormal" >
+		Create queues if mount succeeded
+		</div>
+		</p><h2>Return Value : AttemptToBecomeInfrastructureIndexerReturnValue ( MountIndexDriveOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Success
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Success, if attempt to claim indexing was succesful
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>IndexInformation (IndexingRequest)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Index information object 
@@ -239,40 +326,53 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Owner
+		IndexingRequest
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		IContainerOwner
+		IndexingRequest
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Owner of the object
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		InformationObject
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		IInformationObject
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Object to be indexed
+		Indexing request object
 		</div>
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: PerformIndexing ( Owner, InformationObject )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		</p><h2>Method Call: PerformIndexing ( IndexingRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform indexing of the object
+		</div>
+		</p><h1>QueryIndexedInformation (QueryRequest)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Index information object 
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		QueryRequest
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		QueryRequest
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Query request object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: PerformIndexing ( QueryRequest )</h2>
+		<p>		<div class="MsoNormal" >
 		Perform indexing of the object
 		</div>
 		</p></div>

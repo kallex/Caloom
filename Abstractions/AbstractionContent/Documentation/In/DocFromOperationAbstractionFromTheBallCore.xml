@@ -1612,6 +1612,110 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ExportOwnerContentToZip (Owner, PackageRootFolder)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Export Owner content to zip. Excluding system/core namespaces.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner from whom to export.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PackageRootFolder</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Root folder to package from the group root.</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IncludedFolders ( Owner, PackageRootFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Package included folders. Filtered by SystemSupport namespace restrictions.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: PackageOwnerContentToZip ( IncludedFolders, Owner, PackageRootFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Package group current content</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ContentPackageObject</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentPackage</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package object created</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : ExportOwnerContentToZipReturnValue ( PackageOwnerContentToZipOutput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ContentPackageID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package ID of the zip package</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="FetchInputInformation (Owner, InformationInputID, QueryParameters)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1708,6 +1812,182 @@
                 <Text>
                   <TextContent>Fetch input to storage</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Package group content to zip from given group location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group for whom to create the custom UI</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PackageType</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package type</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PackageName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Description</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package description</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PackageRootFolder</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Root folder to package from the group root.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IncludedFolders</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Folders to include in the package</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ContentPackageObject ( Owner, PackageType, PackageName, Description, PackageRootFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create content package information object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( ContentPackageObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store content package object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ArchiveBlob ( ContentPackageObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Initiate archive blob for zip block updates. Same ID, same location, .zip extension</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ArchiveSourceBlobs ( Owner, PackageRootFolder, IncludedFolders )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Source blobs for archiving</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CreateZipPackageContent ( ContentPackageObject, ArchiveSourceBlobs, ArchiveBlob, IncludedFolders )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create zip package to match the content object</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>UploadedBlockList</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Uploaded block ID list</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CommitArchiveBlob ( ArchiveBlob, CreateZipPackageContentOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Commit archive blob</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : PackageOwnerContentReturnValue ( ContentPackageObject )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ContentPackage</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentPackage</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Content package object created and packed</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>
