@@ -13,6 +13,9 @@
     <StatusItem name="ExecuteOperation_OperationParameters" displayName="VariableType: OperationParameters" description="Operation parameters binary serialized.">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ExecuteOperation_CallerProvidedInfo" displayName="VariableType: CallerProvidedInfo" description="Caller provided information about the call. For caller specific purposes.">
+      <StatusValue trafficLightIndicator="red" indicatorDisplayText="Under design" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="ExecuteOperation">
@@ -20,6 +23,7 @@
       <ItemRef itemName="ExecuteOperation_OperationDomain" />
       <ItemRef itemName="ExecuteOperation_OperationName" />
       <ItemRef itemName="ExecuteOperation_OperationParameters" />
+      <ItemRef itemName="ExecuteOperation_CallerProvidedInfo" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

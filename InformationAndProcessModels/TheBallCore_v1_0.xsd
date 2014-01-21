@@ -69,6 +69,11 @@
 				<xs:documentation>(Opt = "") If logical data type is referencing InformationObject, this is the name for the object.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="isCollection" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(Opt = false) If true, defines collection/generic list for the items.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="InformationModelType">
 		<xs:sequence>

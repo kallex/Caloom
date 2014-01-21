@@ -10,6 +10,7 @@
         <Parameter name="OperationDomain" dataType="string" designDesc="Operation namespace" state="designApproved" />
         <Parameter name="OperationName" dataType="string" designDesc="Operation name" state="designApproved" />
         <Parameter name="OperationParameters" dataType="byte[]" designDesc="Operation parameters binary serialized." state="designApproved" />
+        <Parameter name="CallerProvidedInfo" dataType="string" designDesc="Caller provided information about the call. For caller specific purposes." state="underDesign" />
       </Parameters>
       <Execution>
         <SequentialExecution />

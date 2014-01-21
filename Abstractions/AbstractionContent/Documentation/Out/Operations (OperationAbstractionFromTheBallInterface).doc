@@ -228,7 +228,7 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallInterface)</p>
 </div>
-		<h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters)</h1>
+		<h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Execute given operation
@@ -301,6 +301,23 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Operation parameters binary serialized.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+		CallerProvidedInfo
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+		Caller provided information about the call. For caller specific purposes.
 		</div>
 				</td>
 				</tr>

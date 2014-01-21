@@ -13,6 +13,7 @@ using System.IO;
 				public string OperationDomain ;
 				public string OperationName ;
 				public byte[] OperationParameters ;
+				public string CallerProvidedInfo ;
 				}
 		
 		public class ExecuteOperation 

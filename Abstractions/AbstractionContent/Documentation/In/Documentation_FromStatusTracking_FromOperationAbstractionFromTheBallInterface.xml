@@ -8,7 +8,7 @@
             <Header text="ExecuteOperation (0 %)" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Being implemented 4</TextContent>
+                  <TextContent>Under design 1, Being implemented 4</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -64,6 +64,17 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Operation parameters binary serialized.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                      <TextContent>VariableType: CallerProvidedInfo</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                      <TextContent>Under design</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                      <TextContent>Caller provided information about the call. For caller specific purposes.</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>

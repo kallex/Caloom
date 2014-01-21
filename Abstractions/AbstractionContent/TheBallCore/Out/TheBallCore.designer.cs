@@ -272,6 +272,13 @@ using TheBall.CORE;
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -298,12 +305,6 @@ using TheBall.CORE;
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -790,6 +791,13 @@ using TheBall.CORE;
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -816,12 +824,6 @@ using TheBall.CORE;
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -959,7 +961,6 @@ ContentPackage.Description
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -970,6 +971,7 @@ ContentPackage.Description
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -979,12 +981,10 @@ ContentPackage.Description
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -1006,7 +1006,8 @@ ContentPackage.Description
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(PackageType != _unmodified_PackageType)
 							return true;
 						if(PackageName != _unmodified_PackageName)
@@ -1048,8 +1049,6 @@ ContentPackage.Description
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -1211,6 +1210,13 @@ ContentPackage.Description
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -1237,12 +1243,6 @@ ContentPackage.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -1729,6 +1729,13 @@ ContentPackage.Description
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -1755,12 +1762,6 @@ ContentPackage.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -1898,7 +1899,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -1909,6 +1909,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -1918,12 +1919,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -1945,7 +1944,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(InputDescription != _unmodified_InputDescription)
 							return true;
 						if(LocationURL != _unmodified_LocationURL)
@@ -1987,8 +1987,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -2150,6 +2148,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -2176,12 +2181,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -2668,6 +2667,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -2694,12 +2700,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -2834,7 +2834,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -2845,6 +2844,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -2854,12 +2854,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -2881,7 +2879,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(OutputDescription != _unmodified_OutputDescription)
 							return true;
 						if(DestinationURL != _unmodified_DestinationURL)
@@ -2927,8 +2926,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -3096,6 +3093,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -3122,12 +3126,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -3614,6 +3612,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -3640,12 +3645,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -3778,7 +3777,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -3789,6 +3787,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -3798,12 +3797,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -3825,7 +3822,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(AuthenticationDescription != _unmodified_AuthenticationDescription)
 							return true;
 						if(SharedSecret != _unmodified_SharedSecret)
@@ -3871,8 +3869,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -4037,6 +4033,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -4063,12 +4066,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -4555,6 +4552,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -4581,12 +4585,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -4715,7 +4713,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -4726,6 +4723,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -4735,12 +4733,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -4762,7 +4758,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(DeviceDescription != _unmodified_DeviceDescription)
 							return true;
 						if(SharedSecret != _unmodified_SharedSecret)
@@ -4800,8 +4797,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -4954,6 +4949,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -4980,12 +4982,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -5117,7 +5113,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5127,6 +5122,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -5145,7 +5141,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -5159,7 +5154,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -5186,7 +5180,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(FiscalInclusiveStartDate != _unmodified_FiscalInclusiveStartDate)
 							return true;
 						if(FiscalInclusiveEndDate != _unmodified_FiscalInclusiveEndDate)
@@ -5240,8 +5235,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -5388,6 +5381,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -5414,12 +5414,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -5572,7 +5566,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -5582,6 +5575,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -5624,7 +5618,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -5665,7 +5658,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -5707,7 +5699,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(OpenInvoices != _unmodified_OpenInvoices)
 							return true;
 						if(PredictedInvoices != _unmodified_PredictedInvoices)
@@ -5825,8 +5818,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -5970,6 +5961,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -5996,12 +5994,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -6488,6 +6480,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -6514,12 +6513,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -6670,7 +6663,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -6680,6 +6672,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -6713,7 +6706,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -6745,7 +6737,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -6782,7 +6773,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
 						if(InvoiceName != _unmodified_InvoiceName)
@@ -6899,8 +6891,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -7089,6 +7079,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -7115,12 +7112,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -7257,7 +7248,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -7268,6 +7258,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -7277,12 +7268,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -7304,7 +7293,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(MonthlyFeesTotal != _unmodified_MonthlyFeesTotal)
 							return true;
 						if(OneTimeFeesTotal != _unmodified_OneTimeFeesTotal)
@@ -7350,8 +7340,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -7519,6 +7507,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -7545,12 +7540,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -8015,6 +8004,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -8041,12 +8037,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -8193,7 +8183,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -8203,6 +8192,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -8229,7 +8219,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -8252,7 +8241,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -8284,7 +8272,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(UserName != _unmodified_UserName)
 							return true;
 						if(UserID != _unmodified_UserID)
@@ -8374,8 +8363,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -8543,6 +8530,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -8569,12 +8563,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -9039,6 +9027,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -9065,12 +9060,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -9535,6 +9524,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -9561,12 +9557,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -9705,7 +9695,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -9715,6 +9704,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -9733,7 +9723,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -9747,7 +9736,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -9774,7 +9762,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(GroupName != _unmodified_GroupName)
 							return true;
 						if(GroupTotalPriceWithoutTaxes != _unmodified_GroupTotalPriceWithoutTaxes)
@@ -9836,8 +9825,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -9996,6 +9983,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -10022,12 +10016,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -10160,7 +10148,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -10170,6 +10157,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -10188,7 +10176,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -10202,7 +10189,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -10229,7 +10215,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(GroupName != _unmodified_GroupName)
 							return true;
 						if(InvoiceEventDetailCollection != _unmodified_InvoiceEventDetailCollection)
@@ -10279,8 +10266,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -10421,6 +10406,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -10447,12 +10439,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -10917,6 +10903,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -10943,12 +10936,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -11413,6 +11400,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -11439,12 +11433,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -11585,7 +11573,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -11596,6 +11583,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -11605,12 +11593,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -11632,7 +11618,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(IndentMode != _unmodified_IndentMode)
 							return true;
 						if(EventStartDateTime != _unmodified_EventStartDateTime)
@@ -11694,8 +11681,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -11887,6 +11872,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -11913,12 +11905,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -12059,7 +12045,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -12069,6 +12054,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -12086,7 +12072,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -12100,7 +12085,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -12127,7 +12111,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
 							return true;
 						if(IndentMode != _unmodified_IndentMode)
@@ -12192,8 +12177,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -12370,6 +12353,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -12396,12 +12386,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -12866,6 +12850,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -12892,12 +12883,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -13024,7 +13009,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13035,6 +13019,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -13044,12 +13029,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -13071,7 +13054,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(CategoryName != _unmodified_CategoryName)
 							return true;
 				
@@ -13097,8 +13081,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -13236,6 +13218,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -13262,12 +13251,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -13402,7 +13385,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13412,6 +13394,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -13430,7 +13413,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -13444,7 +13426,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -13471,7 +13452,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(ProcessID != _unmodified_ProcessID)
 							return true;
 						if(ProcessName != _unmodified_ProcessName)
@@ -13525,8 +13507,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -13673,6 +13653,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return true;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -13699,12 +13686,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return true;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -13833,7 +13814,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -13844,6 +13824,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -13853,12 +13834,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -13880,7 +13859,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(Title != _unmodified_Title)
 							return true;
 						if(URL != _unmodified_URL)
@@ -13910,8 +13890,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -14055,6 +14033,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -14081,12 +14066,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -14540,6 +14519,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -14566,12 +14552,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -14700,7 +14680,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -14711,6 +14690,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -14720,12 +14700,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -14747,7 +14725,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(OwnerType != _unmodified_OwnerType)
 							return true;
 						if(OwnerIdentifier != _unmodified_OwnerIdentifier)
@@ -14777,8 +14756,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -14922,6 +14899,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -14948,12 +14932,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -15086,7 +15064,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15096,6 +15073,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -15114,7 +15092,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -15128,7 +15105,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -15155,7 +15131,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(SummaryName != _unmodified_SummaryName)
 							return true;
 						if(SummaryMonitoringItem != _unmodified_SummaryMonitoringItem)
@@ -15205,8 +15182,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -15347,6 +15322,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -15373,12 +15355,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -15539,7 +15515,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -15549,6 +15524,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -15606,7 +15582,6 @@ InformationInput.AuthenticatedDeviceID
 					{
 					}					
 				}
-
 
 				private object FindFromObjectTree(string objectId)
 				{
@@ -15666,7 +15641,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -15718,7 +15692,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(OwnerInfo != _unmodified_OwnerInfo)
 							return true;
 						if(TimeRangeInclusiveStartExclusiveEnd != _unmodified_TimeRangeInclusiveStartExclusiveEnd)
@@ -15890,8 +15865,6 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
-
-
 				public void ParsePropertyValue(string propertyName, string value)
 				{
 					switch (propertyName)
@@ -16045,6 +16018,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -16071,12 +16051,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -16541,6 +16515,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -16567,12 +16548,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -16727,7 +16702,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -16737,6 +16711,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -16787,7 +16762,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -16837,7 +16811,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -16884,7 +16857,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(OwnerInfo != _unmodified_OwnerInfo)
 							return true;
 						if(ProcessorUsage != _unmodified_ProcessorUsage)
@@ -17026,8 +17000,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -17174,6 +17146,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -17200,12 +17179,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -17670,6 +17643,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -17696,12 +17676,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -17834,7 +17808,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -17844,6 +17817,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -17862,7 +17836,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -17876,7 +17849,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -17903,7 +17875,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(TimeRange != _unmodified_TimeRange)
 							return true;
 						if(UsageType != _unmodified_UsageType)
@@ -17965,8 +17938,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -18125,6 +18096,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -18151,12 +18129,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -18621,6 +18593,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -18647,12 +18626,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -18785,7 +18758,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -18795,6 +18767,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -18813,7 +18786,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -18827,7 +18799,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -18854,7 +18825,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(TimeRange != _unmodified_TimeRange)
 							return true;
 						if(UsageType != _unmodified_UsageType)
@@ -18908,8 +18880,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -19056,6 +19026,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -19082,12 +19059,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -19552,6 +19523,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -19578,12 +19556,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -19712,7 +19684,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -19723,6 +19694,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -19732,12 +19704,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -19759,7 +19729,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(SnapshotTime != _unmodified_SnapshotTime)
 							return true;
 						if(UsageType != _unmodified_UsageType)
@@ -19797,8 +19768,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -19954,6 +19923,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -19980,12 +19956,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -20450,6 +20420,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -20476,12 +20453,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -20614,7 +20585,6 @@ InformationInput.AuthenticatedDeviceID
 
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -20624,6 +20594,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -20642,7 +20613,6 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -20656,7 +20626,6 @@ InformationInput.AuthenticatedDeviceID
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -20683,7 +20652,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(TimeRange != _unmodified_TimeRange)
 							return true;
 						if(UsageType != _unmodified_UsageType)
@@ -20737,8 +20707,6 @@ InformationInput.AuthenticatedDeviceID
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -20885,6 +20853,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -20911,12 +20886,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -21041,7 +21010,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21052,6 +21020,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -21061,12 +21030,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -21088,7 +21055,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(StartTime != _unmodified_StartTime)
 							return true;
 						if(EndTime != _unmodified_EndTime)
@@ -21118,8 +21086,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -21263,6 +21229,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -21289,12 +21262,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -21759,6 +21726,13 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -21785,12 +21759,6 @@ InformationInput.AuthenticatedDeviceID
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -21923,7 +21891,6 @@ InformationInput.AuthenticatedDeviceID
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -21934,6 +21901,7 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -21943,12 +21911,10 @@ InformationInput.AuthenticatedDeviceID
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -21970,7 +21936,8 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(RemoteIPAddress != _unmodified_RemoteIPAddress)
 							return true;
 						if(RemoteEndpointUserName != _unmodified_RemoteEndpointUserName)
@@ -22020,8 +21987,6 @@ InformationInput.AuthenticatedDeviceID
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)

@@ -4,7 +4,7 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallInterface)" title="Operations (OperationAbstractionFromTheBallInterface)">
         <Content>
-          <Header text="ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters)" level="1">
+          <Header text="ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -63,6 +63,17 @@
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                         <TextContent>Operation parameters binary serialized.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                        <TextContent>CallerProvidedInfo</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData styleRef="color:red;font-weight:bold;text-decoration:underline">
+                        <TextContent>Caller provided information about the call. For caller specific purposes.</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>

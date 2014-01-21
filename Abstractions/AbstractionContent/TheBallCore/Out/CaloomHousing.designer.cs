@@ -158,6 +158,13 @@ using TheBall.CORE;
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -184,12 +191,6 @@ using TheBall.CORE;
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -332,7 +333,6 @@ House.Description
 					//string typeName = collType.Name;
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -343,6 +343,7 @@ House.Description
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
+
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
@@ -352,12 +353,10 @@ House.Description
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -379,7 +378,8 @@ House.Description
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(ImageBaseUrl != _unmodified_ImageBaseUrl)
 							return true;
 						if(Title != _unmodified_Title)
@@ -417,8 +417,6 @@ House.Description
 				
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)

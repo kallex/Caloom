@@ -177,6 +177,13 @@ using TheBall.CORE;
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -203,12 +210,6 @@ using TheBall.CORE;
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
@@ -358,7 +359,6 @@ TrainingModule.Description
 					}
 				}
 
-
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
@@ -368,6 +368,7 @@ TrainingModule.Description
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
+
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
@@ -386,7 +387,6 @@ TrainingModule.Description
 					}					
 				}
 
-
 				private object FindFromObjectTree(string objectId)
 				{
 					{
@@ -400,7 +400,6 @@ TrainingModule.Description
 					}
 					return null;
 				}
-
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
@@ -427,7 +426,8 @@ TrainingModule.Description
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
-					get {
+					get { 
+
 						if(ImageBaseUrl != _unmodified_ImageBaseUrl)
 							return true;
 						if(Title != _unmodified_Title)
@@ -489,8 +489,6 @@ TrainingModule.Description
 
 				
 				}
-
-
 
 
 				public void ParsePropertyValue(string propertyName, string value)
@@ -649,6 +647,13 @@ TrainingModule.Description
 				}
 
 
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
 			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
 			    {
                     foreach(string key in nameValueCollection.AllKeys)
@@ -675,12 +680,6 @@ TrainingModule.Description
                         return this;
 			        return FindFromObjectTree(objectId);
 			    }
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
 
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{

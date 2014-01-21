@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Infrastructure">
-    <InformationModel />
+    <InformationModel>
+      <InformationObject name="StatusSummary" serializationType="JSON" designDesc="Status summary object" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="PendingOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="OperationExecutionItem" designDesc="Operation execution item">
+        <InformationItems>
+          <InformationItem name="OperationName" logicalDataType="Text_Short"/>
+          <InformationItem name="OperationDomain" logicalDataType="Text_Short"/>
+          <InformationItem name="OperationID" logicalDataType="Text_Short"/>
+          <InformationItem name="CallerProvidedInfo" logicalDataType="Text_Short"/>
+          <InformationItem name="CreationTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ExecutionBeginTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ExecutionCompletedTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ExecutionStatus" logicalDataType="Text_Short"/>          
+        </InformationItems>
+      </InformationObject>
+    </InformationModel>
     <Operations>
       <Operation name="ExecuteOperation">
         <OperationSpec>
@@ -12,6 +30,7 @@
           <Parameter name="OperationDomain" dataType="string" designDesc="Operation namespace" state="designApproved"/>
           <Parameter name="OperationName" dataType="string" designDesc="Operation name" state="designApproved"/>
           <Parameter name="OperationParameters" dataType="byte[]" designDesc="Operation parameters binary serialized." state="designApproved"/>
+          <Parameter name="CallerProvidedInfo" dataType="string" designDesc="Caller provided information about the call. For caller specific purposes."/>
         </Parameters>
         <Execution>
           <SequentialExecution />

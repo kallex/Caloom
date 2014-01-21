@@ -70,6 +70,7 @@
     </Content>
     <Content Include="..\..\InformationAndProcessModels\TheBallInterface.xml">
       <Link>TheBallCore\TheBallInterface.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
       <SubType>Designer</SubType>
