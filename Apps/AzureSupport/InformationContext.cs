@@ -306,5 +306,23 @@ namespace TheBall
         {
             Current.StartResourceMeasuring(usageType);
         }
+
+        // Currently being used for listing changed IDs
+        public HashSet<string> ChangedIDs = new HashSet<string>();
+        private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP" };
+        public void ObjectStoredNotification(IInformationObject informationObject)
+        {
+            if (trackedDomainNames.Contains(informationObject.SemanticDomainName) == false)
+                return;
+            ChangedIDs.Add(informationObject.ID);
+        }
+
+        public string[] GetChangedObjectIDs()
+        {
+            List<string> idList = new List<string>();
+            foreach (string id in ChangedIDs)
+                idList.Add(id);
+            return idList.ToArray();
+        }
     }
 }

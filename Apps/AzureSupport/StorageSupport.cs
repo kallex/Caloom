@@ -994,6 +994,7 @@ namespace TheBall
             SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
             Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
+            InformationContext.Current.ObjectStoredNotification(informationObject);
             return blob;
         }
 

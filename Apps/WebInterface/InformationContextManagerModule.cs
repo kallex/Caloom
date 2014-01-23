@@ -6,6 +6,7 @@ using System.Web;
 using AzureSupport;
 using TheBall;
 using TheBall.CORE;
+using TheBall.Interface;
 
 namespace WebInterface
 {
@@ -95,6 +96,29 @@ namespace WebInterface
                 var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
+            }
+            try
+            {
+                var changedList = InformationContext.Current.GetChangedObjectIDs();
+                if (changedList.Length > 0)
+                {
+                    DateTime startTime = InformationContext.Current.RequestResourceUsage != null
+                                             ? InformationContext.Current.RequestResourceUsage.RequestDetails.UTCDateTime
+                                             : DateTime.UtcNow;
+                    UpdateStatusSummaryParameters parameters = new UpdateStatusSummaryParameters
+                    {
+                        Owner = InformationContext.Current.Owner,
+                        StartTime = startTime,
+                        EndTime = DateTime.UtcNow,
+                        ChangedIDList = InformationContext.Current.GetChangedObjectIDs(),
+                        RemoveExpiredEntriesSeconds = InstanceConfiguration.HARDCODED_StatusUpdateExpireSeconds,
+                    };
+                    UpdateStatusSummary.Execute(parameters);
+                }
+            }
+            catch(Exception ex) // DO NOT FAIL HERE
+            {
+                
             }
             InformationContext.ProcessAndClearCurrent();
         }

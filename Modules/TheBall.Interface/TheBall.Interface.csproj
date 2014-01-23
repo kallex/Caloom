@@ -47,7 +47,10 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
       <Link>TheBallInterface.designer.cs</Link>
     </Compile>
+    <Compile Include="InformationChangeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusSummary.cs" />
+    <Compile Include="UpdateStatusSummaryImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj">

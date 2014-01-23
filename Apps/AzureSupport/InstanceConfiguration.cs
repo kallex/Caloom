@@ -36,6 +36,7 @@ namespace TheBall
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
+        public static readonly int HARDCODED_StatusUpdateExpireSeconds = 300;
 
         static InstanceConfiguration()
         {

@@ -2,7 +2,7 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Interface">
     <InformationModel>
-      <InformationObject name="StatusSummary" serializationType="JSON" designDesc="Status summary object" provideCreateMethod="false">
+      <InformationObject name="StatusSummary" serializationType="Binary" designDesc="Status summary object" provideCreateMethod="false">
         <InformationItems>
           <InformationItem name="PendingOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
           <InformationItem name="ExecutingOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
@@ -10,9 +10,10 @@
           <InformationItem name="RecentChangeItemIDs" logicalDataType="Text_Short" isCollection="true" />
         </InformationItems>
       </InformationObject>
-      <InformationObject name="InformationChangeItem" designDesc="Item that describes information object change. ID is guid prefixed with UTC timerange." provideCreateMethod="false" serializationType="JSON">
+      <InformationObject name="InformationChangeItem" designDesc="Item that describes information object change. ID is guid prefixed with UTC timerange." provideCreateMethod="false" serializationType="Binary">
         <InformationItems>
-          <InformationItem name="UTCTimeRange" logicalDataType="Text_Short"/>
+          <InformationItem name="StartTimeUTC" logicalDataType="Time_DateTime"/>
+          <InformationItem name="EndTimeUTC" logicalDataType="Time_DateTime"/>
           <InformationItem name="ChangedObjectIDList" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
@@ -43,6 +44,41 @@
         </Parameters>
         <Execution>
           <SequentialExecution />
+        </Execution>
+      </Operation>
+      <Operation name="UpdateStatusSummary">
+        <OperationSpec>
+          <Description>Updates status summary for given owner, based on changed ID lists and time range.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the operation context" state="implemented"/>
+          <Parameter name="StartTime" dataType="DateTime" designDesc="Starting time of changes updated in this cycle" state="implemented"/>
+          <Parameter name="EndTime" dataType="DateTime" designDesc="Ending time of changes updated in this cycle" state="implemented"/>
+          <Parameter name="ChangedIDList" dataType="string[]" designDesc="Changed ID list on this cycle" state="implemented"/>
+          <Parameter name="RemoveExpiredEntriesSeconds" dataType="int" designDesc="Remove entries older than amount of seconds given here" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="ChangeItem" dataType="InformationChangeItem" designDesc="Change item registering the ID changed list. NOTE! ID is of form UTCStart_UTCEnd_GUID" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="StartTime"/>
+              <Parameter name="EndTime"/>
+              <Parameter name="ChangedIDList"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store changeitem" state="implemented">
+              <Target name="ChangeItem"/>
+            </MethodExecute>
+            <MethodExecute name="EnsureUpdateOnStatusSummary" designDesc="Guarantee update on StatusSummary, retry if fails. Sort the RecentChangeItemIDs to ID order, remove expired entries" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="RemoveExpiredEntriesSeconds"/>
+              <Target name="ChangeItem"/>
+              <ReturnValue name="ExpiredEntryIDs" dataType="string[]" designDesc="Expired entries based on expiration time" state="implemented"/>
+            </MethodExecute>
+            <MethodExecute name="RemoveExpiredEntries" designDesc="Remove expired changeitem entries" state="implemented">
+              <Parameter name="Owner"/>
+              <Target name="EnsureUpdateOnStatusSummaryOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
         </Execution>
       </Operation>
     </Operations>

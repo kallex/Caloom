@@ -226,25 +226,25 @@ div.WordSection1
 
 		
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
-<p class="MsoTitle">Operations (OperationAbstractionFromTheBallInterface)</p>
+<p class="MsoTitle">Status Tracking Document (TheBall.Interface)</p>
 </div>
-		<h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
-		<h2>Specifications</h2>
+		<h1>Summary</h1>
+		<h2>ExecuteOperation (0 %)</h2>
 		<p>		<div class="MsoNormal" >
-		Execute given operation
+		Under design 1, Being implemented 4
 		</div>
-		</p><h2>Parameters</h2>
+		</p><h1>ExecuteOperation (0 %)</h1>
 		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OwnerLocation
+		VariableType: OwnerLocation
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
+		Being implemented
 		</div>
 				</td>
 				<td>
@@ -256,12 +256,12 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationDomain
+		VariableType: OperationDomain
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
+		Being implemented
 		</div>
 				</td>
 				<td>
@@ -273,12 +273,12 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationName
+		VariableType: OperationName
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
+		Being implemented
 		</div>
 				</td>
 				<td>
@@ -290,12 +290,12 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationParameters
+		VariableType: OperationParameters
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		byte[]
+		Being implemented
 		</div>
 				</td>
 				<td>
@@ -307,12 +307,12 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
-		CallerProvidedInfo
+		VariableType: CallerProvidedInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
-		string
+		Under design
 		</div>
 				</td>
 				<td>
@@ -322,136 +322,6 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h1>UpdateStatusSummary (Owner, StartTime, EndTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
-		<h2>Specifications</h2>
-		<p>		<div class="MsoNormal" >
-		Updates status summary for given owner, based on changed ID lists and time range.
-		</div>
-		</p><h2>Parameters</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		Owner
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Owner of the operation context
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		StartTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		DateTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Starting time of changes updated in this cycle
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		EndTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		DateTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Ending time of changes updated in this cycle
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		ChangedIDList
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string[]
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Changed ID list on this cycle
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		RemoveExpiredEntriesSeconds
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		int
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Remove entries older than amount of seconds given here
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Target Definition: ChangeItem ( Owner, StartTime, EndTime, ChangedIDList )</h2>
-		<p>		<div class="MsoNormal" >
-		Change item registering the ID changed list. NOTE! ID is of form UTCStart_UTCEnd_GUID
-		</div>
-		</p><h2>Method Call: StoreObject ( ChangeItem )</h2>
-		<p>		<div class="MsoNormal" >
-		Store changeitem
-		</div>
-		</p><h2>Method Call: EnsureUpdateOnStatusSummary ( ChangeItem, Owner, RemoveExpiredEntriesSeconds )</h2>
-		<p>		<div class="MsoNormal" >
-		Guarantee update on StatusSummary, retry if fails. Sort the RecentChangeItemIDs to ID order, remove expired entries
-		</div>
-		</p><p><table border="1">
-				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		ExpiredEntryIDs
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string[]
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Expired entries based on expiration time
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Method Call: RemoveExpiredEntries ( EnsureUpdateOnStatusSummaryOutput, Owner )</h2>
-		<p>		<div class="MsoNormal" >
-		Remove expired changeitem entries
-		</div>
 		</p></div>
 
 </body>

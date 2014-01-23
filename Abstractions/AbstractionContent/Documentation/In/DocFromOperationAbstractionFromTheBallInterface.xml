@@ -81,6 +81,133 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateStatusSummary (Owner, StartTime, EndTime, ChangedIDList, RemoveExpiredEntriesSeconds)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Updates status summary for given owner, based on changed ID lists and time range.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner of the operation context</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>StartTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>DateTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Starting time of changes updated in this cycle</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EndTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>DateTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Ending time of changes updated in this cycle</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ChangedIDList</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Changed ID list on this cycle</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RemoveExpiredEntriesSeconds</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>int</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Remove entries older than amount of seconds given here</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ChangeItem ( Owner, StartTime, EndTime, ChangedIDList )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Change item registering the ID changed list. NOTE! ID is of form UTCStart_UTCEnd_GUID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( ChangeItem )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store changeitem</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: EnsureUpdateOnStatusSummary ( ChangeItem, Owner, RemoveExpiredEntriesSeconds )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Guarantee update on StatusSummary, retry if fails. Sort the RecentChangeItemIDs to ID order, remove expired entries</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ExpiredEntryIDs</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Expired entries based on expiration time</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveExpiredEntries ( EnsureUpdateOnStatusSummaryOutput, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove expired changeitem entries</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
         </Content>
       </Document>
     </Documents>

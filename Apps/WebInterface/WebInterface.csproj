@@ -174,6 +174,10 @@
     <None Include="Properties\PublishProfiles\Websites.pubxml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\TheBall.Interface\TheBall.Interface.csproj">
+      <Project>{85D72A8C-30D3-4BC9-9E2F-C4D114DA04D6}</Project>
+      <Name>TheBall.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AzureSupport\AzureSupport.csproj">
       <Project>{33F04EB2-55DE-4539-8E67-152A6057F100}</Project>
       <Name>AzureSupport</Name>
