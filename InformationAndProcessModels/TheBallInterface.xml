@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
-  <InstanceOfTheBall semanticDomainName="TheBall.Infrastructure">
+  <InstanceOfTheBall semanticDomainName="TheBall.Interface">
     <InformationModel>
       <InformationObject name="StatusSummary" serializationType="JSON" designDesc="Status summary object" provideCreateMethod="false">
         <InformationItems>
           <InformationItem name="PendingOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
+          <InformationItem name="ExecutingOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
+          <InformationItem name="RecentCompletedOperations" logicalDataType="InformationObject" informationObjectName="OperationExecutionItem" isCollection="true"/>
+          <InformationItem name="RecentChangeItemIDs" logicalDataType="Text_Short" isCollection="true" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="InformationChangeItem" designDesc="Item that describes information object change. ID is guid prefixed with UTC timerange." provideCreateMethod="false" serializationType="JSON">
+        <InformationItems>
+          <InformationItem name="UTCTimeRange" logicalDataType="Text_Short"/>
+          <InformationItem name="ChangedObjectIDList" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="OperationExecutionItem" designDesc="Operation execution item">
