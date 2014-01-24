@@ -29,8 +29,7 @@ using System.IO;
 				public class UpdateStatusSummaryParameters 
 		{
 				public TheBall.CORE.IContainerOwner Owner ;
-				public DateTime StartTime ;
-				public DateTime EndTime ;
+				public DateTime UpdateTime ;
 				public string[] ChangedIDList ;
 				public int RemoveExpiredEntriesSeconds ;
 				}
@@ -43,10 +42,7 @@ using System.IO;
 				public static void Execute(UpdateStatusSummaryParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationChangeItem ChangeItem = UpdateStatusSummaryImplementation.GetTarget_ChangeItem(parameters.Owner, parameters.StartTime, parameters.EndTime, parameters.ChangedIDList);	
-				UpdateStatusSummaryImplementation.ExecuteMethod_StoreObject(ChangeItem);		
-				string[] EnsureUpdateOnStatusSummaryOutput = UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummary(parameters.Owner, parameters.RemoveExpiredEntriesSeconds, ChangeItem);		
-				UpdateStatusSummaryImplementation.ExecuteMethod_RemoveExpiredEntries(parameters.Owner, EnsureUpdateOnStatusSummaryOutput);		
+					UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummary(parameters.Owner, parameters.UpdateTime, parameters.ChangedIDList, parameters.RemoveExpiredEntriesSeconds);		
 				}
 				}
 		 } 

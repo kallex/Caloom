@@ -308,7 +308,7 @@ using TheBall.CORE;
 				{
 					switch (propertyName)
 					{
-						case "RecentChangeItemIDs":
+						case "ChangeItemTrackingList":
 							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
 							break;
 						default:
@@ -322,7 +322,7 @@ using TheBall.CORE;
 			[DataMember]
 			public List< OperationExecutionItem > RecentCompletedOperations = new List< OperationExecutionItem >();
 			[DataMember]
-			public List< string > RecentChangeItemIDs = new List< string >();
+			public List< string > ChangeItemTrackingList = new List< string >();
 			
 			}
 			[DataContract]

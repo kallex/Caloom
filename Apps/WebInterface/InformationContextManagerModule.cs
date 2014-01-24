@@ -84,6 +84,7 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             if (request.Path.StartsWith("/websocket/"))
                 return;
+
             // Do resource tracking only on non-local requests
             if (request.IsLocal == false)
             {
@@ -96,29 +97,6 @@ namespace WebInterface
                 var reqDetails = InformationContext.Current.RequestResourceUsage.RequestDetails;
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
-            }
-            try
-            {
-                var changedList = InformationContext.Current.GetChangedObjectIDs();
-                if (changedList.Length > 0)
-                {
-                    DateTime startTime = InformationContext.Current.RequestResourceUsage != null
-                                             ? InformationContext.Current.RequestResourceUsage.RequestDetails.UTCDateTime
-                                             : DateTime.UtcNow;
-                    UpdateStatusSummaryParameters parameters = new UpdateStatusSummaryParameters
-                    {
-                        Owner = InformationContext.Current.Owner,
-                        StartTime = startTime,
-                        EndTime = DateTime.UtcNow,
-                        ChangedIDList = InformationContext.Current.GetChangedObjectIDs(),
-                        RemoveExpiredEntriesSeconds = InstanceConfiguration.HARDCODED_StatusUpdateExpireSeconds,
-                    };
-                    UpdateStatusSummary.Execute(parameters);
-                }
-            }
-            catch(Exception ex) // DO NOT FAIL HERE
-            {
-                
             }
             InformationContext.ProcessAndClearCurrent();
         }

@@ -66,6 +66,7 @@ namespace TheBall
             }
         }
 
+
         public static void ProcessAndClearCurrent()
         {
             Current.PerformFinalizingActions();

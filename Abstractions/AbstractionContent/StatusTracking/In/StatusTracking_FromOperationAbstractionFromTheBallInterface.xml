@@ -19,10 +19,7 @@
     <StatusItem name="UpdateStatusSummary_Owner" displayName="VariableType: Owner" description="Owner of the operation context">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="UpdateStatusSummary_StartTime" displayName="VariableType: StartTime" description="Starting time of changes updated in this cycle">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateStatusSummary_EndTime" displayName="VariableType: EndTime" description="Ending time of changes updated in this cycle">
+    <StatusItem name="UpdateStatusSummary_UpdateTime" displayName="VariableType: UpdateTime" description="Starting time of changes updated in this cycle">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="UpdateStatusSummary_ChangedIDList" displayName="VariableType: ChangedIDList" description="Changed ID list on this cycle">
@@ -31,16 +28,7 @@
     <StatusItem name="UpdateStatusSummary_RemoveExpiredEntriesSeconds" displayName="VariableType: RemoveExpiredEntriesSeconds" description="Remove entries older than amount of seconds given here">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="UpdateStatusSummary_ChangeItem" displayName="TargetDefinitionType: ChangeItem" description="Change item registering the ID changed list. NOTE! ID is of form UTCStart_UTCEnd_GUID">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateStatusSummary_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store changeitem">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateStatusSummary_EnsureUpdateOnStatusSummary" displayName="MethodExecuteType: EnsureUpdateOnStatusSummary" description="Guarantee update on StatusSummary, retry if fails. Sort the RecentChangeItemIDs to ID order, remove expired entries">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateStatusSummary_RemoveExpiredEntries" displayName="MethodExecuteType: RemoveExpiredEntries" description="Remove expired changeitem entries">
+    <StatusItem name="UpdateStatusSummary_EnsureUpdateOnStatusSummary" displayName="MethodExecuteType: EnsureUpdateOnStatusSummary" description="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
   </StatusItems>
@@ -54,14 +42,10 @@
     </Group>
     <Group name="UpdateStatusSummary">
       <ItemRef itemName="UpdateStatusSummary_Owner" />
-      <ItemRef itemName="UpdateStatusSummary_StartTime" />
-      <ItemRef itemName="UpdateStatusSummary_EndTime" />
+      <ItemRef itemName="UpdateStatusSummary_UpdateTime" />
       <ItemRef itemName="UpdateStatusSummary_ChangedIDList" />
       <ItemRef itemName="UpdateStatusSummary_RemoveExpiredEntriesSeconds" />
-      <ItemRef itemName="UpdateStatusSummary_ChangeItem" />
-      <ItemRef itemName="UpdateStatusSummary_StoreObject" />
       <ItemRef itemName="UpdateStatusSummary_EnsureUpdateOnStatusSummary" />
-      <ItemRef itemName="UpdateStatusSummary_RemoveExpiredEntries" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

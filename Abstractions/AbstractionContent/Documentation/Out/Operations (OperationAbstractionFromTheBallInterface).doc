@@ -322,10 +322,16 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h1>UpdateStatusSummary (Owner, StartTime, EndTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
+		</p><h1>UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Updates status summary for given owner, based on changed ID lists and time range.
+		
+            Updates status summary for given owner, based on changed ID lists and time range.
+            Blocks IDlist with prefixing T:-timestamp- value before respective IDs.
+            If two timestamps match, the latter is added with one unit/tick/ms to make it newer.
+            IDs do not appear in the list multiple times, but are always represented by the latest 
+            update item. 
+          
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
@@ -350,7 +356,7 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		StartTime
+		UpdateTime
 		</div>
 				</td>
 				<td>
@@ -361,23 +367,6 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Starting time of changes updated in this cycle
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		EndTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		DateTime
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Ending time of changes updated in this cycle
 		</div>
 				</td>
 				</tr>
@@ -416,41 +405,9 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: ChangeItem ( Owner, StartTime, EndTime, ChangedIDList )</h2>
+		</p><h2>Method Call: EnsureUpdateOnStatusSummary ( Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds )</h2>
 		<p>		<div class="MsoNormal" >
-		Change item registering the ID changed list. NOTE! ID is of form UTCStart_UTCEnd_GUID
-		</div>
-		</p><h2>Method Call: StoreObject ( ChangeItem )</h2>
-		<p>		<div class="MsoNormal" >
-		Store changeitem
-		</div>
-		</p><h2>Method Call: EnsureUpdateOnStatusSummary ( ChangeItem, Owner, RemoveExpiredEntriesSeconds )</h2>
-		<p>		<div class="MsoNormal" >
-		Guarantee update on StatusSummary, retry if fails. Sort the RecentChangeItemIDs to ID order, remove expired entries
-		</div>
-		</p><p><table border="1">
-				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		ExpiredEntryIDs
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string[]
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Expired entries based on expiration time
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Method Call: RemoveExpiredEntries ( EnsureUpdateOnStatusSummaryOutput, Owner )</h2>
-		<p>		<div class="MsoNormal" >
-		Remove expired changeitem entries
+		Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely.
 		</div>
 		</p></div>
 
