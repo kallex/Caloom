@@ -45,7 +45,7 @@ using TheBall.CORE;
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
-						return StorageSerializationType.Binary;
+						return StorageSerializationType.JSON;
 					}
 				}
 

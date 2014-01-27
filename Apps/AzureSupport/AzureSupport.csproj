@@ -80,6 +80,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallCore.designer.cs">
       <Link>Abstractions\OperationAbstractionFromTheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs">
+      <Link>TheBall.Interface\OperationAbstractionFromTheBallInterface.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\CaloomCore.designer.cs">
       <Link>Abstractions\CaloomCore.designer.cs</Link>
     </Compile>
@@ -97,6 +100,18 @@
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
+      <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Modules\TheBall.Interface\InformationChangeItem.cs">
+      <Link>TheBall.Interface\InformationChangeItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Modules\TheBall.Interface\StatusSummary.cs">
+      <Link>TheBall.Interface\StatusSummary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Modules\TheBall.Interface\UpdateStatusSummaryImplementation.cs">
+      <Link>TheBall.Interface\UpdateStatusSummaryImplementation.cs</Link>
     </Compile>
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />

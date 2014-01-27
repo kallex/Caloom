@@ -12,6 +12,7 @@ using Amazon.IdentityManagement.Model;
 using DiagnosticsUtils;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.Interface;
 
 namespace TheBall
 {
@@ -66,6 +67,30 @@ namespace TheBall
             }
         }
 
+        public static void updateStatusSummary()
+        {
+            try
+            {
+                var changedList = InformationContext.Current.GetChangedObjectIDs();
+                if (changedList.Length > 0)
+                {
+                    UpdateStatusSummaryParameters parameters = new UpdateStatusSummaryParameters
+                    {
+                        Owner = InformationContext.Current.Owner,
+                        UpdateTime = DateTime.UtcNow,
+                        ChangedIDList = changedList,
+                        RemoveExpiredEntriesSeconds = InstanceConfiguration.HARDCODED_StatusUpdateExpireSeconds,
+                    };
+                    UpdateStatusSummary.Execute(parameters);
+                }
+            }
+            catch (Exception ex) // DO NOT FAIL HERE
+            {
+
+            }
+            
+        }
+
 
         public static void ProcessAndClearCurrent()
         {
@@ -117,6 +142,7 @@ namespace TheBall
 
         public void PerformFinalizingActions()
         {
+            updateStatusSummary();
             var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
             foreach(var grpItem in grouped)
             {
@@ -308,20 +334,44 @@ namespace TheBall
             Current.StartResourceMeasuring(usageType);
         }
 
+        public enum ObjectChangeType
+        {
+            M_Modified = 1,
+            N_New = 2,
+            D_Deleted = 3,
+        }
+
         // Currently being used for listing changed IDs
-        public HashSet<string> ChangedIDs = new HashSet<string>();
+        private HashSet<string> ChangedIDInfos = new HashSet<string>();
         private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP" };
-        public void ObjectStoredNotification(IInformationObject informationObject)
+        public void ObjectStoredNotification(IInformationObject informationObject, ObjectChangeType changeType)
         {
             if (trackedDomainNames.Contains(informationObject.SemanticDomainName) == false)
                 return;
-            ChangedIDs.Add(informationObject.ID);
+            string changeTypeValue;
+            switch (changeType)
+            {
+                case ObjectChangeType.D_Deleted:
+                    changeTypeValue = "D";
+                    break;
+                case ObjectChangeType.M_Modified:
+                    changeTypeValue = "M";
+                    break;
+                case ObjectChangeType.N_New:
+                    changeTypeValue = "N";
+                    break;
+                default:
+                    throw new NotSupportedException("ChangeType handling not implemented: " + changeType.ToString());
+
+            }
+            string changedIDInfo = changeTypeValue + ":" + informationObject.ID;
+            ChangedIDInfos.Add(changedIDInfo);
         }
 
         public string[] GetChangedObjectIDs()
         {
             List<string> idList = new List<string>();
-            foreach (string id in ChangedIDs)
+            foreach (string id in ChangedIDInfos)
                 idList.Add(id);
             return idList.ToArray();
         }

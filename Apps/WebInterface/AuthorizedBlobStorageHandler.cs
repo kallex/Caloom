@@ -463,6 +463,7 @@ namespace WebInterface
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
+                (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/")))
             {
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
@@ -547,7 +548,7 @@ namespace WebInterface
             }
             if (urlReferrer == null)
             {
-                if (contentPath.StartsWith("customui_"))
+                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("foundation-one"))
                     return;
                 throw new SecurityException("Url referer required for non-default template requests, that target other than customui_ folder");
             }
@@ -588,13 +589,16 @@ namespace WebInterface
             string LocalWebCatConFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
-            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\"; ;
+            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\"; 
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
+            string LocalFoundationOneAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
+            else if (prefixStrippedContent.Contains("foundation-one/"))
+                fileName = prefixStrippedContent.Replace("foundation-one/", LocalFoundationOneAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))
                 fileName = prefixStrippedContent.Replace("categoriesandcontent/", LocalWebCatConFolder);
             else if (prefixStrippedContent.Contains("wwwsite/"))

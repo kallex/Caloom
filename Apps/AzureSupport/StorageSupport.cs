@@ -994,7 +994,8 @@ namespace TheBall
             SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
             Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
-            InformationContext.Current.ObjectStoredNotification(informationObject);
+            InformationContext.Current.ObjectStoredNotification(informationObject, 
+                isNewBlob ? InformationContext.ObjectChangeType.N_New : InformationContext.ObjectChangeType.M_Modified);
             return blob;
         }
 
@@ -1228,6 +1229,8 @@ namespace TheBall
             //TODO: Generic default view deletion
             //DefaultViewSupport.DeleteDefaultView(informationObject);
             informationObject.PostDeleteExecute(owner);
+            InformationContext.Current.ObjectStoredNotification(informationObject, InformationContext.ObjectChangeType.D_Deleted);
+
         }
 
         public static CloudBlockBlob GetBlob(string containerName, string blobAddress)
