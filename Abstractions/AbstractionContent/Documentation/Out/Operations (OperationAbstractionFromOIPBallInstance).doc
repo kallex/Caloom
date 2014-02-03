@@ -762,6 +762,67 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>PackageCategorizedContentToConnection (ConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Package categorized content to connection domain-neutralized transfer package
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.Interface.Connection ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection item
+		</div>
+		</p><h2>Target Definition: CategoriesToTransfer ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Categories to transfer based on Connection ThisSideCategories
+		</div>
+		</p><h2>Target Definition: ContentToTransferLocations ( CategoriesToTransfer )</h2>
+		<p>		<div class="MsoNormal" >
+		Content to transfer based on categories to transfer
+		</div>
+		</p><h2>Return Value : PackageCategorizedContentToConnectionReturnValue ( ContentToTransferLocations )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ContentLocations
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Return value of content to package
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>PerformWebAction (TargetObjectID, CommandName, Owner, InformationSources, FormSourceNames, FormSubmitContent)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

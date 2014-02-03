@@ -7,6 +7,30 @@ using System.Drawing;
 using System.IO;
 
 		namespace AaltoGlobalImpact.OIP { 
+				public class PackageCategorizedContentToConnectionParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class PackageCategorizedContentToConnection 
+		{
+				private static void PrepareParameters(PackageCategorizedContentToConnectionParameters parameters)
+		{
+					}
+				public static PackageCategorizedContentToConnectionReturnValue Execute(PackageCategorizedContentToConnectionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.Interface.Connection Connection = PackageCategorizedContentToConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				Category[] CategoriesToTransfer = PackageCategorizedContentToConnectionImplementation.GetTarget_CategoriesToTransfer(Connection);	
+				string[] ContentToTransferLocations = PackageCategorizedContentToConnectionImplementation.GetTarget_ContentToTransferLocations(CategoriesToTransfer);	
+				PackageCategorizedContentToConnectionReturnValue returnValue = PackageCategorizedContentToConnectionImplementation.Get_ReturnValue(ContentToTransferLocations);
+		return returnValue;
+				}
+				}
+				public class PackageCategorizedContentToConnectionReturnValue 
+		{
+				public string[] ContentLocations ;
+				}
 				public class CreateGroupParameters 
 		{
 				public string GroupName ;

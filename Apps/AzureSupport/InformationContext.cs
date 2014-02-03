@@ -40,6 +40,11 @@ namespace TheBall
 
         public static bool AllowStatic { get; private set; }
 
+        public static IContainerOwner CurrentOwner
+        {
+            get { return Current.Owner; }
+        }
+
         public static InformationContext Current
         {
             get

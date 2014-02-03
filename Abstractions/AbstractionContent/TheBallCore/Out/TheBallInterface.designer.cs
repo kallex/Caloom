@@ -1007,9 +1007,11 @@ using TheBall.CORE;
 
 					result.NativeCategoryObjectName = @"Category.NativeCategoryObjectName";
 
-					result.Title = @"Category.Title";
+					result.IdentifyingCategoryName = @"Category.IdentifyingCategoryName";
 
 					result.ParentCategoryID = @"Category.ParentCategoryID";
+
+					result.LinkingType = @"Category.LinkingType";
 
 				
 					return result;
@@ -1075,9 +1077,11 @@ using TheBall.CORE;
 							return true;
 						if(NativeCategoryObjectName != _unmodified_NativeCategoryObjectName)
 							return true;
-						if(Title != _unmodified_Title)
+						if(IdentifyingCategoryName != _unmodified_IdentifyingCategoryName)
 							return true;
 						if(ParentCategoryID != _unmodified_ParentCategoryID)
+							return true;
+						if(LinkingType != _unmodified_LinkingType)
 							return true;
 				
 						return false;
@@ -1094,8 +1098,9 @@ using TheBall.CORE;
 					NativeCategoryID = sourceObject.NativeCategoryID;
 					NativeCategoryDomainName = sourceObject.NativeCategoryDomainName;
 					NativeCategoryObjectName = sourceObject.NativeCategoryObjectName;
-					Title = sourceObject.Title;
+					IdentifyingCategoryName = sourceObject.IdentifyingCategoryName;
 					ParentCategoryID = sourceObject.ParentCategoryID;
+					LinkingType = sourceObject.LinkingType;
 				}
 				
 
@@ -1105,8 +1110,9 @@ using TheBall.CORE;
 					_unmodified_NativeCategoryID = NativeCategoryID;
 					_unmodified_NativeCategoryDomainName = NativeCategoryDomainName;
 					_unmodified_NativeCategoryObjectName = NativeCategoryObjectName;
-					_unmodified_Title = Title;
+					_unmodified_IdentifyingCategoryName = IdentifyingCategoryName;
 					_unmodified_ParentCategoryID = ParentCategoryID;
+					_unmodified_LinkingType = LinkingType;
 				
 				
 				}
@@ -1125,11 +1131,14 @@ using TheBall.CORE;
 						case "NativeCategoryObjectName":
 							NativeCategoryObjectName = value;
 							break;
-						case "Title":
-							Title = value;
+						case "IdentifyingCategoryName":
+							IdentifyingCategoryName = value;
 							break;
 						case "ParentCategoryID":
 							ParentCategoryID = value;
+							break;
+						case "LinkingType":
+							LinkingType = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -1145,11 +1154,14 @@ using TheBall.CORE;
 			public string NativeCategoryObjectName { get; set; }
 			private string _unmodified_NativeCategoryObjectName;
 			[DataMember]
-			public string Title { get; set; }
-			private string _unmodified_Title;
+			public string IdentifyingCategoryName { get; set; }
+			private string _unmodified_IdentifyingCategoryName;
 			[DataMember]
 			public string ParentCategoryID { get; set; }
 			private string _unmodified_ParentCategoryID;
+			[DataMember]
+			public string LinkingType { get; set; }
+			private string _unmodified_LinkingType;
 			
 			}
 			[DataContract]

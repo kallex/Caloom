@@ -26,8 +26,9 @@
           <InformationItem name="NativeCategoryID" logicalDataType="Text_Short" />
           <InformationItem name="NativeCategoryDomainName" logicalDataType="Text_Short"/>
           <InformationItem name="NativeCategoryObjectName" logicalDataType="Text_Short"/>
-          <InformationItem name="Title" logicalDataType="Text_Short" />
+          <InformationItem name="IdentifyingCategoryName" logicalDataType="Text_Short" />
           <InformationItem name="ParentCategoryID" logicalDataType="Text_Short"/>
+          <InformationItem name="LinkingType" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="StatusSummary" serializationType="JSON" designDesc="Status summary object" provideCreateMethod="false">

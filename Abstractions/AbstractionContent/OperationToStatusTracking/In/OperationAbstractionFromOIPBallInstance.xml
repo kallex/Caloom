@@ -1,6 +1,33 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="AaltoGlobalImpact.OIP">
+    <Operation name="PackageCategorizedContentToConnection">
+      <OperationSpec>
+        <Description>
+            Package categorized content to connection domain-neutralized transfer package
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionID" dataType="string" designDesc="TheBall.Interface.Connection ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connection item" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <TargetDefinition name="CategoriesToTransfer" dataType="Category[]" designDesc="Categories to transfer based on Connection ThisSideCategories" state="implemented">
+            <Target name="Connection" />
+          </TargetDefinition>
+          <TargetDefinition name="ContentToTransferLocations" dataType="string[]" designDesc="Content to transfer based on categories to transfer" state="implemented">
+            <Target name="CategoriesToTransfer" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="ContentLocations" dataType="string[]" designDesc="Return value of content to package" state="implemented" />
+        <Target name="ContentToTransferLocations" />
+      </OperationReturnValues>
+    </Operation>
     <Operation name="CreateGroup">
       <OperationSpec>
         <Description>Create group</Description>
