@@ -37,13 +37,19 @@ namespace AaltoGlobalImpact.OIP
             TBCollaboratorRole role =
                 groupRoot.Group.Roles.CollectionContent.FirstOrDefault(
                     candidate => candidate.Email.EmailAddress == memberEmailAddress);
-            if(role != null)
-                throw new InvalidDataException("Person to be invited is already member (or pending) of the group");
-            role = TBCollaboratorRole.CreateDefault();
-            role.Email.EmailAddress = memberEmailAddress;
-            role.Role = TBCollaboratorRole.CollaboratorRoleValue;
-            role.SetRoleAsInvited();
-            groupRoot.Group.Roles.CollectionContent.Add(role);
+            if (role != null)
+            {
+                if (role.IsRoleStatusValidMember())
+                    throw new InvalidDataException("Person to be invited is already member of the group");
+            }
+            else
+            {
+                role = TBCollaboratorRole.CreateDefault();
+                role.Email.EmailAddress = memberEmailAddress;
+                role.Role = TBCollaboratorRole.CollaboratorRoleValue;
+                role.SetRoleAsInvited();
+                groupRoot.Group.Roles.CollectionContent.Add(role);
+            }
         }
 
         public static void ExecuteMethod_StoreObjects(TBRGroupRoot groupRoot, TBEmailValidation emailValidation)
