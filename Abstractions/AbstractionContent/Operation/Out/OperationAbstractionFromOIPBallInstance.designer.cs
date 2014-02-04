@@ -21,7 +21,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					TheBall.Interface.Connection Connection = PackageCategorizedContentToConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				Category[] CategoriesToTransfer = PackageCategorizedContentToConnectionImplementation.GetTarget_CategoriesToTransfer(Connection);	
+				Dictionary<string, Category> CategoriesToTransfer = PackageCategorizedContentToConnectionImplementation.GetTarget_CategoriesToTransfer(Connection);	
 				string[] ContentToTransferLocations = PackageCategorizedContentToConnectionImplementation.GetTarget_ContentToTransferLocations(CategoriesToTransfer);	
 				PackageCategorizedContentToConnectionReturnValue returnValue = PackageCategorizedContentToConnectionImplementation.Get_ReturnValue(ContentToTransferLocations);
 		return returnValue;

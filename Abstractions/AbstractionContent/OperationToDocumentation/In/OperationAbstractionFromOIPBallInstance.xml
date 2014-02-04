@@ -15,7 +15,7 @@
           <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connection item" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <TargetDefinition name="CategoriesToTransfer" dataType="Category[]" designDesc="Categories to transfer based on Connection ThisSideCategories" state="implemented">
+          <TargetDefinition name="CategoriesToTransfer" dataType="Dictionary&lt;string, Category&gt;" designDesc="Categories to transfer based on Connection ThisSideCategories" state="implemented">
             <Target name="Connection" />
           </TargetDefinition>
           <TargetDefinition name="ContentToTransferLocations" dataType="string[]" designDesc="Content to transfer based on categories to transfer" state="implemented">
