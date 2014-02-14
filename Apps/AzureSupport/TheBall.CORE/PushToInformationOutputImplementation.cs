@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
@@ -24,8 +26,21 @@ namespace TheBall.CORE
             return informationOutput.DestinationURL;
         }
 
-        public static string GetTarget_LocalContentURL(InformationOutput informationOutput)
+        public static string GetTarget_LocalContentURL(string localContentName, InformationOutput informationOutput)
         {
+            var invalidFilenameChars = Path.GetInvalidFileNameChars();
+            bool hasInvalidFilenameCharacter = localContentName.Any(invalidFilenameChars.Contains);
+            if(hasInvalidFilenameCharacter)
+                throw new ArgumentException("Invalid filename character in localContentName: " + localContentName, "localContentName");
+            bool requiresLocalName = informationOutput.LocalContentURL.EndsWith("/");
+            bool hasLocalContentName = String.IsNullOrEmpty(localContentName) == false;
+            if (requiresLocalName)
+            {
+                if(String.IsNullOrEmpty(localContentName))
+                    throw new ArgumentException("Valid argument missing for localContentName", "localContentName");
+                return informationOutput.LocalContentURL + localContentName;
+            } else if(hasLocalContentName)
+                throw new ArgumentException("InformationOutput LocalContentUrl needs to end to / to support localContentName");
             return informationOutput.LocalContentURL;
         }
 
@@ -67,12 +82,13 @@ namespace TheBall.CORE
                 throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
         }
 
-        public static string GetTarget_DestinationContentName(InformationOutput informationOutput)
+        public static string GetTarget_DestinationContentName(string specificDestinationContentName, InformationOutput informationOutput)
         {
-            string destinationContentName = informationOutput.DestinationContentName;
+            string destinationContentName = string.IsNullOrEmpty(specificDestinationContentName) ?
+                                                informationOutput.DestinationContentName : specificDestinationContentName;
             if (string.IsNullOrEmpty(destinationContentName))
                 return "bulkdump.all";
-            return informationOutput.DestinationContentName;
+            return destinationContentName;
         }
     }
 }

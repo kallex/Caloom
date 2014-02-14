@@ -64,10 +64,6 @@
       <Project>{33f04eb2-55de-4539-8e67-152a6057f100}</Project>
       <Name>AzureSupport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TheBall.Infrastructure\TheBall.Infrastructure.csproj">
-      <Project>{5b408149-6555-4b32-984c-11b1f82dfd8b}</Project>
-      <Name>TheBall.Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

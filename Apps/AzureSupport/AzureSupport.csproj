@@ -80,6 +80,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallCore.designer.cs">
       <Link>Abstractions\OperationAbstractionFromTheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInfrastructure.designer.cs">
+      <Link>TheBall.Infrastructure\OperationAbstractionFromTheBallInfrastructure.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs">
       <Link>TheBall.Interface\OperationAbstractionFromTheBallInterface.designer.cs</Link>
     </Compile>
@@ -101,6 +104,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInfrastructure.designer.cs">
+      <Link>TheBall.Infrastructure\TheBallInfrastructure.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
       <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
     </Compile>
@@ -113,7 +119,7 @@
     <Compile Include="..\..\Modules\TheBall.Interface\UpdateStatusSummaryImplementation.cs">
       <Link>TheBall.Interface\UpdateStatusSummaryImplementation.cs</Link>
     </Compile>
-    <Compile Include="AaltoGlobalImpact.OIP\PackageCategorizedContentToConnectionImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />
     <Compile Include="Partials\EmbeddedContentCollection.cs" />
@@ -270,7 +276,11 @@
     <Compile Include="TheBall.CORE\SystemSupport.cs" />
     <Compile Include="TheBall.CORE\UsageMonitorItem.cs" />
     <Compile Include="TheBall.CORE\UsageSummary.cs" />
+    <Compile Include="TheBall.Infrastructure\CloudDriveSupport.cs" />
+    <Compile Include="TheBall.Infrastructure\CreateCloudDriveImplementation.cs" />
+    <Compile Include="TheBall.Infrastructure\SplittingStream.cs" />
     <Compile Include="TheBall.Interface\Category.cs" />
+    <Compile Include="TheBall.Interface\PushCollaborationContentImplementation.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>

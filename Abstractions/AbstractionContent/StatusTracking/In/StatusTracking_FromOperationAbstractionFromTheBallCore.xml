@@ -277,6 +277,12 @@
     <StatusItem name="PushToInformationOutput_InformationOutputID" displayName="VariableType: InformationOutputID" description="ID of information output">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="PushToInformationOutput_LocalContentName" displayName="VariableType: LocalContentName" description="Required of LocalContentURL ends with /">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushToInformationOutput_SpecificDestinationContentName" displayName="VariableType: SpecificDestinationContentName" description="Optional dedicated content name - if given.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="PushToInformationOutput_InformationOutput" displayName="TargetDefinitionType: InformationOutput" description="Information output to push the data to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -827,6 +833,8 @@
     <Group name="PushToInformationOutput">
       <ItemRef itemName="PushToInformationOutput_Owner" />
       <ItemRef itemName="PushToInformationOutput_InformationOutputID" />
+      <ItemRef itemName="PushToInformationOutput_LocalContentName" />
+      <ItemRef itemName="PushToInformationOutput_SpecificDestinationContentName" />
       <ItemRef itemName="PushToInformationOutput_InformationOutput" />
       <ItemRef itemName="PushToInformationOutput_VerifyValidOutput" />
       <ItemRef itemName="PushToInformationOutput_DestinationURL" />

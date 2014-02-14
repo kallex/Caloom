@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="AaltoGlobalImpact.OIP">
-    <Operation name="PackageCategorizedContentToConnection">
+    <Operation name="PickCategorizedContentToConnection">
       <OperationSpec>
         <Description>
             Package categorized content to connection domain-neutralized transfer package

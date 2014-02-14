@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="AaltoGlobalImpact.OIP">
-    <StatusItem name="PackageCategorizedContentToConnection_ConnectionID" displayName="VariableType: ConnectionID" description="TheBall.Interface.Connection ID">
+    <StatusItem name="PickCategorizedContentToConnection_ConnectionID" displayName="VariableType: ConnectionID" description="TheBall.Interface.Connection ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PackageCategorizedContentToConnection_Connection" displayName="TargetDefinitionType: Connection" description="Connection item">
+    <StatusItem name="PickCategorizedContentToConnection_Connection" displayName="TargetDefinitionType: Connection" description="Connection item">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PackageCategorizedContentToConnection_CategoriesToTransfer" displayName="TargetDefinitionType: CategoriesToTransfer" description="Categories to transfer based on Connection ThisSideCategories">
+    <StatusItem name="PickCategorizedContentToConnection_CategoriesToTransfer" displayName="TargetDefinitionType: CategoriesToTransfer" description="Categories to transfer based on Connection ThisSideCategories">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PackageCategorizedContentToConnection_ContentToTransferLocations" displayName="TargetDefinitionType: ContentToTransferLocations" description="Content to transfer based on categories to transfer">
+    <StatusItem name="PickCategorizedContentToConnection_ContentToTransferLocations" displayName="TargetDefinitionType: ContentToTransferLocations" description="Content to transfer based on categories to transfer">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PackageCategorizedContentToConnection_ContentLocations" displayName="VariableType: ContentLocations" description="Return value of content to package">
+    <StatusItem name="PickCategorizedContentToConnection_ContentLocations" displayName="VariableType: ContentLocations" description="Return value of content to package">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateGroup_GroupName" displayName="VariableType: GroupName" description="Group name to be created">
@@ -489,12 +489,12 @@
     </StatusItem>
   </StatusItems>
   <Groups>
-    <Group name="PackageCategorizedContentToConnection">
-      <ItemRef itemName="PackageCategorizedContentToConnection_ConnectionID" />
-      <ItemRef itemName="PackageCategorizedContentToConnection_Connection" />
-      <ItemRef itemName="PackageCategorizedContentToConnection_CategoriesToTransfer" />
-      <ItemRef itemName="PackageCategorizedContentToConnection_ContentToTransferLocations" />
-      <ItemRef itemName="PackageCategorizedContentToConnection_ContentLocations" />
+    <Group name="PickCategorizedContentToConnection">
+      <ItemRef itemName="PickCategorizedContentToConnection_ConnectionID" />
+      <ItemRef itemName="PickCategorizedContentToConnection_Connection" />
+      <ItemRef itemName="PickCategorizedContentToConnection_CategoriesToTransfer" />
+      <ItemRef itemName="PickCategorizedContentToConnection_ContentToTransferLocations" />
+      <ItemRef itemName="PickCategorizedContentToConnection_ContentLocations" />
     </Group>
     <Group name="CreateGroup">
       <ItemRef itemName="CreateGroup_GroupName" />

@@ -2464,7 +2464,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Publish website with worker call
 		</div>
-		</p><h1>PushToInformationOutput (Owner, InformationOutputID)</h1>
+		</p><h1>PushToInformationOutput (Owner, InformationOutputID, LocalContentName, SpecificDestinationContentName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -2508,6 +2508,40 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LocalContentName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Required of LocalContentURL ends with /
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SpecificDestinationContentName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Optional dedicated content name - if given.
+		</div>
+				</td>
+				</tr>
 		</table>
 		</p><h2>Target Definition: InformationOutput ( Owner, InformationOutputID )</h2>
 		<p>		<div class="MsoNormal" >
@@ -2521,11 +2555,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Location to push the output to
 		</div>
-		</p><h2>Target Definition: DestinationContentName ( InformationOutput )</h2>
+		</p><h2>Target Definition: DestinationContentName ( InformationOutput, SpecificDestinationContentName )</h2>
 		<p>		<div class="MsoNormal" >
 		Destination content name
 		</div>
-		</p><h2>Target Definition: LocalContentURL ( InformationOutput )</h2>
+		</p><h2>Target Definition: LocalContentURL ( InformationOutput, LocalContentName )</h2>
 		<p>		<div class="MsoNormal" >
 		Local content URL to push the output from
 		</div>

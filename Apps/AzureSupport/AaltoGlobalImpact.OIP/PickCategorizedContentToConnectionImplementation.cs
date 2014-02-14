@@ -8,7 +8,7 @@ using INT = TheBall.Interface;
 
 namespace AaltoGlobalImpact.OIP
 {
-    public class PackageCategorizedContentToConnectionImplementation
+    public class PickCategorizedContentToConnectionImplementation
     {
         public static Connection GetTarget_Connection(string connectionId)
         {
@@ -101,9 +101,16 @@ namespace AaltoGlobalImpact.OIP
             return resultLocations;
         }
 
-        public static PackageCategorizedContentToConnectionReturnValue Get_ReturnValue(string[] contentToTransferLocations)
+        public static PickCategorizedContentToConnectionReturnValue Get_ReturnValue(string[] contentToTransferLocations)
         {
-            return new PackageCategorizedContentToConnectionReturnValue { ContentLocations = contentToTransferLocations };
+            return new PickCategorizedContentToConnectionReturnValue { ContentLocations = contentToTransferLocations };
+        }
+
+        public void test()
+        {
+            PickCategorizedContentToConnectionParameters par = new PickCategorizedContentToConnectionParameters {};
+            PickCategorizedContentToConnectionReturnValue returnValue = PickCategorizedContentToConnection.Execute(par);
+            var done = returnValue.ContentLocations;
         }
     }
 }

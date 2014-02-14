@@ -81,6 +81,153 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="PushCollaborationContent (ConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Push collaboration content to given connection ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection ID to push the content with</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PackageContentListingOperationName ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Operation name for package listing operation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DynamicPackageListingOperation ( PackageContentListingOperationName, ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Dynamic operation execution of content packaging operation</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DynamicPackageListingResult</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>List of objects to package</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: TransferPackage ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Transferpackage that identifies the data to package and send</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddTransferPackageToConnection ( Connection, TransferPackage )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Adds transfer package to outgoing packages of connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stores objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PackageTransferPackageContent ( TransferPackage, DynamicPackageListingOperationOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Package contents for transfer package</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OutputContentName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Output content blob names</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendTransferPackageContent ( Connection, TransferPackage, PackageTransferPackageContentOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Send package contents through connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetTransferPackageAsProcessed ( TransferPackage )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set transfer package as prosessed state</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjectComplete ( Connection, TransferPackage )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stores connection with processed transferpackage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

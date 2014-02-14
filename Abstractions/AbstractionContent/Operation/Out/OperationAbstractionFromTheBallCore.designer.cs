@@ -298,6 +298,8 @@ using System.IO;
 		{
 				public IContainerOwner Owner ;
 				public string InformationOutputID ;
+				public string LocalContentName ;
+				public string SpecificDestinationContentName ;
 				}
 		
 		public class PushToInformationOutput 
@@ -311,8 +313,8 @@ using System.IO;
 					InformationOutput InformationOutput = PushToInformationOutputImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
 				PushToInformationOutputImplementation.ExecuteMethod_VerifyValidOutput(InformationOutput);		
 				string DestinationURL = PushToInformationOutputImplementation.GetTarget_DestinationURL(InformationOutput);	
-				string DestinationContentName = PushToInformationOutputImplementation.GetTarget_DestinationContentName(InformationOutput);	
-				string LocalContentURL = PushToInformationOutputImplementation.GetTarget_LocalContentURL(InformationOutput);	
+				string DestinationContentName = PushToInformationOutputImplementation.GetTarget_DestinationContentName(parameters.SpecificDestinationContentName, InformationOutput);	
+				string LocalContentURL = PushToInformationOutputImplementation.GetTarget_LocalContentURL(parameters.LocalContentName, InformationOutput);	
 				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PushToInformationOutputImplementation.GetTarget_AuthenticatedAsActiveDevice(InformationOutput);	
 				PushToInformationOutputImplementation.ExecuteMethod_PushToInformationOutput(parameters.Owner, InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice);		
 				}

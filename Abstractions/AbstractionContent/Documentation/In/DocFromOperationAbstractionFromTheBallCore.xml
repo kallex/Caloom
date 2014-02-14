@@ -2405,7 +2405,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="PushToInformationOutput (Owner, InformationOutputID)" level="1">
+          <Header text="PushToInformationOutput (Owner, InformationOutputID, LocalContentName, SpecificDestinationContentName)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -2446,6 +2446,28 @@
                         <TextContent>ID of information output</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LocalContentName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Required of LocalContentURL ends with /</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>SpecificDestinationContentName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Optional dedicated content name - if given.</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
@@ -2471,14 +2493,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: DestinationContentName ( InformationOutput )" level="2">
+            <Header text="Target Definition: DestinationContentName ( InformationOutput, SpecificDestinationContentName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Destination content name</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: LocalContentURL ( InformationOutput )" level="2">
+            <Header text="Target Definition: LocalContentURL ( InformationOutput, LocalContentName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Local content URL to push the output from</TextContent>

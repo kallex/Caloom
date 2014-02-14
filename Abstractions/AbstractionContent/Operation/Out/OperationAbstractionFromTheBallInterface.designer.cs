@@ -7,6 +7,31 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
+				public class PushCollaborationContentParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class PushCollaborationContent 
+		{
+				private static void PrepareParameters(PushCollaborationContentParameters parameters)
+		{
+					}
+				public static void Execute(PushCollaborationContentParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = PushCollaborationContentImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				string PackageContentListingOperationName = PushCollaborationContentImplementation.GetTarget_PackageContentListingOperationName(Connection);	
+				string[] DynamicPackageListingOperationOutput = PushCollaborationContentImplementation.ExecuteMethod_DynamicPackageListingOperation(parameters.ConnectionID, PackageContentListingOperationName);		
+				TransferPackage TransferPackage = PushCollaborationContentImplementation.GetTarget_TransferPackage(parameters.ConnectionID);	
+				PushCollaborationContentImplementation.ExecuteMethod_AddTransferPackageToConnection(Connection, TransferPackage);		
+				PushCollaborationContentImplementation.ExecuteMethod_StoreObject(Connection);		
+				string[] PackageTransferPackageContentOutput = PushCollaborationContentImplementation.ExecuteMethod_PackageTransferPackageContent(TransferPackage, DynamicPackageListingOperationOutput);		
+				PushCollaborationContentImplementation.ExecuteMethod_SendTransferPackageContent(Connection, TransferPackage, PackageTransferPackageContentOutput);		
+				PushCollaborationContentImplementation.ExecuteMethod_SetTransferPackageAsProcessed(TransferPackage);		
+				PushCollaborationContentImplementation.ExecuteMethod_StoreObjectComplete(Connection, TransferPackage);		
+				}
+				}
 				public class ExecuteOperationParameters 
 		{
 				public string OwnerLocation ;

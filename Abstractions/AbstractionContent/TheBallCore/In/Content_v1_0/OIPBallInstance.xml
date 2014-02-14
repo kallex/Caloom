@@ -1328,7 +1328,7 @@
       -->
     </InformationModel>
     <Operations>
-      <Operation name="PackageCategorizedContentToConnection">
+      <Operation name="PickCategorizedContentToConnection">
         <OperationSpec>
           <Description>
             Package categorized content to connection domain-neutralized transfer package

@@ -7,27 +7,27 @@ using System.Drawing;
 using System.IO;
 
 		namespace AaltoGlobalImpact.OIP { 
-				public class PackageCategorizedContentToConnectionParameters 
+				public class PickCategorizedContentToConnectionParameters 
 		{
 				public string ConnectionID ;
 				}
 		
-		public class PackageCategorizedContentToConnection 
+		public class PickCategorizedContentToConnection 
 		{
-				private static void PrepareParameters(PackageCategorizedContentToConnectionParameters parameters)
+				private static void PrepareParameters(PickCategorizedContentToConnectionParameters parameters)
 		{
 					}
-				public static PackageCategorizedContentToConnectionReturnValue Execute(PackageCategorizedContentToConnectionParameters parameters)
+				public static PickCategorizedContentToConnectionReturnValue Execute(PickCategorizedContentToConnectionParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.Interface.Connection Connection = PackageCategorizedContentToConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				Dictionary<string, Category> CategoriesToTransfer = PackageCategorizedContentToConnectionImplementation.GetTarget_CategoriesToTransfer(Connection);	
-				string[] ContentToTransferLocations = PackageCategorizedContentToConnectionImplementation.GetTarget_ContentToTransferLocations(CategoriesToTransfer);	
-				PackageCategorizedContentToConnectionReturnValue returnValue = PackageCategorizedContentToConnectionImplementation.Get_ReturnValue(ContentToTransferLocations);
+					TheBall.Interface.Connection Connection = PickCategorizedContentToConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				Dictionary<string, Category> CategoriesToTransfer = PickCategorizedContentToConnectionImplementation.GetTarget_CategoriesToTransfer(Connection);	
+				string[] ContentToTransferLocations = PickCategorizedContentToConnectionImplementation.GetTarget_ContentToTransferLocations(CategoriesToTransfer);	
+				PickCategorizedContentToConnectionReturnValue returnValue = PickCategorizedContentToConnectionImplementation.Get_ReturnValue(ContentToTransferLocations);
 		return returnValue;
 				}
 				}
-				public class PackageCategorizedContentToConnectionReturnValue 
+				public class PickCategorizedContentToConnectionReturnValue 
 		{
 				public string[] ContentLocations ;
 				}

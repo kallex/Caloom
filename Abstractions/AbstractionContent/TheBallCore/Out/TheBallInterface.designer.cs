@@ -314,11 +314,11 @@ using TheBall.CORE;
 						case "OutputInformationID":
 							OutputInformationID = value;
 							break;
-						case "OperationToPackageToSend":
-							OperationToPackageToSend = value;
+						case "OperationToListPackageContents":
+							OperationToListPackageContents = value;
 							break;
-						case "OperationToExtractReceived":
-							OperationToExtractReceived = value;
+						case "OperationToProcessReceived":
+							OperationToProcessReceived = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -339,11 +339,11 @@ using TheBall.CORE;
 			[DataMember]
 			public List< TransferPackage > OutgoingPackages = new List< TransferPackage >();
 			[DataMember]
-			public string OperationToPackageToSend { get; set; }
-			private string _unmodified_OperationToPackageToSend;
+			public string OperationToListPackageContents { get; set; }
+			private string _unmodified_OperationToListPackageContents;
 			[DataMember]
-			public string OperationToExtractReceived { get; set; }
-			private string _unmodified_OperationToExtractReceived;
+			public string OperationToProcessReceived { get; set; }
+			private string _unmodified_OperationToProcessReceived;
 			
 			}
 			[DataContract]
@@ -472,55 +472,21 @@ using TheBall.CORE;
 				}
 
 
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((TransferPackage) sourceMaster);
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
-
 
 				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
+
+				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -598,113 +564,50 @@ using TheBall.CORE;
 
 
 
-				public static TransferPackage CreateDefault()
-				{
-					var result = new TransferPackage();
-					return result;
-				}
-
-				public static TransferPackage CreateDemoDefault()
-				{
-					TransferPackage customDemo = null;
-					TransferPackage.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new TransferPackage();
-					result.ConnectionID = @"TransferPackage.ConnectionID";
-
-					result.PackageDirection = @"TransferPackage.PackageDirection";
-
-				
-					return result;
-				}
-
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
+					// Remove exception if basic functionality starts to have issues
+					throw new NotImplementedException("Item level collections do not support object tree operations right now");
 				}
 
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
+					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
+
 
 				}
+
+			
+                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+	
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
-
-						if(ConnectionID != _unmodified_ConnectionID)
-							return true;
-						if(PackageDirection != _unmodified_PackageDirection)
-							return true;
-						if(IsProcessed != _unmodified_IsProcessed)
-							return true;
-				
-						return false;
+						// Remove exception if some basic functionality is broken due to it
+						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 					}
 				}
-
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
-
-
-				private void CopyContentFrom(TransferPackage sourceObject)
-				{
-					ConnectionID = sourceObject.ConnectionID;
-					PackageDirection = sourceObject.PackageDirection;
-					IsProcessed = sourceObject.IsProcessed;
-				}
-				
-
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
-					_unmodified_ConnectionID = ConnectionID;
-					_unmodified_PackageDirection = PackageDirection;
-					_unmodified_IsProcessed = IsProcessed;
-				
-				
+					// Remove exception if some basic functionality is broken due to it
+					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
 
 
@@ -718,8 +621,14 @@ using TheBall.CORE;
 						case "PackageDirection":
 							PackageDirection = value;
 							break;
+						case "PackageType":
+							PackageType = value;
+							break;
 						case "IsProcessed":
 							IsProcessed = bool.Parse(value);
+							break;
+						case "PackageContentBlobs":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -732,8 +641,13 @@ using TheBall.CORE;
 			public string PackageDirection { get; set; }
 			private string _unmodified_PackageDirection;
 			[DataMember]
+			public string PackageType { get; set; }
+			private string _unmodified_PackageType;
+			[DataMember]
 			public bool IsProcessed { get; set; }
 			private bool _unmodified_IsProcessed;
+			[DataMember]
+			public List< string > PackageContentBlobs = new List< string >();
 			
 			}
 			[DataContract]

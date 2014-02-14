@@ -682,86 +682,6 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="PackageCategorizedContentToConnection (ConnectionID)" level="1">
-            <Header text="Specifications" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>
-            Package categorized content to connection domain-neutralized transfer package
-          </TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>ConnectionID</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>TheBall.Interface.Connection ID</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Connection item</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: CategoriesToTransfer ( Connection )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Categories to transfer based on Connection ThisSideCategories</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: ContentToTransferLocations ( CategoriesToTransfer )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Content to transfer based on categories to transfer</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Return Value : PackageCategorizedContentToConnectionReturnValue ( ContentToTransferLocations )" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Return Value" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>ContentLocations</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string[]</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Return value of content to package</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-          </Header>
           <Header text="PerformWebAction (TargetObjectID, CommandName, Owner, InformationSources, FormSourceNames, FormSubmitContent)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -896,6 +816,86 @@
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                         <TextContent>If true, page should be rendered after operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PickCategorizedContentToConnection (ConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Package categorized content to connection domain-neutralized transfer package
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.Interface.Connection ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connection item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CategoriesToTransfer ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Categories to transfer based on Connection ThisSideCategories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ContentToTransferLocations ( CategoriesToTransfer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Content to transfer based on categories to transfer</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : PickCategorizedContentToConnectionReturnValue ( ContentToTransferLocations )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ContentLocations</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Return value of content to package</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>

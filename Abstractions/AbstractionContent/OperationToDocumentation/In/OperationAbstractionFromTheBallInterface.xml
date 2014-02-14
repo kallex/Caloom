@@ -1,6 +1,56 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Interface">
+    <Operation name="PushCollaborationContent">
+      <OperationSpec>
+        <Description>Push collaboration content to given connection ID</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID to push the content with" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <TargetDefinition name="PackageContentListingOperationName" dataType="string" designDesc="Operation name for package listing operation" state="implemented">
+            <Target name="Connection" />
+          </TargetDefinition>
+          <MethodExecute name="DynamicPackageListingOperation" designDesc="Dynamic operation execution of content packaging operation" state="implemented">
+            <Parameter name="ConnectionID" />
+            <Target name="PackageContentListingOperationName" />
+            <ReturnValue name="DynamicPackageListingResult" dataType="string[]" designDesc="List of objects to package" state="implemented" />
+          </MethodExecute>
+          <TargetDefinition name="TransferPackage" dataType="TransferPackage" designDesc="Transferpackage that identifies the data to package and send" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <MethodExecute name="AddTransferPackageToConnection" designDesc="Adds transfer package to outgoing packages of connection" state="implemented">
+            <Target name="Connection" />
+            <Target name="TransferPackage" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Stores objects" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+          <MethodExecute name="PackageTransferPackageContent" designDesc="Package contents for transfer package" state="implemented">
+            <Target name="TransferPackage" />
+            <Target name="DynamicPackageListingOperationOutput" />
+            <ReturnValue name="OutputContentName" dataType="string[]" designDesc="Output content blob names" state="implemented" />
+          </MethodExecute>
+          <MethodExecute name="SendTransferPackageContent" designDesc="Send package contents through connection" state="implemented">
+            <Target name="Connection" />
+            <Target name="TransferPackage" />
+            <Target name="PackageTransferPackageContentOutput" />
+          </MethodExecute>
+          <MethodExecute name="SetTransferPackageAsProcessed" designDesc="Set transfer package as prosessed state" state="implemented">
+            <Target name="TransferPackage" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjectComplete" designDesc="Stores connection with processed transferpackage" state="implemented">
+            <Target name="Connection" />
+            <Target name="TransferPackage" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ExecuteOperation">
       <OperationSpec>
         <Description>Execute given operation</Description>

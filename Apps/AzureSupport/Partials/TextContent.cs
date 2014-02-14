@@ -17,10 +17,8 @@ namespace AaltoGlobalImpact.OIP
         void IBeforeStoreHandler.PerformBeforeStoreUpdate()
         {
             /* Don't need to modify from default time */
-            /*
             if (Published == default(DateTime))
-                Published = DateTime.UtcNow.Date;
-             */
+                Published = Published.ToUniversalTime();
         }
     }
 }

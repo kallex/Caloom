@@ -739,6 +739,8 @@
         <Parameters>
           <Parameter dataType="IContainerOwner" name="Owner" designDesc="Security context owner" state="implemented"/>
           <Parameter dataType="string" name="InformationOutputID" designDesc="ID of information output" state="implemented"/>
+          <Parameter dataType="string" name="LocalContentName" designDesc="Required of LocalContentURL ends with /" state="implemented"/>
+          <Parameter dataType="string" name="SpecificDestinationContentName" designDesc="Optional dedicated content name - if given." state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
@@ -753,9 +755,11 @@
               <Target name="InformationOutput"/>
             </TargetDefinition>
             <TargetDefinition dataType="string" name="DestinationContentName" designDesc="Destination content name" state="implemented">
+              <Parameter name="SpecificDestinationContentName"/>
               <Target name="InformationOutput"/>
             </TargetDefinition>
             <TargetDefinition dataType="string" name="LocalContentURL" designDesc="Local content URL to push the output from" state="implemented">
+              <Parameter name="LocalContentName"/>
               <Target name="InformationOutput"/>
             </TargetDefinition>
             <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">

@@ -1,6 +1,39 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
+    <StatusItem name="PushCollaborationContent_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID to push the content with">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_PackageContentListingOperationName" displayName="TargetDefinitionType: PackageContentListingOperationName" description="Operation name for package listing operation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_DynamicPackageListingOperation" displayName="MethodExecuteType: DynamicPackageListingOperation" description="Dynamic operation execution of content packaging operation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_TransferPackage" displayName="TargetDefinitionType: TransferPackage" description="Transferpackage that identifies the data to package and send">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_AddTransferPackageToConnection" displayName="MethodExecuteType: AddTransferPackageToConnection" description="Adds transfer package to outgoing packages of connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_StoreObject" displayName="MethodExecuteType: StoreObject" description="Stores objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_PackageTransferPackageContent" displayName="MethodExecuteType: PackageTransferPackageContent" description="Package contents for transfer package">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_SendTransferPackageContent" displayName="MethodExecuteType: SendTransferPackageContent" description="Send package contents through connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_SetTransferPackageAsProcessed" displayName="MethodExecuteType: SetTransferPackageAsProcessed" description="Set transfer package as prosessed state">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushCollaborationContent_StoreObjectComplete" displayName="MethodExecuteType: StoreObjectComplete" description="Stores connection with processed transferpackage">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ExecuteOperation_OwnerLocation" displayName="VariableType: OwnerLocation" description="Owner location of the operation context">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -33,6 +66,19 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="PushCollaborationContent">
+      <ItemRef itemName="PushCollaborationContent_ConnectionID" />
+      <ItemRef itemName="PushCollaborationContent_Connection" />
+      <ItemRef itemName="PushCollaborationContent_PackageContentListingOperationName" />
+      <ItemRef itemName="PushCollaborationContent_DynamicPackageListingOperation" />
+      <ItemRef itemName="PushCollaborationContent_TransferPackage" />
+      <ItemRef itemName="PushCollaborationContent_AddTransferPackageToConnection" />
+      <ItemRef itemName="PushCollaborationContent_StoreObject" />
+      <ItemRef itemName="PushCollaborationContent_PackageTransferPackageContent" />
+      <ItemRef itemName="PushCollaborationContent_SendTransferPackageContent" />
+      <ItemRef itemName="PushCollaborationContent_SetTransferPackageAsProcessed" />
+      <ItemRef itemName="PushCollaborationContent_StoreObjectComplete" />
+    </Group>
     <Group name="ExecuteOperation">
       <ItemRef itemName="ExecuteOperation_OwnerLocation" />
       <ItemRef itemName="ExecuteOperation_OperationDomain" />

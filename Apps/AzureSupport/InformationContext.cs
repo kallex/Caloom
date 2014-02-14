@@ -348,7 +348,7 @@ namespace TheBall
 
         // Currently being used for listing changed IDs
         private HashSet<string> ChangedIDInfos = new HashSet<string>();
-        private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP" };
+        private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface" };
         public void ObjectStoredNotification(IInformationObject informationObject, ObjectChangeType changeType)
         {
             if (trackedDomainNames.Contains(informationObject.SemanticDomainName) == false)

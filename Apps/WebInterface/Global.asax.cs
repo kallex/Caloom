@@ -39,6 +39,8 @@ namespace WebInterface
                 bool isWww = Request.Url.DnsSafeHost.StartsWith("www.") ||
                              Request.Url.DnsSafeHost.StartsWith("teaching.") ||
                              Request.Url.DnsSafeHost.StartsWith("ptt.") ||
+                             Request.Url.DnsSafeHost.StartsWith("7lk.") ||
+                             Request.Url.DnsSafeHost.StartsWith("globalimpact.") ||
                              Request.Url.DnsSafeHost.StartsWith("newglobal.");
                 if (isWebSocket == false && isIndexAspx == false && isWww == false)
                 {

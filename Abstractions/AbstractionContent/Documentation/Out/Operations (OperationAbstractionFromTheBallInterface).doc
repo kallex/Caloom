@@ -322,6 +322,112 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>PushCollaborationContent (ConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Push collaboration content to given connection ID
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID to push the content with
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection object
+		</div>
+		</p><h2>Target Definition: PackageContentListingOperationName ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation name for package listing operation
+		</div>
+		</p><h2>Method Call: DynamicPackageListingOperation ( PackageContentListingOperationName, ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Dynamic operation execution of content packaging operation
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DynamicPackageListingResult
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		List of objects to package
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: TransferPackage ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Transferpackage that identifies the data to package and send
+		</div>
+		</p><h2>Method Call: AddTransferPackageToConnection ( Connection, TransferPackage )</h2>
+		<p>		<div class="MsoNormal" >
+		Adds transfer package to outgoing packages of connection
+		</div>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Stores objects
+		</div>
+		</p><h2>Method Call: PackageTransferPackageContent ( TransferPackage, DynamicPackageListingOperationOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Package contents for transfer package
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OutputContentName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Output content blob names
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: SendTransferPackageContent ( Connection, TransferPackage, PackageTransferPackageContentOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Send package contents through connection
+		</div>
+		</p><h2>Method Call: SetTransferPackageAsProcessed ( TransferPackage )</h2>
+		<p>		<div class="MsoNormal" >
+		Set transfer package as prosessed state
+		</div>
+		</p><h2>Method Call: StoreObjectComplete ( Connection, TransferPackage )</h2>
+		<p>		<div class="MsoNormal" >
+		Stores connection with processed transferpackage
+		</div>
 		</p><h1>UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
