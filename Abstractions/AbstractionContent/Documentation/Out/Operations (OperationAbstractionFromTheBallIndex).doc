@@ -345,7 +345,48 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Perform indexing of the object
 		</div>
-		</p><h1>QueryIndexedInformation (QueryRequest)</h1>
+		</p><h1>PerformUserQuery</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Perform user web query
+		</div>
+		</p><h2>Target Definition: QueryObject</h2>
+		<p>		<div class="MsoNormal" >
+		Retrieve query object from JSON content
+		</div>
+		</p><h2>Operation Call: PerformQuery ( QueryObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform query request
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		QueryTrackableID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Trackable ID as result
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ResponseContentObject ( PerformQueryOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Query response token
+		</div>
+		</p><h2>Method Call: WriteContentToHttpResponse ( ResponseContentObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Write query token to http response
+		</div>
+		</p><h1>QueryIndexedInformation (QueryRequest, IndexName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Index information object 
@@ -370,11 +411,57 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
-		</table>
-		</p><h2>Method Call: PerformIndexing ( QueryRequest )</h2>
-		<p>		<div class="MsoNormal" >
-		Perform indexing of the object
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IndexName
 		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Index name to perform query against
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: QueryID ( QueryRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain trackable ID for query
+		</div>
+		</p><h2>Target Definition: QueryQueueName ( IndexName )</h2>
+		<p>		<div class="MsoNormal" >
+		Query queue name for search requests
+		</div>
+		</p><h2>Method Call: QueueQueryRequest ( QueryQueueName, QueryRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Queue query request
+		</div>
+		</p><h2>Return Value : QueryIndexedInformationReturnValue ( QueryID )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		QueryTrackableID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Query ID token
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p></div>
 
 </body>

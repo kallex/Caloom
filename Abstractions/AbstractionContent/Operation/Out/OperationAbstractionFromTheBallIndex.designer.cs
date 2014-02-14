@@ -52,6 +52,7 @@ using System.IO;
 				public class QueryIndexedInformationParameters 
 		{
 				public QueryRequest QueryRequest ;
+				public string IndexName ;
 				}
 		
 		public class QueryIndexedInformation 
@@ -59,10 +60,35 @@ using System.IO;
 				private static void PrepareParameters(QueryIndexedInformationParameters parameters)
 		{
 					}
-				public static void Execute(QueryIndexedInformationParameters parameters)
+				public static QueryIndexedInformationReturnValue Execute(QueryIndexedInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					QueryIndexedInformationImplementation.ExecuteMethod_PerformIndexing(parameters.QueryRequest);		
+					string QueryID = QueryIndexedInformationImplementation.GetTarget_QueryID(parameters.QueryRequest);	
+				string QueryQueueName = QueryIndexedInformationImplementation.GetTarget_QueryQueueName(parameters.IndexName);	
+				QueryIndexedInformationImplementation.ExecuteMethod_QueueQueryRequest(parameters.QueryRequest, QueryQueueName);		
+				QueryIndexedInformationReturnValue returnValue = QueryIndexedInformationImplementation.Get_ReturnValue(QueryID);
+		return returnValue;
+				}
+				}
+				public class QueryIndexedInformationReturnValue 
+		{
+				public string QueryTrackableID ;
+				}
+		
+		public class PerformUserQuery 
+		{
+				public static void Execute()
+		{
+						
+					UserQuery QueryObject = PerformUserQueryImplementation.GetTarget_QueryObject();	
+				string PerformQueryOutput;
+		{ // Local block to allow local naming
+			QueryIndexedInformationParameters operationParameters = PerformUserQueryImplementation.PerformQuery_GetParameters(QueryObject);
+			var operationReturnValue = QueryIndexedInformation.Execute(operationParameters);
+			PerformQueryOutput = PerformUserQueryImplementation.PerformQuery_GetOutput(operationReturnValue, QueryObject);						
+		} // Local block closing
+				QueryToken ResponseContentObject = PerformUserQueryImplementation.GetTarget_ResponseContentObject(PerformQueryOutput);	
+				PerformUserQueryImplementation.ExecuteMethod_WriteContentToHttpResponse(ResponseContentObject);		
 				}
 				}
 		 } 

@@ -158,7 +158,66 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="QueryIndexedInformation (QueryRequest)" level="1">
+          <Header text="PerformUserQuery" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform user web query</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueryObject" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Retrieve query object from JSON content</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: PerformQuery ( QueryObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform query request</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>QueryTrackableID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Trackable ID as result</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ResponseContentObject ( PerformQueryOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Query response token</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: WriteContentToHttpResponse ( ResponseContentObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Write query token to http response</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="QueryIndexedInformation (QueryRequest, IndexName)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -186,15 +245,64 @@
                         <TextContent>Query request object</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IndexName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Index name to perform query against</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: PerformIndexing ( QueryRequest )" level="2">
+            <Header text="Target Definition: QueryID ( QueryRequest )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Perform indexing of the object</TextContent>
+                  <TextContent>Obtain trackable ID for query</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueryQueueName ( IndexName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Query queue name for search requests</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: QueueQueryRequest ( QueryQueueName, QueryRequest )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue query request</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : QueryIndexedInformationReturnValue ( QueryID )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>QueryTrackableID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Query ID token</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>

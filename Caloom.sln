@@ -28,8 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecuritySupport", "Apps\Sec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{DC9F1304-69FB-448A-BA7A-B3BB1F00A688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBall.Index", "Modules\TheBall.Index\TheBall.Index.csproj", "{518928B2-4554-4CCA-A5A3-2D5EE59A352D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -272,36 +270,6 @@ Global
 		{FE40FC1C-284E-4F91-B00F-5CCA71846208}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
 		{FE40FC1C-284E-4F91-B00F-5CCA71846208}.Staging|PHP 5.2.ActiveCfg = Release|Any CPU
 		{FE40FC1C-284E-4F91-B00F-5CCA71846208}.Staging|x86.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|PHP 5.2.ActiveCfg = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|Any CPU.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|Any CPU.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|Mixed Platforms.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|PHP 5.2.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Local|x86.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|Any CPU.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|Mixed Platforms.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|PHP 5.2.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Production|x86.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Release|x86.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|Any CPU.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|Any CPU.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|PHP 5.2.ActiveCfg = Release|Any CPU
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D}.Staging|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,6 +282,5 @@ Global
 		{FE40FC1C-284E-4F91-B00F-5CCA71846208} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{5377CB63-1979-4596-A1F4-DF9417C9B037} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
 		{37BBF002-DC1F-40EE-9F04-4C5DF50F892D} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
-		{518928B2-4554-4CCA-A5A3-2D5EE59A352D} = {DC9F1304-69FB-448A-BA7A-B3BB1F00A688}
 	EndGlobalSection
 EndGlobal

@@ -7,8 +7,11 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Web;
 using AaltoGlobalImpact.OIP;
 using JsonFx.Json;
+using JsonFx.Serialization;
+using TheBall.Index;
 
 namespace AzureSupport
 {
@@ -57,6 +60,12 @@ namespace AzureSupport
             watch.Stop();
             var elapsed = watch.ElapsedMilliseconds;
             return result;
+        }
+
+        public static string SerializeToJSONString(object obj)
+        {
+            var writer = new JsonWriter();
+            return writer.Write(obj);
         }
     }
 }

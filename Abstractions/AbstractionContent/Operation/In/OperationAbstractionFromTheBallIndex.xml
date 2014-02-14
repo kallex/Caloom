@@ -56,11 +56,43 @@
       </OperationSpec>
       <Parameters>
         <Parameter name="QueryRequest" dataType="QueryRequest" designDesc="Query request object" state="implemented" />
+        <Parameter name="IndexName" dataType="string" designDesc="Index name to perform query against" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
+          <TargetDefinition name="QueryID" dataType="string" designDesc="Obtain trackable ID for query" state="implemented">
             <Parameter name="QueryRequest" />
+          </TargetDefinition>
+          <TargetDefinition name="QueryQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
+            <Parameter name="IndexName" />
+          </TargetDefinition>
+          <MethodExecute name="QueueQueryRequest" designDesc="Queue query request" state="implemented">
+            <Parameter name="QueryRequest" />
+            <Target name="QueryQueueName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Query ID token" state="implemented" />
+        <Target name="QueryID" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="PerformUserQuery">
+      <OperationSpec>
+        <Description>Perform user web query</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="QueryObject" dataType="UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
+          <OperationExecute name="PerformQuery" targetOperationName="QueryIndexedInformation" designDesc="Perform query request" state="implemented">
+            <Target name="QueryObject" />
+            <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Trackable ID as result" state="implemented" />
+          </OperationExecute>
+          <TargetDefinition name="ResponseContentObject" dataType="QueryToken" designDesc="Query response token" state="implemented">
+            <Target name="PerformQueryOutput" />
+          </TargetDefinition>
+          <MethodExecute name="WriteContentToHttpResponse" designDesc="Write query token to http response" state="implemented">
+            <Target name="ResponseContentObject" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

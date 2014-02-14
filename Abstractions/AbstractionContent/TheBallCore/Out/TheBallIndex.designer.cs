@@ -29,6 +29,20 @@ using TheBall.CORE;
 
 
 
+			[DataContract]
+			public class UserQuery
+			{
+				[DataMember]
+				public string QueryString { get; set; }
+			}
+
+			[DataContract]
+			public class QueryToken
+			{
+				[DataMember]
+				public string ID { get; set; }
+			}
+
 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
@@ -674,6 +688,8 @@ using TheBall.CORE;
 					var result = new QueryRequest();
 					result.OwnerPrefix = @"QueryRequest.OwnerPrefix";
 
+					result.QueryString = @"QueryRequest.QueryString";
+
 				
 					return result;
 				}
@@ -734,6 +750,8 @@ using TheBall.CORE;
 
 						if(OwnerPrefix != _unmodified_OwnerPrefix)
 							return true;
+						if(QueryString != _unmodified_QueryString)
+							return true;
 				
 						return false;
 					}
@@ -747,6 +765,7 @@ using TheBall.CORE;
 				private void CopyContentFrom(QueryRequest sourceObject)
 				{
 					OwnerPrefix = sourceObject.OwnerPrefix;
+					QueryString = sourceObject.QueryString;
 				}
 				
 
@@ -754,6 +773,7 @@ using TheBall.CORE;
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OwnerPrefix = OwnerPrefix;
+					_unmodified_QueryString = QueryString;
 				
 				
 				}
@@ -766,6 +786,9 @@ using TheBall.CORE;
 						case "OwnerPrefix":
 							OwnerPrefix = value;
 							break;
+						case "QueryString":
+							QueryString = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -773,6 +796,9 @@ using TheBall.CORE;
 			[DataMember]
 			public string OwnerPrefix { get; set; }
 			private string _unmodified_OwnerPrefix;
+			[DataMember]
+			public string QueryString { get; set; }
+			private string _unmodified_QueryString;
 			
 			}
  } 
