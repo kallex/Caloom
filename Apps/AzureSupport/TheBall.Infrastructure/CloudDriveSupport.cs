@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using Microsoft.WindowsAzure.StorageClient.Protocol;
 
@@ -15,6 +16,8 @@ namespace TheBall.Infrastructure
             Account =
                 CloudStorageAccount.Parse(InstanceConfiguration.AzureStorageConnectionString);
             DriveContainerName = InstanceConfiguration.CloudDriveContainerName;
+            var localStorage = RoleEnvironment.GetLocalResource(InstanceConfiguration.LocalStorageResourceName);
+            CloudDrive.InitializeCache(localStorage.RootPath, InstanceConfiguration.CloudDriveTotalCacheSizeInMB);
         }
 
         public static string MountLatestReadOnly()

@@ -346,6 +346,51 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h2>Method Call: MountDrive ( DriveReference )</h2>
+		<p>		<div class="MsoNormal" >
+		Mount the cloud drive. Perform write/read operations to confirm succesful mount.
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DriveLetter
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Mounted drive letter
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Return Value : MountCloudDriveReturnValue ( MountDriveOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MountedDriveLetter
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Mounted drive letter
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p></div>
 
 </body>

@@ -34,8 +34,17 @@
         <Parameter name="DriveReference" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Platform drive reference" state="implemented" />
       </Parameters>
       <Execution>
-        <SequentialExecution />
+        <SequentialExecution>
+          <MethodExecute name="MountDrive" designDesc="Mount the cloud drive. Perform write/read operations to confirm succesful mount." state="implemented">
+            <Parameter name="DriveReference" />
+            <ReturnValue name="DriveLetter" dataType="string" designDesc="Mounted drive letter" state="implemented" />
+          </MethodExecute>
+        </SequentialExecution>
       </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="MountedDriveLetter" dataType="string" designDesc="Mounted drive letter" state="implemented" />
+        <Target name="MountDriveOutput" />
+      </OperationReturnValues>
     </Operation>
   </Operations>
 </OperationAbstraction>

@@ -41,9 +41,17 @@ using System.IO;
 				private static void PrepareParameters(MountCloudDriveParameters parameters)
 		{
 					}
-				public static void Execute(MountCloudDriveParameters parameters)
+				public static MountCloudDriveReturnValue Execute(MountCloudDriveParameters parameters)
 		{
 						PrepareParameters(parameters);
-					}
+					string MountDriveOutput = MountCloudDriveImplementation.ExecuteMethod_MountDrive(parameters.DriveReference);		
+				MountCloudDriveReturnValue returnValue = MountCloudDriveImplementation.Get_ReturnValue(MountDriveOutput);
+		return returnValue;
+				}
+				}
+
+		    public class MountCloudDriveReturnValue 
+		{
+				public string MountedDriveLetter ;
 				}
 		 } 

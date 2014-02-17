@@ -13,6 +13,7 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.Index;
 
 namespace CaloomWorkerRole
 {
@@ -29,6 +30,7 @@ namespace CaloomWorkerRole
         private CloudTableClient CurrTable;
         private LocalResource LocalStorageResource;
         private CloudBlobContainer AnonWebContainer;
+        private bool IsIndexingMaster = false;
 
         private string[] ActiveContainerNames;
 
@@ -180,13 +182,26 @@ namespace CaloomWorkerRole
             ActiveContainerNames = InstanceConfiguration.WorkerActiveContainerName.Split(',');
             //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
+            tryToBecomeIndexingMaster();
             IsStopped = false;
             return base.OnStart();
+        }
+
+        private void tryToBecomeIndexingMaster()
+        {
+            AttemptToBecomeInfrastructureIndexerParameters parameters =
+                new AttemptToBecomeInfrastructureIndexerParameters
+                    {
+                        IndexName = "defaultindex"
+                    };
+            var result = AttemptToBecomeInfrastructureIndexer.Execute(parameters);
+            IsIndexingMaster = result.Success;
         }
 
         public override void OnStop()
         {
             // Close the connection to Service Bus Queue
+            QueueSupport.ReportStatistics("Stopping: " + CurrWorkerID, TimeSpan.FromDays(1));
             IsStopped = true;
             while(GracefullyStopped == false)
                 Thread.Sleep(1000);

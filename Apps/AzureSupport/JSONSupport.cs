@@ -67,5 +67,11 @@ namespace AzureSupport
             var writer = new JsonWriter();
             return writer.Write(obj);
         }
+
+        public static T GetObjectFromString<T>(string jsonString)
+        {
+            var reader = new JsonReader();
+            return reader.Read<T>(jsonString);
+        }
     }
 }

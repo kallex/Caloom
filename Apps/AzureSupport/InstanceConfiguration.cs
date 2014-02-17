@@ -36,13 +36,17 @@ namespace TheBall
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
+        public static readonly int CloudDriveTotalCacheSizeInMB;
+        public static readonly string LocalStorageResourceName;
         public static readonly int HARDCODED_StatusUpdateExpireSeconds = 300;
 
         static InstanceConfiguration()
         {
             # region Infrastructure
 
+            LocalStorageResourceName = "LocalCache";
             CloudDriveContainerName = "CloudDrives";
+            CloudDriveTotalCacheSizeInMB = 2048;
             #endregion
             #region Data storage
 

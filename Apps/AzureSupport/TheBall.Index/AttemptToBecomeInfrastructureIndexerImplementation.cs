@@ -19,6 +19,8 @@ namespace TheBall.Index
         {
             if (mountIndexDriveOutput == null)
                 return;
+            QueueSupport.RegisterQueue(queryQueueName);
+            QueueSupport.RegisterQueue(indexRequestQueueName);
         }
 
         public static AttemptToBecomeInfrastructureIndexerReturnValue Get_ReturnValue(CloudDrive mountIndexDriveOutput)
@@ -33,12 +35,24 @@ namespace TheBall.Index
 
         public static CloudDrive ExecuteMethod_MountIndexDrive(string indexDriveName)
         {
-            var createdDrive = CreateCloudDrive.Execute(new CreateCloudDriveParameters
-                {
-                    DriveName = indexDriveName,
-                    SizeInMegabytes = IndexSupport.IndexDriveStorageSizeInMB
-                });
-            return createdDrive.CloudDrive;
+            try
+            {
+                var createdDriveResult = CreateCloudDrive.Execute(new CreateCloudDriveParameters
+                    {
+                        DriveName = indexDriveName,
+                        SizeInMegabytes = IndexSupport.IndexDriveStorageSizeInMB
+                    });
+                var drive = createdDriveResult.CloudDrive;
+                MountCloudDrive.Execute(new MountCloudDriveParameters
+                    {
+                        DriveReference = drive
+                    });
+                return drive;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
