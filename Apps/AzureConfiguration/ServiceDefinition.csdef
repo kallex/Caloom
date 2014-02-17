@@ -20,6 +20,7 @@
     </ConfigurationSettings>
     <LocalResources>
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />
+      <LocalStorage name="LocalCache" cleanOnRoleRecycle="true" sizeInMB="10240" />
     </LocalResources>
   </WorkerRole>
   <WebRole name="TheBallWebFarm" vmsize="ExtraSmall">
