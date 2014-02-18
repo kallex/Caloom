@@ -1,3 +1,4 @@
+using System;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.Infrastructure;
 
@@ -15,17 +16,17 @@ namespace TheBall.Index
             return IndexSupport.GetIndexRequestQueueName(indexName);
         }
 
-        public static void ExecuteMethod_EnsureQueuesIfMountSucceeded(CloudDrive mountIndexDriveOutput, string queryQueueName, string indexRequestQueueName)
+        public static void ExecuteMethod_EnsureQueuesIfMountSucceeded(bool success, string queryQueueName, string indexRequestQueueName)
         {
-            if (mountIndexDriveOutput == null)
+            if (success == false)
                 return;
             QueueSupport.RegisterQueue(queryQueueName);
             QueueSupport.RegisterQueue(indexRequestQueueName);
         }
 
-        public static AttemptToBecomeInfrastructureIndexerReturnValue Get_ReturnValue(CloudDrive mountIndexDriveOutput)
+        public static AttemptToBecomeInfrastructureIndexerReturnValue Get_ReturnValue(AttemptToBecomeInfrastructureIndexerReturnValue executionResult)
         {
-            return new AttemptToBecomeInfrastructureIndexerReturnValue {Success = mountIndexDriveOutput != null};
+            return executionResult;
         }
 
         public static string GetTarget_IndexDriveName(string indexName)
@@ -33,8 +34,10 @@ namespace TheBall.Index
             return indexName + "Storage";
         }
 
-        public static CloudDrive ExecuteMethod_MountIndexDrive(string indexDriveName)
+        public static AttemptToBecomeInfrastructureIndexerReturnValue ExecuteMethod_MountIndexDrive(string indexDriveName)
         {
+            CloudDrive drive = null;
+            Exception exception = null;
             try
             {
                 var createdDriveResult = CreateCloudDrive.Execute(new CreateCloudDriveParameters
@@ -42,17 +45,27 @@ namespace TheBall.Index
                         DriveName = indexDriveName,
                         SizeInMegabytes = IndexSupport.IndexDriveStorageSizeInMB
                     });
-                var drive = createdDriveResult.CloudDrive;
-                MountCloudDrive.Execute(new MountCloudDriveParameters
+                drive = createdDriveResult.CloudDrive;
+                exception = createdDriveResult.Exception;
+                if (exception == null)
+                {
+                    var mountDriveResult = MountCloudDrive.Execute(new MountCloudDriveParameters
                     {
                         DriveReference = drive
                     });
-                return drive;
+                    exception = mountDriveResult.Exception;
+                }
             }
-            catch
+            catch(Exception ex)
             {
-                return null;
+                exception = ex;
             }
+            return new AttemptToBecomeInfrastructureIndexerReturnValue
+                {
+                    Exception = exception,
+                    Success = exception == null,
+                    CloudDrive = drive
+                };
         }
     }
 }

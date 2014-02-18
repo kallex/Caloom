@@ -272,12 +272,12 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Microsoft.WindowsAzure.StorageClient.CloudDrive
+		AttemptToBecomeInfrastructureIndexerReturnValue
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Mounted drive if succeeded, otherwise null
+		Main execution result
 		</div>
 				</td>
 				</tr>
@@ -290,7 +290,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Query queue name for search requests
 		</div>
-		</p><h2>Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput, QueryQueueName, IndexRequestQueueName )</h2>
+		</p><h2>Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput.Success, QueryQueueName, IndexRequestQueueName )</h2>
 		<p>		<div class="MsoNormal" >
 		Create queues if mount succeeded
 		</div>
@@ -311,6 +311,40 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Success, if attempt to claim indexing was succesful
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CloudDrive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Microsoft.WindowsAzure.StorageClient.CloudDrive
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created drive
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Error causing exception
 		</div>
 				</td>
 				</tr>
@@ -462,6 +496,36 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>ReleaseIndexerResources (ResourceInfo)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Release indexing resources (such as cloud drive mount)
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ResourceInfo
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AttemptToBecomeInfrastructureIndexerReturnValue
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Allocated resources
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ReleaseResources ( ResourceInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Release resources
+		</div>
 		</p></div>
 
 </body>

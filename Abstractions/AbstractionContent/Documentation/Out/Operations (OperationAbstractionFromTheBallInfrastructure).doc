@@ -284,17 +284,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		CreatedDrive
+		CreateDriveResult
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Microsoft.WindowsAzure.StorageClient.CloudDrive
+		CreateCloudDriveReturnValue
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Created drive
+		Created drive execution result
 		</div>
 				</td>
 				</tr>
@@ -316,6 +316,23 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Created drive
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Error causing exception
 		</div>
 				</td>
 				</tr>
@@ -355,17 +372,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		DriveLetter
+		MountResult
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		MountCloudDriveReturnValue
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Mounted drive letter
+		Mounted operation main result
 		</div>
 				</td>
 				</tr>
@@ -387,6 +404,23 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Mounted drive letter
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.Exception
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Error causing exception
 		</div>
 				</td>
 				</tr>

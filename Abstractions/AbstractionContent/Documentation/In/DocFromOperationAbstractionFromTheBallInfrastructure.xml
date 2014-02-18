@@ -70,13 +70,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>CreatedDrive</TextContent>
+                        <TextContent>CreateDriveResult</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
+                        <TextContent>CreateCloudDriveReturnValue</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Created drive</TextContent>
+                        <TextContent>Created drive execution result</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -101,6 +101,17 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Created drive</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Error causing exception</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -156,13 +167,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>DriveLetter</TextContent>
+                        <TextContent>MountResult</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>string</TextContent>
+                        <TextContent>MountCloudDriveReturnValue</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Mounted drive letter</TextContent>
+                        <TextContent>Mounted operation main result</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -187,6 +198,17 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Mounted drive letter</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Error causing exception</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>

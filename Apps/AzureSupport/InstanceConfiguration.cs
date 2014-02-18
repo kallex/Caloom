@@ -45,7 +45,7 @@ namespace TheBall
             # region Infrastructure
 
             LocalStorageResourceName = "LocalCache";
-            CloudDriveContainerName = "CloudDrives";
+            CloudDriveContainerName = "clouddrives";
             CloudDriveTotalCacheSizeInMB = 2048;
             #endregion
             #region Data storage

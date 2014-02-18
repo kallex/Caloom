@@ -41,7 +41,8 @@ namespace TheBall.Infrastructure
             CloudDrive myDrive = account.CreateCloudDrive(driveUriValue);
             if (capacityInMegabytes < 16)
                 throw new ArgumentException("Cloud drive capacity needs to be at least 16MB");
-            myDrive.Create(capacityInMegabytes);
+            myDrive.CreateIfNotExist(capacityInMegabytes);
+            //myDrive.Create(capacityInMegabytes);
             return myDrive;
         }
 
@@ -137,5 +138,9 @@ namespace TheBall.Infrastructure
             return snapshotUri;
         }
 
+        public static void UnmountDrive(CloudDrive cloudDrive)
+        {
+            cloudDrive.Unmount();
+        }
     }
 }

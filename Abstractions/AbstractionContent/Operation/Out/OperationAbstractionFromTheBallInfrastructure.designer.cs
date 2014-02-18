@@ -22,7 +22,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					string DriveBlobName = CreateCloudDriveImplementation.GetTarget_DriveBlobName(parameters.DriveName);	
-				Microsoft.WindowsAzure.StorageClient.CloudDrive CreateDriveOutput = CreateCloudDriveImplementation.ExecuteMethod_CreateDrive(parameters.SizeInMegabytes, DriveBlobName);		
+				CreateCloudDriveReturnValue CreateDriveOutput = CreateCloudDriveImplementation.ExecuteMethod_CreateDrive(parameters.SizeInMegabytes, DriveBlobName);		
 				CreateCloudDriveReturnValue returnValue = CreateCloudDriveImplementation.Get_ReturnValue(CreateDriveOutput);
 		return returnValue;
 				}
@@ -30,6 +30,7 @@ using System.IO;
 				public class CreateCloudDriveReturnValue 
 		{
 				public Microsoft.WindowsAzure.StorageClient.CloudDrive CloudDrive ;
+				public System.Exception Exception ;
 				}
 				public class MountCloudDriveParameters 
 		{
@@ -44,14 +45,14 @@ using System.IO;
 				public static MountCloudDriveReturnValue Execute(MountCloudDriveParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string MountDriveOutput = MountCloudDriveImplementation.ExecuteMethod_MountDrive(parameters.DriveReference);		
+					MountCloudDriveReturnValue MountDriveOutput = MountCloudDriveImplementation.ExecuteMethod_MountDrive(parameters.DriveReference);		
 				MountCloudDriveReturnValue returnValue = MountCloudDriveImplementation.Get_ReturnValue(MountDriveOutput);
 		return returnValue;
 				}
 				}
-
-		    public class MountCloudDriveReturnValue 
+				public class MountCloudDriveReturnValue 
 		{
 				public string MountedDriveLetter ;
+				public System.Exception Exception ;
 				}
 		 } 

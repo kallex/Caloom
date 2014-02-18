@@ -17,12 +17,13 @@
           <MethodExecute name="CreateDrive" designDesc="Create cloud drive" state="implemented">
             <Parameter name="SizeInMegabytes" />
             <Target name="DriveBlobName" />
-            <ReturnValue name="CreatedDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented" />
+            <ReturnValue name="CreateDriveResult" dataType="CreateCloudDriveReturnValue" designDesc="Created drive execution result" state="implemented" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>
       <OperationReturnValues>
         <ReturnValue name="CloudDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented" />
+        <ReturnValue name="Exception" dataType="System.Exception" designDesc="Error causing exception" state="implemented" />
         <Target name="CreateDriveOutput" />
       </OperationReturnValues>
     </Operation>
@@ -37,12 +38,13 @@
         <SequentialExecution>
           <MethodExecute name="MountDrive" designDesc="Mount the cloud drive. Perform write/read operations to confirm succesful mount." state="implemented">
             <Parameter name="DriveReference" />
-            <ReturnValue name="DriveLetter" dataType="string" designDesc="Mounted drive letter" state="implemented" />
+            <ReturnValue name="MountResult" dataType="MountCloudDriveReturnValue" designDesc="Mounted operation main result" state="implemented" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>
       <OperationReturnValues>
         <ReturnValue name="MountedDriveLetter" dataType="string" designDesc="Mounted drive letter" state="implemented" />
+        <ReturnValue name="Exception" dataType="System.Exception" designDesc="Error causing exception" state="implemented" />
         <Target name="MountDriveOutput" />
       </OperationReturnValues>
     </Operation>

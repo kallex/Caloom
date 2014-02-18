@@ -7,7 +7,24 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Index { 
-				public class AttemptToBecomeInfrastructureIndexerParameters 
+				public class ReleaseIndexerResourcesParameters 
+		{
+				public AttemptToBecomeInfrastructureIndexerReturnValue ResourceInfo ;
+				}
+		
+		public class ReleaseIndexerResources 
+		{
+				private static void PrepareParameters(ReleaseIndexerResourcesParameters parameters)
+		{
+					}
+				public static void Execute(ReleaseIndexerResourcesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ReleaseIndexerResourcesImplementation.ExecuteMethod_ReleaseResources(parameters.ResourceInfo);		
+				}
+				}
+
+		    public class AttemptToBecomeInfrastructureIndexerParameters 
 		{
 				public string IndexName ;
 				}
@@ -21,10 +38,10 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					string IndexDriveName = AttemptToBecomeInfrastructureIndexerImplementation.GetTarget_IndexDriveName(parameters.IndexName);	
-				Microsoft.WindowsAzure.StorageClient.CloudDrive MountIndexDriveOutput = AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_MountIndexDrive(IndexDriveName);		
+				AttemptToBecomeInfrastructureIndexerReturnValue MountIndexDriveOutput = AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_MountIndexDrive(IndexDriveName);		
 				string QueryQueueName = AttemptToBecomeInfrastructureIndexerImplementation.GetTarget_QueryQueueName(parameters.IndexName);	
 				string IndexRequestQueueName = AttemptToBecomeInfrastructureIndexerImplementation.GetTarget_IndexRequestQueueName(parameters.IndexName);	
-				AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_EnsureQueuesIfMountSucceeded(MountIndexDriveOutput, QueryQueueName, IndexRequestQueueName);		
+				AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_EnsureQueuesIfMountSucceeded(MountIndexDriveOutput.Success, QueryQueueName, IndexRequestQueueName);		
 				AttemptToBecomeInfrastructureIndexerReturnValue returnValue = AttemptToBecomeInfrastructureIndexerImplementation.Get_ReturnValue(MountIndexDriveOutput);
 		return returnValue;
 				}
@@ -32,6 +49,8 @@ using System.IO;
 				public class AttemptToBecomeInfrastructureIndexerReturnValue 
 		{
 				public bool Success ;
+				public Microsoft.WindowsAzure.StorageClient.CloudDrive CloudDrive ;
+				public System.Exception Exception ;
 				}
 				public class IndexInformationParameters 
 		{

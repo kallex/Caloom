@@ -31,6 +31,7 @@ namespace CaloomWorkerRole
         private LocalResource LocalStorageResource;
         private CloudBlobContainer AnonWebContainer;
         private bool IsIndexingMaster = false;
+        private AttemptToBecomeInfrastructureIndexerReturnValue IndexerInfo;
 
         private string[] ActiveContainerNames;
 
@@ -189,13 +190,27 @@ namespace CaloomWorkerRole
 
         private void tryToBecomeIndexingMaster()
         {
+            QueueSupport.ReportStatistics("Trying to become indexing master: " + RoleEnvironment.CurrentRoleInstance.Id);
             AttemptToBecomeInfrastructureIndexerParameters parameters =
                 new AttemptToBecomeInfrastructureIndexerParameters
                     {
                         IndexName = "defaultindex"
                     };
             var result = AttemptToBecomeInfrastructureIndexer.Execute(parameters);
+            IndexerInfo = result;
             IsIndexingMaster = result.Success;
+            QueueSupport.ReportStatistics("Trying result: " + IsIndexingMaster + " from  " + RoleEnvironment.CurrentRoleInstance.Id);
+            if (!IsIndexingMaster)
+            {
+                QueueSupport.ReportStatistics("Error: " + result.Exception.ToString());
+            }
+            else
+            {
+                var driveLetter = result.CloudDrive.LocalPath.Substring(0, 1);
+                DriveInfo driveInfo = new DriveInfo(driveLetter);
+                var availableMegabytes = driveInfo.AvailableFreeSpace/(1024*1024);
+                QueueSupport.ReportStatistics("Success: " + result.CloudDrive.LocalPath + " available: " + availableMegabytes + "MB");
+            }
         }
 
         public override void OnStop()
@@ -205,6 +220,10 @@ namespace CaloomWorkerRole
             IsStopped = true;
             while(GracefullyStopped == false)
                 Thread.Sleep(1000);
+            if (IsIndexingMaster)
+            {
+                   
+            }
             base.OnStop();
         }
     }

@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Index">
+    <Operation name="ReleaseIndexerResources">
+      <OperationSpec>
+        <Description>Release indexing resources (such as cloud drive mount)</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ResourceInfo" dataType="AttemptToBecomeInfrastructureIndexerReturnValue" designDesc="Allocated resources" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="ReleaseResources" designDesc="Release resources" state="implemented">
+            <Parameter name="ResourceInfo" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="AttemptToBecomeInfrastructureIndexer">
       <OperationSpec>
         <Description>Attempt to claim indexer role. Mounting indexing db/storage read-write as the claim.</Description>
@@ -15,7 +30,7 @@
           </TargetDefinition>
           <MethodExecute name="MountIndexDrive" designDesc="Index drive" state="implemented">
             <Target name="IndexDriveName" />
-            <ReturnValue name="MountedDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Mounted drive if succeeded, otherwise null" state="implemented" />
+            <ReturnValue name="MountedDrive" dataType="AttemptToBecomeInfrastructureIndexerReturnValue" designDesc="Main execution result" state="implemented" />
           </MethodExecute>
           <TargetDefinition name="QueryQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
             <Parameter name="IndexName" />
@@ -24,7 +39,7 @@
             <Parameter name="IndexName" />
           </TargetDefinition>
           <MethodExecute name="EnsureQueuesIfMountSucceeded" designDesc="Create queues if mount succeeded" state="implemented">
-            <Target name="MountIndexDriveOutput" />
+            <Target name="MountIndexDriveOutput.Success" />
             <Target name="QueryQueueName" />
             <Target name="IndexRequestQueueName" />
           </MethodExecute>
@@ -32,6 +47,8 @@
       </Execution>
       <OperationReturnValues>
         <ReturnValue name="Success" dataType="bool" designDesc="Success, if attempt to claim indexing was succesful" state="implemented" />
+        <ReturnValue name="CloudDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented" />
+        <ReturnValue name="Exception" dataType="System.Exception" designDesc="Error causing exception" state="implemented" />
         <Target name="MountIndexDriveOutput" />
       </OperationReturnValues>
     </Operation>

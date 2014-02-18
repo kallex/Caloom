@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall.Infrastructure
@@ -9,17 +10,32 @@ namespace TheBall.Infrastructure
         {
             if(driveName.Contains(".vhd"))
                 throw new ArgumentException("Drive name must not contain .vhd extension");
-            return driveName + ".vhd";
+            driveName = driveName + ".vhd";
+            return driveName;
         }
 
-        public static CloudDrive ExecuteMethod_CreateDrive(int sizeInMegabytes, string driveBlobName)
+        public static CreateCloudDriveReturnValue ExecuteMethod_CreateDrive(int sizeInMegabytes, string driveBlobName)
         {
-            return CloudDriveSupport.CreatePageBlobDrive(driveBlobName, sizeInMegabytes);
+            CloudDrive drive = null;
+            Exception exception = null;
+            try
+            {
+                drive = CloudDriveSupport.CreatePageBlobDrive(driveBlobName, sizeInMegabytes);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            return new CreateCloudDriveReturnValue
+                {
+                    CloudDrive = drive,
+                    Exception = exception
+                };
         }
 
-        public static CreateCloudDriveReturnValue Get_ReturnValue(CloudDrive createDriveOutput)
+        public static CreateCloudDriveReturnValue Get_ReturnValue(CreateCloudDriveReturnValue executionResult)
         {
-            return new CreateCloudDriveReturnValue {CloudDrive = createDriveOutput};
+            return executionResult;
         }
     }
 }

@@ -62,10 +62,10 @@
                         <TextContent>MountedDrive</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
+                        <TextContent>AttemptToBecomeInfrastructureIndexerReturnValue</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Mounted drive if succeeded, otherwise null</TextContent>
+                        <TextContent>Main execution result</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -86,7 +86,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput, QueryQueueName, IndexRequestQueueName )" level="2">
+            <Header text="Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput.Success, QueryQueueName, IndexRequestQueueName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Create queues if mount succeeded</TextContent>
@@ -111,6 +111,28 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Success, if attempt to claim indexing was succesful</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CloudDrive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created drive</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.Exception</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Error causing exception</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -303,6 +325,46 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ReleaseIndexerResources (ResourceInfo)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Release indexing resources (such as cloud drive mount)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ResourceInfo</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AttemptToBecomeInfrastructureIndexerReturnValue</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Allocated resources</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ReleaseResources ( ResourceInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Release resources</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>
