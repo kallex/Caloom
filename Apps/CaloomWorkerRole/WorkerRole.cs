@@ -121,6 +121,7 @@ namespace CaloomWorkerRole
             {
                 ErrorSupport.ReportException(task.Exception);
             }
+            releaseIndexingMasterResourcesForMaster();
             QueueSupport.ReportStatistics("Stopped: " + CurrWorkerID, TimeSpan.FromDays(1));
             GracefullyStopped = true;
         }
@@ -188,6 +189,19 @@ namespace CaloomWorkerRole
             return base.OnStart();
         }
 
+        private void releaseIndexingMasterResourcesForMaster()
+        {
+            if (IsIndexingMaster)
+            {
+                QueueSupport.ReportStatistics("Unmounting drive... " + RoleEnvironment.CurrentRoleInstance.Id);
+                ReleaseIndexerResources.Execute(new ReleaseIndexerResourcesParameters
+                {
+                    ResourceInfo = IndexerInfo
+                });
+                QueueSupport.ReportStatistics("Unmounted succesfully... " + RoleEnvironment.CurrentRoleInstance.Id);
+            }
+        }
+
         private void tryToBecomeIndexingMaster()
         {
             QueueSupport.ReportStatistics("Trying to become indexing master: " + RoleEnvironment.CurrentRoleInstance.Id);
@@ -220,10 +234,6 @@ namespace CaloomWorkerRole
             IsStopped = true;
             while(GracefullyStopped == false)
                 Thread.Sleep(1000);
-            if (IsIndexingMaster)
-            {
-                   
-            }
             base.OnStop();
         }
     }
