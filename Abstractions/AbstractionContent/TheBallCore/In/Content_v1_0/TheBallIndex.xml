@@ -182,6 +182,30 @@
           <Target name="RequestObject"/>
         </OperationReturnValues>
       </Operation>
+      <Operation name="FilterAndSubmitIndexingRequests">
+        <OperationSpec>
+          <Description>Filter given information objects and submit (passed) objects for background indexing</Description>
+        </OperationSpec>
+      <Parameters>
+        <Parameter name="CandidateObjectLocations" dataType="string[]" designDesc="Object target locations" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="ObjectsToIndex" dataType="string[]" designDesc="Filtered list of objects to index" state="implemented">
+            <Parameter name="CandidateObjectLocations"/>
+          </TargetDefinition>
+          <TargetDefinition name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object" state="implemented">
+            <Target name="ObjectsToIndex"/>
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
+            <Target name="IndexingRequest"/>
+          </MethodExecute>
+          <MethodExecute name="PutIndexingRequestToQueue" designDesc="Put indexing request to queue" state="implemented">
+            <Target name="IndexingRequest"/>
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      </Operation>
     </Operations>
     <Subscriptions />
   </InstanceOfTheBall>

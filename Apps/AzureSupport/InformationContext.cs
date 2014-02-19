@@ -12,6 +12,7 @@ using Amazon.IdentityManagement.Model;
 using DiagnosticsUtils;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.Index;
 using TheBall.Interface;
 
 namespace TheBall
@@ -149,9 +150,18 @@ namespace TheBall
         {
             updateStatusSummary();
             var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
+            var currentOwner = _owner;
             foreach(var grpItem in grouped)
             {
-                SubscribeSupport.AddPendingRequests(grpItem.Key, grpItem.Select(item => item.TargetLocation).ToArray());
+                var targetLocations = grpItem.Select(item => item.TargetLocation).Distinct().ToArray();
+                SubscribeSupport.AddPendingRequests(grpItem.Key, targetLocations);
+                if (currentOwner != null)
+                {
+                    if (grpItem.Key.IsEqualOwner(currentOwner))
+                    {
+                        FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = targetLocations });
+                    }
+                }
             }
             FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
             if (isResourceMeasuring)

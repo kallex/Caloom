@@ -38,9 +38,17 @@ namespace TheBall.Index
 
         public static void PutQueryRequestToQueue(string indexName, IContainerOwner owner, string requestID)
         {
-            var queueName = GetQueryRequestQueueName("defaultindex");
+            var queueName = GetQueryRequestQueueName(indexName);
             string ownerstring = owner.ToParseableString();
             string messageText = ownerstring + ":" + requestID;
+            QueueSupport.PutMessageToQueue(queueName, messageText);
+        }
+
+        public static void PutIndexingRequestToQueue(string indexName, IContainerOwner owner, string requestID)
+        {
+            var queueName = GetIndexRequestQueueName(indexName);
+            string ownerString = owner.ToParseableString();
+            string messageText = ownerString + ":" + requestID;
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
     }

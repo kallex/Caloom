@@ -349,6 +349,48 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>FilterAndSubmitIndexingRequests (CandidateObjectLocations)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Filter given information objects and submit (passed) objects for background indexing
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CandidateObjectLocations
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Object target locations
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ObjectsToIndex ( CandidateObjectLocations )</h2>
+		<p>		<div class="MsoNormal" >
+		Filtered list of objects to index
+		</div>
+		</p><h2>Target Definition: IndexingRequest ( ObjectsToIndex )</h2>
+		<p>		<div class="MsoNormal" >
+		Indexing request object
+		</div>
+		</p><h2>Method Call: StoreObject ( IndexingRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h2>Method Call: PutIndexingRequestToQueue ( IndexingRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Put indexing request to queue
+		</div>
 		</p><h1>IndexInformation (IndexingRequest)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

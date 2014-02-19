@@ -24,6 +24,11 @@ namespace TheBall.CORE
 
     public static partial class ExtIContainerOwner
     {
+        public static bool IsEqualOwner(this IContainerOwner owner, IContainerOwner comparingToOwner)
+        {
+            return owner.ContainerName == comparingToOwner.ContainerName && owner.LocationPrefix == comparingToOwner.LocationPrefix;
+        }
+
         public static string ToParseableString(this IContainerOwner owner)
         {
             return owner.ContainerName + "/" + owner.LocationPrefix;

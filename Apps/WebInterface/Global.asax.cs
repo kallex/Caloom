@@ -18,6 +18,8 @@ namespace WebInterface
             string connStr;
             connStr = InstanceConfiguration.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);
+            QueueSupport.RegisterQueue("index-defaultindex-index");
+            QueueSupport.RegisterQueue("index-defaultindex-query");
         }
 
         protected void Session_Start(object sender, EventArgs e)

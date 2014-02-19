@@ -140,6 +140,67 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="FilterAndSubmitIndexingRequests (CandidateObjectLocations)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Filter given information objects and submit (passed) objects for background indexing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CandidateObjectLocations</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Object target locations</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ObjectsToIndex ( CandidateObjectLocations )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Filtered list of objects to index</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IndexingRequest ( ObjectsToIndex )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Indexing request object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( IndexingRequest )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PutIndexingRequestToQueue ( IndexingRequest )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Put indexing request to queue</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="IndexInformation (IndexingRequest)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

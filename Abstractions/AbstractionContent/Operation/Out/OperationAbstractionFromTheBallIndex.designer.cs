@@ -129,9 +129,27 @@ using System.IO;
 		return returnValue;
 				}
 				}
-
-		    public class PrepareAndExecuteQueryReturnValue 
+				public class PrepareAndExecuteQueryReturnValue 
 		{
 				public QueryRequest ActiveRequest ;
+				}
+				public class FilterAndSubmitIndexingRequestsParameters 
+		{
+				public string[] CandidateObjectLocations ;
+				}
+		
+		public class FilterAndSubmitIndexingRequests 
+		{
+				private static void PrepareParameters(FilterAndSubmitIndexingRequestsParameters parameters)
+		{
+					}
+				public static void Execute(FilterAndSubmitIndexingRequestsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] ObjectsToIndex = FilterAndSubmitIndexingRequestsImplementation.GetTarget_ObjectsToIndex(parameters.CandidateObjectLocations);	
+				IndexingRequest IndexingRequest = FilterAndSubmitIndexingRequestsImplementation.GetTarget_IndexingRequest(ObjectsToIndex);	
+				FilterAndSubmitIndexingRequestsImplementation.ExecuteMethod_StoreObject(IndexingRequest);		
+				FilterAndSubmitIndexingRequestsImplementation.ExecuteMethod_PutIndexingRequestToQueue(IndexingRequest);		
+				}
 				}
 		 } 
