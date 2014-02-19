@@ -1,10 +1,14 @@
  
 
 var QueryToken {
-	ID: string;
+	QueryRequestObjectDomainName: string;
+	QueryRequestObjectName: string;
+	QueryRequestObjectID: string;
 
     constructor() {
-					this.ID = ko.observable(this.ID);
+					this.QueryRequestObjectDomainName = ko.observable(this.QueryRequestObjectDomainName);
+			this.QueryRequestObjectName = ko.observable(this.QueryRequestObjectName);
+			this.QueryRequestObjectID = ko.observable(this.QueryRequestObjectID);
     }
 }
 

@@ -211,13 +211,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>QueryTrackableID</TextContent>
+                        <TextContent>QueryTrackableRequest</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>string</TextContent>
+                        <TextContent>QueryRequest</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Trackable ID as result</TextContent>
+                        <TextContent>Trackable active query object</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -236,6 +236,84 @@
                 <Text>
                   <TextContent>Write query token to http response</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PrepareAndExecuteQuery (QueryString)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Prepare query object and execute the async </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>QueryString</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Query string</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RequestObject ( QueryString )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Request object to prepare and push execute for</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( RequestObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store query request object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PutQueryRequestToQueryQueue ( RequestObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Put query request to query queue.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : PrepareAndExecuteQueryReturnValue ( RequestObject )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ActiveRequest</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>QueryRequest</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Active request</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>

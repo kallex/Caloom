@@ -101,9 +101,9 @@
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="QueryObject" dataType="UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
-          <OperationExecute name="PerformQuery" targetOperationName="QueryIndexedInformation" designDesc="Perform query request" state="implemented">
+          <OperationExecute name="PerformQuery" targetOperationName="PrepareAndExecuteQuery" designDesc="Perform query request" state="implemented">
             <Target name="QueryObject" />
-            <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Trackable ID as result" state="implemented" />
+            <ReturnValue name="QueryTrackableRequest" dataType="QueryRequest" designDesc="Trackable active query object" state="implemented" />
           </OperationExecute>
           <TargetDefinition name="ResponseContentObject" dataType="QueryToken" designDesc="Query response token" state="implemented">
             <Target name="PerformQueryOutput" />
@@ -113,6 +113,31 @@
           </MethodExecute>
         </SequentialExecution>
       </Execution>
+    </Operation>
+    <Operation name="PrepareAndExecuteQuery">
+      <OperationSpec>
+        <Description>Prepare query object and execute the async </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="QueryString" dataType="string" designDesc="Query string" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="RequestObject" dataType="QueryRequest" designDesc="Request object to prepare and push execute for" state="implemented">
+            <Parameter name="QueryString" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store query request object" state="implemented">
+            <Target name="RequestObject" />
+          </MethodExecute>
+          <MethodExecute name="PutQueryRequestToQueryQueue" designDesc="Put query request to query queue." state="implemented">
+            <Target name="RequestObject" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="ActiveRequest" dataType="QueryRequest" designDesc="Active request" state="implemented" />
+        <Target name="RequestObject" />
+      </OperationReturnValues>
     </Operation>
   </Operations>
 </OperationAbstraction>

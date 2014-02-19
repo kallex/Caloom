@@ -397,17 +397,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		QueryTrackableID
+		QueryTrackableRequest
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		QueryRequest
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Trackable ID as result
+		Trackable active query object
 		</div>
 				</td>
 				</tr>
@@ -420,6 +420,65 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Write query token to http response
 		</div>
+		</p><h1>PrepareAndExecuteQuery (QueryString)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Prepare query object and execute the async 
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		QueryString
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Query string
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: RequestObject ( QueryString )</h2>
+		<p>		<div class="MsoNormal" >
+		Request object to prepare and push execute for
+		</div>
+		</p><h2>Method Call: StoreObject ( RequestObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Store query request object
+		</div>
+		</p><h2>Method Call: PutQueryRequestToQueryQueue ( RequestObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Put query request to query queue.
+		</div>
+		</p><h2>Return Value : PrepareAndExecuteQueryReturnValue ( RequestObject )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ActiveRequest
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		QueryRequest
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Active request
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>QueryIndexedInformation (QueryRequest, IndexName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

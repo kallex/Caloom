@@ -23,8 +23,7 @@ using System.IO;
 					ReleaseIndexerResourcesImplementation.ExecuteMethod_ReleaseResources(parameters.ResourceInfo);		
 				}
 				}
-
-		    public class AttemptToBecomeInfrastructureIndexerParameters 
+				public class AttemptToBecomeInfrastructureIndexerParameters 
 		{
 				public string IndexName ;
 				}
@@ -100,14 +99,39 @@ using System.IO;
 		{
 						
 					UserQuery QueryObject = PerformUserQueryImplementation.GetTarget_QueryObject();	
-				string PerformQueryOutput;
+				QueryRequest PerformQueryOutput;
 		{ // Local block to allow local naming
-			QueryIndexedInformationParameters operationParameters = PerformUserQueryImplementation.PerformQuery_GetParameters(QueryObject);
-			var operationReturnValue = QueryIndexedInformation.Execute(operationParameters);
+			PrepareAndExecuteQueryParameters operationParameters = PerformUserQueryImplementation.PerformQuery_GetParameters(QueryObject);
+			var operationReturnValue = PrepareAndExecuteQuery.Execute(operationParameters);
 			PerformQueryOutput = PerformUserQueryImplementation.PerformQuery_GetOutput(operationReturnValue, QueryObject);						
 		} // Local block closing
 				QueryToken ResponseContentObject = PerformUserQueryImplementation.GetTarget_ResponseContentObject(PerformQueryOutput);	
 				PerformUserQueryImplementation.ExecuteMethod_WriteContentToHttpResponse(ResponseContentObject);		
 				}
+				}
+				public class PrepareAndExecuteQueryParameters 
+		{
+				public string QueryString ;
+				}
+		
+		public class PrepareAndExecuteQuery 
+		{
+				private static void PrepareParameters(PrepareAndExecuteQueryParameters parameters)
+		{
+					}
+				public static PrepareAndExecuteQueryReturnValue Execute(PrepareAndExecuteQueryParameters parameters)
+		{
+						PrepareParameters(parameters);
+					QueryRequest RequestObject = PrepareAndExecuteQueryImplementation.GetTarget_RequestObject(parameters.QueryString);	
+				PrepareAndExecuteQueryImplementation.ExecuteMethod_StoreObject(RequestObject);		
+				PrepareAndExecuteQueryImplementation.ExecuteMethod_PutQueryRequestToQueryQueue(RequestObject);		
+				PrepareAndExecuteQueryReturnValue returnValue = PrepareAndExecuteQueryImplementation.Get_ReturnValue(RequestObject);
+		return returnValue;
+				}
+				}
+
+		    public class PrepareAndExecuteQueryReturnValue 
+		{
+				public QueryRequest ActiveRequest ;
 				}
 		 } 

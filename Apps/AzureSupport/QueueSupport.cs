@@ -178,5 +178,12 @@ namespace TheBall
             public CloudQueueMessage Message;
             public T RetrievedObject;
         }
+
+        public static void PutMessageToQueue(string queueName, string messageText)
+        {
+            var queue = GetQueue(queueName);
+            CloudQueueMessage message = new CloudQueueMessage(messageText);
+            queue.AddMessage(message);
+        }
     }
 }

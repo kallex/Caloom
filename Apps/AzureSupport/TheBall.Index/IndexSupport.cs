@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheBall.CORE;
 
 namespace TheBall.Index
 {
@@ -34,5 +35,13 @@ namespace TheBall.Index
         }
 
         public const int IndexDriveStorageSizeInMB = 1024*100; // 100 GB
+
+        public static void PutQueryRequestToQueue(string indexName, IContainerOwner owner, string requestID)
+        {
+            var queueName = GetQueryRequestQueueName("defaultindex");
+            string ownerstring = owner.ToParseableString();
+            string messageText = ownerstring + ":" + requestID;
+            QueueSupport.PutMessageToQueue(queueName, messageText);
+        }
     }
 }

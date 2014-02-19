@@ -13,21 +13,33 @@
         </InterfaceObject>
         <InterfaceObject name="QueryToken" designDesc="Query token item">
           <InterfaceItems>
-            <InterfaceItem name="ID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="QueryRequestObjectDomainName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="QueryRequestObjectName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="QueryRequestObjectID" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
-      <InformationObject name="IndexingRequest" designDesc="Request for indexing content">
+      <InformationObject name="IndexingRequest" provideCreateMethod="false" designDesc="Request for indexing content">
         <InformationItems>
-          <InformationItem name="OwnerPrefix" logicalDataType="Text_Short"/>
+          <InformationItem name="ObjectLocations" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="QueryRequest" designDesc="Request for querying content">
+      <InformationObject name="QueryRequest" provideCreateMethod="false" designDesc="Request for querying content">
         <InformationItems>
-          <InformationItem name="OwnerPrefix" logicalDataType="Text_Short"/>
           <InformationItem name="QueryString" logicalDataType="Text_Short"/>
+          <InformationItem name="IsQueryCompleted" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="QueryResultObjects" logicalDataType="InformationObject"
+                           informationObjectName="QueryResultItem" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="QueryResultItem" provideCreateMethod="false" designDesc="Query result item">
+        <InformationItems>
+          <InformationItem name="ObjectDomainName" logicalDataType="Text_Short" />
+          <InformationItem name="ObjectName" logicalDataType="Text_Short" />
+          <InformationItem name="ObjectID" logicalDataType="Text_Short" />
+          <InformationItem name="Rank" logicalDataType="Number_ApproxDecimal"/>
         </InformationItems>
       </InformationObject>
     </InformationModel>
@@ -120,31 +132,56 @@
             </MethodExecute>
           </SequentialExecution>
         </Execution>
-      <OperationReturnValues>
-        <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Query ID token" state="implemented" />
-        <Target name="QueryID"/>
-      </OperationReturnValues>
+        <OperationReturnValues>
+          <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Query ID token" state="implemented" />
+          <Target name="QueryID"/>
+        </OperationReturnValues>
       </Operation>
-    <Operation name="PerformUserQuery">
-      <OperationSpec>
-        <Description>Perform user web query</Description>
-      </OperationSpec>
-    <Execution>
-      <SequentialExecution>
-        <TargetDefinition name="QueryObject" dataType="UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
-        <OperationExecute name="PerformQuery" targetOperationName="QueryIndexedInformation" designDesc="Perform query request" state="implemented">
-          <Target name="QueryObject"/>
-          <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Trackable ID as result" state="implemented"/>
-        </OperationExecute>
-        <TargetDefinition name="ResponseContentObject" dataType="QueryToken" designDesc="Query response token" state="implemented">
-          <Target name="PerformQueryOutput"/>
-        </TargetDefinition>
-        <MethodExecute name="WriteContentToHttpResponse" designDesc="Write query token to http response" state="implemented">
-          <Target name="ResponseContentObject"/>
-        </MethodExecute>
-      </SequentialExecution>
-    </Execution>
-    </Operation>
+      <Operation name="PerformUserQuery">
+        <OperationSpec>
+          <Description>Perform user web query</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="QueryObject" dataType="UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
+            <OperationExecute name="PerformQuery" targetOperationName="PrepareAndExecuteQuery" designDesc="Perform query request" state="implemented">
+              <Target name="QueryObject"/>
+              <ReturnValue name="QueryTrackableRequest" dataType="QueryRequest" designDesc="Trackable active query object" state="implemented"/>
+            </OperationExecute>
+            <TargetDefinition name="ResponseContentObject" dataType="QueryToken" designDesc="Query response token" state="implemented">
+              <Target name="PerformQueryOutput"/>
+            </TargetDefinition>
+            <MethodExecute name="WriteContentToHttpResponse" designDesc="Write query token to http response" state="implemented">
+              <Target name="ResponseContentObject"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="PrepareAndExecuteQuery">
+        <OperationSpec>
+          <Description>Prepare query object and execute the async </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="QueryString" dataType="string" designDesc="Query string" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="QueryRequest" name="RequestObject" designDesc="Request object to prepare and push execute for" state="implemented">
+              <Parameter name="QueryString"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store query request object" state="implemented">
+              <Target name="RequestObject"/>
+            </MethodExecute>
+            <MethodExecute name="PutQueryRequestToQueryQueue" designDesc="Put query request to query queue." state="implemented">
+              <Target name="RequestObject"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue dataType="QueryRequest" name="ActiveRequest" designDesc="Active request" state="implemented"/>
+          <Target name="RequestObject"/>
+        </OperationReturnValues>
+      </Operation>
     </Operations>
     <Subscriptions />
   </InstanceOfTheBall>

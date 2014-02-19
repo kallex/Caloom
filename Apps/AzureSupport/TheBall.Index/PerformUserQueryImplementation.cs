@@ -14,32 +14,36 @@ namespace TheBall.Index
             return result;
         }
 
-        public static QueryIndexedInformationParameters PerformQuery_GetParameters(UserQuery queryObject)
-        {
-            return new QueryIndexedInformationParameters
-                {
-                    QueryRequest = new QueryRequest { OwnerPrefix = InformationContext.CurrentOwner.GetOwnerPrefix(),
-                        QueryString = queryObject.QueryString
-                    }, IndexName = "default",
-                };
-        }
-
-        public static string PerformQuery_GetOutput(QueryIndexedInformationReturnValue operationReturnValue, UserQuery queryObject)
-        {
-            return operationReturnValue.QueryTrackableID;
-        }
-
-        public static QueryToken GetTarget_ResponseContentObject(string performQueryOutput)
-        {
-            return new QueryToken {ID = performQueryOutput};
-        }
-
         public static void ExecuteMethod_WriteContentToHttpResponse(QueryToken responseContentObject)
         {
             var httpContext = HttpContext.Current;
             var jsonString = JSONSupport.SerializeToJSONString(responseContentObject);
             httpContext.Response.Write(jsonString);
             httpContext.Response.ContentType = "application/json";
+        }
+
+        public static PrepareAndExecuteQueryParameters PerformQuery_GetParameters(UserQuery queryObject)
+        {
+            return new PrepareAndExecuteQueryParameters
+                {
+                    QueryString = queryObject.QueryString
+                };
+        }
+
+        public static QueryRequest PerformQuery_GetOutput(PrepareAndExecuteQueryReturnValue operationReturnValue, UserQuery queryObject)
+        {
+            return operationReturnValue.ActiveRequest;
+        }
+
+        public static QueryToken GetTarget_ResponseContentObject(QueryRequest performQueryOutput)
+        {
+            QueryToken queryToken = new QueryToken
+                {
+                    QueryRequestObjectDomainName = performQueryOutput.SemanticDomainName, 
+                    QueryRequestObjectName = performQueryOutput.Name, 
+                    QueryRequestObjectID = performQueryOutput.ID
+                };
+            return queryToken;
         }
     }
 }

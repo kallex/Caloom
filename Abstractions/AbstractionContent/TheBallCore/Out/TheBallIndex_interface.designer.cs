@@ -39,7 +39,13 @@ using TheBall.CORE;
                 public string ETag { get; set; }
 
 			[DataMember]
-			public string ID;
+			public string QueryRequestObjectDomainName;
+
+			[DataMember]
+			public string QueryRequestObjectName;
+
+			[DataMember]
+			public string QueryRequestObjectID;
 
 			
 			}

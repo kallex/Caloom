@@ -24,6 +24,11 @@ namespace TheBall.CORE
 
     public static partial class ExtIContainerOwner
     {
+        public static string ToParseableString(this IContainerOwner owner)
+        {
+            return owner.ContainerName + "/" + owner.LocationPrefix;
+        }
+
         public static string PrefixWithOwnerLocation(this IContainerOwner owner, string location)
         {
             string ownerLocationPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
