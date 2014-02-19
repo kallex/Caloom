@@ -34,28 +34,52 @@
     <StatusItem name="AttemptToBecomeInfrastructureIndexer_Exception" displayName="VariableType: Exception" description="Error causing exception">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="IndexInformation_IndexingRequest" displayName="VariableType: IndexingRequest" description="Indexing request object">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    <StatusItem name="IndexInformation_IndexingRequestID" displayName="VariableType: IndexingRequestID" description="Indexing request ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_Owner" displayName="VariableType: Owner" description="Owner of the index and process">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_IndexName" displayName="VariableType: IndexName" description="Index name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_IndexStorageRootPath" displayName="VariableType: IndexStorageRootPath" description="Index storage root path">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_IndexingRequest" displayName="TargetDefinitionType: IndexingRequest" description="Indexing request object for the ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="IndexInformation_LuceneIndexFolder" displayName="TargetDefinitionType: LuceneIndexFolder" description="Indexing subfolder based on Owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="IndexInformation_PerformIndexing" displayName="MethodExecuteType: PerformIndexing" description="Perform indexing of the object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_QueryRequest" displayName="VariableType: QueryRequest" description="Query request object">
+    <StatusItem name="IndexInformation_DeleteIndexingRequest" displayName="MethodExecuteType: DeleteIndexingRequest" description="Delete associated indexing request">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_IndexName" displayName="VariableType: IndexName" description="Index name to perform query against">
+    <StatusItem name="QueryIndexedInformation_QueryRequestID" displayName="VariableType: QueryRequestID" description="Query request ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_QueryID" displayName="TargetDefinitionType: QueryID" description="Obtain trackable ID for query">
+    <StatusItem name="QueryIndexedInformation_Owner" displayName="VariableType: Owner" description="Owner of the index and process">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_QueryQueueName" displayName="TargetDefinitionType: QueryQueueName" description="Query queue name for search requests">
+    <StatusItem name="QueryIndexedInformation_IndexName" displayName="VariableType: IndexName" description="Index name">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_QueueQueryRequest" displayName="MethodExecuteType: QueueQueryRequest" description="Queue query request">
+    <StatusItem name="QueryIndexedInformation_IndexStorageRootPath" displayName="VariableType: IndexStorageRootPath" description="Index storage root path">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="QueryIndexedInformation_QueryTrackableID" displayName="VariableType: QueryTrackableID" description="Query ID token">
+    <StatusItem name="QueryIndexedInformation_QueryRequest" displayName="TargetDefinitionType: QueryRequest" description="Query request object for the ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="QueryIndexedInformation_LuceneIndexFolder" displayName="TargetDefinitionType: LuceneIndexFolder" description="Indexing subfolder based on Owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="QueryIndexedInformation_PerformQueryRequest" displayName="MethodExecuteType: PerformQueryRequest" description="Perform query request">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="QueryIndexedInformation_SaveQueryRequest" displayName="MethodExecuteType: SaveQueryRequest" description="Save fullfilled query request">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="PerformUserQuery_QueryObject" displayName="TargetDefinitionType: QueryObject" description="Retrieve query object from JSON content">
@@ -118,16 +142,24 @@
       <ItemRef itemName="AttemptToBecomeInfrastructureIndexer_Exception" />
     </Group>
     <Group name="IndexInformation">
+      <ItemRef itemName="IndexInformation_IndexingRequestID" />
+      <ItemRef itemName="IndexInformation_Owner" />
+      <ItemRef itemName="IndexInformation_IndexName" />
+      <ItemRef itemName="IndexInformation_IndexStorageRootPath" />
       <ItemRef itemName="IndexInformation_IndexingRequest" />
+      <ItemRef itemName="IndexInformation_LuceneIndexFolder" />
       <ItemRef itemName="IndexInformation_PerformIndexing" />
+      <ItemRef itemName="IndexInformation_DeleteIndexingRequest" />
     </Group>
     <Group name="QueryIndexedInformation">
-      <ItemRef itemName="QueryIndexedInformation_QueryRequest" />
+      <ItemRef itemName="QueryIndexedInformation_QueryRequestID" />
+      <ItemRef itemName="QueryIndexedInformation_Owner" />
       <ItemRef itemName="QueryIndexedInformation_IndexName" />
-      <ItemRef itemName="QueryIndexedInformation_QueryID" />
-      <ItemRef itemName="QueryIndexedInformation_QueryQueueName" />
-      <ItemRef itemName="QueryIndexedInformation_QueueQueryRequest" />
-      <ItemRef itemName="QueryIndexedInformation_QueryTrackableID" />
+      <ItemRef itemName="QueryIndexedInformation_IndexStorageRootPath" />
+      <ItemRef itemName="QueryIndexedInformation_QueryRequest" />
+      <ItemRef itemName="QueryIndexedInformation_LuceneIndexFolder" />
+      <ItemRef itemName="QueryIndexedInformation_PerformQueryRequest" />
+      <ItemRef itemName="QueryIndexedInformation_SaveQueryRequest" />
     </Group>
     <Group name="PerformUserQuery">
       <ItemRef itemName="PerformUserQuery_QueryObject" />

@@ -391,7 +391,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Put indexing request to queue
 		</div>
-		</p><h1>IndexInformation (IndexingRequest)</h1>
+		</p><h1>IndexInformation (IndexingRequestID, Owner, IndexName, IndexStorageRootPath)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Index information object 
@@ -401,25 +401,88 @@ div.WordSection1
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		IndexingRequest
+				<div class="MsoNormal" >
+		IndexingRequestID
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		IndexingRequest
+				<div class="MsoNormal" >
+		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Indexing request object
+				<div class="MsoNormal" >
+		Indexing request ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner of the index and process
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IndexName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Index name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IndexStorageRootPath
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Index storage root path
 		</div>
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: PerformIndexing ( IndexingRequest )</h2>
+		</p><h2>Target Definition: IndexingRequest ( Owner, IndexingRequestID )</h2>
+		<p>		<div class="MsoNormal" >
+		Indexing request object for the ID
+		</div>
+		</p><h2>Target Definition: LuceneIndexFolder ( Owner, IndexName, IndexStorageRootPath )</h2>
+		<p>		<div class="MsoNormal" >
+		Indexing subfolder based on Owner
+		</div>
+		</p><h2>Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder )</h2>
 		<p>		<div class="MsoNormal" >
 		Perform indexing of the object
+		</div>
+		</p><h2>Method Call: DeleteIndexingRequest ( IndexingRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete associated indexing request
 		</div>
 		</p><h1>PerformUserQuery</h1>
 		<h2>Specifications</h2>
@@ -521,7 +584,7 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h1>QueryIndexedInformation (QueryRequest, IndexName)</h1>
+		</p><h1>QueryIndexedInformation (QueryRequestID, Owner, IndexName, IndexStorageRootPath)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Index information object 
@@ -532,17 +595,34 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		QueryRequest
+		QueryRequestID
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		QueryRequest
+		string
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Query request object
+		Query request ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner of the index and process
 		</div>
 				</td>
 				</tr>
@@ -559,30 +639,14 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Index name to perform query against
+		Index name
 		</div>
 				</td>
 				</tr>
-		</table>
-		</p><h2>Target Definition: QueryID ( QueryRequest )</h2>
-		<p>		<div class="MsoNormal" >
-		Obtain trackable ID for query
-		</div>
-		</p><h2>Target Definition: QueryQueueName ( IndexName )</h2>
-		<p>		<div class="MsoNormal" >
-		Query queue name for search requests
-		</div>
-		</p><h2>Method Call: QueueQueryRequest ( QueryQueueName, QueryRequest )</h2>
-		<p>		<div class="MsoNormal" >
-		Queue query request
-		</div>
-		</p><h2>Return Value : QueryIndexedInformationReturnValue ( QueryID )</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		QueryTrackableID
+		IndexStorageRootPath
 		</div>
 				</td>
 				<td>
@@ -592,11 +656,27 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Query ID token
+		Index storage root path
 		</div>
 				</td>
 				</tr>
 		</table>
+		</p><h2>Target Definition: QueryRequest ( Owner, QueryRequestID )</h2>
+		<p>		<div class="MsoNormal" >
+		Query request object for the ID
+		</div>
+		</p><h2>Target Definition: LuceneIndexFolder ( Owner, IndexName, IndexStorageRootPath )</h2>
+		<p>		<div class="MsoNormal" >
+		Indexing subfolder based on Owner
+		</div>
+		</p><h2>Method Call: PerformQueryRequest ( QueryRequest, LuceneIndexFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform query request
+		</div>
+		</p><h2>Method Call: SaveQueryRequest ( QueryRequest )</h2>
+		<p>		<div class="MsoNormal" >
+		Save fullfilled query request
+		</div>
 		</p><h1>ReleaseIndexerResources (ResourceInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

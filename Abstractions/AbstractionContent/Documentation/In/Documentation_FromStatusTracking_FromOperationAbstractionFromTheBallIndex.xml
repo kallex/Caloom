@@ -4,50 +4,7 @@
     <Documents>
       <Document name="Status Tracking Document (TheBall.Index)" title="Status Tracking Document (TheBall.Index)">
         <Content>
-          <Header text="Summary" level="1">
-            <Header text="IndexInformation (50 %)" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Being implemented 1, Implemented 1</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-          </Header>
-          <Header text="IndexInformation (50 %)" level="1">
-            <Paragraph>
-              <Table>
-                <Columns>
-                  <Column name="Item" />
-                  <Column name="Status" />
-                  <Column name="Description" />
-                </Columns>
-                <Rows>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: IndexingRequest</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Indexing request object</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData>
-                      <TextContent>MethodExecuteType: PerformIndexing</TextContent>
-                    </ColumnData>
-                    <ColumnData>
-                      <TextContent>Implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData>
-                      <TextContent>Perform indexing of the object</TextContent>
-                    </ColumnData>
-                  </Row>
-                </Rows>
-              </Table>
-            </Paragraph>
-          </Header>
+          <Header text="Summary" level="1" />
         </Content>
       </Document>
     </Documents>

@@ -100,12 +100,28 @@
           <Description>Index information object </Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object" state="designApproved"/>
+          <Parameter name="IndexingRequestID" dataType="string" designDesc="Indexing request ID" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
+          <Parameter name="IndexName" dataType="string" designDesc="Index name" state="implemented"/>
+          <Parameter name="IndexStorageRootPath" dataType="string" designDesc="Index storage root path" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
+            <TargetDefinition name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object for the ID" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="IndexingRequestID"/>
+            </TargetDefinition>
+            <TargetDefinition name="LuceneIndexFolder" dataType="string" designDesc="Indexing subfolder based on Owner" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="IndexName"/>
+              <Parameter name="IndexStorageRootPath"/>
+            </TargetDefinition>
             <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
-              <Parameter name="IndexingRequest"/>
+              <Target name="IndexingRequest"/>
+              <Target name="LuceneIndexFolder"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteIndexingRequest" designDesc="Delete associated indexing request" state="implemented">
+              <Target name="IndexingRequest"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
@@ -115,27 +131,31 @@
           <Description>Index information object </Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="QueryRequest" dataType="QueryRequest" designDesc="Query request object" state="implemented"/>
-          <Parameter name="IndexName" dataType="string" designDesc="Index name to perform query against" state="implemented"/>
+          <Parameter name="QueryRequestID" dataType="string" designDesc="Query request ID" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
+          <Parameter name="IndexName" dataType="string" designDesc="Index name" state="implemented"/>
+          <Parameter name="IndexStorageRootPath" dataType="string" designDesc="Index storage root path" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="QueryID" dataType="string" designDesc="Obtain trackable ID for query" state="implemented">
-              <Parameter name="QueryRequest"/>
+            <TargetDefinition name="QueryRequest" dataType="QueryRequest" designDesc="Query request object for the ID" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="QueryRequestID"/>
             </TargetDefinition>
-            <TargetDefinition name="QueryQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
+            <TargetDefinition name="LuceneIndexFolder" dataType="string" designDesc="Indexing subfolder based on Owner" state="implemented">
+              <Parameter name="Owner"/>
               <Parameter name="IndexName"/>
+              <Parameter name="IndexStorageRootPath"/>
             </TargetDefinition>
-            <MethodExecute name="QueueQueryRequest" designDesc="Queue query request" state="implemented">
-              <Parameter name="QueryRequest"/>
-              <Target name="QueryQueueName"/>
+            <MethodExecute name="PerformQueryRequest" designDesc="Perform query request" state="implemented">
+              <Target name="QueryRequest"/>
+              <Target name="LuceneIndexFolder"/>
+            </MethodExecute>
+            <MethodExecute name="SaveQueryRequest" designDesc="Save fullfilled query request" state="implemented">
+              <Target name="QueryRequest"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
-        <OperationReturnValues>
-          <ReturnValue name="QueryTrackableID" dataType="string" designDesc="Query ID token" state="implemented" />
-          <Target name="QueryID"/>
-        </OperationReturnValues>
       </Operation>
       <Operation name="PerformUserQuery">
         <OperationSpec>

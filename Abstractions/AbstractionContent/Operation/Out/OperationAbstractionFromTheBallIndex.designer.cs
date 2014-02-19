@@ -53,7 +53,10 @@ using System.IO;
 				}
 				public class IndexInformationParameters 
 		{
-				public IndexingRequest IndexingRequest ;
+				public string IndexingRequestID ;
+				public TheBall.CORE.IContainerOwner Owner ;
+				public string IndexName ;
+				public string IndexStorageRootPath ;
 				}
 		
 		public class IndexInformation 
@@ -64,13 +67,18 @@ using System.IO;
 				public static void Execute(IndexInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					IndexInformationImplementation.ExecuteMethod_PerformIndexing(parameters.IndexingRequest);		
+					IndexingRequest IndexingRequest = IndexInformationImplementation.GetTarget_IndexingRequest(parameters.Owner, parameters.IndexingRequestID);	
+				string LuceneIndexFolder = IndexInformationImplementation.GetTarget_LuceneIndexFolder(parameters.Owner, parameters.IndexName, parameters.IndexStorageRootPath);	
+				IndexInformationImplementation.ExecuteMethod_PerformIndexing(IndexingRequest, LuceneIndexFolder);		
+				IndexInformationImplementation.ExecuteMethod_DeleteIndexingRequest(IndexingRequest);		
 				}
 				}
 				public class QueryIndexedInformationParameters 
 		{
-				public QueryRequest QueryRequest ;
+				public string QueryRequestID ;
+				public TheBall.CORE.IContainerOwner Owner ;
 				public string IndexName ;
+				public string IndexStorageRootPath ;
 				}
 		
 		public class QueryIndexedInformation 
@@ -78,19 +86,14 @@ using System.IO;
 				private static void PrepareParameters(QueryIndexedInformationParameters parameters)
 		{
 					}
-				public static QueryIndexedInformationReturnValue Execute(QueryIndexedInformationParameters parameters)
+				public static void Execute(QueryIndexedInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string QueryID = QueryIndexedInformationImplementation.GetTarget_QueryID(parameters.QueryRequest);	
-				string QueryQueueName = QueryIndexedInformationImplementation.GetTarget_QueryQueueName(parameters.IndexName);	
-				QueryIndexedInformationImplementation.ExecuteMethod_QueueQueryRequest(parameters.QueryRequest, QueryQueueName);		
-				QueryIndexedInformationReturnValue returnValue = QueryIndexedInformationImplementation.Get_ReturnValue(QueryID);
-		return returnValue;
+					QueryRequest QueryRequest = QueryIndexedInformationImplementation.GetTarget_QueryRequest(parameters.Owner, parameters.QueryRequestID);	
+				string LuceneIndexFolder = QueryIndexedInformationImplementation.GetTarget_LuceneIndexFolder(parameters.Owner, parameters.IndexName, parameters.IndexStorageRootPath);	
+				QueryIndexedInformationImplementation.ExecuteMethod_PerformQueryRequest(QueryRequest, LuceneIndexFolder);		
+				QueryIndexedInformationImplementation.ExecuteMethod_SaveQueryRequest(QueryRequest);		
 				}
-				}
-				public class QueryIndexedInformationReturnValue 
-		{
-				public string QueryTrackableID ;
 				}
 		
 		public class PerformUserQuery 

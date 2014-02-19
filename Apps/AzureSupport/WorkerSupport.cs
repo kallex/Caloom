@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.Index;
 
 namespace TheBall
 {
@@ -581,5 +582,66 @@ namespace TheBall
         }
 
 
+        public static void ProcessIndexing(QueueSupport.MessageObject<string>[] indexingMessages, string indexStorageRootFolder)
+        {
+            foreach (var indexingMessage in indexingMessages)
+            {
+                var splitValues = indexingMessage.RetrievedObject.Split(':');
+                var containerName = splitValues[0];
+                var ownerString = splitValues[1];
+                var owner = VirtualOwner.FigureOwner(ownerString);
+                var indexRequestID = splitValues[2];
+                try
+                {
+                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
+                    InformationContext.Current.Owner = owner;
+                    InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerIndexing);
+                    IndexInformation.Execute(new IndexInformationParameters
+                        {
+                            IndexingRequestID = indexRequestID,
+                            IndexName = IndexSupport.DefaultIndexName,
+                            IndexStorageRootPath = indexStorageRootFolder,
+                            Owner = owner
+                        });
+                }
+                finally
+                {
+                    if (containerName != null)
+                        InformationContext.ProcessAndClearCurrent();
+
+                }
+            }
+        }
+
+        public static void ProcessQueries(QueueSupport.MessageObject<string>[] queryMessages, string indexStorageRootFolder)
+        {
+            foreach (var queryMessage in queryMessages)
+            {
+                var splitValues = queryMessage.RetrievedObject.Split(':');
+                var containerName = splitValues[0];
+                var ownerString = splitValues[1];
+                var owner = VirtualOwner.FigureOwner(ownerString);
+                var queryRequestID = splitValues[2];
+                try
+                {
+                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
+                    InformationContext.Current.Owner = owner;
+                    InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerQuery);
+                    QueryIndexedInformation.Execute(new QueryIndexedInformationParameters
+                        {
+                            QueryRequestID = queryRequestID,
+                            IndexName = IndexSupport.DefaultIndexName,
+                            IndexStorageRootPath = indexStorageRootFolder,
+                            Owner = owner
+                        });
+                }
+                finally
+                {
+                    if (containerName != null)
+                        InformationContext.ProcessAndClearCurrent();
+
+                }
+            }
+        }
     }
 }

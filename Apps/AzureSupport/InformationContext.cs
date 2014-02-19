@@ -341,7 +341,9 @@ namespace TheBall
         public enum ResourceUsageType
         {
             WebRole,
-            WorkerRole
+            WorkerRole,
+            WorkerIndexing,
+            WorkerQuery,
         }
 
         public static void StartResourceMeasuringOnCurrent(ResourceUsageType usageType)

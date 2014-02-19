@@ -201,7 +201,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="IndexInformation (IndexingRequest)" level="1">
+          <Header text="IndexInformation (IndexingRequestID, Owner, IndexName, IndexStorageRootPath)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -219,24 +219,78 @@
                   </Columns>
                   <Rows>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>IndexingRequest</TextContent>
+                      <ColumnData>
+                        <TextContent>IndexingRequestID</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>IndexingRequest</TextContent>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>Indexing request object</TextContent>
+                      <ColumnData>
+                        <TextContent>Indexing request ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner of the index and process</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IndexName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Index name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IndexStorageRootPath</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Index storage root path</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: PerformIndexing ( IndexingRequest )" level="2">
+            <Header text="Target Definition: IndexingRequest ( Owner, IndexingRequestID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Indexing request object for the ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LuceneIndexFolder ( Owner, IndexName, IndexStorageRootPath )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Indexing subfolder based on Owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Perform indexing of the object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteIndexingRequest ( IndexingRequest )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete associated indexing request</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -378,7 +432,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="QueryIndexedInformation (QueryRequest, IndexName)" level="1">
+          <Header text="QueryIndexedInformation (QueryRequestID, Owner, IndexName, IndexStorageRootPath)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -397,13 +451,24 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>QueryRequest</TextContent>
+                        <TextContent>QueryRequestID</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>QueryRequest</TextContent>
+                        <TextContent>string</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Query request object</TextContent>
+                        <TextContent>Query request ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner of the index and process</TextContent>
                       </ColumnData>
                     </Row>
                     <Row>
@@ -414,56 +479,50 @@
                         <TextContent>string</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Index name to perform query against</TextContent>
+                        <TextContent>Index name</TextContent>
                       </ColumnData>
                     </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: QueryID ( QueryRequest )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Obtain trackable ID for query</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: QueryQueueName ( IndexName )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Query queue name for search requests</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: QueueQueryRequest ( QueryQueueName, QueryRequest )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Queue query request</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Return Value : QueryIndexedInformationReturnValue ( QueryID )" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Return Value" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>QueryTrackableID</TextContent>
+                        <TextContent>IndexStorageRootPath</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Query ID token</TextContent>
+                        <TextContent>Index storage root path</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueryRequest ( Owner, QueryRequestID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Query request object for the ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LuceneIndexFolder ( Owner, IndexName, IndexStorageRootPath )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Indexing subfolder based on Owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformQueryRequest ( QueryRequest, LuceneIndexFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform query request</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SaveQueryRequest ( QueryRequest )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save fullfilled query request</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>

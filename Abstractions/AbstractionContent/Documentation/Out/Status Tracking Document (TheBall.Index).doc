@@ -229,49 +229,7 @@ div.WordSection1
 <p class="MsoTitle">Status Tracking Document (TheBall.Index)</p>
 </div>
 		<h1>Summary</h1>
-		<h2>IndexInformation (50 %)</h2>
-		<p>		<div class="MsoNormal" >
-		Being implemented 1, Implemented 1
 		</div>
-		</p><h1>IndexInformation (50 %)</h1>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		VariableType: IndexingRequest
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Indexing request object
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		MethodExecuteType: PerformIndexing
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Perform indexing of the object
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p></div>
 
 </body>
 </html>

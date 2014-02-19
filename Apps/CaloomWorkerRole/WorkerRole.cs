@@ -13,6 +13,7 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
+using TheBall.CORE;
 using TheBall.Index;
 
 namespace CaloomWorkerRole
@@ -41,6 +42,13 @@ namespace CaloomWorkerRole
             activeContainerIX %= ActiveContainerNames.Length;
         }
 
+        public class TaskCommunicatingObject
+        {
+            public bool IsExecutingIndexing;
+        }
+
+        public static TaskCommunicatingObject TaskCommObj = new TaskCommunicatingObject();
+
         public override void Run()
         {
             GracefullyStopped = false;
@@ -66,6 +74,24 @@ namespace CaloomWorkerRole
                         break;
                     int availableIx;
                     Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
+
+                    if (IsIndexingMaster && TaskCommObj.IsExecutingIndexing == false)
+                    {
+                        lock (TaskCommObj)
+                        {
+                            TaskCommObj.IsExecutingIndexing = true;
+                            bool handledIndexing = PollAndHandleIndexingMessages(tasks, availableIx, availableTask);
+                            if (handledIndexing)
+                            {
+                                Thread.Sleep(PollCyclePerRound);
+                                continue;
+                            }
+                            else // If task wasn't started, we set indexing to false and allow flow to continue
+                            {
+                                TaskCommObj.IsExecutingIndexing = false;
+                            }
+                        }
+                    }
 
                     stepActiveContainerIX(ref activeContainerIX);
                     string activeContainerName = ActiveContainerNames[activeContainerIX];
@@ -142,6 +168,37 @@ namespace CaloomWorkerRole
             if (availableTask.Exception != null)
                 ErrorSupport.ReportException(availableTask.Exception);
             return true;
+        }
+
+        private bool PollAndHandleIndexingMessages(Task[] tasks, int availableIx, Task availableTask)
+        {
+            var indexingMessages = IndexSupport.GetIndexingRequestsFromQueue(IndexSupport.DefaultIndexName);
+            var queryMessages = IndexSupport.GetQueryRequestsFromQueue(IndexSupport.DefaultIndexName);
+            if (indexingMessages.Length > 0 || queryMessages.Length > 0)
+            {
+                // TODO: Task the stuff
+                Task executing = Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            WorkerSupport.ProcessIndexing(indexingMessages, IndexerInfo.CloudDrive.LocalPath);
+                            WorkerSupport.ProcessQueries(queryMessages, IndexerInfo.CloudDrive.LocalPath);
+                        }
+                        finally
+                        {
+                            lock (TaskCommObj)
+                            {
+                                TaskCommObj.IsExecutingIndexing = false;
+                            }
+                        }
+                    });
+                tasks[availableIx] = executing;
+                if(availableTask.Exception != null)
+                    ErrorSupport.ReportException(availableTask.Exception);
+                return true;
+            }
+            else
+                return false;
         }
 
 

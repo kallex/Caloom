@@ -185,5 +185,17 @@ namespace TheBall
             CloudQueueMessage message = new CloudQueueMessage(messageText);
             queue.AddMessage(message);
         }
+
+        public static void GetMessagesFromQueue(string queueName, out MessageObject<string>[] messageObjects, int maxCount = 100, bool deleteOnRetrieval = true)
+        {
+            var queue = GetQueue(queueName);
+            var messages = queue.GetMessages(maxCount);
+            messageObjects = messages.Select(msg => new MessageObject<string> {Message = msg, RetrievedObject = msg.AsString}).ToArray();
+            if (deleteOnRetrieval)
+            {
+                foreach(var msgObj in messageObjects)
+                    queue.DeleteMessage(msgObj.Message);
+            }
+        }
     }
 }

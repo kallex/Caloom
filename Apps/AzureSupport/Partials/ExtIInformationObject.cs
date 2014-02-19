@@ -29,6 +29,11 @@ namespace TheBall.CORE
             return owner.ContainerName == comparingToOwner.ContainerName && owner.LocationPrefix == comparingToOwner.LocationPrefix;
         }
 
+        public static string ToFolderName(this IContainerOwner owner)
+        {
+            return owner.ToParseableString();
+        }
+
         public static string ToParseableString(this IContainerOwner owner)
         {
             return owner.ContainerName + "/" + owner.LocationPrefix;

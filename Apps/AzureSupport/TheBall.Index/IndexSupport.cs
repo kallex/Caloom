@@ -51,5 +51,23 @@ namespace TheBall.Index
             string messageText = storageContainerName + ":" + ownerString + ":" + requestID;
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
+
+        public static QueueSupport.MessageObject<string>[] GetQueryRequestsFromQueue(string indexName)
+        {
+            string queueName = GetQueryRequestQueueName(indexName);
+            QueueSupport.MessageObject<string>[] results;
+            QueueSupport.GetMessagesFromQueue(queueName, out results);
+            return results;
+        }
+
+        public static QueueSupport.MessageObject<string>[] GetIndexingRequestsFromQueue(string indexName)
+        {
+            string queueName = GetIndexRequestQueueName(indexName);
+            QueueSupport.MessageObject<string>[] results;
+            QueueSupport.GetMessagesFromQueue(queueName, out results);
+            return results;
+        }
+
+        public const string DefaultIndexName = "defaultindex";
     }
 }
