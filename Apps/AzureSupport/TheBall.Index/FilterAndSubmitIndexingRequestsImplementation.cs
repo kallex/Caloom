@@ -26,7 +26,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_PutIndexingRequestToQueue(IndexingRequest indexingRequest)
         {
-            IndexSupport.PutIndexingRequestToQueue("defaultindex", InformationContext.CurrentOwner, indexingRequest.ID);
+            string activeContainerName = StorageSupport.CurrActiveContainer.Name;
+            IndexSupport.PutIndexingRequestToQueue(activeContainerName, "defaultindex", InformationContext.CurrentOwner, indexingRequest.ID);
         }
     }
 }

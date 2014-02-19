@@ -36,19 +36,19 @@ namespace TheBall.Index
 
         public const int IndexDriveStorageSizeInMB = 1024*100; // 100 GB
 
-        public static void PutQueryRequestToQueue(string indexName, IContainerOwner owner, string requestID)
+        public static void PutQueryRequestToQueue(string storageContainerName, string indexName, IContainerOwner owner, string requestID)
         {
             var queueName = GetQueryRequestQueueName(indexName);
             string ownerstring = owner.ToParseableString();
-            string messageText = ownerstring + ":" + requestID;
+            string messageText = storageContainerName + ":" +  ownerstring + ":" + requestID;
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
 
-        public static void PutIndexingRequestToQueue(string indexName, IContainerOwner owner, string requestID)
+        public static void PutIndexingRequestToQueue(string storageContainerName, string indexName, IContainerOwner owner, string requestID)
         {
             var queueName = GetIndexRequestQueueName(indexName);
             string ownerString = owner.ToParseableString();
-            string messageText = ownerString + ":" + requestID;
+            string messageText = storageContainerName + ":" + ownerString + ":" + requestID;
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
     }

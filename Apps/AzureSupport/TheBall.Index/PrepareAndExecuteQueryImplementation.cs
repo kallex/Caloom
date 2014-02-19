@@ -22,7 +22,8 @@ namespace TheBall.Index
         public static void ExecuteMethod_PutQueryRequestToQueryQueue(QueryRequest requestObject)
         {
             var owner = InformationContext.CurrentOwner;
-            IndexSupport.PutQueryRequestToQueue("defaultindex", owner, requestObject.ID);
+            string activeContainerName = StorageSupport.CurrActiveContainer.Name;
+            IndexSupport.PutQueryRequestToQueue(activeContainerName, "defaultindex", owner, requestObject.ID);
         }
 
         public static PrepareAndExecuteQueryReturnValue Get_ReturnValue(QueryRequest requestObject)
