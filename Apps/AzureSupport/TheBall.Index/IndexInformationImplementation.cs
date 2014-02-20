@@ -23,13 +23,23 @@ namespace TheBall.Index
         {
             string indexName = indexingRequest.IndexName;
             List<Document> documents = new List<Document>();
+            List<string> removeDocumentIDs = new List<string>();
             foreach (var objLocation in indexingRequest.ObjectLocations)
             {
                 IInformationObject iObj = StorageSupport.RetrieveInformation(objLocation, null, owner);
+                if (iObj == null)
+                {
+                    var lastSlashIX = objLocation.LastIndexOf('/');
+                    var objectID = objLocation.Substring(lastSlashIX + 1);
+                    removeDocumentIDs.Add(objectID);
+                    continue;
+                }
                 IIndexedDocument iDoc = iObj as IIndexedDocument;
                 if (iDoc != null)
                 {
                     var luceneDoc = iDoc.GetLuceneDocument(indexName);
+                    if (luceneDoc == null)
+                        continue;
                     luceneDoc.RemoveFields("ObjectDomainName");
                     luceneDoc.RemoveFields("ObjectName");
                     luceneDoc.RemoveFields("ObjectID");
@@ -41,7 +51,7 @@ namespace TheBall.Index
                     documents.Add(luceneDoc);
                 }
             }
-            FieldIndexSupport.AddDocuments(luceneIndexFolder, documents.ToArray());
+            FieldIndexSupport.AddAndRemoveDocuments(luceneIndexFolder, documents.ToArray(), removeDocumentIDs.ToArray());
         }
 
         public static void ExecuteMethod_DeleteIndexingRequest(IndexingRequest indexingRequest)

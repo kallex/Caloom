@@ -37,6 +37,20 @@ namespace LuceneSupport
             writer.Dispose();
         }
 
+        public static void AddAndRemoveDocuments(string indexRoot, Document[] docsToAdd, string[] docsToRemove, Analyzer analyzer = null)
+        {
+            doWithWriter(indexRoot, writer =>
+                {
+                    Term[] terms = docsToRemove.Select(docId => new Term("ID", docId)).ToArray();
+                    writer.DeleteDocuments(terms);
+                    foreach (var doc in docsToAdd)
+                    {
+                        string id = doc.GetField("ID").StringValue;
+                        writer.UpdateDocument(new Term("ID", id), doc);
+                    }
+                }, analyzer);            
+        }
+
         public static void AddDocuments(string indexRoot, Document[] docs, Analyzer analyzer = null, bool recreateIndex = false)
         {
             doWithWriter(indexRoot, writer => {
