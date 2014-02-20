@@ -97,6 +97,12 @@
     <StatusItem name="PrepareAndExecuteQuery_QueryString" displayName="VariableType: QueryString" description="Query string">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="PrepareAndExecuteQuery_DefaultFieldName" displayName="VariableType: DefaultFieldName" description="Default field name - for Lucene or alike. Defaults for example freetext search properly">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PrepareAndExecuteQuery_IndexName" displayName="VariableType: IndexName" description="Index name for query">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="PrepareAndExecuteQuery_RequestObject" displayName="TargetDefinitionType: RequestObject" description="Request object to prepare and push execute for">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -170,6 +176,8 @@
     </Group>
     <Group name="PrepareAndExecuteQuery">
       <ItemRef itemName="PrepareAndExecuteQuery_QueryString" />
+      <ItemRef itemName="PrepareAndExecuteQuery_DefaultFieldName" />
+      <ItemRef itemName="PrepareAndExecuteQuery_IndexName" />
       <ItemRef itemName="PrepareAndExecuteQuery_RequestObject" />
       <ItemRef itemName="PrepareAndExecuteQuery_StoreObject" />
       <ItemRef itemName="PrepareAndExecuteQuery_PutQueryRequestToQueryQueue" />

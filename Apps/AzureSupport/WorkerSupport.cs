@@ -591,6 +591,9 @@ namespace TheBall
                 var ownerString = splitValues[1];
                 var owner = VirtualOwner.FigureOwner(ownerString);
                 var indexRequestID = splitValues[2];
+                string containerIndexRoot = Path.Combine(indexStorageRootFolder, containerName);
+                if (Directory.Exists(containerIndexRoot) == false)
+                    Directory.CreateDirectory(containerIndexRoot);
                 try
                 {
                     InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
@@ -600,7 +603,7 @@ namespace TheBall
                         {
                             IndexingRequestID = indexRequestID,
                             IndexName = IndexSupport.DefaultIndexName,
-                            IndexStorageRootPath = indexStorageRootFolder,
+                            IndexStorageRootPath = containerIndexRoot,
                             Owner = owner
                         });
                 }
@@ -622,6 +625,9 @@ namespace TheBall
                 var ownerString = splitValues[1];
                 var owner = VirtualOwner.FigureOwner(ownerString);
                 var queryRequestID = splitValues[2];
+                string containerIndexRoot = Path.Combine(indexStorageRootFolder, containerName);
+                if (Directory.Exists(containerIndexRoot) == false)
+                    Directory.CreateDirectory(containerIndexRoot);
                 try
                 {
                     InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
@@ -631,7 +637,7 @@ namespace TheBall
                         {
                             QueryRequestID = queryRequestID,
                             IndexName = IndexSupport.DefaultIndexName,
-                            IndexStorageRootPath = indexStorageRootFolder,
+                            IndexStorageRootPath = containerIndexRoot,
                             Owner = owner
                         });
                 }

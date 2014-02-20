@@ -2,7 +2,10 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Lucene.Net.Analysis.Standard;
+using LuceneSupport;
 using TheBall.CORE;
+using Version = Lucene.Net.Util.Version;
 
 namespace TheBall.Index
 {
@@ -46,7 +49,26 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_PerformQueryRequest(QueryRequest queryRequest, string luceneIndexFolder)
         {
-            
+            var queryString = queryRequest.QueryString;
+            var defaultFieldName = queryRequest.DefaultFieldName;
+            var resultDocuments = FieldIndexSupport.PerformQuery(luceneIndexFolder, queryString, defaultFieldName, new StandardAnalyzer(Version.LUCENE_30));
+            queryRequest.QueryResultObjects.Clear();
+            foreach (var resultDoc in resultDocuments)
+            {
+                var doc = resultDoc.Doc;
+                string objectDomainName = doc.Get("ObjectDomainName");
+                string objectName = doc.Get("ObjectName");
+                string objectID = doc.Get("ObjectID");
+                QueryResultItem item = new QueryResultItem
+                    {
+                        ObjectDomainName = objectDomainName,
+                        ObjectName = objectName,
+                        ObjectID = objectID,
+                        Rank = resultDoc.Score
+                    };
+                queryRequest.QueryResultObjects.Add(item);
+            }
+            queryRequest.IsQueryCompleted = true;
         }
 
         public static void ExecuteMethod_SaveQueryRequest(QueryRequest queryRequest)

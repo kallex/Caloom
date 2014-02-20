@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TheBall.CORE;
@@ -69,5 +70,14 @@ namespace TheBall.Index
         }
 
         public const string DefaultIndexName = "defaultindex";
+
+        public static string GetRequestID(string indexName, string queryString, string defaultFieldName)
+        {
+            string idSource = String.Format("IXN:{0}QS:{1}DFN:{2}", indexName, queryString, defaultFieldName);
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(idSource));
+            var hexStr = BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return hexStr;
+        }
     }
 }

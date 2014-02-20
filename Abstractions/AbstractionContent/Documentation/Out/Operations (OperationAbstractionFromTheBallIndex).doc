@@ -476,7 +476,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Indexing subfolder based on Owner
 		</div>
-		</p><h2>Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder )</h2>
+		</p><h2>Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder, Owner )</h2>
 		<p>		<div class="MsoNormal" >
 		Perform indexing of the object
 		</div>
@@ -525,7 +525,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Write query token to http response
 		</div>
-		</p><h1>PrepareAndExecuteQuery (QueryString)</h1>
+		</p><h1>PrepareAndExecuteQuery (QueryString, DefaultFieldName, IndexName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Prepare query object and execute the async 
@@ -550,8 +550,42 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DefaultFieldName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Default field name - for Lucene or alike. Defaults for example freetext search properly
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IndexName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Index name for query
+		</div>
+				</td>
+				</tr>
 		</table>
-		</p><h2>Target Definition: RequestObject ( QueryString )</h2>
+		</p><h2>Target Definition: RequestObject ( QueryString, DefaultFieldName, IndexName )</h2>
 		<p>		<div class="MsoNormal" >
 		Request object to prepare and push execute for
 		</div>
@@ -559,7 +593,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store query request object
 		</div>
-		</p><h2>Method Call: PutQueryRequestToQueryQueue ( RequestObject )</h2>
+		</p><h2>Method Call: PutQueryRequestToQueryQueue ( RequestObject, IndexName )</h2>
 		<p>		<div class="MsoNormal" >
 		Put query request to query queue.
 		</div>

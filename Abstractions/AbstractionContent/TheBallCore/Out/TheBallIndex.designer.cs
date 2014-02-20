@@ -34,6 +34,8 @@ using TheBall.CORE;
 			{
 				[DataMember]
 				public string QueryString { get; set; }
+				[DataMember]
+				public string DefaultFieldName { get; set; }
 			}
 
 			[DataContract]
@@ -326,6 +328,9 @@ using TheBall.CORE;
 				{
 					switch (propertyName)
 					{
+						case "IndexName":
+							IndexName = value;
+							break;
 						case "ObjectLocations":
 							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
 							break;
@@ -333,6 +338,9 @@ using TheBall.CORE;
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string IndexName { get; set; }
+			private string _unmodified_IndexName;
 			[DataMember]
 			public List< string > ObjectLocations = new List< string >();
 			
@@ -609,8 +617,23 @@ using TheBall.CORE;
 						case "QueryString":
 							QueryString = value;
 							break;
+						case "DefaultFieldName":
+							DefaultFieldName = value;
+							break;
+						case "IndexName":
+							IndexName = value;
+							break;
 						case "IsQueryCompleted":
 							IsQueryCompleted = bool.Parse(value);
+							break;
+						case "LastRequestTime":
+							LastRequestTime = DateTime.Parse(value);
+							break;
+						case "LastCompletionTime":
+							LastCompletionTime = DateTime.Parse(value);
+							break;
+						case "LastCompletionDurationMs":
+							LastCompletionDurationMs = long.Parse(value);
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -620,8 +643,23 @@ using TheBall.CORE;
 			public string QueryString { get; set; }
 			private string _unmodified_QueryString;
 			[DataMember]
+			public string DefaultFieldName { get; set; }
+			private string _unmodified_DefaultFieldName;
+			[DataMember]
+			public string IndexName { get; set; }
+			private string _unmodified_IndexName;
+			[DataMember]
 			public bool IsQueryCompleted { get; set; }
 			private bool _unmodified_IsQueryCompleted;
+			[DataMember]
+			public DateTime LastRequestTime { get; set; }
+			private DateTime _unmodified_LastRequestTime;
+			[DataMember]
+			public DateTime LastCompletionTime { get; set; }
+			private DateTime _unmodified_LastCompletionTime;
+			[DataMember]
+			public long LastCompletionDurationMs { get; set; }
+			private long _unmodified_LastCompletionDurationMs;
 			[DataMember]
 			public List< QueryResultItem > QueryResultObjects = new List< QueryResultItem >();
 			

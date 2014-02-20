@@ -74,6 +74,7 @@
             <Parameter name="IndexStorageRootPath" />
           </TargetDefinition>
           <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
+            <Parameter name="Owner" />
             <Target name="IndexingRequest" />
             <Target name="LuceneIndexFolder" />
           </MethodExecute>
@@ -140,16 +141,21 @@
       </OperationSpec>
       <Parameters>
         <Parameter name="QueryString" dataType="string" designDesc="Query string" state="implemented" />
+        <Parameter name="DefaultFieldName" dataType="string" designDesc="Default field name - for Lucene or alike. Defaults for example freetext search properly" state="implemented" />
+        <Parameter name="IndexName" dataType="string" designDesc="Index name for query" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="RequestObject" dataType="QueryRequest" designDesc="Request object to prepare and push execute for" state="implemented">
             <Parameter name="QueryString" />
+            <Parameter name="DefaultFieldName" />
+            <Parameter name="IndexName" />
           </TargetDefinition>
           <MethodExecute name="StoreObject" designDesc="Store query request object" state="implemented">
             <Target name="RequestObject" />
           </MethodExecute>
           <MethodExecute name="PutQueryRequestToQueryQueue" designDesc="Put query request to query queue." state="implemented">
+            <Parameter name="IndexName" />
             <Target name="RequestObject" />
           </MethodExecute>
         </SequentialExecution>

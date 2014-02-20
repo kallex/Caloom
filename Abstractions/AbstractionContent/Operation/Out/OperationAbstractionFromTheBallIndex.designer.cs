@@ -69,7 +69,7 @@ using System.IO;
 						PrepareParameters(parameters);
 					IndexingRequest IndexingRequest = IndexInformationImplementation.GetTarget_IndexingRequest(parameters.Owner, parameters.IndexingRequestID);	
 				string LuceneIndexFolder = IndexInformationImplementation.GetTarget_LuceneIndexFolder(parameters.Owner, parameters.IndexName, parameters.IndexStorageRootPath);	
-				IndexInformationImplementation.ExecuteMethod_PerformIndexing(IndexingRequest, LuceneIndexFolder);		
+				IndexInformationImplementation.ExecuteMethod_PerformIndexing(parameters.Owner, IndexingRequest, LuceneIndexFolder);		
 				IndexInformationImplementation.ExecuteMethod_DeleteIndexingRequest(IndexingRequest);		
 				}
 				}
@@ -115,6 +115,8 @@ using System.IO;
 				public class PrepareAndExecuteQueryParameters 
 		{
 				public string QueryString ;
+				public string DefaultFieldName ;
+				public string IndexName ;
 				}
 		
 		public class PrepareAndExecuteQuery 
@@ -125,9 +127,9 @@ using System.IO;
 				public static PrepareAndExecuteQueryReturnValue Execute(PrepareAndExecuteQueryParameters parameters)
 		{
 						PrepareParameters(parameters);
-					QueryRequest RequestObject = PrepareAndExecuteQueryImplementation.GetTarget_RequestObject(parameters.QueryString);	
+					QueryRequest RequestObject = PrepareAndExecuteQueryImplementation.GetTarget_RequestObject(parameters.QueryString, parameters.DefaultFieldName, parameters.IndexName);	
 				PrepareAndExecuteQueryImplementation.ExecuteMethod_StoreObject(RequestObject);		
-				PrepareAndExecuteQueryImplementation.ExecuteMethod_PutQueryRequestToQueryQueue(RequestObject);		
+				PrepareAndExecuteQueryImplementation.ExecuteMethod_PutQueryRequestToQueryQueue(parameters.IndexName, RequestObject);		
 				PrepareAndExecuteQueryReturnValue returnValue = PrepareAndExecuteQueryImplementation.Get_ReturnValue(RequestObject);
 		return returnValue;
 				}

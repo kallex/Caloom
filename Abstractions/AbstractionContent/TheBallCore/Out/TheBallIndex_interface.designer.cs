@@ -27,6 +27,9 @@ using TheBall.CORE;
 			[DataMember]
 			public string QueryString;
 
+			[DataMember]
+			public string DefaultFieldName;
+
 			
 			}
 			[DataContract]

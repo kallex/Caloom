@@ -289,11 +289,13 @@
     <Compile Include="TheBall.CORE\UsageSummary.cs" />
     <Compile Include="TheBall.Index\AttemptToBecomeInfrastructureIndexerImplementation.cs" />
     <Compile Include="TheBall.Index\FilterAndSubmitIndexingRequestsImplementation.cs" />
+    <Compile Include="TheBall.Index\IIndexedContent.cs" />
     <Compile Include="TheBall.Index\IndexInformationImplementation.cs" />
     <Compile Include="TheBall.Index\IndexSupport.cs" />
     <Compile Include="TheBall.Index\PerformUserQueryImplementation.cs" />
     <Compile Include="TheBall.Index\PrepareAndExecuteQueryImplementation.cs" />
     <Compile Include="TheBall.Index\QueryIndexedInformationImplementation.cs" />
+    <Compile Include="TheBall.Index\QueryRequest.cs" />
     <Compile Include="TheBall.Index\ReleaseIndexerResourcesImplementation.cs" />
     <Compile Include="TheBall.Infrastructure\CloudDriveSupport.cs" />
     <Compile Include="TheBall.Infrastructure\CreateCloudDriveImplementation.cs" />
@@ -308,6 +310,10 @@
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LuceneSupport\LuceneSupport.csproj">
+      <Project>{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}</Project>
+      <Name>LuceneSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SecuritySupport\SecuritySupport.csproj">
       <Project>{FE40FC1C-284E-4F91-B00F-5CCA71846208}</Project>
       <Name>SecuritySupport</Name>

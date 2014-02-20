@@ -9,6 +9,7 @@
         <InterfaceObject name="UserQuery" designDesc="User query item">
           <InterfaceItems>
             <InterfaceItem name="QueryString" logicalDataType="Text_Short"/>
+            <InterfaceItem name="DefaultFieldName" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="QueryToken" designDesc="Query token item">
@@ -23,13 +24,19 @@
     <InformationModel>
       <InformationObject name="IndexingRequest" provideCreateMethod="false" designDesc="Request for indexing content">
         <InformationItems>
+          <InformationItem name="IndexName" logicalDataType="Text_Short"/>
           <InformationItem name="ObjectLocations" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="QueryRequest" provideCreateMethod="false" designDesc="Request for querying content">
         <InformationItems>
           <InformationItem name="QueryString" logicalDataType="Text_Short"/>
+          <InformationItem name="DefaultFieldName" logicalDataType="Text_Short"/>
+          <InformationItem name="IndexName" logicalDataType="Text_Short"/>
           <InformationItem name="IsQueryCompleted" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="LastRequestTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="LastCompletionTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="LastCompletionDurationMs" logicalDataType="Number_Integer"/>
           <InformationItem name="QueryResultObjects" logicalDataType="InformationObject"
                            informationObjectName="QueryResultItem" isCollection="true"/>
         </InformationItems>
@@ -117,6 +124,7 @@
               <Parameter name="IndexStorageRootPath"/>
             </TargetDefinition>
             <MethodExecute name="PerformIndexing" designDesc="Perform indexing of the object" state="implemented">
+              <Parameter name="Owner"/>
               <Target name="IndexingRequest"/>
               <Target name="LuceneIndexFolder"/>
             </MethodExecute>
@@ -183,16 +191,21 @@
         </OperationSpec>
         <Parameters>
           <Parameter name="QueryString" dataType="string" designDesc="Query string" state="implemented"/>
+          <Parameter name="DefaultFieldName" dataType="string" designDesc="Default field name - for Lucene or alike. Defaults for example freetext search properly" state="implemented"/>
+          <Parameter name="IndexName" dataType="string" designDesc="Index name for query" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
             <TargetDefinition dataType="QueryRequest" name="RequestObject" designDesc="Request object to prepare and push execute for" state="implemented">
               <Parameter name="QueryString"/>
+              <Parameter name="DefaultFieldName"/>
+              <Parameter name="IndexName"/>
             </TargetDefinition>
             <MethodExecute name="StoreObject" designDesc="Store query request object" state="implemented">
               <Target name="RequestObject"/>
             </MethodExecute>
             <MethodExecute name="PutQueryRequestToQueryQueue" designDesc="Put query request to query queue." state="implemented">
+              <Parameter name="IndexName"/>
               <Target name="RequestObject"/>
             </MethodExecute>
           </SequentialExecution>

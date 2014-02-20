@@ -15,6 +15,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.Index;
 
 namespace TheBall
 {
@@ -1226,6 +1227,7 @@ namespace TheBall
                 }
 
             }
+            IIndexedDocument iDoc = informationObject as IIndexedDocument;
             //TODO: Generic default view deletion
             //DefaultViewSupport.DeleteDefaultView(informationObject);
             informationObject.PostDeleteExecute(owner);

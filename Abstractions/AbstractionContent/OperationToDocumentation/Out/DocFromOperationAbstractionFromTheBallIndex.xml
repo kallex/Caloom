@@ -280,7 +280,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder )" level="2">
+            <Header text="Method Call: PerformIndexing ( IndexingRequest, LuceneIndexFolder, Owner )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Perform indexing of the object</TextContent>
@@ -354,7 +354,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="PrepareAndExecuteQuery (QueryString)" level="1">
+          <Header text="PrepareAndExecuteQuery (QueryString, DefaultFieldName, IndexName)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -382,11 +382,33 @@
                         <TextContent>Query string</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DefaultFieldName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Default field name - for Lucene or alike. Defaults for example freetext search properly</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IndexName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Index name for query</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: RequestObject ( QueryString )" level="2">
+            <Header text="Target Definition: RequestObject ( QueryString, DefaultFieldName, IndexName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Request object to prepare and push execute for</TextContent>
@@ -400,7 +422,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: PutQueryRequestToQueryQueue ( RequestObject )" level="2">
+            <Header text="Method Call: PutQueryRequestToQueryQueue ( RequestObject, IndexName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Put query request to query queue.</TextContent>

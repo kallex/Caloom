@@ -156,6 +156,8 @@ namespace TheBall
 
         public static void GetJSONObjectsFromQueue<T>(string queueName, out MessageObject<T>[] messageObjects, int maxMessagesToRetrieve)
         {
+            if (maxMessagesToRetrieve > 32)
+                throw new ArgumentException("Max messages to retrieve is 32", "maxMessagesToRetrieve");
             var queue = GetQueue(queueName);
             var messages = queue.GetMessages(maxMessagesToRetrieve);
             List<MessageObject<T>> resultData = new List<MessageObject<T>>();
@@ -186,11 +188,13 @@ namespace TheBall
             queue.AddMessage(message);
         }
 
-        public static void GetMessagesFromQueue(string queueName, out MessageObject<string>[] messageObjects, int maxCount = 100, bool deleteOnRetrieval = true)
+        public static void GetMessagesFromQueue(string queueName, out MessageObject<string>[] messageObjects, int maxCount = 32, bool deleteOnRetrieval = true)
         {
             var queue = GetQueue(queueName);
+            //List<CloudQueueMessage> messageList = new List<CloudQueueMessage>();
             var messages = queue.GetMessages(maxCount);
-            messageObjects = messages.Select(msg => new MessageObject<string> {Message = msg, RetrievedObject = msg.AsString}).ToArray();
+            //messageList.AddRange(messages);
+            messageObjects = messages.Select(msg => new MessageObject<string> { Message = msg, RetrievedObject = msg.AsString }).ToArray();
             if (deleteOnRetrieval)
             {
                 foreach(var msgObj in messageObjects)

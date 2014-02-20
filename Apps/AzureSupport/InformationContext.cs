@@ -149,19 +149,12 @@ namespace TheBall
         public void PerformFinalizingActions()
         {
             updateStatusSummary();
+            createIndexingRequest();
             var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
-            var currentOwner = _owner;
             foreach(var grpItem in grouped)
             {
                 var targetLocations = grpItem.Select(item => item.TargetLocation).Distinct().ToArray();
                 SubscribeSupport.AddPendingRequests(grpItem.Key, targetLocations);
-                if (currentOwner != null)
-                {
-                    if (grpItem.Key.IsEqualOwner(currentOwner))
-                    {
-                        FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = targetLocations });
-                    }
-                }
             }
             FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
             if (isResourceMeasuring)
@@ -183,6 +176,14 @@ namespace TheBall
                 string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + uniquePostFix;
                 RequestResourceUsage.SetLocationAsOwnerContent(measurementOwner, itemName);
                 RequestResourceUsage.StoreInformation();
+            }
+        }
+
+        private void createIndexingRequest()
+        {
+            if (_owner != null && IndexedIDInfos.Count > 0)
+            {
+                FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = IndexedIDInfos.ToArray() });
             }
         }
 
@@ -360,9 +361,20 @@ namespace TheBall
 
         // Currently being used for listing changed IDs
         private HashSet<string> ChangedIDInfos = new HashSet<string>();
+        private HashSet<string> IndexedIDInfos = new HashSet<string>();
         private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface" };
         public void ObjectStoredNotification(IInformationObject informationObject, ObjectChangeType changeType)
         {
+            IIndexedDocument iDoc = informationObject as IIndexedDocument;
+            if (iDoc != null && _owner != null)
+            {
+                VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
+                if (owner.IsEqualOwner(_owner))
+                {
+                    IndexedIDInfos.Add(informationObject.RelativeLocation);
+                }
+            }
+
             if (trackedDomainNames.Contains(informationObject.SemanticDomainName) == false)
                 return;
             string changeTypeValue;

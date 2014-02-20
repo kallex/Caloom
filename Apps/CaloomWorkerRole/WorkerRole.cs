@@ -181,8 +181,15 @@ namespace CaloomWorkerRole
                     {
                         try
                         {
-                            WorkerSupport.ProcessIndexing(indexingMessages, IndexerInfo.CloudDrive.LocalPath);
-                            WorkerSupport.ProcessQueries(queryMessages, IndexerInfo.CloudDrive.LocalPath);
+                            try
+                            {
+                                WorkerSupport.ProcessIndexing(indexingMessages, IndexerInfo.CloudDrive.LocalPath);
+                                WorkerSupport.ProcessQueries(queryMessages, IndexerInfo.CloudDrive.LocalPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                ErrorSupport.ReportException(ex);
+                            }
                         }
                         finally
                         {
