@@ -26,7 +26,9 @@ namespace TheBall.Index
         {
             return new PrepareAndExecuteQueryParameters
                 {
-                    QueryString = queryObject.QueryString
+                    QueryString = queryObject.QueryString,
+                    IndexName = IndexSupport.DefaultIndexName,
+                    DefaultFieldName = queryObject.DefaultFieldName
                 };
         }
 

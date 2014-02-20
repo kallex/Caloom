@@ -362,7 +362,7 @@ namespace TheBall
         // Currently being used for listing changed IDs
         private HashSet<string> ChangedIDInfos = new HashSet<string>();
         private HashSet<string> IndexedIDInfos = new HashSet<string>();
-        private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface" };
+        private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface", "TheBall.Index" };
         public void ObjectStoredNotification(IInformationObject informationObject, ObjectChangeType changeType)
         {
             IIndexedDocument iDoc = informationObject as IIndexedDocument;
