@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using DiagnosticsUtils;
 using Lucene.Net.Analysis.Standard;
 using LuceneSupport;
 using TheBall.CORE;
@@ -11,31 +13,6 @@ namespace TheBall.Index
 {
     public class QueryIndexedInformationImplementation
     {
-        /*
-        public static string GetTarget_QueryID(QueryRequest queryRequest)
-        {
-            var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(queryRequest.QueryString));
-            var hexStr = BitConverter.ToString(hash).Replace("-", "").ToLower();
-            return hexStr;
-        }
-
-        public static QueryIndexedInformationReturnValue Get_ReturnValue(string queryId)
-        {
-            return new QueryIndexedInformationReturnValue {QueryTrackableID = queryId};
-        }
-
-        public static string GetTarget_QueryQueueName(string indexName)
-        {
-            return IndexSupport.GetQueryRequestQueueName(indexName);
-        }
-
-        public static void ExecuteMethod_QueueQueryRequest(QueryRequest queryRequest, string queryQueueName)
-        {
-            // TODO: Actual query request
-        }
-         * */
-
         public static QueryRequest GetTarget_QueryRequest(IContainerOwner owner, string queryRequestId)
         {
             return QueryRequest.RetrieveFromOwnerContent(owner, queryRequestId);
@@ -51,6 +28,8 @@ namespace TheBall.Index
         {
             var queryString = queryRequest.QueryString;
             var defaultFieldName = queryRequest.DefaultFieldName;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             var resultDocuments = FieldIndexSupport.PerformQuery(luceneIndexFolder, queryString, defaultFieldName, new StandardAnalyzer(Version.LUCENE_30));
             queryRequest.QueryResultObjects.Clear();
             foreach (var resultDoc in resultDocuments)
@@ -68,6 +47,9 @@ namespace TheBall.Index
                     };
                 queryRequest.QueryResultObjects.Add(item);
             }
+            stopwatch.Stop();
+            queryRequest.LastCompletionDurationMs = (long) Math.Ceiling(stopwatch.Elapsed.TotalMilliseconds);
+            queryRequest.LastCompletionTime = DateTime.UtcNow;
             queryRequest.IsQueryCompleted = true;
         }
 
