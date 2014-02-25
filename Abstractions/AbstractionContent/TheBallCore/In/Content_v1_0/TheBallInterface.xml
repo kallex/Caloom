@@ -6,12 +6,15 @@
         <InformationItems>
           <InformationItem name="InputInformationID" logicalDataType="Text_Short"/>
           <InformationItem name="OutputInformationID" logicalDataType="Text_Short" />
+          <InformationItem name="OtherSideConnectionID" logicalDataType="Text_Short"/>
           <InformationItem name="ThisSideCategories" logicalDataType="InformationObject" informationObjectName="Category" isCollection="true"/>
           <InformationItem name="OtherSideCategories" logicalDataType="InformationObject" informationObjectName="Category" isCollection="true"/>
+          <InformationItem name="CategoryLinks" logicalDataType="InformationObject" informationObjectName="CategoryLink" isCollection="true"/>
           <InformationItem name="IncomingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
           <InformationItem name="OutgoingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
           <InformationItem name="OperationToListPackageContents" logicalDataType="Text_Short"/>
           <InformationItem name="OperationToProcessReceived" logicalDataType="Text_Short"/>
+          <InformationItem name="OperationToUpdateThisSideCategories" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="TransferPackage" provideCreateMethod="false" designDesc="Transfer package, whose folder under Connection is used as content storage location">
@@ -23,6 +26,13 @@
           <InformationItem name="PackageContentBlobs" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="CategoryLink" designDesc="Link between category entries">
+        <InformationItems>
+          <InformationItem name="SourceCategoryID" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetCategoryID" logicalDataType="Text_Short"/>
+          <InformationItem name="LinkingType" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="Category" designDesc="Category">
         <InformationItems>
           <InformationItem name="NativeCategoryID" logicalDataType="Text_Short" />
@@ -30,7 +40,6 @@
           <InformationItem name="NativeCategoryObjectName" logicalDataType="Text_Short"/>
           <InformationItem name="IdentifyingCategoryName" logicalDataType="Text_Short" />
           <InformationItem name="ParentCategoryID" logicalDataType="Text_Short"/>
-          <InformationItem name="LinkingType" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="StatusSummary" serializationType="JSON" designDesc="Status summary object" provideCreateMethod="false">

@@ -314,11 +314,17 @@ using TheBall.CORE;
 						case "OutputInformationID":
 							OutputInformationID = value;
 							break;
+						case "OtherSideConnectionID":
+							OtherSideConnectionID = value;
+							break;
 						case "OperationToListPackageContents":
 							OperationToListPackageContents = value;
 							break;
 						case "OperationToProcessReceived":
 							OperationToProcessReceived = value;
+							break;
+						case "OperationToUpdateThisSideCategories":
+							OperationToUpdateThisSideCategories = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -331,9 +337,14 @@ using TheBall.CORE;
 			public string OutputInformationID { get; set; }
 			private string _unmodified_OutputInformationID;
 			[DataMember]
+			public string OtherSideConnectionID { get; set; }
+			private string _unmodified_OtherSideConnectionID;
+			[DataMember]
 			public List< Category > ThisSideCategories = new List< Category >();
 			[DataMember]
 			public List< Category > OtherSideCategories = new List< Category >();
+			[DataMember]
+			public List< CategoryLink > CategoryLinks = new List< CategoryLink >();
 			[DataMember]
 			public List< TransferPackage > IncomingPackages = new List< TransferPackage >();
 			[DataMember]
@@ -344,6 +355,9 @@ using TheBall.CORE;
 			[DataMember]
 			public string OperationToProcessReceived { get; set; }
 			private string _unmodified_OperationToProcessReceived;
+			[DataMember]
+			public string OperationToUpdateThisSideCategories { get; set; }
+			private string _unmodified_OperationToUpdateThisSideCategories;
 			
 			}
 			[DataContract]
@@ -652,6 +666,398 @@ using TheBall.CORE;
 			}
 			[DataContract]
 			[Serializable]
+			public partial class CategoryLink : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public CategoryLink()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.Interface";
+				    this.Name = "CategoryLink";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.Interface/CategoryLink/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CategoryLink), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.Interface", "CategoryLink", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static CategoryLink RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveCategoryLink(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryLink");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CategoryLink), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static CategoryLink RetrieveCategoryLink(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (CategoryLink) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryLink), null, owner);
+                    return result;
+                }
+
+				public static CategoryLink RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = CategoryLink.RetrieveCategoryLink("Content/TheBall.Interface/CategoryLink/" + contentName, containerOwner);
+					var result = CategoryLink.RetrieveCategoryLink("TheBall.Interface/CategoryLink/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.Interface/CategoryLink/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.Interface/CategoryLink/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((CategoryLink) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CategoryLink));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static CategoryLink DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CategoryLink));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (CategoryLink) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.Interface", "CategoryLink", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Interface", "CategoryLink", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref CategoryLink customDemoObject);
+
+
+
+				public static CategoryLink CreateDefault()
+				{
+					var result = new CategoryLink();
+					return result;
+				}
+
+				public static CategoryLink CreateDemoDefault()
+				{
+					CategoryLink customDemo = null;
+					CategoryLink.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new CategoryLink();
+					result.SourceCategoryID = @"CategoryLink.SourceCategoryID";
+
+					result.TargetCategoryID = @"CategoryLink.TargetCategoryID";
+
+					result.LinkingType = @"CategoryLink.LinkingType";
+
+				
+					return result;
+				}
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(SourceCategoryID != _unmodified_SourceCategoryID)
+							return true;
+						if(TargetCategoryID != _unmodified_TargetCategoryID)
+							return true;
+						if(LinkingType != _unmodified_LinkingType)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(CategoryLink sourceObject)
+				{
+					SourceCategoryID = sourceObject.SourceCategoryID;
+					TargetCategoryID = sourceObject.TargetCategoryID;
+					LinkingType = sourceObject.LinkingType;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_SourceCategoryID = SourceCategoryID;
+					_unmodified_TargetCategoryID = TargetCategoryID;
+					_unmodified_LinkingType = LinkingType;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "SourceCategoryID":
+							SourceCategoryID = value;
+							break;
+						case "TargetCategoryID":
+							TargetCategoryID = value;
+							break;
+						case "LinkingType":
+							LinkingType = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string SourceCategoryID { get; set; }
+			private string _unmodified_SourceCategoryID;
+			[DataMember]
+			public string TargetCategoryID { get; set; }
+			private string _unmodified_TargetCategoryID;
+			[DataMember]
+			public string LinkingType { get; set; }
+			private string _unmodified_LinkingType;
+			
+			}
+			[DataContract]
+			[Serializable]
 			public partial class Category : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -925,8 +1331,6 @@ using TheBall.CORE;
 
 					result.ParentCategoryID = @"Category.ParentCategoryID";
 
-					result.LinkingType = @"Category.LinkingType";
-
 				
 					return result;
 				}
@@ -995,8 +1399,6 @@ using TheBall.CORE;
 							return true;
 						if(ParentCategoryID != _unmodified_ParentCategoryID)
 							return true;
-						if(LinkingType != _unmodified_LinkingType)
-							return true;
 				
 						return false;
 					}
@@ -1014,7 +1416,6 @@ using TheBall.CORE;
 					NativeCategoryObjectName = sourceObject.NativeCategoryObjectName;
 					IdentifyingCategoryName = sourceObject.IdentifyingCategoryName;
 					ParentCategoryID = sourceObject.ParentCategoryID;
-					LinkingType = sourceObject.LinkingType;
 				}
 				
 
@@ -1026,7 +1427,6 @@ using TheBall.CORE;
 					_unmodified_NativeCategoryObjectName = NativeCategoryObjectName;
 					_unmodified_IdentifyingCategoryName = IdentifyingCategoryName;
 					_unmodified_ParentCategoryID = ParentCategoryID;
-					_unmodified_LinkingType = LinkingType;
 				
 				
 				}
@@ -1051,9 +1451,6 @@ using TheBall.CORE;
 						case "ParentCategoryID":
 							ParentCategoryID = value;
 							break;
-						case "LinkingType":
-							LinkingType = value;
-							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -1073,9 +1470,6 @@ using TheBall.CORE;
 			[DataMember]
 			public string ParentCategoryID { get; set; }
 			private string _unmodified_ParentCategoryID;
-			[DataMember]
-			public string LinkingType { get; set; }
-			private string _unmodified_LinkingType;
 			
 			}
 			[DataContract]

@@ -1702,6 +1702,74 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateConnectionThisSideCategories (ConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update this side categories of connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentCategoryContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current category container</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ActiveCategories ( CurrentCategoryContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current active categories, in order, with proper parent IDs listed</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connecton that contains this categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateThisSideCategories ( Connection, ActiveCategories )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update connection's this side categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UpdateGroupContainersGroupMembership (GroupRoot)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

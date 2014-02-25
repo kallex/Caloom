@@ -86,7 +86,7 @@
       <Link>Abstractions\OperationAbstractionFromCaloomSchools.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs">
-      <Link>Abstractions\OperationAbstractionFromOIPBallInstance.designer.cs</Link>
+      <Link>AaltoGlobalImpact.OIP\OperationAbstractionFromOIPBallInstance.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs">
       <Link>Abstractions\OperationAbstractionFromTheBallAdmin.designer.cs</Link>
@@ -113,7 +113,7 @@
       <Link>Abstractions\CaloomSchools.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
-      <Link>Abstractions\OIPBallInstance.designer.cs</Link>
+      <Link>AaltoGlobalImpact.OIP\OIPBallInstance.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallAdmin.designer.cs">
       <Link>Abstractions\TheBallAdmin.designer.cs</Link>
@@ -131,6 +131,7 @@
       <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
     </Compile>
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />
     <Compile Include="Partials\EmbeddedContentCollection.cs" />

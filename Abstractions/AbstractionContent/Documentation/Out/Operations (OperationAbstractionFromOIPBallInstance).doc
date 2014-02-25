@@ -1597,6 +1597,52 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Store modified objects
 		</div>
+		</p><h1>UpdateConnectionThisSideCategories (ConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update this side categories of connection
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: CurrentCategoryContainer</h2>
+		<p>		<div class="MsoNormal" >
+		Current category container
+		</div>
+		</p><h2>Target Definition: ActiveCategories ( CurrentCategoryContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Current active categories, in order, with proper parent IDs listed
+		</div>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connecton that contains this categories
+		</div>
+		</p><h2>Method Call: UpdateThisSideCategories ( Connection, ActiveCategories )</h2>
+		<p>		<div class="MsoNormal" >
+		Update connection's this side categories
+		</div>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store connection object
+		</div>
 		</p><h1>UpdateGroupContainersGroupMembership (GroupRoot)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

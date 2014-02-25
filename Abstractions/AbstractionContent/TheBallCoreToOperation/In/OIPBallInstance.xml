@@ -2139,6 +2139,32 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="UpdateConnectionThisSideCategories">
+        <OperationSpec>
+          <Description>Update this side categories of connection</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="CurrentCategoryContainer" dataType="NodeSummaryContainer" designDesc="Current category container" state="implemented" />
+            <TargetDefinition name="ActiveCategories" dataType="Category[]" designDesc="Current active categories, in order, with proper parent IDs listed" state="implemented">
+              <Target name="CurrentCategoryContainer"/>
+            </TargetDefinition>
+            <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connecton that contains this categories" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateThisSideCategories" designDesc="Update connection's this side categories" state="implemented">
+              <Target name="Connection"/>
+              <Target name="ActiveCategories"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     </Operations>
     <Subscriptions>
       <Subscription triggeredOperationName="UpdatePageContent">

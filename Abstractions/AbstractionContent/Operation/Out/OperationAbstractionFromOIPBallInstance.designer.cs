@@ -602,4 +602,24 @@ using System.IO;
 				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_StoreObject(NodeSummaryContainer);		
 				}
 				}
+				public class UpdateConnectionThisSideCategoriesParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class UpdateConnectionThisSideCategories 
+		{
+				private static void PrepareParameters(UpdateConnectionThisSideCategoriesParameters parameters)
+		{
+					}
+				public static void Execute(UpdateConnectionThisSideCategoriesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					NodeSummaryContainer CurrentCategoryContainer = UpdateConnectionThisSideCategoriesImplementation.GetTarget_CurrentCategoryContainer();	
+				Category[] ActiveCategories = UpdateConnectionThisSideCategoriesImplementation.GetTarget_ActiveCategories(CurrentCategoryContainer);	
+				TheBall.Interface.Connection Connection = UpdateConnectionThisSideCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_UpdateThisSideCategories(Connection, ActiveCategories);		
+				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
+				}
+				}
 		 } 

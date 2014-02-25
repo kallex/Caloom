@@ -29,8 +29,9 @@ namespace AaltoGlobalImpact.OIP
                 InformationContext.CurrentOwner, "MasterCollection");
             var sourceCategoryDict = categoryCollection.CollectionContent.ToDictionary(cat => cat.ID);
             var sourceCategoryList = categoryCollection.CollectionContent;
+            var childrenInclusiveSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == INT.Category.LINKINGTYPE_INCLUDECHILDREN).Select(catLink => catLink.SourceCategoryID).ToArray();
             var childrenInclusiveIDs = transferCategories
-                .Where(tCat => tCat.LinkingType == INT.Category.LINKINGTYPE_INCLUDECHILDREN)
+                .Where(tCat => childrenInclusiveSourceIDs.Contains(tCat.ID))
                 .Select(tCat => tCat.NativeCategoryID).OrderBy(str => str)
                 .ToList();
             var matchIDs = transferCategories
