@@ -81,6 +81,91 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="InitiateIntegrationConnection (Description, TargetBallHostName, TargetGroupID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Initiates integration connection
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Description</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Description of the connection</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TargetBallHostName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Target Ball instance host name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TargetGroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Target group ID for the connection</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( Description )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Creates connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeviceForConnection ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Device for the connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreConnection ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: NegotiateDeviceConnection ( DeviceForConnection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Negotiate device connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PushCollaborationContent (ConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

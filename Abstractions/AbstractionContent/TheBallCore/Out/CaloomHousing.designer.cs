@@ -296,7 +296,7 @@ using TheBall.CORE;
 					var result = new House();
 					return result;
 				}
-
+				/*
 				public static House CreateDemoDefault()
 				{
 					House customDemo = null;
@@ -325,7 +325,7 @@ House.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{

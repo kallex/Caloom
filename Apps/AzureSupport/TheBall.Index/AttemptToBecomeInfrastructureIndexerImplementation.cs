@@ -31,7 +31,9 @@ namespace TheBall.Index
 
         public static string GetTarget_IndexDriveName(string indexName)
         {
-            return indexName + "Storage";
+            //return indexName + "Storage";
+            // For now we use only one storage for the indexing - host/container + indexname is within the folder structure
+            return "CombinedIndexStorage";
         }
 
         public static AttemptToBecomeInfrastructureIndexerReturnValue ExecuteMethod_MountIndexDrive(string indexDriveName)

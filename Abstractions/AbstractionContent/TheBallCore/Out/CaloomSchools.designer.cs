@@ -316,7 +316,7 @@ using TheBall.CORE;
 					result.TrainingModules = TrainingModuleCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TrainingModule CreateDemoDefault()
 				{
 					TrainingModule customDemo = null;
@@ -346,7 +346,7 @@ TrainingModule.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -871,6 +871,7 @@ TrainingModule.Description
 					return result;
 				}
 
+				/*
 				public static TrainingModuleCollection CreateDemoDefault()
 				{
 					TrainingModuleCollection customDemo = null;
@@ -883,6 +884,7 @@ TrainingModule.Description
 					//result.CollectionContent.Add(TrainingModule.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TrainingModule> CollectionContent = new List<TrainingModule>();

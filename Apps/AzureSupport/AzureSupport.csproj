@@ -303,7 +303,10 @@
     <Compile Include="TheBall.Infrastructure\MountCloudDriveImplementation.cs" />
     <Compile Include="TheBall.Infrastructure\SplittingStream.cs" />
     <Compile Include="TheBall.Interface\Category.cs" />
+    <Compile Include="TheBall.Interface\Connection.cs" />
+    <Compile Include="TheBall.Interface\ConnectionCollection.cs" />
     <Compile Include="TheBall.Interface\InformationChangeItem.cs" />
+    <Compile Include="TheBall.Interface\InitiateIntegrationConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\PushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />

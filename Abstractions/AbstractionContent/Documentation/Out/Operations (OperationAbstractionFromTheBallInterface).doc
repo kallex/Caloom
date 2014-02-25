@@ -322,6 +322,84 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>InitiateIntegrationConnection (Description, TargetBallHostName, TargetGroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Initiates integration connection
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Description
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Description of the connection
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TargetBallHostName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Target Ball instance host name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TargetGroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Target group ID for the connection
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( Description )</h2>
+		<p>		<div class="MsoNormal" >
+		Creates connection
+		</div>
+		</p><h2>Target Definition: DeviceForConnection ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Device for the connection
+		</div>
+		</p><h2>Method Call: StoreConnection ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store connection object
+		</div>
+		</p><h2>Method Call: NegotiateDeviceConnection ( DeviceForConnection )</h2>
+		<p>		<div class="MsoNormal" >
+		Negotiate device connection
+		</div>
 		</p><h1>PushCollaborationContent (ConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

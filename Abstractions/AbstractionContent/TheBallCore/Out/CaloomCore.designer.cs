@@ -334,7 +334,7 @@ using TheBall.CORE;
 					var result = new Who();
 					return result;
 				}
-
+				/*
 				public static Who CreateDemoDefault()
 				{
 					Who customDemo = null;
@@ -363,7 +363,7 @@ Who.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -750,7 +750,7 @@ Who.Description
 					result.Who = Who.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ProductForWhom CreateDemoDefault()
 				{
 					ProductForWhom customDemo = null;
@@ -781,7 +781,7 @@ ProductForWhom.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -1273,7 +1273,7 @@ ProductForWhom.Description
 					result.SubProducts = ProductUsageCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Product CreateDemoDefault()
 				{
 					Product customDemo = null;
@@ -1303,7 +1303,7 @@ Product.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -1828,6 +1828,7 @@ Product.Description
 					return result;
 				}
 
+				/*
 				public static ProductUsageCollection CreateDemoDefault()
 				{
 					ProductUsageCollection customDemo = null;
@@ -1840,6 +1841,7 @@ Product.Description
 					//result.CollectionContent.Add(ProductUsage.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ProductUsage> CollectionContent = new List<ProductUsage>();
@@ -2262,7 +2264,7 @@ Product.Description
 					result.Product = Product.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ProductUsage CreateDemoDefault()
 				{
 					ProductUsage customDemo = null;
@@ -2274,7 +2276,7 @@ Product.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -2768,6 +2770,7 @@ Product.Description
 					return result;
 				}
 
+				/*
 				public static ProductCollection CreateDemoDefault()
 				{
 					ProductCollection customDemo = null;
@@ -2780,6 +2783,7 @@ Product.Description
 					//result.CollectionContent.Add(Product.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Product> CollectionContent = new List<Product>();
@@ -3203,7 +3207,7 @@ Product.Description
 					result.NodeSourceProducts = ProductCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static NodeSummaryContainer CreateDemoDefault()
 				{
 					NodeSummaryContainer customDemo = null;
@@ -3216,7 +3220,7 @@ Product.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -3732,6 +3736,7 @@ Product.Description
 					return result;
 				}
 
+				/*
 				public static RenderedNodeCollection CreateDemoDefault()
 				{
 					RenderedNodeCollection customDemo = null;
@@ -3744,6 +3749,7 @@ Product.Description
 					//result.CollectionContent.Add(RenderedNode.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<RenderedNode> CollectionContent = new List<RenderedNode>();
@@ -4169,7 +4175,7 @@ Product.Description
 					result.Filters = ShortTextCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static RenderedNode CreateDemoDefault()
 				{
 					RenderedNode customDemo = null;
@@ -4203,7 +4209,7 @@ RenderedNode.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -4894,6 +4900,7 @@ RenderedNode.Excerpt
 					return result;
 				}
 
+				/*
 				public static ShortTextCollection CreateDemoDefault()
 				{
 					ShortTextCollection customDemo = null;
@@ -4906,6 +4913,7 @@ RenderedNode.Excerpt
 					//result.CollectionContent.Add(ShortTextObject.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ShortTextObject> CollectionContent = new List<ShortTextObject>();
@@ -5327,7 +5335,7 @@ RenderedNode.Excerpt
 					var result = new ShortTextObject();
 					return result;
 				}
-
+				/*
 				public static ShortTextObject CreateDemoDefault()
 				{
 					ShortTextObject customDemo = null;
@@ -5340,7 +5348,7 @@ RenderedNode.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{

@@ -93,5 +93,33 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="InitiateIntegrationConnection">
+      <OperationSpec>
+        <Description>
+            Initiates integration connection
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Description" dataType="string" designDesc="Description of the connection" state="implemented" />
+        <Parameter name="TargetBallHostName" dataType="string" designDesc="Target Ball instance host name" state="implemented" />
+        <Parameter name="TargetGroupID" dataType="string" designDesc="Target group ID for the connection" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Creates connection" state="implemented">
+            <Parameter name="Description" />
+          </TargetDefinition>
+          <TargetDefinition name="DeviceForConnection" dataType="TheBall.CORE.DeviceMembership" designDesc="Device for the connection" state="implemented">
+            <Target name="Connection" />
+          </TargetDefinition>
+          <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+          <MethodExecute name="NegotiateDeviceConnection" designDesc="Negotiate device connection" state="implemented">
+            <Target name="DeviceForConnection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

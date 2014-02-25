@@ -2,10 +2,18 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Interface">
     <InformationModel>
+      <InformationObject name="ConnectionCollection" designDesc="Collection for connections">
+        <CollectionFor contentInformationObjectName="Connection" collectionType="Master"/>
+      </InformationObject>
       <InformationObject name="Connection" provideCreateMethod="false" designDesc="Connection, that is complete integration between two parties">
         <InformationItems>
+          <!-- Input/Output structure is only used for output transfer constraining, 
+            for input the device suffices -->
+          <!--
           <InformationItem name="InputInformationID" logicalDataType="Text_Short"/>
+          -->
           <InformationItem name="OutputInformationID" logicalDataType="Text_Short" />
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
           <InformationItem name="DeviceID" logicalDataType="Text_Short"/>
           <InformationItem name="IsActiveParty" logicalDataType="TrueOrFalse_Boolean"/>
           <InformationItem name="OtherSideConnectionID" logicalDataType="Text_Short"/>
@@ -180,6 +188,34 @@
               <Target name="EnsureUpdateOnStatusSummaryOutput"/>
             </MethodExecute>
             -->
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="InitiateIntegrationConnection">
+        <OperationSpec>
+          <Description>
+            Initiates integration connection
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Description" dataType="string" designDesc="Description of the connection" state="implemented"/>
+          <Parameter name="TargetBallHostName" dataType="string" designDesc="Target Ball instance host name" state="implemented"/>
+          <Parameter name="TargetGroupID" dataType="string" designDesc="Target group ID for the connection" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Connection" dataType="Connection" designDesc="Creates connection" state="implemented">
+              <Parameter name="Description"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TheBall.CORE.DeviceMembership" name="DeviceForConnection" designDesc="Device for the connection" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="NegotiateDeviceConnection" designDesc="Negotiate device connection" state="implemented">
+              <Target name="DeviceForConnection"/>
+            </MethodExecute>
           </SequentialExecution>
         </Execution>
       </Operation>

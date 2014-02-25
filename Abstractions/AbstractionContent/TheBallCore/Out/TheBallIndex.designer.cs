@@ -281,7 +281,9 @@ using TheBall.CORE;
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					// Remove exception if basic functionality starts to have issues
-					throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					if(filterOnFalse(this))
+						result.Add(this);
 				}
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
@@ -567,7 +569,9 @@ using TheBall.CORE;
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					// Remove exception if basic functionality starts to have issues
-					throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					if(filterOnFalse(this))
+						result.Add(this);
 				}
 
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)

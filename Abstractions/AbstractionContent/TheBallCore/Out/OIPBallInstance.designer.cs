@@ -514,7 +514,7 @@ using TheBall.CORE;
 					var result = new TBSystem();
 					return result;
 				}
-
+				/*
 				public static TBSystem CreateDemoDefault()
 				{
 					TBSystem customDemo = null;
@@ -529,7 +529,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -896,7 +896,7 @@ using TheBall.CORE;
 					result.Publications = PublicationPackageCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static WebPublishInfo CreateDemoDefault()
 				{
 					WebPublishInfo customDemo = null;
@@ -913,7 +913,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -1448,6 +1448,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static PublicationPackageCollection CreateDemoDefault()
 				{
 					PublicationPackageCollection customDemo = null;
@@ -1460,6 +1461,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(PublicationPackage.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<PublicationPackage> CollectionContent = new List<PublicationPackage>();
@@ -1881,7 +1883,7 @@ using TheBall.CORE;
 					var result = new PublicationPackage();
 					return result;
 				}
-
+				/*
 				public static PublicationPackage CreateDemoDefault()
 				{
 					PublicationPackage customDemo = null;
@@ -1894,7 +1896,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -2260,7 +2262,7 @@ using TheBall.CORE;
 					result.Account = TBAccount.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBRLoginRoot CreateDemoDefault()
 				{
 					TBRLoginRoot customDemo = null;
@@ -2272,7 +2274,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -2671,7 +2673,7 @@ using TheBall.CORE;
 					result.Account = TBAccount.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBRAccountRoot CreateDemoDefault()
 				{
 					TBRAccountRoot customDemo = null;
@@ -2683,7 +2685,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -3082,7 +3084,7 @@ using TheBall.CORE;
 					result.Group = TBCollaboratingGroup.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBRGroupRoot CreateDemoDefault()
 				{
 					TBRGroupRoot customDemo = null;
@@ -3094,7 +3096,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -3492,7 +3494,7 @@ using TheBall.CORE;
 					var result = new TBRLoginGroupRoot();
 					return result;
 				}
-
+				/*
 				public static TBRLoginGroupRoot CreateDemoDefault()
 				{
 					TBRLoginGroupRoot customDemo = null;
@@ -3507,7 +3509,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -3873,7 +3875,7 @@ using TheBall.CORE;
 					result.Account = TBAccount.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBREmailRoot CreateDemoDefault()
 				{
 					TBREmailRoot customDemo = null;
@@ -3885,7 +3887,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -4286,7 +4288,7 @@ using TheBall.CORE;
 					result.GroupRoleCollection = TBAccountCollaborationGroupCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBAccount CreateDemoDefault()
 				{
 					TBAccount customDemo = null;
@@ -4300,7 +4302,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -4804,7 +4806,7 @@ using TheBall.CORE;
 					var result = new TBAccountCollaborationGroup();
 					return result;
 				}
-
+				/*
 				public static TBAccountCollaborationGroup CreateDemoDefault()
 				{
 					TBAccountCollaborationGroup customDemo = null;
@@ -4821,7 +4823,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -5260,6 +5262,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static TBAccountCollaborationGroupCollection CreateDemoDefault()
 				{
 					TBAccountCollaborationGroupCollection customDemo = null;
@@ -5272,6 +5275,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(TBAccountCollaborationGroup.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TBAccountCollaborationGroup> CollectionContent = new List<TBAccountCollaborationGroup>();
@@ -5693,7 +5697,7 @@ using TheBall.CORE;
 					var result = new TBLoginInfo();
 					return result;
 				}
-
+				/*
 				public static TBLoginInfo CreateDemoDefault()
 				{
 					TBLoginInfo customDemo = null;
@@ -5706,7 +5710,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -6125,6 +6129,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static TBLoginInfoCollection CreateDemoDefault()
 				{
 					TBLoginInfoCollection customDemo = null;
@@ -6137,6 +6142,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(TBLoginInfo.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TBLoginInfo> CollectionContent = new List<TBLoginInfo>();
@@ -6558,7 +6564,7 @@ using TheBall.CORE;
 					var result = new TBEmail();
 					return result;
 				}
-
+				/*
 				public static TBEmail CreateDemoDefault()
 				{
 					TBEmail customDemo = null;
@@ -6571,7 +6577,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -7000,6 +7006,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static TBEmailCollection CreateDemoDefault()
 				{
 					TBEmailCollection customDemo = null;
@@ -7012,6 +7019,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(TBEmail.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TBEmail> CollectionContent = new List<TBEmail>();
@@ -7434,7 +7442,7 @@ using TheBall.CORE;
 					result.Email = TBEmail.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBCollaboratorRole CreateDemoDefault()
 				{
 					TBCollaboratorRole customDemo = null;
@@ -7450,7 +7458,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -7932,6 +7940,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static TBCollaboratorRoleCollection CreateDemoDefault()
 				{
 					TBCollaboratorRoleCollection customDemo = null;
@@ -7944,6 +7953,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(TBCollaboratorRole.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TBCollaboratorRole> CollectionContent = new List<TBCollaboratorRole>();
@@ -8366,7 +8376,7 @@ using TheBall.CORE;
 					result.Roles = TBCollaboratorRoleCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBCollaboratingGroup CreateDemoDefault()
 				{
 					TBCollaboratingGroup customDemo = null;
@@ -8380,7 +8390,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -9378,7 +9388,7 @@ using TheBall.CORE;
 					var result = new TBGroupJoinConfirmation();
 					return result;
 				}
-
+				/*
 				public static TBGroupJoinConfirmation CreateDemoDefault()
 				{
 					TBGroupJoinConfirmation customDemo = null;
@@ -9391,7 +9401,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -9746,7 +9756,7 @@ using TheBall.CORE;
 					var result = new TBDeviceJoinConfirmation();
 					return result;
 				}
-
+				/*
 				public static TBDeviceJoinConfirmation CreateDemoDefault()
 				{
 					TBDeviceJoinConfirmation customDemo = null;
@@ -9763,7 +9773,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -10138,7 +10148,7 @@ using TheBall.CORE;
 					var result = new TBInformationInputConfirmation();
 					return result;
 				}
-
+				/*
 				public static TBInformationInputConfirmation CreateDemoDefault()
 				{
 					TBInformationInputConfirmation customDemo = null;
@@ -10155,7 +10165,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -10530,7 +10540,7 @@ using TheBall.CORE;
 					var result = new TBInformationOutputConfirmation();
 					return result;
 				}
-
+				/*
 				public static TBInformationOutputConfirmation CreateDemoDefault()
 				{
 					TBInformationOutputConfirmation customDemo = null;
@@ -10547,7 +10557,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -10924,7 +10934,7 @@ using TheBall.CORE;
 					result.LoginProviderCollection = LoginProviderCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TBRegisterContainer CreateDemoDefault()
 				{
 					TBRegisterContainer customDemo = null;
@@ -10939,7 +10949,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -11400,7 +11410,7 @@ using TheBall.CORE;
 					var result = new LoginProvider();
 					return result;
 				}
-
+				/*
 				public static LoginProvider CreateDemoDefault()
 				{
 					LoginProvider customDemo = null;
@@ -11421,7 +11431,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -11880,6 +11890,7 @@ using TheBall.CORE;
 					return result;
 				}
 
+				/*
 				public static LoginProviderCollection CreateDemoDefault()
 				{
 					LoginProviderCollection customDemo = null;
@@ -11892,6 +11903,7 @@ using TheBall.CORE;
 					//result.CollectionContent.Add(LoginProvider.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<LoginProvider> CollectionContent = new List<LoginProvider>();
@@ -12313,7 +12325,7 @@ using TheBall.CORE;
 					var result = new ContactOipContainer();
 					return result;
 				}
-
+				/*
 				public static ContactOipContainer CreateDemoDefault()
 				{
 					ContactOipContainer customDemo = null;
@@ -12326,7 +12338,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -12681,7 +12693,7 @@ using TheBall.CORE;
 					var result = new TBPRegisterEmail();
 					return result;
 				}
-
+				/*
 				public static TBPRegisterEmail CreateDemoDefault()
 				{
 					TBPRegisterEmail customDemo = null;
@@ -12694,7 +12706,7 @@ using TheBall.CORE;
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -13049,7 +13061,7 @@ using TheBall.CORE;
 					var result = new JavaScriptContainer();
 					return result;
 				}
-
+				/*
 				public static JavaScriptContainer CreateDemoDefault()
 				{
 					JavaScriptContainer customDemo = null;
@@ -13067,7 +13079,7 @@ JavaScriptContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -13422,7 +13434,7 @@ JavaScriptContainer.HtmlContent
 					var result = new JavascriptContainer();
 					return result;
 				}
-
+				/*
 				public static JavascriptContainer CreateDemoDefault()
 				{
 					JavascriptContainer customDemo = null;
@@ -13440,7 +13452,7 @@ JavascriptContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -13795,7 +13807,7 @@ JavascriptContainer.HtmlContent
 					var result = new FooterContainer();
 					return result;
 				}
-
+				/*
 				public static FooterContainer CreateDemoDefault()
 				{
 					FooterContainer customDemo = null;
@@ -13813,7 +13825,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -14168,7 +14180,7 @@ FooterContainer.HtmlContent
 					var result = new NavigationContainer();
 					return result;
 				}
-
+				/*
 				public static NavigationContainer CreateDemoDefault()
 				{
 					NavigationContainer customDemo = null;
@@ -14181,7 +14193,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -14539,7 +14551,7 @@ FooterContainer.HtmlContent
 					result.GroupSummary = GroupSummaryContainer.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountSummary CreateDemoDefault()
 				{
 					AccountSummary customDemo = null;
@@ -14553,7 +14565,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -15061,7 +15073,7 @@ FooterContainer.HtmlContent
 					result.AccountSummary = AccountSummary.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountContainer CreateDemoDefault()
 				{
 					AccountContainer customDemo = null;
@@ -15076,7 +15088,7 @@ FooterContainer.HtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -15634,7 +15646,7 @@ FooterContainer.HtmlContent
 					result.Icon = Image.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountIndex CreateDemoDefault()
 				{
 					AccountIndex customDemo = null;
@@ -15662,7 +15674,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -16080,7 +16092,7 @@ AccountIndex.Summary
 					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountModule CreateDemoDefault()
 				{
 					AccountModule customDemo = null;
@@ -16095,7 +16107,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -16654,7 +16666,7 @@ AccountIndex.Summary
 					result.ImageGroups = ImageGroupCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ImageGroupContainer CreateDemoDefault()
 				{
 					ImageGroupContainer customDemo = null;
@@ -16666,7 +16678,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -17066,7 +17078,7 @@ AccountIndex.Summary
 					result.Locations = AddressAndLocationCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static LocationContainer CreateDemoDefault()
 				{
 					LocationContainer customDemo = null;
@@ -17078,7 +17090,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -17558,6 +17570,7 @@ AccountIndex.Summary
 					return result;
 				}
 
+				/*
 				public static AddressAndLocationCollection CreateDemoDefault()
 				{
 					AddressAndLocationCollection customDemo = null;
@@ -17570,6 +17583,7 @@ AccountIndex.Summary
 					//result.CollectionContent.Add(AddressAndLocation.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<AddressAndLocation> CollectionContent = new List<AddressAndLocation>();
@@ -17988,7 +18002,7 @@ AccountIndex.Summary
 					result.Location = Location.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AddressAndLocation CreateDemoDefault()
 				{
 					AddressAndLocation customDemo = null;
@@ -18002,7 +18016,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -18492,7 +18506,7 @@ AccountIndex.Summary
 					var result = new StreetAddress();
 					return result;
 				}
-
+				/*
 				public static StreetAddress CreateDemoDefault()
 				{
 					StreetAddress customDemo = null;
@@ -18511,7 +18525,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -18896,7 +18910,7 @@ AccountIndex.Summary
 					var result = new AccountContent();
 					return result;
 				}
-
+				/*
 				public static AccountContent CreateDemoDefault()
 				{
 					AccountContent customDemo = null;
@@ -18909,7 +18923,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -19266,7 +19280,7 @@ AccountIndex.Summary
 					result.Address = StreetAddress.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountProfile CreateDemoDefault()
 				{
 					AccountProfile customDemo = null;
@@ -19283,7 +19297,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -19742,7 +19756,7 @@ AccountIndex.Summary
 					result.EmailCollection = TBEmailCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountSecurity CreateDemoDefault()
 				{
 					AccountSecurity customDemo = null;
@@ -19755,7 +19769,7 @@ AccountIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -20208,7 +20222,7 @@ AccountIndex.Summary
 					result.MemberInGroups = ReferenceCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AccountRoles CreateDemoDefault()
 				{
 					AccountRoles customDemo = null;
@@ -20228,7 +20242,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -20689,7 +20703,7 @@ AccountRoles.OrganizationsImPartOf
 					var result = new PersonalInfoVisibility();
 					return result;
 				}
-
+				/*
 				public static PersonalInfoVisibility CreateDemoDefault()
 				{
 					PersonalInfoVisibility customDemo = null;
@@ -20702,7 +20716,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -21121,6 +21135,7 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+				/*
 				public static GroupedInformationCollection CreateDemoDefault()
 				{
 					GroupedInformationCollection customDemo = null;
@@ -21133,6 +21148,7 @@ AccountRoles.OrganizationsImPartOf
 					//result.CollectionContent.Add(GroupedInformation.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<GroupedInformation> CollectionContent = new List<GroupedInformation>();
@@ -21555,7 +21571,7 @@ AccountRoles.OrganizationsImPartOf
 					result.ReferenceCollection = ReferenceCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static GroupedInformation CreateDemoDefault()
 				{
 					GroupedInformation customDemo = null;
@@ -21569,7 +21585,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -21977,7 +21993,7 @@ AccountRoles.OrganizationsImPartOf
 					var result = new ReferenceToInformation();
 					return result;
 				}
-
+				/*
 				public static ReferenceToInformation CreateDemoDefault()
 				{
 					ReferenceToInformation customDemo = null;
@@ -21992,7 +22008,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -22416,6 +22432,7 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+				/*
 				public static ReferenceCollection CreateDemoDefault()
 				{
 					ReferenceCollection customDemo = null;
@@ -22428,6 +22445,7 @@ AccountRoles.OrganizationsImPartOf
 					//result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
@@ -22847,7 +22865,7 @@ AccountRoles.OrganizationsImPartOf
 					result.BlogIndexGroup = BlogIndexGroup.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static BlogContainer CreateDemoDefault()
 				{
 					BlogContainer customDemo = null;
@@ -22862,7 +22880,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -23421,7 +23439,7 @@ AccountRoles.OrganizationsImPartOf
 					result.RecentBlogCollection = BlogCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static RecentBlogSummary CreateDemoDefault()
 				{
 					RecentBlogSummary customDemo = null;
@@ -23434,7 +23452,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -23895,7 +23913,7 @@ AccountRoles.OrganizationsImPartOf
 					result.NodeSourceCategories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static NodeSummaryContainer CreateDemoDefault()
 				{
 					NodeSummaryContainer customDemo = null;
@@ -23915,7 +23933,7 @@ AccountRoles.OrganizationsImPartOf
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -24809,6 +24827,7 @@ AccountRoles.OrganizationsImPartOf
 					return result;
 				}
 
+				/*
 				public static RenderedNodeCollection CreateDemoDefault()
 				{
 					RenderedNodeCollection customDemo = null;
@@ -24821,6 +24840,7 @@ AccountRoles.OrganizationsImPartOf
 					//result.CollectionContent.Add(RenderedNode.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<RenderedNode> CollectionContent = new List<RenderedNode>();
@@ -25247,7 +25267,7 @@ AccountRoles.OrganizationsImPartOf
 					result.Locations = ShortTextCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static RenderedNode CreateDemoDefault()
 				{
 					RenderedNode customDemo = null;
@@ -25286,7 +25306,7 @@ RenderedNode.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -26060,6 +26080,7 @@ RenderedNode.Excerpt
 					return result;
 				}
 
+				/*
 				public static ShortTextCollection CreateDemoDefault()
 				{
 					ShortTextCollection customDemo = null;
@@ -26072,6 +26093,7 @@ RenderedNode.Excerpt
 					//result.CollectionContent.Add(ShortTextObject.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ShortTextObject> CollectionContent = new List<ShortTextObject>();
@@ -26493,7 +26515,7 @@ RenderedNode.Excerpt
 					var result = new ShortTextObject();
 					return result;
 				}
-
+				/*
 				public static ShortTextObject CreateDemoDefault()
 				{
 					ShortTextObject customDemo = null;
@@ -26506,7 +26528,7 @@ RenderedNode.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -26925,6 +26947,7 @@ RenderedNode.Excerpt
 					return result;
 				}
 
+				/*
 				public static LongTextCollection CreateDemoDefault()
 				{
 					LongTextCollection customDemo = null;
@@ -26937,6 +26960,7 @@ RenderedNode.Excerpt
 					//result.CollectionContent.Add(LongTextObject.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<LongTextObject> CollectionContent = new List<LongTextObject>();
@@ -27358,7 +27382,7 @@ RenderedNode.Excerpt
 					var result = new LongTextObject();
 					return result;
 				}
-
+				/*
 				public static LongTextObject CreateDemoDefault()
 				{
 					LongTextObject customDemo = null;
@@ -27376,7 +27400,7 @@ LongTextObject.Content
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -27740,7 +27764,7 @@ LongTextObject.Content
 					result.MapMarkers = MapMarkerCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static MapContainer CreateDemoDefault()
 				{
 					MapContainer customDemo = null;
@@ -27760,7 +27784,7 @@ LongTextObject.Content
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -28586,7 +28610,7 @@ LongTextObject.Content
 					result.Location = Location.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static MapMarker CreateDemoDefault()
 				{
 					MapMarker customDemo = null;
@@ -28615,7 +28639,7 @@ MapMarker.PopupContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -29137,6 +29161,7 @@ MapMarker.PopupContent
 					return result;
 				}
 
+				/*
 				public static MapMarkerCollection CreateDemoDefault()
 				{
 					MapMarkerCollection customDemo = null;
@@ -29149,6 +29174,7 @@ MapMarker.PopupContent
 					//result.CollectionContent.Add(MapMarker.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<MapMarker> CollectionContent = new List<MapMarker>();
@@ -29574,7 +29600,7 @@ MapMarker.PopupContent
 					result.CalendarIndexCollection = CalendarIndex.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static CalendarContainer CreateDemoDefault()
 				{
 					CalendarContainer customDemo = null;
@@ -29589,7 +29615,7 @@ MapMarker.PopupContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -30149,7 +30175,7 @@ MapMarker.PopupContent
 					result.ImageGroup = ImageGroup.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AboutContainer CreateDemoDefault()
 				{
 					AboutContainer customDemo = null;
@@ -30179,7 +30205,7 @@ AboutContainer.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -30699,7 +30725,7 @@ AboutContainer.Body
 					result.AccountIndexCollection = CalendarIndex.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static OBSAccountContainer CreateDemoDefault()
 				{
 					OBSAccountContainer customDemo = null;
@@ -30714,7 +30740,7 @@ AboutContainer.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -31275,7 +31301,7 @@ AboutContainer.Body
 					result.ProjectIndexCollection = CalendarIndex.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ProjectContainer CreateDemoDefault()
 				{
 					ProjectContainer customDemo = null;
@@ -31290,7 +31316,7 @@ AboutContainer.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -31851,7 +31877,7 @@ AboutContainer.Body
 					result.CourseIndexCollection = CalendarIndex.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static CourseContainer CreateDemoDefault()
 				{
 					CourseContainer customDemo = null;
@@ -31866,7 +31892,7 @@ AboutContainer.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -32423,7 +32449,7 @@ AboutContainer.Body
 					var result = new ContainerHeader();
 					return result;
 				}
-
+				/*
 				public static ContainerHeader CreateDemoDefault()
 				{
 					ContainerHeader customDemo = null;
@@ -32438,7 +32464,7 @@ AboutContainer.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -32807,7 +32833,7 @@ AboutContainer.Body
 					result.ActivityCollection = ActivityCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ActivitySummaryContainer CreateDemoDefault()
 				{
 					ActivitySummaryContainer customDemo = null;
@@ -32829,7 +32855,7 @@ ActivitySummaryContainer.SummaryBody
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -33398,7 +33424,7 @@ ActivitySummaryContainer.SummaryBody
 					result.Icon = Image.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ActivityIndex CreateDemoDefault()
 				{
 					ActivityIndex customDemo = null;
@@ -33426,7 +33452,7 @@ ActivityIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -33843,7 +33869,7 @@ ActivityIndex.Summary
 					result.ActivityModule = Activity.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ActivityContainer CreateDemoDefault()
 				{
 					ActivityContainer customDemo = null;
@@ -33857,7 +33883,7 @@ ActivityIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -34447,6 +34473,7 @@ ActivityIndex.Summary
 					return result;
 				}
 
+				/*
 				public static ActivityCollection CreateDemoDefault()
 				{
 					ActivityCollection customDemo = null;
@@ -34459,6 +34486,7 @@ ActivityIndex.Summary
 					//result.CollectionContent.Add(Activity.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Activity> CollectionContent = new List<Activity>();
@@ -34888,7 +34916,7 @@ ActivityIndex.Summary
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Activity CreateDemoDefault()
 				{
 					Activity customDemo = null;
@@ -34932,7 +34960,7 @@ Activity.IFrameSources
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -35786,6 +35814,7 @@ Activity.IFrameSources
 					return result;
 				}
 
+				/*
 				public static ModeratorCollection CreateDemoDefault()
 				{
 					ModeratorCollection customDemo = null;
@@ -35798,6 +35827,7 @@ Activity.IFrameSources
 					//result.CollectionContent.Add(Moderator.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Moderator> CollectionContent = new List<Moderator>();
@@ -36219,7 +36249,7 @@ Activity.IFrameSources
 					var result = new Moderator();
 					return result;
 				}
-
+				/*
 				public static Moderator CreateDemoDefault()
 				{
 					Moderator customDemo = null;
@@ -36234,7 +36264,7 @@ Activity.IFrameSources
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -36663,6 +36693,7 @@ Activity.IFrameSources
 					return result;
 				}
 
+				/*
 				public static CollaboratorCollection CreateDemoDefault()
 				{
 					CollaboratorCollection customDemo = null;
@@ -36675,6 +36706,7 @@ Activity.IFrameSources
 					//result.CollectionContent.Add(Collaborator.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Collaborator> CollectionContent = new List<Collaborator>();
@@ -37096,7 +37128,7 @@ Activity.IFrameSources
 					var result = new Collaborator();
 					return result;
 				}
-
+				/*
 				public static Collaborator CreateDemoDefault()
 				{
 					Collaborator customDemo = null;
@@ -37117,7 +37149,7 @@ Activity.IFrameSources
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -37516,7 +37548,7 @@ Activity.IFrameSources
 					result.GroupCollection = GroupCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static GroupSummaryContainer CreateDemoDefault()
 				{
 					GroupSummaryContainer customDemo = null;
@@ -37538,7 +37570,7 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -38113,7 +38145,7 @@ GroupSummaryContainer.SummaryBody
 					result.LocationCollection = AddressAndLocationCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static GroupContainer CreateDemoDefault()
 				{
 					GroupContainer customDemo = null;
@@ -38132,7 +38164,7 @@ GroupSummaryContainer.SummaryBody
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -38905,7 +38937,7 @@ GroupSummaryContainer.SummaryBody
 					result.Icon = Image.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static GroupIndex CreateDemoDefault()
 				{
 					GroupIndex customDemo = null;
@@ -38933,7 +38965,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -39347,7 +39379,7 @@ GroupIndex.Summary
 					var result = new AddAddressAndLocationInfo();
 					return result;
 				}
-
+				/*
 				public static AddAddressAndLocationInfo CreateDemoDefault()
 				{
 					AddAddressAndLocationInfo customDemo = null;
@@ -39360,7 +39392,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -39715,7 +39747,7 @@ GroupIndex.Summary
 					var result = new AddImageInfo();
 					return result;
 				}
-
+				/*
 				public static AddImageInfo CreateDemoDefault()
 				{
 					AddImageInfo customDemo = null;
@@ -39728,7 +39760,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -40083,7 +40115,7 @@ GroupIndex.Summary
 					var result = new AddImageGroupInfo();
 					return result;
 				}
-
+				/*
 				public static AddImageGroupInfo CreateDemoDefault()
 				{
 					AddImageGroupInfo customDemo = null;
@@ -40096,7 +40128,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -40451,7 +40483,7 @@ GroupIndex.Summary
 					var result = new AddEmailAddressInfo();
 					return result;
 				}
-
+				/*
 				public static AddEmailAddressInfo CreateDemoDefault()
 				{
 					AddEmailAddressInfo customDemo = null;
@@ -40464,7 +40496,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -40819,7 +40851,7 @@ GroupIndex.Summary
 					var result = new CreateGroupInfo();
 					return result;
 				}
-
+				/*
 				public static CreateGroupInfo CreateDemoDefault()
 				{
 					CreateGroupInfo customDemo = null;
@@ -40832,7 +40864,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -41187,7 +41219,7 @@ GroupIndex.Summary
 					var result = new AddActivityInfo();
 					return result;
 				}
-
+				/*
 				public static AddActivityInfo CreateDemoDefault()
 				{
 					AddActivityInfo customDemo = null;
@@ -41200,7 +41232,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -41555,7 +41587,7 @@ GroupIndex.Summary
 					var result = new AddBlogPostInfo();
 					return result;
 				}
-
+				/*
 				public static AddBlogPostInfo CreateDemoDefault()
 				{
 					AddBlogPostInfo customDemo = null;
@@ -41568,7 +41600,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -41923,7 +41955,7 @@ GroupIndex.Summary
 					var result = new AddCategoryInfo();
 					return result;
 				}
-
+				/*
 				public static AddCategoryInfo CreateDemoDefault()
 				{
 					AddCategoryInfo customDemo = null;
@@ -41936,7 +41968,7 @@ GroupIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -42355,6 +42387,7 @@ GroupIndex.Summary
 					return result;
 				}
 
+				/*
 				public static GroupCollection CreateDemoDefault()
 				{
 					GroupCollection customDemo = null;
@@ -42367,6 +42400,7 @@ GroupIndex.Summary
 					//result.CollectionContent.Add(Group.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Group> CollectionContent = new List<Group>();
@@ -42794,7 +42828,7 @@ GroupIndex.Summary
 					result.CategoryCollection = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Group CreateDemoDefault()
 				{
 					Group customDemo = null;
@@ -42829,7 +42863,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -43491,7 +43525,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 					var result = new Introduction();
 					return result;
 				}
-
+				/*
 				public static Introduction CreateDemoDefault()
 				{
 					Introduction customDemo = null;
@@ -43511,7 +43545,7 @@ Introduction.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -43962,6 +43996,7 @@ Introduction.Body
 					return result;
 				}
 
+				/*
 				public static ContentCategoryRankCollection CreateDemoDefault()
 				{
 					ContentCategoryRankCollection customDemo = null;
@@ -43974,6 +44009,7 @@ Introduction.Body
 					//result.CollectionContent.Add(ContentCategoryRank.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ContentCategoryRank> CollectionContent = new List<ContentCategoryRank>();
@@ -44395,7 +44431,7 @@ Introduction.Body
 					var result = new ContentCategoryRank();
 					return result;
 				}
-
+				/*
 				public static ContentCategoryRank CreateDemoDefault()
 				{
 					ContentCategoryRank customDemo = null;
@@ -44416,7 +44452,7 @@ Introduction.Body
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -44892,6 +44928,7 @@ Introduction.Body
 					return result;
 				}
 
+				/*
 				public static LinkToContentCollection CreateDemoDefault()
 				{
 					LinkToContentCollection customDemo = null;
@@ -44904,6 +44941,7 @@ Introduction.Body
 					//result.CollectionContent.Add(LinkToContent.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<LinkToContent> CollectionContent = new List<LinkToContent>();
@@ -45322,7 +45360,7 @@ Introduction.Body
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static LinkToContent CreateDemoDefault()
 				{
 					LinkToContent customDemo = null;
@@ -45347,7 +45385,7 @@ LinkToContent.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -45964,6 +46002,7 @@ LinkToContent.Description
 					return result;
 				}
 
+				/*
 				public static EmbeddedContentCollection CreateDemoDefault()
 				{
 					EmbeddedContentCollection customDemo = null;
@@ -45976,6 +46015,7 @@ LinkToContent.Description
 					//result.CollectionContent.Add(EmbeddedContent.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<EmbeddedContent> CollectionContent = new List<EmbeddedContent>();
@@ -46393,7 +46433,7 @@ LinkToContent.Description
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static EmbeddedContent CreateDemoDefault()
 				{
 					EmbeddedContent customDemo = null;
@@ -46417,7 +46457,7 @@ EmbeddedContent.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -46981,6 +47021,7 @@ EmbeddedContent.Description
 					return result;
 				}
 
+				/*
 				public static TextContentCollection CreateDemoDefault()
 				{
 					TextContentCollection customDemo = null;
@@ -46993,6 +47034,7 @@ EmbeddedContent.Description
 					//result.CollectionContent.Add(TextContent.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<TextContent> CollectionContent = new List<TextContent>();
@@ -47411,7 +47453,7 @@ EmbeddedContent.Description
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static TextContent CreateDemoDefault()
 				{
 					TextContent customDemo = null;
@@ -47459,7 +47501,7 @@ TextContent.RawHtmlContent
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -48141,6 +48183,7 @@ TextContent.RawHtmlContent
 					return result;
 				}
 
+				/*
 				public static BlogCollection CreateDemoDefault()
 				{
 					BlogCollection customDemo = null;
@@ -48153,6 +48196,7 @@ TextContent.RawHtmlContent
 					//result.CollectionContent.Add(Blog.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Blog> CollectionContent = new List<Blog>();
@@ -48584,7 +48628,7 @@ TextContent.RawHtmlContent
 					result.SocialPanel = SocialPanelCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Blog CreateDemoDefault()
 				{
 					Blog customDemo = null;
@@ -48632,7 +48676,7 @@ Blog.IFrameSources
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -49531,7 +49575,7 @@ Blog.IFrameSources
 					result.BlogSourceForSummary = BlogCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static BlogIndexGroup CreateDemoDefault()
 				{
 					BlogIndexGroup customDemo = null;
@@ -49565,7 +49609,7 @@ BlogIndexGroup.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -50299,7 +50343,7 @@ BlogIndexGroup.Summary
 					result.Icon = Image.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static CalendarIndex CreateDemoDefault()
 				{
 					CalendarIndex customDemo = null;
@@ -50327,7 +50371,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -50741,7 +50785,7 @@ CalendarIndex.Summary
 					var result = new Filter();
 					return result;
 				}
-
+				/*
 				public static Filter CreateDemoDefault()
 				{
 					Filter customDemo = null;
@@ -50754,7 +50798,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -51109,7 +51153,7 @@ CalendarIndex.Summary
 					var result = new Calendar();
 					return result;
 				}
-
+				/*
 				public static Calendar CreateDemoDefault()
 				{
 					Calendar customDemo = null;
@@ -51122,7 +51166,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -51541,6 +51585,7 @@ CalendarIndex.Summary
 					return result;
 				}
 
+				/*
 				public static CalendarCollection CreateDemoDefault()
 				{
 					CalendarCollection customDemo = null;
@@ -51553,6 +51598,7 @@ CalendarIndex.Summary
 					//result.CollectionContent.Add(Calendar.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Calendar> CollectionContent = new List<Calendar>();
@@ -51974,7 +52020,7 @@ CalendarIndex.Summary
 					var result = new Map();
 					return result;
 				}
-
+				/*
 				public static Map CreateDemoDefault()
 				{
 					Map customDemo = null;
@@ -51987,7 +52033,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -52406,6 +52452,7 @@ CalendarIndex.Summary
 					return result;
 				}
 
+				/*
 				public static MapCollection CreateDemoDefault()
 				{
 					MapCollection customDemo = null;
@@ -52418,6 +52465,7 @@ CalendarIndex.Summary
 					//result.CollectionContent.Add(Map.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Map> CollectionContent = new List<Map>();
@@ -52843,7 +52891,7 @@ CalendarIndex.Summary
 					result.MapByCategory = MapCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static MapIndexCollection CreateDemoDefault()
 				{
 					MapIndexCollection customDemo = null;
@@ -52858,7 +52906,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -53416,7 +53464,7 @@ CalendarIndex.Summary
 					result.Location = Location.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static MapResult CreateDemoDefault()
 				{
 					MapResult customDemo = null;
@@ -53428,7 +53476,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -53890,6 +53938,7 @@ CalendarIndex.Summary
 					return result;
 				}
 
+				/*
 				public static MapResultCollection CreateDemoDefault()
 				{
 					MapResultCollection customDemo = null;
@@ -53902,6 +53951,7 @@ CalendarIndex.Summary
 					//result.CollectionContent.Add(MapResult.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<MapResult> CollectionContent = new List<MapResult>();
@@ -54326,7 +54376,7 @@ CalendarIndex.Summary
 					result.ResultByProximity = MapResultCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static MapResultsCollection CreateDemoDefault()
 				{
 					MapResultsCollection customDemo = null;
@@ -54340,7 +54390,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -54845,7 +54895,7 @@ CalendarIndex.Summary
 					result.VideoData = MediaContent.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Video CreateDemoDefault()
 				{
 					Video customDemo = null;
@@ -54861,7 +54911,7 @@ CalendarIndex.Summary
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -55360,6 +55410,7 @@ CalendarIndex.Summary
 					return result;
 				}
 
+				/*
 				public static ImageCollection CreateDemoDefault()
 				{
 					ImageCollection customDemo = null;
@@ -55372,6 +55423,7 @@ CalendarIndex.Summary
 					//result.CollectionContent.Add(Image.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Image> CollectionContent = new List<Image>();
@@ -55791,7 +55843,7 @@ CalendarIndex.Summary
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Image CreateDemoDefault()
 				{
 					Image customDemo = null;
@@ -55817,7 +55869,7 @@ Image.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -56478,6 +56530,7 @@ Image.Description
 					return result;
 				}
 
+				/*
 				public static BinaryFileCollection CreateDemoDefault()
 				{
 					BinaryFileCollection customDemo = null;
@@ -56490,6 +56543,7 @@ Image.Description
 					//result.CollectionContent.Add(BinaryFile.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<BinaryFile> CollectionContent = new List<BinaryFile>();
@@ -56913,7 +56967,7 @@ Image.Description
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static BinaryFile CreateDemoDefault()
 				{
 					BinaryFile customDemo = null;
@@ -56937,7 +56991,7 @@ BinaryFile.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -57829,6 +57883,7 @@ BinaryFile.Description
 					return result;
 				}
 
+				/*
 				public static ImageGroupCollection CreateDemoDefault()
 				{
 					ImageGroupCollection customDemo = null;
@@ -57841,6 +57896,7 @@ BinaryFile.Description
 					//result.CollectionContent.Add(ImageGroup.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<ImageGroup> CollectionContent = new List<ImageGroup>();
@@ -58259,7 +58315,7 @@ BinaryFile.Description
 					result.ImagesCollection = ImageCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static ImageGroup CreateDemoDefault()
 				{
 					ImageGroup customDemo = null;
@@ -58282,7 +58338,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -58780,7 +58836,7 @@ ImageGroup.Description
 					result.VideoCollection = VideoCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static VideoGroup CreateDemoDefault()
 				{
 					VideoGroup customDemo = null;
@@ -58796,7 +58852,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -59278,6 +59334,7 @@ ImageGroup.Description
 					return result;
 				}
 
+				/*
 				public static VideoCollection CreateDemoDefault()
 				{
 					VideoCollection customDemo = null;
@@ -59290,6 +59347,7 @@ ImageGroup.Description
 					//result.CollectionContent.Add(Video.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Video> CollectionContent = new List<Video>();
@@ -59711,7 +59769,7 @@ ImageGroup.Description
 					var result = new Tooltip();
 					return result;
 				}
-
+				/*
 				public static Tooltip CreateDemoDefault()
 				{
 					Tooltip customDemo = null;
@@ -59724,7 +59782,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -60143,6 +60201,7 @@ ImageGroup.Description
 					return result;
 				}
 
+				/*
 				public static SocialPanelCollection CreateDemoDefault()
 				{
 					SocialPanelCollection customDemo = null;
@@ -60155,6 +60214,7 @@ ImageGroup.Description
 					//result.CollectionContent.Add(SocialPanel.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<SocialPanel> CollectionContent = new List<SocialPanel>();
@@ -60577,7 +60637,7 @@ ImageGroup.Description
 					result.SocialFilter = Filter.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static SocialPanel CreateDemoDefault()
 				{
 					SocialPanel customDemo = null;
@@ -60589,7 +60649,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -60987,7 +61047,7 @@ ImageGroup.Description
 					var result = new Longitude();
 					return result;
 				}
-
+				/*
 				public static Longitude CreateDemoDefault()
 				{
 					Longitude customDemo = null;
@@ -61000,7 +61060,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -61355,7 +61415,7 @@ ImageGroup.Description
 					var result = new Latitude();
 					return result;
 				}
-
+				/*
 				public static Latitude CreateDemoDefault()
 				{
 					Latitude customDemo = null;
@@ -61368,7 +61428,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -61725,7 +61785,7 @@ ImageGroup.Description
 					result.Latitude = Latitude.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Location CreateDemoDefault()
 				{
 					Location customDemo = null;
@@ -61740,7 +61800,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -62265,6 +62325,7 @@ ImageGroup.Description
 					return result;
 				}
 
+				/*
 				public static LocationCollection CreateDemoDefault()
 				{
 					LocationCollection customDemo = null;
@@ -62277,6 +62338,7 @@ ImageGroup.Description
 					//result.CollectionContent.Add(Location.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Location> CollectionContent = new List<Location>();
@@ -62698,7 +62760,7 @@ ImageGroup.Description
 					var result = new Date();
 					return result;
 				}
-
+				/*
 				public static Date CreateDemoDefault()
 				{
 					Date customDemo = null;
@@ -62709,7 +62771,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -63094,7 +63156,7 @@ ImageGroup.Description
 					var result = new Sex();
 					return result;
 				}
-
+				/*
 				public static Sex CreateDemoDefault()
 				{
 					Sex customDemo = null;
@@ -63107,7 +63169,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -63462,7 +63524,7 @@ ImageGroup.Description
 					var result = new OBSAddress();
 					return result;
 				}
-
+				/*
 				public static OBSAddress CreateDemoDefault()
 				{
 					OBSAddress customDemo = null;
@@ -63493,7 +63555,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -63940,7 +64002,7 @@ ImageGroup.Description
 					result.Birthday = Date.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Identity CreateDemoDefault()
 				{
 					Identity customDemo = null;
@@ -63959,7 +64021,7 @@ ImageGroup.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -64440,7 +64502,7 @@ ImageGroup.Description
 					var result = new ImageVideoSoundVectorRaw();
 					return result;
 				}
-
+				/*
 				public static ImageVideoSoundVectorRaw CreateDemoDefault()
 				{
 					ImageVideoSoundVectorRaw customDemo = null;
@@ -64458,7 +64520,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -64842,7 +64904,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static CategoryContainer CreateDemoDefault()
 				{
 					CategoryContainer customDemo = null;
@@ -64854,7 +64916,7 @@ ImageVideoSoundVectorRaw.Vector
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -65256,7 +65318,7 @@ ImageVideoSoundVectorRaw.Vector
 					result.ParentCategory = Category.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static Category CreateDemoDefault()
 				{
 					Category customDemo = null;
@@ -65283,7 +65345,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -65880,6 +65942,7 @@ Category.Excerpt
 					return result;
 				}
 
+				/*
 				public static CategoryCollection CreateDemoDefault()
 				{
 					CategoryCollection customDemo = null;
@@ -65892,6 +65955,7 @@ Category.Excerpt
 					//result.CollectionContent.Add(Category.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Category> CollectionContent = new List<Category>();
@@ -66371,6 +66435,7 @@ Category.Excerpt
 					return result;
 				}
 
+				/*
 				public static SubscriptionCollection CreateDemoDefault()
 				{
 					SubscriptionCollection customDemo = null;
@@ -66383,6 +66448,7 @@ Category.Excerpt
 					//result.CollectionContent.Add(Subscription.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
@@ -66804,7 +66870,7 @@ Category.Excerpt
 					var result = new Subscription();
 					return result;
 				}
-
+				/*
 				public static Subscription CreateDemoDefault()
 				{
 					Subscription customDemo = null;
@@ -66825,7 +66891,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -67233,7 +67299,7 @@ Category.Excerpt
 					result.ErrorContent = SystemError.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static QueueEnvelope CreateDemoDefault()
 				{
 					QueueEnvelope customDemo = null;
@@ -67249,7 +67315,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -67837,6 +67903,7 @@ Category.Excerpt
 					return result;
 				}
 
+				/*
 				public static OperationRequestCollection CreateDemoDefault()
 				{
 					OperationRequestCollection customDemo = null;
@@ -67849,6 +67916,7 @@ Category.Excerpt
 					//result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
@@ -68277,7 +68345,7 @@ Category.Excerpt
 					result.PublishWebContent = PublishWebContentOperation.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static OperationRequest CreateDemoDefault()
 				{
 					OperationRequest customDemo = null;
@@ -68295,7 +68363,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -69011,7 +69079,7 @@ Category.Excerpt
 					var result = new SubscriptionChainRequestMessage();
 					return result;
 				}
-
+				/*
 				public static SubscriptionChainRequestMessage CreateDemoDefault()
 				{
 					SubscriptionChainRequestMessage customDemo = null;
@@ -69024,7 +69092,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -69380,7 +69448,7 @@ Category.Excerpt
 					result.SubscriptionTargetCollection = SubscriptionTargetCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static SubscriptionChainRequestContent CreateDemoDefault()
 				{
 					SubscriptionChainRequestContent customDemo = null;
@@ -69392,7 +69460,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -69840,7 +69908,7 @@ Category.Excerpt
 					var result = new SubscriptionTarget();
 					return result;
 				}
-
+				/*
 				public static SubscriptionTarget CreateDemoDefault()
 				{
 					SubscriptionTarget customDemo = null;
@@ -69853,7 +69921,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -70272,6 +70340,7 @@ Category.Excerpt
 					return result;
 				}
 
+				/*
 				public static SubscriptionTargetCollection CreateDemoDefault()
 				{
 					SubscriptionTargetCollection customDemo = null;
@@ -70284,6 +70353,7 @@ Category.Excerpt
 					//result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<SubscriptionTarget> CollectionContent = new List<SubscriptionTarget>();
@@ -70705,7 +70775,7 @@ Category.Excerpt
 					var result = new DeleteEntireOwnerOperation();
 					return result;
 				}
-
+				/*
 				public static DeleteEntireOwnerOperation CreateDemoDefault()
 				{
 					DeleteEntireOwnerOperation customDemo = null;
@@ -70720,7 +70790,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -71085,7 +71155,7 @@ Category.Excerpt
 					var result = new DeleteOwnerContentOperation();
 					return result;
 				}
-
+				/*
 				public static DeleteOwnerContentOperation CreateDemoDefault()
 				{
 					DeleteOwnerContentOperation customDemo = null;
@@ -71100,7 +71170,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -71467,7 +71537,7 @@ Category.Excerpt
 					result.MessageContent = QueueEnvelope.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static SystemError CreateDemoDefault()
 				{
 					SystemError customDemo = null;
@@ -71482,7 +71552,7 @@ Category.Excerpt
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -71953,7 +72023,7 @@ Category.Excerpt
 					var result = new SystemErrorItem();
 					return result;
 				}
-
+				/*
 				public static SystemErrorItem CreateDemoDefault()
 				{
 					SystemErrorItem customDemo = null;
@@ -71973,7 +72043,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -72402,6 +72472,7 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+				/*
 				public static SystemErrorItemCollection CreateDemoDefault()
 				{
 					SystemErrorItemCollection customDemo = null;
@@ -72414,6 +72485,7 @@ SystemErrorItem.LongDescription
 					//result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
@@ -72835,7 +72907,7 @@ SystemErrorItem.LongDescription
 					var result = new InformationSource();
 					return result;
 				}
-
+				/*
 				public static InformationSource CreateDemoDefault()
 				{
 					InformationSource customDemo = null;
@@ -72858,7 +72930,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -73347,6 +73419,7 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+				/*
 				public static InformationSourceCollection CreateDemoDefault()
 				{
 					InformationSourceCollection customDemo = null;
@@ -73359,6 +73432,7 @@ SystemErrorItem.LongDescription
 					//result.CollectionContent.Add(InformationSource.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
@@ -73780,7 +73854,7 @@ SystemErrorItem.LongDescription
 					var result = new RefreshDefaultViewsOperation();
 					return result;
 				}
-
+				/*
 				public static RefreshDefaultViewsOperation CreateDemoDefault()
 				{
 					RefreshDefaultViewsOperation customDemo = null;
@@ -73795,7 +73869,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -74161,7 +74235,7 @@ SystemErrorItem.LongDescription
 					result.Handlers = UpdateWebContentHandlerCollection.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static UpdateWebContentOperation CreateDemoDefault()
 				{
 					UpdateWebContentOperation customDemo = null;
@@ -74181,7 +74255,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -74629,7 +74703,7 @@ SystemErrorItem.LongDescription
 					var result = new UpdateWebContentHandlerItem();
 					return result;
 				}
-
+				/*
 				public static UpdateWebContentHandlerItem CreateDemoDefault()
 				{
 					UpdateWebContentHandlerItem customDemo = null;
@@ -74644,7 +74718,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -75073,6 +75147,7 @@ SystemErrorItem.LongDescription
 					return result;
 				}
 
+				/*
 				public static UpdateWebContentHandlerCollection CreateDemoDefault()
 				{
 					UpdateWebContentHandlerCollection customDemo = null;
@@ -75085,6 +75160,7 @@ SystemErrorItem.LongDescription
 					//result.CollectionContent.Add(UpdateWebContentHandlerItem.CreateDemoDefault());
 					return result;
 				}
+				*/
 
 		
 				[DataMember] public List<UpdateWebContentHandlerItem> CollectionContent = new List<UpdateWebContentHandlerItem>();
@@ -75506,7 +75582,7 @@ SystemErrorItem.LongDescription
 					var result = new PublishWebContentOperation();
 					return result;
 				}
-
+				/*
 				public static PublishWebContentOperation CreateDemoDefault()
 				{
 					PublishWebContentOperation customDemo = null;
@@ -75525,7 +75601,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -75910,7 +75986,7 @@ SystemErrorItem.LongDescription
 					var result = new SubscriberInput();
 					return result;
 				}
-
+				/*
 				public static SubscriberInput CreateDemoDefault()
 				{
 					SubscriberInput customDemo = null;
@@ -75929,7 +76005,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -76314,7 +76390,7 @@ SystemErrorItem.LongDescription
 					var result = new Monitor();
 					return result;
 				}
-
+				/*
 				public static Monitor CreateDemoDefault()
 				{
 					Monitor customDemo = null;
@@ -76335,7 +76411,7 @@ SystemErrorItem.LongDescription
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -76750,7 +76826,7 @@ SystemErrorItem.LongDescription
 					var result = new IconTitleDescription();
 					return result;
 				}
-
+				/*
 				public static IconTitleDescription CreateDemoDefault()
 				{
 					IconTitleDescription customDemo = null;
@@ -76770,7 +76846,7 @@ IconTitleDescription.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
@@ -77144,7 +77220,7 @@ IconTitleDescription.Description
 					result.ForAllPeople = IconTitleDescription.CreateDefault();
 					return result;
 				}
-
+				/*
 				public static AboutAGIApplications CreateDemoDefault()
 				{
 					AboutAGIApplications customDemo = null;
@@ -77157,7 +77233,7 @@ IconTitleDescription.Description
 				
 					return result;
 				}
-
+				*/
 
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{

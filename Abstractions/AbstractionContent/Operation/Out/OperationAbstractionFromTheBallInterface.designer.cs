@@ -70,4 +70,25 @@ using System.IO;
 					UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummary(parameters.Owner, parameters.UpdateTime, parameters.ChangedIDList, parameters.RemoveExpiredEntriesSeconds);		
 				}
 				}
+				public class InitiateIntegrationConnectionParameters 
+		{
+				public string Description ;
+				public string TargetBallHostName ;
+				public string TargetGroupID ;
+				}
+		
+		public class InitiateIntegrationConnection 
+		{
+				private static void PrepareParameters(InitiateIntegrationConnectionParameters parameters)
+		{
+					}
+				public static void Execute(InitiateIntegrationConnectionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = InitiateIntegrationConnectionImplementation.GetTarget_Connection(parameters.Description);	
+				TheBall.CORE.DeviceMembership DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(Connection);	
+				InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
+				InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnection(DeviceForConnection);		
+				}
+				}
 		 } 
