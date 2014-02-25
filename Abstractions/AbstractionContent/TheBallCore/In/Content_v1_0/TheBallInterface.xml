@@ -6,6 +6,8 @@
         <InformationItems>
           <InformationItem name="InputInformationID" logicalDataType="Text_Short"/>
           <InformationItem name="OutputInformationID" logicalDataType="Text_Short" />
+          <InformationItem name="DeviceID" logicalDataType="Text_Short"/>
+          <InformationItem name="IsActiveParty" logicalDataType="TrueOrFalse_Boolean"/>
           <InformationItem name="OtherSideConnectionID" logicalDataType="Text_Short"/>
           <InformationItem name="ThisSideCategories" logicalDataType="InformationObject" informationObjectName="Category" isCollection="true"/>
           <InformationItem name="OtherSideCategories" logicalDataType="InformationObject" informationObjectName="Category" isCollection="true"/>

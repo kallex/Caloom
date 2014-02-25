@@ -314,6 +314,12 @@ using TheBall.CORE;
 						case "OutputInformationID":
 							OutputInformationID = value;
 							break;
+						case "DeviceID":
+							DeviceID = value;
+							break;
+						case "IsActiveParty":
+							IsActiveParty = bool.Parse(value);
+							break;
 						case "OtherSideConnectionID":
 							OtherSideConnectionID = value;
 							break;
@@ -336,6 +342,12 @@ using TheBall.CORE;
 			[DataMember]
 			public string OutputInformationID { get; set; }
 			private string _unmodified_OutputInformationID;
+			[DataMember]
+			public string DeviceID { get; set; }
+			private string _unmodified_DeviceID;
+			[DataMember]
+			public bool IsActiveParty { get; set; }
+			private bool _unmodified_IsActiveParty;
 			[DataMember]
 			public string OtherSideConnectionID { get; set; }
 			private string _unmodified_OtherSideConnectionID;
