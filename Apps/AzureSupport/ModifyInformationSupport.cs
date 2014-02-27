@@ -10,6 +10,7 @@ using System.Web;
 using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
+using TheBall.Interface;
 
 namespace TheBall
 {
@@ -142,6 +143,26 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "UpdateConnectionThisSideCategories":
+                    {
+                        UpdateConnectionThisSideCategoriesParameters parameters = new UpdateConnectionThisSideCategoriesParameters
+                            {
+                                ConnectionID = form["ConnectionID"]
+                            };
+                        UpdateConnectionThisSideCategories.Execute(parameters);
+                        break;
+                    }
+                case "InitiateIntegrationConnection":
+                    {
+                        InitiateIntegrationConnectionParameters parameters = new InitiateIntegrationConnectionParameters
+                            {
+                                Description = form["Description"],
+                                TargetBallHostName = form["TargetBallHostName"],
+                                TargetGroupID = form["TargetGroupID"]
+                            };
+                        InitiateIntegrationConnection.Execute(parameters);
+                        break;
+                    }
                 case "DeleteCustomUI":
                     {
                         if (containerOwner.IsGroupContainer() == false)

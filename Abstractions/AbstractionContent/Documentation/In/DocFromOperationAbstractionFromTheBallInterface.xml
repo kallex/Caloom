@@ -144,7 +144,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: DeviceForConnection ( Connection )" level="2">
+            <Header text="Target Definition: DeviceForConnection ( Connection, Description, TargetBallHostName, TargetGroupID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Device for the connection</TextContent>

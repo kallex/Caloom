@@ -16,19 +16,36 @@ namespace TheBall.Interface
             return connection;
         }
 
-        public static DeviceMembership GetTarget_DeviceForConnection(Connection connection)
+        public static AuthenticatedAsActiveDevice GetTarget_DeviceForConnection(string description, string targetBallHostName, string targetGroupId, Connection connection)
         {
-            throw new System.NotImplementedException();
+            CreateAuthenticatedAsActiveDeviceParameters parameters = new CreateAuthenticatedAsActiveDeviceParameters
+            {
+                AuthenticationDeviceDescription = description,
+                TargetBallHostName = targetBallHostName,
+                TargetGroupID = targetGroupId,
+                Owner = Owner,
+                SharedSecret = "testsecretXYZ33"
+            };
+            var operResult = CreateAuthenticatedAsActiveDevice.Execute(parameters);
+            connection.DeviceID = operResult.CreatedAuthenticatedAsActiveDevice.ID;
+            return operResult.CreatedAuthenticatedAsActiveDevice;
         }
 
         public static void ExecuteMethod_StoreConnection(Connection connection)
         {
-            throw new System.NotImplementedException();
+            connection.StoreInformation();
         }
 
-        public static void ExecuteMethod_NegotiateDeviceConnection(DeviceMembership deviceForConnection)
+        public static void ExecuteMethod_NegotiateDeviceConnection(AuthenticatedAsActiveDevice deviceForConnection)
         {
-            throw new System.NotImplementedException();
+            PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters =
+                new PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters
+                    {
+                        AuthenticatedAsActiveDeviceID = deviceForConnection.ID,
+                        Owner = Owner
+                    };
+            PerformNegotiationAndValidateAuthenticationAsActiveDevice.Execute(parameters);
         }
+
     }
 }

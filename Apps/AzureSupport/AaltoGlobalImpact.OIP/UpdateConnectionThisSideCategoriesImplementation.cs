@@ -52,7 +52,7 @@ namespace AaltoGlobalImpact.OIP
                 }
             }
             Debug.Assert(thisSideCategories.Count == activeCategories.Length);
-            var finalList = activeCategories.Select(activeCat => thisSideCategories.First(cat => cat.ParentCategoryID == activeCat.ID)).ToList();
+            var finalList = activeCategories.Select(activeCat => thisSideCategories.First(cat => cat.NativeCategoryID == activeCat.ID)).ToList();
             connection.ThisSideCategories = finalList;
         }
 

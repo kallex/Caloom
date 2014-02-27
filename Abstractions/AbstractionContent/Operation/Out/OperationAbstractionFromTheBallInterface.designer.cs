@@ -86,7 +86,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = InitiateIntegrationConnectionImplementation.GetTarget_Connection(parameters.Description);	
-				TheBall.CORE.DeviceMembership DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(Connection);	
+				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
 				InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
 				InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnection(DeviceForConnection);		
 				}

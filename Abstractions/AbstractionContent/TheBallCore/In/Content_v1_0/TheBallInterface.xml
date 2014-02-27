@@ -207,7 +207,10 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Creates connection" state="implemented">
               <Parameter name="Description"/>
             </TargetDefinition>
-            <TargetDefinition dataType="TheBall.CORE.DeviceMembership" name="DeviceForConnection" designDesc="Device for the connection" state="implemented">
+            <TargetDefinition dataType="TheBall.CORE.AuthenticatedAsActiveDevice" name="DeviceForConnection" designDesc="Device for the connection" state="implemented">
+              <Parameter name="Description"/>
+              <Parameter name="TargetBallHostName"/>
+              <Parameter name="TargetGroupID"/>
               <Target name="Connection"/>
             </TargetDefinition>
             <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">

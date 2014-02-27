@@ -388,7 +388,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Creates connection
 		</div>
-		</p><h2>Target Definition: DeviceForConnection ( Connection )</h2>
+		</p><h2>Target Definition: DeviceForConnection ( Connection, Description, TargetBallHostName, TargetGroupID )</h2>
 		<p>		<div class="MsoNormal" >
 		Device for the connection
 		</div>
