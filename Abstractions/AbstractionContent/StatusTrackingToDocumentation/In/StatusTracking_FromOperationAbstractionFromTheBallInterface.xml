@@ -85,6 +85,36 @@
     <StatusItem name="InitiateIntegrationConnection_NegotiateDeviceConnection" displayName="MethodExecuteType: NegotiateDeviceConnection" description="Negotiate device connection">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateReceivingConnection_Description" displayName="VariableType: Description" description="Connection description">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnection_OtherSideConnectionID" displayName="VariableType: OtherSideConnectionID" description="Other side connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnection_Connection" displayName="TargetDefinitionType: Connection" description="Created connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnection_StoreConnection" displayName="MethodExecuteType: StoreConnection" description="Store connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnection_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID of created connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionOtherSideCategories_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionOtherSideCategories_Connection" displayName="TargetDefinitionType: Connection" description="Connecton that contains this categories">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionOtherSideCategories_GetOtherSideCategories" displayName="MethodExecuteType: GetOtherSideCategories" description="Get other side categories">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionOtherSideCategories_UpdateOtherSideCategories" displayName="MethodExecuteType: UpdateOtherSideCategories" description="Update connection's this side categories">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionOtherSideCategories_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="PushCollaborationContent">
@@ -122,6 +152,20 @@
       <ItemRef itemName="InitiateIntegrationConnection_DeviceForConnection" />
       <ItemRef itemName="InitiateIntegrationConnection_StoreConnection" />
       <ItemRef itemName="InitiateIntegrationConnection_NegotiateDeviceConnection" />
+    </Group>
+    <Group name="CreateReceivingConnection">
+      <ItemRef itemName="CreateReceivingConnection_Description" />
+      <ItemRef itemName="CreateReceivingConnection_OtherSideConnectionID" />
+      <ItemRef itemName="CreateReceivingConnection_Connection" />
+      <ItemRef itemName="CreateReceivingConnection_StoreConnection" />
+      <ItemRef itemName="CreateReceivingConnection_ConnectionID" />
+    </Group>
+    <Group name="UpdateConnectionOtherSideCategories">
+      <ItemRef itemName="UpdateConnectionOtherSideCategories_ConnectionID" />
+      <ItemRef itemName="UpdateConnectionOtherSideCategories_Connection" />
+      <ItemRef itemName="UpdateConnectionOtherSideCategories_GetOtherSideCategories" />
+      <ItemRef itemName="UpdateConnectionOtherSideCategories_UpdateOtherSideCategories" />
+      <ItemRef itemName="UpdateConnectionOtherSideCategories_StoreObject" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

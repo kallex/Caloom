@@ -124,5 +124,57 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="CreateReceivingConnection">
+      <OperationSpec>
+        <Description>
+            Creates receiving connection, used for device initiated connection other end initiation.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Description" dataType="string" designDesc="Connection description" state="implemented" />
+        <Parameter name="OtherSideConnectionID" dataType="string" designDesc="Other side connection ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Created connection" state="implemented">
+            <Parameter name="Description" />
+            <Parameter name="OtherSideConnectionID" />
+          </TargetDefinition>
+          <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="ConnectionID" dataType="string" designDesc="Connection ID of created connection" state="implemented" />
+        <Target name="Connection" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="UpdateConnectionOtherSideCategories">
+      <OperationSpec>
+        <Description>Update other side categories of connection</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connecton that contains this categories" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <MethodExecute name="GetOtherSideCategories" designDesc="Get other side categories" state="implemented">
+            <Target name="Connection" />
+            <ReturnValue name="OtherSideCategories" dataType="Category[]" designDesc="Other side categories" state="implemented" />
+          </MethodExecute>
+          <MethodExecute name="UpdateOtherSideCategories" designDesc="Update connection's this side categories" state="implemented">
+            <Target name="Connection" />
+            <Target name="GetOtherSideCategoriesOutput" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

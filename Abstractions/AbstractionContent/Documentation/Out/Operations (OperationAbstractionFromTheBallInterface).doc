@@ -228,7 +228,81 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallInterface)</p>
 </div>
-		<h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
+		<h1>CreateReceivingConnection (Description, OtherSideConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Creates receiving connection, used for device initiated connection other end initiation.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Description
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection description
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OtherSideConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Other side connection ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( Description, OtherSideConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Created connection
+		</div>
+		</p><h2>Method Call: StoreConnection ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store connection object
+		</div>
+		</p><h2>Return Value : CreateReceivingConnectionReturnValue ( Connection )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID of created connection
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Execute given operation
@@ -505,6 +579,68 @@ div.WordSection1
 		</p><h2>Method Call: StoreObjectComplete ( Connection, TransferPackage )</h2>
 		<p>		<div class="MsoNormal" >
 		Stores connection with processed transferpackage
+		</div>
+		</p><h1>UpdateConnectionOtherSideCategories (ConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update other side categories of connection
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connecton that contains this categories
+		</div>
+		</p><h2>Method Call: GetOtherSideCategories ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Get other side categories
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OtherSideCategories
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Category[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Other side categories
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: UpdateOtherSideCategories ( Connection, GetOtherSideCategoriesOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Update connection's this side categories
+		</div>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store connection object
 		</div>
 		</p><h1>UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
 		<h2>Specifications</h2>

@@ -4,6 +4,90 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallInterface)" title="Operations (OperationAbstractionFromTheBallInterface)">
         <Content>
+          <Header text="CreateReceivingConnection (Description, OtherSideConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Creates receiving connection, used for device initiated connection other end initiation.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Description</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection description</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OtherSideConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Other side connection ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( Description, OtherSideConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Created connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreConnection ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateReceivingConnectionReturnValue ( Connection )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection ID of created connection</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -309,6 +393,89 @@
               <Paragraph>
                 <Text>
                   <TextContent>Stores connection with processed transferpackage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateConnectionOtherSideCategories (ConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update other side categories of connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connecton that contains this categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: GetOtherSideCategories ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get other side categories</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OtherSideCategories</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Category[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Other side categories</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateOtherSideCategories ( Connection, GetOtherSideCategoriesOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update connection's this side categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store connection object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

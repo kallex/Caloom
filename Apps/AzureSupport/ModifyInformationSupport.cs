@@ -16,24 +16,24 @@ namespace TheBall
 {
     public static class ModifyInformationSupport
     {
-        public static void ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
+        public static object ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
         {
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
-                return;
+                return null;
 
             string operationName = form["ExecuteOperation"];
             if (operationName != null)
             {
-                executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
-                return;
+                var operationResult = executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
+                return operationResult;
             }
 
             string adminOperationName = form["ExecuteAdminOperation"];
             if (adminOperationName != null)
             {
-                executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
-                return;
+                var adminResult = executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
+                return adminResult;
             }
 
             string contentSourceInfo = form["ContentSourceInfo"];
@@ -90,10 +90,10 @@ namespace TheBall
                  * */
                 rootObject.StoreInformationMasterFirst(containerOwner, false);
             }
-
+            return null;
         }
 
-        private static void executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        private static object executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
             var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID" };
             string adminGroupID = InstanceConfiguration.AdminGroupID;
@@ -129,7 +129,7 @@ namespace TheBall
                 default:
                     throw new NotSupportedException("Operation not (yet) supported: " + operationName);
             }
-
+            return null;
         }
 
         private static void requireGroup(IContainerOwner owner, string errorMessage)
@@ -138,11 +138,21 @@ namespace TheBall
                 throw new InvalidOperationException(errorMessage);
         }
 
-        private static void executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        private static object executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "UpdateConnectionOtherSideCategories":
+                    {
+                        var parameters = new UpdateConnectionOtherSideCategoriesParameters
+                        {
+                            ConnectionID = form["ConnectionID"]
+                        };
+                        UpdateConnectionOtherSideCategories.Execute(parameters);
+                        break;
+                    }
+
                 case "UpdateConnectionThisSideCategories":
                     {
                         UpdateConnectionThisSideCategoriesParameters parameters = new UpdateConnectionThisSideCategoriesParameters
@@ -472,6 +482,7 @@ namespace TheBall
                 default:
                     throw new NotSupportedException("Operation not (yet) supported: " + operationName);
             }
+            return null;
         }
 
         private static NameValueCollection filterForm(NameValueCollection form, params string[] keysToFilter)

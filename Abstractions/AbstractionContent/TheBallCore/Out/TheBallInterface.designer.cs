@@ -1883,6 +1883,8 @@ using TheBall.CORE;
 
 					result.NativeCategoryObjectName = @"Category.NativeCategoryObjectName";
 
+					result.NativeCategoryTitle = @"Category.NativeCategoryTitle";
+
 					result.IdentifyingCategoryName = @"Category.IdentifyingCategoryName";
 
 					result.ParentCategoryID = @"Category.ParentCategoryID";
@@ -1951,6 +1953,8 @@ using TheBall.CORE;
 							return true;
 						if(NativeCategoryObjectName != _unmodified_NativeCategoryObjectName)
 							return true;
+						if(NativeCategoryTitle != _unmodified_NativeCategoryTitle)
+							return true;
 						if(IdentifyingCategoryName != _unmodified_IdentifyingCategoryName)
 							return true;
 						if(ParentCategoryID != _unmodified_ParentCategoryID)
@@ -1970,6 +1974,7 @@ using TheBall.CORE;
 					NativeCategoryID = sourceObject.NativeCategoryID;
 					NativeCategoryDomainName = sourceObject.NativeCategoryDomainName;
 					NativeCategoryObjectName = sourceObject.NativeCategoryObjectName;
+					NativeCategoryTitle = sourceObject.NativeCategoryTitle;
 					IdentifyingCategoryName = sourceObject.IdentifyingCategoryName;
 					ParentCategoryID = sourceObject.ParentCategoryID;
 				}
@@ -1981,6 +1986,7 @@ using TheBall.CORE;
 					_unmodified_NativeCategoryID = NativeCategoryID;
 					_unmodified_NativeCategoryDomainName = NativeCategoryDomainName;
 					_unmodified_NativeCategoryObjectName = NativeCategoryObjectName;
+					_unmodified_NativeCategoryTitle = NativeCategoryTitle;
 					_unmodified_IdentifyingCategoryName = IdentifyingCategoryName;
 					_unmodified_ParentCategoryID = ParentCategoryID;
 				
@@ -2001,6 +2007,9 @@ using TheBall.CORE;
 						case "NativeCategoryObjectName":
 							NativeCategoryObjectName = value;
 							break;
+						case "NativeCategoryTitle":
+							NativeCategoryTitle = value;
+							break;
 						case "IdentifyingCategoryName":
 							IdentifyingCategoryName = value;
 							break;
@@ -2020,6 +2029,9 @@ using TheBall.CORE;
 			[DataMember]
 			public string NativeCategoryObjectName { get; set; }
 			private string _unmodified_NativeCategoryObjectName;
+			[DataMember]
+			public string NativeCategoryTitle { get; set; }
+			private string _unmodified_NativeCategoryTitle;
 			[DataMember]
 			public string IdentifyingCategoryName { get; set; }
 			private string _unmodified_IdentifyingCategoryName;

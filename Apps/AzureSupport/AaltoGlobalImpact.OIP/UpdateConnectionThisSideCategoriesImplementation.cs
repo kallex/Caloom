@@ -40,7 +40,9 @@ namespace AaltoGlobalImpact.OIP
             thisSideCategories.AddRange(missingCategories.Select(categoryToInterfaceCategory));
             foreach (var nativeCategory in activeCategories)
             {
-                var matchinCategory = thisSideCategories.First(cat => cat.NativeCategoryID == nativeCategory.ID);
+                var matchingCategory = thisSideCategories.First(cat => cat.NativeCategoryID == nativeCategory.ID);
+                matchingCategory.IdentifyingCategoryName = nativeCategory.CategoryName;
+                matchingCategory.NativeCategoryTitle = nativeCategory.Title;
                 TheBall.Interface.Category parentCategory = null;
                 if (string.IsNullOrEmpty(nativeCategory.ParentCategoryID) == false)
                 {
@@ -48,7 +50,7 @@ namespace AaltoGlobalImpact.OIP
                 }
                 if (parentCategory != null)
                 {
-                    matchinCategory.ParentCategoryID = parentCategory.ID;
+                    matchingCategory.ParentCategoryID = parentCategory.ID;
                 }
             }
             Debug.Assert(thisSideCategories.Count == activeCategories.Length);
@@ -63,6 +65,7 @@ namespace AaltoGlobalImpact.OIP
                     NativeCategoryDomainName = cat.SemanticDomainName,
                     NativeCategoryObjectName = cat.Name,
                     NativeCategoryID = cat.ID,
+                    NativeCategoryTitle = cat.Title,
                     IdentifyingCategoryName = cat.CategoryName
                 };
         }

@@ -91,4 +91,47 @@ using System.IO;
 				InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnection(DeviceForConnection);		
 				}
 				}
-		 } 
+				public class CreateReceivingConnectionParameters 
+		{
+				public string Description ;
+				public string OtherSideConnectionID ;
+				}
+		
+		public class CreateReceivingConnection 
+		{
+				private static void PrepareParameters(CreateReceivingConnectionParameters parameters)
+		{
+					}
+				public static CreateReceivingConnectionReturnValue Execute(CreateReceivingConnectionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = CreateReceivingConnectionImplementation.GetTarget_Connection(parameters.Description, parameters.OtherSideConnectionID);	
+				CreateReceivingConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
+				CreateReceivingConnectionReturnValue returnValue = CreateReceivingConnectionImplementation.Get_ReturnValue(Connection);
+		return returnValue;
+				}
+				}
+				public class CreateReceivingConnectionReturnValue 
+		{
+				public string ConnectionID ;
+				}
+				public class UpdateConnectionOtherSideCategoriesParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class UpdateConnectionOtherSideCategories 
+		{
+				private static void PrepareParameters(UpdateConnectionOtherSideCategoriesParameters parameters)
+		{
+					}
+				public static void Execute(UpdateConnectionOtherSideCategoriesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.Interface.Connection Connection = UpdateConnectionOtherSideCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				Category[] GetOtherSideCategoriesOutput = UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_GetOtherSideCategories(Connection);		
+				UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_UpdateOtherSideCategories(Connection, GetOtherSideCategoriesOutput);		
+				UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
+				}
+				}
+		} 
