@@ -7,6 +7,18 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
+		
+		public class SetCategoryLinkingForConnection 
+		{
+				public static void Execute()
+		{
+						
+					CategoryLinkParameters CategoryLinkingParameters = SetCategoryLinkingForConnectionImplementation.GetTarget_CategoryLinkingParameters();	
+				Connection Connection = SetCategoryLinkingForConnectionImplementation.GetTarget_Connection(CategoryLinkingParameters);	
+				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_SetConnectionLinkingData(Connection, CategoryLinkingParameters);		
+				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
+				}
+				}
 				public class PushCollaborationContentParameters 
 		{
 				public string ConnectionID ;
@@ -134,4 +146,4 @@ using System.IO;
 				UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-		} 
+		 } 

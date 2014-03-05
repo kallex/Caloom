@@ -1935,6 +1935,98 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>
+		</p><h1>InitiateImportedGroupWithUnchangedID (GroupID, InitiatorAccountID, TemplateNameList)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Initiate imported group. NOTE! The ID needs to remain the same. Group contains internal structures.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to be initiated
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InitiatorAccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID of initiator
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TemplateNameList
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Comma separated list of templates to initialize group
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupAsOwner ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Container owner
+		</div>
+		</p><h2>Target Definition: GroupContainer ( GroupAsOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Group container
+		</div>
+		</p><h2>Method Call: ValidateGroupContainerID ( GroupContainer, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate group container ID, so that it matches the referencing ID
+		</div>
+		</p><h2>Target Definition: GroupRoot ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group root item to match the group
+		</div>
+		</p><h2>Method Call: StoreObjects ( GroupRoot, GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
+		</p><h2>Method Call: SetGroupInitiatorAccess ( GroupRoot, GroupContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Set group access as initiator only
+		</div>
+		</p><h2>Method Call: FixContentTypesAndMetadataOfBlobs ( GroupAsOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Fix content types and metadata of blobs
+		</div>
+		</p><h2>Method Call: FixRelativeLocationsOfInformationObjects ( GroupAsOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Fix relative locations of objects
+		</div>
 		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

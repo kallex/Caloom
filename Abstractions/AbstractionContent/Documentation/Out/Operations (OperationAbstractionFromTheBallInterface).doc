@@ -580,6 +580,27 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Stores connection with processed transferpackage
 		</div>
+		</p><h1>SetCategoryLinkingForConnection</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Sets category linking for connection
+		</div>
+		</p><h2>Target Definition: CategoryLinkingParameters</h2>
+		<p>		<div class="MsoNormal" >
+		Deserialized operation parameters
+		</div>
+		</p><h2>Target Definition: Connection ( CategoryLinkingParameters )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection to set the linking info to
+		</div>
+		</p><h2>Method Call: SetConnectionLinkingData ( Connection, CategoryLinkingParameters )</h2>
+		<p>		<div class="MsoNormal" >
+		Set connection linking data
+		</div>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
 		</p><h1>UpdateConnectionOtherSideCategories (ConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

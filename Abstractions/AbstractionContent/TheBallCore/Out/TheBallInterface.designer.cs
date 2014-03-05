@@ -29,6 +29,26 @@ using TheBall.CORE;
 
 
 
+			[DataContract]
+			public class CategoryLinkParameters
+			{
+				[DataMember]
+				public string ConnectionID { get; set; }
+				[DataMember]
+				public CategoryLinkItem[] LinkItems { get; set; }
+			}
+
+			[DataContract]
+			public class CategoryLinkItem
+			{
+				[DataMember]
+				public string SourceCategoryID { get; set; }
+				[DataMember]
+				public string TargetCategoryID { get; set; }
+				[DataMember]
+				public string LinkingType { get; set; }
+			}
+
 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)

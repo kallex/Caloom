@@ -496,6 +496,31 @@ using System.IO;
 				UnregisterEmailAddressImplementation.ExecuteMethod_ExecuteUnlinkEmailAddress(parameters.AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID);		
 				}
 				}
+				public class InitiateImportedGroupWithUnchangedIDParameters 
+		{
+				public string GroupID ;
+				public string InitiatorAccountID ;
+				public string TemplateNameList ;
+				}
+		
+		public class InitiateImportedGroupWithUnchangedID 
+		{
+				private static void PrepareParameters(InitiateImportedGroupWithUnchangedIDParameters parameters)
+		{
+					}
+				public static void Execute(InitiateImportedGroupWithUnchangedIDParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner GroupAsOwner = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
+				AaltoGlobalImpact.OIP.GroupContainer GroupContainer = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupContainer(GroupAsOwner);	
+				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_ValidateGroupContainerID(parameters.GroupID, GroupContainer);		
+				AaltoGlobalImpact.OIP.TBRGroupRoot GroupRoot = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupRoot(parameters.GroupID);	
+				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_StoreObjects(GroupRoot, GroupContainer);		
+				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_SetGroupInitiatorAccess(GroupRoot, GroupContainer);		
+				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixContentTypesAndMetadataOfBlobs(GroupAsOwner);		
+				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixRelativeLocationsOfInformationObjects(GroupAsOwner);		
+				}
+				}
 				public class CreateGroupWithTemplatesParameters 
 		{
 				public string GroupName ;

@@ -469,6 +469,39 @@
     <StatusItem name="UnregisterEmailAddress_ExecuteUnlinkEmailAddress" displayName="MethodExecuteType: ExecuteUnlinkEmailAddress" description="Perform unlink">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_GroupID" displayName="VariableType: GroupID" description="Group ID to be initiated">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_InitiatorAccountID" displayName="VariableType: InitiatorAccountID" description="Account ID of initiator">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_TemplateNameList" displayName="VariableType: TemplateNameList" description="Comma separated list of templates to initialize group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_GroupAsOwner" displayName="TargetDefinitionType: GroupAsOwner" description="Container owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_GroupContainer" displayName="TargetDefinitionType: GroupContainer" description="Group container">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_ValidateGroupContainerID" displayName="MethodExecuteType: ValidateGroupContainerID" description="Validate group container ID, so that it matches the referencing ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_GroupRoot" displayName="TargetDefinitionType: GroupRoot" description="Group root item to match the group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_SetGroupInitiatorAccess" displayName="MethodExecuteType: SetGroupInitiatorAccess" description="Set group access as initiator only">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_FixContentTypesAndMetadataOfBlobs" displayName="MethodExecuteType: FixContentTypesAndMetadataOfBlobs" description="Fix content types and metadata of blobs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateImportedGroupWithUnchangedID_FixRelativeLocationsOfInformationObjects" displayName="MethodExecuteType: FixRelativeLocationsOfInformationObjects" description="Fix relative locations of objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateGroupWithTemplates_GroupName" displayName="VariableType: GroupName" description="Group name to be created">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -913,6 +946,19 @@
       <ItemRef itemName="UnregisterEmailAddress_AccountContainerBeforeGroupRemoval" />
       <ItemRef itemName="UnregisterEmailAddress_EmailAddressID" />
       <ItemRef itemName="UnregisterEmailAddress_ExecuteUnlinkEmailAddress" />
+    </Group>
+    <Group name="InitiateImportedGroupWithUnchangedID">
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_GroupID" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_InitiatorAccountID" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_TemplateNameList" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_GroupAsOwner" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_GroupContainer" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_ValidateGroupContainerID" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_GroupRoot" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_StoreObjects" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_SetGroupInitiatorAccess" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_FixContentTypesAndMetadataOfBlobs" />
+      <ItemRef itemName="InitiateImportedGroupWithUnchangedID_FixRelativeLocationsOfInformationObjects" />
     </Group>
     <Group name="CreateGroupWithTemplates">
       <ItemRef itemName="CreateGroupWithTemplates_GroupName" />

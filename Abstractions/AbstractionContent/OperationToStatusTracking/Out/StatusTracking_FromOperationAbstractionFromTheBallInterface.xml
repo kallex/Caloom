@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
+    <StatusItem name="SetCategoryLinkingForConnection_CategoryLinkingParameters" displayName="TargetDefinitionType: CategoryLinkingParameters" description="Deserialized operation parameters">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetCategoryLinkingForConnection_Connection" displayName="TargetDefinitionType: Connection" description="Connection to set the linking info to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetCategoryLinkingForConnection_SetConnectionLinkingData" displayName="MethodExecuteType: SetConnectionLinkingData" description="Set connection linking data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetCategoryLinkingForConnection_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="PushCollaborationContent_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID to push the content with">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -117,6 +129,12 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="SetCategoryLinkingForConnection">
+      <ItemRef itemName="SetCategoryLinkingForConnection_CategoryLinkingParameters" />
+      <ItemRef itemName="SetCategoryLinkingForConnection_Connection" />
+      <ItemRef itemName="SetCategoryLinkingForConnection_SetConnectionLinkingData" />
+      <ItemRef itemName="SetCategoryLinkingForConnection_StoreObject" />
+    </Group>
     <Group name="PushCollaborationContent">
       <ItemRef itemName="PushCollaborationContent_ConnectionID" />
       <ItemRef itemName="PushCollaborationContent_Connection" />

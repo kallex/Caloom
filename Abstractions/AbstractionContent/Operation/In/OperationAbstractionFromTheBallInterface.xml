@@ -1,6 +1,26 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Interface">
+    <Operation name="SetCategoryLinkingForConnection">
+      <OperationSpec>
+        <Description>Sets category linking for connection</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="CategoryLinkingParameters" dataType="CategoryLinkParameters" designDesc="Deserialized operation parameters" state="implemented" />
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection to set the linking info to" state="implemented">
+            <Target name="CategoryLinkingParameters" />
+          </TargetDefinition>
+          <MethodExecute name="SetConnectionLinkingData" designDesc="Set connection linking data" state="implemented">
+            <Target name="Connection" />
+            <Target name="CategoryLinkingParameters" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store objects" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="PushCollaborationContent">
       <OperationSpec>
         <Description>Push collaboration content to given connection ID</Description>

@@ -397,6 +397,43 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SetCategoryLinkingForConnection" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sets category linking for connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CategoryLinkingParameters" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Deserialized operation parameters</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( CategoryLinkingParameters )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connection to set the linking info to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetConnectionLinkingData ( Connection, CategoryLinkingParameters )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set connection linking data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UpdateConnectionOtherSideCategories (ConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Interface">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="CategoryLinkParameters" designDesc="Category link operation parameters">
+          <InterfaceItems>
+            <InterfaceItem name="ConnectionID" logicalDataType="Text_Short"/>
+            <ObjectInstance name="LinkItems" interfaceObjectName="CategoryLinkItem" isCollection="true"/>            
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="CategoryLinkItem" designDesc="Category linking item in UI">
+          <InterfaceItems>
+            <InterfaceItem name="SourceCategoryID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="TargetCategoryID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="LinkingType" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel>
       <InformationObject name="ConnectionCollection" designDesc="Collection for connections">
         <CollectionFor contentInformationObjectName="Connection" collectionType="Master"/>
@@ -82,6 +99,26 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="SetCategoryLinkingForConnection">
+        <OperationSpec>
+          <Description>Sets category linking for connection</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="CategoryLinkingParameters" dataType="CategoryLinkParameters" designDesc="Deserialized operation parameters" state="implemented" />
+            <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection to set the linking info to" state="implemented">
+              <Target name="CategoryLinkingParameters"/>
+            </TargetDefinition>
+            <MethodExecute name="SetConnectionLinkingData" designDesc="Set connection linking data" state="implemented">
+              <Target name="Connection"/>
+              <Target name="CategoryLinkingParameters"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store objects" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+          </SequentialExecution>        
+        </Execution>
+      </Operation>
       <Operation name="PushCollaborationContent">
         <OperationSpec>
           <Description>Push collaboration content to given connection ID</Description>

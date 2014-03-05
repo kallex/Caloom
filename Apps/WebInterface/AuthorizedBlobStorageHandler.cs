@@ -163,31 +163,6 @@ namespace WebInterface
 
         }
 
-        private static void ProcessDynamicRegisterRequest(HttpRequest request, HttpResponse response)
-        {
-            string blobPath = GetBlobPath(request);
-            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobPath);
-            response.Clear();
-            try
-            {
-                string template = blob.DownloadText();
-                string returnUrl = request.Params["ReturnUrl"];
-                TBRegisterContainer registerContainer = GetRegistrationInfo(returnUrl);
-                string responseContent = RenderWebSupport.RenderTemplateWithContent(template, registerContainer);
-                response.ContentType = blob.Properties.ContentType;
-                response.Write(responseContent);
-            }
-            catch (StorageClientException scEx)
-            {
-                response.Write(scEx.ToString());
-                response.StatusCode = (int)scEx.StatusCode;
-            }
-            finally
-            {
-                response.End();
-            }
-        }
-
         private static TBRegisterContainer GetRegistrationInfo(string returnUrl)
         {
             TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register", absoluteLoginUrl:null);
@@ -429,7 +404,7 @@ namespace WebInterface
             try
             {
                 blob.FetchAttributes();
-                response.ContentType = blob.Properties.ContentType;
+                response.ContentType = StorageSupport.GetMimeType(blob.Name);
                 response.Headers.Add("ETag", blob.Properties.ETag);
                 blob.DownloadToStream(response.OutputStream);
             }
@@ -499,7 +474,7 @@ namespace WebInterface
             try
             {
                 blob.FetchAttributes();
-                response.ContentType = blob.Properties.ContentType;
+                response.ContentType = StorageSupport.GetMimeType(blob.Name);
                 response.Headers.Add("ETag", blob.Properties.ETag);
                 blob.DownloadToStream(response.OutputStream);
             } catch(StorageClientException scEx)

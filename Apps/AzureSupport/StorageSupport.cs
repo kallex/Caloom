@@ -246,19 +246,19 @@ namespace TheBall
             return hostName.Replace(".", "-");
         }
 
-        public static string GetMimeType(string extension)
+        public static string GetMimeType(string fullNameOrExtension)
         {
-            if (extension == null)
+            if (fullNameOrExtension == null)
             {
-                throw new ArgumentNullException("extension");
+                throw new ArgumentNullException("fullNameOrExtension");
             }
 
-            if (!extension.StartsWith("."))
+            if (!fullNameOrExtension.StartsWith("."))
             {
-                extension = "." + extension;
+                fullNameOrExtension = Path.GetExtension(fullNameOrExtension);
             }
 
-            switch (extension)
+            switch (fullNameOrExtension)
             {
                 #region Big freaking list of mime types
                 // combination of values from Windows 7 Registry and  

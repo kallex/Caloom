@@ -26,7 +26,7 @@ namespace AaltoGlobalImpact.OIP
                 groupContainer.SetLocationAsOwnerContent(owner, "default");
                 groupContainer.GroupProfile.GroupName = groupRoot.Group.Title;
                 groupContainer.StoreInformation();
-            }
+            }   
             return groupContainer;
         }
 

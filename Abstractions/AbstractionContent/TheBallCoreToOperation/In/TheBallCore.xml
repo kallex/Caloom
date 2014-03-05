@@ -1030,6 +1030,49 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+
+      <Operation name="InitiateImportedGroupWithUnchangedID">
+        <OperationSpec>
+          <Description>Initiate imported group. NOTE! The ID needs to remain the same. Group contains internal structures.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to be initiated" state="implemented"/>
+          <Parameter name="InitiatorAccountID" dataType="string" designDesc="Account ID of initiator" state="implemented"/>
+          <Parameter name="TemplateNameList" dataType="string" designDesc="Comma separated list of templates to initialize group" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner" state="implemented">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container" state="implemented">
+              <Target name="GroupAsOwner"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateGroupContainerID" designDesc="Validate group container ID, so that it matches the referencing ID" state="implemented">
+              <Parameter name="GroupID"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <TargetDefinition name="GroupRoot" dataType="AaltoGlobalImpact.OIP.TBRGroupRoot" designDesc="Group root item to match the group" state="implemented">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+              <Target name="GroupRoot"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <MethodExecute name="SetGroupInitiatorAccess" designDesc="Set group access as initiator only" state="implemented">
+              <Target name="GroupRoot"/>
+              <Target name="GroupContainer"/>
+            </MethodExecute>
+            <MethodExecute name="FixContentTypesAndMetadataOfBlobs" designDesc="Fix content types and metadata of blobs" state="implemented">
+              <Target name="GroupAsOwner"/>
+            </MethodExecute>
+            <MethodExecute name="FixRelativeLocationsOfInformationObjects" designDesc="Fix relative locations of objects" state="implemented">
+              <Target name="GroupAsOwner"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      
       <Operation name="CreateGroupWithTemplates">
         <OperationSpec>
           <Description>Create group with templates</Description>
