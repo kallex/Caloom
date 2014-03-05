@@ -16,9 +16,10 @@ namespace AaltoGlobalImpact.OIP
             activity.SetLocationAsOwnerContent(owner, activity.ID);
             activity.ActivityName = ActivityName;
             activity.ReferenceToInformation.Title = activity.ActivityName;
-            activity.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(activity);
+            activity.ReferenceToInformation.URL = RelativeLocation; // DefaultViewSupport.GetDefaultViewURL(activity);
             StorageSupport.StoreInformationMasterFirst(activity, owner, true);
-            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, activity, owner);
+            //DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, activity, owner);
+            
             //ActivitySummaryContainer summaryContainer = ActivitySummaryContainer.RetrieveFromOwnerContent(owner, "default");
             //summaryContainer.AddNewActivity(activity);
             //StorageSupport.StoreInformation(summaryContainer);

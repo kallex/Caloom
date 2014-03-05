@@ -599,11 +599,12 @@ namespace TheBallTool
             InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
+        /*
         private static void RenderAllPagesInWorker()
         {
             RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation",
                 "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup", "AaltoGlobalImpact.OIP.Category");
-        }
+        }*/
 
         private static void TestSubscriptionChainPick()
         {

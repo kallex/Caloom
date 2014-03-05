@@ -70,37 +70,7 @@ namespace TheBall
 
         public static string GetBlobInformationObjectType(this CloudBlob blob)
         {
-            FetchMetadataIfMissing(blob);
-            return blob.Attributes.Metadata[InformationObjectTypeKey];
-        }
-
-        public static void SetBlobInformationSources(this CloudBlob blob, InformationSourceCollection informationSourceCollection)
-        {
-            //if(informationSourceCollection == null)
-            //{
-            //    blob.Attributes.Metadata.Remove(InformationSourcesKey);
-            //    return;
-            //}
-            //string stringValue = informationSourceCollection.SerializeToXml(noFormatting:true);
-            //blob.Attributes.Metadata[InformationSourcesKey] = stringValue;
-            string blobInformationType = blob.GetBlobInformationType();
-            if(blobInformationType == InformationType_GenericContentValue)
-                throw new InvalidDataException("Blob type of GenericContent cannot have information sources: " + blob.Name);
-            InformationSourceSupport.SetInformationSources(blob.Name, informationSourceCollection);
-        }
-
-        public static InformationSourceCollection GetBlobInformationSources(this CloudBlob blob)
-        {
-            //FetchMetadataIfMissing(blob);
-            //string stringValue = blob.Attributes.Metadata[InformationSourcesKey];
-            //if (stringValue == null)
-            //    return null;
-            //return InformationSourceCollection.DeserializeFromXml(stringValue);
-            string blobInformationType = blob.GetBlobInformationType();
-            if (blobInformationType == InformationType_GenericContentValue)
-                throw new InvalidDataException("Blob type of GenericContent cannot have information sources: " + blob.Name);
-            var result = InformationSourceSupport.GetInformationSources(blob.Name);
-            return result;
+            return InformationObjectSupport.GetInformationObjectType(blob.Name);
         }
 
         private static void FetchMetadataIfMissing(CloudBlob blob)
@@ -201,42 +171,33 @@ namespace TheBall
         }
 
         public static CloudBlockBlob UploadBlobText(this CloudBlobContainer container,
-            string blobPath, string textContent, string blobInformationType = null)
+            string blobPath, string textContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
-            UploadBlobText(blob, textContent, blobInformationType);
+            UploadBlobText(blob, textContent);
             return blob;
         }
 
-        public static void UploadBlobText(this CloudBlob blob, string textContent, string blobInformationType = null)
+        public static void UploadBlobText(this CloudBlob blob, string textContent)
         {
-            if (blobInformationType == null)
-                blobInformationType = InformationType_GenericContentValue;
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
-            blob.SetBlobInformationType(blobInformationType);
             blob.UploadText(textContent);
         }
 
         public static void UploadBlobBinary(this CloudBlobContainer container,
-    string blobPath, byte[] binaryContent, string blobInformationType = null)
+    string blobPath, byte[] binaryContent)
         {
-            if (blobInformationType == null)
-                blobInformationType = InformationType_GenericContentValue;
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
-            blob.SetBlobInformationType(blobInformationType);
             blob.UploadByteArray(binaryContent);
             InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static void UploadBlobStream(this CloudBlobContainer container,
-    string blobPath, Stream streamContent, string blobInformationType = null)
+    string blobPath, Stream streamContent)
         {
-            if (blobInformationType == null)
-                blobInformationType = InformationType_GenericContentValue;
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
-            blob.SetBlobInformationType(blobInformationType);
             blob.UploadFromStream(streamContent);
             InformationContext.AddStorageTransactionToCurrent();
         }
@@ -971,7 +932,6 @@ namespace TheBall
                 else
                     options.AccessCondition = AccessCondition.IfNoneMatch("*");
             }
-            blob.SetBlobInformationType(InformationType_InformationObjectValue);
             blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
             InformationContext.AddStorageTransactionToCurrent();
@@ -1192,13 +1152,13 @@ namespace TheBall
         public static CloudBlockBlob UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
         {
             string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
-            return CurrActiveContainer.UploadBlobText(uploadAddress, content, blobInformationType);
+            return CurrActiveContainer.UploadBlobText(uploadAddress, content);
         }
 
         public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
             string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
-            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent, contentInformationType);
+            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent);
         }
 
 

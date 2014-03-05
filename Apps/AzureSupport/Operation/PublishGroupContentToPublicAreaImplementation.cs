@@ -13,11 +13,14 @@ namespace AaltoGlobalImpact.OIP
 
         public static string GetTarget_PublicContainerName(string groupID)
         {
-            return RenderWebSupport.GetCurrentAnonContainerName();
+            throw new NotSupportedException();
+            //return RenderWebSupport.GetCurrentAnonContainerName();
         }
 
         public static void ExecuteMethod_PublishGroupContent(string groupID, bool useWorker, string currentContainerName, string publicContainerName)
         {
+            throw new NotSupportedException();
+            /*
             string groupPublicSiteLocation = "grp/" + groupID + "/" + RenderWebSupport.DefaultPublicGroupSiteLocation;
             string defaultPublicSiteLocation = "grp/default/" + RenderWebSupport.DefaultPublicGroupSiteLocation;
             string aboutAuthTargetLocation = RenderWebSupport.DefaultAboutTargetLocation;
@@ -38,6 +41,7 @@ namespace AaltoGlobalImpact.OIP
                 //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
                 QueueSupport.PutToOperationQueue(operationRequests.ToArray());
             }
+             * */
         }
     }
 }

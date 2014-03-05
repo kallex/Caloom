@@ -86,11 +86,14 @@ namespace WebTemplateManager
                              .ToArray();
                 if (pubPriPrefix == "pub" && templateName == "legacy")
                 {
+                    throw new NotSupportedException();
+                    /*
                     FileSystemSupport.UploadTemplateContent(allFiles, owner,
                                                             RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
                                                             Preprocessor, ContentFilterer, InformationTypeResolver);
                     RenderWebSupport.RenderWebTemplate(owner.LocationPrefix, true, "AaltoGlobalImpact.OIP.Blog",
                                                        "AaltoGlobalImpact.OIP.Activity");
+                     * */
                 }
                 else
                 {

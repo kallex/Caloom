@@ -67,7 +67,7 @@ namespace AaltoGlobalImpact.OIP
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(containerOwner, locationFileName);
             postedContent.InputStream.Seek(0, SeekOrigin.Begin);
-            StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream, StorageSupport.InformationType_GenericContentValue);
+            StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream);
             UpdateAdditionalMediaFormats();
         }
 

@@ -9,7 +9,7 @@ namespace AaltoGlobalImpact.OIP
             if (ReferenceToInformation == null)
                 ReferenceToInformation = OIP.ReferenceToInformation.CreateDefault();
             ReferenceToInformation.Title = this.ActivityName;
-            ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(this);
+            ReferenceToInformation.URL = RelativeLocation; // DefaultViewSupport.GetDefaultViewURL(this);
             this.LocationCollection.IsCollectionFiltered = true;
             this.CategoryCollection.IsCollectionFiltered = true;
             this.ImageGroupCollection.IsCollectionFiltered = true;

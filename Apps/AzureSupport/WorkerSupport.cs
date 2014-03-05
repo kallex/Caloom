@@ -37,22 +37,7 @@ namespace TheBall
                 throw new InvalidDataException("Self-circular subscription for target: " + subscription.TargetRelativeLocation);
             if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource)
             {
-                try
-                {
-                    CloudBlob cloudBlob =
-                        StorageSupport.CurrActiveContainer.GetBlockBlobReference(subscription.SubscriberRelativeLocation);
-                    RenderWebSupport.RefreshPHTMLContent(cloudBlob, true);
-                } catch(Exception ex)
-                {
-                    StorageClientException storageClientException = ex as StorageClientException;
-                    if(storageClientException != null)
-                    {
-                        if (storageClientException.ErrorCode == StorageErrorCode.BlobNotFound)
-                            return;
-                    }
-                    // TODO: Detect and remove the missing subscribers
-                    ErrorSupport.ReportException(ex);
-                }
+                throw new NotSupportedException();
             }
             else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_MasterToReferenceUpdate)
             {
@@ -495,8 +480,11 @@ namespace TheBall
 
         public static void RefreshDefaultViews(RefreshDefaultViewsOperation refreshDefaultViewsOperation)
         {
+            throw new NotSupportedException();
+            /*
             Type type = Assembly.GetExecutingAssembly().GetType(refreshDefaultViewsOperation.TypeNameToRefresh);
             DefaultViewSupport.RefreshDefaultViews(refreshDefaultViewsOperation.ViewLocation, type);
+             * */
         }
 
         private static void DeleteOwnerContent(VirtualOwner containerOwner)

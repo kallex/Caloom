@@ -11,6 +11,7 @@ using TheBall.CORE;
 
 namespace TheBall
 {
+#if superseded
     public static class RenderWebSupport
     {
         private const string InformationStorageKey = "InformationStorage";
@@ -718,34 +719,6 @@ namespace TheBall
             return null;
         }
         
-        public static OperationRequest SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
-        {
-            if (useQueuedWorker)
-            {
-                OperationRequest envelope = new OperationRequest
-                {
-                    UpdateWebContentOperation = new UpdateWebContentOperation
-                    {
-                        SourceContainerName =
-                            sourceContainerName,
-                        SourcePathRoot = sourcePathRoot,
-                        TargetContainerName =
-                            targetContainerName,
-                        TargetPathRoot = targetPathRoot,
-                        RenderWhileSync = renderWhileSync
-                    }
-                };
-                //QueueSupport.PutToDefaultQueue(envelope);
-                return envelope;
-            }
-            else
-            {
-                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
-                return null;
-            }
-        }
-
-
         public static void RefreshAllAccountAndGroupTemplates(bool useWorker, params string[] viewTypesToRefresh)
         {
             refreshAllGroupTemplates(useWorker, viewTypesToRefresh);
@@ -899,19 +872,6 @@ namespace TheBall
             }
         }
 
-        public static void RefreshGroupTemplate(string groupID, string templateName, bool useBackgroundWorker)
-        {
-            string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string syscontentRoot = "sys/AAA/group/";
-            string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
-            string sysLocationSource = syscontentRoot + templateName;
-            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
-                                useBackgroundWorker, false);
-            if (useBackgroundWorker)
-                QueueSupport.PutToOperationQueue(accountSync);
-            
-        }
-
         public static void RefreshAllAccountTemplates(string templateName)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
@@ -921,17 +881,6 @@ namespace TheBall
             }
         }
 
-        public static void RefreshAccountTemplate(string acctID, string templateName, bool useBackgroundWorker)
-        {
-            string currContainerName = StorageSupport.CurrActiveContainer.Name;
-            string syscontentRoot = "sys/AAA/account/";
-            string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
-            string sysLocationSource = syscontentRoot + templateName;
-            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
-                                useBackgroundWorker, false);
-            if(useBackgroundWorker)
-                QueueSupport.PutToOperationQueue(accountSync);
-        }
 
         public static void RefreshAccountTemplates(string acctID, bool useWorker, params string[] viewTypesToRefresh)
         {
@@ -959,6 +908,22 @@ namespace TheBall
             }
         }
 
+    }
+#endif
+    public static class RenderWebSupport
+    {
+        public const string LastUpdateFileName = ".lastupdated";
+        public const string CurrentToServeFileName = ".currenttoserve";
+
+        public static string GetLocationWithoutExtension(string location)
+        {
+            string currExtension = Path.GetExtension(location);
+            int currExtensionLength = currExtension == null ? 0 : currExtension.Length;
+            return location.Substring(0,
+                                                    location.Length -
+                                                    currExtensionLength);
+        }
+        
         public static string GetUrlFromRelativeLocation(string relativeLocation)
         {
             if (relativeLocation.StartsWith("grp/"))
@@ -966,12 +931,93 @@ namespace TheBall
                 //return "/auth/" + relativeLocation;
                 return "../../" + relativeLocation.Substring(StorageSupport.AccOrGrpPlusIDPathLength);
             }
-            if(relativeLocation.StartsWith("acc/"))
+            if (relativeLocation.StartsWith("acc/"))
             {
                 string result = "/auth/account" + relativeLocation.Substring(4 + StorageSupport.GuidLength);
                 return result;
             }
             return relativeLocation;
         }
+
+        public static void RefreshGroupTemplate(string groupID, string templateName, bool useBackgroundWorker)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = SystemSupport.SystemOwnerRoot + "/group/";
+            string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
+            string sysLocationSource = syscontentRoot + templateName;
+            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
+                                useBackgroundWorker, false);
+            if (useBackgroundWorker)
+                QueueSupport.PutToOperationQueue(accountSync);
+
+        }
+
+        public static void RefreshAccountTemplate(string acctID, string templateName, bool useBackgroundWorker)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = SystemSupport.SystemOwnerRoot + "/account/";
+            string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
+            string sysLocationSource = syscontentRoot + templateName;
+            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
+                                useBackgroundWorker, false);
+            if (useBackgroundWorker)
+                QueueSupport.PutToOperationQueue(accountSync);
+        }
+
+        public static OperationRequest SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
+        {
+            if (useQueuedWorker)
+            {
+                OperationRequest envelope = new OperationRequest
+                {
+                    UpdateWebContentOperation = new UpdateWebContentOperation
+                    {
+                        SourceContainerName =
+                            sourceContainerName,
+                        SourcePathRoot = sourcePathRoot,
+                        TargetContainerName =
+                            targetContainerName,
+                        TargetPathRoot = targetPathRoot,
+                        RenderWhileSync = renderWhileSync
+                    }
+                };
+                //QueueSupport.PutToDefaultQueue(envelope);
+                return envelope;
+            }
+            else
+            {
+                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+                return null;
+            }
+        }
+
+        public static bool CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        {
+            return false;
+        }
+
+        public static bool RenderingSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        {
+            return false;
+        }
+
+        public static void RefreshAllGroupTemplates(string templateName)
+        {
+            string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            foreach (var groupID in groupIDs)
+            {
+                RefreshGroupTemplate(groupID, templateName, true);
+            }
+        }
+
+        public static void RefreshAllAccountTemplates(string templateName)
+        {
+            string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            foreach (var acctID in accountIDs)
+            {
+                RefreshAccountTemplate(acctID, templateName, true);
+            }
+        }
+
     }
 }

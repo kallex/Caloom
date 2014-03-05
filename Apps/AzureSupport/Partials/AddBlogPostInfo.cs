@@ -17,10 +17,10 @@ namespace AaltoGlobalImpact.OIP
             blog.SetLocationAsOwnerContent(owner, blog.ID);
             blog.Title = Title;
             blog.ReferenceToInformation.Title = blog.Title;
-            blog.ReferenceToInformation.URL = DefaultViewSupport.GetDefaultViewURL(blog);
+            blog.ReferenceToInformation.URL = blog.RelativeLocation; // DefaultViewSupport.GetDefaultViewURL(blog);
             blog.Published = DateTime.Now;
             StorageSupport.StoreInformationMasterFirst(blog, owner, true);
-            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, blog, owner);
+            //DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, blog, owner);
             //BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
             //blogContainer.AddNewBlogPost(blog);
             //StorageSupport.StoreInformation(blogContainer);

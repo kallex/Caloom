@@ -11,7 +11,7 @@ namespace TheBall.CORE
 {
     public class ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation
     {
-        private const string LockLocation = "sys/AAA/TheBall.CORE/RequestResourceUsage/0.lock";
+        private const string LockLocation = SystemSupport.SystemOwnerRoot + "/TheBall.CORE/RequestResourceUsage/0.lock";
         public static CloudBlockBlob[] GetTarget_BatchToProcess(int processBatchSize, bool processIfLess)
         {
             //options.
@@ -63,7 +63,7 @@ namespace TheBall.CORE
             foreach (var ownerKey in allKeys)
             {
                 IContainerOwner owner;
-                if (ownerKey.StartsWith("sys/AAA"))
+                if (ownerKey.StartsWith(SystemSupport.SystemOwnerRoot))
                     owner = TBSystem.CurrSystem;
                 else
                     owner = VirtualOwner.FigureOwner(ownerKey);

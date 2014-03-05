@@ -8,6 +8,7 @@ using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
+#if superseded
     public class DefaultViewSupport
     {
         public static string[] FixedAccountSiteLocations = new string[]
@@ -145,4 +146,5 @@ namespace AaltoGlobalImpact.OIP
             return templateName;
         }
     }
+#endif
 }

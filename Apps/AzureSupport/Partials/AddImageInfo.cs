@@ -17,7 +17,7 @@ namespace AaltoGlobalImpact.OIP
             image.SetLocationAsOwnerContent(owner, image.ID);
             image.Title = ImageTitle;
             StorageSupport.StoreInformationMasterFirst(image, owner, true);
-            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, image, owner);
+            //DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, image, owner);
             return true;
         }
     }

@@ -17,7 +17,7 @@ namespace AaltoGlobalImpact.OIP
             category.SetLocationAsOwnerContent(owner, category.ID);
             category.CategoryName = CategoryName;
             StorageSupport.StoreInformationMasterFirst(category, owner, true);
-            DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, category, owner);
+            //DefaultViewSupport.CreateDefaultViewRelativeToRequester(requesterLocation, category, owner);
             //BlogContainer blogContainer = BlogContainer.RetrieveFromOwnerContent(owner, "default");
             //blogContainer.AddNewBlogPost(blog);
             //StorageSupport.StoreInformation(blogContainer);

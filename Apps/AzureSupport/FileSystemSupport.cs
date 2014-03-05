@@ -42,10 +42,8 @@ namespace TheBall
     public static class FileSystemSupport
     {
         public static string[] UploadTemplateContent(string[] allFiles, IContainerOwner owner, string targetLocation, bool clearOldTarget,
-            Action<BlobStorageContent> preprocessor = null, Predicate<BlobStorageContent> contentFilterer = null, InformationTypeResolver informationTypeResolver = null)
+            Action<BlobStorageContent> preprocessor = null, Predicate<BlobStorageContent> contentFilterer = null)
         {
-            if (informationTypeResolver == null)
-                informationTypeResolver = GetBlobInformationType;
             if (clearOldTarget)
             {
                 StorageSupport.DeleteBlobsFromOwnerTarget(owner, targetLocation);
@@ -54,9 +52,11 @@ namespace TheBall
             List<ErrorItem> errorList = new List<ErrorItem>();
             var fixedContent = allFiles.Where(fileName => fileName.EndsWith(".txt") == false)
                 .Select(fileName =>
-                        new BlobStorageContent {
-                            FileName = fileName, 
-                            BinaryContent = GetBlobContent(fileName, errorList, processedDict)
+                        new BlobStorageContent
+                        {
+                            FileName = fileName,
+                            BinaryContent = File.ReadAllBytes(fileName)
+                            // BinaryContent = GetBlobContent(fileName, errorList, processedDict)
                         })
                 .ToArray();
             if (preprocessor != null)
@@ -75,12 +75,13 @@ namespace TheBall
                 }
                 string webtemplatePath = Path.Combine(targetLocation, content.FileName).Replace("\\", "/");
                 Console.WriteLine("Uploading: " + webtemplatePath);
-                string contentInformationType;
-                contentInformationType = informationTypeResolver(content);
-                StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent, contentInformationType);
+                StorageSupport.UploadOwnerBlobBinary(owner, webtemplatePath, content.BinaryContent);
             }
             return processedDict.Keys.ToArray();
         }
+
+
+#if superseded
 
         private static string GetBlobInformationType(BlobStorageContent content)
         {
@@ -248,6 +249,6 @@ namespace TheBall
         {
             Console.WriteLine(text);
         }
-
+#endif
     }
 }

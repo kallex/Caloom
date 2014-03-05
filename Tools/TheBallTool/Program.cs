@@ -34,6 +34,8 @@ namespace TheBallTool
                 if(DataPatcher.DoPatching())
                     return;
 
+                throw new NotSupportedException("Functionality moved up-to-date to WebTemplateManager");
+
                 //ProcessErrors(false);
                 //return;
 
@@ -64,7 +66,7 @@ namespace TheBallTool
                 string[] wwwTemplates =
                     allFiles.Where(file => file.StartsWith(groupNamePart) == false && file.StartsWith(publicGroupNamePart) == false && file.StartsWith(accountNamePart) == false).
                         ToArray();
-                UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, null);
+                //UploadAndMoveUnused(accountTemplates, groupTemplates, publicGroupTemplates, null);
                 //UploadAndMoveUnused(null, null, null, wwwTemplates);
                 //UploadAndMoveUnused(null, null, publicGroupTemplates, null);
                 //UploadAndMoveUnused(accountTemplates, null, null);
@@ -74,9 +76,10 @@ namespace TheBallTool
 
                 // TODO: The delete above needs to go through first before the refresh one below
 
+                /*
                 RenderWebSupport.RefreshAllAccountAndGroupTemplates(true, "AaltoGlobalImpact.OIP.Blog", "AaltoGlobalImpact.OIP.Activity", "AaltoGlobalImpact.OIP.AddressAndLocation",
                     "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup", "AaltoGlobalImpact.OIP.Category");
-
+                */
                 //RunTaskedQueueWorker();
 
 
@@ -261,29 +264,6 @@ namespace TheBallTool
             }
         }
 
-        private static void UploadAndMoveUnused(string[] accountTemplates, string[] groupTemplates, string[] publicTemplates, string[] wwwTemplates)
-        {
-            string[] accountUnusedFiles = null;
-            if(accountTemplates != null)
-                accountUnusedFiles = FileSystemSupport.UploadTemplateContent(accountTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultAccountTemplates, true);
-            string[] groupUnusedFiles = null;
-            if(groupTemplates != null)
-                groupUnusedFiles = FileSystemSupport.UploadTemplateContent(groupTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultGroupTemplates, true);
-            string[] publicUnusedFiles = null;
-            if(publicTemplates != null)
-                publicUnusedFiles = FileSystemSupport.UploadTemplateContent(publicTemplates, TBSystem.CurrSystem, RenderWebSupport.DefaultPublicGroupTemplates, true);
-            string[] wwwUnusedFiles = null;
-            if(wwwTemplates != null)
-                wwwUnusedFiles = FileSystemSupport.UploadTemplateContent(wwwTemplates, TBSystem.CurrSystem,
-                                                                         RenderWebSupport.DefaultPublicWwwTemplates, true);
-            if(accountTemplates != null && groupTemplates != null && publicTemplates != null && wwwUnusedFiles != null)
-            {
-                string[] everyWhereUnusedFiles =
-                    accountUnusedFiles.Intersect(groupUnusedFiles).Intersect(publicUnusedFiles).Intersect(wwwUnusedFiles).ToArray();
-                //FileSystemSupport.MoveUnusedTxtFiles(everyWhereUnusedFiles);
-            }
-        }
-
         private static void DeleteAllAccountAndGroupContents(bool useWorker)
         {
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
@@ -358,12 +338,13 @@ namespace TheBallTool
             accountRoot.Account.StoreAccountToRoot();
         }
 
+        /*
         private static void TestDriveDynamicCreation()
         {
             object test = RenderWebSupport.GetOrInitiateContentObject(new List<RenderWebSupport.ContentItem>(),
                                                                       "AaltoGlobalImpact.OIP.InformationSource",
                                                                       "vilperi", false);
-        }
+        }*/
 
         private const string FixedGroupID = "05DF28FD-58A7-46A7-9830-DA3F51AAF6AF";
 

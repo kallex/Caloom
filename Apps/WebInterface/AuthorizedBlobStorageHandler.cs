@@ -286,6 +286,9 @@ namespace WebInterface
                 return true;
             }
 
+            throw new NotSupportedException("Old legacy update no longer supported");
+
+#if superseded
             string sourceNamesCommaSeparated = form["RootSourceName"];
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
@@ -371,6 +374,7 @@ namespace WebInterface
             //                    String.Format("grp/default/{0}/", "livepubsite"), true);
 
             return true;
+#endif
         }
 
         private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
