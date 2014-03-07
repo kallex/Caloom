@@ -1612,6 +1612,60 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ExecuteProcess (ProcessID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Executes proces with given ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Process ( ProcessID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process object of execution</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProcessLockLocation ( Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process lock file location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteAndStoreProcessWithLock ( ProcessLockLocation, Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExportOwnerContentToZip (Owner, PackageRootFolder)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

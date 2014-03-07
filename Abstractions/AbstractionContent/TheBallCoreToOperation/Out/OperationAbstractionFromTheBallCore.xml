@@ -1,6 +1,28 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.CORE">
+    <Operation name="ExecuteProcess">
+      <OperationSpec>
+        <Description>Executes proces with given ID</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ProcessID" dataType="string" designDesc="Process ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Process" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
+            <Parameter name="ProcessID" />
+          </TargetDefinition>
+          <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
+            <Target name="Process" />
+          </TargetDefinition>
+          <MethodExecute name="ExecuteAndStoreProcessWithLock" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
+            <Target name="ProcessLockLocation" />
+            <Target name="Process" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="CreateSpecifiedInformationObjectWithValues">
       <OperationSpec>
         <Description>Creates information object, sets it values and stores it</Description>

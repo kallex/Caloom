@@ -762,6 +762,36 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>MigrateActivitiesAndBlogsToTextContents (Process)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Migrate activities and blogs to text contents
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process that this operation is to execute
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ExecuteProcess ( Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute process.
+		</div>
 		</p><h1>PerformWebAction (TargetObjectID, CommandName, Owner, InformationSources, FormSourceNames, FormSubmitContent)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

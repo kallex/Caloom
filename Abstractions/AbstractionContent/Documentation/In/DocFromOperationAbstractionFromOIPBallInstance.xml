@@ -682,6 +682,46 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="MigrateActivitiesAndBlogsToTextContents (Process)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Migrate activities and blogs to text contents</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Process</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.Process</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process that this operation is to execute</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteProcess ( Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute process.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PerformWebAction (TargetObjectID, CommandName, Owner, InformationSources, FormSourceNames, FormSubmitContent)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

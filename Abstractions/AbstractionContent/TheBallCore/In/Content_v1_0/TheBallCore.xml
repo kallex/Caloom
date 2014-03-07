@@ -89,8 +89,6 @@
       </InformationObject>
       <InformationObject name="Invoice" designDesc="">
         <InformationItems>
-          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject"
-                           informationObjectName="ReferenceToInformation"/>
           <InformationItem name="InvoiceName" logicalDataType="Text_Short" />
           <InformationItem name="InvoiceID" logicalDataType="Text_Short" />
           <InformationItem name="InvoicedAmount" logicalDataType="Text_Short" />
@@ -175,8 +173,6 @@
       </InformationObject>
       <InformationObject name="InvoiceRow" designDesc="">
         <InformationItems>
-          <InformationItem name="ReferenceToInformation" logicalDataType="InformationObject"
-                           informationObjectName="ReferenceToInformation"/>
           <InformationItem name="IndentMode" logicalDataType="Text_Short"/>
           <InformationItem name="AmountOfUnits" logicalDataType="Text_Short" />
           <InformationItem name="Duration" logicalDataType="Text_Short" />
@@ -194,22 +190,25 @@
           <InformationItem name="CategoryName" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="Process" designDesc="">
+      <InformationObject name="Process" designDesc="Individual process, including maintained last execution state and initial arguments" provideCreateMethod="false">
         <InformationItems>
-          <InformationItem name="ProcessID" logicalDataType="Text_Short"/>
-          <InformationItem name="ProcessName" logicalDataType="Text_Short"/>
-          <InformationItem name="CategoryCollection" logicalDataType="InformationObject"
-                           informationObjectName="CategoryCollection"/>
+          <InformationItem name="ProcessDescription" logicalDataType="Text_Short"/>
+          <InformationItem name="ExecutingOperation" logicalDataType="InformationObject" informationObjectName="SemanticInformationItem"/>
+          <InformationItem name="InitialArguments" logicalDataType="InformationObject" informationObjectName="SemanticInformationItem" isCollection="true"/>
+          <InformationItem name="ProcessItems" logicalDataType="InformationObject" informationObjectName="ProcessItem" isCollection="true"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="ReferenceToInformation" designDesc="Reference to information" isIndependentMaster="true">
+      <InformationObject name="ProcessItem" designDesc="Process item entry" provideCreateMethod="false">
         <InformationItems>
-          <InformationItem name="Title" logicalDataType="Text_Short" />
-          <InformationItem name="URL" logicalDataType="Text_Short" />
+          <InformationItem name="Outputs" logicalDataType="InformationObject" informationObjectName="SemanticInformationItem" isCollection="true"/>
+          <InformationItem name="Inputs" logicalDataType="InformationObject" informationObjectName="SemanticInformationItem" isCollection="true"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="ReferenceCollection" designDesc="Collection of references">
-        <CollectionFor contentInformationObjectName="ReferenceToInformation" />
+      <InformationObject name="SemanticInformationItem" designDesc="Semantic information item">
+        <InformationItems>
+          <InformationItem name="ItemFullType" logicalDataType="Text_Short" />
+          <InformationItem name="ItemLocation" logicalDataType="Text_Short" />
+        </InformationItems>
       </InformationObject>
       <InformationObject name="InformationOwnerInfo" designDesc="Info about information owner">
         <InformationItems>
@@ -327,6 +326,28 @@
           </SequentialExecution>
         </Execution>
       </Operation>-->
+      <Operation name="ExecuteProcess">
+        <OperationSpec>
+          <Description>Executes proces with given ID</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessID" dataType="string" designDesc="Process ID" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Process" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
+              <Parameter name="ProcessID"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
+              <Target name="Process"/>
+            </TargetDefinition>
+            <MethodExecute name="ExecuteAndStoreProcessWithLock" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
+              <Target name="ProcessLockLocation"/>
+              <Target name="Process"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="CreateSpecifiedInformationObjectWithValues">
         <OperationSpec>
           <Description>Creates information object, sets it values and stores it</Description>

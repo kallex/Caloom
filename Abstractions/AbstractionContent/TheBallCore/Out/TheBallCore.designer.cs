@@ -6628,7 +6628,6 @@ InformationInput.AuthenticatedDeviceID
 				public static Invoice CreateDefault()
 				{
 					var result = new Invoice();
-					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					result.InvoiceDetails = InvoiceDetails.CreateDefault();
 					result.InvoiceUsers = InvoiceUserCollection.CreateDefault();
 					return result;
@@ -6641,7 +6640,6 @@ InformationInput.AuthenticatedDeviceID
 					if(customDemo != null)
 						return customDemo;
 					var result = new Invoice();
-					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.InvoiceName = @"Invoice.InvoiceName";
 
 					result.InvoiceID = @"Invoice.InvoiceID";
@@ -6708,27 +6706,11 @@ InformationInput.AuthenticatedDeviceID
 
 					if(searchWithinCurrentMasterOnly == false)
 					{
-						{
-							IInformationObject item = ReferenceToInformation;
-							if(item != null)
-							{
-								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-							}
-						}
 					}					
 				}
 
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = ReferenceToInformation;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
 					{
 						var item = InvoiceDetails;
 						if(item != null)
@@ -6767,11 +6749,6 @@ InformationInput.AuthenticatedDeviceID
 						}
 					}
 					{
-						var item = (IInformationObject) ReferenceToInformation;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
 						var item = (IInformationObject) InvoiceDetails;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -6787,8 +6764,6 @@ InformationInput.AuthenticatedDeviceID
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
-						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
-							return true;
 						if(InvoiceName != _unmodified_InvoiceName)
 							return true;
 						if(InvoiceID != _unmodified_InvoiceID)
@@ -6834,14 +6809,6 @@ InformationInput.AuthenticatedDeviceID
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					if(ReferenceToInformation != null) {
-						if(ReferenceToInformation.ID == replacingObject.ID)
-							ReferenceToInformation = (ReferenceToInformation) replacingObject;
-						else {
-							IInformationObject iObject = ReferenceToInformation;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
 					if(InvoiceDetails != null) {
 						if(InvoiceDetails.ID == replacingObject.ID)
 							InvoiceDetails = (InvoiceDetails) replacingObject;
@@ -6863,7 +6830,6 @@ InformationInput.AuthenticatedDeviceID
 
 				private void CopyContentFrom(Invoice sourceObject)
 				{
-					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					InvoiceName = sourceObject.InvoiceName;
 					InvoiceID = sourceObject.InvoiceID;
 					InvoicedAmount = sourceObject.InvoicedAmount;
@@ -6889,10 +6855,6 @@ InformationInput.AuthenticatedDeviceID
 					_unmodified_FeesAndInterestAmount = FeesAndInterestAmount;
 					_unmodified_UnpaidAmount = UnpaidAmount;
 				
-					_unmodified_ReferenceToInformation = ReferenceToInformation;
-					if(ReferenceToInformation != null)
-						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
-
 					_unmodified_InvoiceDetails = InvoiceDetails;
 					if(InvoiceDetails != null)
 						((IInformationObject) InvoiceDetails).SetInstanceTreeValuesAsUnmodified();
@@ -6937,9 +6899,6 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
-			public ReferenceToInformation ReferenceToInformation { get; set; }
-			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public string InvoiceName { get; set; }
 			private string _unmodified_InvoiceName;
@@ -12030,7 +11989,6 @@ InformationInput.AuthenticatedDeviceID
 				public static InvoiceRow CreateDefault()
 				{
 					var result = new InvoiceRow();
-					result.ReferenceToInformation = ReferenceToInformation.CreateDefault();
 					return result;
 				}
 				/*
@@ -12041,7 +11999,6 @@ InformationInput.AuthenticatedDeviceID
 					if(customDemo != null)
 						return customDemo;
 					var result = new InvoiceRow();
-					result.ReferenceToInformation = ReferenceToInformation.CreateDemoDefault();
 					result.IndentMode = @"InvoiceRow.IndentMode";
 
 					result.AmountOfUnits = @"InvoiceRow.AmountOfUnits";
@@ -12084,27 +12041,11 @@ InformationInput.AuthenticatedDeviceID
 						result.Add(this);
 					if(searchWithinCurrentMasterOnly == false)
 					{
-						{
-							IInformationObject item = ReferenceToInformation;
-							if(item != null)
-							{
-								item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-							}
-						}
 					}					
 				}
 
 				private object FindFromObjectTree(string objectId)
 				{
-					{
-						var item = ReferenceToInformation;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
 					return null;
 				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
@@ -12124,19 +12065,12 @@ InformationInput.AuthenticatedDeviceID
 							existingValue.Add(iObject);
 						}
 					}
-					{
-						var item = (IInformationObject) ReferenceToInformation;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
 
 				}
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
-						if(ReferenceToInformation != _unmodified_ReferenceToInformation)
-							return true;
 						if(IndentMode != _unmodified_IndentMode)
 							return true;
 						if(AmountOfUnits != _unmodified_AmountOfUnits)
@@ -12158,20 +12092,11 @@ InformationInput.AuthenticatedDeviceID
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					if(ReferenceToInformation != null) {
-						if(ReferenceToInformation.ID == replacingObject.ID)
-							ReferenceToInformation = (ReferenceToInformation) replacingObject;
-						else {
-							IInformationObject iObject = ReferenceToInformation;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
 				}
 
 
 				private void CopyContentFrom(InvoiceRow sourceObject)
 				{
-					ReferenceToInformation = sourceObject.ReferenceToInformation;
 					IndentMode = sourceObject.IndentMode;
 					AmountOfUnits = sourceObject.AmountOfUnits;
 					Duration = sourceObject.Duration;
@@ -12193,10 +12118,6 @@ InformationInput.AuthenticatedDeviceID
 					_unmodified_Taxes = Taxes;
 					_unmodified_PriceWithTaxes = PriceWithTaxes;
 				
-					_unmodified_ReferenceToInformation = ReferenceToInformation;
-					if(ReferenceToInformation != null)
-						((IInformationObject) ReferenceToInformation).SetInstanceTreeValuesAsUnmodified();
-
 				
 				}
 
@@ -12230,9 +12151,6 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
-			public ReferenceToInformation ReferenceToInformation { get; set; }
-			private ReferenceToInformation _unmodified_ReferenceToInformation;
 			[DataMember]
 			public string IndentMode { get; set; }
 			private string _unmodified_IndentMode;
@@ -13249,55 +13167,21 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((Process) sourceMaster);
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
-
 
 				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
+
+				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
@@ -13375,161 +13259,52 @@ InformationInput.AuthenticatedDeviceID
 
 
 
-				public static Process CreateDefault()
-				{
-					var result = new Process();
-					result.CategoryCollection = CategoryCollection.CreateDefault();
-					return result;
-				}
-				/*
-				public static Process CreateDemoDefault()
-				{
-					Process customDemo = null;
-					Process.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new Process();
-					result.ProcessID = @"Process.ProcessID";
-
-					result.ProcessName = @"Process.ProcessName";
-
-					result.CategoryCollection = CategoryCollection.CreateDemoDefault();
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(CategoryCollection != null) {
-						((IInformationObject) CategoryCollection).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
+					// Remove exception if basic functionality starts to have issues
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
 					if(filterOnFalse(this))
 						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = CategoryCollection;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
 				}
 
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = CategoryCollection;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) CategoryCollection;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
+					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
+
 
 				}
+
+			
+                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+	
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
-
-						if(ProcessID != _unmodified_ProcessID)
-							return true;
-						if(ProcessName != _unmodified_ProcessName)
-							return true;
-						if(CategoryCollection != _unmodified_CategoryCollection)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) CategoryCollection;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
+						// Remove exception if some basic functionality is broken due to it
+						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 					}
 				}
-
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
-					if(CategoryCollection != null) {
-						if(CategoryCollection.ID == replacingObject.ID)
-							CategoryCollection = (CategoryCollection) replacingObject;
-						else {
-							IInformationObject iObject = CategoryCollection;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
-
-
-				private void CopyContentFrom(Process sourceObject)
-				{
-					ProcessID = sourceObject.ProcessID;
-					ProcessName = sourceObject.ProcessName;
-					CategoryCollection = sourceObject.CategoryCollection;
-				}
-				
-
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
-					_unmodified_ProcessID = ProcessID;
-					_unmodified_ProcessName = ProcessName;
-				
-					_unmodified_CategoryCollection = CategoryCollection;
-					if(CategoryCollection != null)
-						((IInformationObject) CategoryCollection).SetInstanceTreeValuesAsUnmodified();
+					// Remove exception if some basic functionality is broken due to it
+					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
 
-				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
 
 
@@ -13537,30 +13312,28 @@ InformationInput.AuthenticatedDeviceID
 				{
 					switch (propertyName)
 					{
-						case "ProcessID":
-							ProcessID = value;
-							break;
-						case "ProcessName":
-							ProcessName = value;
+						case "ProcessDescription":
+							ProcessDescription = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string ProcessID { get; set; }
-			private string _unmodified_ProcessID;
+			public string ProcessDescription { get; set; }
+			private string _unmodified_ProcessDescription;
 			[DataMember]
-			public string ProcessName { get; set; }
-			private string _unmodified_ProcessName;
+			public SemanticInformationItem ExecutingOperation { get; set; }
+			private SemanticInformationItem _unmodified_ExecutingOperation;
 			[DataMember]
-			public CategoryCollection CategoryCollection { get; set; }
-			private CategoryCollection _unmodified_CategoryCollection;
+			public List< SemanticInformationItem > InitialArguments = new List< SemanticInformationItem >();
+			[DataMember]
+			public List< ProcessItem > ProcessItems = new List< ProcessItem >();
 			
 			}
 			[DataContract]
 			[Serializable]
-			public partial class ReferenceToInformation : IInformationObject 
+			public partial class ProcessItem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -13568,26 +13341,26 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public ReferenceToInformation()
+				public ProcessItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
-				    this.Name = "ReferenceToInformation";
+				    this.Name = "ProcessItem";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ReferenceToInformation/";
+					string contentTypeName = "TheBall.CORE/ProcessItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ReferenceToInformation), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ProcessItem), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -13596,7 +13369,7 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ReferenceToInformation", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.CORE", "ProcessItem", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -13604,20 +13377,20 @@ InformationInput.AuthenticatedDeviceID
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ReferenceToInformation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static ProcessItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceToInformation(relativeLocation, owner);
+					return RetrieveProcessItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceToInformation");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessItem");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceToInformation), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProcessItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -13636,23 +13409,23 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
-                public static ReferenceToInformation RetrieveReferenceToInformation(string relativeLocation, IContainerOwner owner = null)
+                public static ProcessItem RetrieveProcessItem(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ReferenceToInformation) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceToInformation), null, owner);
+                    var result = (ProcessItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProcessItem), null, owner);
                     return result;
                 }
 
-				public static ReferenceToInformation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static ProcessItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = ReferenceToInformation.RetrieveReferenceToInformation("Content/TheBall.CORE/ReferenceToInformation/" + contentName, containerOwner);
-					var result = ReferenceToInformation.RetrieveReferenceToInformation("TheBall.CORE/ReferenceToInformation/" + contentName, containerOwner);
+					// var result = ProcessItem.RetrieveProcessItem("Content/TheBall.CORE/ProcessItem/" + contentName, containerOwner);
+					var result = ProcessItem.RetrieveProcessItem("TheBall.CORE/ProcessItem/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ReferenceToInformation/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ReferenceToInformation/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ProcessItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ProcessItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13679,64 +13452,30 @@ InformationInput.AuthenticatedDeviceID
 
 				bool IInformationObject.IsIndependentMaster { 
 					get {
-						return true;
+						return false;
 					}
 				}
 
 
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
 				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
 				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((ReferenceToInformation) sourceMaster);
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
-
 
 				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
 				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
 				}
+
+				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceToInformation));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProcessItem));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -13749,13 +13488,13 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public static ReferenceToInformation DeserializeFromXml(string xmlString)
+				public static ProcessItem DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceToInformation));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(ProcessItem));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (ReferenceToInformation) serializer.ReadObject(xmlReader);
+							return (ProcessItem) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -13788,7 +13527,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ReferenceToInformation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.CORE", "ProcessItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13802,117 +13541,60 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ReferenceToInformation", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ProcessItem", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref ReferenceToInformation customDemoObject);
+				static partial void CreateCustomDemo(ref ProcessItem customDemoObject);
 
 
-
-				public static ReferenceToInformation CreateDefault()
-				{
-					var result = new ReferenceToInformation();
-					return result;
-				}
-				/*
-				public static ReferenceToInformation CreateDemoDefault()
-				{
-					ReferenceToInformation customDemo = null;
-					ReferenceToInformation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new ReferenceToInformation();
-					result.Title = @"ReferenceToInformation.Title";
-
-					result.URL = @"ReferenceToInformation.URL";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
 
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
+					// Remove exception if basic functionality starts to have issues
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
 					if(filterOnFalse(this))
 						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
 				}
 
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
+					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
+
 
 				}
+
+			
+                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+	
 
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
-
-						if(Title != _unmodified_Title)
-							return true;
-						if(URL != _unmodified_URL)
-							return true;
-				
-						return false;
+						// Remove exception if some basic functionality is broken due to it
+						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 					}
 				}
-
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
-
-
-				private void CopyContentFrom(ReferenceToInformation sourceObject)
-				{
-					Title = sourceObject.Title;
-					URL = sourceObject.URL;
-				}
-				
-
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
-					_unmodified_Title = Title;
-					_unmodified_URL = URL;
-				
-				
+					// Remove exception if some basic functionality is broken due to it
+					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
 				}
 
 
@@ -13920,27 +13602,19 @@ InformationInput.AuthenticatedDeviceID
 				{
 					switch (propertyName)
 					{
-						case "Title":
-							Title = value;
-							break;
-						case "URL":
-							URL = value;
-							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string Title { get; set; }
-			private string _unmodified_Title;
+			public List< SemanticInformationItem > Outputs = new List< SemanticInformationItem >();
 			[DataMember]
-			public string URL { get; set; }
-			private string _unmodified_URL;
+			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
 			
 			}
 			[DataContract]
 			[Serializable]
-			public partial class ReferenceCollection : IInformationObject , IInformationCollection
+			public partial class SemanticInformationItem : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -13948,26 +13622,26 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public ReferenceCollection()
+				public SemanticInformationItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
-				    this.Name = "ReferenceCollection";
+				    this.Name = "SemanticInformationItem";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ReferenceCollection/";
+					string contentTypeName = "TheBall.CORE/SemanticInformationItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ReferenceCollection), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SemanticInformationItem), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -13976,7 +13650,7 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ReferenceCollection", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.CORE", "SemanticInformationItem", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -13984,20 +13658,20 @@ InformationInput.AuthenticatedDeviceID
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static ReferenceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static SemanticInformationItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceCollection(relativeLocation, owner);
+					return RetrieveSemanticInformationItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceCollection");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: SemanticInformationItem");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ReferenceCollection), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SemanticInformationItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -14016,23 +13690,23 @@ InformationInput.AuthenticatedDeviceID
 				}
 
 
-                public static ReferenceCollection RetrieveReferenceCollection(string relativeLocation, IContainerOwner owner = null)
+                public static SemanticInformationItem RetrieveSemanticInformationItem(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (ReferenceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceCollection), null, owner);
+                    var result = (SemanticInformationItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(SemanticInformationItem), null, owner);
                     return result;
                 }
 
-				public static ReferenceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static SemanticInformationItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = ReferenceCollection.RetrieveReferenceCollection("Content/TheBall.CORE/ReferenceCollection/" + contentName, containerOwner);
-					var result = ReferenceCollection.RetrieveReferenceCollection("TheBall.CORE/ReferenceCollection/" + contentName, containerOwner);
+					// var result = SemanticInformationItem.RetrieveSemanticInformationItem("Content/TheBall.CORE/SemanticInformationItem/" + contentName, containerOwner);
+					var result = SemanticInformationItem.RetrieveSemanticInformationItem("TheBall.CORE/SemanticInformationItem/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ReferenceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ReferenceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/SemanticInformationItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/SemanticInformationItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14102,7 +13776,7 @@ InformationInput.AuthenticatedDeviceID
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((ReferenceCollection) sourceMaster);
+					CopyContentFrom((SemanticInformationItem) sourceMaster);
 				}
 
 
@@ -14116,7 +13790,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SemanticInformationItem));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -14129,13 +13803,13 @@ InformationInput.AuthenticatedDeviceID
 					}
 				}
 
-				public static ReferenceCollection DeserializeFromXml(string xmlString)
+				public static SemanticInformationItem DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(ReferenceCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SemanticInformationItem));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (ReferenceCollection) serializer.ReadObject(xmlReader);
+							return (SemanticInformationItem) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -14168,7 +13842,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ReferenceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.CORE", "SemanticInformationItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14182,59 +13856,41 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ReferenceCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "SemanticInformationItem", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref ReferenceCollection customDemoObject);
+				static partial void CreateCustomDemo(ref SemanticInformationItem customDemoObject);
 
+
+
+				public static SemanticInformationItem CreateDefault()
+				{
+					var result = new SemanticInformationItem();
+					return result;
+				}
+				/*
+				public static SemanticInformationItem CreateDemoDefault()
+				{
+					SemanticInformationItem customDemo = null;
+					SemanticInformationItem.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new SemanticInformationItem();
+					result.ItemFullType = @"SemanticInformationItem.ItemFullType";
+
+					result.ItemLocation = @"SemanticInformationItem.ItemLocation";
 
 				
+					return result;
+				}
+				*/
+
 				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
 				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
 				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ReferenceToInformation.GetRelativeLocationFromID("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
 
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
@@ -14246,166 +13902,27 @@ InformationInput.AuthenticatedDeviceID
                     targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
-				
-		
-				public static ReferenceCollection CreateDefault()
-				{
-					var result = new ReferenceCollection();
-					return result;
-				}
-
-				/*
-				public static ReferenceCollection CreateDemoDefault()
-				{
-					ReferenceCollection customDemo = null;
-					ReferenceCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new ReferenceCollection();
-					result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
-					//result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
-					//result.CollectionContent.Add(ReferenceToInformation.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<ReferenceToInformation> CollectionContent = new List<ReferenceToInformation>();
-				private ReferenceToInformation[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public ReferenceToInformation[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (ReferenceToInformation )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(ReferenceCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
 
 				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false) {
-						foreach(IInformationObject iObject in CollectionContent)
-							iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-					}
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
 				}
 
-
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster)
 					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
 							string key = iObject.ID;
 							List<IInformationObject> existingValue;
 							bool keyFound = result.TryGetValue(key, out existingValue);
@@ -14416,14 +13933,63 @@ InformationInput.AuthenticatedDeviceID
 							existingValue.Add(iObject);
 						}
 					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(ItemFullType != _unmodified_ItemFullType)
+							return true;
+						if(ItemLocation != _unmodified_ItemLocation)
+							return true;
+				
+						return false;
 					}
 				}
 
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
 
+
+				private void CopyContentFrom(SemanticInformationItem sourceObject)
+				{
+					ItemFullType = sourceObject.ItemFullType;
+					ItemLocation = sourceObject.ItemLocation;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_ItemFullType = ItemFullType;
+					_unmodified_ItemLocation = ItemLocation;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "ItemFullType":
+							ItemFullType = value;
+							break;
+						case "ItemLocation":
+							ItemLocation = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string ItemFullType { get; set; }
+			private string _unmodified_ItemFullType;
+			[DataMember]
+			public string ItemLocation { get; set; }
+			private string _unmodified_ItemLocation;
 			
 			}
 			[DataContract]

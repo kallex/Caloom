@@ -2165,6 +2165,21 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="MigrateActivitiesAndBlogsToTextContents">
+        <OperationSpec>
+          <Description>Migrate activities and blogs to text contents</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Process" dataType="TheBall.CORE.Process" designDesc="Process that this operation is to execute" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ExecuteProcess" designDesc="Execute process." state="implemented">
+              <Parameter name="Process"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     </Operations>
     <Subscriptions>
       <Subscription triggeredOperationName="UpdatePageContent">

@@ -7,7 +7,26 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.CORE { 
-				public class CreateSpecifiedInformationObjectWithValuesParameters 
+				public class ExecuteProcessParameters 
+		{
+				public string ProcessID ;
+				}
+		
+		public class ExecuteProcess 
+		{
+				private static void PrepareParameters(ExecuteProcessParameters parameters)
+		{
+					}
+				public static void Execute(ExecuteProcessParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.Process Process = ExecuteProcessImplementation.GetTarget_Process(parameters.ProcessID);	
+				string ProcessLockLocation = ExecuteProcessImplementation.GetTarget_ProcessLockLocation(Process);	
+				ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLock(ProcessLockLocation, Process);		
+				}
+				}
+
+		    public class CreateSpecifiedInformationObjectWithValuesParameters 
 		{
 				public IContainerOwner Owner ;
 				public string ObjectDomainName ;

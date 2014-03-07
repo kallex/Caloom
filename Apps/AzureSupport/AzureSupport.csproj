@@ -130,9 +130,11 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
       <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
     </Compile>
+    <Compile Include="AaltoGlobalImpact.OIP\MigrateActivitiesAndBlogsToTextContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="InformationObjectSupport.cs" />
+    <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />

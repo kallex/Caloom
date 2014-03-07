@@ -52,11 +52,6 @@ namespace TheBall
             get { return Guid.Empty; }
         }
 
-        public static void SetBlobInformationType(this CloudBlob blob, string informationTypeValue)
-        {
-            blob.Attributes.Metadata[InformationTypeKey] = informationTypeValue;
-        }
-
         public static string GetBlobInformationType(this CloudBlob blob)
         {
             FetchMetadataIfMissing(blob);

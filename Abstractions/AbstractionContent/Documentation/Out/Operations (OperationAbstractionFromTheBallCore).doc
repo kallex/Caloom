@@ -1757,6 +1757,44 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete the object.
 		</div>
+		</p><h1>ExecuteProcess (ProcessID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Executes proces with given ID
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Process ( ProcessID )</h2>
+		<p>		<div class="MsoNormal" >
+		Process object of execution
+		</div>
+		</p><h2>Target Definition: ProcessLockLocation ( Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Process lock file location
+		</div>
+		</p><h2>Method Call: ExecuteAndStoreProcessWithLock ( ProcessLockLocation, Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there.
+		</div>
 		</p><h1>ExportOwnerContentToZip (Owner, PackageRootFolder)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

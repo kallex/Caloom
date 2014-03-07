@@ -622,4 +622,20 @@ using System.IO;
 				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-		 } 
+				public class MigrateActivitiesAndBlogsToTextContentsParameters 
+		{
+				public TheBall.CORE.Process Process ;
+				}
+		
+		public class MigrateActivitiesAndBlogsToTextContents 
+		{
+				private static void PrepareParameters(MigrateActivitiesAndBlogsToTextContentsParameters parameters)
+		{
+					}
+				public static void Execute(MigrateActivitiesAndBlogsToTextContentsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					MigrateActivitiesAndBlogsToTextContentsImplementation.ExecuteMethod_ExecuteProcess(parameters.Process);		
+				}
+				}
+		} 

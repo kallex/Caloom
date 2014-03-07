@@ -1,0 +1,40 @@
+using System;
+using System.Reflection;
+using AzureSupport;
+
+namespace TheBall.CORE
+{
+    public class ExecuteProcessImplementation
+    {
+        static IContainerOwner Owner { get { return InformationContext.CurrentOwner; }}
+
+        public static Process GetTarget_Process(string processId)
+        {
+            return Process.RetrieveFromOwnerContent(Owner, processId);
+        }
+
+        public static string GetTarget_ProcessLockLocation(Process process)
+        {
+            return process.RelativeLocation + ".lock";
+        }
+
+        public static void ExecuteMethod_ExecuteAndStoreProcessWithLock(string processLockLocation, Process process)
+        {
+            string lockEtag;
+            bool obtainLock = StorageSupport.AcquireLogicalLockByCreatingBlob(processLockLocation, out lockEtag);
+            if (obtainLock == false)
+                return;
+            try
+            {
+                Type operationType = TypeSupport.GetTypeByName(process.ExecutingOperation.ItemFullType);
+                var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
+                method.Invoke(null, null);
+                process.StoreInformation();
+            }
+            finally
+            {
+                StorageSupport.ReleaseLogicalLockByDeletingBlob(processLockLocation, lockEtag);
+            }
+        }
+    }
+}
