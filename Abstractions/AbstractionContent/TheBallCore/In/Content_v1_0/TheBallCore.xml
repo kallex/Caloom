@@ -190,6 +190,11 @@
           <InformationItem name="CategoryName" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="ProcessContainer" designDesc="Process collection container" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="Processes" logicalDataType="InformationObject" informationObjectName="Process" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="Process" designDesc="Individual process, including maintained last execution state and initial arguments" provideCreateMethod="false">
         <InformationItems>
           <InformationItem name="ProcessDescription" logicalDataType="Text_Short"/>

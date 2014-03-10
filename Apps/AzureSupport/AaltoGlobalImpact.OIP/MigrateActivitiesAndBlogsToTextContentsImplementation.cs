@@ -47,9 +47,11 @@ namespace AaltoGlobalImpact.OIP
             {
                 TextContent textContent = getOrCreateInformationObjectsTextContent(process, blog);
                 textContent.Title = blog.Title;
+                textContent.Published = blog.Published;
+                textContent.Author = blog.Author;
                 textContent.SubTitle = blog.SubTitle;
                 textContent.Excerpt = blog.Excerpt;
-                textContent.Body = blog.Body;
+                textContent.RawHtmlContent = blog.Body;
                 textContent.Categories = getCategoriesByTitle(targetCategoryCollection.CollectionContent,
                                                               blog.CategoryCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
@@ -59,8 +61,10 @@ namespace AaltoGlobalImpact.OIP
                 TextContent textContent = getOrCreateInformationObjectsTextContent(process, activity);
                 textContent.SetLocationAsOwnerContent(Owner, textContent.ID);
                 textContent.Title = activity.ActivityName;
+                textContent.Published = activity.StartingTime;
+                textContent.Author = activity.ContactPerson;
                 textContent.Excerpt = activity.Excerpt;
-                textContent.Body = activity.Description;
+                textContent.RawHtmlContent = activity.Description;
                 textContent.Categories = getCategoriesByTitle(targetCategoryCollection.CollectionContent,
                                                               activity.CategoryCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
