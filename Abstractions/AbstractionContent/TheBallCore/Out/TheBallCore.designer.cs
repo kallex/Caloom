@@ -246,8 +246,8 @@ using TheBall.CORE;
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ContentPackageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ContentPackageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ContentPackageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -376,6 +376,9 @@ using TheBall.CORE;
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -442,7 +445,7 @@ using TheBall.CORE;
 					string dummyItemLocation = ContentPackage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -473,7 +476,7 @@ using TheBall.CORE;
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/ContentPackageCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/ContentPackageCollection/" + "MasterCollection");
 				}
 
 
@@ -767,8 +770,8 @@ using TheBall.CORE;
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ContentPackage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ContentPackage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ContentPackage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -896,6 +899,9 @@ using TheBall.CORE;
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1186,8 +1192,8 @@ ContentPackage.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InformationInputCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InformationInputCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationInputCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInputCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1316,6 +1322,9 @@ ContentPackage.Description
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -1382,7 +1391,7 @@ ContentPackage.Description
 					string dummyItemLocation = InformationInput.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -1413,7 +1422,7 @@ ContentPackage.Description
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/InformationInputCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InformationInputCollection/" + "MasterCollection");
 				}
 
 
@@ -1707,8 +1716,8 @@ ContentPackage.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InformationInput/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InformationInput/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationInput/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInput/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1836,6 +1845,9 @@ ContentPackage.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -2126,8 +2138,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InformationOutputCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InformationOutputCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOutputCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutputCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2256,6 +2268,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -2322,7 +2337,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InformationOutput.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -2353,7 +2368,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/InformationOutputCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InformationOutputCollection/" + "MasterCollection");
 				}
 
 
@@ -2647,8 +2662,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InformationOutput/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InformationOutput/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOutput/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutput/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2776,6 +2791,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3073,8 +3091,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3203,6 +3221,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -3269,7 +3290,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = AuthenticatedAsActiveDevice.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -3300,7 +3321,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + "MasterCollection");
 				}
 
 
@@ -3594,8 +3615,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3723,6 +3744,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4015,8 +4039,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/DeviceMembershipCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/DeviceMembershipCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/DeviceMembershipCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembershipCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4145,6 +4169,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -4211,7 +4238,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = DeviceMembership.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -4242,7 +4269,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/DeviceMembershipCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/DeviceMembershipCollection/" + "MasterCollection");
 				}
 
 
@@ -4536,8 +4563,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/DeviceMembership/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/DeviceMembership/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/DeviceMembership/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembership/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4665,6 +4692,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4933,8 +4963,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5062,6 +5092,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -5365,8 +5398,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceSummaryContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceSummaryContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5494,6 +5527,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -5945,8 +5981,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6075,6 +6111,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -6141,7 +6180,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = Invoice.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -6172,7 +6211,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "TheBall.CORE/InvoiceCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InvoiceCollection/" + "MasterCollection");
 				}
 
 
@@ -6466,8 +6505,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/Invoice/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/Invoice/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Invoice/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Invoice/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -6595,6 +6634,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -7024,8 +7066,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceDetails/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceDetails/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceDetails/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceDetails/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7153,6 +7195,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -7452,8 +7497,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceUserCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceUserCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceUserCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUserCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -7582,6 +7627,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -7646,7 +7694,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InvoiceUser.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -7951,8 +7999,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceUser/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceUser/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceUser/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUser/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8080,6 +8128,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -8477,8 +8528,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -8607,6 +8658,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -8671,7 +8725,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InvoiceRowGroup.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -8976,8 +9030,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9106,6 +9160,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -9170,7 +9227,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InvoiceEventDetailGroup.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -9475,8 +9532,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceRowGroup/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceRowGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -9604,6 +9661,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -9934,8 +9994,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10063,6 +10123,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -10357,8 +10420,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10487,6 +10550,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -10551,7 +10617,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InvoiceEventDetail.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -10856,8 +10922,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceRowCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceRowCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -10986,6 +11052,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -11050,7 +11119,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = InvoiceRow.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -11355,8 +11424,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceEventDetail/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceEventDetail/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetail/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetail/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11484,6 +11553,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -11827,8 +11899,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InvoiceRow/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InvoiceRow/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRow/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRow/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -11956,6 +12028,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -12267,8 +12342,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/CategoryCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/CategoryCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/CategoryCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/CategoryCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12397,6 +12472,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -12461,7 +12539,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = Category.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -12766,8 +12844,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/Category/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/Category/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Category/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Category/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -12895,6 +12973,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13134,8 +13215,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/Process/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/Process/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Process/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Process/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13229,6 +13310,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13424,8 +13508,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ProcessItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ProcessItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13519,6 +13603,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -13705,8 +13792,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/SemanticInformationItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/SemanticInformationItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/SemanticInformationItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/SemanticInformationItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -13835,6 +13922,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -13879,7 +13969,7 @@ InformationInput.AuthenticatedDeviceID
 					var result = new SemanticInformationItem();
 					result.ItemFullType = @"SemanticInformationItem.ItemFullType";
 
-					result.ItemLocation = @"SemanticInformationItem.ItemLocation";
+					result.ItemValue = @"SemanticInformationItem.ItemValue";
 
 				
 					return result;
@@ -13941,7 +14031,7 @@ InformationInput.AuthenticatedDeviceID
 
 						if(ItemFullType != _unmodified_ItemFullType)
 							return true;
-						if(ItemLocation != _unmodified_ItemLocation)
+						if(ItemValue != _unmodified_ItemValue)
 							return true;
 				
 						return false;
@@ -13956,7 +14046,7 @@ InformationInput.AuthenticatedDeviceID
 				private void CopyContentFrom(SemanticInformationItem sourceObject)
 				{
 					ItemFullType = sourceObject.ItemFullType;
-					ItemLocation = sourceObject.ItemLocation;
+					ItemValue = sourceObject.ItemValue;
 				}
 				
 
@@ -13964,7 +14054,7 @@ InformationInput.AuthenticatedDeviceID
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ItemFullType = ItemFullType;
-					_unmodified_ItemLocation = ItemLocation;
+					_unmodified_ItemValue = ItemValue;
 				
 				
 				}
@@ -13977,8 +14067,8 @@ InformationInput.AuthenticatedDeviceID
 						case "ItemFullType":
 							ItemFullType = value;
 							break;
-						case "ItemLocation":
-							ItemLocation = value;
+						case "ItemValue":
+							ItemValue = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -13988,8 +14078,8 @@ InformationInput.AuthenticatedDeviceID
 			public string ItemFullType { get; set; }
 			private string _unmodified_ItemFullType;
 			[DataMember]
-			public string ItemLocation { get; set; }
-			private string _unmodified_ItemLocation;
+			public string ItemValue { get; set; }
+			private string _unmodified_ItemValue;
 			
 			}
 			[DataContract]
@@ -14085,8 +14175,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/InformationOwnerInfo/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/InformationOwnerInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOwnerInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOwnerInfo/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14214,6 +14304,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -14465,8 +14558,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/UsageSummary/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/UsageSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/UsageSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageSummary/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -14594,6 +14687,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -14888,8 +14984,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/UsageMonitorItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/UsageMonitorItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/UsageMonitorItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageMonitorItem/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15017,6 +15113,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -15584,8 +15683,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/RequestResourceUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/RequestResourceUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/RequestResourceUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -15714,6 +15813,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -15778,7 +15880,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = RequestResourceUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -16083,8 +16185,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/RequestResourceUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/RequestResourceUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/RequestResourceUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16212,6 +16314,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -16714,8 +16819,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ProcessorUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ProcessorUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -16844,6 +16949,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -16908,7 +17016,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = ProcessorUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -17213,8 +17321,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/ProcessorUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/ProcessorUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17342,6 +17450,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -17666,8 +17777,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -17796,6 +17907,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -17860,7 +17974,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = StorageTransactionUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -18165,8 +18279,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/StorageTransactionUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/StorageTransactionUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageTransactionUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18294,6 +18408,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -18598,8 +18715,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/StorageUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/StorageUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -18728,6 +18845,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -18792,7 +18912,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = StorageUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -19097,8 +19217,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/StorageUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/StorageUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19226,6 +19346,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -19497,8 +19620,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/NetworkUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/NetworkUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/NetworkUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -19627,6 +19750,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -19691,7 +19817,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = NetworkUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -19996,8 +20122,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/NetworkUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/NetworkUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/NetworkUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20125,6 +20251,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20429,8 +20558,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/TimeRange/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/TimeRange/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/TimeRange/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/TimeRange/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20558,6 +20687,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -20805,8 +20937,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -20935,6 +21067,9 @@ InformationInput.AuthenticatedDeviceID
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -20999,7 +21134,7 @@ InformationInput.AuthenticatedDeviceID
 					string dummyItemLocation = HTTPActivityDetails.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -21304,8 +21439,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/TheBall.CORE/HTTPActivityDetails/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "TheBall.CORE/HTTPActivityDetails/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/HTTPActivityDetails/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetails/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -21433,6 +21568,9 @@ InformationInput.AuthenticatedDeviceID
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{

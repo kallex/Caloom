@@ -207,7 +207,7 @@
       <InformationObject name="SemanticInformationItem" designDesc="Semantic information item">
         <InformationItems>
           <InformationItem name="ItemFullType" logicalDataType="Text_Short" />
-          <InformationItem name="ItemLocation" logicalDataType="Text_Short" />
+          <InformationItem name="ItemValue" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="InformationOwnerInfo" designDesc="Info about information owner">

@@ -853,7 +853,7 @@ namespace TheBall
 
         public static void FixOwnerLocation(IInformationObject informationObject, IContainerOwner owner)
         {
-            string ownerLocation = GetBlobOwnerAddress(owner, informationObject.RelativeLocation);
+            string ownerLocation = GetOwnerContentLocation(owner, informationObject.RelativeLocation);
             informationObject.RelativeLocation = ownerLocation;
         }
 
@@ -908,7 +908,7 @@ namespace TheBall
         public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
         {
             string location = owner != null
-                                  ? GetBlobOwnerAddress(owner, informationObject.RelativeLocation)
+                                  ? GetOwnerContentLocation(owner, informationObject.RelativeLocation)
                                   : informationObject.RelativeLocation;
             // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
             informationObject.RelativeLocation = location;
@@ -995,7 +995,7 @@ namespace TheBall
         public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
-                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
             blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
@@ -1112,19 +1112,9 @@ namespace TheBall
             var result =
                 CurrActiveContainer.GetInformationObjects(itemDirectory, null,  iObj => iObj.GetType() == type).ToArray();
             return result;
-            /*
-            var blobList = CurrActiveContainer.GetBlobListing(itemDirectory, withMetaData: true).ToArray();
-            List<IInformationObject> result = new List<IInformationObject>(blobList.Length);
-            foreach(CloudBlockBlob blob in blobList)
-            {
-                var item = RetrieveInformation(blob.Name, type);
-                result.Add(item);
-            }
-            return result.ToArray();
-             * */
         }
 
-        public static string GetBlobOwnerAddress(IContainerOwner owner, string blobAddress)
+        public static string GetOwnerContentLocation(IContainerOwner owner, string blobAddress)
         {
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
             if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("dev/"))
@@ -1140,26 +1130,26 @@ namespace TheBall
 
         public static string DownloadOwnerBlobText(IContainerOwner owner, string blobAddress, bool returnNullIfMissing = false)
         {
-            string downloadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            string downloadAddress = GetOwnerContentLocation(owner, blobAddress);
             return CurrActiveContainer.DownloadBlobText(downloadAddress, returnNullIfMissing);
         }
 
         public static CloudBlockBlob UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
         {
-            string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
             return CurrActiveContainer.UploadBlobText(uploadAddress, content);
         }
 
         public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
-            string uploadAddress = GetBlobOwnerAddress(owner, blobAddress);
+            string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
             CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent);
         }
 
 
         public static CloudBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
         {
-            string blobAddress = GetBlobOwnerAddress(containerOwner, contentPath);
+            string blobAddress = GetOwnerContentLocation(containerOwner, contentPath);
             CloudBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
             return blob;
         }
@@ -1168,7 +1158,7 @@ namespace TheBall
         {
             string relativeLocation = informationObject.RelativeLocation;
             if (owner != null)
-                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
             CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
             blob.DeleteAndFireSubscriptions();
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
@@ -1200,7 +1190,7 @@ namespace TheBall
         {
             string relativeLocation = blobAddress;
             if (owner != null)
-                relativeLocation = GetBlobOwnerAddress(owner, relativeLocation);
+                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
             CloudBlob blob = container.GetBlockBlobReference(relativeLocation);
             return blob;
         }
@@ -1231,7 +1221,7 @@ namespace TheBall
 
         public static int DeleteContentsFromOwner(IContainerOwner owner)
         {
-            string referenceLocation = GetBlobOwnerAddress(owner, ".");
+            string referenceLocation = GetOwnerContentLocation(owner, ".");
             return DeleteContentsFromOwner(referenceLocation);
         }
 
@@ -1278,7 +1268,7 @@ namespace TheBall
 
         public static string GetOwnerRootAddress(IContainerOwner owner)
         {
-            string ownerRootAddress = GetBlobOwnerAddress(owner, "");
+            string ownerRootAddress = GetOwnerContentLocation(owner, "");
             return ownerRootAddress;
         }
 
@@ -1302,7 +1292,7 @@ namespace TheBall
 
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
-            string rootAddress = CurrActiveContainer.Name + "/" + GetBlobOwnerAddress(owner, targetLocation);
+            string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
             BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata };
             var blobs = CurrBlobClient.ListBlobsWithPrefix(rootAddress, options);
             int deletedCount = 0;
@@ -1387,7 +1377,13 @@ namespace TheBall
             var blobListing = container.GetBlobListing(directoryLocation, true);
             return blobListing.Cast<CloudBlockBlob>().Where(blob => filterIfFalse(blob));
         }
-        
+
+        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, IContainerOwner owner, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
+        {
+            string ownerLocation = GetOwnerContentLocation(owner, directoryLocation);
+            return GetInformationObjects(container, ownerLocation, filterByFullName, filterIfFalse);
+        }
+
         public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
         {
             var informationObjectBlobs =
@@ -1435,7 +1431,7 @@ namespace TheBall
 
         public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
         {
-            string contentListingPrefix = GetBlobOwnerAddress(owner, contentType);
+            string contentListingPrefix = GetOwnerContentLocation(owner, contentType);
             string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
             BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             InformationContext.AddStorageTransactionToCurrent();
@@ -1510,6 +1506,7 @@ namespace TheBall
                                               .ToArray();
             return directories;
         }
+
     }
 
     public class ReferenceOutdatedException : Exception

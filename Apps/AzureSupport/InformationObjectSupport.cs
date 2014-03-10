@@ -3,8 +3,21 @@ using TheBall.CORE;
 
 namespace TheBall
 {
-    public class InformationObjectSupport
+    public static class InformationObjectSupport
     {
+        public static bool IsObjectsSemanticItem(this IInformationObject informationObject, SemanticInformationItem semanticItem)
+        {
+            bool isSameType = semanticItem.ItemFullType == informationObject.SemanticDomainName + "." + informationObject.Name;
+            string contentLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, semanticItem.ItemValue);
+            return isSameType && informationObject.RelativeLocation == contentLocation;
+        }
+
+        public static bool IsContentGivenType(string contentFullPath, string fullTypeNameToCompareAgainst)
+        {
+            string contentInformationObjectType = GetInformationObjectType(contentFullPath);
+            return fullTypeNameToCompareAgainst == contentInformationObjectType;
+        }
+
         public static string GetInformationObjectType(string contentFullPath)
         {
             if (contentFullPath.StartsWith("acc/") || contentFullPath.StartsWith("grp/") || contentFullPath.StartsWith(SystemSupport.SystemOwnerRoot))

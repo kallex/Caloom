@@ -132,8 +132,8 @@ using TheBall.CORE;
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.Housing/House/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.Housing/House/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.Housing/House/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.Housing/House/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -261,6 +261,9 @@ using TheBall.CORE;
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{

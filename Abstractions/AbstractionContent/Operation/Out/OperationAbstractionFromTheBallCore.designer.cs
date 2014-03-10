@@ -25,8 +25,7 @@ using System.IO;
 				ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLock(ProcessLockLocation, Process);		
 				}
 				}
-
-		    public class CreateSpecifiedInformationObjectWithValuesParameters 
+				public class CreateSpecifiedInformationObjectWithValuesParameters 
 		{
 				public IContainerOwner Owner ;
 				public string ObjectDomainName ;

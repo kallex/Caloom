@@ -170,8 +170,8 @@ using TheBall.CORE;
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/Who/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/Who/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/Who/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/Who/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -299,6 +299,9 @@ using TheBall.CORE;
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -584,8 +587,8 @@ Who.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductForWhom/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductForWhom/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ProductForWhom/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ProductForWhom/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -713,6 +716,9 @@ Who.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1108,8 +1114,8 @@ ProductForWhom.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/Product/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/Product/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/Product/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/Product/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1237,6 +1243,9 @@ ProductForWhom.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -1578,8 +1587,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ProductUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ProductUsageCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1708,6 +1717,9 @@ Product.Description
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -1774,7 +1786,7 @@ Product.Description
 					string dummyItemLocation = ProductUsage.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -1805,7 +1817,7 @@ Product.Description
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "Caloom.CORE/ProductUsageCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "Caloom.CORE/ProductUsageCollection/" + "MasterCollection");
 				}
 
 
@@ -2099,8 +2111,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ProductUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ProductUsage/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2228,6 +2240,9 @@ Product.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -2520,8 +2535,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ProductCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ProductCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ProductCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ProductCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -2650,6 +2665,9 @@ Product.Description
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -2716,7 +2734,7 @@ Product.Description
 					string dummyItemLocation = Product.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -2747,7 +2765,7 @@ Product.Description
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetBlobOwnerAddress(owner, "Caloom.CORE/ProductCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "Caloom.CORE/ProductCollection/" + "MasterCollection");
 				}
 
 
@@ -3041,8 +3059,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/NodeSummaryContainer/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/NodeSummaryContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/NodeSummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/NodeSummaryContainer/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3170,6 +3188,9 @@ Product.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -3508,8 +3529,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/RenderedNodeCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/RenderedNodeCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/RenderedNodeCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/RenderedNodeCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -3638,6 +3659,9 @@ Product.Description
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -3702,7 +3726,7 @@ Product.Description
 					string dummyItemLocation = RenderedNode.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -4007,8 +4031,8 @@ Product.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/RenderedNode/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/RenderedNode/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/RenderedNode/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/RenderedNode/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4136,6 +4160,9 @@ Product.Description
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
@@ -4672,8 +4699,8 @@ RenderedNode.Excerpt
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ShortTextCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ShortTextCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ShortTextCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ShortTextCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -4802,6 +4829,9 @@ RenderedNode.Excerpt
 				[DataMember]
 				public string MasterETag { get; set; }
 
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
 					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
@@ -4866,7 +4896,7 @@ RenderedNode.Excerpt
 					string dummyItemLocation = ShortTextObject.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetBlobOwnerAddress(owner, nonOwnerDirectoryLocation);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
@@ -5171,8 +5201,8 @@ RenderedNode.Excerpt
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Content/Caloom.CORE/ShortTextObject/" + contentName);
-                    RelativeLocation = StorageSupport.GetBlobOwnerAddress(containerOwner, "Caloom.CORE/ShortTextObject/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/Caloom.CORE/ShortTextObject/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Caloom.CORE/ShortTextObject/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -5300,6 +5330,9 @@ RenderedNode.Excerpt
 
 				[DataMember]
 				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
 
 				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{

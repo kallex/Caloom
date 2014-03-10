@@ -17,7 +17,7 @@ namespace TheBall.CORE
             string objectTypeName = objectDomainName + "." + objectName;
             Type objectType = Type.GetType(objectTypeName);
             IInformationObject iObj = (IInformationObject) Activator.CreateInstance(objectType);
-            var relativeLocation = StorageSupport.GetBlobOwnerAddress(owner, objectDomainName + "/" + objectName + "/" + iObj.ID);
+            var relativeLocation = StorageSupport.GetOwnerContentLocation(owner, objectDomainName + "/" + objectName + "/" + iObj.ID);
             iObj.RelativeLocation = relativeLocation;
             return iObj;
         }

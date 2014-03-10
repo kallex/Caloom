@@ -25,6 +25,7 @@ namespace TheBall.CORE
         string RelativeLocation { get; set; }
         string SemanticDomainName { get; set; }
         string Name { get; set; }
+        string GeneratedByProcessID { get; set; }
         bool IsIndependentMaster { get; }
         void InitializeDefaultSubscribers(IContainerOwner owner);
         void SetValuesToObjects(NameValueCollection form);
