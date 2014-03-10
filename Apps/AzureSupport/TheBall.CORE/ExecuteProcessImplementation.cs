@@ -26,9 +26,14 @@ namespace TheBall.CORE
                 return;
             try
             {
-                Type operationType = TypeSupport.GetTypeByName(process.ExecutingOperation.ItemFullType);
+                string operationTypeName = process.ExecutingOperation.ItemFullType;
+                string parameterTypeName = operationTypeName + "Parameters";
+                Type operationType = TypeSupport.GetTypeByName(operationTypeName);
+                Type parameterType = TypeSupport.GetTypeByName(parameterTypeName);
+                dynamic parameters = Activator.CreateInstance(parameterType);
+                parameters.Process = process;
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
-                method.Invoke(null, null);
+                method.Invoke(null, new object[] { parameters});
                 process.StoreInformation();
             }
             finally
