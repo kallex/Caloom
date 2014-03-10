@@ -142,10 +142,16 @@ namespace CaloomWorkerRole
                     throw;
                 }
             }
-            Task.WaitAll(tasks);
-            foreach (var task in tasks.Where(task => task.Exception != null))
+            try
             {
-                ErrorSupport.ReportException(task.Exception);
+                Task.WaitAll(tasks);
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.Flatten().InnerExceptions)
+                {
+                    ErrorSupport.ReportException(e);
+                }
             }
             releaseIndexingMasterResourcesForMaster();
             QueueSupport.ReportStatistics("Stopped: " + CurrWorkerID, TimeSpan.FromDays(1));

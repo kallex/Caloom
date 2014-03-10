@@ -29,33 +29,37 @@ namespace TheBall
         {
             int firstIX = contentFullPath.IndexOf('/');
             if(firstIX < 0)
-                throw new ArgumentException("Invalid object full path, missing two / characters");
+                throw new ArgumentException("Invalid object full path, missing two / characters: " + contentFullPath);
             int secondIX = contentFullPath.IndexOf('/', firstIX + 1);
             if (secondIX < 0)
-                throw new ArgumentException("Invalid object full path, missing two / characters");
-            return constructTypeName(contentFullPath, firstIX, secondIX);
+                throw new ArgumentException("Invalid object full path, missing two / characters: " + contentFullPath);
+            return constructTypeName(contentFullPath, 0, firstIX, secondIX);
         }
 
-        private static string constructTypeName(string contentFullPath, int firstIX, int secondIX)
+        private static string constructTypeName(string contentFullPath, int beginIX, int firstIX, int secondIX)
         {
+            int firstContentStart = beginIX;
             int firstContentEnd = firstIX;
-            int firstContentLength = firstIX;
+            int firstContentLength = firstContentEnd - firstContentStart;
             int secondContentStart = firstContentEnd + 1;
             int secondContentEnd = secondIX;
             int secondContentLength = secondContentEnd - secondContentStart;
-            return contentFullPath.Substring(0, firstContentLength) + "."
+            return contentFullPath.Substring(firstContentStart, firstContentLength) + "."
                    + contentFullPath.Substring(secondContentStart, secondContentLength);
         }
 
         private static string figureOwnedObjectType(string contentFullPath)
         {
-            int secondIX = contentFullPath.IndexOf('/');
+            int secondIX = contentFullPath.LastIndexOf('/');
             if (secondIX < 0)
-                throw new ArgumentException("Invalid object full path, missing two / characters");
+                throw new ArgumentException("Invalid object full path, missing first of last three / characters: " + contentFullPath);
             int firstIX = contentFullPath.LastIndexOf('/', secondIX-1);
             if (firstIX < 0)
-                throw new ArgumentException("Invalid object full path, missing two / characters");
-            return constructTypeName(contentFullPath, firstIX, secondIX);
+                throw new ArgumentException("Invalid object full path, missing second of last three / characters: " + contentFullPath);
+            int beginIX = contentFullPath.LastIndexOf('/', firstIX - 1) + 1;
+            if(beginIX <= 0)
+                throw new ArgumentException("Invalid object full path, missing third of three / characters: " + contentFullPath);
+            return constructTypeName(contentFullPath, beginIX, firstIX, secondIX);
         }
     }
 }

@@ -54,8 +54,11 @@ namespace TheBall
 
         public static string GetBlobInformationType(this CloudBlob blob)
         {
-            FetchMetadataIfMissing(blob);
-            return blob.Attributes.Metadata[InformationTypeKey];
+            //FetchMetadataIfMissing(blob);
+            if (Path.HasExtension(blob.Name))
+                return InformationType_GenericContentValue;
+            return InformationType_InformationObjectValue;
+            //return blob.Attributes.Metadata[InformationTypeKey];
         }
 
         public static void SetBlobInformationObjectType(this CloudBlob blob, string informationObjectType)
