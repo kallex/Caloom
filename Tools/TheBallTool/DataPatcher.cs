@@ -11,6 +11,7 @@ using Category = AaltoGlobalImpact.OIP.Category;
 using CategoryCollection = AaltoGlobalImpact.OIP.CategoryCollection;
 using OIPDomain = AaltoGlobalImpact.OIP.DomainInformationSupport;
 using CoreDomain = TheBall.CORE.DomainInformationSupport;
+using Process = TheBall.CORE.Process;
 
 namespace TheBallTool
 {
@@ -618,7 +619,34 @@ namespace TheBallTool
             ProcessContainer container = ProcessContainer.RetrieveFromOwnerContent(owner, processContainerName);
             if (container == null)
             {
-                
+                container = new ProcessContainer();
+                container.SetLocationAsOwnerContent(owner, "default");
+            }
+            var migrationProcess = container.Processes.SingleOrDefault();
+            if (migrationProcess == null)
+            {
+                migrationProcess = new Process();
+                migrationProcess.SetLocationAsOwnerContent(owner, migrationProcess.ID);
+                container.Processes.Add(migrationProcess);
+                migrationProcess.ProcessDescription = "Patch created AGI content migration process";
+                migrationProcess.ExecutingOperation = new SemanticInformationItem(
+                    "AaltoGlobalImpact.OIP.MigrateActivitiesAndBlogsToTextContents", null);
+                migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/9798daca-afc4-4046-a99b-d0d88bb364e0"));
+                migrationProcess.StoreInformation(owner);
+            }
+            try
+            {
+                InformationContext.Current.Owner = owner;
+                ExecuteProcess.Execute(new ExecuteProcessParameters {ProcessID = migrationProcess.ID});
+                migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcess.ID);
+                container.Processes.Clear();
+                container.Processes.Add(migrationProcess);
+                container.StoreInformation();
+            }
+            finally
+            {
+                InformationContext.ProcessAndClearCurrent();
+                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
             }
         }
 
@@ -719,12 +747,13 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
+            testProcessWithAGISiteMigration();
             //InitCategoryParentIDFromParentCategory();
 
             //ReconnectAccountsMastersAndCollections();
 
             //PatchSubscriptionsToSubmitted();
-            PatchCollectionsToNodeSummaries();
+            //PatchCollectionsToNodeSummaries();
             //PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
             //FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
             //FixGroupMastersAndCollections("ecc5fac6-49d3-4c57-b01b-349d83503d93"); // Proj2

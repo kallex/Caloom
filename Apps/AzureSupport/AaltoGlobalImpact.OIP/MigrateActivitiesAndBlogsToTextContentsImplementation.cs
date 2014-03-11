@@ -51,8 +51,9 @@ namespace AaltoGlobalImpact.OIP
                 textContent.Author = blog.Author;
                 textContent.SubTitle = blog.SubTitle;
                 textContent.Excerpt = blog.Excerpt;
+                textContent.Body = blog.Body;
                 textContent.RawHtmlContent = blog.Body;
-                textContent.Categories = getCategoriesByTitle(targetCategoryCollection.CollectionContent,
+                textContent.Categories = getCategoriesByTitleFilteringToOne(targetCategoryCollection.CollectionContent,
                                                               blog.CategoryCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
             }
@@ -64,20 +65,41 @@ namespace AaltoGlobalImpact.OIP
                 textContent.Published = activity.StartingTime;
                 textContent.Author = activity.ContactPerson;
                 textContent.Excerpt = activity.Excerpt;
+                textContent.Body = activity.Description;
                 textContent.RawHtmlContent = activity.Description;
-                textContent.Categories = getCategoriesByTitle(targetCategoryCollection.CollectionContent,
+                textContent.Categories = getCategoriesByTitleFilteringToOne(targetCategoryCollection.CollectionContent,
                                                               activity.CategoryCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
             }
         }
 
-        private static CategoryCollection getCategoriesByTitle(List<Category> currentCategories, Category[] sourceCategories)
+        private static CategoryCollection getCategoriesByTitleFilteringToOne(List<Category> currentCategories, Category[] sourceCategories)
         {
             CategoryCollection result = new CategoryCollection();
-            var sourceTitles = sourceCategories.Select(cat => cat.Title).ToArray();
+            var sourceTitles = sourceCategories.Select(cat => cat.CategoryName).ToArray();
             var categoriesToSet = sourceTitles.Select(title => currentCategories.FirstOrDefault(cat => cat.Title == title))
                                               .Where(cat => cat != null);
             result.CollectionContent.AddRange(categoriesToSet);
+            if (result.CollectionContent.Count > 1)
+            {
+                bool removeProject = false;
+                bool removeNews = false;
+                if (result.CollectionContent.Any(cat => cat.Title == "Events"))
+                {
+                    removeProject = true;
+                    removeNews = true;
+                }
+                if (result.CollectionContent.Any(cat => cat.Title == "Projects"))
+                {
+                    removeNews = true;
+                }
+                result.CollectionContent.RemoveAll(cat =>
+                    {
+                        if ((cat.Title == "News" && removeNews) || (cat.Title == "Projects" && removeProject))
+                            return true;
+                        return false;
+                    });
+            }
             return result;
         }
 
