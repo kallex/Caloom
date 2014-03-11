@@ -2701,6 +2701,61 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Push information to output
 		</div>
+		</p><h1>RequestProcessExecution (ProcessID, Owner)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Request process execution through worker queue
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ProcessID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process ID to be queued
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner of the process
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ActiveContainerName</h2>
+		<p>		<div class="MsoNormal" >
+		Active container name of instance storage
+		</div>
+		</p><h2>Target Definition: RequestEnvelope ( ActiveContainerName, ProcessID, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Queue envelope (legacy bound to non-CORE namespace)
+		</div>
+		</p><h2>Method Call: PutEnvelopeToDefaultQueue ( RequestEnvelope )</h2>
+		<p>		<div class="MsoNormal" >
+		Put envelope to default queue
+		</div>
 		</p><h1>SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

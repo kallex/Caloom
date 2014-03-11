@@ -67732,6 +67732,8 @@ Category.Excerpt
 					var result = new QueueEnvelope();
 					result.ActiveContainerName = @"QueueEnvelope.ActiveContainerName";
 
+					result.OwnerPrefix = @"QueueEnvelope.OwnerPrefix";
+
 					result.SingleOperation = OperationRequest.CreateDemoDefault();
 					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDemoDefault();
 					result.ErrorContent = SystemError.CreateDemoDefault();
@@ -67873,6 +67875,8 @@ Category.Excerpt
 
 						if(ActiveContainerName != _unmodified_ActiveContainerName)
 							return true;
+						if(OwnerPrefix != _unmodified_OwnerPrefix)
+							return true;
 						if(CurrentRetryCount != _unmodified_CurrentRetryCount)
 							return true;
 						if(SingleOperation != _unmodified_SingleOperation)
@@ -67945,6 +67949,7 @@ Category.Excerpt
 				private void CopyContentFrom(QueueEnvelope sourceObject)
 				{
 					ActiveContainerName = sourceObject.ActiveContainerName;
+					OwnerPrefix = sourceObject.OwnerPrefix;
 					CurrentRetryCount = sourceObject.CurrentRetryCount;
 					SingleOperation = sourceObject.SingleOperation;
 					OrderDependentOperationSequence = sourceObject.OrderDependentOperationSequence;
@@ -67956,6 +67961,7 @@ Category.Excerpt
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_ActiveContainerName = ActiveContainerName;
+					_unmodified_OwnerPrefix = OwnerPrefix;
 					_unmodified_CurrentRetryCount = CurrentRetryCount;
 				
 					_unmodified_SingleOperation = SingleOperation;
@@ -67981,6 +67987,9 @@ Category.Excerpt
 						case "ActiveContainerName":
 							ActiveContainerName = value;
 							break;
+						case "OwnerPrefix":
+							OwnerPrefix = value;
+							break;
 						case "CurrentRetryCount":
 							CurrentRetryCount = long.Parse(value);
 							break;
@@ -67991,6 +68000,9 @@ Category.Excerpt
 			[DataMember]
 			public string ActiveContainerName { get; set; }
 			private string _unmodified_ActiveContainerName;
+			[DataMember]
+			public string OwnerPrefix { get; set; }
+			private string _unmodified_OwnerPrefix;
 			[DataMember]
 			public long CurrentRetryCount { get; set; }
 			private long _unmodified_CurrentRetryCount;
@@ -68789,6 +68801,8 @@ Category.Excerpt
 					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDemoDefault();
 					result.DeleteOwnerContent = DeleteOwnerContentOperation.CreateDemoDefault();
 					result.PublishWebContent = PublishWebContentOperation.CreateDemoDefault();
+					result.ProcessIDToExecute = @"OperationRequest.ProcessIDToExecute";
+
 				
 					return result;
 				}
@@ -69043,6 +69057,8 @@ Category.Excerpt
 							return true;
 						if(PublishWebContent != _unmodified_PublishWebContent)
 							return true;
+						if(ProcessIDToExecute != _unmodified_ProcessIDToExecute)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) SubscriberNotification;
 							if(item != null) 
@@ -69181,12 +69197,14 @@ Category.Excerpt
 					DeleteEntireOwner = sourceObject.DeleteEntireOwner;
 					DeleteOwnerContent = sourceObject.DeleteOwnerContent;
 					PublishWebContent = sourceObject.PublishWebContent;
+					ProcessIDToExecute = sourceObject.ProcessIDToExecute;
 				}
 				
 
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_ProcessIDToExecute = ProcessIDToExecute;
 				
 					_unmodified_SubscriberNotification = SubscriberNotification;
 					if(SubscriberNotification != null)
@@ -69224,6 +69242,9 @@ Category.Excerpt
 				{
 					switch (propertyName)
 					{
+						case "ProcessIDToExecute":
+							ProcessIDToExecute = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -69249,6 +69270,9 @@ Category.Excerpt
 			[DataMember]
 			public PublishWebContentOperation PublishWebContent { get; set; }
 			private PublishWebContentOperation _unmodified_PublishWebContent;
+			[DataMember]
+			public string ProcessIDToExecute { get; set; }
+			private string _unmodified_ProcessIDToExecute;
 			
 			}
 			[DataContract]

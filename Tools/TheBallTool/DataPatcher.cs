@@ -612,7 +612,7 @@ namespace TheBallTool
             bool result = WorkerSupport.PollAndExecuteChainSubscription();
         }
 
-        private static void testProcessWithAGISiteMigration()
+        private static void testProcessWithAGISiteMigration(bool requestRemoteExecution)
         {
             VirtualOwner owner = new VirtualOwner("grp", "d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
             string processContainerName = "default";
@@ -637,10 +637,21 @@ namespace TheBallTool
             try
             {
                 InformationContext.Current.Owner = owner;
-                ExecuteProcess.Execute(new ExecuteProcessParameters {ProcessID = migrationProcess.ID});
-                migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcess.ID);
-                container.Processes.Clear();
-                container.Processes.Add(migrationProcess);
+                if (requestRemoteExecution)
+                {
+                    RequestProcessExecution.Execute(new RequestProcessExecutionParameters
+                        {
+                            Owner = owner,
+                            ProcessID = migrationProcess.ID,
+                        });
+                }
+                else
+                {
+                    ExecuteProcess.Execute(new ExecuteProcessParameters { ProcessID = migrationProcess.ID });
+                    migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcess.ID);
+                    container.Processes.Clear();
+                    container.Processes.Add(migrationProcess);
+                }
                 container.StoreInformation();
             }
             finally
@@ -747,7 +758,7 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-            testProcessWithAGISiteMigration();
+            testProcessWithAGISiteMigration(true);
             //InitCategoryParentIDFromParentCategory();
 
             //ReconnectAccountsMastersAndCollections();

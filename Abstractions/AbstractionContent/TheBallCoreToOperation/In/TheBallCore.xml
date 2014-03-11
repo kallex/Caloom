@@ -331,6 +331,28 @@
           </SequentialExecution>
         </Execution>
       </Operation>-->
+      <Operation name="RequestProcessExecution">
+        <OperationSpec>
+          <Description>Request process execution through worker queue</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessID" dataType="string" designDesc="Process ID to be queued" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the process" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="ActiveContainerName" dataType="string" designDesc="Active container name of instance storage" state="implemented" />
+            <TargetDefinition name="RequestEnvelope" dataType="AaltoGlobalImpact.OIP.QueueEnvelope" designDesc="Queue envelope (legacy bound to non-CORE namespace)" state="implemented">
+              <Parameter name="ProcessID"/>
+              <Parameter name="Owner"/>
+              <Target name="ActiveContainerName"/>
+            </TargetDefinition>
+            <MethodExecute name="PutEnvelopeToDefaultQueue" designDesc="Put envelope to default queue" state="implemented">
+              <Target name="RequestEnvelope"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ExecuteProcess">
         <OperationSpec>
           <Description>Executes proces with given ID</Description>

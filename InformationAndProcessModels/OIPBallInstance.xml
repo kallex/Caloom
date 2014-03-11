@@ -1146,6 +1146,7 @@
       <InformationObject name="QueueEnvelope" designDesc="QueueEnvelope for all kinds of queued items">
         <InformationItems>
           <InformationItem name="ActiveContainerName" logicalDataType="Text_Short"/>
+          <InformationItem name="OwnerPrefix" logicalDataType="Text_Short"/>
           <InformationItem name="CurrentRetryCount" logicalDataType="Number_Integer"/>
           <InformationItem name="SingleOperation" logicalDataType="InformationObject" informationObjectName="OperationRequest"/>
           <InformationItem name="OrderDependentOperationSequence" logicalDataType="InformationObject" informationObjectName="OperationRequestCollection" />
@@ -1164,6 +1165,7 @@
           <InformationItem name="DeleteEntireOwner" logicalDataType="InformationObject" informationObjectName="DeleteEntireOwnerOperation" />
           <InformationItem name="DeleteOwnerContent" logicalDataType="InformationObject" informationObjectName="DeleteOwnerContentOperation" />
           <InformationItem name="PublishWebContent" logicalDataType="InformationObject" informationObjectName="PublishWebContentOperation"/>
+          <InformationItem name="ProcessIDToExecute" logicalDataType="Text_Short" />
         </InformationItems>
       </InformationObject>
 

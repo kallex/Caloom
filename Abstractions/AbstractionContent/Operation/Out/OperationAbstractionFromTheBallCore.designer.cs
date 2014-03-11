@@ -7,7 +7,27 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.CORE { 
-				public class ExecuteProcessParameters 
+				public class RequestProcessExecutionParameters 
+		{
+				public string ProcessID ;
+				public TheBall.CORE.IContainerOwner Owner ;
+				}
+		
+		public class RequestProcessExecution 
+		{
+				private static void PrepareParameters(RequestProcessExecutionParameters parameters)
+		{
+					}
+				public static void Execute(RequestProcessExecutionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string ActiveContainerName = RequestProcessExecutionImplementation.GetTarget_ActiveContainerName();	
+				AaltoGlobalImpact.OIP.QueueEnvelope RequestEnvelope = RequestProcessExecutionImplementation.GetTarget_RequestEnvelope(parameters.ProcessID, parameters.Owner, ActiveContainerName);	
+				RequestProcessExecutionImplementation.ExecuteMethod_PutEnvelopeToDefaultQueue(RequestEnvelope);		
+				}
+				}
+
+		    public class ExecuteProcessParameters 
 		{
 				public string ProcessID ;
 				}

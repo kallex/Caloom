@@ -273,6 +273,11 @@ namespace TheBall
         private static int counter = 0;
         public static void ProcessMessage(QueueEnvelope envelope, bool reportEnvelopeError = true)
         {
+            if (envelope.SingleOperation != null && envelope.SingleOperation.ProcessIDToExecute != null)
+            {
+                executeProcessRequestEnvelope(envelope, reportEnvelopeError);
+                return;
+            }
             try
             {
                 InformationContext.Current.InitializeCloudStorageAccess(envelope.ActiveContainerName);
@@ -314,6 +319,36 @@ namespace TheBall
                 counter = 0;
             }
 
+        }
+
+        private static void executeProcessRequestEnvelope(QueueEnvelope envelope, bool reportEnvelopeError)
+        {
+            var processID = envelope.SingleOperation.ProcessIDToExecute;
+            string containerName = envelope.ActiveContainerName;
+            string ownerPrefix = envelope.OwnerPrefix;
+            if (String.IsNullOrEmpty(containerName) || String.IsNullOrEmpty(ownerPrefix))
+                throw new InvalidDataException("Container or owner missing from ProcessIDExecute envelope");
+            IContainerOwner owner = VirtualOwner.FigureOwner(ownerPrefix);
+            try
+            {
+                InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
+                InformationContext.Current.Owner = owner;
+                InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
+                ExecuteProcess.Execute(new ExecuteProcessParameters
+                    {
+                        ProcessID = processID
+                    });
+            }
+            catch (Exception ex)
+            {
+                if (reportEnvelopeError)
+                    ErrorSupport.ReportEnvelopeWithException(envelope, ex);
+                throw;
+            }
+            finally
+            {
+                InformationContext.ProcessAndClearCurrent();
+            }
         }
 
         private static void ProcessSingleOperation(OperationRequest operationRequest)

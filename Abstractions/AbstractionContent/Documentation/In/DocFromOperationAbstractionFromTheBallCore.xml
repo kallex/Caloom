@@ -2687,6 +2687,71 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="RequestProcessExecution (ProcessID, Owner)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Request process execution through worker queue</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process ID to be queued</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner of the process</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ActiveContainerName" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Active container name of instance storage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RequestEnvelope ( ActiveContainerName, ProcessID, Owner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue envelope (legacy bound to non-CORE namespace)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PutEnvelopeToDefaultQueue ( RequestEnvelope )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Put envelope to default queue</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
