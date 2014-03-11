@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,6 +47,8 @@ namespace AaltoGlobalImpact.OIP
             foreach (var blog in blogs)
             {
                 TextContent textContent = getOrCreateInformationObjectsTextContent(process, blog);
+                byte[] blogImageData = getBlogImageContent(blog);
+                setTextContentImageContent(textContent, blogImageData);
                 textContent.Title = blog.Title;
                 textContent.Published = blog.Published;
                 textContent.Author = blog.Author;
@@ -71,6 +74,24 @@ namespace AaltoGlobalImpact.OIP
                                                               activity.CategoryCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
             }
+        }
+
+        private static void setTextContentImageContent(TextContent textContent, byte[] blogImageData)
+        {
+            var existingImageData = textContent.ImageData;
+            byte[] existingContent = existingImageData != null ? existingImageData.GetContentData() : null;
+            if (existingContent != null && blogImageData != null)
+            {
+                // if arrays are equal, return without doing anything
+                if (blogImageData.SequenceEqual(existingContent))
+                    return;
+            }
+            // TODO: Manage removal of media content (check how file uploads do that)
+        }
+
+        private static byte[] getBlogImageContent(Blog blog)
+        {
+            throw new System.NotImplementedException();
         }
 
         private static CategoryCollection getCategoriesByTitleFilteringToOne(List<Category> currentCategories, Category[] sourceCategories)

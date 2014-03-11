@@ -71,6 +71,18 @@ namespace AaltoGlobalImpact.OIP
             UpdateAdditionalMediaFormats();
         }
 
+        public void SetMediaContent(string contentFileName, byte[] contentData)
+        {
+            var owner = InformationContext.CurrentOwner;
+            ClearCurrentContent(owner);
+            FileExt = Path.GetExtension(contentFileName);
+            ContentLength = contentData.Length;
+            string locationFileName = ID + FileExt;
+            SetLocationAsOwnerContent(owner, locationFileName);
+            StorageSupport.CurrActiveContainer.UploadBlobBinary(RelativeLocation, contentData);
+            UpdateAdditionalMediaFormats();
+        }
+
         public void UpdateAdditionalMediaFormats()
         {
             RemoveAdditionalMediaFormats();
@@ -93,6 +105,21 @@ namespace AaltoGlobalImpact.OIP
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
             blob.DeleteWithoutFiringSubscriptions();
             RemoveAdditionalMediaFormats();
+        }
+
+        public byte[] GetContentData()
+        {
+            var owner = InformationContext.CurrentOwner;
+            var blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
+            try
+            {
+                byte[] result = blob.DownloadByteArray();
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
