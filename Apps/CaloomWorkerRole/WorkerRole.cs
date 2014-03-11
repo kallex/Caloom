@@ -62,7 +62,7 @@ namespace CaloomWorkerRole
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                };
-            QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID, TimeSpan.FromDays(1));
+            QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID + " version: " + InstanceConfiguration.VersionString, TimeSpan.FromDays(1));
             int activeContainerIX = 0;
             int PollCyclePerRound = PollCyclePerContainerMilliseconds/ActiveContainerNames.Length;
             while (!IsStopped)
