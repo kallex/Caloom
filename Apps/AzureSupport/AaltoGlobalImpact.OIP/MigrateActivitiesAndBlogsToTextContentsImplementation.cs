@@ -44,11 +44,13 @@ namespace AaltoGlobalImpact.OIP
                                            .Cast<Activity>();
             var targetCategoryCollection =
                 CategoryCollection.RetrieveFromOwnerContent(Owner, "MasterCollection");
+            var targetAddressAndLocationCollection =
+                AddressAndLocationCollection.RetrieveFromOwnerContent(Owner, "MasterCollection");
             foreach (var blog in blogs)
             {
                 TextContent textContent = getOrCreateInformationObjectsTextContent(process, blog);
-                byte[] blogImageData = getBlogImageContent(blog);
-                setTextContentImageContent(textContent, blogImageData);
+                MediaContent blogMediaContent = getBlogMediaContent(blog);
+                setTextContentImage(textContent, blogMediaContent);
                 textContent.Title = blog.Title;
                 textContent.Published = blog.Published;
                 textContent.Author = blog.Author;
@@ -58,12 +60,15 @@ namespace AaltoGlobalImpact.OIP
                 textContent.RawHtmlContent = blog.Body;
                 textContent.Categories = getCategoriesByTitleFilteringToOne(targetCategoryCollection.CollectionContent,
                                                               blog.CategoryCollection.GetIDSelectedArray());
+                textContent.Locations = getLocationsByWhitespaceTrimmedLocationName(targetAddressAndLocationCollection.CollectionContent,
+                                                                             blog.LocationCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
             }
             foreach (var activity in activities)
             {
                 TextContent textContent = getOrCreateInformationObjectsTextContent(process, activity);
-                textContent.SetLocationAsOwnerContent(Owner, textContent.ID);
+                MediaContent activityMediaContent = getActivityMediaContent(activity);
+                setTextContentImage(textContent, activityMediaContent);
                 textContent.Title = activity.ActivityName;
                 textContent.Published = activity.StartingTime;
                 textContent.Author = activity.ContactPerson;
@@ -72,26 +77,70 @@ namespace AaltoGlobalImpact.OIP
                 textContent.RawHtmlContent = activity.Description;
                 textContent.Categories = getCategoriesByTitleFilteringToOne(targetCategoryCollection.CollectionContent,
                                                               activity.CategoryCollection.GetIDSelectedArray());
+                textContent.Locations = getLocationsByWhitespaceTrimmedLocationName(targetAddressAndLocationCollection.CollectionContent,
+                                                                             activity.LocationCollection.GetIDSelectedArray());
                 textContent.StoreInformation();
             }
         }
 
-        private static void setTextContentImageContent(TextContent textContent, byte[] blogImageData)
+        private static void setTextContentImage(TextContent textContent, MediaContent legacyContent)
         {
+            var owner = VirtualOwner.FigureOwner(textContent);
             var existingImageData = textContent.ImageData;
-            byte[] existingContent = existingImageData != null ? existingImageData.GetContentData() : null;
-            if (existingContent != null && blogImageData != null)
+            if (existingImageData != null && legacyContent != null)
             {
-                // if arrays are equal, return without doing anything
-                if (blogImageData.SequenceEqual(existingContent))
+                // If actual content is equal, return without doing anything
+                if(existingImageData.GetMD5FromStorage() == legacyContent.GetMD5FromStorage())
                     return;
+                var legacyData = legacyContent.GetContentData();
+                if (legacyData == null)
+                {
+                    existingImageData.ClearCurrentContent(owner);
+                    textContent.ImageData = null;
+                    return;
+                }
+                string fileNameWithExtension = "data" + legacyContent.FileExt;
+                existingImageData.SetMediaContent(fileNameWithExtension,
+                    legacyContent.GetContentData());
             }
-            // TODO: Manage removal of media content (check how file uploads do that)
+            if (existingImageData != null && legacyContent == null)
+            {
+                existingImageData.ClearCurrentContent(owner);
+                textContent.ImageData = null;
+                return;
+            }
+            if (existingImageData == null && legacyContent != null)
+            {
+                var legacyData = legacyContent.GetContentData();
+                if (legacyData == null)
+                    return;
+                string fileNameWithExtension = "data" + legacyContent.FileExt;
+                var newImageData = new MediaContent();
+                newImageData.SetLocationAsOwnerContent(owner, newImageData.ID);
+                newImageData.SetMediaContent(fileNameWithExtension,
+                    legacyContent.GetContentData());
+                textContent.ImageData = newImageData;
+            }
         }
 
-        private static byte[] getBlogImageContent(Blog blog)
+        private static MediaContent getActivityMediaContent(Activity activity)
         {
-            throw new System.NotImplementedException();
+            return activity.ProfileImage.ImageData;
+        }
+
+        private static MediaContent getBlogMediaContent(Blog blog)
+        {
+            return blog.ProfileImage.ImageData;
+        }
+
+        private static AddressAndLocationCollection getLocationsByWhitespaceTrimmedLocationName(List<AddressAndLocation> currentLocations, AddressAndLocation[] sourceLocations)
+        {
+            AddressAndLocationCollection result = new AddressAndLocationCollection();
+            var sourceLocationNames = sourceLocations.Select(loc => loc.Location.LocationName.Trim());
+            var locationsToSet = sourceLocationNames.Select(name => currentLocations.FirstOrDefault(loc => loc.Location.LocationName.Trim() == name))
+                                                    .Where(loc => loc != null);
+            result.CollectionContent.AddRange(locationsToSet);
+            return result;
         }
 
         private static CategoryCollection getCategoriesByTitleFilteringToOne(List<Category> currentCategories, Category[] sourceCategories)

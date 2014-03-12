@@ -107,6 +107,31 @@ namespace AaltoGlobalImpact.OIP
             RemoveAdditionalMediaFormats();
         }
 
+        public string GetMD5FromStorage()
+        {
+            try
+            {
+                var owner = InformationContext.CurrentOwner;
+                CloudBlob mainBlob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
+                mainBlob.FetchAttributes();
+                return mainBlob.Properties.ContentMD5;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static string CalculateComparableMD5(byte[] data)
+        {
+            var md5Check = System.Security.Cryptography.MD5.Create();
+            md5Check.TransformBlock(data, 0, data.Length, null, 0);
+            md5Check.TransformFinalBlock(new byte[0], 0, 0);
+            byte[] hashBytes = md5Check.Hash;
+            string hashVal = Convert.ToBase64String(hashBytes);
+            return hashVal;
+        }
+
         public byte[] GetContentData()
         {
             var owner = InformationContext.CurrentOwner;

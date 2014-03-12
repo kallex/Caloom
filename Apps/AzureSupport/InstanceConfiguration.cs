@@ -9,7 +9,7 @@ namespace TheBall
 {
     public static class InstanceConfiguration
     {
-        public static readonly string VersionString = "v1.0.2b";
+        public static readonly string VersionString = "v1.0.3b";
         public static readonly string AWSAccessKey;
         public static readonly string AWSSecretKey;
         public static readonly string EmailFromAddress;

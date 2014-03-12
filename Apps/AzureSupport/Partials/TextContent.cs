@@ -28,9 +28,9 @@ namespace AaltoGlobalImpact.OIP
         {
             Document document = new Document();
             document.Add(FieldIndexSupport.GetField("DocType", "Text"));
-            document.Add(FieldIndexSupport.GetField("Title", Title));
-            document.Add(FieldIndexSupport.GetField("Excerpt", Excerpt, analyzed: true));
-            document.Add(FieldIndexSupport.GetField("Body", Body, analyzed: true));
+            document.Add(FieldIndexSupport.GetField("Title", Title ?? ""));
+            document.Add(FieldIndexSupport.GetField("Excerpt", Excerpt ?? "", analyzed: true));
+            document.Add(FieldIndexSupport.GetField("Body", Body ?? "", analyzed: true));
             return document;
         }
     }
