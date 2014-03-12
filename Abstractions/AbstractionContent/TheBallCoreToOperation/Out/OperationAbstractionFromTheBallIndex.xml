@@ -38,8 +38,7 @@
           <TargetDefinition name="IndexRequestQueueName" dataType="string" designDesc="Query queue name for search requests" state="implemented">
             <Parameter name="IndexName" />
           </TargetDefinition>
-          <MethodExecute name="EnsureQueuesIfMountSucceeded" designDesc="Create queues if mount succeeded" state="implemented">
-            <Target name="MountIndexDriveOutput.Success" />
+          <MethodExecute name="EnsureAndRegisterQueues" designDesc="Create queues if mount succeeded" state="implemented">
             <Target name="QueryQueueName" />
             <Target name="IndexRequestQueueName" />
           </MethodExecute>

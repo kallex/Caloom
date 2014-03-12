@@ -40,7 +40,7 @@ using System.IO;
 				AttemptToBecomeInfrastructureIndexerReturnValue MountIndexDriveOutput = AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_MountIndexDrive(IndexDriveName);		
 				string QueryQueueName = AttemptToBecomeInfrastructureIndexerImplementation.GetTarget_QueryQueueName(parameters.IndexName);	
 				string IndexRequestQueueName = AttemptToBecomeInfrastructureIndexerImplementation.GetTarget_IndexRequestQueueName(parameters.IndexName);	
-				AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_EnsureQueuesIfMountSucceeded(MountIndexDriveOutput.Success, QueryQueueName, IndexRequestQueueName);		
+				AttemptToBecomeInfrastructureIndexerImplementation.ExecuteMethod_EnsureAndRegisterQueues(QueryQueueName, IndexRequestQueueName);		
 				AttemptToBecomeInfrastructureIndexerReturnValue returnValue = AttemptToBecomeInfrastructureIndexerImplementation.Get_ReturnValue(MountIndexDriveOutput);
 		return returnValue;
 				}

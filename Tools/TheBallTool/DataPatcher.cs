@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
+using TheBall.Index;
 using Category = AaltoGlobalImpact.OIP.Category;
 using CategoryCollection = AaltoGlobalImpact.OIP.CategoryCollection;
 using OIPDomain = AaltoGlobalImpact.OIP.DomainInformationSupport;
@@ -612,6 +613,16 @@ namespace TheBallTool
             bool result = WorkerSupport.PollAndExecuteChainSubscription();
         }
 
+        private static void resendIndexingRequests(string groupID)
+        {
+            VirtualOwner owner = new VirtualOwner("grp", groupID);
+            var indexingRequests = StorageSupport.CurrActiveContainer.GetInformationObjects(owner, "TheBall.Index/IndexingRequest");
+            foreach (var ixReq in indexingRequests)
+            {
+                IndexSupport.PutIndexingRequestToQueue(StorageSupport.CurrActiveContainer.Name, IndexSupport.DefaultIndexName, owner, ixReq.ID);
+            }
+        }
+
         private static void testProcessWithAGISiteMigration(bool requestRemoteExecution)
         {
             VirtualOwner owner = new VirtualOwner("grp", "d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
@@ -759,6 +770,7 @@ namespace TheBallTool
                 throw new NotSupportedException("Skip this with debugger");
 
             testProcessWithAGISiteMigration(true);
+            //resendIndexingRequests("d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
             //InitCategoryParentIDFromParentCategory();
 
             //ReconnectAccountsMastersAndCollections();

@@ -26,8 +26,7 @@ using System.IO;
 				RequestProcessExecutionImplementation.ExecuteMethod_PutEnvelopeToDefaultQueue(RequestEnvelope);		
 				}
 				}
-
-		    public class ExecuteProcessParameters 
+				public class ExecuteProcessParameters 
 		{
 				public string ProcessID ;
 				}

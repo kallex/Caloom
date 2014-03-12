@@ -290,7 +290,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Query queue name for search requests
 		</div>
-		</p><h2>Method Call: EnsureQueuesIfMountSucceeded ( MountIndexDriveOutput.Success, QueryQueueName, IndexRequestQueueName )</h2>
+		</p><h2>Method Call: EnsureAndRegisterQueues ( QueryQueueName, IndexRequestQueueName )</h2>
 		<p>		<div class="MsoNormal" >
 		Create queues if mount succeeded
 		</div>

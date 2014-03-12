@@ -32,7 +32,7 @@ namespace LuceneSupport
             var writer = new IndexWriter(indexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
             actionWithWriter(writer);
             writer.Optimize();
-            writer.Commit();
+            //writer.Commit();
             writer.Flush(true, true, true);
             writer.Dispose();
         }

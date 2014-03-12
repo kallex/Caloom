@@ -16,10 +16,8 @@ namespace TheBall.Index
             return IndexSupport.GetIndexRequestQueueName(indexName);
         }
 
-        public static void ExecuteMethod_EnsureQueuesIfMountSucceeded(bool success, string queryQueueName, string indexRequestQueueName)
+        public static void ExecuteMethod_EnsureAndRegisterQueues(string queryQueueName, string indexRequestQueueName)
         {
-            if (success == false)
-                return;
             QueueSupport.RegisterQueue(queryQueueName);
             QueueSupport.RegisterQueue(indexRequestQueueName);
         }
@@ -69,5 +67,6 @@ namespace TheBall.Index
                     CloudDrive = drive
                 };
         }
+
     }
 }
