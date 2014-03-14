@@ -16,6 +16,26 @@ using TheBall.CORE;
 
 
 			[DataContract]
+			public partial class ConnectionCommunicationData 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string ActiveSideConnectionID;
+
+			[DataMember]
+			public string ReceivingSideConnectionID;
+
+			[DataMember]
+			public string ProcessRequest;
+
+			
+			}
+			[DataContract]
 			public partial class CategoryLinkParameters 
 			{
 				[DataMember]

@@ -302,6 +302,111 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>CreateReceivingConnectionStructures (ConnectionCommunicationData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Create receiving connection structures. Called by active part after connection is authorized.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionCommunicationData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionCommunicationData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection communication data
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ThisSideConnection ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		This side connection entry
+		</div>
+		</p><h2>Target Definition: ProcessToListPackageContents ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Process to list package contents
+		</div>
+		</p><h2>Target Definition: ProcessToProcessReceivedData ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Process to process received data
+		</div>
+		</p><h2>Target Definition: ProcessToUpdateThisSideCategories ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Process to update this side categories
+		</div>
+		</p><h2>Method Call: SetConnectionProcesses ( ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )</h2>
+		<p>		<div class="MsoNormal" >
+		Set connection processes
+		</div>
+		</p><h2>Method Call: StoreObjects ( ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
+		</p><h1>ExecuteConnectionProcess (ConnectionID, ConnectionProcessToExecute)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Executes connection's bound process by its name.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionProcessToExecute
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Pre-defined list of hardcoded names to match the connection process fields
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection object
+		</div>
+		</p><h2>Method Call: PerformProcessExecution ( Connection, ConnectionProcessToExecute )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute the defined process
+		</div>
 		</p><h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -380,22 +485,70 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		CallerProvidedInfo
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Caller provided information about the call. For caller specific purposes.
 		</div>
 				</td>
 				</tr>
 		</table>
+		</p><h1>FinalizeConnectionAfterGroupAuthorization (ConnectionID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Finalizes connection with negotiating connection ID pairs between participants.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ConnectionID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection object for finalization
+		</div>
+		</p><h2>Target Definition: ConnectionCommunicationData ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection finalizing data model (UI/JSON serializable)
+		</div>
+		</p><h2>Method Call: CallDeviceServiceForFinalizing ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Call device based service for finalizing
+		</div>
+		</p><h2>Method Call: UpdateConnectionWithCommunicationData ( Connection, ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Update received information to the connection
+		</div>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Store connection object
+		</div>
 		</p><h1>InitiateIntegrationConnection (Description, TargetBallHostName, TargetGroupID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -473,6 +626,63 @@ div.WordSection1
 		</p><h2>Method Call: NegotiateDeviceConnection ( DeviceForConnection )</h2>
 		<p>		<div class="MsoNormal" >
 		Negotiate device connection
+		</div>
+		</p><h1>PerformConnectionOperation (InputStream, OutputStream)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Perform connection operation with parameters obtained from InformationContext.Current.DeviceOperationContext
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Input stream for parameter serialization
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OutputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Output stream for connection response output
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ConnectionCommunicationData ( InputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection communicating data obtained from DeviceContext
+		</div>
+		</p><h2>Method Call: PerformOperation ( ConnectionCommunicationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform operation based on communication data request
+		</div>
+		</p><h2>Method Call: SerializeCommunicationDataToOutput ( ConnectionCommunicationData, OutputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Serialize communication data to output
 		</div>
 		</p><h1>PushCollaborationContent (ConnectionID)</h1>
 		<h2>Specifications</h2>

@@ -30,6 +30,17 @@ using TheBall.CORE;
 
 
 			[DataContract]
+			public class ConnectionCommunicationData
+			{
+				[DataMember]
+				public string ActiveSideConnectionID { get; set; }
+				[DataMember]
+				public string ReceivingSideConnectionID { get; set; }
+				[DataMember]
+				public string ProcessRequest { get; set; }
+			}
+
+			[DataContract]
 			public class CategoryLinkParameters
 			{
 				[DataMember]
@@ -891,14 +902,23 @@ using TheBall.CORE;
 						case "OtherSideConnectionID":
 							OtherSideConnectionID = value;
 							break;
-						case "OperationToListPackageContents":
-							OperationToListPackageContents = value;
+						case "OperationNameToListPackageContents":
+							OperationNameToListPackageContents = value;
 							break;
-						case "OperationToProcessReceived":
-							OperationToProcessReceived = value;
+						case "OperationNameToProcessReceived":
+							OperationNameToProcessReceived = value;
 							break;
-						case "OperationToUpdateThisSideCategories":
-							OperationToUpdateThisSideCategories = value;
+						case "OperationNameToUpdateThisSideCategories":
+							OperationNameToUpdateThisSideCategories = value;
+							break;
+						case "ProcessIDToListPackageContents":
+							ProcessIDToListPackageContents = value;
+							break;
+						case "ProcessIDToProcessReceived":
+							ProcessIDToProcessReceived = value;
+							break;
+						case "ProcessIDToUpdateThisSideCategories":
+							ProcessIDToUpdateThisSideCategories = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -930,14 +950,23 @@ using TheBall.CORE;
 			[DataMember]
 			public List< TransferPackage > OutgoingPackages = new List< TransferPackage >();
 			[DataMember]
-			public string OperationToListPackageContents { get; set; }
-			private string _unmodified_OperationToListPackageContents;
+			public string OperationNameToListPackageContents { get; set; }
+			private string _unmodified_OperationNameToListPackageContents;
 			[DataMember]
-			public string OperationToProcessReceived { get; set; }
-			private string _unmodified_OperationToProcessReceived;
+			public string OperationNameToProcessReceived { get; set; }
+			private string _unmodified_OperationNameToProcessReceived;
 			[DataMember]
-			public string OperationToUpdateThisSideCategories { get; set; }
-			private string _unmodified_OperationToUpdateThisSideCategories;
+			public string OperationNameToUpdateThisSideCategories { get; set; }
+			private string _unmodified_OperationNameToUpdateThisSideCategories;
+			[DataMember]
+			public string ProcessIDToListPackageContents { get; set; }
+			private string _unmodified_ProcessIDToListPackageContents;
+			[DataMember]
+			public string ProcessIDToProcessReceived { get; set; }
+			private string _unmodified_ProcessIDToProcessReceived;
+			[DataMember]
+			public string ProcessIDToUpdateThisSideCategories { get; set; }
+			private string _unmodified_ProcessIDToUpdateThisSideCategories;
 			
 			}
 			[DataContract]

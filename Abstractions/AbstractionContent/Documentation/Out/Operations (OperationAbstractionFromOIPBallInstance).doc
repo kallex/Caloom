@@ -1627,7 +1627,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Store modified objects
 		</div>
-		</p><h1>UpdateConnectionThisSideCategories (ConnectionID)</h1>
+		</p><h1>UpdateConnectionThisSideCategories (Process)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Update this side categories of connection
@@ -1638,17 +1638,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		ConnectionID
+		Process
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		TheBall.CORE.Process
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Connection ID
+		Process that has ConnectionID as initial parameter
 		</div>
 				</td>
 				</tr>
@@ -1661,7 +1661,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Current active categories, in order, with proper parent IDs listed
 		</div>
-		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
+		</p><h2>Target Definition: Connection ( Process )</h2>
 		<p>		<div class="MsoNormal" >
 		Connecton that contains this categories
 		</div>

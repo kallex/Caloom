@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using AzureSupport;
 
@@ -27,13 +28,7 @@ namespace TheBall.CORE
             try
             {
                 string operationTypeName = process.ExecutingOperation.ItemFullType;
-                string parameterTypeName = operationTypeName + "Parameters";
-                Type operationType = TypeSupport.GetTypeByName(operationTypeName);
-                Type parameterType = TypeSupport.GetTypeByName(parameterTypeName);
-                dynamic parameters = Activator.CreateInstance(parameterType);
-                parameters.Process = process;
-                var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
-                method.Invoke(null, new object[] { parameters});
+                OperationSupport.ExecuteOperation(operationTypeName, new Tuple<string, object>("Process", process));
                 process.StoreInformation();
             }
             finally

@@ -7,6 +7,25 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
+				public class PerformConnectionOperationParameters 
+		{
+				public System.IO.Stream InputStream ;
+				public System.IO.Stream OutputStream ;
+				}
+		
+		public class PerformConnectionOperation 
+		{
+				private static void PrepareParameters(PerformConnectionOperationParameters parameters)
+		{
+					}
+				public static void Execute(PerformConnectionOperationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ConnectionCommunicationData ConnectionCommunicationData = PerformConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
+				PerformConnectionOperationImplementation.ExecuteMethod_PerformOperation(ConnectionCommunicationData);		
+				PerformConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
+				}
+				}
 		
 		public class SetCategoryLinkingForConnection 
 		{
@@ -101,6 +120,66 @@ using System.IO;
 				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
 				InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
 				InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnection(DeviceForConnection);		
+				}
+				}
+				public class ExecuteConnectionProcessParameters 
+		{
+				public string ConnectionID ;
+				public string ConnectionProcessToExecute ;
+				}
+		
+		public class ExecuteConnectionProcess 
+		{
+				private static void PrepareParameters(ExecuteConnectionProcessParameters parameters)
+		{
+					}
+				public static void Execute(ExecuteConnectionProcessParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = ExecuteConnectionProcessImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				ExecuteConnectionProcessImplementation.ExecuteMethod_PerformProcessExecution(parameters.ConnectionProcessToExecute, Connection);		
+				}
+				}
+
+		    public class FinalizeConnectionAfterGroupAuthorizationParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class FinalizeConnectionAfterGroupAuthorization 
+		{
+				private static void PrepareParameters(FinalizeConnectionAfterGroupAuthorizationParameters parameters)
+		{
+					}
+				public static void Execute(FinalizeConnectionAfterGroupAuthorizationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				ConnectionCommunicationData ConnectionCommunicationData = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_ConnectionCommunicationData(Connection);	
+				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_CallDeviceServiceForFinalizing(ConnectionCommunicationData);		
+				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_UpdateConnectionWithCommunicationData(Connection, ConnectionCommunicationData);		
+				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_StoreObject(Connection);		
+				}
+				}
+				public class CreateReceivingConnectionStructuresParameters 
+		{
+				public ConnectionCommunicationData ConnectionCommunicationData ;
+				}
+		
+		public class CreateReceivingConnectionStructures 
+		{
+				private static void PrepareParameters(CreateReceivingConnectionStructuresParameters parameters)
+		{
+					}
+				public static void Execute(CreateReceivingConnectionStructuresParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection ThisSideConnection = CreateReceivingConnectionStructuresImplementation.GetTarget_ThisSideConnection(parameters.ConnectionCommunicationData);	
+				TheBall.CORE.Process ProcessToListPackageContents = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToListPackageContents(parameters.ConnectionCommunicationData);	
+				TheBall.CORE.Process ProcessToProcessReceivedData = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedData(parameters.ConnectionCommunicationData);	
+				TheBall.CORE.Process ProcessToUpdateThisSideCategories = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategories(parameters.ConnectionCommunicationData);	
+				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_SetConnectionProcesses(ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
+				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_StoreObjects(ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
 				}
 				}
 				public class CreateReceivingConnectionParameters 

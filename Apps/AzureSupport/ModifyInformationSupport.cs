@@ -155,11 +155,11 @@ namespace TheBall
 
                 case "UpdateConnectionThisSideCategories":
                     {
-                        UpdateConnectionThisSideCategoriesParameters parameters = new UpdateConnectionThisSideCategoriesParameters
+                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
                             {
-                                ConnectionID = form["ConnectionID"]
-                            };
-                        UpdateConnectionThisSideCategories.Execute(parameters);
+                                ConnectionID = form["ConnectionID"],
+                                ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
+                            });
                         break;
                     }
                 case "InitiateIntegrationConnection":

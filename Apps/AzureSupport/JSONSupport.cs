@@ -62,6 +62,15 @@ namespace AzureSupport
             return result;
         }
 
+        public static void SerializeToJSONStream(object obj, Stream outputStream)
+        {
+            var writer = new JsonWriter();
+            using (StreamWriter textWriter = new StreamWriter(outputStream))
+            {
+                writer.Write(obj, textWriter);
+            }
+        }
+
         public static string SerializeToJSONString(object obj)
         {
             var writer = new JsonWriter();

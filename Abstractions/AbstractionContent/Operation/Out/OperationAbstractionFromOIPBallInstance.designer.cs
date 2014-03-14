@@ -604,7 +604,7 @@ using System.IO;
 				}
 				public class UpdateConnectionThisSideCategoriesParameters 
 		{
-				public string ConnectionID ;
+				public TheBall.CORE.Process Process ;
 				}
 		
 		public class UpdateConnectionThisSideCategories 
@@ -617,7 +617,7 @@ using System.IO;
 						PrepareParameters(parameters);
 					NodeSummaryContainer CurrentCategoryContainer = UpdateConnectionThisSideCategoriesImplementation.GetTarget_CurrentCategoryContainer();	
 				Category[] ActiveCategories = UpdateConnectionThisSideCategoriesImplementation.GetTarget_ActiveCategories(CurrentCategoryContainer);	
-				TheBall.Interface.Connection Connection = UpdateConnectionThisSideCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				TheBall.Interface.Connection Connection = UpdateConnectionThisSideCategoriesImplementation.GetTarget_Connection(parameters.Process);	
 				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_UpdateThisSideCategories(Connection, ActiveCategories);		
 				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}

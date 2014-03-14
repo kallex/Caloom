@@ -19,7 +19,7 @@ namespace TheBall.Interface
 
         public static string GetTarget_PackageContentListingOperationName(Connection connection)
         {
-            return connection.OperationToListPackageContents;
+            return connection.OperationNameToListPackageContents;
         }
 
         public static string[] ExecuteMethod_DynamicPackageListingOperation(string connectionId, string packageContentListingOperationName)

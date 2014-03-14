@@ -487,7 +487,7 @@
     <StatusItem name="SetCategoryHierarchyAndOrderInNodeSummary_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store modified objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="UpdateConnectionThisSideCategories_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+    <StatusItem name="UpdateConnectionThisSideCategories_Process" displayName="VariableType: Process" description="Process that has ConnectionID as initial parameter">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="UpdateConnectionThisSideCategories_CurrentCategoryContainer" displayName="TargetDefinitionType: CurrentCategoryContainer" description="Current category container">
@@ -740,7 +740,7 @@
       <ItemRef itemName="SetCategoryHierarchyAndOrderInNodeSummary_StoreObject" />
     </Group>
     <Group name="UpdateConnectionThisSideCategories">
-      <ItemRef itemName="UpdateConnectionThisSideCategories_ConnectionID" />
+      <ItemRef itemName="UpdateConnectionThisSideCategories_Process" />
       <ItemRef itemName="UpdateConnectionThisSideCategories_CurrentCategoryContainer" />
       <ItemRef itemName="UpdateConnectionThisSideCategories_ActiveCategories" />
       <ItemRef itemName="UpdateConnectionThisSideCategories_Connection" />

@@ -142,19 +142,54 @@ namespace WebInterface
                 cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
-                string contentRoot = deviceMembership.RelativeLocation + "_Input";
-                string blobName = contentRoot + "/" + contentName;
-                var blob = StorageSupport.GetOwnerBlobReference(owner, blobName);
-                if(blob.Name != blobName)
-                    throw new InvalidDataException("Invalid content name");
-                var reqStream = request.GetBufferedInputStream();
-                AesManaged aes = new AesManaged();
-                aes.KeySize = 256;
-                aes.IV = Convert.FromBase64String(ivStr);
-                aes.Key = deviceMembership.ActiveSymmetricAESKey;
-                var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
-                blob.UploadFromStream(cryptoStream);
+                if (contentName.StartsWith("OP-"))
+                {
+                    string operationName = contentName.Substring(3);
+                    var reqStream = request.GetBufferedInputStream();
+                    AesManaged decAES = new AesManaged
+                        {
+                            KeySize = 256,
+                            IV = Convert.FromBase64String(ivStr),
+                            Key = deviceMembership.ActiveSymmetricAESKey
+                        };
+                    var reqDecryptor = decAES.CreateDecryptor(decAES.Key, decAES.IV);
+
+                    AesManaged encAES = new AesManaged
+                        {
+                            KeySize = 256, 
+                            Key = deviceMembership.ActiveSymmetricAESKey
+                        };
+                    encAES.GenerateIV();
+                    var respivBase64 = Convert.ToBase64String(encAES.IV);
+                    response.Headers.Add("IV", respivBase64);
+                    var responseStream = response.OutputStream;
+                    var respEncryptor = encAES.CreateEncryptor(encAES.Key, encAES.IV);
+
+
+                    using (CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor, CryptoStreamMode.Read),
+                            respEncryptedStream = new CryptoStream(responseStream, respEncryptor, CryptoStreamMode.Write))
+                    {
+                        OperationSupport.ExecuteOperation(operationName, 
+                            new Tuple<string, object>("InputStream", reqDecryptStream),
+                            new Tuple<string, object>("OutputStream", respEncryptedStream));
+                    }
+                }
+                else
+                {
+                    string contentRoot = deviceMembership.RelativeLocation + "_Input";
+                    string blobName = contentRoot + "/" + contentName;
+                    var blob = StorageSupport.GetOwnerBlobReference(owner, blobName);
+                    if (blob.Name != blobName)
+                        throw new InvalidDataException("Invalid content name");
+                    var reqStream = request.GetBufferedInputStream();
+                    AesManaged aes = new AesManaged();
+                    aes.KeySize = 256;
+                    aes.IV = Convert.FromBase64String(ivStr);
+                    aes.Key = deviceMembership.ActiveSymmetricAESKey;
+                    var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                    CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
+                    blob.UploadFromStream(cryptoStream);
+                }
                 response.StatusCode = 200;
                 response.End();
             }

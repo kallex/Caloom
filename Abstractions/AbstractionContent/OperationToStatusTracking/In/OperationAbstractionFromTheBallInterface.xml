@@ -1,6 +1,31 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Interface">
+    <Operation name="PerformConnectionOperation">
+      <OperationSpec>
+        <Description>
+            Perform connection operation with parameters obtained from InformationContext.Current.DeviceOperationContext
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="InputStream" dataType="System.IO.Stream" designDesc="Input stream for parameter serialization" state="implemented" />
+        <Parameter name="OutputStream" dataType="System.IO.Stream" designDesc="Output stream for connection response output" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection communicating data obtained from DeviceContext" state="implemented">
+            <Parameter name="InputStream" />
+          </TargetDefinition>
+          <MethodExecute name="PerformOperation" designDesc="Perform operation based on communication data request" state="implemented">
+            <Target name="ConnectionCommunicationData" />
+          </MethodExecute>
+          <MethodExecute name="SerializeCommunicationDataToOutput" designDesc="Serialize communication data to output" state="implemented">
+            <Parameter name="OutputStream" />
+            <Target name="ConnectionCommunicationData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="SetCategoryLinkingForConnection">
       <OperationSpec>
         <Description>Sets category linking for connection</Description>
@@ -80,7 +105,7 @@
         <Parameter name="OperationDomain" dataType="string" designDesc="Operation namespace" state="designApproved" />
         <Parameter name="OperationName" dataType="string" designDesc="Operation name" state="designApproved" />
         <Parameter name="OperationParameters" dataType="byte[]" designDesc="Operation parameters binary serialized." state="designApproved" />
-        <Parameter name="CallerProvidedInfo" dataType="string" designDesc="Caller provided information about the call. For caller specific purposes." state="underDesign" />
+        <Parameter name="CallerProvidedInfo" dataType="string" designDesc="Caller provided information about the call. For caller specific purposes." state="designApproved" />
       </Parameters>
       <Execution>
         <SequentialExecution />
@@ -140,6 +165,96 @@
           </MethodExecute>
           <MethodExecute name="NegotiateDeviceConnection" designDesc="Negotiate device connection" state="implemented">
             <Target name="DeviceForConnection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ExecuteConnectionProcess">
+      <OperationSpec>
+        <Description>
+            Executes connection's bound process by its name.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented" />
+        <Parameter name="ConnectionProcessToExecute" dataType="string" designDesc="Pre-defined list of hardcoded names to match the connection process fields" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <MethodExecute name="PerformProcessExecution" designDesc="Execute the defined process" state="implemented">
+            <Parameter name="ConnectionProcessToExecute" />
+            <Target name="Connection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="FinalizeConnectionAfterGroupAuthorization">
+      <OperationSpec>
+        <Description>
+            Finalizes connection with negotiating connection ID pairs between participants.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object for finalization" state="implemented">
+            <Parameter name="ConnectionID" />
+          </TargetDefinition>
+          <TargetDefinition name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection finalizing data model (UI/JSON serializable)" state="implemented">
+            <Target name="Connection" />
+          </TargetDefinition>
+          <MethodExecute name="CallDeviceServiceForFinalizing" designDesc="Call device based service for finalizing" state="implemented">
+            <Target name="ConnectionCommunicationData" />
+          </MethodExecute>
+          <MethodExecute name="UpdateConnectionWithCommunicationData" designDesc="Update received information to the connection" state="implemented">
+            <Target name="Connection" />
+            <Target name="ConnectionCommunicationData" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+            <Target name="Connection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="CreateReceivingConnectionStructures">
+      <OperationSpec>
+        <Description>
+            Create receiving connection structures. Called by active part after connection is authorized.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection communication data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="ThisSideConnection" dataType="Connection" designDesc="This side connection entry" state="implemented">
+            <Parameter name="ConnectionCommunicationData" />
+          </TargetDefinition>
+          <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented">
+            <Parameter name="ConnectionCommunicationData" />
+          </TargetDefinition>
+          <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented">
+            <Parameter name="ConnectionCommunicationData" />
+          </TargetDefinition>
+          <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented">
+            <Parameter name="ConnectionCommunicationData" />
+          </TargetDefinition>
+          <MethodExecute name="SetConnectionProcesses" designDesc="Set connection processes" state="implemented">
+            <Target name="ThisSideConnection" />
+            <Target name="ProcessToListPackageContents" />
+            <Target name="ProcessToProcessReceivedData" />
+            <Target name="ProcessToUpdateThisSideCategories" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+            <Target name="ThisSideConnection" />
+            <Target name="ProcessToListPackageContents" />
+            <Target name="ProcessToProcessReceivedData" />
+            <Target name="ProcessToUpdateThisSideCategories" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

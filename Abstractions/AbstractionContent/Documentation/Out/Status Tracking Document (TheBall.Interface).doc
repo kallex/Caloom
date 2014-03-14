@@ -231,7 +231,7 @@ div.WordSection1
 		<h1>Summary</h1>
 		<h2>ExecuteOperation (0 %)</h2>
 		<p>		<div class="MsoNormal" >
-		Under design 1, Being implemented 4
+		Being implemented 5
 		</div>
 		</p><h1>ExecuteOperation (0 %)</h1>
 		<p><table border="1">
@@ -306,17 +306,17 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		VariableType: CallerProvidedInfo
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
-		Under design
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Caller provided information about the call. For caller specific purposes.
 		</div>
 				</td>

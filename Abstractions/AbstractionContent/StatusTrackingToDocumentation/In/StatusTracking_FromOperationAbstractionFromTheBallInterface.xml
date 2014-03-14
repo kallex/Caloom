@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
+    <StatusItem name="PerformConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformConnectionOperation_OutputStream" displayName="VariableType: OutputStream" description="Output stream for connection response output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformConnectionOperation_ConnectionCommunicationData" displayName="TargetDefinitionType: ConnectionCommunicationData" description="Connection communicating data obtained from DeviceContext">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformConnectionOperation_PerformOperation" displayName="MethodExecuteType: PerformOperation" description="Perform operation based on communication data request">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformConnectionOperation_SerializeCommunicationDataToOutput" displayName="MethodExecuteType: SerializeCommunicationDataToOutput" description="Serialize communication data to output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="SetCategoryLinkingForConnection_CategoryLinkingParameters" displayName="TargetDefinitionType: CategoryLinkingParameters" description="Deserialized operation parameters">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -59,7 +74,7 @@
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ExecuteOperation_CallerProvidedInfo" displayName="VariableType: CallerProvidedInfo" description="Caller provided information about the call. For caller specific purposes.">
-      <StatusValue trafficLightIndicator="red" indicatorDisplayText="Under design" indicatorValue="1" />
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="UpdateStatusSummary_Owner" displayName="VariableType: Owner" description="Owner of the operation context">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
@@ -97,6 +112,57 @@
     <StatusItem name="InitiateIntegrationConnection_NegotiateDeviceConnection" displayName="MethodExecuteType: NegotiateDeviceConnection" description="Negotiate device connection">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ExecuteConnectionProcess_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteConnectionProcess_ConnectionProcessToExecute" displayName="VariableType: ConnectionProcessToExecute" description="Pre-defined list of hardcoded names to match the connection process fields">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteConnectionProcess_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteConnectionProcess_PerformProcessExecution" displayName="MethodExecuteType: PerformProcessExecution" description="Execute the defined process">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_Connection" displayName="TargetDefinitionType: Connection" description="Connection object for finalization">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_ConnectionCommunicationData" displayName="TargetDefinitionType: ConnectionCommunicationData" description="Connection finalizing data model (UI/JSON serializable)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_CallDeviceServiceForFinalizing" displayName="MethodExecuteType: CallDeviceServiceForFinalizing" description="Call device based service for finalizing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_UpdateConnectionWithCommunicationData" displayName="MethodExecuteType: UpdateConnectionWithCommunicationData" description="Update received information to the connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="FinalizeConnectionAfterGroupAuthorization_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_ConnectionCommunicationData" displayName="VariableType: ConnectionCommunicationData" description="Connection communication data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_ThisSideConnection" displayName="TargetDefinitionType: ThisSideConnection" description="This side connection entry">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_ProcessToListPackageContents" displayName="TargetDefinitionType: ProcessToListPackageContents" description="Process to list package contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_ProcessToProcessReceivedData" displayName="TargetDefinitionType: ProcessToProcessReceivedData" description="Process to process received data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_ProcessToUpdateThisSideCategories" displayName="TargetDefinitionType: ProcessToUpdateThisSideCategories" description="Process to update this side categories">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_SetConnectionProcesses" displayName="MethodExecuteType: SetConnectionProcesses" description="Set connection processes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateReceivingConnectionStructures_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateReceivingConnection_Description" displayName="VariableType: Description" description="Connection description">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -129,6 +195,13 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="PerformConnectionOperation">
+      <ItemRef itemName="PerformConnectionOperation_InputStream" />
+      <ItemRef itemName="PerformConnectionOperation_OutputStream" />
+      <ItemRef itemName="PerformConnectionOperation_ConnectionCommunicationData" />
+      <ItemRef itemName="PerformConnectionOperation_PerformOperation" />
+      <ItemRef itemName="PerformConnectionOperation_SerializeCommunicationDataToOutput" />
+    </Group>
     <Group name="SetCategoryLinkingForConnection">
       <ItemRef itemName="SetCategoryLinkingForConnection_CategoryLinkingParameters" />
       <ItemRef itemName="SetCategoryLinkingForConnection_Connection" />
@@ -170,6 +243,29 @@
       <ItemRef itemName="InitiateIntegrationConnection_DeviceForConnection" />
       <ItemRef itemName="InitiateIntegrationConnection_StoreConnection" />
       <ItemRef itemName="InitiateIntegrationConnection_NegotiateDeviceConnection" />
+    </Group>
+    <Group name="ExecuteConnectionProcess">
+      <ItemRef itemName="ExecuteConnectionProcess_ConnectionID" />
+      <ItemRef itemName="ExecuteConnectionProcess_ConnectionProcessToExecute" />
+      <ItemRef itemName="ExecuteConnectionProcess_Connection" />
+      <ItemRef itemName="ExecuteConnectionProcess_PerformProcessExecution" />
+    </Group>
+    <Group name="FinalizeConnectionAfterGroupAuthorization">
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_ConnectionID" />
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_Connection" />
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_ConnectionCommunicationData" />
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_CallDeviceServiceForFinalizing" />
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_UpdateConnectionWithCommunicationData" />
+      <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_StoreObject" />
+    </Group>
+    <Group name="CreateReceivingConnectionStructures">
+      <ItemRef itemName="CreateReceivingConnectionStructures_ConnectionCommunicationData" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_ThisSideConnection" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToListPackageContents" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToProcessReceivedData" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToUpdateThisSideCategories" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_SetConnectionProcesses" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_StoreObjects" />
     </Group>
     <Group name="CreateReceivingConnection">
       <ItemRef itemName="CreateReceivingConnection_Description" />

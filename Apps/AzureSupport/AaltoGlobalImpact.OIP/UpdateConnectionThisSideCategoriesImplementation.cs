@@ -3,6 +3,7 @@ using TheBall;
 using TheBall.CORE;
 using TheBall.Interface;
 using System.Linq;
+using Process = TheBall.CORE.Process;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -24,9 +25,10 @@ namespace AaltoGlobalImpact.OIP
             return currentCategoryContainer.NodeSourceCategories.GetIDSelectedArray();
         }
 
-        public static Connection GetTarget_Connection(string connectionId)
+        public static Connection GetTarget_Connection(Process process)
         {
-            return Connection.RetrieveFromOwnerContent(Owner, connectionId);
+            string connectionID = process.InitialArguments.First(arg => arg.ItemFullType == "ConnectionID").ItemValue;
+            return Connection.RetrieveFromOwnerContent(Owner, connectionID);
         }
 
         public static void ExecuteMethod_UpdateThisSideCategories(Connection connection, Category[] activeCategories)
