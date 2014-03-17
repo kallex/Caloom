@@ -1363,6 +1363,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: CallDeleteDeviceOnRemoteSide ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call delete device on remote side of device connection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: DeleteAuthenticatedAsActiveDevice ( AuthenticatedAsActiveDevice )" level="2">
               <Paragraph>
                 <Text>

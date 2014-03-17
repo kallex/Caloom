@@ -29,6 +29,15 @@ using TheBall.CORE;
 
 
 
+			[DataContract]
+			public class DeviceOperationData
+			{
+				[DataMember]
+				public string OperationRequestString { get; set; }
+				[DataMember]
+				public bool OperationResult { get; set; }
+			}
+
 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)

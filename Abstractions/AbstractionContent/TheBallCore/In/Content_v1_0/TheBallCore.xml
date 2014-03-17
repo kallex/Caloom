@@ -4,6 +4,16 @@
 -->
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.CORE">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="DeviceOperationData" designDesc="Device operation data for device-connection related remote operations">
+          <InterfaceItems>
+            <InterfaceItem name="OperationRequestString" logicalDataType="Text_Short"/>
+            <InterfaceItem name="OperationResult" logicalDataType="TrueOrFalse_Boolean"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel>
       <InformationObject name="ContentPackageCollection" designDesc="Collection for content packages">
         <CollectionFor contentInformationObjectName="ContentPackage" collectionType="Master"/>
@@ -713,6 +723,9 @@
               <Parameter name="Owner"/>
               <Parameter name="AuthenticatedAsActiveDeviceID"/>
             </TargetDefinition>
+            <MethodExecute name="CallDeleteDeviceOnRemoteSide" designDesc="Call delete device on remote side of device connection" state="implemented">
+              <Target name="AuthenticatedAsActiveDevice"/>
+            </MethodExecute>
             <MethodExecute name="DeleteAuthenticatedAsActiveDevice" designDesc="Delete device membership record" state="implemented">
               <Target name="AuthenticatedAsActiveDevice"/>
             </MethodExecute>

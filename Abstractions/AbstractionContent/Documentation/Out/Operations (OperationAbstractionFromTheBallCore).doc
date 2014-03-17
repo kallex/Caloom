@@ -1537,6 +1537,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Created device membership
 		</div>
+		</p><h2>Method Call: CallDeleteDeviceOnRemoteSide ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Call delete device on remote side of device connection
+		</div>
 		</p><h2>Method Call: DeleteAuthenticatedAsActiveDevice ( AuthenticatedAsActiveDevice )</h2>
 		<p>		<div class="MsoNormal" >
 		Delete device membership record

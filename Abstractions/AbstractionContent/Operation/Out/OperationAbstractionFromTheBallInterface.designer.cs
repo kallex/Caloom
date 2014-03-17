@@ -116,7 +116,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = DeleteConnectionWithStructuresImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				DeleteConnectionWithStructuresImplementation.ExecuteMethod_CallDeleteOnOtherEnd(parameters.IsLaunchedByRemoteDelete, Connection);		
+				DeleteConnectionWithStructuresImplementation.ExecuteMethod_CallDeleteOnOtherEndOrDeleteDevice(parameters.IsLaunchedByRemoteDelete, Connection);		
 				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionIntermediateContent(Connection);		
 				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionProcesses(Connection);		
 				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionObject(Connection);		

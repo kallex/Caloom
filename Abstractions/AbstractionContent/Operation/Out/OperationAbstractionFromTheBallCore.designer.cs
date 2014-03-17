@@ -286,6 +286,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = DeleteAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
+				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_CallDeleteDeviceOnRemoteSide(AuthenticatedAsActiveDevice);		
 				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_DeleteAuthenticatedAsActiveDevice(AuthenticatedAsActiveDevice);		
 				}
 				}

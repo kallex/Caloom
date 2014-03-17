@@ -381,6 +381,9 @@
             <Parameter name="Owner" />
             <Parameter name="AuthenticatedAsActiveDeviceID" />
           </TargetDefinition>
+          <MethodExecute name="CallDeleteDeviceOnRemoteSide" designDesc="Call delete device on remote side of device connection" state="implemented">
+            <Target name="AuthenticatedAsActiveDevice" />
+          </MethodExecute>
           <MethodExecute name="DeleteAuthenticatedAsActiveDevice" designDesc="Delete device membership record" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>

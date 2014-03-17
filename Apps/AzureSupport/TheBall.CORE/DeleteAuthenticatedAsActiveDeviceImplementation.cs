@@ -11,5 +11,18 @@ namespace TheBall.CORE
         {
             authenticatedAsActiveDevice.DeleteInformationObject();
         }
+
+        public static void ExecuteMethod_CallDeleteDeviceOnRemoteSide(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        {
+            try
+            {
+                var result = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.EstablishedTrustID,
+                                                                                       "RemoteDeviceCoreOperation", new DeviceOperationData {OperationRequestString = "DELETEREMOTEDEVICE"});
+            }
+            catch
+            {
+                
+            }
+        }
     }
 }

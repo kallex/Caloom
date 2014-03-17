@@ -14,7 +14,7 @@ namespace TheBall.Interface
         {
             switch (connectionCommunicationData.ProcessRequest)
             {
-                case "INITIATEREMOTECONNECTION":
+                case "FINALIZECONNECTION":
                     var output = CreateReceivingConnection.Execute(new CreateReceivingConnectionParameters
                         {
                             Description = connectionCommunicationData.ProcessParametersString,

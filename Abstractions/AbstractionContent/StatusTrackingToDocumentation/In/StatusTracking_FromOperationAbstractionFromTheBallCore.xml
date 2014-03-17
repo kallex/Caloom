@@ -253,6 +253,9 @@
     <StatusItem name="DeleteAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" displayName="TargetDefinitionType: AuthenticatedAsActiveDevice" description="Created device membership">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="DeleteAuthenticatedAsActiveDevice_CallDeleteDeviceOnRemoteSide" displayName="MethodExecuteType: CallDeleteDeviceOnRemoteSide" description="Call delete device on remote side of device connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="DeleteAuthenticatedAsActiveDevice_DeleteAuthenticatedAsActiveDevice" displayName="MethodExecuteType: DeleteAuthenticatedAsActiveDevice" description="Delete device membership record">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -919,6 +922,7 @@
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_Owner" />
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_AuthenticatedAsActiveDeviceID" />
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" />
+      <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_CallDeleteDeviceOnRemoteSide" />
       <ItemRef itemName="DeleteAuthenticatedAsActiveDevice_DeleteAuthenticatedAsActiveDevice" />
     </Group>
     <Group name="CreateInformationOutput">
