@@ -1204,5 +1204,30 @@
         <Target name="ContentPackageObject" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="RemoteDeviceCoreOperation">
+      <OperationSpec>
+        <Description>Remote device core operation for primitive ops to deal with device-to-device actions</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="InputStream" dataType="System.IO.Stream" designDesc="Input stream for operation" state="implemented" />
+        <Parameter name="OutputStream" dataType="System.IO.Stream" designDesc="Input stream for operation" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="DeviceOperationData" dataType="DeviceOperationData" designDesc="Device operation data from input stream" state="implemented">
+            <Parameter name="InputStream" />
+          </TargetDefinition>
+          <TargetDefinition name="CurrentDevice" dataType="DeviceMembership" designDesc="Current executing device (obtained through InformationContext.CurrentDevice" state="implemented" />
+          <MethodExecute name="PerformOperation" designDesc="Perform specific operation based on Device Operation Data" state="implemented">
+            <Target name="CurrentDevice" />
+            <Target name="DeviceOperationData" />
+          </MethodExecute>
+          <MethodExecute name="SerializeDeviceOperationDataToOutput" designDesc="Serialize result to output" state="implemented">
+            <Parameter name="OutputStream" />
+            <Target name="DeviceOperationData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

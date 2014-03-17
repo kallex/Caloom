@@ -41,6 +41,11 @@ namespace TheBall
 
         public static bool AllowStatic { get; private set; }
 
+        public static DeviceMembership CurrentExecutingForDevice
+        {
+            get { return Current.ExecutingForDevice; }
+        }
+
         public static IContainerOwner CurrentOwner
         {
             get { return Current.Owner; }
@@ -273,6 +278,18 @@ namespace TheBall
                 if(_owner == null)
                     throw new InvalidDataException("Owner not set, but still requested in active information context");
                 return _owner;
+            }
+        }
+
+        private DeviceMembership _executingForDevice;
+        public DeviceMembership ExecutingForDevice
+        {
+            set { _executingForDevice = value; }
+            get
+            {
+                if(_executingForDevice == null)
+                    throw new InvalidDataException("ExecutingForDevice not set, but still requested in active information context");
+                return _executingForDevice;
             }
         }
 

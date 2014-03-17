@@ -297,7 +297,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: CallDeleteOnOtherEndOrDeleteDevice ( Connection, IsLaunchedByRemoteDelete )" level="2">
+            <Header text="Method Call: CallDeleteOnOtherEndAndDeleteOtherEndDevice ( Connection, IsLaunchedByRemoteDelete )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless</TextContent>

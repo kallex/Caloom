@@ -2844,6 +2844,65 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Push information to output
 		</div>
+		</p><h1>RemoteDeviceCoreOperation (InputStream, OutputStream)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Remote device core operation for primitive ops to deal with device-to-device actions
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Input stream for operation
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OutputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Input stream for operation
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: DeviceOperationData ( InputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Device operation data from input stream
+		</div>
+		</p><h2>Target Definition: CurrentDevice</h2>
+		<p>		<div class="MsoNormal" >
+		Current executing device (obtained through InformationContext.CurrentDevice
+		</div>
+		</p><h2>Method Call: PerformOperation ( CurrentDevice, DeviceOperationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform specific operation based on Device Operation Data
+		</div>
+		</p><h2>Method Call: SerializeDeviceOperationDataToOutput ( DeviceOperationData, OutputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Serialize result to output
+		</div>
 		</p><h1>RequestProcessExecution (ProcessID, Owner)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

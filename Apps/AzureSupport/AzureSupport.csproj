@@ -151,6 +151,7 @@
     <Compile Include="Partials\BinaryFile.cs" />
     <Compile Include="Partials\BinaryFileCollection.cs" />
     <Compile Include="Partials\ImageCollection.cs" />
+    <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />
     <Compile Include="TheBall.CORE\SemanticInformationItem.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringSummariesImplementation.cs" />

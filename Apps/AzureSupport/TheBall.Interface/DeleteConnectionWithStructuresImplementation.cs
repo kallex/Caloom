@@ -13,7 +13,7 @@ namespace TheBall.Interface
             return Connection.RetrieveFromOwnerContent(Owner, connectionId);
         }
 
-        public static void ExecuteMethod_CallDeleteOnOtherEndOrDeleteDevice(bool isLaunchedByRemoteDelete, Connection connection)
+        public static void ExecuteMethod_CallDeleteOnOtherEndAndDeleteOtherEndDevice(bool isLaunchedByRemoteDelete, Connection connection)
         {
             if (isLaunchedByRemoteDelete == false)
             {
@@ -29,28 +29,15 @@ namespace TheBall.Interface
                                     ProcessRequest = "DELETEREMOTECONNECTION"
                                 });
                     bool success = result.ReceivingSideConnectionID == null;
+                    DeleteAuthenticatedAsActiveDevice.Execute(new DeleteAuthenticatedAsActiveDeviceParameters
+                        {
+                            Owner = InformationContext.CurrentOwner,
+                            AuthenticatedAsActiveDeviceID = connection.DeviceID
+                        });
                 }
                 catch
                 {
 
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (connection.DeviceID != null)
-                    {
-                        DeleteDeviceMembership.Execute(new DeleteDeviceMembershipParameters
-                            {
-                                Owner = InformationContext.CurrentOwner,
-                                DeviceMembershipID = connection.DeviceID
-                            });
-                    }
-                }
-                catch
-                {
-                    
                 }
             }
         }

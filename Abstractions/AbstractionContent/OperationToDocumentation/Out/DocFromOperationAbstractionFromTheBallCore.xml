@@ -2859,6 +2859,78 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="RemoteDeviceCoreOperation (InputStream, OutputStream)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remote device core operation for primitive ops to deal with device-to-device actions</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Input stream for operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OutputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Input stream for operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeviceOperationData ( InputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Device operation data from input stream</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentDevice" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current executing device (obtained through InformationContext.CurrentDevice</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformOperation ( CurrentDevice, DeviceOperationData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform specific operation based on Device Operation Data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SerializeDeviceOperationDataToOutput ( DeviceOperationData, OutputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Serialize result to output</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="RequestProcessExecution (ProcessID, Owner)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

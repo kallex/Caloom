@@ -864,4 +864,24 @@ using System.IO;
 		{
 				public ContentPackage ContentPackage ;
 				}
+				public class RemoteDeviceCoreOperationParameters 
+		{
+				public System.IO.Stream InputStream ;
+				public System.IO.Stream OutputStream ;
+				}
+		
+		public class RemoteDeviceCoreOperation 
+		{
+				private static void PrepareParameters(RemoteDeviceCoreOperationParameters parameters)
+		{
+					}
+				public static void Execute(RemoteDeviceCoreOperationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					DeviceOperationData DeviceOperationData = RemoteDeviceCoreOperationImplementation.GetTarget_DeviceOperationData(parameters.InputStream);	
+				DeviceMembership CurrentDevice = RemoteDeviceCoreOperationImplementation.GetTarget_CurrentDevice();	
+				RemoteDeviceCoreOperationImplementation.ExecuteMethod_PerformOperation(CurrentDevice, DeviceOperationData);		
+				RemoteDeviceCoreOperationImplementation.ExecuteMethod_SerializeDeviceOperationDataToOutput(parameters.OutputStream, DeviceOperationData);		
+				}
+				}
 		 } 

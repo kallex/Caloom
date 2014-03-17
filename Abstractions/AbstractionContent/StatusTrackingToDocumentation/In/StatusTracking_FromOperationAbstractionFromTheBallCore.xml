@@ -811,6 +811,24 @@
     <StatusItem name="PackageOwnerContent_ContentPackage" displayName="VariableType: ContentPackage" description="Content package object created and packed">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for operation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_OutputStream" displayName="VariableType: OutputStream" description="Input stream for operation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_DeviceOperationData" displayName="TargetDefinitionType: DeviceOperationData" description="Device operation data from input stream">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_CurrentDevice" displayName="TargetDefinitionType: CurrentDevice" description="Current executing device (obtained through InformationContext.CurrentDevice">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_PerformOperation" displayName="MethodExecuteType: PerformOperation" description="Perform specific operation based on Device Operation Data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoteDeviceCoreOperation_SerializeDeviceOperationDataToOutput" displayName="MethodExecuteType: SerializeDeviceOperationDataToOutput" description="Serialize result to output">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateProcess">
@@ -1160,6 +1178,14 @@
       <ItemRef itemName="PackageOwnerContent_CreateZipPackageContent" />
       <ItemRef itemName="PackageOwnerContent_CommitArchiveBlob" />
       <ItemRef itemName="PackageOwnerContent_ContentPackage" />
+    </Group>
+    <Group name="RemoteDeviceCoreOperation">
+      <ItemRef itemName="RemoteDeviceCoreOperation_InputStream" />
+      <ItemRef itemName="RemoteDeviceCoreOperation_OutputStream" />
+      <ItemRef itemName="RemoteDeviceCoreOperation_DeviceOperationData" />
+      <ItemRef itemName="RemoteDeviceCoreOperation_CurrentDevice" />
+      <ItemRef itemName="RemoteDeviceCoreOperation_PerformOperation" />
+      <ItemRef itemName="RemoteDeviceCoreOperation_SerializeDeviceOperationDataToOutput" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

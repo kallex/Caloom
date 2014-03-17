@@ -281,7 +281,7 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
               <Parameter name="ConnectionID"/>
             </TargetDefinition>
-            <MethodExecute name="CallDeleteOnOtherEndOrDeleteDevice" designDesc="Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless" state="implemented">
+            <MethodExecute name="CallDeleteOnOtherEndAndDeleteOtherEndDevice" designDesc="Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless" state="implemented">
               <Parameter name="IsLaunchedByRemoteDelete"/>
               <Target name="Connection"/>
             </MethodExecute>

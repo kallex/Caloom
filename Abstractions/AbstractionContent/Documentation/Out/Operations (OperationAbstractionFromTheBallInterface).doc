@@ -464,7 +464,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Connection object
 		</div>
-		</p><h2>Method Call: CallDeleteOnOtherEndOrDeleteDevice ( Connection, IsLaunchedByRemoteDelete )</h2>
+		</p><h2>Method Call: CallDeleteOnOtherEndAndDeleteOtherEndDevice ( Connection, IsLaunchedByRemoteDelete )</h2>
 		<p>		<div class="MsoNormal" >
 		Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless
 		</div>
