@@ -7,23 +7,23 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
-				public class PerformConnectionOperationParameters 
+				public class ExecuteRemoteCalledConnectionOperationParameters 
 		{
 				public System.IO.Stream InputStream ;
 				public System.IO.Stream OutputStream ;
 				}
 		
-		public class PerformConnectionOperation 
+		public class ExecuteRemoteCalledConnectionOperation 
 		{
-				private static void PrepareParameters(PerformConnectionOperationParameters parameters)
+				private static void PrepareParameters(ExecuteRemoteCalledConnectionOperationParameters parameters)
 		{
 					}
-				public static void Execute(PerformConnectionOperationParameters parameters)
+				public static void Execute(ExecuteRemoteCalledConnectionOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ConnectionCommunicationData ConnectionCommunicationData = PerformConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
-				PerformConnectionOperationImplementation.ExecuteMethod_PerformOperation(ConnectionCommunicationData);		
-				PerformConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
+					ConnectionCommunicationData ConnectionCommunicationData = ExecuteRemoteCalledConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
+				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_PerformOperation(ConnectionCommunicationData);		
+				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
 				}
 				}
 		
@@ -101,6 +101,27 @@ using System.IO;
 					UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummary(parameters.Owner, parameters.UpdateTime, parameters.ChangedIDList, parameters.RemoveExpiredEntriesSeconds);		
 				}
 				}
+				public class DeleteConnectionWithStructuresParameters 
+		{
+				public string ConnectionID ;
+				public bool IsLaunchedByRemoteDelete ;
+				}
+		
+		public class DeleteConnectionWithStructures 
+		{
+				private static void PrepareParameters(DeleteConnectionWithStructuresParameters parameters)
+		{
+					}
+				public static void Execute(DeleteConnectionWithStructuresParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = DeleteConnectionWithStructuresImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				DeleteConnectionWithStructuresImplementation.ExecuteMethod_CallDeleteOnOtherEnd(parameters.IsLaunchedByRemoteDelete, Connection);		
+				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionIntermediateContent(Connection);		
+				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionProcesses(Connection);		
+				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionObject(Connection);		
+				}
+				}
 				public class InitiateIntegrationConnectionParameters 
 		{
 				public string Description ;
@@ -140,8 +161,7 @@ using System.IO;
 				ExecuteConnectionProcessImplementation.ExecuteMethod_PerformProcessExecution(parameters.ConnectionProcessToExecute, Connection);		
 				}
 				}
-
-		    public class FinalizeConnectionAfterGroupAuthorizationParameters 
+				public class FinalizeConnectionAfterGroupAuthorizationParameters 
 		{
 				public string ConnectionID ;
 				}
@@ -161,6 +181,33 @@ using System.IO;
 				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
+				public class CreateConnectionStructuresParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class CreateConnectionStructures 
+		{
+				private static void PrepareParameters(CreateConnectionStructuresParameters parameters)
+		{
+					}
+				public static CreateConnectionStructuresReturnValue Execute(CreateConnectionStructuresParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = CreateConnectionStructuresImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				TheBall.CORE.Process ProcessToListPackageContents = CreateConnectionStructuresImplementation.GetTarget_ProcessToListPackageContents(Connection);	
+				TheBall.CORE.Process ProcessToProcessReceivedData = CreateConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedData(Connection);	
+				TheBall.CORE.Process ProcessToUpdateThisSideCategories = CreateConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategories(Connection);	
+				CreateConnectionStructuresImplementation.ExecuteMethod_SetConnectionProcesses(Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
+				CreateConnectionStructuresImplementation.ExecuteMethod_StoreObjects(Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
+				CreateConnectionStructuresReturnValue returnValue = CreateConnectionStructuresImplementation.Get_ReturnValue(Connection);
+		return returnValue;
+				}
+				}
+				public class CreateConnectionStructuresReturnValue 
+		{
+				public Connection UpdatedConnection ;
+				}
 				public class CreateReceivingConnectionStructuresParameters 
 		{
 				public ConnectionCommunicationData ConnectionCommunicationData ;
@@ -175,11 +222,13 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Connection ThisSideConnection = CreateReceivingConnectionStructuresImplementation.GetTarget_ThisSideConnection(parameters.ConnectionCommunicationData);	
-				TheBall.CORE.Process ProcessToListPackageContents = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToListPackageContents(parameters.ConnectionCommunicationData);	
-				TheBall.CORE.Process ProcessToProcessReceivedData = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedData(parameters.ConnectionCommunicationData);	
-				TheBall.CORE.Process ProcessToUpdateThisSideCategories = CreateReceivingConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategories(parameters.ConnectionCommunicationData);	
-				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_SetConnectionProcesses(ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
-				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_StoreObjects(ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
+				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_StoreObject(ThisSideConnection);		
+				
+		{ // Local block to allow local naming
+			CreateConnectionStructuresParameters operationParameters = CreateReceivingConnectionStructuresImplementation.CallCreateConnectionStructures_GetParameters(ThisSideConnection);
+			var operationReturnValue = CreateConnectionStructures.Execute(operationParameters);
+									
+		} // Local block closing
 				}
 				}
 				public class CreateReceivingConnectionParameters 

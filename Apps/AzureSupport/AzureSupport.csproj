@@ -135,6 +135,9 @@
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="OperationSupport.cs" />
+    <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
+    <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
+    <Compile Include="TheBall.CORE\DeviceSupport.cs" />
     <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
@@ -312,13 +315,15 @@
     <Compile Include="TheBall.Interface\Category.cs" />
     <Compile Include="TheBall.Interface\Connection.cs" />
     <Compile Include="TheBall.Interface\ConnectionCollection.cs" />
+    <Compile Include="TheBall.Interface\CreateConnectionStructuresImplementation.cs" />
     <Compile Include="TheBall.Interface\CreateReceivingConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\CreateReceivingConnectionStructuresImplementation.cs" />
+    <Compile Include="TheBall.Interface\DeleteConnectionWithStructuresImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteConnectionProcessImplementation.cs" />
     <Compile Include="TheBall.Interface\FinalizeConnectionAfterGroupAuthorizationImplementation.cs" />
     <Compile Include="TheBall.Interface\InformationChangeItem.cs" />
     <Compile Include="TheBall.Interface\InitiateIntegrationConnectionImplementation.cs" />
-    <Compile Include="TheBall.Interface\PerformConnectionOperationImplementation.cs" />
+    <Compile Include="TheBall.Interface\ExecuteRemoteCalledConnectionOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\PushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />

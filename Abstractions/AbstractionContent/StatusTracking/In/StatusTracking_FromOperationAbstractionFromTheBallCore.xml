@@ -1,6 +1,39 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.CORE">
+    <StatusItem name="CreateProcess_ProcessDescription" displayName="VariableType: ProcessDescription" description="Process description">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_ExecutingOperationName" displayName="VariableType: ExecutingOperationName" description="Execting operation name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_InitialArguments" displayName="VariableType: InitialArguments" description="Initial arguments as semantic information items">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_Process" displayName="TargetDefinitionType: Process" description="Create process object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_OwnerProcessContainer" displayName="TargetDefinitionType: OwnerProcessContainer" description="Process container that contains all processes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_AddProcessObjectToContainerAndStoreBoth" displayName="MethodExecuteType: AddProcessObjectToContainerAndStoreBoth" description="Add process object to container and store both">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateProcess_CreatedProcess" displayName="VariableType: CreatedProcess" description="Created process">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteProcess_ProcessID" displayName="VariableType: ProcessID" description="Process ID of process to delete">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteProcess_Process" displayName="TargetDefinitionType: Process" description="Process to delete">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteProcess_OwnerProcessContainer" displayName="TargetDefinitionType: OwnerProcessContainer" description="Process container that contains all processes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteProcess_ObtainLockRemoveFromContainerAndDeleteProcess" displayName="MethodExecuteType: ObtainLockRemoveFromContainerAndDeleteProcess" description="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="RequestProcessExecution_ProcessID" displayName="VariableType: ProcessID" description="Process ID to be queued">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -182,6 +215,9 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateAuthenticatedAsActiveDevice_NegotiationURL" displayName="TargetDefinitionType: NegotiationURL" description="Trust negotiation URL">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAuthenticatedAsActiveDevice_ConnectionURL" displayName="TargetDefinitionType: ConnectionURL" description="Established connection URL">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" displayName="TargetDefinitionType: AuthenticatedAsActiveDevice" description="Created device membership client">
@@ -774,6 +810,21 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="CreateProcess">
+      <ItemRef itemName="CreateProcess_ProcessDescription" />
+      <ItemRef itemName="CreateProcess_ExecutingOperationName" />
+      <ItemRef itemName="CreateProcess_InitialArguments" />
+      <ItemRef itemName="CreateProcess_Process" />
+      <ItemRef itemName="CreateProcess_OwnerProcessContainer" />
+      <ItemRef itemName="CreateProcess_AddProcessObjectToContainerAndStoreBoth" />
+      <ItemRef itemName="CreateProcess_CreatedProcess" />
+    </Group>
+    <Group name="DeleteProcess">
+      <ItemRef itemName="DeleteProcess_ProcessID" />
+      <ItemRef itemName="DeleteProcess_Process" />
+      <ItemRef itemName="DeleteProcess_OwnerProcessContainer" />
+      <ItemRef itemName="DeleteProcess_ObtainLockRemoveFromContainerAndDeleteProcess" />
+    </Group>
     <Group name="RequestProcessExecution">
       <ItemRef itemName="RequestProcessExecution_ProcessID" />
       <ItemRef itemName="RequestProcessExecution_Owner" />
@@ -852,6 +903,7 @@
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_TargetGroupID" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_SharedSecret" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_NegotiationURL" />
+      <ItemRef itemName="CreateAuthenticatedAsActiveDevice_ConnectionURL" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_StoreObject" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_CreatedAuthenticatedAsActiveDevice" />

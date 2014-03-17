@@ -8,6 +8,8 @@
             <InterfaceItem name="ActiveSideConnectionID" logicalDataType="Text_Short"/>
             <InterfaceItem name="ReceivingSideConnectionID" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessRequest" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ProcessParametersString" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ProcessResultString" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="CategoryLinkParameters" designDesc="Category link operation parameters">
@@ -109,10 +111,10 @@
       </InformationObject>
     </InformationModel>
     <Operations>
-      <Operation name="PerformConnectionOperation">
+      <Operation name="ExecuteRemoteCalledConnectionOperation">
         <OperationSpec>
           <Description>
-            Perform connection operation with parameters obtained from InformationContext.Current.DeviceOperationContext
+            Perform connection operation with parameters obtained from inputstream and outputing to outputstream. (De)Serializing done to ConnectionCommunicationData object.
           </Description>
         </OperationSpec>
         <Parameters>
@@ -264,6 +266,37 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="DeleteConnectionWithStructures">
+        <OperationSpec>
+          <Description>
+            Delete connection with its structures and transfer storage contents
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented"/>
+          <Parameter name="IsLaunchedByRemoteDelete" dataType="bool" designDesc="Is the deletion launched by remote connection" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </TargetDefinition>
+            <MethodExecute name="CallDeleteOnOtherEnd" designDesc="Call delete on other end - if not already executing because of remote call. Ignore failure regardless" state="implemented">
+              <Parameter name="IsLaunchedByRemoteDelete"/>
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteConnectionIntermediateContent" designDesc="Delete connection's intermediate content, including transfer connect" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteConnectionProcesses" designDesc="Delete connection attached processes" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="DeleteConnectionObject" designDesc="Delete the actual connection object" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="InitiateIntegrationConnection">
         <OperationSpec>
           <Description>
@@ -347,6 +380,48 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="CreateConnectionStructures">
+        <OperationSpec>
+          <Description>
+            Create receiving connection structures. Called by active part after connection is authorized.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ConnectionID" dataType="string" designDesc="Connection communication data" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Connection" dataType="Connection" designDesc="This side connection entry" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="SetConnectionProcesses" designDesc="Set connection processes" state="implemented">
+              <Target name="Connection"/>
+              <Target name="ProcessToListPackageContents"/>
+              <Target name="ProcessToProcessReceivedData"/>
+              <Target name="ProcessToUpdateThisSideCategories"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+              <Target name="Connection"/>
+              <Target name="ProcessToListPackageContents"/>
+              <Target name="ProcessToProcessReceivedData"/>
+              <Target name="ProcessToUpdateThisSideCategories"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue dataType="Connection" name="UpdatedConnection" designDesc="Updated connection value" state="implemented"/>
+          <Target name="Connection"/>
+        </OperationReturnValues>
+      </Operation>
       <Operation name="CreateReceivingConnectionStructures">
         <OperationSpec>
           <Description>
@@ -361,27 +436,13 @@
             <TargetDefinition name="ThisSideConnection" dataType="Connection" designDesc="This side connection entry" state="implemented">
               <Parameter name="ConnectionCommunicationData"/>
             </TargetDefinition>
-            <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented">
-              <Parameter name="ConnectionCommunicationData"/>
-            </TargetDefinition>
-            <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented">
-              <Parameter name="ConnectionCommunicationData"/>
-            </TargetDefinition>
-            <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented">
-              <Parameter name="ConnectionCommunicationData"/>
-            </TargetDefinition>
-            <MethodExecute name="SetConnectionProcesses" designDesc="Set connection processes" state="implemented">
+            <MethodExecute name="StoreObject" designDesc="Store objects" state="implemented">
               <Target name="ThisSideConnection"/>
-              <Target name="ProcessToListPackageContents"/>
-              <Target name="ProcessToProcessReceivedData"/>
-              <Target name="ProcessToUpdateThisSideCategories"/>
             </MethodExecute>
-            <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+            <OperationExecute name="CallCreateConnectionStructures" targetOperationName="CreateConnectionStructures"
+                              designDesc="Call operation to create connection structures" state="implemented">
               <Target name="ThisSideConnection"/>
-              <Target name="ProcessToListPackageContents"/>
-              <Target name="ProcessToProcessReceivedData"/>
-              <Target name="ProcessToUpdateThisSideCategories"/>
-            </MethodExecute>
+            </OperationExecute>
           </SequentialExecution>
         </Execution>
       </Operation>

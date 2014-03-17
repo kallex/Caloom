@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.IO;
 using System.Linq;
+using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
 
@@ -48,11 +50,29 @@ namespace TheBall.CORE
 
 }
 
-namespace AaltoGlobalImpact.OIP
+namespace TheBall.CORE
 {
 
     public static class ExtIInformationObject
     {
+        public static string ObtainLockOnObject(this IInformationObject informationObject)
+        {
+            string lockLocation = informationObject.RelativeLocation + ".lock";
+            string lockEtag;
+            bool obtainLock = StorageSupport.AcquireLogicalLockByCreatingBlob(lockLocation, out lockEtag);
+            if (obtainLock)
+                return lockEtag;
+            return null;
+        }
+
+        public static void ReleaseLockOnObject(this IInformationObject informationObject, string lockEtag, bool ignoreLockReleaseError = false)
+        {
+            string lockLocation = informationObject.RelativeLocation + ".lock";
+            bool releaseLockSucceeded = StorageSupport.ReleaseLogicalLockByDeletingBlob(lockLocation, lockEtag);
+            if(releaseLockSucceeded == false && ignoreLockReleaseError == false)
+                throw new InvalidDataException("Lock release failed: " + lockLocation);
+        }
+        
         public static void SetObjectContent(this IInformationObject rootObject, string containerID,
                                             string containedField, string[] objectIDList)
         {

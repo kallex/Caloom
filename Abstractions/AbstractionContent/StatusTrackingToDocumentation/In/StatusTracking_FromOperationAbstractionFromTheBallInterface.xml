@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
-    <StatusItem name="PerformConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
+    <StatusItem name="ExecuteRemoteCalledConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PerformConnectionOperation_OutputStream" displayName="VariableType: OutputStream" description="Output stream for connection response output">
+    <StatusItem name="ExecuteRemoteCalledConnectionOperation_OutputStream" displayName="VariableType: OutputStream" description="Output stream for connection response output">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PerformConnectionOperation_ConnectionCommunicationData" displayName="TargetDefinitionType: ConnectionCommunicationData" description="Connection communicating data obtained from DeviceContext">
+    <StatusItem name="ExecuteRemoteCalledConnectionOperation_ConnectionCommunicationData" displayName="TargetDefinitionType: ConnectionCommunicationData" description="Connection communicating data obtained from DeviceContext">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PerformConnectionOperation_PerformOperation" displayName="MethodExecuteType: PerformOperation" description="Perform operation based on communication data request">
+    <StatusItem name="ExecuteRemoteCalledConnectionOperation_PerformOperation" displayName="MethodExecuteType: PerformOperation" description="Perform operation based on communication data request">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PerformConnectionOperation_SerializeCommunicationDataToOutput" displayName="MethodExecuteType: SerializeCommunicationDataToOutput" description="Serialize communication data to output">
+    <StatusItem name="ExecuteRemoteCalledConnectionOperation_SerializeCommunicationDataToOutput" displayName="MethodExecuteType: SerializeCommunicationDataToOutput" description="Serialize communication data to output">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="SetCategoryLinkingForConnection_CategoryLinkingParameters" displayName="TargetDefinitionType: CategoryLinkingParameters" description="Deserialized operation parameters">
@@ -91,6 +91,27 @@
     <StatusItem name="UpdateStatusSummary_EnsureUpdateOnStatusSummary" displayName="MethodExecuteType: EnsureUpdateOnStatusSummary" description="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_IsLaunchedByRemoteDelete" displayName="VariableType: IsLaunchedByRemoteDelete" description="Is the deletion launched by remote connection">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_CallDeleteOnOtherEnd" displayName="MethodExecuteType: CallDeleteOnOtherEnd" description="Call delete on other end - if not already executing because of remote call. Ignore failure regardless">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_DeleteConnectionIntermediateContent" displayName="MethodExecuteType: DeleteConnectionIntermediateContent" description="Delete connection's intermediate content, including transfer connect">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_DeleteConnectionProcesses" displayName="MethodExecuteType: DeleteConnectionProcesses" description="Delete connection attached processes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteConnectionWithStructures_DeleteConnectionObject" displayName="MethodExecuteType: DeleteConnectionObject" description="Delete the actual connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="InitiateIntegrationConnection_Description" displayName="VariableType: Description" description="Description of the connection">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -142,25 +163,40 @@
     <StatusItem name="FinalizeConnectionAfterGroupAuthorization_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateConnectionStructures_ConnectionID" displayName="VariableType: ConnectionID" description="Connection communication data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_Connection" displayName="TargetDefinitionType: Connection" description="This side connection entry">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_ProcessToListPackageContents" displayName="TargetDefinitionType: ProcessToListPackageContents" description="Process to list package contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_ProcessToProcessReceivedData" displayName="TargetDefinitionType: ProcessToProcessReceivedData" description="Process to process received data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_ProcessToUpdateThisSideCategories" displayName="TargetDefinitionType: ProcessToUpdateThisSideCategories" description="Process to update this side categories">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_SetConnectionProcesses" displayName="MethodExecuteType: SetConnectionProcesses" description="Set connection processes">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateConnectionStructures_UpdatedConnection" displayName="VariableType: UpdatedConnection" description="Updated connection value">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateReceivingConnectionStructures_ConnectionCommunicationData" displayName="VariableType: ConnectionCommunicationData" description="Connection communication data">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateReceivingConnectionStructures_ThisSideConnection" displayName="TargetDefinitionType: ThisSideConnection" description="This side connection entry">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateReceivingConnectionStructures_ProcessToListPackageContents" displayName="TargetDefinitionType: ProcessToListPackageContents" description="Process to list package contents">
+    <StatusItem name="CreateReceivingConnectionStructures_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateReceivingConnectionStructures_ProcessToProcessReceivedData" displayName="TargetDefinitionType: ProcessToProcessReceivedData" description="Process to process received data">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateReceivingConnectionStructures_ProcessToUpdateThisSideCategories" displayName="TargetDefinitionType: ProcessToUpdateThisSideCategories" description="Process to update this side categories">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateReceivingConnectionStructures_SetConnectionProcesses" displayName="MethodExecuteType: SetConnectionProcesses" description="Set connection processes">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateReceivingConnectionStructures_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+    <StatusItem name="CreateReceivingConnectionStructures_CallCreateConnectionStructures" displayName="OperationExecuteType: CallCreateConnectionStructures" description="Call operation to create connection structures">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateReceivingConnection_Description" displayName="VariableType: Description" description="Connection description">
@@ -195,12 +231,12 @@
     </StatusItem>
   </StatusItems>
   <Groups>
-    <Group name="PerformConnectionOperation">
-      <ItemRef itemName="PerformConnectionOperation_InputStream" />
-      <ItemRef itemName="PerformConnectionOperation_OutputStream" />
-      <ItemRef itemName="PerformConnectionOperation_ConnectionCommunicationData" />
-      <ItemRef itemName="PerformConnectionOperation_PerformOperation" />
-      <ItemRef itemName="PerformConnectionOperation_SerializeCommunicationDataToOutput" />
+    <Group name="ExecuteRemoteCalledConnectionOperation">
+      <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_InputStream" />
+      <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_OutputStream" />
+      <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_ConnectionCommunicationData" />
+      <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_PerformOperation" />
+      <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_SerializeCommunicationDataToOutput" />
     </Group>
     <Group name="SetCategoryLinkingForConnection">
       <ItemRef itemName="SetCategoryLinkingForConnection_CategoryLinkingParameters" />
@@ -235,6 +271,15 @@
       <ItemRef itemName="UpdateStatusSummary_RemoveExpiredEntriesSeconds" />
       <ItemRef itemName="UpdateStatusSummary_EnsureUpdateOnStatusSummary" />
     </Group>
+    <Group name="DeleteConnectionWithStructures">
+      <ItemRef itemName="DeleteConnectionWithStructures_ConnectionID" />
+      <ItemRef itemName="DeleteConnectionWithStructures_IsLaunchedByRemoteDelete" />
+      <ItemRef itemName="DeleteConnectionWithStructures_Connection" />
+      <ItemRef itemName="DeleteConnectionWithStructures_CallDeleteOnOtherEnd" />
+      <ItemRef itemName="DeleteConnectionWithStructures_DeleteConnectionIntermediateContent" />
+      <ItemRef itemName="DeleteConnectionWithStructures_DeleteConnectionProcesses" />
+      <ItemRef itemName="DeleteConnectionWithStructures_DeleteConnectionObject" />
+    </Group>
     <Group name="InitiateIntegrationConnection">
       <ItemRef itemName="InitiateIntegrationConnection_Description" />
       <ItemRef itemName="InitiateIntegrationConnection_TargetBallHostName" />
@@ -258,14 +303,22 @@
       <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_UpdateConnectionWithCommunicationData" />
       <ItemRef itemName="FinalizeConnectionAfterGroupAuthorization_StoreObject" />
     </Group>
+    <Group name="CreateConnectionStructures">
+      <ItemRef itemName="CreateConnectionStructures_ConnectionID" />
+      <ItemRef itemName="CreateConnectionStructures_Connection" />
+      <ItemRef itemName="CreateConnectionStructures_ProcessToListPackageContents" />
+      <ItemRef itemName="CreateConnectionStructures_ProcessToProcessReceivedData" />
+      <ItemRef itemName="CreateConnectionStructures_ProcessToUpdateThisSideCategories" />
+      <ItemRef itemName="CreateConnectionStructures_SetConnectionProcesses" />
+      <ItemRef itemName="CreateConnectionStructures_StoreObjects" />
+      <ItemRef itemName="CreateConnectionStructures_UpdatedConnection" />
+    </Group>
     <Group name="CreateReceivingConnectionStructures">
       <ItemRef itemName="CreateReceivingConnectionStructures_ConnectionCommunicationData" />
       <ItemRef itemName="CreateReceivingConnectionStructures_ThisSideConnection" />
-      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToListPackageContents" />
-      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToProcessReceivedData" />
-      <ItemRef itemName="CreateReceivingConnectionStructures_ProcessToUpdateThisSideCategories" />
-      <ItemRef itemName="CreateReceivingConnectionStructures_SetConnectionProcesses" />
-      <ItemRef itemName="CreateReceivingConnectionStructures_StoreObjects" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_StoreObject" />
+      <ItemRef itemName="CreateReceivingConnectionStructures_CallCreateConnectionStructures" />
+      <GroupRef groupName="CreateConnectionStructures" />
     </Group>
     <Group name="CreateReceivingConnection">
       <ItemRef itemName="CreateReceivingConnection_Description" />

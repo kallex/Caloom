@@ -7,6 +7,50 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.CORE { 
+				public class CreateProcessParameters 
+		{
+				public string ProcessDescription ;
+				public string ExecutingOperationName ;
+				public SemanticInformationItem[] InitialArguments ;
+				}
+		
+		public class CreateProcess 
+		{
+				private static void PrepareParameters(CreateProcessParameters parameters)
+		{
+					}
+				public static CreateProcessReturnValue Execute(CreateProcessParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Process Process = CreateProcessImplementation.GetTarget_Process(parameters.ProcessDescription, parameters.ExecutingOperationName, parameters.InitialArguments);	
+				ProcessContainer OwnerProcessContainer = CreateProcessImplementation.GetTarget_OwnerProcessContainer();	
+				CreateProcessImplementation.ExecuteMethod_AddProcessObjectToContainerAndStoreBoth(OwnerProcessContainer, Process);		
+				CreateProcessReturnValue returnValue = CreateProcessImplementation.Get_ReturnValue(Process);
+		return returnValue;
+				}
+				}
+				public class CreateProcessReturnValue 
+		{
+				public Process CreatedProcess ;
+				}
+				public class DeleteProcessParameters 
+		{
+				public string ProcessID ;
+				}
+		
+		public class DeleteProcess 
+		{
+				private static void PrepareParameters(DeleteProcessParameters parameters)
+		{
+					}
+				public static void Execute(DeleteProcessParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Process Process = DeleteProcessImplementation.GetTarget_Process(parameters.ProcessID);	
+				ProcessContainer OwnerProcessContainer = DeleteProcessImplementation.GetTarget_OwnerProcessContainer();	
+				DeleteProcessImplementation.ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcess(parameters.ProcessID, Process, OwnerProcessContainer);		
+				}
+				}
 				public class RequestProcessExecutionParameters 
 		{
 				public string ProcessID ;
@@ -197,7 +241,8 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					string NegotiationURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_NegotiationURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
-				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, parameters.SharedSecret, NegotiationURL);	
+				string ConnectionURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_ConnectionURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, parameters.SharedSecret, NegotiationURL, ConnectionURL);	
 				CreateAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
 				CreateAuthenticatedAsActiveDeviceReturnValue returnValue = CreateAuthenticatedAsActiveDeviceImplementation.Get_ReturnValue(AuthenticatedAsActiveDevice);
 		return returnValue;

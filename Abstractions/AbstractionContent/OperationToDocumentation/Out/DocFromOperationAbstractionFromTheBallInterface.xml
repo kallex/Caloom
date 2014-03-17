@@ -4,6 +4,107 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallInterface)" title="Operations (OperationAbstractionFromTheBallInterface)">
         <Content>
+          <Header text="CreateConnectionStructures (ConnectionID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Create receiving connection structures. Called by active part after connection is authorized.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection communication data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>This side connection entry</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProcessToListPackageContents ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process to list package contents</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProcessToProcessReceivedData ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process to process received data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProcessToUpdateThisSideCategories ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process to update this side categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetConnectionProcesses ( Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set connection processes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateConnectionStructuresReturnValue ( Connection )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>UpdatedConnection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Updated connection value</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateReceivingConnection (Description, OtherSideConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -129,38 +230,98 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ProcessToListPackageContents ( ConnectionCommunicationData )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Process to list package contents</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: ProcessToProcessReceivedData ( ConnectionCommunicationData )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Process to process received data</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: ProcessToUpdateThisSideCategories ( ConnectionCommunicationData )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Process to update this side categories</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: SetConnectionProcesses ( ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Set connection processes</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: StoreObjects ( ThisSideConnection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )" level="2">
+            <Header text="Method Call: StoreObject ( ThisSideConnection )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: CallCreateConnectionStructures ( ThisSideConnection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call operation to create connection structures</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="DeleteConnectionWithStructures (ConnectionID, IsLaunchedByRemoteDelete)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete connection with its structures and transfer storage contents
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ConnectionID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IsLaunchedByRemoteDelete</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Is the deletion launched by remote connection</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CallDeleteOnOtherEnd ( Connection, IsLaunchedByRemoteDelete )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call delete on other end - if not already executing because of remote call. Ignore failure regardless</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteConnectionIntermediateContent ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete connection's intermediate content, including transfer connect</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteConnectionProcesses ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete connection attached processes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteConnectionObject ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete the actual connection object</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -299,6 +460,73 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ExecuteRemoteCalledConnectionOperation (InputStream, OutputStream)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Perform connection operation with parameters obtained from inputstream and outputing to outputstream. (De)Serializing done to ConnectionCommunicationData object.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Input stream for parameter serialization</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OutputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Output stream for connection response output</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ConnectionCommunicationData ( InputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connection communicating data obtained from DeviceContext</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformOperation ( ConnectionCommunicationData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform operation based on communication data request</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SerializeCommunicationDataToOutput ( ConnectionCommunicationData, OutputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Serialize communication data to output</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>
@@ -453,73 +681,6 @@
               <Paragraph>
                 <Text>
                   <TextContent>Negotiate device connection</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-          </Header>
-          <Header text="PerformConnectionOperation (InputStream, OutputStream)" level="1">
-            <Header text="Specifications" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>
-            Perform connection operation with parameters obtained from InformationContext.Current.DeviceOperationContext
-          </TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>InputStream</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>System.IO.Stream</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Input stream for parameter serialization</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>OutputStream</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>System.IO.Stream</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Output stream for connection response output</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: ConnectionCommunicationData ( InputStream )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Connection communicating data obtained from DeviceContext</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: PerformOperation ( ConnectionCommunicationData )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Perform operation based on communication data request</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: SerializeCommunicationDataToOutput ( ConnectionCommunicationData, OutputStream )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Serialize communication data to output</TextContent>
                 </Text>
               </Paragraph>
             </Header>

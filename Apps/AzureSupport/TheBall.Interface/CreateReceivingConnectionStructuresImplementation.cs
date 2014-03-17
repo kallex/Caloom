@@ -21,44 +21,16 @@ namespace TheBall.Interface
             return connection;
         }
 
-        public static Process GetTarget_ProcessToListPackageContents(ConnectionCommunicationData connectionCommunicationData)
+
+        public static CreateConnectionStructuresParameters CallCreateConnectionStructures_GetParameters(Connection thisSideConnection)
         {
-            Process process = new Process
+            return new CreateConnectionStructuresParameters
                 {
-                    ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.ListConnectionPackageContents", null),
+                    ConnectionID = thisSideConnection.ID
                 };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connectionCommunicationData.ReceivingSideConnectionID));
-            return process;
         }
 
-        public static Process GetTarget_ProcessToProcessReceivedData(ConnectionCommunicationData connectionCommunicationData)
-        {
-            Process process = new Process
-                {
-                    ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.ProcessConnectionReceivedData", null),
-                };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connectionCommunicationData.ReceivingSideConnectionID));
-            return process;
-        }
-
-        public static Process GetTarget_ProcessToUpdateThisSideCategories(ConnectionCommunicationData connectionCommunicationData)
-        {
-            Process process = new Process
-                {
-                    ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.UpdateConnectionThisSideCategories", null)
-                };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connectionCommunicationData.ReceivingSideConnectionID));
-            return process;
-        }
-
-        public static void ExecuteMethod_SetConnectionProcesses(Connection thisSideConnection, Process processToListPackageContents, Process processToProcessReceivedData, Process processToUpdateThisSideCategories)
-        {
-            thisSideConnection.ProcessIDToListPackageContents = processToListPackageContents.ID;
-            thisSideConnection.ProcessIDToProcessReceived = processToProcessReceivedData.ID;
-            thisSideConnection.ProcessIDToUpdateThisSideCategories = processToUpdateThisSideCategories.ID;
-        }
-
-        public static void ExecuteMethod_StoreObjects(Connection thisSideConnection, Process processToListPackageContents, Process processToProcessReceivedData, Process processToUpdateThisSideCategories)
+        public static void ExecuteMethod_StoreObject(Connection thisSideConnection)
         {
             thisSideConnection.StoreInformation();
         }

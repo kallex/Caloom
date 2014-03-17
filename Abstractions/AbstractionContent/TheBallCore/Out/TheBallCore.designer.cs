@@ -3798,6 +3798,8 @@ InformationInput.AuthenticatedDeviceID
 
 					result.NegotiationURL = @"AuthenticatedAsActiveDevice.NegotiationURL";
 
+					result.ConnectionURL = @"AuthenticatedAsActiveDevice.ConnectionURL";
+
 				
 					return result;
 				}
@@ -3868,6 +3870,8 @@ InformationInput.AuthenticatedDeviceID
 							return true;
 						if(NegotiationURL != _unmodified_NegotiationURL)
 							return true;
+						if(ConnectionURL != _unmodified_ConnectionURL)
+							return true;
 				
 						return false;
 					}
@@ -3886,6 +3890,7 @@ InformationInput.AuthenticatedDeviceID
 					EstablishedTrustID = sourceObject.EstablishedTrustID;
 					IsValidatedAndActive = sourceObject.IsValidatedAndActive;
 					NegotiationURL = sourceObject.NegotiationURL;
+					ConnectionURL = sourceObject.ConnectionURL;
 				}
 				
 
@@ -3898,6 +3903,7 @@ InformationInput.AuthenticatedDeviceID
 					_unmodified_EstablishedTrustID = EstablishedTrustID;
 					_unmodified_IsValidatedAndActive = IsValidatedAndActive;
 					_unmodified_NegotiationURL = NegotiationURL;
+					_unmodified_ConnectionURL = ConnectionURL;
 				
 				
 				}
@@ -3922,6 +3928,9 @@ InformationInput.AuthenticatedDeviceID
 						case "NegotiationURL":
 							NegotiationURL = value;
 							break;
+						case "ConnectionURL":
+							ConnectionURL = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -3944,6 +3953,9 @@ InformationInput.AuthenticatedDeviceID
 			[DataMember]
 			public string NegotiationURL { get; set; }
 			private string _unmodified_NegotiationURL;
+			[DataMember]
+			public string ConnectionURL { get; set; }
+			private string _unmodified_ConnectionURL;
 			
 			}
 			[DataContract]
@@ -13396,12 +13408,15 @@ InformationInput.AuthenticatedDeviceID
 				{
 					switch (propertyName)
 					{
+						case "ProcessIDs":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public List< Process > Processes = new List< Process >();
+			public List< string > ProcessIDs = new List< string >();
 			
 			}
 			[DataContract]

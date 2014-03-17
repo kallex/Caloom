@@ -143,6 +143,16 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "DeleteConnection":
+                    {
+                        var parameters = new DeleteConnectionWithStructuresParameters
+                            {
+                                ConnectionID = form["ConnectionID"],
+                                IsLaunchedByRemoteDelete = false
+                            };
+                        DeleteConnectionWithStructures.Execute(parameters);
+                        break;
+                    }
                 case "UpdateConnectionOtherSideCategories":
                     {
                         var parameters = new UpdateConnectionOtherSideCategoriesParameters

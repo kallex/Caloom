@@ -33,6 +33,12 @@ using TheBall.CORE;
 			[DataMember]
 			public string ProcessRequest;
 
+			[DataMember]
+			public string ProcessParametersString;
+
+			[DataMember]
+			public string ProcessResultString;
+
 			
 			}
 			[DataContract]

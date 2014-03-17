@@ -633,12 +633,13 @@ namespace TheBallTool
                 container = new ProcessContainer();
                 container.SetLocationAsOwnerContent(owner, "default");
             }
-            var migrationProcess = container.Processes.SingleOrDefault();
+            var migrationProcessID = container.ProcessIDs.SingleOrDefault();
+            Process migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcessID);
             if (migrationProcess == null)
             {
                 migrationProcess = new Process();
                 migrationProcess.SetLocationAsOwnerContent(owner, migrationProcess.ID);
-                container.Processes.Add(migrationProcess);
+                container.ProcessIDs.Add(migrationProcess.ID);
                 migrationProcess.ProcessDescription = "Patch created AGI content migration process";
                 migrationProcess.ExecutingOperation = new SemanticInformationItem(
                     "AaltoGlobalImpact.OIP.MigrateActivitiesAndBlogsToTextContents", null);
@@ -660,8 +661,8 @@ namespace TheBallTool
                 {
                     ExecuteProcess.Execute(new ExecuteProcessParameters { ProcessID = migrationProcess.ID });
                     migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcess.ID);
-                    container.Processes.Clear();
-                    container.Processes.Add(migrationProcess);
+                    container.ProcessIDs.Clear();
+                    container.ProcessIDs.Add(migrationProcess.ID);
                 }
                 container.StoreInformation();
             }

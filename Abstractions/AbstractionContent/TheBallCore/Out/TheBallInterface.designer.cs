@@ -38,6 +38,10 @@ using TheBall.CORE;
 				public string ReceivingSideConnectionID { get; set; }
 				[DataMember]
 				public string ProcessRequest { get; set; }
+				[DataMember]
+				public string ProcessParametersString { get; set; }
+				[DataMember]
+				public string ProcessResultString { get; set; }
 			}
 
 			[DataContract]

@@ -429,7 +429,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, Owner, AuthenticationDeviceDescription, SharedSecret )" level="2">
+            <Header text="Target Definition: ConnectionURL ( TargetBallHostName, TargetGroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Established connection URL</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, ConnectionURL, Owner, AuthenticationDeviceDescription, SharedSecret )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Created device membership client</TextContent>
@@ -1048,6 +1055,108 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="CreateProcess (ProcessDescription, ExecutingOperationName, InitialArguments)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Create process with initial parameters to set up
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessDescription</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process description</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ExecutingOperationName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Execting operation name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InitialArguments</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>SemanticInformationItem[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Initial arguments as semantic information items</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Process ( ProcessDescription, ExecutingOperationName, InitialArguments )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create process object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerProcessContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process container that contains all processes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddProcessObjectToContainerAndStoreBoth ( OwnerProcessContainer, Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add process object to container and store both</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateProcessReturnValue ( Process )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CreatedProcess</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created process</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateSpecifiedInformationObjectWithValues (Owner, ObjectDomainName, ObjectName, HttpFormData, HttpFileData)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1519,6 +1628,62 @@
               <Paragraph>
                 <Text>
                   <TextContent>Delete information output record</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="DeleteProcess (ProcessID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Delete process and remove from OwnerProcessContainer
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProcessID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process ID of process to delete</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Process ( ProcessID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process to delete</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerProcessContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process container that contains all processes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ObtainLockRemoveFromContainerAndDeleteProcess ( Process, OwnerProcessContainer, ProcessID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container.</TextContent>
                 </Text>
               </Paragraph>
             </Header>

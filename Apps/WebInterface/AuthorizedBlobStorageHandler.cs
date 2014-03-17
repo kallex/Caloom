@@ -142,9 +142,9 @@ namespace WebInterface
                 cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
-                if (contentName.StartsWith("OP-"))
+                if (contentName.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
-                    string operationName = contentName.Substring(3);
+                    string operationName = contentName.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged decAES = new AesManaged
                         {

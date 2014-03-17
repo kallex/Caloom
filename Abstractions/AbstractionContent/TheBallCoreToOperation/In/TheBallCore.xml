@@ -55,6 +55,7 @@
           <InformationItem name="EstablishedTrustID" logicalDataType="Text_Short"/>
           <InformationItem name="IsValidatedAndActive" logicalDataType="TrueOrFalse_Boolean"/>
           <InformationItem name="NegotiationURL" logicalDataType="Text_Short"/>
+          <InformationItem name="ConnectionURL" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       
@@ -192,7 +193,7 @@
       </InformationObject>
       <InformationObject name="ProcessContainer" designDesc="Process collection container" provideCreateMethod="false">
         <InformationItems>
-          <InformationItem name="Processes" logicalDataType="InformationObject" informationObjectName="Process" isCollection="true"/>
+          <InformationItem name="ProcessIDs" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="Process" designDesc="Individual process, including maintained last execution state and initial arguments" provideCreateMethod="false">
@@ -331,6 +332,59 @@
           </SequentialExecution>
         </Execution>
       </Operation>-->
+      <Operation name="CreateProcess">
+        <OperationSpec>
+          <Description>
+            Create process with initial parameters to set up
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessDescription" dataType="string" designDesc="Process description" state="implemented"/>
+          <Parameter name="ExecutingOperationName" dataType="string" designDesc="Execting operation name" state="implemented"/>
+          <Parameter name="InitialArguments" dataType="SemanticInformationItem[]" designDesc="Initial arguments as semantic information items" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Process" dataType="Process" designDesc="Create process object" state="implemented">
+              <Parameter name="ProcessDescription"/>
+              <Parameter name="ExecutingOperationName"/>
+              <Parameter name="InitialArguments"/>
+            </TargetDefinition>
+            <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+            <MethodExecute name="AddProcessObjectToContainerAndStoreBoth" designDesc="Add process object to container and store both" state="implemented">
+              <Target name="OwnerProcessContainer"/>
+              <Target name="Process"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="CreatedProcess" dataType="Process" designDesc="Created process" state="implemented" />
+          <Target name="Process"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="DeleteProcess">
+        <OperationSpec>
+          <Description>
+            Delete process and remove from OwnerProcessContainer
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProcessID" dataType="string" designDesc="Process ID of process to delete" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Process" dataType="Process" designDesc="Process to delete" state="implemented">
+              <Parameter name="ProcessID"/>
+            </TargetDefinition>
+            <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+            <MethodExecute name="ObtainLockRemoveFromContainerAndDeleteProcess" designDesc="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container." state="implemented">
+              <Parameter name="ProcessID"/>
+              <Target name="Process"/>
+              <Target name="OwnerProcessContainer"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="RequestProcessExecution">
         <OperationSpec>
           <Description>Request process execution through worker queue</Description>
@@ -597,11 +651,16 @@
               <Parameter name="TargetBallHostName"/>
               <Parameter name="TargetGroupID"/>
             </TargetDefinition>
+            <TargetDefinition name="ConnectionURL" dataType="string" designDesc="Established connection URL" state="implemented">
+              <Parameter name="TargetBallHostName"/>
+              <Parameter name="TargetGroupID"/>
+            </TargetDefinition>
             <TargetDefinition dataType="AuthenticatedAsActiveDevice" name="AuthenticatedAsActiveDevice" designDesc="Created device membership client" state="implemented">
               <Parameter name="Owner"/>
               <Parameter name="AuthenticationDeviceDescription"/>
               <Parameter name="SharedSecret"/>
               <Target name="NegotiationURL"/>
+              <Target name="ConnectionURL"/>
             </TargetDefinition>
             <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
               <Target name="AuthenticatedAsActiveDevice"/>
