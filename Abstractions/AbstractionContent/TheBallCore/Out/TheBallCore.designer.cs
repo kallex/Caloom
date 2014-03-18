@@ -30,7 +30,7 @@ using TheBall.CORE;
 
 
 			[DataContract]
-			public class DeviceOperationData
+			public partial class DeviceOperationData
 			{
 				[DataMember]
 				public string OperationRequestString { get; set; }

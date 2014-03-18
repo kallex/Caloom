@@ -261,23 +261,24 @@ using System.IO;
 		{
 				public string ConnectionID ;
 				}
-				public class UpdateConnectionOtherSideCategoriesParameters 
+				public class SynchronizeConnectionCategoriesParameters 
 		{
 				public string ConnectionID ;
 				}
 		
-		public class UpdateConnectionOtherSideCategories 
+		public class SynchronizeConnectionCategories 
 		{
-				private static void PrepareParameters(UpdateConnectionOtherSideCategoriesParameters parameters)
+				private static void PrepareParameters(SynchronizeConnectionCategoriesParameters parameters)
 		{
 					}
-				public static void Execute(UpdateConnectionOtherSideCategoriesParameters parameters)
+				public static void Execute(SynchronizeConnectionCategoriesParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.Interface.Connection Connection = UpdateConnectionOtherSideCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				Category[] GetOtherSideCategoriesOutput = UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_GetOtherSideCategories(Connection);		
-				UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_UpdateOtherSideCategories(Connection, GetOtherSideCategoriesOutput);		
-				UpdateConnectionOtherSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
+					SynchronizeConnectionCategoriesImplementation.ExecuteMethod_ExecuteProcessToUpdateThisSideCategories(parameters.ConnectionID);		
+				TheBall.Interface.Connection Connection = SynchronizeConnectionCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				Category[] SyncCategoriesWithOtherSideCategoriesOutput = SynchronizeConnectionCategoriesImplementation.ExecuteMethod_SyncCategoriesWithOtherSideCategories(Connection);		
+				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_UpdateOtherSideCategories(Connection, SyncCategoriesWithOtherSideCategoriesOutput);		
+				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
 		 } 

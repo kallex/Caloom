@@ -941,10 +941,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store objects
 		</div>
-		</p><h1>UpdateConnectionOtherSideCategories (ConnectionID)</h1>
+		</p><h1>SynchronizeConnectionCategories (ConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Update other side categories of connection
+		Update both side categories of connection up-to-date with each other
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
@@ -967,11 +967,15 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h2>Method Call: ExecuteProcessToUpdateThisSideCategories ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute process to update this side categories
+		</div>
 		</p><h2>Target Definition: Connection ( ConnectionID )</h2>
 		<p>		<div class="MsoNormal" >
 		Connecton that contains this categories
 		</div>
-		</p><h2>Method Call: GetOtherSideCategories ( Connection )</h2>
+		</p><h2>Method Call: SyncCategoriesWithOtherSideCategories ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
 		Get other side categories
 		</div>
@@ -995,7 +999,7 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: UpdateOtherSideCategories ( Connection, GetOtherSideCategoriesOutput )</h2>
+		</p><h2>Method Call: UpdateOtherSideCategories ( Connection, SyncCategoriesWithOtherSideCategoriesOutput )</h2>
 		<p>		<div class="MsoNormal" >
 		Update connection's this side categories
 		</div>

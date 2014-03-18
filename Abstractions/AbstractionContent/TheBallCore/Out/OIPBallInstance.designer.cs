@@ -30,7 +30,7 @@ using TheBall.CORE;
 
 
 			[DataContract]
-			public class ParentToChildren
+			public partial class ParentToChildren
 			{
 				[DataMember]
 				public string id { get; set; }

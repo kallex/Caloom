@@ -30,7 +30,7 @@ using TheBall.CORE;
 
 
 			[DataContract]
-			public class UserQuery
+			public partial class UserQuery
 			{
 				[DataMember]
 				public string QueryString { get; set; }
@@ -39,7 +39,7 @@ using TheBall.CORE;
 			}
 
 			[DataContract]
-			public class QueryToken
+			public partial class QueryToken
 			{
 				[DataMember]
 				public string QueryRequestObjectDomainName { get; set; }

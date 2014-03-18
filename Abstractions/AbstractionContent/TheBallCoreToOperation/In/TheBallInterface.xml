@@ -485,25 +485,28 @@
           <Target name="Connection"/>
         </OperationReturnValues>
       </Operation>
-      <Operation name="UpdateConnectionOtherSideCategories">
+      <Operation name="SynchronizeConnectionCategories">
         <OperationSpec>
-          <Description>Update other side categories of connection</Description>
+          <Description>Update both side categories of connection up-to-date with each other</Description>
         </OperationSpec>
         <Parameters>
           <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
+            <MethodExecute name="ExecuteProcessToUpdateThisSideCategories" designDesc="Execute process to update this side categories" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </MethodExecute>
             <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connecton that contains this categories" state="implemented">
               <Parameter name="ConnectionID"/>
             </TargetDefinition>
-            <MethodExecute name="GetOtherSideCategories" designDesc="Get other side categories" state="implemented">
+            <MethodExecute name="SyncCategoriesWithOtherSideCategories" designDesc="Get other side categories" state="implemented">
               <Target name="Connection"/>
               <ReturnValue dataType="Category[]" name="OtherSideCategories" designDesc="Other side categories" state="implemented"/>
             </MethodExecute>
             <MethodExecute name="UpdateOtherSideCategories" designDesc="Update connection's this side categories" state="implemented">
               <Target name="Connection"/>
-              <Target name="GetOtherSideCategoriesOutput"/>
+              <Target name="SyncCategoriesWithOtherSideCategoriesOutput"/>
             </MethodExecute>
             <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
               <Target name="Connection"/>

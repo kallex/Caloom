@@ -162,13 +162,13 @@ namespace TheBall
                         DeleteConnectionWithStructures.Execute(parameters);
                         break;
                     }
-                case "UpdateConnectionOtherSideCategories":
+                case "SynchronizeConnectionCategories":
                     {
-                        var parameters = new UpdateConnectionOtherSideCategoriesParameters
+                        var parameters = new SynchronizeConnectionCategoriesParameters
                         {
                             ConnectionID = form["ConnectionID"]
                         };
-                        UpdateConnectionOtherSideCategories.Execute(parameters);
+                        SynchronizeConnectionCategories.Execute(parameters);
                         break;
                     }
 

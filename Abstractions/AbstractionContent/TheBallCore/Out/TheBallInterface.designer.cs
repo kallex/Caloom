@@ -30,7 +30,7 @@ using TheBall.CORE;
 
 
 			[DataContract]
-			public class ConnectionCommunicationData
+			public partial class ConnectionCommunicationData
 			{
 				[DataMember]
 				public string ActiveSideConnectionID { get; set; }
@@ -47,7 +47,7 @@ using TheBall.CORE;
 			}
 
 			[DataContract]
-			public class CategoryInfo
+			public partial class CategoryInfo
 			{
 				[DataMember]
 				public string CategoryID { get; set; }
@@ -66,7 +66,7 @@ using TheBall.CORE;
 			}
 
 			[DataContract]
-			public class CategoryLinkParameters
+			public partial class CategoryLinkParameters
 			{
 				[DataMember]
 				public string ConnectionID { get; set; }
@@ -75,7 +75,7 @@ using TheBall.CORE;
 			}
 
 			[DataContract]
-			public class CategoryLinkItem
+			public partial class CategoryLinkItem
 			{
 				[DataMember]
 				public string SourceCategoryID { get; set; }

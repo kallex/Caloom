@@ -16,11 +16,19 @@ namespace TheBall.Interface
         {
             switch (connectionCommunicationData.ProcessRequest)
             {
-                case "GETCATEGORIES":
+                case "SYNCCATEGORIES":
                     {
+                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                            {
+                                ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
+                                ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
+                            });
                         Connection thisSideConnection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
                                                                                             connectionCommunicationData.ReceivingSideConnectionID);
-                        connectionCommunicationData.CategoryCollectionData = getCategoryCollectionData(thisSideConnection.ThisSideCategories);
+                        thisSideConnection.OtherSideCategories.Clear();
+                        thisSideConnection.OtherSideCategories.AddRange(connectionCommunicationData.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()));
+                        thisSideConnection.StoreInformation();
+                        connectionCommunicationData.CategoryCollectionData = thisSideConnection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray();
                         break;
                     }
                 case "FINALIZECONNECTION":
@@ -46,25 +54,6 @@ namespace TheBall.Interface
                 default:
                     break;
             }
-        }
-
-        private static CategoryInfo[] getCategoryCollectionData(List<Category> thisSideCategories)
-        {
-            return thisSideCategories.Select(getCategoryInfo).ToArray();
-        }
-
-        private static CategoryInfo getCategoryInfo(Category category)
-        {
-            return new CategoryInfo
-                {
-                    CategoryID = category.ID,
-                    NativeCategoryID = category.NativeCategoryID,
-                    NativeCategoryDomainName = category.NativeCategoryDomainName,
-                    NativeCategoryObjectName = category.NativeCategoryObjectName,
-                    NativeCategoryTitle = category.NativeCategoryTitle,
-                    IdentifyingCategoryName = category.IdentifyingCategoryName,
-                    ParentCategoryID = category.ParentCategoryID
-                };
         }
 
         public static void ExecuteMethod_SerializeCommunicationDataToOutput(Stream outputStream, ConnectionCommunicationData connectionCommunicationData)

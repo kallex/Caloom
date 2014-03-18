@@ -3,7 +3,7 @@ using TheBall.CORE;
 
 namespace TheBall.Interface
 {
-    public class UpdateConnectionOtherSideCategoriesImplementation
+    public class SynchronizeConnectionCategoriesImplementation
     {
         private static IContainerOwner Owner
         {
@@ -14,32 +14,20 @@ namespace TheBall.Interface
             return Connection.RetrieveFromOwnerContent(Owner, connectionId);
         }
 
-        public static Category[] ExecuteMethod_GetOtherSideCategories(Connection connection)
+        public static Category[] ExecuteMethod_SyncCategoriesWithOtherSideCategories(Connection connection)
         {
             ConnectionCommunicationData connectionData = new ConnectionCommunicationData
                 {
                     ActiveSideConnectionID = connection.ID,
                     ReceivingSideConnectionID = connection.OtherSideConnectionID,
-                    ProcessRequest = "GETCATEGORIES"
+                    ProcessRequest = "SYNCCATEGORIES",
+                    CategoryCollectionData = connection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray()
                 };
             var result = DeviceSupport.ExecuteRemoteOperation<ConnectionCommunicationData>(connection.DeviceID,
                                                                                            "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionData);
-            return result.CategoryCollectionData.Select(getCategoryFromCategoryInfo).ToArray();
+            return result.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()).ToArray();
         }
 
-        private static Category getCategoryFromCategoryInfo(CategoryInfo catInfo)
-        {
-            return new Category
-                {
-                    ID = catInfo.CategoryID,
-                    NativeCategoryID = catInfo.NativeCategoryID,
-                    NativeCategoryDomainName = catInfo.NativeCategoryDomainName,
-                    NativeCategoryObjectName = catInfo.NativeCategoryObjectName,
-                    NativeCategoryTitle = catInfo.NativeCategoryTitle,
-                    IdentifyingCategoryName = catInfo.IdentifyingCategoryName,
-                    ParentCategoryID = catInfo.ParentCategoryID
-                };
-        }
 
         /*
          * 
@@ -62,6 +50,15 @@ namespace TheBall.Interface
         public static void ExecuteMethod_StoreObject(Connection connection)
         {
             connection.StoreInformation();
+        }
+
+        public static void ExecuteMethod_ExecuteProcessToUpdateThisSideCategories(string connectionID)
+        {
+            ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                {
+                    ConnectionID = connectionID,
+                    ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
+                });
         }
     }
 }

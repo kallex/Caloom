@@ -876,11 +876,11 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="UpdateConnectionOtherSideCategories (ConnectionID)" level="1">
+          <Header text="SynchronizeConnectionCategories (ConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Update other side categories of connection</TextContent>
+                  <TextContent>Update both side categories of connection up-to-date with each other</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -908,6 +908,13 @@
                 </Table>
               </Paragraph>
             </Header>
+            <Header text="Method Call: ExecuteProcessToUpdateThisSideCategories ( ConnectionID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute process to update this side categories</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: Connection ( ConnectionID )" level="2">
               <Paragraph>
                 <Text>
@@ -915,7 +922,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: GetOtherSideCategories ( Connection )" level="2">
+            <Header text="Method Call: SyncCategoriesWithOtherSideCategories ( Connection )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Get other side categories</TextContent>
@@ -944,7 +951,7 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateOtherSideCategories ( Connection, GetOtherSideCategoriesOutput )" level="2">
+            <Header text="Method Call: UpdateOtherSideCategories ( Connection, SyncCategoriesWithOtherSideCategoriesOutput )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Update connection's this side categories</TextContent>
