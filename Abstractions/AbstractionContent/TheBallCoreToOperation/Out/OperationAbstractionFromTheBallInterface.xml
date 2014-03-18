@@ -285,11 +285,8 @@
             <Target name="ProcessToProcessReceivedData" />
             <Target name="ProcessToUpdateThisSideCategories" />
           </MethodExecute>
-          <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
             <Target name="Connection" />
-            <Target name="ProcessToListPackageContents" />
-            <Target name="ProcessToProcessReceivedData" />
-            <Target name="ProcessToUpdateThisSideCategories" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

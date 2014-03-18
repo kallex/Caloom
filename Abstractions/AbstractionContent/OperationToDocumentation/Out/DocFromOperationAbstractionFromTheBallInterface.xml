@@ -73,10 +73,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: StoreObjects ( Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )" level="2">
+            <Header text="Method Call: StoreObject ( Connection )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Store objects</TextContent>
+                  <TextContent>Store object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

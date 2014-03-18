@@ -16,32 +16,38 @@ namespace TheBall.Interface
 
         public static Process GetTarget_ProcessToListPackageContents(Connection connection)
         {
-            Process process = new Process
-            {
-                ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.ListConnectionPackageContents", null),
-            };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connection.ID));
-            return process;
+            CreateProcessParameters processParameters = new CreateProcessParameters
+                {
+                    ExecutingOperationName = "AaltoGlobalImpact.OIP.ListConnectionPackageContents",
+                    InitialArguments = new SemanticInformationItem[] {new SemanticInformationItem("ConnectionID", connection.ID)},
+                    ProcessDescription = "Process to list package contents"
+                };
+            var result = CreateProcess.Execute(processParameters);
+            return result.CreatedProcess;
         }
 
         public static Process GetTarget_ProcessToProcessReceivedData(Connection connection)
         {
-            Process process = new Process
+            CreateProcessParameters processParameters = new CreateProcessParameters
             {
-                ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.ProcessConnectionReceivedData", null),
+                ExecutingOperationName = "AaltoGlobalImpact.OIP.ProcessConnectionReceivedData",
+                InitialArguments = new SemanticInformationItem[] { new SemanticInformationItem("ConnectionID", connection.ID) },
+                ProcessDescription = "Process to list package contents"
             };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connection.ID));
-            return process;
+            var result = CreateProcess.Execute(processParameters);
+            return result.CreatedProcess;
         }
 
         public static Process GetTarget_ProcessToUpdateThisSideCategories(Connection connection)
         {
-            Process process = new Process
+            CreateProcessParameters processParameters = new CreateProcessParameters
             {
-                ExecutingOperation = new SemanticInformationItem("AaltoGlobalImpact.OIP.UpdateConnectionThisSideCategories", null)
+                ExecutingOperationName = "AaltoGlobalImpact.OIP.UpdateConnectionThisSideCategories",
+                InitialArguments = new SemanticInformationItem[] { new SemanticInformationItem("ConnectionID", connection.ID) },
+                ProcessDescription = "Process to list package contents"
             };
-            process.InitialArguments.Add(new SemanticInformationItem("ConnectionID", connection.ID));
-            return process;
+            var result = CreateProcess.Execute(processParameters);
+            return result.CreatedProcess;
         }
 
         public static void ExecuteMethod_SetConnectionProcesses(Connection connection, Process processToListPackageContents, Process processToProcessReceivedData, Process processToUpdateThisSideCategories)
@@ -51,12 +57,9 @@ namespace TheBall.Interface
             connection.ProcessIDToUpdateThisSideCategories = processToUpdateThisSideCategories.ID;
         }
 
-        public static void ExecuteMethod_StoreObjects(Connection connection, Process processToListPackageContents, Process processToProcessReceivedData, Process processToUpdateThisSideCategories)
+        public static void ExecuteMethod_StoreObject(Connection connection)
         {
             connection.StoreInformation();
-            processToListPackageContents.StoreInformation();
-            processToProcessReceivedData.StoreInformation();
-            processToUpdateThisSideCategories.StoreInformation();
         }
 
         public static CreateConnectionStructuresReturnValue Get_ReturnValue(Connection connection)

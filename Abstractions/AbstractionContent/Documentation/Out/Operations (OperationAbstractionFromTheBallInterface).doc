@@ -276,9 +276,9 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Set connection processes
 		</div>
-		</p><h2>Method Call: StoreObjects ( Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories )</h2>
+		</p><h2>Method Call: StoreObject ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
-		Store objects
+		Store object
 		</div>
 		</p><h2>Return Value : CreateConnectionStructuresReturnValue ( Connection )</h2>
 		<p><table border="1">
