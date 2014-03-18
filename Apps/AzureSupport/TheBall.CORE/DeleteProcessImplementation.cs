@@ -29,8 +29,11 @@ namespace TheBall.CORE
                     return;
                 try
                 {
-                    ownerProcessContainer.ProcessIDs.Remove(process.ID);
-                    ownerProcessContainer.StoreInformation();
+                    if (ownerProcessContainer != null)
+                    {
+                        ownerProcessContainer.ProcessIDs.Remove(process.ID);
+                        ownerProcessContainer.StoreInformation();
+                    }
                     process.DeleteInformationObject();
                 }
                 finally

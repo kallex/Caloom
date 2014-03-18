@@ -20,7 +20,7 @@ namespace TheBall.CORE
             if (processContainer == null)
             {
                 processContainer = new ProcessContainer();
-                processContainer.SetLocationAsOwnerContent(InformationContext.CurrentOwner, processContainer.ID);
+                processContainer.SetLocationAsOwnerContent(InformationContext.CurrentOwner, "default");
             }
             return processContainer;
         }
