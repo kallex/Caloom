@@ -143,6 +143,15 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "FinalizeConnectionAfterGroupAuthorization":
+                    {
+                        var parameters = new FinalizeConnectionAfterGroupAuthorizationParameters
+                            {
+                                ConnectionID = form["ConnectionID"]
+                            };
+                        FinalizeConnectionAfterGroupAuthorization.Execute(parameters);
+                        break;
+                    }
                 case "DeleteConnection":
                     {
                         var parameters = new DeleteConnectionWithStructuresParameters

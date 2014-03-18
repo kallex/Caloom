@@ -122,6 +122,8 @@ namespace WebInterface
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
                 throw new SecurityException("Device membership not valid and active");
+            InformationContext.Current.Owner = owner;
+            InformationContext.Current.ExecutingForDevice = deviceMembership;
             if (request.RequestType == "GET")
             {
                 string contentPath = request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);

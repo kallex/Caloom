@@ -21,6 +21,10 @@ namespace TheBall.Interface
                             OtherSideConnectionID = connectionCommunicationData.ActiveSideConnectionID
                         });
                     connectionCommunicationData.ReceivingSideConnectionID = output.ConnectionID;
+                    CreateReceivingConnectionStructures.Execute(new CreateReceivingConnectionStructuresParameters
+                        {
+                            ConnectionCommunicationData = connectionCommunicationData
+                        });
                     break;
                 case "DELETEREMOTECONNECTION":
                     DeleteConnectionWithStructures.Execute(new DeleteConnectionWithStructuresParameters

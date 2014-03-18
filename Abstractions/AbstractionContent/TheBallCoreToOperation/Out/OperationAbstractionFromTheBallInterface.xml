@@ -240,6 +240,7 @@
             <Target name="Connection" />
           </TargetDefinition>
           <MethodExecute name="CallDeviceServiceForFinalizing" designDesc="Call device based service for finalizing" state="implemented">
+            <Target name="Connection" />
             <Target name="ConnectionCommunicationData" />
           </MethodExecute>
           <MethodExecute name="UpdateConnectionWithCommunicationData" designDesc="Update received information to the connection" state="implemented">
@@ -249,6 +250,9 @@
           <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
+          <OperationExecute name="CallCreateConnectionStructures" targetOperationName="CreateConnectionStructures" designDesc="Create connection structures" state="implemented">
+            <Target name="Connection" />
+          </OperationExecute>
         </SequentialExecution>
       </Execution>
     </Operation>

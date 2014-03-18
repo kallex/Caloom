@@ -16,8 +16,8 @@ namespace TheBall.CORE
         {
             try
             {
-                var result = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.EstablishedTrustID,
-                                                                                       "RemoteDeviceCoreOperation", new DeviceOperationData {OperationRequestString = "DELETEREMOTEDEVICE"});
+                var result = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
+                                                                                       "TheBall.CORE.RemoteDeviceCoreOperation", new DeviceOperationData {OperationRequestString = "DELETEREMOTEDEVICE"});
             }
             catch
             {

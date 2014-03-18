@@ -24,9 +24,15 @@ namespace TheBall.Interface
                 };
         }
 
-        public static void ExecuteMethod_CallDeviceServiceForFinalizing(ConnectionCommunicationData connectionCommunicationData)
+        public static void ExecuteMethod_CallDeviceServiceForFinalizing(Connection connection, ConnectionCommunicationData connectionCommunicationData)
         {
-            throw new System.NotImplementedException();
+            connectionCommunicationData.ProcessParametersString = connection.Description;
+            var result = DeviceSupport
+                .ExecuteRemoteOperation<ConnectionCommunicationData>(
+                    connection.DeviceID,
+                    "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionCommunicationData);
+            connectionCommunicationData.ReceivingSideConnectionID = result.ReceivingSideConnectionID;
+
         }
 
         public static void ExecuteMethod_UpdateConnectionWithCommunicationData(Connection connection, ConnectionCommunicationData connectionCommunicationData)
@@ -37,6 +43,11 @@ namespace TheBall.Interface
         public static void ExecuteMethod_StoreObject(Connection connection)
         {
             connection.StoreInformation();
+        }
+
+        public static CreateConnectionStructuresParameters CallCreateConnectionStructures_GetParameters(Connection connection)
+        {
+            return new CreateConnectionStructuresParameters {ConnectionID = connection.ID};
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -22,7 +23,7 @@ namespace TheBall.Interface
                     var result = DeviceSupport
                         .ExecuteRemoteOperation<ConnectionCommunicationData>(
                             connection.DeviceID,
-                            "ExecuteRemoteCalledConnectionOperation", new ConnectionCommunicationData
+                            "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", new ConnectionCommunicationData
                                 {
                                     ActiveSideConnectionID = connection.ID,
                                     ReceivingSideConnectionID = connection.OtherSideConnectionID,
@@ -35,7 +36,7 @@ namespace TheBall.Interface
                             AuthenticatedAsActiveDeviceID = connection.DeviceID
                         });
                 }
-                catch
+                catch(Exception ex)
                 {
 
                 }

@@ -13,12 +13,9 @@ namespace TheBall.Interface
 
         public static Connection GetTarget_ThisSideConnection(ConnectionCommunicationData connectionCommunicationData)
         {
-            if(string.IsNullOrEmpty(connectionCommunicationData.ReceivingSideConnectionID) == false)
-                throw new InvalidDataException("ReceivingSideConnectionID must not be initialized at creation");
-            Connection connection = new Connection();
-            connection.SetLocationAsOwnerContent(Owner, connection.ID);
-            connectionCommunicationData.ReceivingSideConnectionID = connection.ID;
-            return connection;
+            if(string.IsNullOrEmpty(connectionCommunicationData.ReceivingSideConnectionID))
+                throw new InvalidDataException("ReceivingSideConnectionID be initialized to retrieve the connection");
+            return Connection.RetrieveFromOwnerContent(Owner, connectionCommunicationData.ReceivingSideConnectionID);
         }
 
 

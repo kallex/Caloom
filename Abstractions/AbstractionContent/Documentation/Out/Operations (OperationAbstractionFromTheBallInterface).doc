@@ -720,7 +720,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Connection finalizing data model (UI/JSON serializable)
 		</div>
-		</p><h2>Method Call: CallDeviceServiceForFinalizing ( ConnectionCommunicationData )</h2>
+		</p><h2>Method Call: CallDeviceServiceForFinalizing ( Connection, ConnectionCommunicationData )</h2>
 		<p>		<div class="MsoNormal" >
 		Call device based service for finalizing
 		</div>
@@ -731,6 +731,10 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
 		Store connection object
+		</div>
+		</p><h2>Operation Call: CallCreateConnectionStructures ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Create connection structures
 		</div>
 		</p><h1>InitiateIntegrationConnection (Description, TargetBallHostName, TargetGroupID)</h1>
 		<h2>Specifications</h2>

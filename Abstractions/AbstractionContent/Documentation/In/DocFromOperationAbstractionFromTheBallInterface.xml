@@ -578,7 +578,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: CallDeviceServiceForFinalizing ( ConnectionCommunicationData )" level="2">
+            <Header text="Method Call: CallDeviceServiceForFinalizing ( Connection, ConnectionCommunicationData )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Call device based service for finalizing</TextContent>
@@ -596,6 +596,13 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: CallCreateConnectionStructures ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create connection structures</TextContent>
                 </Text>
               </Paragraph>
             </Header>
