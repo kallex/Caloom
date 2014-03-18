@@ -39,6 +39,41 @@ using TheBall.CORE;
 			[DataMember]
 			public string ProcessResultString;
 
+			[DataMember]
+			public List<CategoryInfo> CategoryCollectionData= new List<CategoryInfo>();
+
+			
+			}
+			[DataContract]
+			public partial class CategoryInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string CategoryID;
+
+			[DataMember]
+			public string NativeCategoryID;
+
+			[DataMember]
+			public string NativeCategoryDomainName;
+
+			[DataMember]
+			public string NativeCategoryObjectName;
+
+			[DataMember]
+			public string NativeCategoryTitle;
+
+			[DataMember]
+			public string IdentifyingCategoryName;
+
+			[DataMember]
+			public string ParentCategoryID;
+
 			
 			}
 			[DataContract]

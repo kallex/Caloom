@@ -42,6 +42,27 @@ using TheBall.CORE;
 				public string ProcessParametersString { get; set; }
 				[DataMember]
 				public string ProcessResultString { get; set; }
+				[DataMember]
+				public CategoryInfo[] CategoryCollectionData { get; set; }
+			}
+
+			[DataContract]
+			public class CategoryInfo
+			{
+				[DataMember]
+				public string CategoryID { get; set; }
+				[DataMember]
+				public string NativeCategoryID { get; set; }
+				[DataMember]
+				public string NativeCategoryDomainName { get; set; }
+				[DataMember]
+				public string NativeCategoryObjectName { get; set; }
+				[DataMember]
+				public string NativeCategoryTitle { get; set; }
+				[DataMember]
+				public string IdentifyingCategoryName { get; set; }
+				[DataMember]
+				public string ParentCategoryID { get; set; }
 			}
 
 			[DataContract]

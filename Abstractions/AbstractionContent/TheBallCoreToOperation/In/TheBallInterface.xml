@@ -10,6 +10,18 @@
             <InterfaceItem name="ProcessRequest" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessParametersString" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessResultString" logicalDataType="Text_Short"/>
+            <ObjectInstance name="CategoryCollectionData" interfaceObjectName="CategoryInfo" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="CategoryInfo" designDesc="Category">
+          <InterfaceItems>
+            <InterfaceItem name="CategoryID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="NativeCategoryID" logicalDataType="Text_Short" />
+            <InterfaceItem name="NativeCategoryDomainName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="NativeCategoryObjectName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="NativeCategoryTitle" logicalDataType="Text_Short"/>
+            <InterfaceItem name="IdentifyingCategoryName" logicalDataType="Text_Short" />
+            <InterfaceItem name="ParentCategoryID" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="CategoryLinkParameters" designDesc="Category link operation parameters">

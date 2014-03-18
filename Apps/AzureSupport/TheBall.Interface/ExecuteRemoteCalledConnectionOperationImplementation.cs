@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using AzureSupport;
 
 namespace TheBall.Interface
@@ -14,6 +16,13 @@ namespace TheBall.Interface
         {
             switch (connectionCommunicationData.ProcessRequest)
             {
+                case "GETCATEGORIES":
+                    {
+                        Connection thisSideConnection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                                                                                            connectionCommunicationData.ReceivingSideConnectionID);
+                        connectionCommunicationData.CategoryCollectionData = getCategoryCollectionData(thisSideConnection.ThisSideCategories);
+                        break;
+                    }
                 case "FINALIZECONNECTION":
                     var output = CreateReceivingConnection.Execute(new CreateReceivingConnectionParameters
                         {
@@ -37,6 +46,25 @@ namespace TheBall.Interface
                 default:
                     break;
             }
+        }
+
+        private static CategoryInfo[] getCategoryCollectionData(List<Category> thisSideCategories)
+        {
+            return thisSideCategories.Select(getCategoryInfo).ToArray();
+        }
+
+        private static CategoryInfo getCategoryInfo(Category category)
+        {
+            return new CategoryInfo
+                {
+                    CategoryID = category.ID,
+                    NativeCategoryID = category.NativeCategoryID,
+                    NativeCategoryDomainName = category.NativeCategoryDomainName,
+                    NativeCategoryObjectName = category.NativeCategoryObjectName,
+                    NativeCategoryTitle = category.NativeCategoryTitle,
+                    IdentifyingCategoryName = category.IdentifyingCategoryName,
+                    ParentCategoryID = category.ParentCategoryID
+                };
         }
 
         public static void ExecuteMethod_SerializeCommunicationDataToOutput(Stream outputStream, ConnectionCommunicationData connectionCommunicationData)
