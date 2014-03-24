@@ -451,8 +451,17 @@ namespace WebInterface
                 response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
                 response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
                 response.Cache.SetCacheability(HttpCacheability.Private);
+                string ifNoneMatch = request.Headers["If-None-Match"];
                 string ifModifiedSince = request.Headers["If-Modified-Since"];
-                if (ifModifiedSince != null)
+                if (ifNoneMatch != null)
+                {
+                    if (ifNoneMatch == blob.Properties.ETag)
+                    {
+                        response.StatusCode = 304;
+                        return;
+                    }
+                }
+                else if (ifModifiedSince != null)
                 {
                     DateTime ifModifiedSinceValue;
                     if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
@@ -540,8 +549,17 @@ namespace WebInterface
                 response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
                 response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
                 response.Cache.SetCacheability(HttpCacheability.Private);
+                string ifNoneMatch = request.Headers["If-None-Match"];
                 string ifModifiedSince = request.Headers["If-Modified-Since"];
-                if (ifModifiedSince != null)
+                if (ifNoneMatch != null)
+                {
+                    if (ifNoneMatch == blob.Properties.ETag)
+                    {
+                        response.StatusCode = 304;
+                        return;
+                    }
+                }
+                else if (ifModifiedSince != null)
                 {
                     DateTime ifModifiedSinceValue;
                     if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
