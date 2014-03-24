@@ -46,6 +46,26 @@ namespace WebInterface
             {
                 blob.FetchAttributes();
                 response.ContentType = StorageSupport.GetMimeType(blob.Name);
+                //response.Cache.SetETag(blob.Properties.ETag);
+                response.AddHeader("ETag", blob.Properties.ETag);
+                response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
+                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+                response.Cache.SetCacheability(HttpCacheability.Private);
+                string ifModifiedSince = request.Headers["If-Modified-Since"];
+                if (ifModifiedSince != null)
+                {
+                    DateTime ifModifiedSinceValue;
+                    if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
+                    {
+                        ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
+                        if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                        {
+                            response.StatusCode = 304;
+                            return;
+                        }
+                    }
+                }
+                response.ContentType = StorageSupport.GetMimeType(blob.Name);
                 blob.DownloadToStream(response.OutputStream);
             } catch(StorageClientException scEx)
             {

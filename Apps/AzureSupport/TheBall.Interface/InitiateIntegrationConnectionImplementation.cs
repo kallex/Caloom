@@ -12,6 +12,7 @@ namespace TheBall.Interface
         {
             Connection connection = new Connection();
             connection.SetLocationAsOwnerContent(Owner, connection.ID);
+            connection.IsActiveParty = true;
             connection.Description = description;
             return connection;
         }
