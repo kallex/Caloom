@@ -389,6 +389,21 @@ namespace TheBall
                         CreateAuthenticatedAsActiveDevice.Execute(parameters);
                         break;
                     }
+                case "RemoveCollaboratorFromGroup":
+                    {
+                        if (containerOwner.IsGroupContainer() == false)
+                            throw new InvalidOperationException("Collaborator removal is only supported in group context");
+                        if(!TBCollaboratorRole.HasModeratorRights(InformationContext.Current.CurrentGroupRole))
+                            throw new SecurityException("Collaborator removal is only doable by moderators/initiators");
+                        string accountID = form["AccountID"];
+                        RemoveMemberFromGroupParameters parameters = new RemoveMemberFromGroupParameters
+                            {
+                                AccountID = accountID,
+                                GroupID = containerOwner.LocationPrefix
+                            };
+                        RemoveMemberFromGroup.Execute(parameters);
+                        break;
+                    }
                 case "InviteMemberToGroup":
                     {
                         if (containerOwner.IsGroupContainer() == false)
