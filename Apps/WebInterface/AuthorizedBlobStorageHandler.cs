@@ -444,37 +444,7 @@ namespace WebInterface
             response.Clear();
             try
             {
-                blob.FetchAttributes();
-                response.ContentType = StorageSupport.GetMimeType(blob.Name);
-                response.Headers.Add("ETag", blob.Properties.ETag);
-//                response.Cache.SetETag(blob.Properties.ETag);
-                response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
-                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
-                response.Cache.SetCacheability(HttpCacheability.Private);
-                string ifNoneMatch = request.Headers["If-None-Match"];
-                string ifModifiedSince = request.Headers["If-Modified-Since"];
-                if (ifNoneMatch != null)
-                {
-                    if (ifNoneMatch == blob.Properties.ETag)
-                    {
-                        response.StatusCode = 304;
-                        return;
-                    }
-                }
-                else if (ifModifiedSince != null)
-                {
-                    DateTime ifModifiedSinceValue;
-                    if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
-                    {
-                        ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
-                        if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
-                        {
-                            response.StatusCode = 304;
-                            return;
-                        }
-                    }
-                }
-                blob.DownloadToStream(response.OutputStream);
+                HandleBlobRequestWithCacheSupport(context, blob, response);
             }
             catch (StorageClientException scEx)
             {
@@ -541,38 +511,7 @@ namespace WebInterface
             response.Clear();
             try
             {
-                var request = context.Request;
-                blob.FetchAttributes();
-                response.ContentType = StorageSupport.GetMimeType(blob.Name);
-                //response.Cache.SetETag(blob.Properties.ETag);
-                response.Headers.Add("ETag", blob.Properties.ETag);
-                response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
-                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
-                response.Cache.SetCacheability(HttpCacheability.Private);
-                string ifNoneMatch = request.Headers["If-None-Match"];
-                string ifModifiedSince = request.Headers["If-Modified-Since"];
-                if (ifNoneMatch != null)
-                {
-                    if (ifNoneMatch == blob.Properties.ETag)
-                    {
-                        response.StatusCode = 304;
-                        return;
-                    }
-                }
-                else if (ifModifiedSince != null)
-                {
-                    DateTime ifModifiedSinceValue;
-                    if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
-                    {
-                        ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
-                        if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
-                        {
-                            response.StatusCode = 304;
-                            return;
-                        }
-                    }
-                }
-                blob.DownloadToStream(response.OutputStream);
+                HandleBlobRequestWithCacheSupport(context, blob, response);
             } catch(StorageClientException scEx)
             {
                 if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
@@ -593,6 +532,47 @@ namespace WebInterface
                 response.Write(errMsg);
             }
             response.End();
+        }
+
+        private static void HandleBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
+        {
+            // Set the cache request properties as IIS will include them regardless for now
+            // even when we wouldn't want them on 304 response...
+            response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
+            response.Cache.SetCacheability(HttpCacheability.Private);
+            var request = context.Request;
+            blob.FetchAttributes();
+            string ifNoneMatch = request.Headers["If-None-Match"];
+            string ifModifiedSince = request.Headers["If-Modified-Since"];
+            if (ifNoneMatch != null)
+            {
+                if (ifNoneMatch == blob.Properties.ETag)
+                {
+                    response.ClearContent();
+                    response.StatusCode = 304;
+                }
+            }
+            else if (ifModifiedSince != null)
+            {
+                DateTime ifModifiedSinceValue;
+                if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
+                {
+                    ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
+                    if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                    {
+                        response.ClearContent();
+                        response.StatusCode = 304;
+                    }
+                }
+            }
+            else
+            {
+                response.ContentType = StorageSupport.GetMimeType(blob.Name);
+                //response.Cache.SetETag(blob.Properties.ETag);
+                response.Headers.Add("ETag", blob.Properties.ETag);
+                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+                blob.DownloadToStream(response.OutputStream);
+            }
         }
 
         private void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
@@ -680,11 +660,8 @@ namespace WebInterface
                 fileName = prefixStrippedContent.Replace("webview/", LocalWwwSiteFolder);
             if (File.Exists(fileName))
             {
-                response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
                 var lastModified = File.GetLastWriteTimeUtc(fileName);
                 lastModified = lastModified.AddTicks(-(lastModified.Ticks % TimeSpan.TicksPerSecond)); ;
-                response.Cache.SetLastModified(lastModified);
-                response.Cache.SetCacheability(HttpCacheability.Private);
                 //response.Headers.Add("ETag", blob.Properties.ETag);
                 //response.Headers.Add("Last-Modified", blob.Properties.LastModifiedUtc.ToString("R"));
                 string ifModifiedSince = context.Request.Headers["If-Modified-Since"];
@@ -696,13 +673,16 @@ namespace WebInterface
                         ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
                         if (lastModified <= ifModifiedSinceValue)
                         {
+                            response.ClearContent();
+                            response.ClearHeaders();
                             response.StatusCode = 304;
                             return;
                         }
                     }
                 }
-
-                
+                response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
+                response.Cache.SetLastModified(lastModified);
+                response.Cache.SetCacheability(HttpCacheability.Private);
                 var fileStream = File.OpenRead(fileName);
                 fileStream.CopyTo(context.Response.OutputStream);
                 fileStream.Close();
