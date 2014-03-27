@@ -550,6 +550,7 @@ namespace WebInterface
                 {
                     response.ClearContent();
                     response.StatusCode = 304;
+                    return;
                 }
             }
             else if (ifModifiedSince != null)
@@ -562,17 +563,15 @@ namespace WebInterface
                     {
                         response.ClearContent();
                         response.StatusCode = 304;
+                        return;
                     }
                 }
             }
-            else
-            {
-                response.ContentType = StorageSupport.GetMimeType(blob.Name);
-                //response.Cache.SetETag(blob.Properties.ETag);
-                response.Headers.Add("ETag", blob.Properties.ETag);
-                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
-                blob.DownloadToStream(response.OutputStream);
-            }
+            response.ContentType = StorageSupport.GetMimeType(blob.Name);
+            //response.Cache.SetETag(blob.Properties.ETag);
+            response.Headers.Add("ETag", blob.Properties.ETag);
+            response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+            blob.DownloadToStream(response.OutputStream);
         }
 
         private void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
