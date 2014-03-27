@@ -10,6 +10,7 @@
             <InterfaceItem name="ProcessRequest" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessParametersString" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessResultString" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ProcessResultArray" logicalDataType="Text_Short" isCollection="true"/>
             <ObjectInstance name="CategoryCollectionData" interfaceObjectName="CategoryInfo" isCollection="true"/>
           </InterfaceItems>
         </InterfaceObject>
@@ -60,6 +61,8 @@
           <InformationItem name="CategoryLinks" logicalDataType="InformationObject" informationObjectName="CategoryLink" isCollection="true"/>
           <InformationItem name="IncomingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
           <InformationItem name="OutgoingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
+          <InformationItem name="ThisSideMD5List" logicalDataType="Text_Short" isCollection="true"/>
+          <InformationItem name="OtherSideMD5List" logicalDataType="Text_Short" isCollection="true"/>
           <InformationItem name="OperationNameToListPackageContents" logicalDataType="Text_Short"/>
           <InformationItem name="OperationNameToProcessReceived" logicalDataType="Text_Short"/>
           <InformationItem name="OperationNameToUpdateThisSideCategories" logicalDataType="Text_Short"/>
@@ -123,6 +126,26 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="UpdateConnectionThisSideMD5List">
+        <OperationSpec>
+          <Description>Update connection this side MD5 list. Takes into account whether this is receiving or sending side.
+          Note! The Connection object is not stored during the processing</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Connection" dataType="Connection" designDesc="Connection object." state="implemented" />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="RootPathForMD5List" dataType="string" designDesc="Root path for MD5 list" state="implemented">
+              <Parameter name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="RetrieveMD5ListFromPathPrefix" designDesc="Retrieve MD5 sorted alphabetically" state="implemented">
+              <Target name="RootPathForMD5List"/>
+              <ReturnValue dataType="string[]" name="MD5List" designDesc="MD5 list of contents under the folder" state="implemented"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ExecuteRemoteCalledConnectionOperation">
         <OperationSpec>
           <Description>
@@ -148,6 +171,36 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="PublishCollaborationContentOverConnection">
+        <OperationSpec>
+          <Description>Publish categorized content over connection</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ConnectionID" dataType="string" designDesc="Connection ID" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateOtherSideMD5List" designDesc="Call remote side to retrieve its MD5 list of contents" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="UpdateThisSideMD5List" designDesc="Update this side MD5 list" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+            <OperationExecute name="CallPackageAndPushCollaborationContent" targetOperationName="PackageAndPushCollaborationContent" designDesc="Call actual package and push" state="implemented">
+              <Parameter name="ConnectionID"/>
+            </OperationExecute>
+            <MethodExecute name="CallOtherSideProcessingForPushedContent" designDesc="Call other side processing for pushed content" state="implemented">
+              <Target name="Connection"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="SetCategoryLinkingForConnection">
         <OperationSpec>
           <Description>Sets category linking for connection</Description>
@@ -168,7 +221,7 @@
           </SequentialExecution>        
         </Execution>
       </Operation>
-      <Operation name="PushCollaborationContent">
+      <Operation name="PackageAndPushCollaborationContent">
         <OperationSpec>
           <Description>Push collaboration content to given connection ID</Description>
         </OperationSpec>

@@ -8,7 +8,7 @@ using TheBall.CORE;
 
 namespace TheBall.Interface
 {
-    public class PushCollaborationContentImplementation
+    public class PackageAndPushCollaborationContentImplementation
     {
         public static Connection GetTarget_Connection(string connectionId)
         {

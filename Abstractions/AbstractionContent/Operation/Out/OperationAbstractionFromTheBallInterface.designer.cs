@@ -7,7 +7,25 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
-				public class ExecuteRemoteCalledConnectionOperationParameters 
+				public class UpdateConnectionThisSideMD5ListParameters 
+		{
+				public Connection Connection ;
+				}
+		
+		public class UpdateConnectionThisSideMD5List 
+		{
+				private static void PrepareParameters(UpdateConnectionThisSideMD5ListParameters parameters)
+		{
+					}
+				public static void Execute(UpdateConnectionThisSideMD5ListParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string RootPathForMD5List = UpdateConnectionThisSideMD5ListImplementation.GetTarget_RootPathForMD5List(parameters.Connection);	
+				string[] RetrieveMD5ListFromPathPrefixOutput = UpdateConnectionThisSideMD5ListImplementation.ExecuteMethod_RetrieveMD5ListFromPathPrefix(RootPathForMD5List);		
+				}
+				}
+
+		    public class ExecuteRemoteCalledConnectionOperationParameters 
 		{
 				public System.IO.Stream InputStream ;
 				public System.IO.Stream OutputStream ;
@@ -26,6 +44,32 @@ using System.IO;
 				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
 				}
 				}
+				public class PublishCollaborationContentOverConnectionParameters 
+		{
+				public string ConnectionID ;
+				}
+		
+		public class PublishCollaborationContentOverConnection 
+		{
+				private static void PrepareParameters(PublishCollaborationContentOverConnectionParameters parameters)
+		{
+					}
+				public static void Execute(PublishCollaborationContentOverConnectionParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Connection Connection = PublishCollaborationContentOverConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_UpdateOtherSideMD5List(Connection);		
+				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_UpdateThisSideMD5List(Connection);		
+				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
+				
+		{ // Local block to allow local naming
+			PackageAndPushCollaborationContentParameters operationParameters = PublishCollaborationContentOverConnectionImplementation.CallPackageAndPushCollaborationContent_GetParameters(parameters.ConnectionID);
+			PackageAndPushCollaborationContent.Execute(operationParameters);
+									
+		} // Local block closing
+				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallOtherSideProcessingForPushedContent(Connection);		
+				}
+				}
 		
 		public class SetCategoryLinkingForConnection 
 		{
@@ -38,29 +82,29 @@ using System.IO;
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-				public class PushCollaborationContentParameters 
+				public class PackageAndPushCollaborationContentParameters 
 		{
 				public string ConnectionID ;
 				}
 		
-		public class PushCollaborationContent 
+		public class PackageAndPushCollaborationContent 
 		{
-				private static void PrepareParameters(PushCollaborationContentParameters parameters)
+				private static void PrepareParameters(PackageAndPushCollaborationContentParameters parameters)
 		{
 					}
-				public static void Execute(PushCollaborationContentParameters parameters)
+				public static void Execute(PackageAndPushCollaborationContentParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = PushCollaborationContentImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				string PackageContentListingOperationName = PushCollaborationContentImplementation.GetTarget_PackageContentListingOperationName(Connection);	
-				string[] DynamicPackageListingOperationOutput = PushCollaborationContentImplementation.ExecuteMethod_DynamicPackageListingOperation(parameters.ConnectionID, PackageContentListingOperationName);		
-				TransferPackage TransferPackage = PushCollaborationContentImplementation.GetTarget_TransferPackage(parameters.ConnectionID);	
-				PushCollaborationContentImplementation.ExecuteMethod_AddTransferPackageToConnection(Connection, TransferPackage);		
-				PushCollaborationContentImplementation.ExecuteMethod_StoreObject(Connection);		
-				string[] PackageTransferPackageContentOutput = PushCollaborationContentImplementation.ExecuteMethod_PackageTransferPackageContent(TransferPackage, DynamicPackageListingOperationOutput);		
-				PushCollaborationContentImplementation.ExecuteMethod_SendTransferPackageContent(Connection, TransferPackage, PackageTransferPackageContentOutput);		
-				PushCollaborationContentImplementation.ExecuteMethod_SetTransferPackageAsProcessed(TransferPackage);		
-				PushCollaborationContentImplementation.ExecuteMethod_StoreObjectComplete(Connection, TransferPackage);		
+					Connection Connection = PackageAndPushCollaborationContentImplementation.GetTarget_Connection(parameters.ConnectionID);	
+				string PackageContentListingOperationName = PackageAndPushCollaborationContentImplementation.GetTarget_PackageContentListingOperationName(Connection);	
+				string[] DynamicPackageListingOperationOutput = PackageAndPushCollaborationContentImplementation.ExecuteMethod_DynamicPackageListingOperation(parameters.ConnectionID, PackageContentListingOperationName);		
+				TransferPackage TransferPackage = PackageAndPushCollaborationContentImplementation.GetTarget_TransferPackage(parameters.ConnectionID);	
+				PackageAndPushCollaborationContentImplementation.ExecuteMethod_AddTransferPackageToConnection(Connection, TransferPackage);		
+				PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObject(Connection);		
+				string[] PackageTransferPackageContentOutput = PackageAndPushCollaborationContentImplementation.ExecuteMethod_PackageTransferPackageContent(TransferPackage, DynamicPackageListingOperationOutput);		
+				PackageAndPushCollaborationContentImplementation.ExecuteMethod_SendTransferPackageContent(Connection, TransferPackage, PackageTransferPackageContentOutput);		
+				PackageAndPushCollaborationContentImplementation.ExecuteMethod_SetTransferPackageAsProcessed(TransferPackage);		
+				PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObjectComplete(Connection, TransferPackage);		
 				}
 				}
 				public class ExecuteOperationParameters 

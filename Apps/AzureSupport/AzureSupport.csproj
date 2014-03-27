@@ -326,10 +326,12 @@
     <Compile Include="TheBall.Interface\InformationChangeItem.cs" />
     <Compile Include="TheBall.Interface\InitiateIntegrationConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteRemoteCalledConnectionOperationImplementation.cs" />
-    <Compile Include="TheBall.Interface\PushCollaborationContentImplementation.cs" />
+    <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
+    <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
+    <Compile Include="TheBall.Interface\UpdateConnectionThisSideMD5ListImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />

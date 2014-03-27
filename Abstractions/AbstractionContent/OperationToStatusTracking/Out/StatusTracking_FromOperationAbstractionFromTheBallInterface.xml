@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
+    <StatusItem name="UpdateConnectionThisSideMD5List_Connection" displayName="VariableType: Connection" description="Connection object.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionThisSideMD5List_RootPathForMD5List" displayName="TargetDefinitionType: RootPathForMD5List" description="Root path for MD5 list">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateConnectionThisSideMD5List_RetrieveMD5ListFromPathPrefix" displayName="MethodExecuteType: RetrieveMD5ListFromPathPrefix" description="Retrieve MD5 sorted alphabetically">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ExecuteRemoteCalledConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -16,6 +25,27 @@
     <StatusItem name="ExecuteRemoteCalledConnectionOperation_SerializeCommunicationDataToOutput" displayName="MethodExecuteType: SerializeCommunicationDataToOutput" description="Serialize communication data to output">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_UpdateOtherSideMD5List" displayName="MethodExecuteType: UpdateOtherSideMD5List" description="Call remote side to retrieve its MD5 list of contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_UpdateThisSideMD5List" displayName="MethodExecuteType: UpdateThisSideMD5List" description="Update this side MD5 list">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_CallPackageAndPushCollaborationContent" displayName="OperationExecuteType: CallPackageAndPushCollaborationContent" description="Call actual package and push">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PublishCollaborationContentOverConnection_CallOtherSideProcessingForPushedContent" displayName="MethodExecuteType: CallOtherSideProcessingForPushedContent" description="Call other side processing for pushed content">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="SetCategoryLinkingForConnection_CategoryLinkingParameters" displayName="TargetDefinitionType: CategoryLinkingParameters" description="Deserialized operation parameters">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -28,37 +58,37 @@
     <StatusItem name="SetCategoryLinkingForConnection_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID to push the content with">
+    <StatusItem name="PackageAndPushCollaborationContent_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID to push the content with">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
+    <StatusItem name="PackageAndPushCollaborationContent_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_PackageContentListingOperationName" displayName="TargetDefinitionType: PackageContentListingOperationName" description="Operation name for package listing operation">
+    <StatusItem name="PackageAndPushCollaborationContent_PackageContentListingOperationName" displayName="TargetDefinitionType: PackageContentListingOperationName" description="Operation name for package listing operation">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_DynamicPackageListingOperation" displayName="MethodExecuteType: DynamicPackageListingOperation" description="Dynamic operation execution of content packaging operation">
+    <StatusItem name="PackageAndPushCollaborationContent_DynamicPackageListingOperation" displayName="MethodExecuteType: DynamicPackageListingOperation" description="Dynamic operation execution of content packaging operation">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_TransferPackage" displayName="TargetDefinitionType: TransferPackage" description="Transferpackage that identifies the data to package and send">
+    <StatusItem name="PackageAndPushCollaborationContent_TransferPackage" displayName="TargetDefinitionType: TransferPackage" description="Transferpackage that identifies the data to package and send">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_AddTransferPackageToConnection" displayName="MethodExecuteType: AddTransferPackageToConnection" description="Adds transfer package to outgoing packages of connection">
+    <StatusItem name="PackageAndPushCollaborationContent_AddTransferPackageToConnection" displayName="MethodExecuteType: AddTransferPackageToConnection" description="Adds transfer package to outgoing packages of connection">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_StoreObject" displayName="MethodExecuteType: StoreObject" description="Stores objects">
+    <StatusItem name="PackageAndPushCollaborationContent_StoreObject" displayName="MethodExecuteType: StoreObject" description="Stores objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_PackageTransferPackageContent" displayName="MethodExecuteType: PackageTransferPackageContent" description="Package contents for transfer package">
+    <StatusItem name="PackageAndPushCollaborationContent_PackageTransferPackageContent" displayName="MethodExecuteType: PackageTransferPackageContent" description="Package contents for transfer package">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_SendTransferPackageContent" displayName="MethodExecuteType: SendTransferPackageContent" description="Send package contents through connection">
+    <StatusItem name="PackageAndPushCollaborationContent_SendTransferPackageContent" displayName="MethodExecuteType: SendTransferPackageContent" description="Send package contents through connection">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_SetTransferPackageAsProcessed" displayName="MethodExecuteType: SetTransferPackageAsProcessed" description="Set transfer package as prosessed state">
+    <StatusItem name="PackageAndPushCollaborationContent_SetTransferPackageAsProcessed" displayName="MethodExecuteType: SetTransferPackageAsProcessed" description="Set transfer package as prosessed state">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PushCollaborationContent_StoreObjectComplete" displayName="MethodExecuteType: StoreObjectComplete" description="Stores connection with processed transferpackage">
+    <StatusItem name="PackageAndPushCollaborationContent_StoreObjectComplete" displayName="MethodExecuteType: StoreObjectComplete" description="Stores connection with processed transferpackage">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ExecuteOperation_OwnerLocation" displayName="VariableType: OwnerLocation" description="Owner location of the operation context">
@@ -237,6 +267,11 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="UpdateConnectionThisSideMD5List">
+      <ItemRef itemName="UpdateConnectionThisSideMD5List_Connection" />
+      <ItemRef itemName="UpdateConnectionThisSideMD5List_RootPathForMD5List" />
+      <ItemRef itemName="UpdateConnectionThisSideMD5List_RetrieveMD5ListFromPathPrefix" />
+    </Group>
     <Group name="ExecuteRemoteCalledConnectionOperation">
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_InputStream" />
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_OutputStream" />
@@ -244,24 +279,34 @@
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_PerformOperation" />
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_SerializeCommunicationDataToOutput" />
     </Group>
+    <Group name="PublishCollaborationContentOverConnection">
+      <ItemRef itemName="PublishCollaborationContentOverConnection_ConnectionID" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_Connection" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_UpdateOtherSideMD5List" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_UpdateThisSideMD5List" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_StoreObject" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_CallPackageAndPushCollaborationContent" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_CallOtherSideProcessingForPushedContent" />
+      <GroupRef groupName="PackageAndPushCollaborationContent" />
+    </Group>
     <Group name="SetCategoryLinkingForConnection">
       <ItemRef itemName="SetCategoryLinkingForConnection_CategoryLinkingParameters" />
       <ItemRef itemName="SetCategoryLinkingForConnection_Connection" />
       <ItemRef itemName="SetCategoryLinkingForConnection_SetConnectionLinkingData" />
       <ItemRef itemName="SetCategoryLinkingForConnection_StoreObject" />
     </Group>
-    <Group name="PushCollaborationContent">
-      <ItemRef itemName="PushCollaborationContent_ConnectionID" />
-      <ItemRef itemName="PushCollaborationContent_Connection" />
-      <ItemRef itemName="PushCollaborationContent_PackageContentListingOperationName" />
-      <ItemRef itemName="PushCollaborationContent_DynamicPackageListingOperation" />
-      <ItemRef itemName="PushCollaborationContent_TransferPackage" />
-      <ItemRef itemName="PushCollaborationContent_AddTransferPackageToConnection" />
-      <ItemRef itemName="PushCollaborationContent_StoreObject" />
-      <ItemRef itemName="PushCollaborationContent_PackageTransferPackageContent" />
-      <ItemRef itemName="PushCollaborationContent_SendTransferPackageContent" />
-      <ItemRef itemName="PushCollaborationContent_SetTransferPackageAsProcessed" />
-      <ItemRef itemName="PushCollaborationContent_StoreObjectComplete" />
+    <Group name="PackageAndPushCollaborationContent">
+      <ItemRef itemName="PackageAndPushCollaborationContent_ConnectionID" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_Connection" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_PackageContentListingOperationName" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_DynamicPackageListingOperation" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_TransferPackage" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_AddTransferPackageToConnection" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_StoreObject" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_PackageTransferPackageContent" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_SendTransferPackageContent" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_SetTransferPackageAsProcessed" />
+      <ItemRef itemName="PackageAndPushCollaborationContent_StoreObjectComplete" />
     </Group>
     <Group name="ExecuteOperation">
       <ItemRef itemName="ExecuteOperation_OwnerLocation" />

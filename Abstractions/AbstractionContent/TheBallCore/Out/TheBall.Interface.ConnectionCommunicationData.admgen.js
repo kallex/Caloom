@@ -6,6 +6,7 @@ var ConnectionCommunicationData {
 	ProcessRequest: string;
 	ProcessParametersString: string;
 	ProcessResultString: string;
+	ProcessResultArray: string[];
 	CategoryCollectionData: CategoryInfo[];
 
     constructor() {
@@ -14,6 +15,7 @@ var ConnectionCommunicationData {
 			this.ProcessRequest = ko.observable(this.ProcessRequest);
 			this.ProcessParametersString = ko.observable(this.ProcessParametersString);
 			this.ProcessResultString = ko.observable(this.ProcessResultString);
+			this.ProcessResultArray = ko.observableArray(this.ProcessResultArray);
 			this.CategoryCollectionData = ko.observableArray(this.CategoryCollectionData);
     }
 }

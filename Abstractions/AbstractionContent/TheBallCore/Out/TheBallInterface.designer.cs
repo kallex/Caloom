@@ -43,6 +43,8 @@ using TheBall.CORE;
 				[DataMember]
 				public string ProcessResultString { get; set; }
 				[DataMember]
+				public string[] ProcessResultArray { get; set; }
+				[DataMember]
 				public CategoryInfo[] CategoryCollectionData { get; set; }
 			}
 
@@ -927,6 +929,12 @@ using TheBall.CORE;
 						case "OtherSideConnectionID":
 							OtherSideConnectionID = value;
 							break;
+						case "ThisSideMD5List":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
+						case "OtherSideMD5List":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
 						case "OperationNameToListPackageContents":
 							OperationNameToListPackageContents = value;
 							break;
@@ -974,6 +982,10 @@ using TheBall.CORE;
 			public List< TransferPackage > IncomingPackages = new List< TransferPackage >();
 			[DataMember]
 			public List< TransferPackage > OutgoingPackages = new List< TransferPackage >();
+			[DataMember]
+			public List< string > ThisSideMD5List = new List< string >();
+			[DataMember]
+			public List< string > OtherSideMD5List = new List< string >();
 			[DataMember]
 			public string OperationNameToListPackageContents { get; set; }
 			private string _unmodified_OperationNameToListPackageContents;

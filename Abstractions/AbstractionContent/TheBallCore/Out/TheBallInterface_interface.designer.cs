@@ -40,6 +40,9 @@ using TheBall.CORE;
 			public string ProcessResultString;
 
 			[DataMember]
+			public List<string> ProcessResultArray= new List<string>();
+
+			[DataMember]
 			public List<CategoryInfo> CategoryCollectionData= new List<CategoryInfo>();
 
 			
