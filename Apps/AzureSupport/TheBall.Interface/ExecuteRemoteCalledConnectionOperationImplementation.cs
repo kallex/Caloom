@@ -16,6 +16,10 @@ namespace TheBall.Interface
         {
             switch (connectionCommunicationData.ProcessRequest)
             {
+                case "PROCESSPUSHEDCONTENT":
+                    {
+                        break;
+                    }
                 case "SYNCCATEGORIES":
                     {
                         ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
