@@ -136,6 +136,7 @@
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="OperationSupport.cs" />
+    <Compile Include="SyncSupport.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeviceSupport.cs" />

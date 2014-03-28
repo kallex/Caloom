@@ -43,7 +43,7 @@ namespace TheBall.CORE
                     OperationSpecificContentData = thisSideContentMd5List
                 };
             deviceOperationData = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
-                                                                                            "", deviceOperationData);
+                                                                                            "TheBall.CORE.RemoteDeviceCoreOperation", deviceOperationData);
             var returnValue = new SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue
                 {
                     ItemsToCopy = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray(),
@@ -55,6 +55,11 @@ namespace TheBall.CORE
         public static void ExecuteMethod_CopyItemsToCopyToTargetDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue callPrepareTargetAndListItemsToCopyOutput)
         {
             var itemsToCopy = callPrepareTargetAndListItemsToCopyOutput.ItemsToCopy;
+            foreach(var itemToCopy in itemsToCopy)
+            {
+                string ownerRelatedLocation = StorageSupport.RemoveOwnerPrefixIfExists(itemToCopy.ContentLocation);
+                DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, ownerRelatedLocation, ownerRelatedLocation);
+            }
         }
 
         public static SyncCopyContentToDeviceTargetReturnValue Get_ReturnValue(SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue callPrepareTargetAndListItemsToCopyOutput)

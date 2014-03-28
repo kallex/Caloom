@@ -60,5 +60,28 @@ namespace TheBall.CORE
                 return contentObject;
             }
         }
+
+        public static void PushContentToDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, string localContentUrl, string destinationContentName)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var blob = StorageSupport.GetOwnerBlobReference(owner, localContentUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(authenticatedAsActiveDevice.ConnectionURL);
+            request.Method = "POST";
+            AesManaged aes = new AesManaged();
+            aes.KeySize = 256;
+            aes.GenerateIV();
+            aes.Key = authenticatedAsActiveDevice.ActiveSymmetricAESKey;
+            var ivBase64 = Convert.ToBase64String(aes.IV);
+            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + authenticatedAsActiveDevice.EstablishedTrustID + ":" + destinationContentName);
+            var requestStream = request.GetRequestStream();
+            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
+            blob.DownloadToStream(cryptoStream);
+            cryptoStream.Close();
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
+                throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
+            
+        }
     }
 }

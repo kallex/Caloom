@@ -57,29 +57,7 @@ namespace TheBall.CORE
         {
             if(authenticatedAsActiveDevice == null)
                 throw new NotSupportedException("Push not currently supported without authenticated as device connection");
-            WebClient webClient = new WebClient();
-            if (destinationUrl.EndsWith("/") == false)
-                destinationUrl += "/";
-            var blob = StorageSupport.GetOwnerBlobReference(owner, localContentUrl);
-
-            //var blobStream = blob.DownloadToStream()
-            //CryptoStream cryptoStream = new CryptoStream()
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(destinationUrl);
-            request.Method = "POST";
-            AesManaged aes = new AesManaged();
-            aes.KeySize = 256;
-            aes.GenerateIV();
-            aes.Key = authenticatedAsActiveDevice.ActiveSymmetricAESKey;
-            var ivBase64 = Convert.ToBase64String(aes.IV);
-            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + authenticatedAsActiveDevice.EstablishedTrustID + ":" + destinationContentName);
-            var requestStream = request.GetRequestStream();
-            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-            var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
-            blob.DownloadToStream(cryptoStream);
-            cryptoStream.Close();
-            var response = (HttpWebResponse) request.GetResponse();
-            if(response.StatusCode != HttpStatusCode.OK)
-                throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
+            DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, localContentUrl, destinationContentName);
         }
 
         public static string GetTarget_DestinationContentName(string specificDestinationContentName, InformationOutput informationOutput)

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using AzureSupport;
 
 namespace TheBall.CORE
@@ -20,6 +22,9 @@ namespace TheBall.CORE
         {
             switch (deviceOperationData.OperationRequestString)
             {
+                case "SYNCCOPYCONTENT":
+                    performSyncCopyContent(currentDevice, deviceOperationData);
+                    break;
                 case "DELETEREMOTEDEVICE":
                     currentDevice.DeleteInformationObject();
                     break;
@@ -33,5 +38,35 @@ namespace TheBall.CORE
         {
             JSONSupport.SerializeToJSONStream(deviceOperationData, outputStream);
         }
+
+        private static void performSyncCopyContent(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
+        {
+            List<ContentItemLocationWithMD5> itemsToCopy = new List<ContentItemLocationWithMD5>();
+            List<ContentItemLocationWithMD5> itemsDeleted = new List<ContentItemLocationWithMD5>();
+            SyncSupport.CopySourceToTargetMethod copySourceToTarget = (location, blobLocation) => itemsToCopy.Add(new ContentItemLocationWithMD5
+                {
+                    ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(location),
+                    ItemDatas = new ItemData[] {new ItemData {DataName = "OPTODO", ItemTextData = "COPY"}}
+                });
+            SyncSupport.DeleteObsoleteTargetMethod deleteObsoleteTarget = (location) =>
+                {
+                    itemsDeleted.Add(new ContentItemLocationWithMD5
+                        {
+                            ContentLocation = location,
+                            ItemDatas = new ItemData[] { new ItemData { DataName = "OPDONE", ItemTextData = "DELETED"}}
+                        });
+                    SyncSupport.DeleteObsoleteTarget(location);
+                };
+
+            string syncTargetRootFolder = String.Format("TheBall.CORE/DeviceMembership/{0}_Input/", currentDevice.ID);
+            SyncSupport.SynchronizeSourceListToTargetFolder(deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
+                                                            copySourceToTarget, deleteObsoleteTarget);
+            deviceOperationData.OperationSpecificContentData = itemsToCopy.Union(itemsDeleted).ToArray();
+        }
+        /*
+                    ItemsToCopy = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray(),
+                    ItemsDeleted = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPDONE" && iData.ItemTextData == "DELETED")).ToArray()
+         * */
+
     }
 }
