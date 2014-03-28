@@ -857,7 +857,9 @@ namespace AaltoGlobalImpact.OIP
             if(textContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));
             node.Authors.CollectionContent.Add(getShortTextObject(textContent.Author));
-            node.MainSortableText = textContent.SortOrderNumber.ToString();
+            //node.MainSortableText = textContent.SortOrderNumber.ToString();
+            node.MainSortableText = textContent.Published.ToString("s");
+            node.TimestampText = getTimeStampText(textContent.Published);
             return node;
         }
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
 using TheBall.Index;
@@ -705,6 +706,25 @@ namespace TheBallTool
             // AccountContainer.AccountModule.Introduction
             // Patch & Fix existing activities, blogs, groups with titles 
 
+        }
+        
+        private static void PatchTextContentBodyContentToRawHtml(string groupID, DateTime patchModifiedBeforeLimit)
+        {
+            VirtualOwner owner = new VirtualOwner("grp", groupID);
+            var textContentBlobs = owner.GetOwnerBlobListing("AaltoGlobalImpact.OIP/TextContent/", true);
+            patchModifiedBeforeLimit = patchModifiedBeforeLimit.ToUniversalTime();
+            foreach (CloudBlockBlob tcBlob in textContentBlobs)
+            {
+                if (tcBlob.Properties.LastModifiedUtc >= patchModifiedBeforeLimit)
+                    continue;
+                var textContent = TextContent.RetrieveTextContent(tcBlob.Name, owner);
+                if (String.IsNullOrEmpty(textContent.RawHtmlContent))
+                {
+                    textContent.RawHtmlContent = textContent.Body;
+                    textContent.Body = "ACTUAL CONTENT IN RAW FIELD!" + Environment.NewLine + textContent.Body;
+                    textContent.StoreInformation();
+                }
+            }
         }
 
         private static void PatchCollectionsToNodeSummaries()

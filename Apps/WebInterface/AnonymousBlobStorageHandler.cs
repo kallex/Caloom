@@ -44,6 +44,8 @@ namespace WebInterface
             response.Clear();
             try
             {
+                HandlePublicBlobRequestWithCacheSupport(HttpContext.Current, blob, response);
+                return;
                 blob.FetchAttributes();
                 response.ContentType = StorageSupport.GetMimeType(blob.Name);
                 //response.Cache.SetETag(blob.Properties.ETag);
@@ -130,6 +132,47 @@ namespace WebInterface
                     return null;
             }
         }
+
+        private static void HandlePublicBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
+        {
+            // Set the cache request properties as IIS will include them regardless for now
+            // even when we wouldn't want them on 304 response...
+            response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
+            response.Cache.SetCacheability(HttpCacheability.Private);
+            var request = context.Request;
+            blob.FetchAttributes();
+            string ifNoneMatch = request.Headers["If-None-Match"];
+            string ifModifiedSince = request.Headers["If-Modified-Since"];
+            if (ifNoneMatch != null)
+            {
+                if (ifNoneMatch == blob.Properties.ETag)
+                {
+                    response.ClearContent();
+                    response.StatusCode = 304;
+                    return;
+                }
+            }
+            else if (ifModifiedSince != null)
+            {
+                DateTime ifModifiedSinceValue;
+                if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
+                {
+                    ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
+                    if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                    {
+                        response.ClearContent();
+                        response.StatusCode = 304;
+                        return;
+                    }
+                }
+            }
+            response.ContentType = StorageSupport.GetMimeType(blob.Name);
+            //response.Cache.SetETag(blob.Properties.ETag);
+            response.Headers.Add("ETag", blob.Properties.ETag);
+            response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+            blob.DownloadToStream(response.OutputStream);
+        }
+
 
         #endregion
     }
