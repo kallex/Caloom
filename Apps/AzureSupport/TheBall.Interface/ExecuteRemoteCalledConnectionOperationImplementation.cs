@@ -18,6 +18,11 @@ namespace TheBall.Interface
             {
                 case "PROCESSPUSHEDCONTENT":
                     {
+                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                            {
+                                ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
+                                ConnectionProcessToExecute = "ProcessReceived"
+                            });
                         break;
                     }
                 case "SYNCCATEGORIES":
