@@ -950,25 +950,37 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Connection object
 		</div>
-		</p><h2>Method Call: UpdateOtherSideMD5List ( Connection )</h2>
+		</p><h2>Operation Call: CallSyncConnectionContentToDeviceToSend ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
-		Call remote side to retrieve its MD5 list of contents
+		Call sync content to device
 		</div>
-		</p><h2>Method Call: UpdateThisSideMD5List ( Connection )</h2>
+		</p><h2>Method Call: CallDeviceSyncToSendContent ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
-		Update this side MD5 list
+		Call device sync to copy content
 		</div>
-		</p><h2>Method Call: StoreObject ( Connection )</h2>
-		<p>		<div class="MsoNormal" >
-		Store connection object
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		WasAnythingCopiedOrDeleted
 		</div>
-		</p><h2>Operation Call: CallPackageAndPushCollaborationContent ( ConnectionID )</h2>
-		<p>		<div class="MsoNormal" >
-		Call actual package and push
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
 		</div>
-		</p><h2>Method Call: CallOtherSideProcessingForPushedContent ( Connection )</h2>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Was anything copied in the sync operation
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: CallOtherSideProcessingForCopiedContent ( Connection, CallDeviceSyncToSendContentOutput )</h2>
 		<p>		<div class="MsoNormal" >
-		Call other side processing for pushed content
+		Call other side to process copied content
 		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>
@@ -990,6 +1002,58 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
 		Store objects
+		</div>
+		</p><h1>SyncConnectionContentToDeviceToSend (Connection)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Sync connection content to device to send
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Connection
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Connection to sync
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: PackageContentListingProcessID ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Process ID for listing  package contents
+		</div>
+		</p><h2>Method Call: ExecuteContentListingProcess ( PackageContentListingProcessID )</h2>
+		<p>		<div class="MsoNormal" >
+		Process execution to list package content items
+		</div>
+		</p><h2>Target Definition: PackageContentListingProcess ( PackageContentListingProcessID )</h2>
+		<p>		<div class="MsoNormal" >
+		Process for listing  package contents
+		</div>
+		</p><h2>Target Definition: ContentListingResult ( PackageContentListingProcess )</h2>
+		<p>		<div class="MsoNormal" >
+		Content listing result
+		</div>
+		</p><h2>Target Definition: SyncTargetRootFolder ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Target root folder for sync-copy
+		</div>
+		</p><h2>Method Call: CopyContentsToSyncRoot ( ContentListingResult, SyncTargetRootFolder )</h2>
+		<p>		<div class="MsoNormal" >
+		Copy content listing to sync root
 		</div>
 		</p><h1>SynchronizeConnectionCategories (ConnectionID)</h1>
 		<h2>Specifications</h2>
@@ -1057,61 +1121,6 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store connection object
 		</div>
-		</p><h1>UpdateConnectionThisSideMD5List (Connection)</h1>
-		<h2>Specifications</h2>
-		<p>		<div class="MsoNormal" >
-		Update connection this side MD5 list. Takes into account whether this is receiving or sending side.
-          Note! The Connection object is not stored during the processing
-		</div>
-		</p><h2>Parameters</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		Connection
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Connection
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Connection object.
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Target Definition: RootPathForMD5List ( Connection )</h2>
-		<p>		<div class="MsoNormal" >
-		Root path for MD5 list
-		</div>
-		</p><h2>Method Call: RetrieveMD5ListFromPathPrefix ( RootPathForMD5List )</h2>
-		<p>		<div class="MsoNormal" >
-		Retrieve MD5 sorted alphabetically
-		</div>
-		</p><p><table border="1">
-				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		MD5List
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string[]
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		MD5 list of contents under the folder
-		</div>
-				</td>
-				</tr>
-		</table>
 		</p><h1>UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

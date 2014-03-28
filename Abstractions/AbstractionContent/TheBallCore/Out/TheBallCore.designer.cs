@@ -35,7 +35,33 @@ using TheBall.CORE;
 				[DataMember]
 				public string OperationRequestString { get; set; }
 				[DataMember]
+				public string[] OperationParameters { get; set; }
+				[DataMember]
+				public string[] OperationReturnValues { get; set; }
+				[DataMember]
 				public bool OperationResult { get; set; }
+				[DataMember]
+				public ContentItemLocationWithMD5[] OperationSpecificContentData { get; set; }
+			}
+
+			[DataContract]
+			public partial class ContentItemLocationWithMD5
+			{
+				[DataMember]
+				public string ContentLocation { get; set; }
+				[DataMember]
+				public string ContentMD5 { get; set; }
+				[DataMember]
+				public ItemData[] ItemDatas { get; set; }
+			}
+
+			[DataContract]
+			public partial class ItemData
+			{
+				[DataMember]
+				public string DataName { get; set; }
+				[DataMember]
+				public string ItemTextData { get; set; }
 			}
 
 		public static class DomainInformationSupport

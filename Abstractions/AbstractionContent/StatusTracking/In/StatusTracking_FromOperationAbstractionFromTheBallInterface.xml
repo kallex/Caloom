@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
-    <StatusItem name="UpdateConnectionThisSideMD5List_Connection" displayName="VariableType: Connection" description="Connection object.">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateConnectionThisSideMD5List_RootPathForMD5List" displayName="TargetDefinitionType: RootPathForMD5List" description="Root path for MD5 list">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="UpdateConnectionThisSideMD5List_RetrieveMD5ListFromPathPrefix" displayName="MethodExecuteType: RetrieveMD5ListFromPathPrefix" description="Retrieve MD5 sorted alphabetically">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
     <StatusItem name="ExecuteRemoteCalledConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -31,19 +22,13 @@
     <StatusItem name="PublishCollaborationContentOverConnection_Connection" displayName="TargetDefinitionType: Connection" description="Connection object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PublishCollaborationContentOverConnection_UpdateOtherSideMD5List" displayName="MethodExecuteType: UpdateOtherSideMD5List" description="Call remote side to retrieve its MD5 list of contents">
+    <StatusItem name="PublishCollaborationContentOverConnection_CallSyncConnectionContentToDeviceToSend" displayName="OperationExecuteType: CallSyncConnectionContentToDeviceToSend" description="Call sync content to device">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PublishCollaborationContentOverConnection_UpdateThisSideMD5List" displayName="MethodExecuteType: UpdateThisSideMD5List" description="Update this side MD5 list">
+    <StatusItem name="PublishCollaborationContentOverConnection_CallDeviceSyncToSendContent" displayName="MethodExecuteType: CallDeviceSyncToSendContent" description="Call device sync to copy content">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PublishCollaborationContentOverConnection_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PublishCollaborationContentOverConnection_CallPackageAndPushCollaborationContent" displayName="OperationExecuteType: CallPackageAndPushCollaborationContent" description="Call actual package and push">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PublishCollaborationContentOverConnection_CallOtherSideProcessingForPushedContent" displayName="MethodExecuteType: CallOtherSideProcessingForPushedContent" description="Call other side processing for pushed content">
+    <StatusItem name="PublishCollaborationContentOverConnection_CallOtherSideProcessingForCopiedContent" displayName="MethodExecuteType: CallOtherSideProcessingForCopiedContent" description="Call other side to process copied content">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="SetCategoryLinkingForConnection_CategoryLinkingParameters" displayName="TargetDefinitionType: CategoryLinkingParameters" description="Deserialized operation parameters">
@@ -56,6 +41,27 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="SetCategoryLinkingForConnection_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_Connection" displayName="VariableType: Connection" description="Connection to sync">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_PackageContentListingProcessID" displayName="TargetDefinitionType: PackageContentListingProcessID" description="Process ID for listing  package contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_ExecuteContentListingProcess" displayName="MethodExecuteType: ExecuteContentListingProcess" description="Process execution to list package content items">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_PackageContentListingProcess" displayName="TargetDefinitionType: PackageContentListingProcess" description="Process for listing  package contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_ContentListingResult" displayName="TargetDefinitionType: ContentListingResult" description="Content listing result">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_SyncTargetRootFolder" displayName="TargetDefinitionType: SyncTargetRootFolder" description="Target root folder for sync-copy">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncConnectionContentToDeviceToSend_CopyContentsToSyncRoot" displayName="MethodExecuteType: CopyContentsToSyncRoot" description="Copy content listing to sync root">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="PackageAndPushCollaborationContent_ConnectionID" displayName="VariableType: ConnectionID" description="Connection ID to push the content with">
@@ -267,11 +273,6 @@
     </StatusItem>
   </StatusItems>
   <Groups>
-    <Group name="UpdateConnectionThisSideMD5List">
-      <ItemRef itemName="UpdateConnectionThisSideMD5List_Connection" />
-      <ItemRef itemName="UpdateConnectionThisSideMD5List_RootPathForMD5List" />
-      <ItemRef itemName="UpdateConnectionThisSideMD5List_RetrieveMD5ListFromPathPrefix" />
-    </Group>
     <Group name="ExecuteRemoteCalledConnectionOperation">
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_InputStream" />
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_OutputStream" />
@@ -282,18 +283,25 @@
     <Group name="PublishCollaborationContentOverConnection">
       <ItemRef itemName="PublishCollaborationContentOverConnection_ConnectionID" />
       <ItemRef itemName="PublishCollaborationContentOverConnection_Connection" />
-      <ItemRef itemName="PublishCollaborationContentOverConnection_UpdateOtherSideMD5List" />
-      <ItemRef itemName="PublishCollaborationContentOverConnection_UpdateThisSideMD5List" />
-      <ItemRef itemName="PublishCollaborationContentOverConnection_StoreObject" />
-      <ItemRef itemName="PublishCollaborationContentOverConnection_CallPackageAndPushCollaborationContent" />
-      <ItemRef itemName="PublishCollaborationContentOverConnection_CallOtherSideProcessingForPushedContent" />
-      <GroupRef groupName="PackageAndPushCollaborationContent" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_CallSyncConnectionContentToDeviceToSend" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_CallDeviceSyncToSendContent" />
+      <ItemRef itemName="PublishCollaborationContentOverConnection_CallOtherSideProcessingForCopiedContent" />
+      <GroupRef groupName="SyncConnectionContentToDeviceToSend" />
     </Group>
     <Group name="SetCategoryLinkingForConnection">
       <ItemRef itemName="SetCategoryLinkingForConnection_CategoryLinkingParameters" />
       <ItemRef itemName="SetCategoryLinkingForConnection_Connection" />
       <ItemRef itemName="SetCategoryLinkingForConnection_SetConnectionLinkingData" />
       <ItemRef itemName="SetCategoryLinkingForConnection_StoreObject" />
+    </Group>
+    <Group name="SyncConnectionContentToDeviceToSend">
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_Connection" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_PackageContentListingProcessID" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_ExecuteContentListingProcess" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_PackageContentListingProcess" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_ContentListingResult" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_SyncTargetRootFolder" />
+      <ItemRef itemName="SyncConnectionContentToDeviceToSend_CopyContentsToSyncRoot" />
     </Group>
     <Group name="PackageAndPushCollaborationContent">
       <ItemRef itemName="PackageAndPushCollaborationContent_ConnectionID" />

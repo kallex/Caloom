@@ -1367,6 +1367,12 @@ namespace TheBall
             return blob;
         }
 
+        public static IEnumerable<IListBlobItem> GetOwnerBlobListing(this IContainerOwner owner, string directoryLocation, bool withMetaData = false)
+        {
+            string storageListingPrefix = GetOwnerContentLocation(owner, directoryLocation);
+            return StorageSupport.CurrActiveContainer.GetBlobListing(storageListingPrefix, withMetaData);
+        }
+
         public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)
         {
             string storageListingPrefix = container.Name + "/" + directoryLocation;
@@ -1510,6 +1516,12 @@ namespace TheBall
             return directories;
         }
 
+        public static string RemoveOwnerPrefixIfExists(string contentLocation)
+        {
+            if (contentLocation.StartsWith("acc/") || contentLocation.StartsWith("grp/"))
+                return contentLocation.Substring(AccOrGrpPlusIDPathLength);
+            return contentLocation;
+        }
     }
 
     public class ReferenceOutdatedException : Exception

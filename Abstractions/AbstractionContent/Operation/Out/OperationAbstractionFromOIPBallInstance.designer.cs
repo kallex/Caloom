@@ -7,6 +7,29 @@ using System.Drawing;
 using System.IO;
 
 		namespace AaltoGlobalImpact.OIP { 
+				public class ListConnectionPackageContentsParameters 
+		{
+				public TheBall.CORE.Process Process ;
+				}
+		
+		public class ListConnectionPackageContents 
+		{
+				private static void PrepareParameters(ListConnectionPackageContentsParameters parameters)
+		{
+					}
+				public static void Execute(ListConnectionPackageContentsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string ConnectionID = ListConnectionPackageContentsImplementation.GetTarget_ConnectionID(parameters.Process);	
+				string[] CallPickCategorizedContentConnectionOutput;
+		{ // Local block to allow local naming
+			PickCategorizedContentToConnectionParameters operationParameters = ListConnectionPackageContentsImplementation.CallPickCategorizedContentConnection_GetParameters(ConnectionID);
+			var operationReturnValue = PickCategorizedContentToConnection.Execute(operationParameters);
+			CallPickCategorizedContentConnectionOutput = ListConnectionPackageContentsImplementation.CallPickCategorizedContentConnection_GetOutput(operationReturnValue, ConnectionID);						
+		} // Local block closing
+				ListConnectionPackageContentsImplementation.ExecuteMethod_SetContentsAsProcessOutput(parameters.Process, CallPickCategorizedContentConnectionOutput);		
+				}
+				}
 				public class PickCategorizedContentToConnectionParameters 
 		{
 				public string ConnectionID ;

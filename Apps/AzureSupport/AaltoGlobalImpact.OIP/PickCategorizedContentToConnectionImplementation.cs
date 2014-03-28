@@ -79,13 +79,17 @@ namespace AaltoGlobalImpact.OIP
             var locationCategoriesTuples = binaryFiles.CollectionContent
                                                       .Select(bf => new Tuple<string, List<Category>>(bf.RelativeLocation, bf.Categories.CollectionContent))
                                                       .Union(linkToContents.CollectionContent
-                                                                           .Select(linkTo => new Tuple<string, List<Category>>(linkTo.RelativeLocation, linkTo.Categories.CollectionContent)))
+                                                                           .Select(linkTo => new Tuple<string, List<Category>>(linkTo.RelativeLocation, 
+                                                                               linkTo.Categories != null ? linkTo.Categories.CollectionContent : new List<Category>())))
                                                       .Union(embeddedContents.CollectionContent
-                                                                             .Select(embedded => new Tuple<string, List<Category>>(embedded.RelativeLocation, embedded.Categories.CollectionContent)))
+                                                                             .Select(embedded => new Tuple<string, List<Category>>(embedded.RelativeLocation, 
+                                                                                 embedded.Categories != null ? embedded.Categories.CollectionContent : new List<Category>())))
                                                       .Union(images.CollectionContent
-                                                                   .Select(image => new Tuple<string, List<Category>>(image.RelativeLocation, image.Categories.CollectionContent)))
+                                                                   .Select(image => new Tuple<string, List<Category>>(image.RelativeLocation, 
+                                                                       image.Categories != null ? image.Categories.CollectionContent : new List<Category>())))
                                                       .Union(textContents.CollectionContent
-                                                                         .Select(txtC => new Tuple<string, List<Category>>(txtC.RelativeLocation, txtC.Categories.CollectionContent))).ToArray();
+                                                                         .Select(txtC => new Tuple<string, List<Category>>(txtC.RelativeLocation, 
+                                                                             txtC.Categories != null ? txtC.Categories.CollectionContent : new List<Category>()))).ToArray();
                     
                         
 
@@ -107,11 +111,5 @@ namespace AaltoGlobalImpact.OIP
             return new PickCategorizedContentToConnectionReturnValue { ContentLocations = contentToTransferLocations };
         }
 
-        public void test()
-        {
-            PickCategorizedContentToConnectionParameters par = new PickCategorizedContentToConnectionParameters {};
-            PickCategorizedContentToConnectionReturnValue returnValue = PickCategorizedContentToConnection.Execute(par);
-            var done = returnValue.ContentLocations;
-        }
     }
 }

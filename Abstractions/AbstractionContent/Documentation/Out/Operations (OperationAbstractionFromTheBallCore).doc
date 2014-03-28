@@ -3229,6 +3229,127 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Sets the redirection file for owner.
 		</div>
+		</p><h1>SyncCopyContentToDeviceTarget (AuthenticatedAsActiveDeviceID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Sync-copy content to device target. Compare both sides with MD5, delete files that do not exist in copy source.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AuthenticatedAsActiveDeviceID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Authenticated as device source for copying
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( AuthenticatedAsActiveDeviceID )</h2>
+		<p>		<div class="MsoNormal" >
+		AuthenticatedAsActiveDevice object
+		</div>
+		</p><h2>Target Definition: ContentRootLocation ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Content root location
+		</div>
+		</p><h2>Target Definition: ThisSideContentMD5List ( ContentRootLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		This side content MD5 list
+		</div>
+		</p><h2>Method Call: CallPrepareTargetAndListItemsToCopy ( AuthenticatedAsActiveDevice, ThisSideContentMD5List )</h2>
+		<p>		<div class="MsoNormal" >
+		Call cleanup and retrieve list to copy from target device
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ItemsToCopy
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentItemLocationWithMD5[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Items to copy to target
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ItemsDeleted
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentItemLocationWithMD5[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Items deleted on target
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: CopyItemsToCopyToTargetDevice ( AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Copy items to copy to target device
+		</div>
+		</p><h2>Return Value : SyncCopyContentToDeviceTargetReturnValue ( CallPrepareTargetAndListItemsToCopyOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CopiedItems
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentItemLocationWithMD5[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Copied items
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DeletedItems
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		ContentItemLocationWithMD5[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Deleted items
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>UnregisterEmailAddress (AccountID, EmailAddress)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

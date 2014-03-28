@@ -1,6 +1,29 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="AaltoGlobalImpact.OIP">
+    <Operation name="ListConnectionPackageContents">
+      <OperationSpec>
+        <Description>List connection package contents for process</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Process" dataType="TheBall.CORE.Process" designDesc="Process object to perform the listing to" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="ConnectionID" dataType="string" designDesc="Connection ID from process" state="implemented">
+            <Parameter name="Process" />
+          </TargetDefinition>
+          <OperationExecute name="CallPickCategorizedContentConnection" targetOperationName="PickCategorizedContentToConnection" designDesc="Call operation for picking content" state="implemented">
+            <Target name="ConnectionID" />
+            <ReturnValue name="ContentLocations" dataType="string[]" designDesc="Content locations" state="implemented" />
+          </OperationExecute>
+          <MethodExecute name="SetContentsAsProcessOutput" designDesc="Set contents as process output as semantic full names: ContentLocation and ContentMD5" state="implemented">
+            <Parameter name="Process" />
+            <Target name="CallPickCategorizedContentConnectionOutput" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="PickCategorizedContentToConnection">
       <OperationSpec>
         <Description>

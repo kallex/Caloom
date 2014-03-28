@@ -7,25 +7,7 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Interface { 
-				public class UpdateConnectionThisSideMD5ListParameters 
-		{
-				public Connection Connection ;
-				}
-		
-		public class UpdateConnectionThisSideMD5List 
-		{
-				private static void PrepareParameters(UpdateConnectionThisSideMD5ListParameters parameters)
-		{
-					}
-				public static void Execute(UpdateConnectionThisSideMD5ListParameters parameters)
-		{
-						PrepareParameters(parameters);
-					string RootPathForMD5List = UpdateConnectionThisSideMD5ListImplementation.GetTarget_RootPathForMD5List(parameters.Connection);	
-				string[] RetrieveMD5ListFromPathPrefixOutput = UpdateConnectionThisSideMD5ListImplementation.ExecuteMethod_RetrieveMD5ListFromPathPrefix(RootPathForMD5List);		
-				}
-				}
-
-		    public class ExecuteRemoteCalledConnectionOperationParameters 
+				public class ExecuteRemoteCalledConnectionOperationParameters 
 		{
 				public System.IO.Stream InputStream ;
 				public System.IO.Stream OutputStream ;
@@ -58,16 +40,14 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = PublishCollaborationContentOverConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_UpdateOtherSideMD5List(Connection);		
-				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_UpdateThisSideMD5List(Connection);		
-				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
 				
 		{ // Local block to allow local naming
-			PackageAndPushCollaborationContentParameters operationParameters = PublishCollaborationContentOverConnectionImplementation.CallPackageAndPushCollaborationContent_GetParameters(parameters.ConnectionID);
-			PackageAndPushCollaborationContent.Execute(operationParameters);
+			SyncConnectionContentToDeviceToSendParameters operationParameters = PublishCollaborationContentOverConnectionImplementation.CallSyncConnectionContentToDeviceToSend_GetParameters(Connection);
+			SyncConnectionContentToDeviceToSend.Execute(operationParameters);
 									
 		} // Local block closing
-				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallOtherSideProcessingForPushedContent(Connection);		
+				bool CallDeviceSyncToSendContentOutput = PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallDeviceSyncToSendContent(Connection);		
+				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallOtherSideProcessingForCopiedContent(Connection, CallDeviceSyncToSendContentOutput);		
 				}
 				}
 		
@@ -80,6 +60,27 @@ using System.IO;
 				Connection Connection = SetCategoryLinkingForConnectionImplementation.GetTarget_Connection(CategoryLinkingParameters);	
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_SetConnectionLinkingData(Connection, CategoryLinkingParameters);		
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
+				}
+				}
+				public class SyncConnectionContentToDeviceToSendParameters 
+		{
+				public Connection Connection ;
+				}
+		
+		public class SyncConnectionContentToDeviceToSend 
+		{
+				private static void PrepareParameters(SyncConnectionContentToDeviceToSendParameters parameters)
+		{
+					}
+				public static void Execute(SyncConnectionContentToDeviceToSendParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string PackageContentListingProcessID = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessID(parameters.Connection);	
+				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_ExecuteContentListingProcess(PackageContentListingProcessID);		
+				TheBall.CORE.Process PackageContentListingProcess = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcess(PackageContentListingProcessID);	
+				TheBall.CORE.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
+				string SyncTargetRootFolder = SyncConnectionContentToDeviceToSendImplementation.GetTarget_SyncTargetRootFolder(parameters.Connection);	
+				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_CopyContentsToSyncRoot(ContentListingResult, SyncTargetRootFolder);		
 				}
 				}
 				public class PackageAndPushCollaborationContentParameters 

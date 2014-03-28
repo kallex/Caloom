@@ -884,4 +884,36 @@ using System.IO;
 				RemoteDeviceCoreOperationImplementation.ExecuteMethod_SerializeDeviceOperationDataToOutput(parameters.OutputStream, DeviceOperationData);		
 				}
 				}
+				public class SyncCopyContentToDeviceTargetParameters 
+		{
+				public string AuthenticatedAsActiveDeviceID ;
+				}
+		
+		public class SyncCopyContentToDeviceTarget 
+		{
+				private static void PrepareParameters(SyncCopyContentToDeviceTargetParameters parameters)
+		{
+					}
+				public class CallPrepareTargetAndListItemsToCopyReturnValue 
+		{
+				public ContentItemLocationWithMD5[] ItemsToCopy ;
+				public ContentItemLocationWithMD5[] ItemsDeleted ;
+				}
+				public static SyncCopyContentToDeviceTargetReturnValue Execute(SyncCopyContentToDeviceTargetParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = SyncCopyContentToDeviceTargetImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.AuthenticatedAsActiveDeviceID);	
+				string ContentRootLocation = SyncCopyContentToDeviceTargetImplementation.GetTarget_ContentRootLocation(AuthenticatedAsActiveDevice);	
+				ContentItemLocationWithMD5[] ThisSideContentMD5List = SyncCopyContentToDeviceTargetImplementation.GetTarget_ThisSideContentMD5List(ContentRootLocation);	
+				CallPrepareTargetAndListItemsToCopyReturnValue CallPrepareTargetAndListItemsToCopyOutput = SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CallPrepareTargetAndListItemsToCopy(AuthenticatedAsActiveDevice, ThisSideContentMD5List);		
+				SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CopyItemsToCopyToTargetDevice(AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput);		
+				SyncCopyContentToDeviceTargetReturnValue returnValue = SyncCopyContentToDeviceTargetImplementation.Get_ReturnValue(CallPrepareTargetAndListItemsToCopyOutput);
+		return returnValue;
+				}
+				}
+				public class SyncCopyContentToDeviceTargetReturnValue 
+		{
+				public ContentItemLocationWithMD5[] CopiedItems ;
+				public ContentItemLocationWithMD5[] DeletedItems ;
+				}
 		 } 

@@ -143,6 +143,15 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
             switch (operationName)
             {
+                case "PublishToConnection":
+                    {
+                        var parameters = new PublishCollaborationContentOverConnectionParameters
+                            {
+                                ConnectionID = form["ConnectionID"]
+                            };
+                        PublishCollaborationContentOverConnection.Execute(parameters);
+                        break;
+                    }
                 case "FinalizeConnectionAfterGroupAuthorization":
                     {
                         var parameters = new FinalizeConnectionAfterGroupAuthorizationParameters

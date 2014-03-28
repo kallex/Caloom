@@ -9,35 +9,11 @@ namespace TheBall.Interface
             return Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner, connectionId);
         }
 
-        public static void ExecuteMethod_UpdateOtherSideMD5List(Connection connection)
-        {
-            ConnectionCommunicationData connectionCommunication = new ConnectionCommunicationData
-                {
-                    ActiveSideConnectionID = connection.ID,
-                    ProcessRequest = "SYNCHRONIZEMD5LIST",
-                    ReceivingSideConnectionID = connection.OtherSideConnectionID
-                };
-            connectionCommunication = DeviceSupport.ExecuteRemoteOperation<ConnectionCommunicationData>(connection.DeviceID,
-                                                                              "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionCommunication);
-            connection.OtherSideMD5List.Clear();
-            connection.OtherSideMD5List.AddRange(connectionCommunication.ProcessResultArray);
-        }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static void ExecuteMethod_CallOtherSideProcessingForCopiedContent(Connection connection, bool callDeviceSyncToSendContentOutput)
         {
-            connection.StoreInformation();
-        }
-
-        public static PackageAndPushCollaborationContentParameters CallPackageAndPushCollaborationContent_GetParameters(string connectionId)
-        {
-            return new PackageAndPushCollaborationContentParameters
-                {
-                    ConnectionID = connectionId
-                };
-        }
-
-        public static void ExecuteMethod_CallOtherSideProcessingForPushedContent(Connection connection)
-        {
+            if (callDeviceSyncToSendContentOutput == false)
+                return;
             ConnectionCommunicationData connectionCommunication = new ConnectionCommunicationData
             {
                 ActiveSideConnectionID = connection.ID,
@@ -49,8 +25,16 @@ namespace TheBall.Interface
                                                      connectionCommunication);
         }
 
-        public static void ExecuteMethod_UpdateThisSideMD5List(Connection connection)
+        public static SyncConnectionContentToDeviceToSendParameters CallSyncConnectionContentToDeviceToSend_GetParameters(Connection connection)
         {
+            return new SyncConnectionContentToDeviceToSendParameters {Connection = connection};
+        }
+
+        public static bool ExecuteMethod_CallDeviceSyncToSendContent(Connection connection)
+        {
+            var result = SyncCopyContentToDeviceTarget.Execute(
+                new SyncCopyContentToDeviceTargetParameters { AuthenticatedAsActiveDeviceID = connection.DeviceID});
+            return result.CopiedItems.Length > 0 || result.DeletedItems.Length > 0;
         }
     }
 }

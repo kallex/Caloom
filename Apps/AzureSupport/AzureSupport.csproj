@@ -130,6 +130,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
       <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
     </Compile>
+    <Compile Include="AaltoGlobalImpact.OIP\ListConnectionPackageContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\MigrateActivitiesAndBlogsToTextContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />
     <Compile Include="TheBall.CORE\SemanticInformationItem.cs" />
+    <Compile Include="TheBall.CORE\SyncCopyContentToDeviceTargetImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringSummariesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringItemsImplementation.cs" />
     <Compile Include="TheBall.CORE\ProcessAllResourceUsagesToOwnerCollectionsImplementation.cs" />
@@ -330,8 +332,8 @@
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
+    <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
-    <Compile Include="TheBall.Interface\UpdateConnectionThisSideMD5ListImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />

@@ -878,38 +878,46 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateOtherSideMD5List ( Connection )" level="2">
+            <Header text="Operation Call: CallSyncConnectionContentToDeviceToSend ( Connection )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Call remote side to retrieve its MD5 list of contents</TextContent>
+                  <TextContent>Call sync content to device</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateThisSideMD5List ( Connection )" level="2">
+            <Header text="Method Call: CallDeviceSyncToSendContent ( Connection )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Update this side MD5 list</TextContent>
+                  <TextContent>Call device sync to copy content</TextContent>
                 </Text>
               </Paragraph>
-            </Header>
-            <Header text="Method Call: StoreObject ( Connection )" level="2">
               <Paragraph>
-                <Text>
-                  <TextContent>Store connection object</TextContent>
-                </Text>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>WasAnythingCopiedOrDeleted</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Was anything copied in the sync operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
-            <Header text="Operation Call: CallPackageAndPushCollaborationContent ( ConnectionID )" level="2">
+            <Header text="Method Call: CallOtherSideProcessingForCopiedContent ( Connection, CallDeviceSyncToSendContentOutput )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Call actual package and push</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: CallOtherSideProcessingForPushedContent ( Connection )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Call other side processing for pushed content</TextContent>
+                  <TextContent>Call other side to process copied content</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -947,6 +955,83 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SyncConnectionContentToDeviceToSend (Connection)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Sync connection content to device to send
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Connection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Connection to sync</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PackageContentListingProcessID ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process ID for listing  package contents</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteContentListingProcess ( PackageContentListingProcessID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process execution to list package content items</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PackageContentListingProcess ( PackageContentListingProcessID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process for listing  package contents</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ContentListingResult ( PackageContentListingProcess )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Content listing result</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncTargetRootFolder ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Target root folder for sync-copy</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CopyContentsToSyncRoot ( ContentListingResult, SyncTargetRootFolder )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy content listing to sync root</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -1038,76 +1123,6 @@
                 <Text>
                   <TextContent>Store connection object</TextContent>
                 </Text>
-              </Paragraph>
-            </Header>
-          </Header>
-          <Header text="UpdateConnectionThisSideMD5List (Connection)" level="1">
-            <Header text="Specifications" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Update connection this side MD5 list. Takes into account whether this is receiving or sending side.
-          Note! The Connection object is not stored during the processing</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>Connection</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Connection</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Connection object.</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: RootPathForMD5List ( Connection )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Root path for MD5 list</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: RetrieveMD5ListFromPathPrefix ( RootPathForMD5List )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Retrieve MD5 sorted alphabetically</TextContent>
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Output value field" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>MD5List</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string[]</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>MD5 list of contents under the folder</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
               </Paragraph>
             </Header>
           </Header>

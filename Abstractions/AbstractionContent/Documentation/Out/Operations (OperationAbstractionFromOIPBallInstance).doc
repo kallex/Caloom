@@ -762,6 +762,64 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>ListConnectionPackageContents (Process)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		List connection package contents for process
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process object to perform the listing to
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: ConnectionID ( Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Connection ID from process
+		</div>
+		</p><h2>Operation Call: CallPickCategorizedContentConnection ( ConnectionID )</h2>
+		<p>		<div class="MsoNormal" >
+		Call operation for picking content
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ContentLocations
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Content locations
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: SetContentsAsProcessOutput ( CallPickCategorizedContentConnectionOutput, Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Set contents as process output as semantic full names: ContentLocation and ContentMD5
+		</div>
 		</p><h1>MigrateActivitiesAndBlogsToTextContents (Process)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

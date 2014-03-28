@@ -61,8 +61,6 @@
           <InformationItem name="CategoryLinks" logicalDataType="InformationObject" informationObjectName="CategoryLink" isCollection="true"/>
           <InformationItem name="IncomingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
           <InformationItem name="OutgoingPackages" logicalDataType="InformationObject" informationObjectName="TransferPackage" isCollection="true"/>
-          <InformationItem name="ThisSideMD5List" logicalDataType="Text_Short" isCollection="true"/>
-          <InformationItem name="OtherSideMD5List" logicalDataType="Text_Short" isCollection="true"/>
           <InformationItem name="OperationNameToListPackageContents" logicalDataType="Text_Short"/>
           <InformationItem name="OperationNameToProcessReceived" logicalDataType="Text_Short"/>
           <InformationItem name="OperationNameToUpdateThisSideCategories" logicalDataType="Text_Short"/>
@@ -126,26 +124,6 @@
       </InformationObject>
     </InformationModel>
     <Operations>
-      <Operation name="UpdateConnectionThisSideMD5List">
-        <OperationSpec>
-          <Description>Update connection this side MD5 list. Takes into account whether this is receiving or sending side.
-          Note! The Connection object is not stored during the processing</Description>
-        </OperationSpec>
-        <Parameters>
-          <Parameter name="Connection" dataType="Connection" designDesc="Connection object." state="implemented" />
-        </Parameters>
-        <Execution>
-          <SequentialExecution>
-            <TargetDefinition name="RootPathForMD5List" dataType="string" designDesc="Root path for MD5 list" state="implemented">
-              <Parameter name="Connection"/>
-            </TargetDefinition>
-            <MethodExecute name="RetrieveMD5ListFromPathPrefix" designDesc="Retrieve MD5 sorted alphabetically" state="implemented">
-              <Target name="RootPathForMD5List"/>
-              <ReturnValue dataType="string[]" name="MD5List" designDesc="MD5 list of contents under the folder" state="implemented"/>
-            </MethodExecute>
-          </SequentialExecution>
-        </Execution>
-      </Operation>
       <Operation name="ExecuteRemoteCalledConnectionOperation">
         <OperationSpec>
           <Description>
@@ -183,20 +161,16 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
               <Parameter name="ConnectionID"/>
             </TargetDefinition>
-            <MethodExecute name="UpdateOtherSideMD5List" designDesc="Call remote side to retrieve its MD5 list of contents" state="implemented">
+            <OperationExecute name="CallSyncConnectionContentToDeviceToSend" targetOperationName="SyncConnectionContentToDeviceToSend" designDesc="Call sync content to device" state="implemented">
               <Target name="Connection"/>
-            </MethodExecute>
-            <MethodExecute name="UpdateThisSideMD5List" designDesc="Update this side MD5 list" state="implemented">
-              <Target name="Connection"/>
-            </MethodExecute>
-            <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
-              <Target name="Connection"/>
-            </MethodExecute>
-            <OperationExecute name="CallPackageAndPushCollaborationContent" targetOperationName="PackageAndPushCollaborationContent" designDesc="Call actual package and push" state="implemented">
-              <Parameter name="ConnectionID"/>
             </OperationExecute>
-            <MethodExecute name="CallOtherSideProcessingForPushedContent" designDesc="Call other side processing for pushed content" state="implemented">
+            <MethodExecute name="CallDeviceSyncToSendContent" designDesc="Call device sync to copy content" state="implemented">
               <Target name="Connection"/>
+              <ReturnValue name="WasAnythingCopiedOrDeleted" dataType="bool" designDesc="Was anything copied in the sync operation" state="implemented"/>
+            </MethodExecute>
+            <MethodExecute name="CallOtherSideProcessingForCopiedContent" designDesc="Call other side to process copied content" state="implemented">
+              <Target name="Connection"/>
+              <Target name="CallDeviceSyncToSendContentOutput"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
@@ -219,6 +193,39 @@
               <Target name="Connection"/>
             </MethodExecute>
           </SequentialExecution>        
+        </Execution>
+      </Operation>
+      <Operation name="SyncConnectionContentToDeviceToSend">
+        <OperationSpec>
+          <Description>
+            Sync connection content to device to send
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Connection" dataType="Connection" designDesc="Connection to sync" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="PackageContentListingProcessID" dataType="string" designDesc="Process ID for listing  package contents" state="implemented">
+              <Parameter name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="ExecuteContentListingProcess" designDesc="Process execution to list package content items" state="implemented">
+              <Target name="PackageContentListingProcessID"/>
+            </MethodExecute>
+            <TargetDefinition name="PackageContentListingProcess" dataType="TheBall.CORE.Process" designDesc="Process for listing  package contents" state="implemented">
+              <Target name="PackageContentListingProcessID"/>
+            </TargetDefinition>
+            <TargetDefinition name="ContentListingResult" dataType="TheBall.CORE.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
+              <Target name="PackageContentListingProcess"/>
+            </TargetDefinition>
+            <TargetDefinition name="SyncTargetRootFolder" dataType="string" designDesc="Target root folder for sync-copy" state="implemented">
+              <Parameter name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="CopyContentsToSyncRoot" designDesc="Copy content listing to sync root" state="implemented">
+              <Target name="ContentListingResult"/>
+              <Target name="SyncTargetRootFolder"/>
+            </MethodExecute>
+          </SequentialExecution>
         </Execution>
       </Operation>
       <Operation name="PackageAndPushCollaborationContent">

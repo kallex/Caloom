@@ -3283,6 +3283,142 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SyncCopyContentToDeviceTarget (AuthenticatedAsActiveDeviceID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync-copy content to device target. Compare both sides with MD5, delete files that do not exist in copy source.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AuthenticatedAsActiveDeviceID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Authenticated as device source for copying</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( AuthenticatedAsActiveDeviceID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>AuthenticatedAsActiveDevice object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ContentRootLocation ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Content root location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ThisSideContentMD5List ( ContentRootLocation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>This side content MD5 list</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CallPrepareTargetAndListItemsToCopy ( AuthenticatedAsActiveDevice, ThisSideContentMD5List )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call cleanup and retrieve list to copy from target device</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ItemsToCopy</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Items to copy to target</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ItemsDeleted</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Items deleted on target</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CopyItemsToCopyToTargetDevice ( AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy items to copy to target device</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : SyncCopyContentToDeviceTargetReturnValue ( CallPrepareTargetAndListItemsToCopyOutput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CopiedItems</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Copied items</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DeletedItems</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Deleted items</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UnregisterEmailAddress (AccountID, EmailAddress)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
