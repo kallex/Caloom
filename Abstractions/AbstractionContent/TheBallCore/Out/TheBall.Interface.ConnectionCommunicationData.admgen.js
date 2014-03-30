@@ -8,6 +8,7 @@ var ConnectionCommunicationData {
 	ProcessResultString: string;
 	ProcessResultArray: string[];
 	CategoryCollectionData: CategoryInfo[];
+	LinkItems: CategoryLinkItem[];
 
     constructor() {
 					this.ActiveSideConnectionID = ko.observable(this.ActiveSideConnectionID);
@@ -17,6 +18,7 @@ var ConnectionCommunicationData {
 			this.ProcessResultString = ko.observable(this.ProcessResultString);
 			this.ProcessResultArray = ko.observableArray(this.ProcessResultArray);
 			this.CategoryCollectionData = ko.observableArray(this.CategoryCollectionData);
+			this.LinkItems = ko.observableArray(this.LinkItems);
     }
 }
 

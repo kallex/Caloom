@@ -16,6 +16,7 @@ namespace TheBall.Interface
             connection.Description = description;
             connection.IsActiveParty = false;
             connection.OtherSideConnectionID = otherSideConnectionId;
+            connection.DeviceID = InformationContext.CurrentExecutingForDevice.ID;
             return connection;
         }
 

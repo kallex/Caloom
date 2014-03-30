@@ -22,6 +22,9 @@ namespace TheBall.Interface
                 case "UpdateConnectionThisSideCategories":
                     processID = connection.ProcessIDToUpdateThisSideCategories;
                     break;
+                case "ProcessReceived":
+                    processID = connection.ProcessIDToProcessReceived;
+                    break;
                 default:
                     throw new NotImplementedException("Connection process execution not implemented for: " + connectionProcessToExecute);
             }

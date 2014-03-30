@@ -499,6 +499,24 @@
     <StatusItem name="SetCategoryHierarchyAndOrderInNodeSummary_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store modified objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_Process" displayName="VariableType: Process" description="Process that has ConnectionID as initial parameter">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_Connection" displayName="TargetDefinitionType: Connection" description="Connecton that has received the contents">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_SourceContentRoot" displayName="TargetDefinitionType: SourceContentRoot" description="Source content tree root. Obtained through Connection/DeviceMemberShipID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_TargetContentRoot" displayName="TargetDefinitionType: TargetContentRoot" description="Target content root folder. Defined as root for the current owner.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_CategoryMap" displayName="TargetDefinitionType: CategoryMap" description="Category mapping dictionary from source to target">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessConnectionReceivedData_CallMigrationSupport" displayName="MethodExecuteType: CallMigrationSupport" description="Call migration support to perform migration">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="UpdateConnectionThisSideCategories_Process" displayName="VariableType: Process" description="Process that has ConnectionID as initial parameter">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -757,6 +775,14 @@
       <ItemRef itemName="SetCategoryHierarchyAndOrderInNodeSummary_NodeSummaryContainer" />
       <ItemRef itemName="SetCategoryHierarchyAndOrderInNodeSummary_SetCategoryOrder" />
       <ItemRef itemName="SetCategoryHierarchyAndOrderInNodeSummary_StoreObject" />
+    </Group>
+    <Group name="ProcessConnectionReceivedData">
+      <ItemRef itemName="ProcessConnectionReceivedData_Process" />
+      <ItemRef itemName="ProcessConnectionReceivedData_Connection" />
+      <ItemRef itemName="ProcessConnectionReceivedData_SourceContentRoot" />
+      <ItemRef itemName="ProcessConnectionReceivedData_TargetContentRoot" />
+      <ItemRef itemName="ProcessConnectionReceivedData_CategoryMap" />
+      <ItemRef itemName="ProcessConnectionReceivedData_CallMigrationSupport" />
     </Group>
     <Group name="UpdateConnectionThisSideCategories">
       <ItemRef itemName="UpdateConnectionThisSideCategories_Process" />

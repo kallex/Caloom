@@ -46,6 +46,8 @@ using TheBall.CORE;
 				public string[] ProcessResultArray { get; set; }
 				[DataMember]
 				public CategoryInfo[] CategoryCollectionData { get; set; }
+				[DataMember]
+				public CategoryLinkItem[] LinkItems { get; set; }
 			}
 
 			[DataContract]

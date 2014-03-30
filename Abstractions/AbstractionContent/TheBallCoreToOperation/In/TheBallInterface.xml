@@ -12,6 +12,7 @@
             <InterfaceItem name="ProcessResultString" logicalDataType="Text_Short"/>
             <InterfaceItem name="ProcessResultArray" logicalDataType="Text_Short" isCollection="true"/>
             <ObjectInstance name="CategoryCollectionData" interfaceObjectName="CategoryInfo" isCollection="true"/>
+            <ObjectInstance name="LinkItems" interfaceObjectName="CategoryLinkItem" isCollection="true"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="CategoryInfo" designDesc="Category">

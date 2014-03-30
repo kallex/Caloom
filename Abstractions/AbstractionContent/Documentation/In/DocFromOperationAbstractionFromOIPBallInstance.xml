@@ -1019,6 +1019,76 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ProcessConnectionReceivedData (Process)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Process connection received data with given process.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Process</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.Process</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Process that has ConnectionID as initial parameter</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Connection ( Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connecton that has received the contents</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SourceContentRoot ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Source content tree root. Obtained through Connection/DeviceMemberShipID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: TargetContentRoot" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Target content root folder. Defined as root for the current owner.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CategoryMap ( Connection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Category mapping dictionary from source to target</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CallMigrationSupport ( SourceContentRoot, TargetContentRoot, CategoryMap, Process )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call migration support to perform migration</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PublishGroupContentToPublicArea (GroupID, UseWorker)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

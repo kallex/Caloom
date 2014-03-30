@@ -36,6 +36,13 @@ namespace TheBall.Interface
                                                                                             connectionCommunicationData.ReceivingSideConnectionID);
                         thisSideConnection.OtherSideCategories.Clear();
                         thisSideConnection.OtherSideCategories.AddRange(connectionCommunicationData.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()));
+                        thisSideConnection.CategoryLinks.Clear();
+                        thisSideConnection.CategoryLinks.AddRange(connectionCommunicationData.LinkItems.Select(catLinkItem => new CategoryLink
+                            {
+                                SourceCategoryID = catLinkItem.SourceCategoryID,
+                                TargetCategoryID = catLinkItem.TargetCategoryID,
+                                LinkingType = catLinkItem.LinkingType
+                            }));
                         thisSideConnection.StoreInformation();
                         connectionCommunicationData.CategoryCollectionData = thisSideConnection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray();
                         break;

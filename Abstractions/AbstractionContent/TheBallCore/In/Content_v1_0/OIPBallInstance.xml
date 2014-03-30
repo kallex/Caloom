@@ -2164,6 +2164,37 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="ProcessConnectionReceivedData">
+        <OperationSpec>
+          <Description>
+            Process connection received data with given process.
+          </Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Process" dataType="TheBall.CORE.Process" designDesc="Process that has ConnectionID as initial parameter" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connecton that has received the contents" state="implemented">
+              <Parameter name="Process"/>
+            </TargetDefinition>
+            <TargetDefinition name="SourceContentRoot" dataType="string" designDesc="Source content tree root. Obtained through Connection/DeviceMemberShipID" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <TargetDefinition name="TargetContentRoot" dataType="string" designDesc="Target content root folder. Defined as root for the current owner." state="implemented" />
+            <TargetDefinition name="CategoryMap" dataType="Dictionary&lt;string, string&gt;" designDesc="Category mapping dictionary from source to target" state="implemented">
+              <Target name="Connection"/>
+            </TargetDefinition>
+            <MethodExecute name="CallMigrationSupport" designDesc="Call migration support to perform migration" state="implemented">
+              <Parameter name="Process"/>
+              <Target name="SourceContentRoot"/>
+              <Target name="TargetContentRoot"/>
+              <Target name="CategoryMap"/>
+            </MethodExecute>
+           </SequentialExecution>
+        </Execution>
+      </Operation>
+                 
       <Operation name="UpdateConnectionThisSideCategories">
         <OperationSpec>
           <Description>Update this side categories of connection</Description>

@@ -133,6 +133,7 @@
     <Compile Include="AaltoGlobalImpact.OIP\ListConnectionPackageContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\MigrateActivitiesAndBlogsToTextContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\ProcessConnectionReceivedDataImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="OperationSupport.cs" />

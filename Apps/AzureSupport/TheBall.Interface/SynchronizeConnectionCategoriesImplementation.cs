@@ -21,7 +21,13 @@ namespace TheBall.Interface
                     ActiveSideConnectionID = connection.ID,
                     ReceivingSideConnectionID = connection.OtherSideConnectionID,
                     ProcessRequest = "SYNCCATEGORIES",
-                    CategoryCollectionData = connection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray()
+                    CategoryCollectionData = connection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray(),
+                    LinkItems = connection.CategoryLinks.Select(catLink => new CategoryLinkItem
+                        {
+                            SourceCategoryID = catLink.SourceCategoryID,
+                            TargetCategoryID = catLink.TargetCategoryID,
+                            LinkingType = catLink.LinkingType
+                        }).ToArray()
                 };
             var result = DeviceSupport.ExecuteRemoteOperation<ConnectionCommunicationData>(connection.DeviceID,
                                                                                            "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionData);

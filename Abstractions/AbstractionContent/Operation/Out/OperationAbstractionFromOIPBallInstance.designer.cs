@@ -625,6 +625,26 @@ using System.IO;
 				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_StoreObject(NodeSummaryContainer);		
 				}
 				}
+				public class ProcessConnectionReceivedDataParameters 
+		{
+				public TheBall.CORE.Process Process ;
+				}
+		
+		public class ProcessConnectionReceivedData 
+		{
+				private static void PrepareParameters(ProcessConnectionReceivedDataParameters parameters)
+		{
+					}
+				public static void Execute(ProcessConnectionReceivedDataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.Interface.Connection Connection = ProcessConnectionReceivedDataImplementation.GetTarget_Connection(parameters.Process);	
+				string SourceContentRoot = ProcessConnectionReceivedDataImplementation.GetTarget_SourceContentRoot(Connection);	
+				string TargetContentRoot = ProcessConnectionReceivedDataImplementation.GetTarget_TargetContentRoot();	
+				Dictionary<string, string> CategoryMap = ProcessConnectionReceivedDataImplementation.GetTarget_CategoryMap(Connection);	
+				ProcessConnectionReceivedDataImplementation.ExecuteMethod_CallMigrationSupport(parameters.Process, SourceContentRoot, TargetContentRoot, CategoryMap);		
+				}
+				}
 				public class UpdateConnectionThisSideCategoriesParameters 
 		{
 				public TheBall.CORE.Process Process ;

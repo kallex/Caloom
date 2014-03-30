@@ -1067,6 +1067,54 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>ProcessConnectionReceivedData (Process)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Process connection received data with given process.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.Process
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Process that has ConnectionID as initial parameter
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Connection ( Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Connecton that has received the contents
+		</div>
+		</p><h2>Target Definition: SourceContentRoot ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Source content tree root. Obtained through Connection/DeviceMemberShipID
+		</div>
+		</p><h2>Target Definition: TargetContentRoot</h2>
+		<p>		<div class="MsoNormal" >
+		Target content root folder. Defined as root for the current owner.
+		</div>
+		</p><h2>Target Definition: CategoryMap ( Connection )</h2>
+		<p>		<div class="MsoNormal" >
+		Category mapping dictionary from source to target
+		</div>
+		</p><h2>Method Call: CallMigrationSupport ( SourceContentRoot, TargetContentRoot, CategoryMap, Process )</h2>
+		<p>		<div class="MsoNormal" >
+		Call migration support to perform migration
+		</div>
 		</p><h1>PublishGroupContentToPublicArea (GroupID, UseWorker)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

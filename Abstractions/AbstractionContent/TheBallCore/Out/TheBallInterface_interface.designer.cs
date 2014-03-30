@@ -45,6 +45,9 @@ using TheBall.CORE;
 			[DataMember]
 			public List<CategoryInfo> CategoryCollectionData= new List<CategoryInfo>();
 
+			[DataMember]
+			public List<CategoryLinkItem> LinkItems= new List<CategoryLinkItem>();
+
 			
 			}
 			[DataContract]
