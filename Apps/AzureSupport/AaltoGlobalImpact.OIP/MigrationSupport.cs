@@ -137,11 +137,12 @@ namespace AaltoGlobalImpact.OIP
                     sourceProcessItems.Add(ownerStrippedName, currProcessItem);
                     isAddingNewItem = true;
                 }
-                bool sourceChangedSinceProcessing = currProcessItem.GetInputValue("SourceMD5") == sourceBlob.Properties.ContentMD5;
+                bool sourceChangedSinceProcessing = currProcessItem.GetInputValue("SourceMD5") != sourceBlob.Properties.ContentMD5;
                 if (!sourceChangedSinceProcessing)
                     continue;
                 if(!isAddingNewItem)
                     processItemsToUpdate.Add(currProcessItem);
+                currProcessItem.SetInputValue("SourceMD5", sourceBlob.Properties.ContentMD5);
                 if (candidateType == "AaltoGlobalImpact.OIP.TextContent")
                 {
                     
@@ -165,7 +166,7 @@ namespace AaltoGlobalImpact.OIP
         public static CategoryCollection GetTargetItemCategories(CategoryCollection sourceCategories, CategoryCollection targetCategoryCollection, Dictionary<string, string> categoryMap)
         {
             var targetItemCategories = new CategoryCollection();
-            targetItemCategories.CollectionContent.AddRange(targetCategoryCollection.CollectionContent);
+            //targetItemCategories.CollectionContent.AddRange(targetCategoryCollection.CollectionContent);
             var activeCategories = sourceCategories.GetIDSelectedArray();
             List<string> targetCategoryIDs = new List<string>();
             foreach (var activeCategory in activeCategories)
@@ -175,7 +176,12 @@ namespace AaltoGlobalImpact.OIP
                     targetCategoryIDs.Add(categoryMap[activeCategory.ID]);
                 }
             }
-            targetItemCategories.SelectedIDCommaSeparated = string.Join(",", targetCategoryIDs.ToArray());
+            targetCategoryIDs = targetCategoryIDs.Distinct().ToList();
+            //targetItemCategories.SelectedIDCommaSeparated = string.Join(",", targetCategoryIDs.ToArray());
+            targetItemCategories.CollectionContent
+                                .AddRange(targetCategoryIDs
+                                              .Select(catID => targetCategoryCollection.CollectionContent.FirstOrDefault(cat => cat.ID == catID))
+                                              .Where(cat => cat != null));
             return targetItemCategories;
         }
     }
