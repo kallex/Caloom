@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
         {
             var nativeLinkDictionary = connection.CategoryLinks.Select(catLink =>
                 {
-                    if (catLink.LinkingType == "ONE2ONE")
+                    if (catLink.LinkingType == TheBall.Interface.Category.LINKINGTYPE_ONE)
                     {
                         var nativeSourceID = connection.OtherSideCategories.FirstOrDefault(osCat => osCat.ID == catLink.SourceCategoryID).NativeCategoryID;
                         var nativeTargetID = connection.ThisSideCategories.FirstOrDefault(tsCat => tsCat.ID == catLink.TargetCategoryID).NativeCategoryID;

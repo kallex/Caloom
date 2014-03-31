@@ -34,26 +34,28 @@ namespace AaltoGlobalImpact.OIP
                 .Where(tCat => childrenInclusiveSourceIDs.Contains(tCat.ID))
                 .Select(tCat => tCat.NativeCategoryID).OrderBy(str => str)
                 .ToList();
-            var matchIDs = transferCategories
+            var exactMatchSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == INT.Category.LINKINGTYPE_ONE).Select(catLink => catLink.SourceCategoryID).ToArray();
+            var exactMatchIDs = transferCategories
+                .Where(tCat => exactMatchSourceIDs.Contains(tCat.ID))
                 .Select(tCat => tCat.NativeCategoryID).OrderBy(str => str)
                 .ToList();
             var result =
                 sourceCategoryList
-                    .Where(cat => matchesOrParentMatches(cat, matchIDs, childrenInclusiveIDs, sourceCategoryDict))
+                    .Where(cat => matchesOrParentMatches(cat, exactMatchIDs, childrenInclusiveIDs, sourceCategoryDict))
                     .ToArray();
             return result.ToDictionary(cat => cat.ID);
         }
 
-        private static bool matchesOrParentMatches(Category cat, List<string> matchIDs, List<string> childrenInclusiveIDs, Dictionary<string, Category> categoryDict)
+        private static bool matchesOrParentMatches(Category cat, List<string> exactMatchIDs, List<string> childrenInclusiveIDs, Dictionary<string, Category> categoryDict)
         {
-            if (matchIDs.BinarySearch(cat.ID) >= 0)
+            if (exactMatchIDs != null && exactMatchIDs.BinarySearch(cat.ID) >= 0)
                 return true;
             if (childrenInclusiveIDs.BinarySearch(cat.ID) >= 0)
                 return true;
             if (cat.ParentCategoryID != null && categoryDict.ContainsKey(cat.ParentCategoryID))
             {
                 Category parentCategory = categoryDict[cat.ParentCategoryID];
-                return matchesOrParentMatches(parentCategory, matchIDs, childrenInclusiveIDs, categoryDict);
+                return matchesOrParentMatches(parentCategory, null, childrenInclusiveIDs, categoryDict);
             }
             return false;
         }
