@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,6 +51,24 @@ namespace AaltoGlobalImpact.OIP
                     {
                         storedBlob = processTextContent((TextContent)iObject, targetContentRoot, categoryMap,
                             targetCategoryCollection, processID);
+                    } else if (iObject is LinkToContent)
+                    {
+                        storedBlob = processLinkToContent((LinkToContent) iObject, targetContentRoot, categoryMap,
+                                                          targetCategoryCollection, processID);
+                    } else if (iObject is EmbeddedContent)
+                    {
+                        storedBlob = processEmbeddedContent((EmbeddedContent)iObject, targetContentRoot, categoryMap,
+                                                          targetCategoryCollection, processID);
+                    }
+                    else if (iObject is BinaryFile)
+                    {
+                        storedBlob = processBinaryContent((BinaryFile)iObject, targetContentRoot, categoryMap,
+                                                          targetCategoryCollection, processID);
+                    }
+                    else if (iObject is Image)
+                    {
+                        storedBlob = processImageContent((Image)iObject, targetContentRoot, categoryMap,
+                                                          targetCategoryCollection, processID);
                     }
                     if (storedBlob != null)
                     {
@@ -81,6 +100,57 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
+        private static CloudBlob processImageContent(Image image, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var sourceCategories = image.Categories;
+            var targetItemCategories = GetTargetItemCategories(sourceCategories, targetCategoryCollection, categoryMap);
+            image.Categories = targetItemCategories;
+            image.RelativeLocation = StorageSupport.GetOwnerContentLocation(owner,
+                                                                                  string.Format("{0}AaltoGlobalImpact.OIP/Image/{1}", targetContentRootLocation, image.ID));
+            image.GeneratedByProcessID = processID;
+            if (image.ImageData != null)
+            {
+                image.ImageData.FixCurrentOwnerLocation();
+            }
+            if (image.Locations != null)
+                image.Locations.CollectionContent.ForEach(location => location.FixCurrentOwnerLocation());
+            var storedBlob = image.StoreInformationMasterFirst(owner, true, overwriteIfExists: true);
+            return storedBlob;
+        }
+
+        private static CloudBlob processBinaryContent(BinaryFile binary, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var sourceCategories = binary.Categories;
+            var targetItemCategories = GetTargetItemCategories(sourceCategories, targetCategoryCollection, categoryMap);
+            binary.Categories = targetItemCategories;
+            binary.RelativeLocation = StorageSupport.GetOwnerContentLocation(owner,
+                                                                                  string.Format("{0}AaltoGlobalImpact.OIP/BinaryFile/{1}", targetContentRootLocation, binary.ID));
+            binary.GeneratedByProcessID = processID;
+            if (binary.Data != null)
+            {
+                binary.Data.FixCurrentOwnerLocation();
+            }
+            var storedBlob = binary.StoreInformationMasterFirst(owner, true, overwriteIfExists: true);
+            return storedBlob;
+        }
+
+        private static CloudBlob processEmbeddedContent(EmbeddedContent embedded, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var sourceCategories = embedded.Categories;
+            var targetItemCategories = GetTargetItemCategories(sourceCategories, targetCategoryCollection, categoryMap);
+            embedded.Categories = targetItemCategories;
+            embedded.RelativeLocation = StorageSupport.GetOwnerContentLocation(owner,
+                                                                                  string.Format("{0}AaltoGlobalImpact.OIP/EmbeddedContent/{1}", targetContentRootLocation, embedded.ID));
+            embedded.GeneratedByProcessID = processID;
+            if (embedded.Locations != null)
+                embedded.Locations.CollectionContent.ForEach(location => location.FixCurrentOwnerLocation());
+            var storedBlob = embedded.StoreInformationMasterFirst(owner, true, overwriteIfExists: true);
+            return storedBlob;
+        }
+
         private static CloudBlob processTextContent(TextContent textContent, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
         {
             var owner = InformationContext.CurrentOwner;
@@ -99,6 +169,27 @@ namespace AaltoGlobalImpact.OIP
             var storedBlob = textContent.StoreInformationMasterFirst(owner, true, overwriteIfExists: true);
             return storedBlob;
         }
+
+        private static CloudBlob processLinkToContent(LinkToContent linkToContent, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var sourceCategories = linkToContent.Categories;
+            var targetItemCategories = GetTargetItemCategories(sourceCategories, targetCategoryCollection, categoryMap);
+            linkToContent.Categories = targetItemCategories;
+            linkToContent.RelativeLocation = StorageSupport.GetOwnerContentLocation(owner,
+                                                                                  string.Format("{0}AaltoGlobalImpact.OIP/LinkToContent/{1}", targetContentRootLocation, linkToContent.ID));
+            linkToContent.GeneratedByProcessID = processID;
+            if (linkToContent.ImageData != null)
+            {
+                linkToContent.ImageData.FixCurrentOwnerLocation();
+            }
+            if (linkToContent.Locations != null)
+                linkToContent.Locations.CollectionContent.ForEach(location => location.FixCurrentOwnerLocation());
+            var storedBlob = linkToContent.StoreInformationMasterFirst(owner, true, overwriteIfExists: true);
+            return storedBlob;
+        }
+
+
 
 
         private static void deleteProcessItem(ProcessItem itemToDelete)
@@ -127,6 +218,12 @@ namespace AaltoGlobalImpact.OIP
 
         private static void determineHowToProcessBlobs(CloudBlockBlob[] sourceBlobs, Dictionary<string, ProcessItem> sourceProcessItems, out List<ProcessItem> processItemsToAdd, out List<ProcessItem> processItemsToUpdate, out List<ProcessItem> processItemsToDelete)
         {
+            string[] validInformationObjectTypes = new string[]
+                {
+                    "AaltoGlobalImpact.OIP.TextContent",
+                    "AaltoGlobalImpact.OIP.MediaContent", "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.EmbeddedContent",
+                    "AaltoGlobalImpact.OIP.LinkToContent", "AaltoGlobalImpact.OIP.Image"
+                };
             processItemsToAdd = new List<ProcessItem>();
             processItemsToUpdate = new List<ProcessItem>();
             processItemsToDelete = new List<ProcessItem>();
@@ -134,7 +231,7 @@ namespace AaltoGlobalImpact.OIP
             foreach (var sourceBlob in sourceBlobs)
             {
                 string candidateType = sourceBlob.GetBlobInformationObjectType();
-                bool continueProcessing = candidateType == "AaltoGlobalImpact.OIP.TextContent" || candidateType == "AaltoGlobalImpact.OIP.MediaContent";
+                bool continueProcessing = validInformationObjectTypes.Contains(candidateType);
                 if (!continueProcessing)
                     continue;
                 string ownerStrippedName = StorageSupport.RemoveOwnerPrefixIfExists(sourceBlob.Name);
