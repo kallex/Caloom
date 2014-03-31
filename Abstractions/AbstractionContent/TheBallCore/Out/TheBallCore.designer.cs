@@ -14029,7 +14029,7 @@ InformationInput.AuthenticatedDeviceID
 			public List< SemanticInformationItem > Outputs = new List< SemanticInformationItem >();
 			[DataMember]
 			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
-			
+
 			}
 			[DataContract]
 			[Serializable]

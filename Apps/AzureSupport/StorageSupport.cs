@@ -860,7 +860,7 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
-        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections)
+        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections, bool overwriteIfExists = false)
         {
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
             if(beforeStoreHandler != null)
@@ -900,7 +900,7 @@ namespace TheBall
                 }
                 referenceInstance.MasterETag = realMaster.ETag;
             }
-            CloudBlob storedResult = StoreInformation(informationObject, owner);
+            CloudBlob storedResult = StoreInformation(informationObject, owner, overwriteIfExists);
             if(reconnectMastersAndCollections)
             {
                 informationObject.ReconnectMastersAndCollections(true);
@@ -1371,6 +1371,14 @@ namespace TheBall
         {
             string storageListingPrefix = GetOwnerContentLocation(owner, directoryLocation);
             return StorageSupport.CurrActiveContainer.GetBlobListing(storageListingPrefix, withMetaData);
+        }
+
+        public static void FixCurrentOwnerLocation(this IInformationObject informationObject)
+        {
+            string relativeLocation = informationObject.RelativeLocation;
+            string strippedLocation = RemoveOwnerPrefixIfExists(relativeLocation);
+            string fixedLocation = GetOwnerContentLocation(InformationContext.CurrentOwner, strippedLocation);
+            informationObject.RelativeLocation = fixedLocation;
         }
 
         public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)

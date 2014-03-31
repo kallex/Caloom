@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="AaltoGlobalImpact.OIP\ListConnectionPackageContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\MigrateActivitiesAndBlogsToTextContentsImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\MigrationSupport.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\ProcessConnectionReceivedDataImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeviceSupport.cs" />
     <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
+    <Compile Include="TheBall.CORE\ExtProcessItem.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />

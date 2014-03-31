@@ -69,7 +69,10 @@ namespace TheBall
                     currTargetBlobLocation = fullRootPath + currSource.ContentLocation;
                 }
                 else if (currTarget != null)
+                {
+                    currTargetIX++;
                     currTargetBlobLocation = fullRootPath + currTarget.ContentLocation;
+                }
 
                 // at this stage we have either both set (that's copy) or just target set (that's delete)
                 if (currSourceBlobLocation != null && currTargetBlobLocation != null)

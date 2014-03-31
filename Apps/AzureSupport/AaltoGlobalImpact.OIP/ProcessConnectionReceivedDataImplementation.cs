@@ -46,7 +46,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_CallMigrationSupport(Process process, string sourceContentRoot, string targetContentRoot, Dictionary<string, string> categoryMap)
         {
-            int i = 0;
+            MigrationSupport.MigrateAaltoGlobalImpactContent(process, sourceContentRoot, targetContentRoot, categoryMap);
         }
     }
 }
