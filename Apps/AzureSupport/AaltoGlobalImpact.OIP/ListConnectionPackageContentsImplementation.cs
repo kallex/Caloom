@@ -1,4 +1,6 @@
+using System.IO;
 using System.Linq;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
 
@@ -31,22 +33,49 @@ namespace AaltoGlobalImpact.OIP
             process.ProcessItems.Clear();
             foreach (string contentLocation in callPickCategorizedContentConnectionOutput)
             {
-                SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
+                bool isMediaContentType = InformationObjectSupport.IsContentGivenType(contentLocation, typeof (MediaContent).FullName);
+                if (isMediaContentType)
+                {
+                    string extension = Path.GetExtension(contentLocation);
+                    string fullLocationWithoutExtension = contentLocation.Substring(0, contentLocation.Length - extension.Length);
+                    var mediaContentBlobs = InformationContext.CurrentOwner.GetOwnerBlobListing(fullLocationWithoutExtension, true);
+                    foreach (CloudBlockBlob mediaContentBlob in mediaContentBlobs)
                     {
-                        ItemFullType = "ContentLocation",
-                        ItemValue = contentLocation
-                    };
-                var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, contentLocation);
-                blob.FetchAttributes();
-                SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
-                    {
-                        ItemFullType = "ContentMD5",
-                        ItemValue = blob.Properties.ContentMD5
-                    };
-                ProcessItem processItem = new ProcessItem();
-                processItem.Outputs.Add(semanticItemForLocation);
-                processItem.Outputs.Add(semanticItemForMD5);
-                process.ProcessItems.Add(processItem);
+                        SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
+                        {
+                            ItemFullType = "ContentLocation",
+                            ItemValue = mediaContentBlob.Name
+                        };
+                        SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
+                        {
+                            ItemFullType = "ContentMD5",
+                            ItemValue = mediaContentBlob.Properties.ContentMD5
+                        };
+                        ProcessItem processItem = new ProcessItem();
+                        processItem.Outputs.Add(semanticItemForLocation);
+                        processItem.Outputs.Add(semanticItemForMD5);
+                        process.ProcessItems.Add(processItem);
+                    }
+                }
+                else
+                {
+                    var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, contentLocation);
+                    blob.FetchAttributes();
+                    SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
+                        {
+                            ItemFullType = "ContentLocation",
+                            ItemValue = contentLocation
+                        };
+                    SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
+                        {
+                            ItemFullType = "ContentMD5",
+                            ItemValue = blob.Properties.ContentMD5
+                        };
+                    ProcessItem processItem = new ProcessItem();
+                    processItem.Outputs.Add(semanticItemForLocation);
+                    processItem.Outputs.Add(semanticItemForMD5);
+                    process.ProcessItems.Add(processItem);
+                }
             }
         }
     }

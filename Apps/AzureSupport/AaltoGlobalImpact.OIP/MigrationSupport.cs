@@ -40,28 +40,43 @@ namespace AaltoGlobalImpact.OIP
                 string informationObjectType = processItem.GetInputValue("InformationObjectType");
                 string contentMD5 = null;
                 string eTag = null;
-                CloudBlob storedBlob = null;
+                List<CloudBlob> storedBlobs = new List<CloudBlob>();
                 string targetLocation = null;
                 if (informationObjectType != null && informationObjectType != mediaContentFullName)
                 {
                     var iObject = StorageSupport.RetrieveInformation(sourceLocation, informationObjectType, null, owner);
+                    CloudBlob storedBlob = null;
                     if (iObject is TextContent)
-                        storedBlob = processTextContent((TextContent) iObject, targetContentRoot, categoryMap,
+                    {
+                        storedBlob = processTextContent((TextContent)iObject, targetContentRoot, categoryMap,
                             targetCategoryCollection, processID);
-                    processItem.SetOutputValue("InformationObjectType", informationObjectType);
-                    targetLocation = StorageSupport.RemoveOwnerPrefixIfExists(storedBlob.Name);
+                    }
+                    if (storedBlob != null)
+                    {
+                        processItem.SetOutputValue("InformationObjectType", informationObjectType);
+                        targetLocation = StorageSupport.RemoveOwnerPrefixIfExists(storedBlob.Name);
+                        contentMD5 = storedBlob.Properties.ContentMD5;
+                        eTag = storedBlob.Properties.ETag;
+                        processItem.SetOutputValue("ContentMD5", contentMD5);
+                        processItem.SetOutputValue("ETag", eTag);
+                        processItem.SetOutputValue("TargetLocation", targetLocation);
+                    }
                 }
-                else
+                else if(informationObjectType == mediaContentFullName)
                 {
-                    
-                }
-                if (storedBlob != null)
-                {
-                    contentMD5 = storedBlob.Properties.ContentMD5;
-                    eTag = storedBlob.Properties.ETag;
+                    string fileNamePart = Path.GetFileName(sourceLocation);
+                    string targetBlobPath = StorageSupport.GetOwnerContentLocation(owner,
+                                                                                          string.Format("{0}AaltoGlobalImpact.OIP/MediaContent/{1}", targetContentRoot, fileNamePart));
+                    var targetBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, targetBlobPath);
+                    var sourceBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, sourceLocation);
+                    targetBlob.CopyFromBlob(sourceBlob);
+                    targetLocation = StorageSupport.RemoveOwnerPrefixIfExists(targetBlob.Name);
+                    contentMD5 = targetBlob.Properties.ContentMD5;
+                    eTag = targetBlob.Properties.ETag;
                     processItem.SetOutputValue("ContentMD5", contentMD5);
                     processItem.SetOutputValue("ETag", eTag);
                     processItem.SetOutputValue("TargetLocation", targetLocation);
+
                 }
             }
         }
