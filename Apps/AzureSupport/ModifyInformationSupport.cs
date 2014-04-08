@@ -529,22 +529,6 @@ namespace TheBall
             }
         }
 
-        public static void SetBinaryContent(IInformationObject rootObject, NameValueCollection fileEntries, HttpFileCollection fileContent, IContainerOwner containerOwner)
-        {
-            foreach (string fileKey in fileEntries.AllKeys)
-            {
-                HttpPostedFile postedFile = null;
-                if (fileContent.AllKeys.Contains(fileKey))
-                {
-                    postedFile = fileContent[fileKey];
-                }
-                //if (String.IsNullOrWhiteSpace(postedFile.FileName))
-                //    continue;
-                string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
-                SetBinaryContent(containerOwner, contentInfo, rootObject, postedFile);
-            }
-        }
-
         public static void SetFieldValues(IInformationObject rootObject, NameValueCollection fieldEntries)
         {
             NameValueCollection internalObjectFixedEntries = new NameValueCollection();
