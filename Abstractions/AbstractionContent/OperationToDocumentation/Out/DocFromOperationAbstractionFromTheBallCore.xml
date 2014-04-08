@@ -3270,6 +3270,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: AddEncodedFormDataToBinaryFiles ( BinaryContentFiles, RootObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add encoded form data to binary files</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: SetFieldValues ( FieldValues, RootObject )" level="2">
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">

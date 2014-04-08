@@ -129,6 +129,11 @@
             <Parameter name="HttpFormData" />
             <Parameter name="HttpFileData" />
           </TargetDefinition>
+          <MethodExecute name="AddEncodedFormDataToBinaryFiles" designDesc="Add encoded form data to binary files" state="implemented">
+            <Parameter name="RootObject" />
+            <Parameter name="HttpFormData" />
+            <Target name="BinaryContentFiles" />
+          </MethodExecute>
           <MethodExecute name="SetFieldValues" designDesc="Set field values of created object." state="designApproved">
             <Parameter name="RootObject" />
             <Target name="FieldValues" />

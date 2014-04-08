@@ -108,6 +108,7 @@ using System.IO;
 				SetObjectTreeValuesImplementation.ExecuteMethod_DecodeEncodedRawHTMLValues(FieldValues);		
 				NameValueCollection ObjectLinkValues = SetObjectTreeValuesImplementation.GetTarget_ObjectLinkValues(parameters.RootObject, parameters.HttpFormData);	
 				Dictionary<string, MediaFileData> BinaryContentFiles = SetObjectTreeValuesImplementation.GetTarget_BinaryContentFiles(parameters.RootObject, parameters.HttpFormData, parameters.HttpFileData);	
+				SetObjectTreeValuesImplementation.ExecuteMethod_AddEncodedFormDataToBinaryFiles(parameters.RootObject, parameters.HttpFormData, BinaryContentFiles);		
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetFieldValues(parameters.RootObject, FieldValues);		
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetObjectLinks(parameters.RootObject, ObjectLinkValues);		
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetBinaryContent(parameters.RootObject, BinaryContentFiles);		

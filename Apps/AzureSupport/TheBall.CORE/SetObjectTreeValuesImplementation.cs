@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Linq;
 
@@ -27,7 +28,7 @@ namespace TheBall.CORE
                 if (String.IsNullOrEmpty(key))
                     continue;
                 var value = httpFormData[key];
-                if (key.StartsWith("File_") == false && key.StartsWith("Object_") == false)
+                if (key.StartsWith("File_") == false && key.StartsWith("Object_") == false && key.StartsWith("FileEmbedded_") == false)
                 {
                     if (key.Contains("___"))
                     {
@@ -111,14 +112,13 @@ namespace TheBall.CORE
 
             foreach (var key in httpFormData.AllKeys)
             {
-                var value = httpFormData[key];
                 if (key.StartsWith("File_"))
                 {
                     HttpPostedFile httpFile = null;
                     if (httpFileData.AllKeys.Contains(key))
                         httpFile = httpFileData[key];
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
-                    resultDict.Add(dictKey, new MediaFileData { HttpFile = httpFile});
+                    resultDict.Add(dictKey, httpFile != null ? new MediaFileData { HttpFile = httpFile} : null);
                 }
             }
             foreach (var key in httpFileData.AllKeys)
@@ -127,10 +127,45 @@ namespace TheBall.CORE
                 {
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
                     if (resultDict.ContainsKey(dictKey) == false)
-                        resultDict.Add(dictKey, new MediaFileData { HttpFile = httpFileData[key]});
+                    {
+                        var httpFile = httpFileData[key];
+                        resultDict.Add(dictKey, httpFile != null ? new MediaFileData { HttpFile = httpFile } : null);
+                    }
                 }
             }
             return resultDict;
+        }
+
+        public static void ExecuteMethod_AddEncodedFormDataToBinaryFiles(IInformationObject rootObject, NameValueCollection httpFormData, Dictionary<string, MediaFileData> binaryContentFiles)
+        {
+            const string base64CommaValue = "base64,";
+            const int base64Length = 7; // base64CommaValue.Length;
+
+            string objectID = rootObject.ID;
+            foreach (var key in httpFormData.AllKeys)
+            {
+                if (key.StartsWith("FileEmbedded_"))
+                {
+                    string dictKey = prefixWithIDIfMissing(key, "FileEmbedded_", objectID);
+                    dictKey = dictKey.Replace("FileEmbedded_", "File_");
+                    string formValue = httpFormData[key];
+                    MediaFileData mediaFileData = null;
+                    if (String.IsNullOrEmpty(formValue) == false)
+                    {
+                        int fileNameEndIX = formValue.IndexOf(':');
+                        string fileName = formValue.Substring(0, fileNameEndIX);
+                        int base64CommaIX = formValue.IndexOf(base64CommaValue, System.StringComparison.Ordinal);
+                        var base64Data = formValue.Substring(base64CommaIX + base64Length);
+                        byte[] realData = Convert.FromBase64String(base64Data);
+                        mediaFileData = new MediaFileData
+                            {
+                                FileName = fileName,
+                                FileContent = realData
+                            };
+                    }
+                    binaryContentFiles.Add(dictKey, mediaFileData);
+                }
+            }
         }
 
         public static void ExecuteMethod_SetFieldValues(IInformationObject rootObject, NameValueCollection fieldValues)

@@ -3232,6 +3232,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Filtered binary content value collection. Filter by File_ prefix, add ID to keys.
 		</div>
+		</p><h2>Method Call: AddEncodedFormDataToBinaryFiles ( BinaryContentFiles, RootObject, HttpFormData )</h2>
+		<p>		<div class="MsoNormal" >
+		Add encoded form data to binary files
+		</div>
 		</p><h2>Method Call: SetFieldValues ( FieldValues, RootObject )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Set field values of created object.
