@@ -569,14 +569,14 @@ namespace TheBall
         }
 
         public static void SetBinaryContent(IContainerOwner containerOwner, string contentInfo, IInformationObject rootObject,
-                                HttpPostedFile postedFile)
+                                MediaFileData mediaFileData)
         {
             int firstIX = contentInfo.IndexOf('_');
             if (firstIX < 0)
                 throw new InvalidDataException("Invalid field data on binary content");
             string containerID = contentInfo.Substring(0, firstIX);
             string containerField = contentInfo.Substring(firstIX + 1);
-            rootObject.SetMediaContent(containerOwner, containerID, containerField, postedFile);
+            rootObject.SetMediaContent(containerOwner, containerID, containerField, mediaFileData);
         }
 
         public static void InitializeChainAndReturnPropertyOwningObject(IInformationObject createdObject, string objectProp, out object actualContainingObject, out string fieldPropertyName)

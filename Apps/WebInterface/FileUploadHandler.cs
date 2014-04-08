@@ -511,7 +511,7 @@ namespace WebInterface
                         owningInformationObject = binaryFile;
                         mediaContent = binaryFile.Data;
                     }
-                    mediaContent.SetMediaContent(owner, mediaContent.ID, uploaded_file);
+                    mediaContent.SetMediaContent(owner, mediaContent.ID, new MediaFileData { HttpFile = uploaded_file});
                     owningInformationObject.StoreInformation();
                 }
 

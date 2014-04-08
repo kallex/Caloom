@@ -481,7 +481,7 @@
               <Parameter name="RootObject"/>
               <Parameter name="HttpFormData"/>
             </TargetDefinition>
-            <TargetDefinition dataType="Dictionary&lt;string, System.Web.HttpPostedFile&gt;" name="BinaryContentFiles" designDesc="Filtered binary content value collection. Filter by File_ prefix, add ID to keys." state="designApproved">
+            <TargetDefinition dataType="Dictionary&lt;string, MediaFileData&gt;" name="BinaryContentFiles" designDesc="Filtered binary content value collection. Filter by File_ prefix, add ID to keys." state="designApproved">
               <Parameter name="RootObject"/>
               <Parameter name="HttpFormData"/>
               <Parameter name="HttpFileData"/>

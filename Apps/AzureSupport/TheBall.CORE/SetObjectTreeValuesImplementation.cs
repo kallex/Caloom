@@ -102,11 +102,11 @@ namespace TheBall.CORE
             return idToInject + "_" + str;
         }
 
-        public static Dictionary<string, HttpPostedFile> GetTarget_BinaryContentFiles(IInformationObject rootObject, NameValueCollection httpFormData, HttpFileCollection httpFileData)
+        public static Dictionary<string, MediaFileData> GetTarget_BinaryContentFiles(IInformationObject rootObject, NameValueCollection httpFormData, HttpFileCollection httpFileData)
         {
             if (httpFileData == null)
-                return new Dictionary<string, HttpPostedFile>();
-            Dictionary<string, HttpPostedFile> resultDict = new Dictionary<string, HttpPostedFile>(httpFileData.Count);
+                return new Dictionary<string, MediaFileData>();
+            Dictionary<string, MediaFileData> resultDict = new Dictionary<string, MediaFileData>(httpFileData.Count);
             string objectID = rootObject.ID;
 
             foreach (var key in httpFormData.AllKeys)
@@ -118,7 +118,7 @@ namespace TheBall.CORE
                     if (httpFileData.AllKeys.Contains(key))
                         httpFile = httpFileData[key];
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
-                    resultDict.Add(dictKey, httpFile);
+                    resultDict.Add(dictKey, new MediaFileData { HttpFile = httpFile});
                 }
             }
             foreach (var key in httpFileData.AllKeys)
@@ -127,7 +127,7 @@ namespace TheBall.CORE
                 {
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
                     if (resultDict.ContainsKey(dictKey) == false)
-                        resultDict.Add(dictKey, httpFileData[key]);
+                        resultDict.Add(dictKey, new MediaFileData { HttpFile = httpFileData[key]});
                 }
             }
             return resultDict;
@@ -143,7 +143,7 @@ namespace TheBall.CORE
             ModifyInformationSupport.SetObjectLinks(rootObject, objectLinkValues);
         }
 
-        public static void ExecuteMethod_SetBinaryContent(IInformationObject rootObject, Dictionary<string, HttpPostedFile> binaryContentFiles)
+        public static void ExecuteMethod_SetBinaryContent(IInformationObject rootObject, Dictionary<string, MediaFileData> binaryContentFiles)
         {
             foreach (var fileKey in binaryContentFiles.Keys)
             {

@@ -61,9 +61,12 @@ namespace AaltoGlobalImpact.OIP
             if(ID != contentObjectID)
                 return;
             ClearCurrentContent(containerOwner);
-            if (mediaContent is HttpPostedFile)
+            MediaFileData mediaFileData = mediaContent as MediaFileData;
+            if(mediaFileData == null)
+                throw new NotSupportedException("Not supported mediaContent object in SetMediaContent");
+            if (mediaFileData.HttpFile != null)
             {
-                HttpPostedFile postedContent = (HttpPostedFile)mediaContent;
+                HttpPostedFile postedContent = mediaFileData.HttpFile;
                 FileExt = Path.GetExtension(postedContent.FileName);
                 ContentLength = postedContent.ContentLength;
                 string locationFileName = ID + FileExt;
@@ -71,16 +74,14 @@ namespace AaltoGlobalImpact.OIP
                 postedContent.InputStream.Seek(0, SeekOrigin.Begin);
                 StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream);
             }
-            else if(mediaContent is MediaFileData)
+            else
             {
-                MediaFileData mediaFileData = (MediaFileData) mediaContent;
                 FileExt = Path.GetExtension(mediaFileData.FileName);
                 ContentLength = mediaFileData.FileContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
                 StorageSupport.CurrActiveContainer.UploadBlobBinary(RelativeLocation, mediaFileData.FileContent);
-            } else 
-                throw new NotSupportedException("Not supported mediaContent object in SetMediaContent");
+            }
             UpdateAdditionalMediaFormats();
         }
 
@@ -160,10 +161,5 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
-        public class MediaFileData
-        {
-            public string FileName;
-            public byte[] FileContent;
-        }
     }
 }

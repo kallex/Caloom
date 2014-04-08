@@ -33,7 +33,8 @@ namespace AaltoGlobalImpact.OIP
             HttpPostedFile postedFile = files[this.ImageData.ID];
             if (postedFile != null && String.IsNullOrWhiteSpace(postedFile.FileName) == false)
             {
-                addedImage.SetMediaContent(owner, addedImage.ImageData.ID, postedFile);
+                addedImage.SetMediaContent(owner, addedImage.ImageData.ID, 
+                    new MediaFileData { HttpFile = postedFile});
             }
             currImageGroup.ImagesCollection.CollectionContent.Add(addedImage);
             currImageGroup.StoreInformationMasterFirst(owner, true);
