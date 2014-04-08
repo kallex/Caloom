@@ -169,40 +169,55 @@ namespace TheBall
                 out blobCopyList, out targetBlobsToDelete);
             foreach(var blobToDelete in targetBlobsToDelete)
             {
-                bool handled = false;
-                if(customHandler != null)
+                try
                 {
-                    handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
+                    bool handled = false;
+                    if (customHandler != null)
+                    {
+                        handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
+                    }
+                    if (handled == false)
+                        blobToDelete.DeleteWithoutFiringSubscriptions();
                 }
-                if(handled == false)
-                    blobToDelete.DeleteWithoutFiringSubscriptions();
+                catch (WebException wex)
+                {
+                    throw new InvalidDataException("Error with blob deletion: " + blobToDelete.Name, wex);
+                }
             }
             foreach(var blobCopyItem in blobCopyList)
             {
-                CloudBlob targetBlob;
-                if (blobCopyItem.TargetBlob == null)
+                try
                 {
-                    string sourceBlobNameWithoutSourcePrefix = blobCopyItem.SourceBlob.Name.Substring(sourcePathRoot.Length);
-                    string targetBlobName;
-                    if (sourceBlobNameWithoutSourcePrefix.StartsWith("/") && String.IsNullOrEmpty(targetPathRoot))
-                        targetBlobName = sourceBlobNameWithoutSourcePrefix.Substring(1);
+                    CloudBlob targetBlob;
+                    if (blobCopyItem.TargetBlob == null)
+                    {
+                        string sourceBlobNameWithoutSourcePrefix = blobCopyItem.SourceBlob.Name.Substring(sourcePathRoot.Length);
+                        string targetBlobName;
+                        if (sourceBlobNameWithoutSourcePrefix.StartsWith("/") && String.IsNullOrEmpty(targetPathRoot))
+                            targetBlobName = sourceBlobNameWithoutSourcePrefix.Substring(1);
+                        else
+                            targetBlobName = targetPathRoot + sourceBlobNameWithoutSourcePrefix;
+                        //string targetBlobName = String.IsNullOrEmpty(targetPathRoot) ? sourceBlobName.
+                        //string targetBlobName = 
+                        //    blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
+                        targetBlob = targetContainer.GetBlobReference(targetBlobName);
+                    }
                     else
-                        targetBlobName = targetPathRoot + sourceBlobNameWithoutSourcePrefix;
-                    //string targetBlobName = String.IsNullOrEmpty(targetPathRoot) ? sourceBlobName.
-                    //string targetBlobName = 
-                    //    blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
-                    targetBlob = targetContainer.GetBlobReference(targetBlobName);
+                        targetBlob = blobCopyItem.TargetBlob;
+                    bool handled = false;
+                    Console.WriteLine("Processing sync: " + blobCopyItem.SourceBlob.Name + " => " + targetBlob.Name);
+                    if (customHandler != null)
+                    {
+                        handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
+                    }
+                    if (handled == false)
+                        targetBlob.CopyFromBlob(blobCopyItem.SourceBlob);
                 }
-                else
-                    targetBlob = blobCopyItem.TargetBlob;
-                bool handled = false;
-                Console.WriteLine("Processing sync: " + blobCopyItem.SourceBlob.Name + " => " + targetBlob.Name);
-                if(customHandler != null)
+                catch (WebException wex)
                 {
-                    handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
+                    throw new InvalidDataException("Error with blob copy: " + blobCopyItem.SourceBlob.Name, wex);
                 }
-                if(handled == false)
-                    targetBlob.CopyFromBlob(blobCopyItem.SourceBlob);
+
             }
             return targetBlobsToDelete.Count + blobCopyList.Count;
         }

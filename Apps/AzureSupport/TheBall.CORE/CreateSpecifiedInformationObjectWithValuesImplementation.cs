@@ -12,6 +12,12 @@ namespace TheBall.CORE
 {
     public class CreateSpecifiedInformationObjectWithValuesImplementation
     {
+        public static void ExecuteMethod_CatchInvalidDomains(string objectDomainName)
+        {
+            if (SystemSupport.ReservedDomainNames.Contains(objectDomainName))
+                throw new SecurityException("Creation of system namespace objects is not permitted");
+        }
+
         public static IInformationObject GetTarget_CreatedObject(IContainerOwner owner, string objectDomainName, string objectName)
         {
             string objectTypeName = objectDomainName + "." + objectName;
@@ -22,132 +28,19 @@ namespace TheBall.CORE
             return iObj;
         }
 
-        public static NameValueCollection GetTarget_FieldValues(NameValueCollection httpFormData, IInformationObject createdObject)
+        public static void ExecuteMethod_StoreInitialObject(IInformationObject createdObject)
         {
-            NameValueCollection fieldEntries = new NameValueCollection();
-            string objectID = createdObject.ID;
-            foreach (var key in httpFormData.AllKeys)
-            {
-                if (String.IsNullOrEmpty(key))
-                    continue;
-                var value = httpFormData[key];
-                if (key.StartsWith("File_") == false && key.StartsWith("Object_") == false)
+            createdObject.StoreInformationMasterFirst(InformationContext.CurrentOwner, true);
+        }
+
+        public static SetObjectTreeValuesParameters SetObjectValues_GetParameters(NameValueCollection httpFormData, HttpFileCollection httpFileData, IInformationObject createdObject)
+        {
+            return new SetObjectTreeValuesParameters
                 {
-                    if (key.Contains("___"))
-                    {
-                        object actualContainingObject;
-                        string fieldPropertyName;
-                        ModifyInformationSupport.InitializeChainAndReturnPropertyOwningObject(createdObject, key, out actualContainingObject, out fieldPropertyName);
-                        IInformationObject containingObject = actualContainingObject as IInformationObject;
-                        if(containingObject == null)
-                            throw new NotSupportedException("Object property setting at creation only supported for IInformationObject types");
-                        fieldEntries.Add(containingObject.ID + "_" + fieldPropertyName, value);
-                    }
-                    else
-                        fieldEntries.Add(objectID + "_" + key, value);
-                }
-            }
-            return fieldEntries;
+                    RootObject = createdObject,
+                    HttpFormData = httpFormData,
+                    HttpFileData = httpFileData
+                };
         }
-
-        public static NameValueCollection GetTarget_ObjectLinkValues(NameValueCollection httpFormData, IInformationObject createdObject)
-        {
-            NameValueCollection objectEntries = new NameValueCollection();
-            if (httpFormData == null)
-                return objectEntries;
-            string objectID = createdObject.ID;
-            foreach (var key in httpFormData.AllKeys)
-            {
-                var value = httpFormData[key];
-                if (key.StartsWith("Object_"))
-                    objectEntries.Add(key.Replace("Object_", "Object_" + objectID + "_"), value);
-            }
-            return objectEntries;
-        }
-
-        public static Dictionary<string, HttpPostedFile> GetTarget_BinaryContentFiles(NameValueCollection httpFormData, HttpFileCollection httpFileData, IInformationObject createdObject)
-        {
-            if(httpFileData == null)
-                return new Dictionary<string, HttpPostedFile>();
-            Dictionary<string, HttpPostedFile> resultDict = new Dictionary<string, HttpPostedFile>(httpFileData.Count);
-            string objectID = createdObject.ID;
-
-            foreach (var key in httpFormData.AllKeys)
-            {
-                var value = httpFormData[key];
-                if (key.StartsWith("File_"))
-                {
-                    HttpPostedFile httpFile = null;
-                    if (httpFileData.AllKeys.Contains(key))
-                        httpFile = httpFileData[key];
-                    string dictKey = key.Replace("File_", "File_" + objectID + "_");
-                    resultDict.Add(dictKey, httpFile);
-                }
-            }
-            foreach (var key in httpFileData.AllKeys)
-            {
-                if (key.StartsWith("File_"))
-                {
-                    string dictKey = key.Replace("File_", "File_" + objectID + "_");
-                    if (resultDict.ContainsKey(dictKey) == false)
-                        resultDict.Add(dictKey, httpFileData[key]);
-                }
-            }
-            return resultDict;
-        }
-
-
-        public static void ExecuteMethod_SetFieldValues(IInformationObject createdObject, NameValueCollection fieldValues)
-        {
-            ModifyInformationSupport.SetFieldValues(createdObject, fieldValues);
-        }
-
-        public static void ExecuteMethod_SetObjectLinks(IInformationObject createdObject, NameValueCollection objectLinkValues)
-        {
-            ModifyInformationSupport.SetObjectLinks(createdObject, objectLinkValues);
-        }
-
-        public static void ExecuteMethod_StoreInitialObject(IContainerOwner owner, IInformationObject createdObject)
-        {
-            createdObject.StoreInformationMasterFirst(owner, true);
-        }
-
-        public static void ExecuteMethod_SetBinaryContent(IContainerOwner owner, IInformationObject createdObject, Dictionary<string, HttpPostedFile> binaryContentFiles)
-        {
-            foreach (var fileKey in binaryContentFiles.Keys)
-            {
-                string contentInfo = fileKey.Substring(5); // Substring("File_".Length);
-                ModifyInformationSupport.SetBinaryContent(owner, contentInfo, createdObject,
-                                                          binaryContentFiles[fileKey]);
-            }
-        }
-
-        public static void ExecuteMethod_StoreCompleteObject(IContainerOwner owner, IInformationObject createdObject)
-        {
-            createdObject.StoreInformationMasterFirst(owner, false);
-        }
-
-        public static void ExecuteMethod_CatchInvalidDomains(string objectDomainName)
-        {
-            if (SystemSupport.ReservedDomainNames.Contains(objectDomainName))
-                throw new SecurityException("Creation of system namespace objects is not permitted");
-        }
-
-        public static void ExecuteMethod_CreateInternalObjects(NameValueCollection httpFormData, IInformationObject createdObject)
-        {
-            var internalObjectProperties = httpFormData.AllKeys.Where(key => key.Contains("___")).ToArray();
-            foreach (var objectProp in internalObjectProperties)
-            {
-                initializeChainObjects(createdObject, objectProp);
-            }
-        }
-
-        private static void initializeChainObjects(IInformationObject createdObject, string objectProp)
-        {
-            object actualContainingObject;
-            string fieldPropertyName;
-            ModifyInformationSupport.InitializeChainAndReturnPropertyOwningObject(createdObject, objectProp, out actualContainingObject, out fieldPropertyName);
-        }
-
     }
 }

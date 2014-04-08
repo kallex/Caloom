@@ -37,26 +37,9 @@ namespace TheBall
             }
 
             string contentSourceInfo = form["ContentSourceInfo"];
+            var filterFields = new string[] { "ContentSourceInfo" };
             string[] contentSourceInfos = contentSourceInfo.Split(',');
-            NameValueCollection fileEntries = new NameValueCollection();
-            NameValueCollection fieldEntries = new NameValueCollection();
-            NameValueCollection objectEntries = new NameValueCollection();
-            foreach (var key in form.AllKeys)
-            {
-                var value = form[key];
-                if (key.StartsWith("File_"))
-                    fileEntries.Add(key, value);
-                else if (key.StartsWith("Object_"))
-                    objectEntries.Add(key, value);
-                else
-                    fieldEntries.Add(key, value);
-            
-            }
-            foreach (var key in fileContent.AllKeys)
-            {
-                if (key.StartsWith("File_") && fileEntries.AllKeys.Contains(key) == false)
-                    fileEntries.Add(key, "");
-            }
+            var filteredForm = filterForm(form, filterFields);
             foreach (string sourceInfo in contentSourceInfos)
             {
                 string relativeLocation;
@@ -72,23 +55,13 @@ namespace TheBall
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
-                SetFieldValues(rootObject, fieldEntries);
-                SetBinaryContent(rootObject, fileEntries, fileContent, containerOwner);
-                SetObjectLinks(rootObject, objectEntries);
 
-                /* Operation bridge model below - not used/needed with field assignment solution */
-                /*
-                var removeMediaList = form["cmdRemoveMedia"];
-                if (String.IsNullOrWhiteSpace(removeMediaList) == false)
-                {
-                    string[] removeList = removeMediaList.Split(',');
-                    foreach (string contentInfo in removeList)
+                SetObjectTreeValues.Execute(new SetObjectTreeValuesParameters
                     {
-                        SetBinaryContent(containerOwner, contentInfo, rootObject, null);
-                    }
-                }
-                 * */
-                rootObject.StoreInformationMasterFirst(containerOwner, false);
+                        RootObject = rootObject,
+                        HttpFormData = filteredForm,
+                        HttpFileData = fileContent
+                    });
             }
             return null;
         }

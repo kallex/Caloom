@@ -1208,13 +1208,13 @@
                       </ColumnData>
                     </Row>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>HttpFormData</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>NameValueCollection</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>Http POST data. Unprocessed and unfiltered.</TextContent>
                       </ColumnData>
                     </Row>
@@ -1247,66 +1247,17 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: CreateInternalObjects ( CreatedObject, HttpFormData )" level="2">
+            <Header text="Method Call: StoreInitialObject ( CreatedObject )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Stores the object first time - with set values.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: SetObjectValues ( CreatedObject, HttpFormData, HttpFileData )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Create internal objects, whose values will be set after creation.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: FieldValues ( CreatedObject, HttpFormData )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: ObjectLinkValues ( CreatedObject, HttpFormData )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: BinaryContentFiles ( CreatedObject, HttpFormData, HttpFileData )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: SetFieldValues ( CreatedObject, FieldValues )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Set field values of created object.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: SetObjectLinks ( CreatedObject, ObjectLinkValues )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Set object links of created object.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: StoreInitialObject ( CreatedObject, Owner )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Stores the created object first time - with set values.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: SetBinaryContent ( CreatedObject, BinaryContentFiles, Owner )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Sets binary content of created object.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: StoreCompleteObject ( CreatedObject, Owner )" level="2">
-              <Paragraph>
-                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Stores the created object - with all set values.</TextContent>
+                  <TextContent>Set object values and let the set operation to store the object.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -3226,6 +3177,124 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store modified object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetObjectTreeValues (RootObject, HttpFormData, HttpFileData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set object tree values for root object and possible/optional ___ notation for tree-object property sets.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RootObject</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IInformationObject</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Root object whose values (and tree) to set</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>HttpFormData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>NameValueCollection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>HTTP POST data. Unprocessed and unfiltered.</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>HttpFileData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.Web.HttpFileCollection</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Http File data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CreateInternalObjects ( RootObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create internal objects, whose values will be set after creation.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: FieldValues ( RootObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DecodeEncodedRawHTMLValues ( FieldValues )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate proper names of object types/field names and decode according to ENC. prefix</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ObjectLinkValues ( RootObject, HttpFormData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: BinaryContentFiles ( RootObject, HttpFormData, HttpFileData )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetFieldValues ( FieldValues, RootObject )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set field values of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetObjectLinks ( ObjectLinkValues, RootObject )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Set object links of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetBinaryContent ( BinaryContentFiles, RootObject )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Sets binary content of created object.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreCompleteObject ( RootObject )" level="2">
+              <Paragraph>
+                <Text styleRef="color:blue;font-weight:bold;font-style:italic">
+                  <TextContent>Stores the created object - with all set values.</TextContent>
                 </Text>
               </Paragraph>
             </Header>

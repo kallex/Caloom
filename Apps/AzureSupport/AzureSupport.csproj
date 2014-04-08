@@ -159,6 +159,7 @@
     <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />
     <Compile Include="TheBall.CORE\SemanticInformationItem.cs" />
+    <Compile Include="TheBall.CORE\SetObjectTreeValuesImplementation.cs" />
     <Compile Include="TheBall.CORE\SyncCopyContentToDeviceTargetImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringSummariesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringItemsImplementation.cs" />

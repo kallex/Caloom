@@ -88,6 +88,32 @@ using System.IO;
 				ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLock(ProcessLockLocation, Process);		
 				}
 				}
+				public class SetObjectTreeValuesParameters 
+		{
+				public IInformationObject RootObject ;
+				public NameValueCollection HttpFormData ;
+				public System.Web.HttpFileCollection HttpFileData ;
+				}
+		
+		public class SetObjectTreeValues 
+		{
+				private static void PrepareParameters(SetObjectTreeValuesParameters parameters)
+		{
+					}
+				public static void Execute(SetObjectTreeValuesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					SetObjectTreeValuesImplementation.ExecuteMethod_CreateInternalObjects(parameters.RootObject, parameters.HttpFormData);		
+				NameValueCollection FieldValues = SetObjectTreeValuesImplementation.GetTarget_FieldValues(parameters.RootObject, parameters.HttpFormData);	
+				SetObjectTreeValuesImplementation.ExecuteMethod_DecodeEncodedRawHTMLValues(FieldValues);		
+				NameValueCollection ObjectLinkValues = SetObjectTreeValuesImplementation.GetTarget_ObjectLinkValues(parameters.RootObject, parameters.HttpFormData);	
+				Dictionary<string, System.Web.HttpPostedFile> BinaryContentFiles = SetObjectTreeValuesImplementation.GetTarget_BinaryContentFiles(parameters.RootObject, parameters.HttpFormData, parameters.HttpFileData);	
+				SetObjectTreeValuesImplementation.ExecuteMethod_SetFieldValues(parameters.RootObject, FieldValues);		
+				SetObjectTreeValuesImplementation.ExecuteMethod_SetObjectLinks(parameters.RootObject, ObjectLinkValues);		
+				SetObjectTreeValuesImplementation.ExecuteMethod_SetBinaryContent(parameters.RootObject, BinaryContentFiles);		
+				SetObjectTreeValuesImplementation.ExecuteMethod_StoreCompleteObject(parameters.RootObject);		
+				}
+				}
 				public class CreateSpecifiedInformationObjectWithValuesParameters 
 		{
 				public IContainerOwner Owner ;
@@ -107,15 +133,13 @@ using System.IO;
 						PrepareParameters(parameters);
 					CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_CatchInvalidDomains(parameters.ObjectDomainName);		
 				IInformationObject CreatedObject = CreateSpecifiedInformationObjectWithValuesImplementation.GetTarget_CreatedObject(parameters.Owner, parameters.ObjectDomainName, parameters.ObjectName);	
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_CreateInternalObjects(parameters.HttpFormData, CreatedObject);		
-				NameValueCollection FieldValues = CreateSpecifiedInformationObjectWithValuesImplementation.GetTarget_FieldValues(parameters.HttpFormData, CreatedObject);	
-				NameValueCollection ObjectLinkValues = CreateSpecifiedInformationObjectWithValuesImplementation.GetTarget_ObjectLinkValues(parameters.HttpFormData, CreatedObject);	
-				Dictionary<string, System.Web.HttpPostedFile> BinaryContentFiles = CreateSpecifiedInformationObjectWithValuesImplementation.GetTarget_BinaryContentFiles(parameters.HttpFormData, parameters.HttpFileData, CreatedObject);	
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_SetFieldValues(CreatedObject, FieldValues);		
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_SetObjectLinks(CreatedObject, ObjectLinkValues);		
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_StoreInitialObject(parameters.Owner, CreatedObject);		
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_SetBinaryContent(parameters.Owner, CreatedObject, BinaryContentFiles);		
-				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_StoreCompleteObject(parameters.Owner, CreatedObject);		
+				CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_StoreInitialObject(CreatedObject);		
+				
+		{ // Local block to allow local naming
+			SetObjectTreeValuesParameters operationParameters = CreateSpecifiedInformationObjectWithValuesImplementation.SetObjectValues_GetParameters(parameters.HttpFormData, parameters.HttpFileData, CreatedObject);
+			SetObjectTreeValues.Execute(operationParameters);
+									
+		} // Local block closing
 				}
 				}
 				public class DeleteSpecifiedInformationObjectParameters 

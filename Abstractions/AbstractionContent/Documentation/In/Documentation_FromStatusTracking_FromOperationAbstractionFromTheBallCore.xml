@@ -5,17 +5,17 @@
       <Document name="Status Tracking Document (TheBall.CORE)" title="Status Tracking Document (TheBall.CORE)">
         <Content>
           <Header text="Summary" level="1">
-            <Header text="CreateSpecifiedInformationObjectWithValues (13 %)" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Being implemented 14, Implemented 2</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="DeleteSpecifiedInformationObject (14 %)" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Being implemented 6, Implemented 1</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="CreateSpecifiedInformationObjectWithValues (33 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 6, Implemented 3</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -26,8 +26,15 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="SetObjectTreeValues (42 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 7, Implemented 5</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
-          <Header text="CreateSpecifiedInformationObjectWithValues (13 %)" level="1">
+          <Header text="CreateSpecifiedInformationObjectWithValues (33 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -70,13 +77,13 @@
                     </ColumnData>
                   </Row>
                   <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>VariableType: HttpFormData</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>Http POST data. Unprocessed and unfiltered.</TextContent>
                     </ColumnData>
                   </Row>
@@ -114,72 +121,6 @@
                     </ColumnData>
                   </Row>
                   <Row>
-                    <ColumnData>
-                      <TextContent>MethodExecuteType: CreateInternalObjects</TextContent>
-                    </ColumnData>
-                    <ColumnData>
-                      <TextContent>Implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData>
-                      <TextContent>Create internal objects, whose values will be set after creation.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: FieldValues</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: ObjectLinkValues</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>TargetDefinitionType: BinaryContentFiles</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: SetFieldValues</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Set field values of created object.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: SetObjectLinks</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Set object links of created object.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>MethodExecuteType: StoreInitialObject</TextContent>
                     </ColumnData>
@@ -187,29 +128,18 @@
                       <TextContent>Being implemented</TextContent>
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Stores the created object first time - with set values.</TextContent>
+                      <TextContent>Stores the object first time - with set values.</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: SetBinaryContent</TextContent>
+                    <ColumnData>
+                      <TextContent>OperationExecuteType: SetObjectValues</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Sets binary content of created object.</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: StoreCompleteObject</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Stores the created object - with all set values.</TextContent>
+                    <ColumnData>
+                      <TextContent>Set object values and let the set operation to store the object.</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>
@@ -300,6 +230,151 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Delete the object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                </Rows>
+              </Table>
+            </Paragraph>
+          </Header>
+          <Header text="SetObjectTreeValues (42 %)" level="1">
+            <Paragraph>
+              <Table>
+                <Columns>
+                  <Column name="Item" />
+                  <Column name="Status" />
+                  <Column name="Description" />
+                </Columns>
+                <Rows>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: RootObject</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Root object whose values (and tree) to set</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: HttpFormData</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>HTTP POST data. Unprocessed and unfiltered.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: HttpFileData</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Http File data</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>MethodExecuteType: CreateInternalObjects</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Create internal objects, whose values will be set after creation.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: FieldValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>MethodExecuteType: DecodeEncodedRawHTMLValues</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Validate proper names of object types/field names and decode according to ENC. prefix</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: ObjectLinkValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered object link value collection. Filter by Object_ prefix, add ID to keys.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>TargetDefinitionType: BinaryContentFiles</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Filtered binary content value collection. Filter by File_ prefix, add ID to keys.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetFieldValues</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set field values of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetObjectLinks</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Set object links of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: SetBinaryContent</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Sets binary content of created object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>MethodExecuteType: StoreCompleteObject</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Being implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <TextContent>Stores the created object - with all set values.</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>

@@ -61,6 +61,42 @@
     <StatusItem name="ExecuteProcess_ExecuteAndStoreProcessWithLock" displayName="MethodExecuteType: ExecuteAndStoreProcessWithLock" description="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="SetObjectTreeValues_RootObject" displayName="VariableType: RootObject" description="Root object whose values (and tree) to set">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_HttpFormData" displayName="VariableType: HttpFormData" description="HTTP POST data. Unprocessed and unfiltered.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_HttpFileData" displayName="VariableType: HttpFileData" description="Http File data">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_CreateInternalObjects" displayName="MethodExecuteType: CreateInternalObjects" description="Create internal objects, whose values will be set after creation.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_FieldValues" displayName="TargetDefinitionType: FieldValues" description="Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_DecodeEncodedRawHTMLValues" displayName="MethodExecuteType: DecodeEncodedRawHTMLValues" description="Validate proper names of object types/field names and decode according to ENC. prefix">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_ObjectLinkValues" displayName="TargetDefinitionType: ObjectLinkValues" description="Filtered object link value collection. Filter by Object_ prefix, add ID to keys.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_BinaryContentFiles" displayName="TargetDefinitionType: BinaryContentFiles" description="Filtered binary content value collection. Filter by File_ prefix, add ID to keys.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_SetFieldValues" displayName="MethodExecuteType: SetFieldValues" description="Set field values of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_SetObjectLinks" displayName="MethodExecuteType: SetObjectLinks" description="Set object links of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_SetBinaryContent" displayName="MethodExecuteType: SetBinaryContent" description="Sets binary content of created object.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetObjectTreeValues_StoreCompleteObject" displayName="MethodExecuteType: StoreCompleteObject" description="Stores the created object - with all set values.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_Owner" displayName="VariableType: Owner" description="Object owner">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -71,7 +107,7 @@
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_HttpFormData" displayName="VariableType: HttpFormData" description="Http POST data. Unprocessed and unfiltered.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_HttpFileData" displayName="VariableType: HttpFileData" description="Http File data">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
@@ -82,32 +118,11 @@
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_CreatedObject" displayName="TargetDefinitionType: CreatedObject" description="Object that is created">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_CreateInternalObjects" displayName="MethodExecuteType: CreateInternalObjects" description="Create internal objects, whose values will be set after creation.">
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" displayName="MethodExecuteType: StoreInitialObject" description="Stores the object first time - with set values.">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetObjectValues" displayName="OperationExecuteType: SetObjectValues" description="Set object values and let the set operation to store the object.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_FieldValues" displayName="TargetDefinitionType: FieldValues" description="Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_ObjectLinkValues" displayName="TargetDefinitionType: ObjectLinkValues" description="Filtered object link value collection. Filter by Object_ prefix, add ID to keys.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_BinaryContentFiles" displayName="TargetDefinitionType: BinaryContentFiles" description="Filtered binary content value collection. Filter by File_ prefix, add ID to keys.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetFieldValues" displayName="MethodExecuteType: SetFieldValues" description="Set field values of created object.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetObjectLinks" displayName="MethodExecuteType: SetObjectLinks" description="Set object links of created object.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" displayName="MethodExecuteType: StoreInitialObject" description="Stores the created object first time - with set values.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetBinaryContent" displayName="MethodExecuteType: SetBinaryContent" description="Sets binary content of created object.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateSpecifiedInformationObjectWithValues_StoreCompleteObject" displayName="MethodExecuteType: StoreCompleteObject" description="Stores the created object - with all set values.">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="DeleteSpecifiedInformationObject_Owner" displayName="VariableType: Owner" description="Object owner">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
@@ -883,6 +898,20 @@
       <ItemRef itemName="ExecuteProcess_ProcessLockLocation" />
       <ItemRef itemName="ExecuteProcess_ExecuteAndStoreProcessWithLock" />
     </Group>
+    <Group name="SetObjectTreeValues">
+      <ItemRef itemName="SetObjectTreeValues_RootObject" />
+      <ItemRef itemName="SetObjectTreeValues_HttpFormData" />
+      <ItemRef itemName="SetObjectTreeValues_HttpFileData" />
+      <ItemRef itemName="SetObjectTreeValues_CreateInternalObjects" />
+      <ItemRef itemName="SetObjectTreeValues_FieldValues" />
+      <ItemRef itemName="SetObjectTreeValues_DecodeEncodedRawHTMLValues" />
+      <ItemRef itemName="SetObjectTreeValues_ObjectLinkValues" />
+      <ItemRef itemName="SetObjectTreeValues_BinaryContentFiles" />
+      <ItemRef itemName="SetObjectTreeValues_SetFieldValues" />
+      <ItemRef itemName="SetObjectTreeValues_SetObjectLinks" />
+      <ItemRef itemName="SetObjectTreeValues_SetBinaryContent" />
+      <ItemRef itemName="SetObjectTreeValues_StoreCompleteObject" />
+    </Group>
     <Group name="CreateSpecifiedInformationObjectWithValues">
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_Owner" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectDomainName" />
@@ -891,15 +920,9 @@
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_HttpFileData" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CatchInvalidDomains" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreatedObject" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreateInternalObjects" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_FieldValues" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_ObjectLinkValues" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_BinaryContentFiles" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetFieldValues" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetObjectLinks" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetBinaryContent" />
-      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_StoreCompleteObject" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetObjectValues" />
+      <GroupRef groupName="SetObjectTreeValues" />
     </Group>
     <Group name="DeleteSpecifiedInformationObject">
       <ItemRef itemName="DeleteSpecifiedInformationObject_Owner" />

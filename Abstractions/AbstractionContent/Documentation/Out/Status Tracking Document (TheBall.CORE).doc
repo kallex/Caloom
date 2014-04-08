@@ -229,19 +229,23 @@ div.WordSection1
 <p class="MsoTitle">Status Tracking Document (TheBall.CORE)</p>
 </div>
 		<h1>Summary</h1>
-		<h2>CreateSpecifiedInformationObjectWithValues (13 %)</h2>
-		<p>		<div class="MsoNormal" >
-		Being implemented 14, Implemented 2
-		</div>
-		</p><h2>DeleteSpecifiedInformationObject (14 %)</h2>
+		<h2>DeleteSpecifiedInformationObject (14 %)</h2>
 		<p>		<div class="MsoNormal" >
 		Being implemented 6, Implemented 1
+		</div>
+		</p><h2>CreateSpecifiedInformationObjectWithValues (33 %)</h2>
+		<p>		<div class="MsoNormal" >
+		Being implemented 6, Implemented 3
 		</div>
 		</p><h2>UnregisterEmailAddress (40 %)</h2>
 		<p>		<div class="MsoNormal" >
 		Being implemented 3, Implemented 2
 		</div>
-		</p><h1>CreateSpecifiedInformationObjectWithValues (13 %)</h1>
+		</p><h2>SetObjectTreeValues (42 %)</h2>
+		<p>		<div class="MsoNormal" >
+		Being implemented 7, Implemented 5
+		</div>
+		</p><h1>CreateSpecifiedInformationObjectWithValues (33 %)</h1>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
@@ -297,17 +301,17 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		VariableType: HttpFormData
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
+				<div class="MsoNormal" >
+		Implemented
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Http POST data. Unprocessed and unfiltered.
 		</div>
 				</td>
@@ -365,108 +369,6 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" >
-		MethodExecuteType: CreateInternalObjects
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Create internal objects, whose values will be set after creation.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		TargetDefinitionType: FieldValues
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		TargetDefinitionType: ObjectLinkValues
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered object link value collection. Filter by Object_ prefix, add ID to keys.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		TargetDefinitionType: BinaryContentFiles
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered binary content value collection. Filter by File_ prefix, add ID to keys.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		MethodExecuteType: SetFieldValues
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Set field values of created object.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		MethodExecuteType: SetObjectLinks
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Set object links of created object.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		MethodExecuteType: StoreInitialObject
 		</div>
@@ -478,41 +380,24 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Stores the created object first time - with set values.
+		Stores the object first time - with set values.
 		</div>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		MethodExecuteType: SetBinaryContent
+				<div class="MsoNormal" >
+		OperationExecuteType: SetObjectValues
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
+				<div class="MsoNormal" >
+		Implemented
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Sets binary content of created object.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		MethodExecuteType: StoreCompleteObject
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Stores the created object - with all set values.
+				<div class="MsoNormal" >
+		Set object values and let the set operation to store the object.
 		</div>
 				</td>
 				</tr>
@@ -636,6 +521,214 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete the object.
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>SetObjectTreeValues (42 %)</h1>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: RootObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Root object whose values (and tree) to set
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: HttpFormData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		HTTP POST data. Unprocessed and unfiltered.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: HttpFileData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Http File data
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MethodExecuteType: CreateInternalObjects
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Create internal objects, whose values will be set after creation.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		TargetDefinitionType: FieldValues
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MethodExecuteType: DecodeEncodedRawHTMLValues
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Validate proper names of object types/field names and decode according to ENC. prefix
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		TargetDefinitionType: ObjectLinkValues
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered object link value collection. Filter by Object_ prefix, add ID to keys.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		TargetDefinitionType: BinaryContentFiles
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered binary content value collection. Filter by File_ prefix, add ID to keys.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		MethodExecuteType: SetFieldValues
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Set field values of created object.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		MethodExecuteType: SetObjectLinks
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Set object links of created object.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		MethodExecuteType: SetBinaryContent
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Sets binary content of created object.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		MethodExecuteType: StoreCompleteObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Being implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Stores the created object - with all set values.
 		</div>
 				</td>
 				</tr>

@@ -1411,17 +1411,17 @@ div.WordSection1
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		HttpFormData
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		NameValueCollection
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Http POST data. Unprocessed and unfiltered.
 		</div>
 				</td>
@@ -1452,41 +1452,13 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Object that is created
 		</div>
-		</p><h2>Method Call: CreateInternalObjects ( CreatedObject, HttpFormData )</h2>
+		</p><h2>Method Call: StoreInitialObject ( CreatedObject )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Stores the object first time - with set values.
+		</div>
+		</p><h2>Operation Call: SetObjectValues ( CreatedObject, HttpFormData, HttpFileData )</h2>
 		<p>		<div class="MsoNormal" >
-		Create internal objects, whose values will be set after creation.
-		</div>
-		</p><h2>Target Definition: FieldValues ( CreatedObject, HttpFormData )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
-		</div>
-		</p><h2>Target Definition: ObjectLinkValues ( CreatedObject, HttpFormData )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered object link value collection. Filter by Object_ prefix, add ID to keys.
-		</div>
-		</p><h2>Target Definition: BinaryContentFiles ( CreatedObject, HttpFormData, HttpFileData )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Filtered binary content value collection. Filter by File_ prefix, add ID to keys.
-		</div>
-		</p><h2>Method Call: SetFieldValues ( CreatedObject, FieldValues )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Set field values of created object.
-		</div>
-		</p><h2>Method Call: SetObjectLinks ( CreatedObject, ObjectLinkValues )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Set object links of created object.
-		</div>
-		</p><h2>Method Call: StoreInitialObject ( CreatedObject, Owner )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Stores the created object first time - with set values.
-		</div>
-		</p><h2>Method Call: SetBinaryContent ( CreatedObject, BinaryContentFiles, Owner )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Sets binary content of created object.
-		</div>
-		</p><h2>Method Call: StoreCompleteObject ( CreatedObject, Owner )</h2>
-		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Stores the created object - with all set values.
+		Set object values and let the set operation to store the object.
 		</div>
 		</p><h1>DeleteAuthenticatedAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)</h1>
 		<h2>Specifications</h2>
@@ -3179,6 +3151,102 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( InformationOutput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store modified object
+		</div>
+		</p><h1>SetObjectTreeValues (RootObject, HttpFormData, HttpFileData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Set object tree values for root object and possible/optional ___ notation for tree-object property sets.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RootObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IInformationObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Root object whose values (and tree) to set
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		HttpFormData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		NameValueCollection
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		HTTP POST data. Unprocessed and unfiltered.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		HttpFileData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.Web.HttpFileCollection
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Http File data
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: CreateInternalObjects ( RootObject, HttpFormData )</h2>
+		<p>		<div class="MsoNormal" >
+		Create internal objects, whose values will be set after creation.
+		</div>
+		</p><h2>Target Definition: FieldValues ( RootObject, HttpFormData )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered field value collection. Filter by non-prefix, add ID to keys. Reflect also to internal objects notation with ___ names texts.
+		</div>
+		</p><h2>Method Call: DecodeEncodedRawHTMLValues ( FieldValues )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate proper names of object types/field names and decode according to ENC. prefix
+		</div>
+		</p><h2>Target Definition: ObjectLinkValues ( RootObject, HttpFormData )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered object link value collection. Filter by Object_ prefix, add ID to keys.
+		</div>
+		</p><h2>Target Definition: BinaryContentFiles ( RootObject, HttpFormData, HttpFileData )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Filtered binary content value collection. Filter by File_ prefix, add ID to keys.
+		</div>
+		</p><h2>Method Call: SetFieldValues ( FieldValues, RootObject )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Set field values of created object.
+		</div>
+		</p><h2>Method Call: SetObjectLinks ( ObjectLinkValues, RootObject )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Set object links of created object.
+		</div>
+		</p><h2>Method Call: SetBinaryContent ( BinaryContentFiles, RootObject )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Sets binary content of created object.
+		</div>
+		</p><h2>Method Call: StoreCompleteObject ( RootObject )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Stores the created object - with all set values.
 		</div>
 		</p><h1>SetOwnerWebRedirect (Owner, RedirectPath)</h1>
 		<h2>Specifications</h2>

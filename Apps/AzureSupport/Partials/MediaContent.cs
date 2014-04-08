@@ -61,13 +61,26 @@ namespace AaltoGlobalImpact.OIP
             if(ID != contentObjectID)
                 return;
             ClearCurrentContent(containerOwner);
-            HttpPostedFile postedContent = (HttpPostedFile) mediaContent;
-            FileExt = Path.GetExtension(postedContent.FileName);
-            ContentLength = postedContent.ContentLength;
-            string locationFileName = ID + FileExt;
-            SetLocationAsOwnerContent(containerOwner, locationFileName);
-            postedContent.InputStream.Seek(0, SeekOrigin.Begin);
-            StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream);
+            if (mediaContent is HttpPostedFile)
+            {
+                HttpPostedFile postedContent = (HttpPostedFile)mediaContent;
+                FileExt = Path.GetExtension(postedContent.FileName);
+                ContentLength = postedContent.ContentLength;
+                string locationFileName = ID + FileExt;
+                SetLocationAsOwnerContent(containerOwner, locationFileName);
+                postedContent.InputStream.Seek(0, SeekOrigin.Begin);
+                StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream);
+            }
+            else if(mediaContent is MediaFileData)
+            {
+                MediaFileData mediaFileData = (MediaFileData) mediaContent;
+                FileExt = Path.GetExtension(mediaFileData.FileName);
+                ContentLength = mediaFileData.FileContent.Length;
+                string locationFileName = ID + FileExt;
+                SetLocationAsOwnerContent(containerOwner, locationFileName);
+                StorageSupport.CurrActiveContainer.UploadBlobBinary(RelativeLocation, mediaFileData.FileContent);
+            } else 
+                throw new NotSupportedException("Not supported mediaContent object in SetMediaContent");
             UpdateAdditionalMediaFormats();
         }
 
@@ -145,6 +158,12 @@ namespace AaltoGlobalImpact.OIP
             {
                 return null;
             }
+        }
+
+        public class MediaFileData
+        {
+            public string FileName;
+            public byte[] FileContent;
         }
     }
 }
