@@ -67,7 +67,7 @@ namespace AaltoGlobalImpact.OIP
             if (mediaFileData.HttpFile != null)
             {
                 HttpPostedFile postedContent = mediaFileData.HttpFile;
-                FileExt = Path.GetExtension(postedContent.FileName);
+                FileExt = Path.GetExtension(postedContent.FileName).ToLower();
                 ContentLength = postedContent.ContentLength;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
@@ -76,7 +76,7 @@ namespace AaltoGlobalImpact.OIP
             }
             else
             {
-                FileExt = Path.GetExtension(mediaFileData.FileName);
+                FileExt = Path.GetExtension(mediaFileData.FileName).ToLower();
                 ContentLength = mediaFileData.FileContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -154,8 +155,13 @@ namespace TheBall.CORE
                     {
                         int fileNameEndIX = formValue.IndexOf(':');
                         string fileName = formValue.Substring(0, fileNameEndIX);
+                        fileName = Path.GetFileName(fileName);
                         int base64CommaIX = formValue.IndexOf(base64CommaValue, System.StringComparison.Ordinal);
                         var base64Data = formValue.Substring(base64CommaIX + base64Length);
+                        // Strip off remaining comma separated datas in case the field value has those
+                        var existingDataCommaIX = base64Data.IndexOf(',');
+                        if (existingDataCommaIX > 0)
+                            base64Data = base64Data.Substring(0, existingDataCommaIX);
                         byte[] realData = Convert.FromBase64String(base64Data);
                         mediaFileData = new MediaFileData
                             {
