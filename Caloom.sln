@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{DC9F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneSupport", "Apps\LuceneSupport\LuceneSupport.csproj", "{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentSyncTool", "Tools\ContentSyncTool\ContentSyncTool.csproj", "{F108F4F5-4A21-41B5-AD32-471B0565B160}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -302,6 +304,36 @@ Global
 		{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
 		{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}.Staging|PHP 5.2.ActiveCfg = Release|Any CPU
 		{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}.Staging|x86.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|PHP 5.2.ActiveCfg = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|Any CPU.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|Mixed Platforms.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|PHP 5.2.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Local|x86.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|Any CPU.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|Mixed Platforms.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|PHP 5.2.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Production|x86.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Release|x86.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|PHP 5.2.ActiveCfg = Release|Any CPU
+		{F108F4F5-4A21-41B5-AD32-471B0565B160}.Staging|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -315,5 +347,6 @@ Global
 		{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{5377CB63-1979-4596-A1F4-DF9417C9B037} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
 		{37BBF002-DC1F-40EE-9F04-4C5DF50F892D} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
+		{F108F4F5-4A21-41B5-AD32-471B0565B160} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
 	EndGlobalSection
 EndGlobal
