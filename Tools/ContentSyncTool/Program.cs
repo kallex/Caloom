@@ -15,6 +15,13 @@ namespace ContentSyncTool
             var prots =
             ProtectedData.Protect(Encoding.UTF8.GetBytes(testStr), null, DataProtectionScope.CurrentUser);
             var unprotected = ProtectedData.Unprotect(prots, null, DataProtectionScope.CurrentUser);
+            /*
+            ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) =>
+                {
+                    Console.WriteLine("Validating server cert...");
+                    return true;
+                };
+             * */
             var request = WebRequest.Create("https://test.caloom.com");
             var resp = request.GetResponse();
             Console.WriteLine(resp.ContentLength);

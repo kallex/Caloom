@@ -136,7 +136,7 @@ namespace SecuritySupport
             SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
             Console.WriteLine("InitSecurityNegotiationManager2");
             securityNegotiationManager.Socket = new WebSocket(deviceConnectionUrl);
-            securityNegotiationManager.Socket.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+            //securityNegotiationManager.Socket.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
             Console.WriteLine("InitSecurityNegotiationManager3");
             securityNegotiationManager.Socket.OnOpen += securityNegotiationManager.socket_OnOpen;
             securityNegotiationManager.Socket.OnClose += securityNegotiationManager.socket_OnClose;
