@@ -12,10 +12,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="CreateSpecifiedInformationObjectWithValues (33 %)" level="2">
+            <Header text="CreateSpecifiedInformationObjectWithValues (40 %)" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Being implemented 6, Implemented 3</TextContent>
+                  <TextContent>Being implemented 6, Implemented 4</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -34,7 +34,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="CreateSpecifiedInformationObjectWithValues (33 %)" level="1">
+          <Header text="CreateSpecifiedInformationObjectWithValues (40 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -140,6 +140,17 @@
                     </ColumnData>
                     <ColumnData>
                       <TextContent>Set object values and let the set operation to store the object.</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: CreatedObjectResult</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Created object as result</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>

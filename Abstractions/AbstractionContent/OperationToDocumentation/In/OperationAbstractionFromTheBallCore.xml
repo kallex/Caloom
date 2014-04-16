@@ -183,6 +183,10 @@
           </OperationExecute>
         </SequentialExecution>
       </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="CreatedObjectResult" dataType="IInformationObject" designDesc="Created object as result" state="implemented" />
+        <Target name="CreatedObject" />
+      </OperationReturnValues>
     </Operation>
     <Operation name="DeleteSpecifiedInformationObject">
       <OperationSpec>

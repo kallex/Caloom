@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net35\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security">
@@ -50,12 +53,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INegotiationProtocolMember.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtectionSupport.cs" />
     <Compile Include="SecurityNegotiationManager.cs" />
     <Compile Include="SymmetricSupport.cs" />
     <Compile Include="TheBallEKE.cs" />
+    <Compile Include="UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

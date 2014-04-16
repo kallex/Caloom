@@ -233,9 +233,9 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Being implemented 6, Implemented 1
 		</div>
-		</p><h2>CreateSpecifiedInformationObjectWithValues (33 %)</h2>
+		</p><h2>CreateSpecifiedInformationObjectWithValues (40 %)</h2>
 		<p>		<div class="MsoNormal" >
-		Being implemented 6, Implemented 3
+		Being implemented 6, Implemented 4
 		</div>
 		</p><h2>UnregisterEmailAddress (40 %)</h2>
 		<p>		<div class="MsoNormal" >
@@ -245,7 +245,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Being implemented 7, Implemented 6
 		</div>
-		</p><h1>CreateSpecifiedInformationObjectWithValues (33 %)</h1>
+		</p><h1>CreateSpecifiedInformationObjectWithValues (40 %)</h1>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
@@ -398,6 +398,23 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Set object values and let the set operation to store the object.
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: CreatedObjectResult
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created object as result
 		</div>
 				</td>
 				</tr>

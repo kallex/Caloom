@@ -42,5 +42,10 @@ namespace TheBall.CORE
                     HttpFileData = httpFileData
                 };
         }
+
+        public static CreateSpecifiedInformationObjectWithValuesReturnValue Get_ReturnValue(IInformationObject createdObject)
+        {
+            return new CreateSpecifiedInformationObjectWithValuesReturnValue {CreatedObjectResult = createdObject};
+        }
     }
 }

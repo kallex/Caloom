@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -9,8 +10,75 @@ namespace ContentSyncTool
 {
     class Program
     {
-        static void Main(string[] args)
+        private static Options options = new Options();
+        private static void Main(string[] args)
         {
+            //Debugger.Launch();
+            bool success = CommandLine.Parser.Default.ParseArguments(args, options, OnVerbCommand);
+            if (!success)
+            {
+                Environment.Exit(CommandLine.Parser.DefaultExitCodeFail);
+            }
+
+        }
+
+        private static void OnVerbCommand(string verb, object verbSubOptions)
+        {
+            if (verbSubOptions == null)
+                return;
+            try
+            {
+                //Debugger.Launch();
+                UserSettings.GetCurrentSettings();
+                switch (verb)
+                {
+                    case "createConnection":
+                        createConnection((CreateConnectionSubOptions) verbSubOptions);
+                        break;
+                    case "listConnections":
+                        listConnections((ListConnectionSubOptions) verbSubOptions);
+                        break;
+                    case "deleteConnection":
+                        deleteConnection((DeleteConnectionSubOptions) verbSubOptions);
+                        break;
+                    default:
+                        throw new ArgumentException("Not implemented verb: " + verb);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.ToString());
+            }
+            finally
+            {
+                UserSettings.SaveCurrentSettings();
+            }
+        }
+
+        private static void deleteConnection(DeleteConnectionSubOptions verbSubOptions)
+        {
+            UserSettings.CurrentSettings.Connections.RemoveAll(conn => conn.Name == verbSubOptions.ConnectionName);
+        }
+
+        private static void listConnections(ListConnectionSubOptions verbSubOptions)
+        {
+            Console.WriteLine("Connections:");
+            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("{0} {1} {2}",
+                connection.Name, connection.HostName, connection.GroupID));
+        }
+
+        private static void createConnection(CreateConnectionSubOptions verbSubOptions)
+        {
+            UserSettings.CurrentSettings.Connections.Add(new UserSettings.Connection
+                {
+                    Name = verbSubOptions.ConnectionName,
+                    HostName = verbSubOptions.HostName,
+                    GroupID = verbSubOptions.GroupID
+                });
+        }
+
+        void testFunc()
+            {
             string testStr = "Kikkarainen";
             var prots =
             ProtectedData.Protect(Encoding.UTF8.GetBytes(testStr), null, DataProtectionScope.CurrentUser);

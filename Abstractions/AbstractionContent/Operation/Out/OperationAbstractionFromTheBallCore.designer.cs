@@ -129,7 +129,7 @@ using System.IO;
 				private static void PrepareParameters(CreateSpecifiedInformationObjectWithValuesParameters parameters)
 		{
 					}
-				public static void Execute(CreateSpecifiedInformationObjectWithValuesParameters parameters)
+				public static CreateSpecifiedInformationObjectWithValuesReturnValue Execute(CreateSpecifiedInformationObjectWithValuesParameters parameters)
 		{
 						PrepareParameters(parameters);
 					CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_CatchInvalidDomains(parameters.ObjectDomainName);		
@@ -141,7 +141,13 @@ using System.IO;
 			SetObjectTreeValues.Execute(operationParameters);
 									
 		} // Local block closing
+				CreateSpecifiedInformationObjectWithValuesReturnValue returnValue = CreateSpecifiedInformationObjectWithValuesImplementation.Get_ReturnValue(CreatedObject);
+		return returnValue;
 				}
+				}
+				public class CreateSpecifiedInformationObjectWithValuesReturnValue 
+		{
+				public IInformationObject CreatedObjectResult ;
 				}
 				public class DeleteSpecifiedInformationObjectParameters 
 		{

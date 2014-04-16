@@ -1261,6 +1261,30 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Return Value : CreateSpecifiedInformationObjectWithValuesReturnValue ( CreatedObject )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CreatedObjectResult</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IInformationObject</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created object as result</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="DeleteAuthenticatedAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)" level="1">
             <Header text="Specifications" level="2">

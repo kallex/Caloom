@@ -127,6 +127,9 @@
     <StatusItem name="CreateSpecifiedInformationObjectWithValues_SetObjectValues" displayName="OperationExecuteType: SetObjectValues" description="Set object values and let the set operation to store the object.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="CreateSpecifiedInformationObjectWithValues_CreatedObjectResult" displayName="VariableType: CreatedObjectResult" description="Created object as result">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="DeleteSpecifiedInformationObject_Owner" displayName="VariableType: Owner" description="Object owner">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -926,6 +929,7 @@
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreatedObject" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_StoreInitialObject" />
       <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_SetObjectValues" />
+      <ItemRef itemName="CreateSpecifiedInformationObjectWithValues_CreatedObjectResult" />
       <GroupRef groupName="SetObjectTreeValues" />
     </Group>
     <Group name="DeleteSpecifiedInformationObject">

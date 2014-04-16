@@ -1460,6 +1460,27 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Set object values and let the set operation to store the object.
 		</div>
+		</p><h2>Return Value : CreateSpecifiedInformationObjectWithValuesReturnValue ( CreatedObject )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CreatedObjectResult
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IInformationObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created object as result
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>DeleteAuthenticatedAsActiveDevice (Owner, AuthenticatedAsActiveDeviceID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
