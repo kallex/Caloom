@@ -14,6 +14,16 @@ namespace ContentSyncTool
             public string Name;
             public string HostName;
             public string GroupID;
+            public string EstablishedTrustID;
+            public Device Device = new Device();
+        }
+
+        [Serializable]
+        public class Device
+        {
+            public string ConnectionURL;
+            public byte[] AESKey;
+            public string EstablishedTrustID;
         }
 
         public List<Connection> Connections = new List<Connection>();

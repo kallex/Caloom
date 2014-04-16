@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-//using System.Linq;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+//using System.Linq;
 
-namespace SecuritySupport
+namespace ContentSyncTool
 {
     public class SymmetricSupport
     {
@@ -92,17 +92,6 @@ namespace SecuritySupport
             return encrypted;
         }
 
-        public static void CopyTo(Stream input, Stream output)
-        {
-            byte[] buffer = new byte[16 * 1024]; // Fairly arbitrary size
-            int bytesRead;
-
-            while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                output.Write(buffer, 0, bytesRead);
-            }
-        }
-
         public byte[] DecryptData(byte[] cipherText)
         {
             var decryptor = CurrProvider.CreateDecryptor();
@@ -122,7 +111,7 @@ namespace SecuritySupport
 #if not4
                             srDecrypt.BaseStream.CopyTo(plainTextStream);
 #else
-                            CopyTo(srDecrypt.BaseStream, plainTextStream);
+                            srDecrypt.BaseStream.CopyTo(plainTextStream);
 #endif
                             //plainText = srDecrypt.ReadBytes(1024*1024);
                         }

@@ -17,7 +17,8 @@ namespace ContentSyncTool
         {
             CreateConnectionVerb = new CreateConnectionSubOptions();
             DeleteConnectionVerb = new DeleteConnectionSubOptions();
-            ListConnectionVerb = new ListConnectionSubOptions();
+            ListConnectionVerb = new EmptySubOptions();
+            SelfTestVerb = new EmptySubOptions();
         }
 
         [VerbOption("createConnection", HelpText = "Create connection")]
@@ -27,7 +28,10 @@ namespace ContentSyncTool
         public DeleteConnectionSubOptions DeleteConnectionVerb { get; set; }
 
         [VerbOption("listConnections", HelpText = "List current connections")]
-        public ListConnectionSubOptions ListConnectionVerb { get; set; }
+        public EmptySubOptions ListConnectionVerb { get; set; }
+
+        [VerbOption("selfTest", HelpText = "Self test tool and executing environment")]
+        public EmptySubOptions SelfTestVerb { get; set; }
 
     }
 
@@ -37,6 +41,11 @@ namespace ContentSyncTool
     }
 
     class ListConnectionSubOptions
+    {
+        
+    }
+
+    class EmptySubOptions
     {
         
     }

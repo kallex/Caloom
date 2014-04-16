@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using ContentSyncTool;
+
 #if ASYNC
 using System.Threading.Tasks;
 #endif

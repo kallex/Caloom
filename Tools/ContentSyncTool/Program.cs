@@ -36,10 +36,13 @@ namespace ContentSyncTool
                         createConnection((CreateConnectionSubOptions) verbSubOptions);
                         break;
                     case "listConnections":
-                        listConnections((ListConnectionSubOptions) verbSubOptions);
+                        listConnections((EmptySubOptions) verbSubOptions);
                         break;
                     case "deleteConnection":
                         deleteConnection((DeleteConnectionSubOptions) verbSubOptions);
+                        break;
+                    case "selfTest":
+                        selfTest((EmptySubOptions) verbSubOptions);
                         break;
                     default:
                         throw new ArgumentException("Not implemented verb: " + verb);
@@ -55,12 +58,20 @@ namespace ContentSyncTool
             }
         }
 
+        private static void selfTest(EmptySubOptions verbSubOptions)
+        {
+            Console.WriteLine("Performing HTTPS connection test...");
+            var request = WebRequest.Create("https://test.caloom.com");
+            var resp = request.GetResponse();
+            Console.WriteLine("HTTPS connection test OK");
+        }
+
         private static void deleteConnection(DeleteConnectionSubOptions verbSubOptions)
         {
             UserSettings.CurrentSettings.Connections.RemoveAll(conn => conn.Name == verbSubOptions.ConnectionName);
         }
 
-        private static void listConnections(ListConnectionSubOptions verbSubOptions)
+        private static void listConnections(EmptySubOptions verbSubOptions)
         {
             Console.WriteLine("Connections:");
             UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("{0} {1} {2}",
@@ -69,12 +80,26 @@ namespace ContentSyncTool
 
         private static void createConnection(CreateConnectionSubOptions verbSubOptions)
         {
-            UserSettings.CurrentSettings.Connections.Add(new UserSettings.Connection
+            string sharedSecret = "testsecretXYZ33";
+            string host = verbSubOptions.HostName;
+            string targetGroupID = verbSubOptions.GroupID;
+            string protocol = host.StartsWith("localdev") ? "ws" : "wss";
+            var result = SecuritySupport.SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + verbSubOptions.HostName + "/websocket/NegotiateDeviceConnection?groupID=" + targetGroupID,
+                                                                      sharedSecret, "Connection from Tool with name: " + verbSubOptions.ConnectionName);
+            string connectionUrl = "";
+            var connection = new UserSettings.Connection
                 {
                     Name = verbSubOptions.ConnectionName,
                     HostName = verbSubOptions.HostName,
-                    GroupID = verbSubOptions.GroupID
-                });
+                    GroupID = verbSubOptions.GroupID,
+                    Device = new UserSettings.Device
+                        {
+                            AESKey = result.AESKey,
+                            ConnectionURL = connectionUrl,
+                            EstablishedTrustID = result.EstablishedTrustID
+                        }
+                };
+            UserSettings.CurrentSettings.Connections.Add(connection);
         }
 
         void testFunc()
