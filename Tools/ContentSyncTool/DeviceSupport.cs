@@ -6,6 +6,29 @@ using AzureSupport;
 
 namespace ContentSyncTool
 {
+    public partial class DeviceOperationData
+    {
+        public string OperationRequestString { get; set; }
+        public string[] OperationParameters { get; set; }
+        public string[] OperationReturnValues { get; set; }
+        public bool OperationResult { get; set; }
+        public ContentItemLocationWithMD5[] OperationSpecificContentData { get; set; }
+    }
+
+    public partial class ContentItemLocationWithMD5
+    {
+        public string ContentLocation { get; set; }
+        public string ContentMD5 { get; set; }
+        public ItemData[] ItemDatas { get; set; }
+    }
+
+    public partial class ItemData
+    {
+        public string DataName { get; set; }
+        public string ItemTextData { get; set; }
+    }
+
+
     public static class DeviceSupport
     {
         public const string OperationPrefixStr = "OP-";

@@ -68,7 +68,14 @@ namespace ContentSyncTool
 
         private static void deleteConnection(DeleteConnectionSubOptions verbSubOptions)
         {
-            UserSettings.CurrentSettings.Connections.RemoveAll(conn => conn.Name == verbSubOptions.ConnectionName);
+            var connection = UserSettings.CurrentSettings.Connections.FirstOrDefault(conn => conn.Name == verbSubOptions.ConnectionName);
+            if(connection == null)
+                throw new ArgumentException("ConnectionName is invalid");
+            DeviceSupport.ExecuteRemoteOperationVoid(connection.Device, "TheBall.CORE.RemoteDeviceCoreOperation", new DeviceOperationData
+                {
+                    OperationRequestString = "DELETEREMOTEDEVICE"
+                });
+            UserSettings.CurrentSettings.Connections.Remove(connection);
         }
 
         private static void listConnections(EmptySubOptions verbSubOptions)
@@ -84,9 +91,10 @@ namespace ContentSyncTool
             string host = verbSubOptions.HostName;
             string targetGroupID = verbSubOptions.GroupID;
             string protocol = host.StartsWith("localdev") ? "ws" : "wss";
+            string connectionProtocol = host.StartsWith("localdev") ? "http" : "https";
             var result = SecuritySupport.SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + verbSubOptions.HostName + "/websocket/NegotiateDeviceConnection?groupID=" + targetGroupID,
                                                                       sharedSecret, "Connection from Tool with name: " + verbSubOptions.ConnectionName);
-            string connectionUrl = "";
+            string connectionUrl = String.Format("{2}://{0}/auth/grp/{1}/DEV", host, targetGroupID, connectionProtocol);
             var connection = new UserSettings.Connection
                 {
                     Name = verbSubOptions.ConnectionName,
