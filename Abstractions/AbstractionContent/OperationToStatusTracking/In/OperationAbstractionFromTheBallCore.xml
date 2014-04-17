@@ -1293,5 +1293,79 @@
         <Target name="CallPrepareTargetAndListItemsToCopyOutput" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="MergeAccountsDestructively">
+      <OperationSpec>
+        <Description>
+            Merges two accounts into one and destroys the leftover. Parameters state these as "PrimaryAccountToStay" and "AccountToMergeAndDestroy"
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="PrimaryAccountToStayID" dataType="string" designDesc="Primary account that is going to stay after the merge" state="implemented" />
+        <Parameter name="AccountToBeMergedAndDestroyedID" dataType="string" designDesc="Account to be merged and destroyed" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="PrimaryAccountToStay" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Primary account root" state="implemented">
+            <Parameter name="PrimaryAccountToStayID" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountToBeMerged" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Account to be merged" state="implemented">
+            <Parameter name="AccountToBeMergedAndDestroyedID" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupInitiatorAccessToBeTransfered" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </TargetDefinition>
+          <TargetDefinition name="EmailAddressesToBeMerged" dataType="AaltoGlobalImpact.OIP.TBEmail[]" designDesc="Email addresses from account to be merged" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </TargetDefinition>
+          <TargetDefinition name="LoginAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBLoginInfo[]" designDesc="Login information from access to be merged" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </TargetDefinition>
+          <MethodExecute name="RemoveAccountToBeMergedFromAllGroups" designDesc="Remove account to be merged from all of its groups" state="implemented">
+            <Target name="AccountToBeMerged" />
+            <Target name="GroupAccessToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="TransferGroupInitiatorRights" designDesc="Transfer group initiator rights" state="implemented">
+            <Parameter name="PrimaryAccountToStayID" />
+            <Parameter name="AccountToBeMergedAndDestroyedID" />
+            <Target name="GroupInitiatorAccessToBeTransfered" />
+          </MethodExecute>
+          <MethodExecute name="RemoveEmailAddressesFromAccountToBeMerged" designDesc="Remove all email addresses from account to be merged" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="RemoveLoginsFromAccountToBeMerged" designDesc="Remove all login accounts from account to be merged" state="implemented">
+            <Target name="AccountToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="AddPrimaryAccountToAllGroupsWhereItsMissing" designDesc="All primary account to all groups where its missing" state="implemented">
+            <Target name="PrimaryAccountToStay" />
+            <Target name="GroupAccessToBeMerged" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="TransferGroupInitiator">
+      <OperationSpec>
+        <Description>Change group initiator from one account to another</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID whose initiatorship is to be transfered" state="implemented" />
+        <Parameter name="OldInitiatorAccountID" dataType="string" designDesc="Old initiator account ID" state="implemented" />
+        <Parameter name="NewInitiatorAccountID" dataType="string" designDesc="New initiator account ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="AddNewInitiatorToGroup" designDesc="Add new initiator to group" state="implemented">
+            <Parameter name="GroupID" />
+            <Parameter name="NewInitiatorAccountID" />
+          </MethodExecute>
+          <MethodExecute name="RemoveOldInitiatorFromGroup" designDesc="Remove old initiator from group" state="implemented">
+            <Parameter name="GroupID" />
+            <Parameter name="OldInitiatorAccountID" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

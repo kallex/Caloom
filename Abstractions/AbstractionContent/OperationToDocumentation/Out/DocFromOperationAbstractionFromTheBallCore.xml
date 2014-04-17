@@ -2127,6 +2127,129 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="MergeAccountsDestructively (PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Merges two accounts into one and destroys the leftover. Parameters state these as "PrimaryAccountToStay" and "AccountToMergeAndDestroy"
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PrimaryAccountToStayID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Primary account that is going to stay after the merge</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountToBeMergedAndDestroyedID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account to be merged and destroyed</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PrimaryAccountToStay ( PrimaryAccountToStayID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Primary account root</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountToBeMerged ( AccountToBeMergedAndDestroyedID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account to be merged</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupAccessToBeMerged ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group access from account, that's being merged - not initiator roles</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupInitiatorAccessToBeTransfered ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group access from account, that's being merged - not initiator roles</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailAddressesToBeMerged ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email addresses from account to be merged</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LoginAccessToBeMerged ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Login information from access to be merged</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveAccountToBeMergedFromAllGroups ( AccountToBeMerged, GroupAccessToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove account to be merged from all of its groups</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Transfer group initiator rights</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveEmailAddressesFromAccountToBeMerged ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove all email addresses from account to be merged</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveLoginsFromAccountToBeMerged ( AccountToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove all login accounts from account to be merged</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddPrimaryAccountToAllGroupsWhereItsMissing ( PrimaryAccountToStay, GroupAccessToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>All primary account to all groups where its missing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -3516,6 +3639,75 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="TransferGroupInitiator (GroupID, OldInitiatorAccountID, NewInitiatorAccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Change group initiator from one account to another</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID whose initiatorship is to be transfered</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OldInitiatorAccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Old initiator account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>NewInitiatorAccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>New initiator account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddNewInitiatorToGroup ( GroupID, NewInitiatorAccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add new initiator to group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveOldInitiatorFromGroup ( GroupID, OldInitiatorAccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove old initiator from group</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>

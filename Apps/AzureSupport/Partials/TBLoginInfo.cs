@@ -4,13 +4,13 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class TBLoginInfo
     {
-        public static string GetLoginIDFromLoginURL(string user)
+        public static string GetLoginIDFromLoginURL(string loginURL)
         {
-            if (user.StartsWith("https://"))
-                return user.Substring(8);
-            if (user.StartsWith("http://"))
-                return user.Substring(7);
-            throw new NotSupportedException("Not supported user name prefix: " + user);
+            if (loginURL.StartsWith("https://"))
+                return loginURL.Substring(8);
+            if (loginURL.StartsWith("http://"))
+                return loginURL.Substring(7);
+            throw new NotSupportedException("Not supported user name prefix: " + loginURL);
         }
     }
 }

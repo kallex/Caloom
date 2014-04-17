@@ -2201,6 +2201,95 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fix relative locations of objects
 		</div>
+		</p><h1>MergeAccountsDestructively (PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Merges two accounts into one and destroys the leftover. Parameters state these as "PrimaryAccountToStay" and "AccountToMergeAndDestroy"
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PrimaryAccountToStayID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Primary account that is going to stay after the merge
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountToBeMergedAndDestroyedID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account to be merged and destroyed
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: PrimaryAccountToStay ( PrimaryAccountToStayID )</h2>
+		<p>		<div class="MsoNormal" >
+		Primary account root
+		</div>
+		</p><h2>Target Definition: AccountToBeMerged ( AccountToBeMergedAndDestroyedID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account to be merged
+		</div>
+		</p><h2>Target Definition: GroupAccessToBeMerged ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Group access from account, that's being merged - not initiator roles
+		</div>
+		</p><h2>Target Definition: GroupInitiatorAccessToBeTransfered ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Group access from account, that's being merged - not initiator roles
+		</div>
+		</p><h2>Target Definition: EmailAddressesToBeMerged ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Email addresses from account to be merged
+		</div>
+		</p><h2>Target Definition: LoginAccessToBeMerged ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Login information from access to be merged
+		</div>
+		</p><h2>Method Call: RemoveAccountToBeMergedFromAllGroups ( AccountToBeMerged, GroupAccessToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove account to be merged from all of its groups
+		</div>
+		</p><h2>Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )</h2>
+		<p>		<div class="MsoNormal" >
+		Transfer group initiator rights
+		</div>
+		</p><h2>Method Call: RemoveEmailAddressesFromAccountToBeMerged ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove all email addresses from account to be merged
+		</div>
+		</p><h2>Method Call: RemoveLoginsFromAccountToBeMerged ( AccountToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove all login accounts from account to be merged
+		</div>
+		</p><h2>Method Call: AddPrimaryAccountToAllGroupsWhereItsMissing ( PrimaryAccountToStay, GroupAccessToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		All primary account to all groups where its missing
+		</div>
 		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -3443,6 +3532,74 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>TransferGroupInitiator (GroupID, OldInitiatorAccountID, NewInitiatorAccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Change group initiator from one account to another
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID whose initiatorship is to be transfered
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OldInitiatorAccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Old initiator account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		NewInitiatorAccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		New initiator account ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: AddNewInitiatorToGroup ( GroupID, NewInitiatorAccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Add new initiator to group
+		</div>
+		</p><h2>Method Call: RemoveOldInitiatorFromGroup ( GroupID, OldInitiatorAccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove old initiator from group
+		</div>
 		</p><h1>UnregisterEmailAddress (AccountID, EmailAddress)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

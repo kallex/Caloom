@@ -947,4 +947,50 @@ using System.IO;
 				public ContentItemLocationWithMD5[] CopiedItems ;
 				public ContentItemLocationWithMD5[] DeletedItems ;
 				}
+				public class MergeAccountsDestructivelyParameters 
+		{
+				public string PrimaryAccountToStayID ;
+				public string AccountToBeMergedAndDestroyedID ;
+				}
+		
+		public class MergeAccountsDestructively 
+		{
+				private static void PrepareParameters(MergeAccountsDestructivelyParameters parameters)
+		{
+					}
+				public static void Execute(MergeAccountsDestructivelyParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.TBRAccountRoot PrimaryAccountToStay = MergeAccountsDestructivelyImplementation.GetTarget_PrimaryAccountToStay(parameters.PrimaryAccountToStayID);	
+				AaltoGlobalImpact.OIP.TBRAccountRoot AccountToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_AccountToBeMerged(parameters.AccountToBeMergedAndDestroyedID);	
+				AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[] GroupAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_GroupAccessToBeMerged(AccountToBeMerged);	
+				AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[] GroupInitiatorAccessToBeTransfered = MergeAccountsDestructivelyImplementation.GetTarget_GroupInitiatorAccessToBeTransfered(AccountToBeMerged);	
+				AaltoGlobalImpact.OIP.TBEmail[] EmailAddressesToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_EmailAddressesToBeMerged(AccountToBeMerged);	
+				AaltoGlobalImpact.OIP.TBLoginInfo[] LoginAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_LoginAccessToBeMerged(AccountToBeMerged);	
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveAccountToBeMergedFromAllGroups(AccountToBeMerged, GroupAccessToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_TransferGroupInitiatorRights(parameters.PrimaryAccountToStayID, parameters.AccountToBeMergedAndDestroyedID, GroupInitiatorAccessToBeTransfered);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveEmailAddressesFromAccountToBeMerged(AccountToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveLoginsFromAccountToBeMerged(AccountToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddPrimaryAccountToAllGroupsWhereItsMissing(PrimaryAccountToStay, GroupAccessToBeMerged);		
+				}
+				}
+				public class TransferGroupInitiatorParameters 
+		{
+				public string GroupID ;
+				public string OldInitiatorAccountID ;
+				public string NewInitiatorAccountID ;
+				}
+		
+		public class TransferGroupInitiator 
+		{
+				private static void PrepareParameters(TransferGroupInitiatorParameters parameters)
+		{
+					}
+				public static void Execute(TransferGroupInitiatorParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TransferGroupInitiatorImplementation.ExecuteMethod_AddNewInitiatorToGroup(parameters.GroupID, parameters.NewInitiatorAccountID);		
+				TransferGroupInitiatorImplementation.ExecuteMethod_RemoveOldInitiatorFromGroup(parameters.GroupID, parameters.OldInitiatorAccountID);		
+				}
+				}
 		 } 
