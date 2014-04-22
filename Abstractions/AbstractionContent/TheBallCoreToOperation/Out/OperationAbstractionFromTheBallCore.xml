@@ -1327,20 +1327,34 @@
             <Target name="AccountToBeMerged" />
             <Target name="GroupAccessToBeMerged" />
           </MethodExecute>
-          <MethodExecute name="TransferGroupInitiatorRights" designDesc="Transfer group initiator rights" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-            <Parameter name="AccountToBeMergedAndDestroyedID" />
-            <Target name="GroupInitiatorAccessToBeTransfered" />
-          </MethodExecute>
           <MethodExecute name="RemoveEmailAddressesFromAccountToBeMerged" designDesc="Remove all email addresses from account to be merged" state="implemented">
             <Target name="AccountToBeMerged" />
           </MethodExecute>
           <MethodExecute name="RemoveLoginsFromAccountToBeMerged" designDesc="Remove all login accounts from account to be merged" state="implemented">
             <Target name="AccountToBeMerged" />
           </MethodExecute>
+          <MethodExecute name="AddLoginsToPrimaryAccount" designDesc="Add logins to new primary account" state="implemented">
+            <Target name="PrimaryAccountToStay" />
+            <Target name="LoginAccessToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="AddEmailAddressesToPrimaryAccount" designDesc="Add email addresses to new primary account" state="implemented">
+            <Target name="PrimaryAccountToStay" />
+            <Target name="EmailAddressesToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="StorePrimaryAccount" designDesc="Store primary account object" state="implemented">
+            <Target name="PrimaryAccountToStay" />
+          </MethodExecute>
+          <MethodExecute name="CallRefreshAccountRootToReferences" designDesc="Fix account root of primary account" state="implemented">
+            <Parameter name="PrimaryAccountToStayID" />
+          </MethodExecute>
           <MethodExecute name="AddPrimaryAccountToAllGroupsWhereItsMissing" designDesc="All primary account to all groups where its missing" state="implemented">
             <Target name="PrimaryAccountToStay" />
             <Target name="GroupAccessToBeMerged" />
+          </MethodExecute>
+          <MethodExecute name="TransferGroupInitiatorRights" designDesc="Transfer group initiator rights" state="implemented">
+            <Parameter name="PrimaryAccountToStayID" />
+            <Parameter name="AccountToBeMergedAndDestroyedID" />
+            <Target name="GroupInitiatorAccessToBeTransfered" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

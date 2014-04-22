@@ -12,6 +12,8 @@ namespace AaltoGlobalImpact.OIP
 
         public static AdditionalFormatContent[] GetFormattedContentToStore(this IAdditionalFormatProvider providerObject, string masterBlobETag, params string[] formatExtensions)
         {
+            if (formatExtensions.Length == 0)
+                formatExtensions = providerObject.GetAdditionalFormatExtensions();
             List<AdditionalFormatContent> contentList = new List<AdditionalFormatContent>(formatExtensions.Length);
             IInformationObject iObj = providerObject as IInformationObject;
             string oldMasterETag = null;

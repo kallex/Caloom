@@ -15,6 +15,8 @@ namespace ContentSyncTool
             public string HostName;
             public string GroupID;
             public string EstablishedTrustID;
+            public string LocalTemplateRootLocation;
+            public string LocalDataRootLocation;
             public Device Device = new Device();
         }
 

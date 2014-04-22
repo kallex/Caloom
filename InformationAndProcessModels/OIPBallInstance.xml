@@ -748,7 +748,24 @@
           <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
         </InformationItems>
       </InformationObject>
-  
+
+      <InformationObject name="CommentCollection" designDesc="Collection of comments">
+        <CollectionFor contentInformationObjectName="Comment" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="Comment" designDesc="Comment object">
+        <InformationItems>
+          <InformationItem name="TargetObjectID" logicalDataType="Text_Short" />
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetObjectDomain" logicalDataType="Text_Short"/>
+          <InformationItem name="CommentText" logicalDataType="Text_Long"/>
+          <InformationItem name="Published" logicalDataType="Time_DateTime"/>
+          <InformationItem name="Modified" logicalDataType="Time_DateTime"/>
+          <InformationItem name="AuthorName" logicalDataType="Text_Short"/>
+          <InformationItem name="AuthorEmail" logicalDataType="Text_Short"/>
+          <InformationItem name="AuthorAccountID" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      
       <InformationObject name="TextContentCollection" designDesc="Collection of text contents">
         <CollectionFor contentInformationObjectName="TextContent" collectionType="Master" />
       </InformationObject>

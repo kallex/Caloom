@@ -2221,13 +2221,6 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Transfer group initiator rights</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="Method Call: RemoveEmailAddressesFromAccountToBeMerged ( AccountToBeMerged )" level="2">
               <Paragraph>
                 <Text>
@@ -2242,10 +2235,45 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: AddLoginsToPrimaryAccount ( PrimaryAccountToStay, LoginAccessToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add logins to new primary account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddEmailAddressesToPrimaryAccount ( PrimaryAccountToStay, EmailAddressesToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add email addresses to new primary account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StorePrimaryAccount ( PrimaryAccountToStay )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store primary account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CallRefreshAccountRootToReferences ( PrimaryAccountToStayID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fix account root of primary account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: AddPrimaryAccountToAllGroupsWhereItsMissing ( PrimaryAccountToStay, GroupAccessToBeMerged )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>All primary account to all groups where its missing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Transfer group initiator rights</TextContent>
                 </Text>
               </Paragraph>
             </Header>

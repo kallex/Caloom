@@ -69,6 +69,7 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -139,6 +140,8 @@
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="MediaFileData.cs" />
     <Compile Include="OperationSupport.cs" />
+    <Compile Include="Partials\Comment.cs" />
+    <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="SyncSupport.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
@@ -343,6 +346,7 @@
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
+    <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
   </ItemGroup>

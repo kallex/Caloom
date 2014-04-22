@@ -2274,10 +2274,6 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Remove account to be merged from all of its groups
 		</div>
-		</p><h2>Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )</h2>
-		<p>		<div class="MsoNormal" >
-		Transfer group initiator rights
-		</div>
 		</p><h2>Method Call: RemoveEmailAddressesFromAccountToBeMerged ( AccountToBeMerged )</h2>
 		<p>		<div class="MsoNormal" >
 		Remove all email addresses from account to be merged
@@ -2286,9 +2282,29 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Remove all login accounts from account to be merged
 		</div>
+		</p><h2>Method Call: AddLoginsToPrimaryAccount ( PrimaryAccountToStay, LoginAccessToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Add logins to new primary account
+		</div>
+		</p><h2>Method Call: AddEmailAddressesToPrimaryAccount ( PrimaryAccountToStay, EmailAddressesToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Add email addresses to new primary account
+		</div>
+		</p><h2>Method Call: StorePrimaryAccount ( PrimaryAccountToStay )</h2>
+		<p>		<div class="MsoNormal" >
+		Store primary account object
+		</div>
+		</p><h2>Method Call: CallRefreshAccountRootToReferences ( PrimaryAccountToStayID )</h2>
+		<p>		<div class="MsoNormal" >
+		Fix account root of primary account
+		</div>
 		</p><h2>Method Call: AddPrimaryAccountToAllGroupsWhereItsMissing ( PrimaryAccountToStay, GroupAccessToBeMerged )</h2>
 		<p>		<div class="MsoNormal" >
 		All primary account to all groups where its missing
+		</div>
+		</p><h2>Method Call: TransferGroupInitiatorRights ( GroupInitiatorAccessToBeTransfered, PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID )</h2>
+		<p>		<div class="MsoNormal" >
+		Transfer group initiator rights
 		</div>
 		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
 		<h2>Specifications</h2>

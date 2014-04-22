@@ -44,6 +44,9 @@ namespace ContentSyncTool
                     case "selfTest":
                         selfTest((EmptySubOptions) verbSubOptions);
                         break;
+                    case "setConnectionRootLocations":
+                        setConnectionRootLocations((ConnectionRootLocationSubOptions) verbSubOptions);
+                        break;
                     default:
                         throw new ArgumentException("Not implemented verb: " + verb);
                 }
@@ -56,6 +59,20 @@ namespace ContentSyncTool
             {
                 UserSettings.SaveCurrentSettings();
             }
+        }
+
+        private static void setConnectionRootLocations(ConnectionRootLocationSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            if (String.IsNullOrEmpty(verbSubOptions.DataRoot) == false)
+                connection.LocalDataRootLocation = verbSubOptions.DataRoot;
+            if (String.IsNullOrEmpty(verbSubOptions.TemplateRoot) == false)
+                connection.LocalTemplateRootLocation = verbSubOptions.TemplateRoot;
+        }
+
+        private static UserSettings.Connection GetConnection(NamedConnectionSubOptions verbSubOptions)
+        {
+            return UserSettings.CurrentSettings.Connections.Single(conn => conn.Name == verbSubOptions.ConnectionName);
         }
 
         private static void selfTest(EmptySubOptions verbSubOptions)
@@ -71,18 +88,27 @@ namespace ContentSyncTool
             var connection = UserSettings.CurrentSettings.Connections.FirstOrDefault(conn => conn.Name == verbSubOptions.ConnectionName);
             if(connection == null)
                 throw new ArgumentException("ConnectionName is invalid");
-            DeviceSupport.ExecuteRemoteOperationVoid(connection.Device, "TheBall.CORE.RemoteDeviceCoreOperation", new DeviceOperationData
-                {
-                    OperationRequestString = "DELETEREMOTEDEVICE"
-                });
+            try
+            {
+                DeviceSupport.ExecuteRemoteOperationVoid(connection.Device, "TheBall.CORE.RemoteDeviceCoreOperation", new DeviceOperationData
+                    {
+                        OperationRequestString = "DELETEREMOTEDEVICE"
+                    });
+            }
+            catch(Exception)
+            {
+                if (verbSubOptions.Force == false)
+                    throw;
+            }
             UserSettings.CurrentSettings.Connections.Remove(connection);
         }
 
         private static void listConnections(EmptySubOptions verbSubOptions)
         {
             Console.WriteLine("Connections:");
-            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("{0} {1} {2}",
-                connection.Name, connection.HostName, connection.GroupID));
+            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("{0} {1} {2} {3} {4}",
+                connection.Name, connection.HostName, connection.GroupID,
+                connection.LocalDataRootLocation, connection.LocalTemplateRootLocation));
         }
 
         private static void createConnection(CreateConnectionSubOptions verbSubOptions)

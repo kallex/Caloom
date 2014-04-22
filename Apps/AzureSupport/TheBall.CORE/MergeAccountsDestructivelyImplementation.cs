@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 
@@ -28,10 +29,10 @@ namespace TheBall.CORE
 
         public static TBAccountCollaborationGroup[] GetTarget_GroupInitiatorAccessToBeTransfered(TBRAccountRoot accountToBeMerged)
         {
-            var initiatorRigths = accountToBeMerged.Account.GroupRoleCollection.CollectionContent
+            var initiatorRights = accountToBeMerged.Account.GroupRoleCollection.CollectionContent
                 .Where(grpRole => TBCollaboratorRole.HasInitiatorRights(grpRole.GroupRole))
                 .ToArray();
-            return initiatorRigths;
+            return initiatorRights;
         }
 
 
@@ -59,11 +60,6 @@ namespace TheBall.CORE
             }
         }
 
-        public static void ExecuteMethod_TransferGroupInitiatorRights(string primaryAccountToStayId, string accountToBeMergedAndDestroyedId, TBAccountCollaborationGroup[] groupInitiatorAccessToBeTransfered)
-        {
-            throw new NotImplementedException();
-        }
-
         public static void ExecuteMethod_RemoveEmailAddressesFromAccountToBeMerged(TBRAccountRoot accountToBeMerged)
         {
             var accountID = accountToBeMerged.ID;
@@ -89,9 +85,76 @@ namespace TheBall.CORE
             }
         }
 
+        public static void ExecuteMethod_AddLoginsToPrimaryAccount(TBRAccountRoot primaryAccountToStay, TBLoginInfo[] loginAccessToBeMerged)
+        {
+            primaryAccountToStay.Account.Logins.CollectionContent.AddRange(loginAccessToBeMerged);
+        }
+
+        public static void ExecuteMethod_AddEmailAddressesToPrimaryAccount(TBRAccountRoot primaryAccountToStay, TBEmail[] emailAddressesToBeMerged)
+        {
+            primaryAccountToStay.Account.Emails.CollectionContent.AddRange(emailAddressesToBeMerged);
+            foreach (var email in emailAddressesToBeMerged)
+            {
+                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress);
+                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                if (emailRoot == null)
+                {
+                    emailRoot = TBREmailRoot.CreateDefault();
+                    emailRoot.ID = emailRootID;
+                    emailRoot.UpdateRelativeLocationFromID();
+                }
+                emailRoot.Account = primaryAccountToStay.Account;
+                StorageSupport.StoreInformation(emailRoot);
+            }
+        }
+
+        public static void ExecuteMethod_StorePrimaryAccount(TBRAccountRoot primaryAccountToStay)
+        {
+            primaryAccountToStay.StoreInformation();
+        }
+
+        public static void ExecuteMethod_CallRefreshAccountRootToReferences(string primaryAccountToStayId)
+        {
+            UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters {AccountID = primaryAccountToStayId});
+        }
+
         public static void ExecuteMethod_AddPrimaryAccountToAllGroupsWhereItsMissing(TBRAccountRoot primaryAccountToStay, TBAccountCollaborationGroup[] groupAccessToBeMerged)
         {
-            throw new NotImplementedException();
+            string memberEmailAddress = primaryAccountToStay.Account.Emails.CollectionContent.FirstOrDefault().EmailAddress;
+            foreach (var groupAccess in groupAccessToBeMerged)
+            {
+                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupAccess.GroupID);
+                TBCollaboratorRole role =
+                    groupRoot.Group.Roles.CollectionContent.FirstOrDefault(
+                        candidate => candidate.Email.EmailAddress == memberEmailAddress);
+                if (role != null)
+                {
+                    continue;
+                }
+                else
+                {
+                    role = TBCollaboratorRole.CreateDefault();
+                    role.Email.EmailAddress = memberEmailAddress;
+                    role.Role = TBCollaboratorRole.CollaboratorRoleValue;
+                    role.SetRoleAsMember();
+                    groupRoot.Group.Roles.CollectionContent.Add(role);
+                }
+                groupRoot.StoreInformation();
+            }
+        }
+
+        public static void ExecuteMethod_TransferGroupInitiatorRights(string primaryAccountToStayId, string accountToBeMergedAndDestroyedId, TBAccountCollaborationGroup[] groupInitiatorAccessToBeTransfered)
+        {
+            foreach (var groupAccess in groupInitiatorAccessToBeTransfered)
+            {
+                var groupID = groupAccess.GroupID;
+                TransferGroupInitiator.Execute(new TransferGroupInitiatorParameters
+                    {
+                        GroupID = groupID,
+                        NewInitiatorAccountID = primaryAccountToStayId,
+                        OldInitiatorAccountID = accountToBeMergedAndDestroyedId
+                    });
+            }
         }
 
     }

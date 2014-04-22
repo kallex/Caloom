@@ -968,10 +968,14 @@ using System.IO;
 				AaltoGlobalImpact.OIP.TBEmail[] EmailAddressesToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_EmailAddressesToBeMerged(AccountToBeMerged);	
 				AaltoGlobalImpact.OIP.TBLoginInfo[] LoginAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_LoginAccessToBeMerged(AccountToBeMerged);	
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveAccountToBeMergedFromAllGroups(AccountToBeMerged, GroupAccessToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_TransferGroupInitiatorRights(parameters.PrimaryAccountToStayID, parameters.AccountToBeMergedAndDestroyedID, GroupInitiatorAccessToBeTransfered);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveEmailAddressesFromAccountToBeMerged(AccountToBeMerged);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveLoginsFromAccountToBeMerged(AccountToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddLoginsToPrimaryAccount(PrimaryAccountToStay, LoginAccessToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddEmailAddressesToPrimaryAccount(PrimaryAccountToStay, EmailAddressesToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_StorePrimaryAccount(PrimaryAccountToStay);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_CallRefreshAccountRootToReferences(parameters.PrimaryAccountToStayID);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddPrimaryAccountToAllGroupsWhereItsMissing(PrimaryAccountToStay, GroupAccessToBeMerged);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_TransferGroupInitiatorRights(parameters.PrimaryAccountToStayID, parameters.AccountToBeMergedAndDestroyedID, GroupInitiatorAccessToBeTransfered);		
 				}
 				}
 				public class TransferGroupInitiatorParameters 
