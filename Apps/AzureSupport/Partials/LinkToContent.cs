@@ -8,6 +8,8 @@ namespace AaltoGlobalImpact.OIP
     {
         public void PerformBeforeStoreUpdate()
         {
+            if (URL != null)
+                URL = URL.Trim();
             if (ImageData == null && string.IsNullOrEmpty(URL) == false)
             {
                 ImageData = new MediaContent();
