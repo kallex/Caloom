@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Security.Cryptography;
 using AzureSupport;
+using SecuritySupport;
 
 namespace TheBall.CORE
 {
@@ -24,9 +25,13 @@ namespace TheBall.CORE
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
-            aes.KeySize = 256;
+            aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+            aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
             aes.GenerateIV();
             aes.Key = device.ActiveSymmetricAESKey;
+            aes.Padding = SymmetricSupport.PADDING_MODE;
+            aes.Mode = SymmetricSupport.AES_MODE;
+            aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
             var ivBase64 = Convert.ToBase64String(aes.IV);
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 
                 + ":" + device.EstablishedTrustID 
@@ -50,9 +55,13 @@ namespace TheBall.CORE
             string ivStr = response.Headers["IV"];
             var respStream = response.GetResponseStream();
             AesManaged aes = new AesManaged();
-            aes.KeySize = 256;
+            aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+            aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
             aes.IV = Convert.FromBase64String(ivStr);
             aes.Key = aesKey;
+            aes.Padding = SymmetricSupport.PADDING_MODE;
+            aes.Mode = SymmetricSupport.AES_MODE;
+            aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
             var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
             using (CryptoStream cryptoStream = new CryptoStream(respStream, decryptor, CryptoStreamMode.Read))
             {
@@ -68,9 +77,13 @@ namespace TheBall.CORE
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(authenticatedAsActiveDevice.ConnectionURL);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
-            aes.KeySize = 256;
+            aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+            aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
             aes.GenerateIV();
             aes.Key = authenticatedAsActiveDevice.ActiveSymmetricAESKey;
+            aes.Padding = SymmetricSupport.PADDING_MODE;
+            aes.Mode = SymmetricSupport.AES_MODE;
+            aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
             var ivBase64 = Convert.ToBase64String(aes.IV);
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + authenticatedAsActiveDevice.EstablishedTrustID + ":" + destinationContentName);
             var requestStream = request.GetRequestStream();

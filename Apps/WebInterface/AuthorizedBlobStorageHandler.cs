@@ -14,6 +14,7 @@ using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
 
@@ -132,9 +133,13 @@ namespace WebInterface
                 var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
 
                 AesManaged aes = new AesManaged();
-                aes.KeySize = 256;
+                aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+                aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
                 aes.GenerateIV();
                 aes.Key = deviceMembership.ActiveSymmetricAESKey;
+                aes.Padding = SymmetricSupport.PADDING_MODE;
+                aes.Mode = SymmetricSupport.AES_MODE;
+                aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
                 var ivBase64 = Convert.ToBase64String(aes.IV);
                 response.Headers.Add("IV", ivBase64);
                 var responseStream = response.OutputStream;
@@ -150,16 +155,24 @@ namespace WebInterface
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged decAES = new AesManaged
                         {
-                            KeySize = 256,
+                            KeySize = SymmetricSupport.AES_KEYSIZE,
+                            BlockSize = SymmetricSupport.AES_BLOCKSIZE,
                             IV = Convert.FromBase64String(ivStr),
-                            Key = deviceMembership.ActiveSymmetricAESKey
+                            Key = deviceMembership.ActiveSymmetricAESKey,
+                            Padding = SymmetricSupport.PADDING_MODE,
+                            Mode = SymmetricSupport.AES_MODE,
+                            FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE
                         };
                     var reqDecryptor = decAES.CreateDecryptor(decAES.Key, decAES.IV);
 
                     AesManaged encAES = new AesManaged
                         {
-                            KeySize = 256, 
-                            Key = deviceMembership.ActiveSymmetricAESKey
+                            KeySize = SymmetricSupport.AES_KEYSIZE, 
+                            BlockSize = SymmetricSupport.AES_BLOCKSIZE,
+                            Key = deviceMembership.ActiveSymmetricAESKey,
+                            Padding = SymmetricSupport.PADDING_MODE,
+                            Mode = SymmetricSupport.AES_MODE,
+                            FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE
                         };
                     encAES.GenerateIV();
                     var respivBase64 = Convert.ToBase64String(encAES.IV);
@@ -185,9 +198,13 @@ namespace WebInterface
                         throw new InvalidDataException("Invalid content name");
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged aes = new AesManaged();
-                    aes.KeySize = 256;
+                    aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+                    aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
                     aes.IV = Convert.FromBase64String(ivStr);
                     aes.Key = deviceMembership.ActiveSymmetricAESKey;
+                    aes.Padding = SymmetricSupport.PADDING_MODE;
+                    aes.Mode = SymmetricSupport.AES_MODE;
+                    aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
                     var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                     CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
                     blob.UploadFromStream(cryptoStream);

@@ -14,6 +14,12 @@ namespace SecuritySupport
         private AesManaged CurrProvider = new AesManaged() {Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7};
         private static RNGCryptoServiceProvider RndSupport = new RNGCryptoServiceProvider();
 
+        public const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
+        public const CipherMode AES_MODE = CipherMode.CBC;
+        public const int AES_FEEDBACK_SIZE = 8;
+        public const int AES_KEYSIZE = 256;
+        public const int AES_BLOCKSIZE = 128;
+
         public string EncryptStringToBase64(string plainText)
         {
             var encrypted = EncryptString(plainText);

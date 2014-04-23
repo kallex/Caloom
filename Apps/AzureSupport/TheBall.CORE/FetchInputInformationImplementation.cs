@@ -4,6 +4,7 @@ using System.Net;
 using System.Security;
 using System.Security.Cryptography;
 using Microsoft.WindowsAzure.StorageClient;
+using SecuritySupport;
 
 namespace TheBall.CORE
 {
@@ -64,9 +65,13 @@ namespace TheBall.CORE
                     throw new InvalidDataException("Invalid content name");
                 var respStream = response.GetResponseStream();
                 AesManaged aes = new AesManaged();
-                aes.KeySize = 256;
+                aes.KeySize = SymmetricSupport.AES_KEYSIZE;
+                aes.BlockSize = SymmetricSupport.AES_BLOCKSIZE;
                 aes.IV = Convert.FromBase64String(ivStr);
                 aes.Key = authenticatedAsActiveDevice.ActiveSymmetricAESKey;
+                aes.Padding = SymmetricSupport.PADDING_MODE;
+                aes.Mode = SymmetricSupport.AES_MODE;
+                aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
                 var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                 CryptoStream cryptoStream = new CryptoStream(respStream, decryptor, CryptoStreamMode.Read);
                 blob.UploadFromStream(cryptoStream);
