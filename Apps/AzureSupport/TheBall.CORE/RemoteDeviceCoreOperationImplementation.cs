@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AzureSupport;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace TheBall.CORE
 {
@@ -28,9 +29,27 @@ namespace TheBall.CORE
                 case "DELETEREMOTEDEVICE":
                     currentDevice.DeleteInformationObject();
                     break;
+                case "GETCONTENTMD5LIST":
+                    getContentMD5List(deviceOperationData);
+                    break;
                 default:
                     throw new NotImplementedException("Not implemented RemoteDevice operation for request string: " + deviceOperationData.OperationRequestString);
             }
+            deviceOperationData.OperationResult = true;
+        }
+
+        private static void getContentMD5List(DeviceOperationData deviceOperationData)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var md5List = deviceOperationData.OperationParameters
+                                             .SelectMany(folder => owner.GetOwnerBlobListing(folder, true)
+                                                                        .Cast<CloudBlockBlob>()
+                                                                        .Select(blob => new ContentItemLocationWithMD5
+                                                                            {
+                                                                                ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
+                                                                                ContentMD5 = blob.Properties.ContentMD5
+                                                                            })).ToArray();
+            deviceOperationData.OperationSpecificContentData = md5List;
             deviceOperationData.OperationResult = true;
         }
 

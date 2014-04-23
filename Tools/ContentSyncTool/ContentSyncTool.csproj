@@ -74,6 +74,7 @@
     <Compile Include="ProtectionSupport.cs" />
     <Compile Include="SecurityNegotiationManager.cs" />
     <Compile Include="SymmetricSupport.cs" />
+    <Compile Include="SyncSupport.cs" />
     <Compile Include="TheBallEKE.cs" />
     <Compile Include="UserSettings.cs" />
   </ItemGroup>

@@ -126,6 +126,46 @@ namespace ContentSyncTool
                                                       ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
                                                   }
                 ).ToArray();
+            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, connection.DownSyncFolders);
+            var combinedTargetList = myDataSyncFolders.SelectMany(sFolder =>
+                {
+                    foreach (var contentMD5 in sFolder.ContentMD5s)
+                    {
+                        contentMD5.ContentLocation = sFolder.Folder + "/" + contentMD5.ContentLocation;
+                    }
+                    return sFolder.ContentMD5s;
+                }).ToArray();
+            var device = connection.Device;
+            SyncSupport.SynchronizeSourceListToTargetFolder(
+                remoteContentSourceList, combinedTargetList,
+                delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
+                    {
+                        string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
+                        string targetDirectoryName = Path.GetDirectoryName(targetFullName);
+                        if (Directory.Exists(targetDirectoryName) == false)
+                            Directory.CreateDirectory(targetDirectoryName);
+                        Console.Write("Copying: " + source.ContentLocation);
+                        DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
+                                                             targetFullName);
+                        Console.WriteLine(" ... done");
+                    }, delegate(ContentItemLocationWithMD5 target)
+                        {
+                            string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
+                            File.Delete(targetFullName);
+                            Console.WriteLine("Deleted: " + target.ContentLocation);
+                        });
+        }
+
+        private static ContentItemLocationWithMD5[] getConnectionContentMD5s(UserSettings.Connection connection, string[] downSyncFolders)
+        {
+            DeviceOperationData dod = new DeviceOperationData
+                {
+                    OperationRequestString = "GETCONTENTMD5LIST",
+                    OperationParameters = downSyncFolders
+                };
+            dod = connection.Device.ExecuteDeviceOperation(dod);
+            return dod.OperationSpecificContentData;
         }
     }
+
 }

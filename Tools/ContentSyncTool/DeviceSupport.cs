@@ -31,6 +31,15 @@ namespace ContentSyncTool
 
     public static class DeviceSupport
     {
+        public static DeviceOperationData ExecuteDeviceOperation(this UserSettings.Device device, DeviceOperationData operationParameters)
+        {
+            var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device, "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters);
+            if(!dod.OperationResult)
+                throw new OperationCanceledException("Remote device operation failed");
+            return dod;
+        }
+
+        
         public const string OperationPrefixStr = "OP-";
 
         public static TReturnType ExecuteRemoteOperation<TReturnType>(UserSettings.Device device, string operationName, object operationParameters)
@@ -104,6 +113,32 @@ namespace ContentSyncTool
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
             
+        }
+
+        public static void FetchContentFromDevice(UserSettings.Device device, string remoteContentFileName, string localContentFileName)
+        {
+            string url = device.ConnectionURL.Replace("/DEV", "/" + remoteContentFileName);
+            string establishedTrustID = device.EstablishedTrustID;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Headers.Add("Authorization", "DeviceAES::" + establishedTrustID + ":");
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
+                throw new InvalidOperationException("Authroized fetch failed with non-OK status code");
+            string ivStr = response.Headers["IV"];
+            var respStream = response.GetResponseStream();
+            AesManaged aes = new AesManaged();
+            aes.KeySize = 256;
+            aes.IV = Convert.FromBase64String(ivStr);
+            aes.Key = device.AESKey;
+            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            using(CryptoStream cryptoStream = new CryptoStream(respStream, decryptor, CryptoStreamMode.Read))
+            using(FileStream fileStream = File.Create(localContentFileName))
+            {
+                cryptoStream.CopyTo(fileStream);
+                fileStream.Close();
+            }
         }
     }
 }
