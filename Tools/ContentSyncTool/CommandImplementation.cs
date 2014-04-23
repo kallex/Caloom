@@ -142,12 +142,20 @@ namespace ContentSyncTool
                     {
                         string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
                         string targetDirectoryName = Path.GetDirectoryName(targetFullName);
-                        if (Directory.Exists(targetDirectoryName) == false)
-                            Directory.CreateDirectory(targetDirectoryName);
-                        Console.Write("Copying: " + source.ContentLocation);
+                        try
+                        {
+                            if (Directory.Exists(targetDirectoryName) == false)
+                                Directory.CreateDirectory(targetDirectoryName);
+                        }
+                        catch
+                        {
+
+                        }
+                        //Console.Write("Copying: " + source.ContentLocation);
                         DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
                                                              targetFullName);
-                        Console.WriteLine(" ... done");
+                        //Console.WriteLine(" ... done");
+                        Console.WriteLine("Copied: " + source.ContentLocation);
                     }, delegate(ContentItemLocationWithMD5 target)
                         {
                             string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
