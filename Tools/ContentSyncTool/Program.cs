@@ -47,6 +47,15 @@ namespace ContentSyncTool
                     case "setConnectionRootLocations":
                         CommandImplementation.setConnectionRootLocations((ConnectionRootLocationSubOptions) verbSubOptions);
                         break;
+                    case "setConnectionSyncFolders":
+                        CommandImplementation.setConnectionSyncFolders((ConnectionSyncFoldersSubOptions) verbSubOptions);
+                        break;
+                    case "upsync":
+                        CommandImplementation.upsync((ConnectionUpSyncSubOptions) verbSubOptions);
+                        break;
+                    case "downsync":
+                        CommandImplementation.downsync((ConnectionDownSyncSubOptions) verbSubOptions);
+                        break;
                     default:
                         throw new ArgumentException("Not implemented verb: " + verb);
                 }

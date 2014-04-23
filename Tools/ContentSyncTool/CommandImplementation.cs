@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using SecuritySupport;
@@ -7,14 +8,7 @@ namespace ContentSyncTool
 {
     internal class CommandImplementation
     {
-        internal static void setConnectionRootLocations(ConnectionRootLocationSubOptions verbSubOptions)
-        {
-            var connection = GetConnection(verbSubOptions);
-            if (String.IsNullOrEmpty(verbSubOptions.DataRoot) == false)
-                connection.LocalDataRootLocation = verbSubOptions.DataRoot;
-            if (String.IsNullOrEmpty(verbSubOptions.TemplateRoot) == false)
-                connection.LocalTemplateRootLocation = verbSubOptions.TemplateRoot;
-        }
+
 
         internal static UserSettings.Connection GetConnection(NamedConnectionSubOptions verbSubOptions)
         {
@@ -80,6 +74,58 @@ namespace ContentSyncTool
                         }
                 };
             UserSettings.CurrentSettings.Connections.Add(connection);
+        }
+
+        internal static void setConnectionRootLocations(ConnectionRootLocationSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            if (String.IsNullOrEmpty(verbSubOptions.DataRoot) == false)
+                connection.LocalDataRootLocation = verbSubOptions.DataRoot;
+            if (String.IsNullOrEmpty(verbSubOptions.TemplateRoot) == false)
+                connection.LocalTemplateRootLocation = verbSubOptions.TemplateRoot;
+        }
+
+        public static void setConnectionSyncFolders(ConnectionSyncFoldersSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            connection.DownSyncFolders = (verbSubOptions.DownSyncFolders ?? "").Split(',').OrderBy(name => name).ToArray();
+            connection.UpSyncFolders = (verbSubOptions.UpSyncFolders ?? "").Split(',').OrderBy(name => name).ToArray();
+        }
+
+        public static void upsync(ConnectionUpSyncSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            if (String.IsNullOrEmpty(connection.LocalTemplateRootLocation))
+                throw new InvalidDataException("Connection LocalTemplateRootLocation must be set before upsync command");
+            if (connection.UpSyncFolders == null || connection.UpSyncFolders.Length == 0)
+                throw new InvalidDataException("Connection upsync folders must be set before upsync command");
+            var rootFolder = connection.LocalTemplateRootLocation;
+            var customSyncFolders = connection.UpSyncFolders
+                                              .Select(folder =>
+                                                      new
+                                                          {
+                                                              Folder = folder,
+                                                              ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
+                                                          }
+                ).ToArray();
+            Console.WriteLine(customSyncFolders.Length);
+        }
+
+        public static void downsync(ConnectionDownSyncSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            if(String.IsNullOrEmpty(connection.LocalDataRootLocation))
+                throw new InvalidDataException("Connection LocalDataRootLocation must be set before downsync command");
+            if (connection.DownSyncFolders == null || connection.DownSyncFolders.Length == 0)
+                throw new InvalidDataException("Connection downsync folders must be set before downsync command");
+            var rootFolder = connection.LocalDataRootLocation;
+            var myDataSyncFolders = connection.DownSyncFolders
+                                              .Select(folder => new
+                                                  {
+                                                      Folder = folder,
+                                                      ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
+                                                  }
+                ).ToArray();
         }
     }
 }

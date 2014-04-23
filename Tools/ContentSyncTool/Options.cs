@@ -20,6 +20,9 @@ namespace ContentSyncTool
             ListConnectionsVerb = new EmptySubOptions();
             SelfTestVerb = new EmptySubOptions();
             SetConnectionRootLocationsVerb = new ConnectionRootLocationSubOptions();
+            SetConnectionSyncFoldersVerb = new ConnectionSyncFoldersSubOptions();
+            UpSyncVerb = new ConnectionUpSyncSubOptions();
+            DownSyncVerb = new ConnectionDownSyncSubOptions();
         }
 
         [VerbOption("createConnection", HelpText = "Create connection")]
@@ -37,6 +40,31 @@ namespace ContentSyncTool
         [VerbOption("setConnectionRootLocations", HelpText = "Set connection template root location")]
         public ConnectionRootLocationSubOptions SetConnectionRootLocationsVerb { get; set; }
 
+        [VerbOption("setConnectionSyncFolders", HelpText = "Set connection sync folders")]
+        public ConnectionSyncFoldersSubOptions SetConnectionSyncFoldersVerb { get; set; }
+
+        [VerbOption("upsync", HelpText = "Upload sync connection with predefined folders")]
+        public ConnectionUpSyncSubOptions UpSyncVerb { get; set; }
+
+        [VerbOption("downsync", HelpText = "Download sync connection with predefined folders")]
+        public ConnectionDownSyncSubOptions DownSyncVerb { get; set; }
+    }
+
+    class ConnectionDownSyncSubOptions : NamedConnectionSubOptions
+    {
+    }
+
+    class ConnectionUpSyncSubOptions : NamedConnectionSubOptions
+    {
+    }
+
+    class ConnectionSyncFoldersSubOptions : NamedConnectionSubOptions
+    {
+        [Option('d', "downSyncFolders", HelpText = "Comma separated owner folders to sync", Required = false)]
+        public string DownSyncFolders { get; set; }
+
+        [Option('u', "upSyncFolders", HelpText = "Comma separated local folders to sync", Required = false)]
+        public string UpSyncFolders { get; set; }
     }
 
     class ConnectionRootLocationSubOptions : NamedConnectionSubOptions
@@ -59,12 +87,6 @@ namespace ContentSyncTool
                 if(Directory.Exists(DataRoot) == false)
                     throw new ArgumentException("Invalid DataRoot value (directory not found): " + DataRoot);
             }
-            /*
-            DirectoryInfo dirInfo = new DirectoryInfo(CatalogueRepositoryRoot);
-            if(dirInfo.Exists == false)
-                throw new ArgumentException("Invalid CatalogueRepositoryRoot value (directory not found): " + CatalogueRepositoryRoot);
-            validateSelf();
-          * */
         }
 
     }
@@ -108,12 +130,6 @@ namespace ContentSyncTool
         {
             if(string.IsNullOrEmpty(ConnectionName))
                 throw new ArgumentException("Connection name is required");
-            /*
-            DirectoryInfo dirInfo = new DirectoryInfo(CatalogueRepositoryRoot);
-            if(dirInfo.Exists == false)
-                throw new ArgumentException("Invalid CatalogueRepositoryRoot value (directory not found): " + CatalogueRepositoryRoot);
-            validateSelf();
-          * */
         }
     }
 

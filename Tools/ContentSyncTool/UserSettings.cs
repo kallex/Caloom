@@ -18,6 +18,8 @@ namespace ContentSyncTool
             public string LocalTemplateRootLocation;
             public string LocalDataRootLocation;
             public Device Device = new Device();
+            public string[] DownSyncFolders;
+            public string[] UpSyncFolders;
         }
 
         [Serializable]
