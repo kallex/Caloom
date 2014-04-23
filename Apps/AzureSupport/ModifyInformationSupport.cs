@@ -38,7 +38,7 @@ namespace TheBall
 
             string contentSourceInfo = form["ContentSourceInfo"];
             var rootSourceAction = form["RootSourceAction"];
-            if (rootSourceAction != "Save")
+            if (rootSourceAction != null && rootSourceAction != "Save")
                 return null;
             var filterFields = new string[] { "ContentSourceInfo", "RootSourceAction" };
             string[] contentSourceInfos = contentSourceInfo.Split(',');
