@@ -51,6 +51,13 @@ namespace TheBall
             get { return Current.Owner; }
         }
 
+        public static IAccountInfo CurrentAccount
+        {
+            get { return Current.Account; }
+        }
+
+
+
         public static InformationContext Current
         {
             get
@@ -267,6 +274,13 @@ namespace TheBall
                     throw new NotSupportedException("CurrBlobClient can only be set once");
                 _currBlobClient = value;
             }
+        }
+
+        private IAccountInfo _account;
+        public IAccountInfo Account
+        {
+            set { _account = value; }
+            get { return _account; }
         }
 
         private IContainerOwner _owner;

@@ -758,11 +758,14 @@
           <InformationItem name="TargetObjectName" logicalDataType="Text_Short"/>
           <InformationItem name="TargetObjectDomain" logicalDataType="Text_Short"/>
           <InformationItem name="CommentText" logicalDataType="Text_Long"/>
-          <InformationItem name="Published" logicalDataType="Time_DateTime"/>
-          <InformationItem name="Modified" logicalDataType="Time_DateTime"/>
-          <InformationItem name="AuthorName" logicalDataType="Text_Short"/>
-          <InformationItem name="AuthorEmail" logicalDataType="Text_Short"/>
-          <InformationItem name="AuthorAccountID" logicalDataType="Text_Short"/>
+          <InformationItem name="Created" logicalDataType="Time_DateTime"/>
+          <InformationItem name="OriginalAuthorName" logicalDataType="Text_Short"/>
+          <InformationItem name="OriginalAuthorEmail" logicalDataType="Text_Short"/>
+          <InformationItem name="OriginalAuthorAccountID" logicalDataType="Text_Short"/>
+          <InformationItem name="LastModified" logicalDataType="Time_DateTime"/>
+          <InformationItem name="LastAuthorName" logicalDataType="Text_Short"/>
+          <InformationItem name="LastAuthorEmail" logicalDataType="Text_Short"/>
+          <InformationItem name="LastAuthorAccountID" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       

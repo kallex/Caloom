@@ -289,6 +289,41 @@ namespace WebInterface
 
         private bool HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            try // Piloting POST account identifying for InformationContext
+            {
+                var loginUrl = context.User.Identity.Name;
+                string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
+                TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
+                if (loginRoot != null)
+                {
+                    var currAccount = loginRoot.Account;
+                    var accountContainer = AccountContainer.RetrieveFromOwnerContent(currAccount, "default");
+                    string accountName;
+                    string accountID = currAccount.ID;
+                    string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
+                    if (accountEmail == null)
+                        accountEmail = "";
+                    if (accountContainer != null && accountContainer.AccountModule != null &&
+                        accountContainer.AccountModule.Profile != null)
+                    {
+                        accountName = string.Format("{0} {1}",
+                                                    accountContainer.AccountModule.Profile.FirstName,
+                                                    accountContainer.AccountModule.Profile.LastName);
+                    }
+                    else
+                    {
+                        accountName = accountEmail;
+                    }
+                    accountName = accountName.Trim();
+                    InformationContext.Current.Account = new CoreAccountData(accountID,
+                                                                             accountName, accountEmail);
+                }
+            }
+            catch // We don't want any errors for this piloting
+            {
+
+            }
+
             validateThatOwnerPostComesFromSameReferrer(context);
             HttpRequest request = context.Request;
             var form = request.Unvalidated().Form;

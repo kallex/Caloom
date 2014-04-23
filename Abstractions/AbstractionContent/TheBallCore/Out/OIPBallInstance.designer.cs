@@ -47801,11 +47801,17 @@ Comment.CommentText
 Comment.CommentText
 ";
 
-					result.AuthorName = @"Comment.AuthorName";
+					result.OriginalAuthorName = @"Comment.OriginalAuthorName";
 
-					result.AuthorEmail = @"Comment.AuthorEmail";
+					result.OriginalAuthorEmail = @"Comment.OriginalAuthorEmail";
 
-					result.AuthorAccountID = @"Comment.AuthorAccountID";
+					result.OriginalAuthorAccountID = @"Comment.OriginalAuthorAccountID";
+
+					result.LastAuthorName = @"Comment.LastAuthorName";
+
+					result.LastAuthorEmail = @"Comment.LastAuthorEmail";
+
+					result.LastAuthorAccountID = @"Comment.LastAuthorAccountID";
 
 				
 					return result;
@@ -47873,15 +47879,21 @@ Comment.CommentText
 							return true;
 						if(CommentText != _unmodified_CommentText)
 							return true;
-						if(Published != _unmodified_Published)
+						if(Created != _unmodified_Created)
 							return true;
-						if(Modified != _unmodified_Modified)
+						if(OriginalAuthorName != _unmodified_OriginalAuthorName)
 							return true;
-						if(AuthorName != _unmodified_AuthorName)
+						if(OriginalAuthorEmail != _unmodified_OriginalAuthorEmail)
 							return true;
-						if(AuthorEmail != _unmodified_AuthorEmail)
+						if(OriginalAuthorAccountID != _unmodified_OriginalAuthorAccountID)
 							return true;
-						if(AuthorAccountID != _unmodified_AuthorAccountID)
+						if(LastModified != _unmodified_LastModified)
+							return true;
+						if(LastAuthorName != _unmodified_LastAuthorName)
+							return true;
+						if(LastAuthorEmail != _unmodified_LastAuthorEmail)
+							return true;
+						if(LastAuthorAccountID != _unmodified_LastAuthorAccountID)
 							return true;
 				
 						return false;
@@ -47899,11 +47911,14 @@ Comment.CommentText
 					TargetObjectName = sourceObject.TargetObjectName;
 					TargetObjectDomain = sourceObject.TargetObjectDomain;
 					CommentText = sourceObject.CommentText;
-					Published = sourceObject.Published;
-					Modified = sourceObject.Modified;
-					AuthorName = sourceObject.AuthorName;
-					AuthorEmail = sourceObject.AuthorEmail;
-					AuthorAccountID = sourceObject.AuthorAccountID;
+					Created = sourceObject.Created;
+					OriginalAuthorName = sourceObject.OriginalAuthorName;
+					OriginalAuthorEmail = sourceObject.OriginalAuthorEmail;
+					OriginalAuthorAccountID = sourceObject.OriginalAuthorAccountID;
+					LastModified = sourceObject.LastModified;
+					LastAuthorName = sourceObject.LastAuthorName;
+					LastAuthorEmail = sourceObject.LastAuthorEmail;
+					LastAuthorAccountID = sourceObject.LastAuthorAccountID;
 				}
 				
 
@@ -47914,11 +47929,14 @@ Comment.CommentText
 					_unmodified_TargetObjectName = TargetObjectName;
 					_unmodified_TargetObjectDomain = TargetObjectDomain;
 					_unmodified_CommentText = CommentText;
-					_unmodified_Published = Published;
-					_unmodified_Modified = Modified;
-					_unmodified_AuthorName = AuthorName;
-					_unmodified_AuthorEmail = AuthorEmail;
-					_unmodified_AuthorAccountID = AuthorAccountID;
+					_unmodified_Created = Created;
+					_unmodified_OriginalAuthorName = OriginalAuthorName;
+					_unmodified_OriginalAuthorEmail = OriginalAuthorEmail;
+					_unmodified_OriginalAuthorAccountID = OriginalAuthorAccountID;
+					_unmodified_LastModified = LastModified;
+					_unmodified_LastAuthorName = LastAuthorName;
+					_unmodified_LastAuthorEmail = LastAuthorEmail;
+					_unmodified_LastAuthorAccountID = LastAuthorAccountID;
 				
 				
 				}
@@ -47940,20 +47958,29 @@ Comment.CommentText
 						case "CommentText":
 							CommentText = value;
 							break;
-						case "Published":
-							Published = DateTime.Parse(value);
+						case "Created":
+							Created = DateTime.Parse(value);
 							break;
-						case "Modified":
-							Modified = DateTime.Parse(value);
+						case "OriginalAuthorName":
+							OriginalAuthorName = value;
 							break;
-						case "AuthorName":
-							AuthorName = value;
+						case "OriginalAuthorEmail":
+							OriginalAuthorEmail = value;
 							break;
-						case "AuthorEmail":
-							AuthorEmail = value;
+						case "OriginalAuthorAccountID":
+							OriginalAuthorAccountID = value;
 							break;
-						case "AuthorAccountID":
-							AuthorAccountID = value;
+						case "LastModified":
+							LastModified = DateTime.Parse(value);
+							break;
+						case "LastAuthorName":
+							LastAuthorName = value;
+							break;
+						case "LastAuthorEmail":
+							LastAuthorEmail = value;
+							break;
+						case "LastAuthorAccountID":
+							LastAuthorAccountID = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
@@ -47972,20 +47999,29 @@ Comment.CommentText
 			public string CommentText { get; set; }
 			private string _unmodified_CommentText;
 			[DataMember]
-			public DateTime Published { get; set; }
-			private DateTime _unmodified_Published;
+			public DateTime Created { get; set; }
+			private DateTime _unmodified_Created;
 			[DataMember]
-			public DateTime Modified { get; set; }
-			private DateTime _unmodified_Modified;
+			public string OriginalAuthorName { get; set; }
+			private string _unmodified_OriginalAuthorName;
 			[DataMember]
-			public string AuthorName { get; set; }
-			private string _unmodified_AuthorName;
+			public string OriginalAuthorEmail { get; set; }
+			private string _unmodified_OriginalAuthorEmail;
 			[DataMember]
-			public string AuthorEmail { get; set; }
-			private string _unmodified_AuthorEmail;
+			public string OriginalAuthorAccountID { get; set; }
+			private string _unmodified_OriginalAuthorAccountID;
 			[DataMember]
-			public string AuthorAccountID { get; set; }
-			private string _unmodified_AuthorAccountID;
+			public DateTime LastModified { get; set; }
+			private DateTime _unmodified_LastModified;
+			[DataMember]
+			public string LastAuthorName { get; set; }
+			private string _unmodified_LastAuthorName;
+			[DataMember]
+			public string LastAuthorEmail { get; set; }
+			private string _unmodified_LastAuthorEmail;
+			[DataMember]
+			public string LastAuthorAccountID { get; set; }
+			private string _unmodified_LastAuthorAccountID;
 			
 			}
 			[DataContract]

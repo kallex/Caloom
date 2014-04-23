@@ -23,7 +23,7 @@ namespace AaltoGlobalImpact.OIP
                 }
                 MediaFileData mediaContent = new MediaFileData
                     {
-                        FileName = "AutoFetch.jpeg",
+                        FileName = "AutoFetch.jpg",
                         FileContent = jpegData
                     };
                 this.SetMediaContent(InformationContext.CurrentOwner, ImageData.ID, mediaContent);

@@ -2,6 +2,7 @@
 using System.Web;
 using Lucene.Net.Documents;
 using LuceneSupport;
+using TheBall;
 using TheBall.Index;
 
 namespace AaltoGlobalImpact.OIP
@@ -20,20 +21,38 @@ namespace AaltoGlobalImpact.OIP
 
         void IBeforeStoreHandler.PerformBeforeStoreUpdate()
         {
+            string currentAccountID = "";
+            string currentAccountEmail = "";
+            string currentAccountName = "";
+            if (InformationContext.CurrentAccount != null)
+            {
+                currentAccountID = InformationContext.CurrentAccount.AccountID;
+                currentAccountEmail = InformationContext.CurrentAccount.AccountEmail;
+                currentAccountName = InformationContext.CurrentAccount.AccountName;
+            }
             if (ETag == null)
             {
-                Published = DateTime.UtcNow;
+                Created = DateTime.UtcNow;
+                OriginalAuthorAccountID = currentAccountID;
+                OriginalAuthorEmail = currentAccountEmail;
+                OriginalAuthorName = currentAccountName;
             }
-            Modified = DateTime.UtcNow;
+            LastModified = DateTime.UtcNow;
+            LastAuthorAccountID = currentAccountID;
+            LastAuthorEmail = currentAccountEmail;
+            LastAuthorName = currentAccountName;
         }
 
         Document IIndexedDocument.GetLuceneDocument(string indexName)
         {
             Document document = new Document();
             document.Add(FieldIndexSupport.GetField("DocType", "Comment"));
-            document.Add(FieldIndexSupport.GetField("AuthorAccountID", AuthorAccountID ?? ""));
-            document.Add(FieldIndexSupport.GetField("AuthorEmail", AuthorEmail ?? ""));
-            document.Add(FieldIndexSupport.GetField("AuthorName", AuthorName ?? ""));
+            document.Add(FieldIndexSupport.GetField("OriginalAuthorAccountID", OriginalAuthorAccountID ?? ""));
+            document.Add(FieldIndexSupport.GetField("OriginalAuthorEmail", OriginalAuthorEmail ?? ""));
+            document.Add(FieldIndexSupport.GetField("OriginalAuthorName", OriginalAuthorName ?? ""));
+            document.Add(FieldIndexSupport.GetField("LastAuthorAccountID", LastAuthorAccountID ?? ""));
+            document.Add(FieldIndexSupport.GetField("LastAuthorEmail", LastAuthorEmail ?? ""));
+            document.Add(FieldIndexSupport.GetField("LastAuthorName", LastAuthorName ?? ""));
             document.Add(FieldIndexSupport.GetField("CommentText", CommentText ?? "", analyzed: true));
             return document;
         }

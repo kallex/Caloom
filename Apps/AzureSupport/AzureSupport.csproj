@@ -137,10 +137,12 @@
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\ProcessConnectionReceivedDataImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
+    <Compile Include="IAccountInfo.cs" />
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="MediaFileData.cs" />
     <Compile Include="OperationSupport.cs" />
     <Compile Include="Partials\Comment.cs" />
+    <Compile Include="Partials\CommentCollection.cs" />
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="SyncSupport.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
