@@ -50,7 +50,7 @@ namespace TheBall
                         currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, currSource.ContentLocation);
                         currTargetBlobLocation = fullRootPath + currTarget.ContentLocation;
                     }
-                    else if (String.CompareOrdinal(currSource.ContentLocation, currTarget.ContentLocation) < 0)
+                    else if (String.Compare(currSource.ContentLocation, currTarget.ContentLocation) < 0)
                     {
                         currSourceIX++;
                         currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, currSource.ContentLocation);
