@@ -14,7 +14,7 @@ namespace ContentSyncTool
             public ContentItemLocationWithMD5 Target;
         }
         public static void SynchronizeSourceListToTargetFolder(ContentItemLocationWithMD5[] sourceContentList, ContentItemLocationWithMD5[] targetContentList,
-            CopySourceToTargetMethod copySourceToTarget, DeleteObsoleteTargetMethod deleteObsoleteTarget)
+            CopySourceToTargetMethod copySourceToTarget, DeleteObsoleteTargetMethod deleteObsoleteTarget, int maxAmountOfParallelismOnCopy = int.MaxValue)
         {
             var sourceContents = sourceContentList.OrderBy(item => item.ContentLocation).ToArray();
             var targetContents = targetContentList.OrderBy(item => item.ContentLocation).ToArray();
@@ -85,7 +85,7 @@ namespace ContentSyncTool
             deleteItems.ForEach(item => deleteObsoleteTarget(item));
 
             // Parallel copy
-            copyItems.EachParallel(copyContent => copySourceToTarget(copyContent.Source, copyContent.Target));
+            copyItems.EachParallel(copyContent => copySourceToTarget(copyContent.Source, copyContent.Target), maxAmountOfParallelismOnCopy);
         }
 
         public delegate void DeleteObsoleteTargetMethod(ContentItemLocationWithMD5 obsoleteTarget);
@@ -97,7 +97,7 @@ namespace ContentSyncTool
         /// <summary>
         /// Enumerates through each item in a list in parallel
         /// </summary>
-        public static void EachParallel<T>(this IEnumerable<T> list, Action<T> action)
+        public static void EachParallel<T>(this IEnumerable<T> list, Action<T> action, int maxAmountOfParallelism)
         {
             // enumerate the list so it can't change during execution
             // TODO: why is this happening?
@@ -116,7 +116,7 @@ namespace ContentSyncTool
             else
             {
                 // Launch each method in it's own thread
-                const int MaxHandles = 64;
+                int MaxHandles = Math.Min(64, maxAmountOfParallelism) ;
                 for (var offset = 0; offset <= count / MaxHandles; offset++)
                 {
                     // break up the list into 64-item chunks because of a limitiation in WaitHandle

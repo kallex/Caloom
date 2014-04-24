@@ -45,10 +45,16 @@ namespace ContentSyncTool
 
         internal static void listConnections(EmptySubOptions verbSubOptions)
         {
-            Console.WriteLine("Connections:");
-            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("{0} {1} {2} {3} {4}",
-                                                                                             connection.Name, connection.HostName, connection.GroupID,
-                                                                                             connection.LocalDataRootLocation, connection.LocalTemplateRootLocation));
+            Console.WriteLine("Connections:" + Environment.NewLine);
+            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("Name: {1}{0}Host:{2}{0}GroupID:{3}{0}Data/Down Root: {4}{0}Template/Up Root: {5}{0}Down Sync Folders: {6}{0}Up Sync Folders: {7}{0}- -- -- -- -- -{0}",
+                                                                                             Environment.NewLine,
+                                                                                             connection.Name, 
+                                                                                             connection.HostName, 
+                                                                                             connection.GroupID,
+                                                                                             connection.LocalDataRootLocation, 
+                                                                                             connection.LocalTemplateRootLocation,
+                                                                                             String.Join(", ", connection.DownSyncFolders ?? new string[0]), 
+                                                                                             String.Join(", ", connection.UpSyncFolders ?? new string[0])));
         }
 
         internal static void createConnection(CreateConnectionSubOptions verbSubOptions)
@@ -100,7 +106,7 @@ namespace ContentSyncTool
             if (connection.UpSyncFolders == null || connection.UpSyncFolders.Length == 0)
                 throw new InvalidDataException("Connection upsync folders must be set before upsync command");
             var rootFolder = connection.LocalTemplateRootLocation;
-            var customSyncFolders = connection.UpSyncFolders
+            var localSyncFolders = connection.UpSyncFolders
                                               .Select(folder =>
                                                       new
                                                           {
@@ -108,7 +114,33 @@ namespace ContentSyncTool
                                                               ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
                                                           }
                 ).ToArray();
-            Console.WriteLine(customSyncFolders.Length);
+            var combinedSourceList = localSyncFolders.SelectMany(sFolder =>
+                {
+                    foreach (var contentMD5 in sFolder.ContentMD5s)
+                    {
+                        contentMD5.ContentLocation = sFolder.Folder + "/" + contentMD5.ContentLocation;
+                    }
+                    return sFolder.ContentMD5s;
+                }).ToArray();
+
+            ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, combinedSourceList);
+
+            var itemsToCopy = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray();
+            var itemsDeleted = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPDONE" && iData.ItemTextData == "DELETED")).ToArray();
+            var device = connection.Device;
+            SyncSupport.SynchronizeSourceListToTargetFolder(
+                itemsToCopy, new ContentItemLocationWithMD5[0],
+                delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
+                    {
+                        string fullLocalName = Path.Combine(rootFolder, source.ContentLocation);
+                        DeviceSupport.PushContentToDevice(device, fullLocalName, source.ContentLocation);
+                        Console.WriteLine("Uploaded: " + source.ContentLocation);
+                    },
+                target =>
+                {
+
+                }, 10);
+
         }
 
         public static void downsync(ConnectionDownSyncSubOptions verbSubOptions)
@@ -161,7 +193,7 @@ namespace ContentSyncTool
                             string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
                             File.Delete(targetFullName);
                             Console.WriteLine("Deleted: " + target.ContentLocation);
-                        });
+                        }, 10);
         }
 
         private static ContentItemLocationWithMD5[] getConnectionContentMD5s(UserSettings.Connection connection, string[] downSyncFolders)
@@ -170,6 +202,17 @@ namespace ContentSyncTool
                 {
                     OperationRequestString = "GETCONTENTMD5LIST",
                     OperationParameters = downSyncFolders
+                };
+            dod = connection.Device.ExecuteDeviceOperation(dod);
+            return dod.OperationSpecificContentData;
+        }
+
+        private static ContentItemLocationWithMD5[] getConnectionToCopyMD5s(UserSettings.Connection connection, ContentItemLocationWithMD5[] localContentToSyncTargetFrom)
+        {
+            DeviceOperationData dod = new DeviceOperationData
+                {
+                    OperationRequestString = "SYNCCOPYCONTENT",
+                    OperationSpecificContentData = localContentToSyncTargetFrom
                 };
             dod = connection.Device.ExecuteDeviceOperation(dod);
             return dod.OperationSpecificContentData;

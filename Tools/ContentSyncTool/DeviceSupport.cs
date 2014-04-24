@@ -116,7 +116,8 @@ namespace ContentSyncTool
 
         public static void PushContentToDevice(UserSettings.Device device, string localContentFileName, string destinationContentName)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
+            string url = device.ConnectionURL.Replace("/DEV", "/" + destinationContentName);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
             aes.KeySize = AES_KEYSIZE;
@@ -137,7 +138,6 @@ namespace ContentSyncTool
             var response = (HttpWebResponse)request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
-            
         }
 
         public static void FetchContentFromDevice(UserSettings.Device device, string remoteContentFileName, string localContentFileName)
