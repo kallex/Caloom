@@ -63,6 +63,7 @@
       <Certificate name="CaloomCom" storeLocation="LocalMachine" storeName="My" />
       <Certificate name="AaltoglobalimpactOrg" storeLocation="LocalMachine" storeName="My" />
       <Certificate name="ProtonitNet" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="TheBallMe" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>

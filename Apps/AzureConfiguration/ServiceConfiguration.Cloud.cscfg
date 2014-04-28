@@ -42,6 +42,7 @@
       <Certificate name="CaloomCom" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
       <Certificate name="AaltoglobalimpactOrg" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
       <Certificate name="ProtonitNet" thumbprint="5F95C3B578192E4FC161AF1A2AA68B9126D96E7D" thumbprintAlgorithm="sha1" />
+      <Certificate name="TheBallMe" thumbprint="27B7CF35511DCC1E1C82C2874E1C10CCBB7D5827" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
 </ServiceConfiguration>
