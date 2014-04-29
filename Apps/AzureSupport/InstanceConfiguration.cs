@@ -23,6 +23,8 @@ namespace TheBall
         public static readonly string EmailInputJoinMessageFormat;
         public static readonly string EmailOutputJoinSubjectFormat;
         public static readonly string EmailOutputJoinMessageFormat;
+        public static readonly string EmailAccountMergeValidationSubjectFormat;
+        public static readonly string EmailAccountMergeValidationMessageFormat;
         public static readonly string EmailValidationURLWithoutID;
         public static readonly string AzureStorageConnectionString;
         public static readonly string WorkerActiveContainerName;
@@ -34,6 +36,7 @@ namespace TheBall
         public static readonly string AzureStorageKey;
         public static readonly string AzureAccountName;
         public static readonly string AdminGroupID;
+        public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
@@ -61,6 +64,19 @@ namespace TheBall
             connStrSplits = connStrSplits[0].Split(new[] {";AccountName="}, StringSplitOptions.None);
             AzureAccountName = connStrSplits[1];
             WorkerActiveContainerName = CloudConfigurationManager.GetSetting("WorkerActiveContainerName");
+            var containerRedirectValue = CloudConfigurationManager.GetSetting("ContainerRedirects");
+            if (String.IsNullOrEmpty(containerRedirectValue) == false)
+            {
+                string[] redirectEntries = containerRedirectValue.Split(',');
+                foreach (string redirectEntry in redirectEntries)
+                {
+                    var redirectComponents = redirectEntry.Split(':');
+                    string redirectFrom = redirectComponents[0];
+                    string redirectTo = redirectComponents[1];
+                    ContainerRedirects.Add(redirectFrom, redirectTo);
+                }
+            }
+
             #endregion
 
             #region System Level
@@ -92,7 +108,7 @@ namespace TheBall
                 AWSSecretKey = "";
             }
 
-            EmailFromAddress = CloudConfigurationManager.GetSetting("EmailFromAddress"); // "no-reply-theball@msunit.citrus.fi"
+            EmailFromAddress = CloudConfigurationManager.GetSetting("EmailFromAddress");
             EmailDeviceJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailDeviceJoinMessageFormat");
             EmailDeviceJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailDeviceJoinSubjectFormat");
             EmailInputJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailInputJoinSubjectFormat");
@@ -103,6 +119,8 @@ namespace TheBall
             EmailValidationMessageFormat = CloudConfigurationManager.GetSetting("EmailValidationMessageFormat");
             EmailGroupJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailGroupJoinSubjectFormat");
             EmailGroupJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailGroupJoinMessageFormat");
+            EmailAccountMergeValidationSubjectFormat = CloudConfigurationManager.GetSetting("EmailAccountMergeValidationSubjectFormat");
+            EmailAccountMergeValidationMessageFormat = CloudConfigurationManager.GetSetting("EmailAccountMergeValidationMessageFormat");
             EmailValidationURLWithoutID = CloudConfigurationManager.GetSetting("EmailValidationURLWithoutID");
 #if hardcoded
             EmailDeviceJoinMessageFormat = @"Your confirmation is required to trust the following device '{0}' to be joined to trust within {1} ID {2}. 

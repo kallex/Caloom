@@ -15,7 +15,10 @@ namespace AzureSupport
             string hostName = request.Url.DnsSafeHost;
             if (hostName == "localhost" || hostName == "localdev" || hostName.StartsWith("192.168."))
                 return InstanceConfiguration.WorkerActiveContainerName;
-            return hostName.Replace('.', '-').ToLower();
+            string containerName = hostName.Replace('.', '-').ToLower();
+            if (InstanceConfiguration.ContainerRedirects.ContainsKey(containerName))
+                return InstanceConfiguration.ContainerRedirects[containerName];
+            return containerName;
         }
 
         public static void InitializeContextStorage(HttpRequest request)

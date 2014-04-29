@@ -151,9 +151,17 @@
           <InformationItem name="DeviceJoinConfirmation" logicalDataType="InformationObject" informationObjectName="TBDeviceJoinConfirmation" />
           <InformationItem name="InformationInputConfirmation" logicalDataType="InformationObject" informationObjectName="TBInformationInputConfirmation" />
           <InformationItem name="InformationOutputConfirmation" logicalDataType="InformationObject" informationObjectName="TBInformationOutputConfirmation" />
+          <InformationItem name="MergeAccountsConfirmation" logicalDataType="InformationObject" informationObjectName="TBMergeAccountConfirmation"/>
           <InformationItem name="RedirectUrlAfterValidation" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="TBMergeAccountConfirmation" designDesc="Merge accounts data">
+          <InformationItems>
+            <InformationItem name="AccountToBeMergedID" logicalDataType="Text_Short"/>
+            <InformationItem name="AccountToMergeToID" logicalDataType="Text_Short"/>
+          </InformationItems>
+        </InformationObject>
+
       <InformationObject name="TBGroupJoinConfirmation" designDesc="Group joining confirmation through email">
         <InformationItems>
           <InformationItem name="GroupID" logicalDataType="Text_Short" />

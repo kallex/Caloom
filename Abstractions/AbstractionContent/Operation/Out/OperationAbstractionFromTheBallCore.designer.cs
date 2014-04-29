@@ -997,4 +997,42 @@ using System.IO;
 				TransferGroupInitiatorImplementation.ExecuteMethod_RemoveOldInitiatorFromGroup(parameters.GroupID, parameters.OldInitiatorAccountID);		
 				}
 				}
-		 } 
+				public class InitiateAccountMergeFromEmailParameters 
+		{
+				public string EmailAddress ;
+				public string CurrentAccountID ;
+				}
+		
+		public class InitiateAccountMergeFromEmail 
+		{
+				private static void PrepareParameters(InitiateAccountMergeFromEmailParameters parameters)
+		{
+					}
+				public static void Execute(InitiateAccountMergeFromEmailParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string AccountToMergeToID = InitiateAccountMergeFromEmailImplementation.GetTarget_AccountToMergeToID(parameters.EmailAddress);	
+				AaltoGlobalImpact.OIP.TBEmailValidation MergeAccountEmailConfirmation = InitiateAccountMergeFromEmailImplementation.GetTarget_MergeAccountEmailConfirmation(parameters.CurrentAccountID, parameters.EmailAddress, AccountToMergeToID);	
+				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_StoreObject(MergeAccountEmailConfirmation);		
+				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_SendConfirmationEmail(MergeAccountEmailConfirmation);		
+				}
+				}
+
+		    public class ConfirmAccountMergeFromEmailParameters 
+		{
+				public AaltoGlobalImpact.OIP.TBEmailValidation EmailConfirmation ;
+				}
+		
+		public class ConfirmAccountMergeFromEmail 
+		{
+				private static void PrepareParameters(ConfirmAccountMergeFromEmailParameters parameters)
+		{
+					}
+				public static void Execute(ConfirmAccountMergeFromEmailParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.TBMergeAccountConfirmation MergeAccountConfirmation = ConfirmAccountMergeFromEmailImplementation.GetTarget_MergeAccountConfirmation(parameters.EmailConfirmation);	
+				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_PerformAccountMerge(MergeAccountConfirmation);		
+				}
+				}
+		} 

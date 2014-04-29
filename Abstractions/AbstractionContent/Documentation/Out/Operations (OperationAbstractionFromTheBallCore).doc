@@ -306,6 +306,40 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for validating the email
 		</div>
+		</p><h1>ConfirmAccountMergeFromEmail (EmailConfirmation)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Confirms account merge from email confirmation
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailConfirmation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBEmailValidation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email validation object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: MergeAccountConfirmation ( EmailConfirmation )</h2>
+		<p>		<div class="MsoNormal" >
+		Merge account confirmation
+		</div>
+		</p><h2>Method Call: PerformAccountMerge ( MergeAccountConfirmation )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform account merge with source and target IDs
+		</div>
 		</p><h1>CreateAndSendEmailValidationForDeviceJoinConfirmation (OwningAccount, OwningGroup, DeviceMembership)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -2108,6 +2142,65 @@ div.WordSection1
 		</p><h2>Method Call: FetchInputToStorage ( InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice, Owner, QueryParameters )</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
+		</div>
+		</p><h1>InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Initiate account merger from email re-registration.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address that the merge is based on
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CurrentAccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Current account ID that is submitting the email
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AccountToMergeToID ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Original account to be merged to
+		</div>
+		</p><h2>Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Initiate merge account if current account ID and account to merge to ID are different
+		</div>
+		</p><h2>Method Call: StoreObject ( MergeAccountEmailConfirmation )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h2>Method Call: SendConfirmationEmail ( MergeAccountEmailConfirmation )</h2>
+		<p>		<div class="MsoNormal" >
+		Send confirmation email
 		</div>
 		</p><h1>InitiateImportedGroupWithUnchangedID (GroupID, InitiatorAccountID, TemplateNameList)</h1>
 		<h2>Specifications</h2>

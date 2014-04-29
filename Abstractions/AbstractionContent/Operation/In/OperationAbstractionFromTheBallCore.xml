@@ -1381,5 +1381,50 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="InitiateAccountMergeFromEmail">
+      <OperationSpec>
+        <Description>Initiate account merger from email re-registration.</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address that the merge is based on" state="implemented" />
+        <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID that is submitting the email" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountToMergeToID" dataType="string" designDesc="Original account to be merged to" state="implemented">
+            <Parameter name="EmailAddress" />
+          </TargetDefinition>
+          <TargetDefinition name="MergeAccountEmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Initiate merge account if current account ID and account to merge to ID are different" state="implemented">
+            <Parameter name="CurrentAccountID" />
+            <Parameter name="EmailAddress" />
+            <Target name="AccountToMergeToID" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
+            <Target name="MergeAccountEmailConfirmation" />
+          </MethodExecute>
+          <MethodExecute name="SendConfirmationEmail" designDesc="Send confirmation email" state="implemented">
+            <Target name="MergeAccountEmailConfirmation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ConfirmAccountMergeFromEmail">
+      <OperationSpec>
+        <Description>Confirms account merge from email confirmation</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="EmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="MergeAccountConfirmation" dataType="AaltoGlobalImpact.OIP.TBMergeAccountConfirmation" designDesc="Merge account confirmation" state="implemented">
+            <Parameter name="EmailConfirmation" />
+          </TargetDefinition>
+          <MethodExecute name="PerformAccountMerge" designDesc="Perform account merge with source and target IDs" state="implemented">
+            <Target name="MergeAccountConfirmation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

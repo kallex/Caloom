@@ -40,16 +40,25 @@ namespace AaltoGlobalImpact.OIP
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(EmailAddress);
             TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
-            if (emailRoot != null)
-                throw new InvalidDataException("Email address '" + EmailAddress + "' is already registered to the system.");
             string accountID = StorageSupport.GetAccountIDFromLocation(this.RelativeLocation);
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
-            TBEmailValidation emailValidation = new TBEmailValidation();
-            emailValidation.AccountID = accountID;
-            emailValidation.Email = this.EmailAddress;
-            emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(30);
-            StorageSupport.StoreInformation(emailValidation);
-            EmailSupport.SendValidationEmail(emailValidation);
+            if (emailRoot != null)
+            {
+                InitiateAccountMergeFromEmail.Execute(new InitiateAccountMergeFromEmailParameters
+                    {
+                        CurrentAccountID = accountID,
+                        EmailAddress = this.EmailAddress
+                    });
+            }
+            else
+            {
+                TBEmailValidation emailValidation = new TBEmailValidation();
+                emailValidation.AccountID = accountID;
+                emailValidation.Email = this.EmailAddress;
+                emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(30);
+                StorageSupport.StoreInformation(emailValidation);
+                EmailSupport.SendValidationEmail(emailValidation);
+            }
         }
     }
 }

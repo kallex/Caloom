@@ -145,11 +145,13 @@
     <Compile Include="Partials\CommentCollection.cs" />
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="SyncSupport.cs" />
+    <Compile Include="TheBall.CORE\ConfirmAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeviceSupport.cs" />
     <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\ExtProcessItem.cs" />
+    <Compile Include="TheBall.CORE\InitiateAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
     <Compile Include="TheBall.CORE\MergeAccountsDestructivelyImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />

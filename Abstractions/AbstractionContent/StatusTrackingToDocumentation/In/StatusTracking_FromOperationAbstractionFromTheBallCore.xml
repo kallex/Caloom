@@ -940,6 +940,33 @@
     <StatusItem name="TransferGroupInitiator_RemoveOldInitiatorFromGroup" displayName="MethodExecuteType: RemoveOldInitiatorFromGroup" description="Remove old initiator from group">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_EmailAddress" displayName="VariableType: EmailAddress" description="Email address that the merge is based on">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_CurrentAccountID" displayName="VariableType: CurrentAccountID" description="Current account ID that is submitting the email">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_AccountToMergeToID" displayName="TargetDefinitionType: AccountToMergeToID" description="Original account to be merged to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_MergeAccountEmailConfirmation" displayName="TargetDefinitionType: MergeAccountEmailConfirmation" description="Initiate merge account if current account ID and account to merge to ID are different">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_SendConfirmationEmail" displayName="MethodExecuteType: SendConfirmationEmail" description="Send confirmation email">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ConfirmAccountMergeFromEmail_EmailConfirmation" displayName="VariableType: EmailConfirmation" description="Email validation object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ConfirmAccountMergeFromEmail_MergeAccountConfirmation" displayName="TargetDefinitionType: MergeAccountConfirmation" description="Merge account confirmation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ConfirmAccountMergeFromEmail_PerformAccountMerge" displayName="MethodExecuteType: PerformAccountMerge" description="Perform account merge with source and target IDs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateProcess">
@@ -1343,6 +1370,19 @@
       <ItemRef itemName="TransferGroupInitiator_NewInitiatorAccountID" />
       <ItemRef itemName="TransferGroupInitiator_AddNewInitiatorToGroup" />
       <ItemRef itemName="TransferGroupInitiator_RemoveOldInitiatorFromGroup" />
+    </Group>
+    <Group name="InitiateAccountMergeFromEmail">
+      <ItemRef itemName="InitiateAccountMergeFromEmail_EmailAddress" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_CurrentAccountID" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_AccountToMergeToID" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_MergeAccountEmailConfirmation" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_StoreObject" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_SendConfirmationEmail" />
+    </Group>
+    <Group name="ConfirmAccountMergeFromEmail">
+      <ItemRef itemName="ConfirmAccountMergeFromEmail_EmailConfirmation" />
+      <ItemRef itemName="ConfirmAccountMergeFromEmail_MergeAccountConfirmation" />
+      <ItemRef itemName="ConfirmAccountMergeFromEmail_PerformAccountMerge" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

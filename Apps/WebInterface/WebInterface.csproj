@@ -163,12 +163,16 @@
     <Content Include="InstanceSettings_OIPBeta.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="InstanceSettings_TheBallTest.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\betaoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\schools.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\test.caloom.com.pubxml" />
+    <None Include="Properties\PublishProfiles\test.theball.me.pubxml" />
     <None Include="Properties\PublishProfiles\testoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\weball.cloudapp.net.pubxml" />
     <None Include="Properties\PublishProfiles\Websites.pubxml" />

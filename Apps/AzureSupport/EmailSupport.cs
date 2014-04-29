@@ -145,6 +145,16 @@ namespace TheBall
                       message);
         }
 
+        public static void SendMergeAccountsConfirmationEmail(TBEmailValidation mergeAccountEmailConfirmation)
+        {
+            string urlLink = GetUrlLink(mergeAccountEmailConfirmation.ID);
+            string emailMessageFormat = InstanceConfiguration.EmailAccountMergeValidationMessageFormat;
+#if never
+#endif
+            string message = string.Format(emailMessageFormat, mergeAccountEmailConfirmation.Email, urlLink);
+            SendEmail(FromAddress, mergeAccountEmailConfirmation.Email, InstanceConfiguration.EmailAccountMergeValidationSubjectFormat, message);
+        }
+
         private static string GetUrlLink(string emailValidationID)
         {
             string urlLink = InstanceConfiguration.EmailValidationURLWithoutID + emailValidationID;

@@ -8892,6 +8892,10 @@ using TheBall.CORE;
 						((IInformationObject) InformationOutputConfirmation).UpdateCollections(masterInstance);
 					}
 
+					if(MergeAccountsConfirmation != null) {
+						((IInformationObject) MergeAccountsConfirmation).UpdateCollections(masterInstance);
+					}
+
 				}
 
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
@@ -8941,6 +8945,14 @@ using TheBall.CORE;
 						}
 					} // Scoping block end
 
+					{ // Scoping block for variable name reusability
+						IInformationObject item = MergeAccountsConfirmation;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -8977,6 +8989,15 @@ using TheBall.CORE;
 					}
 					{
 						var item = InformationOutputConfirmation;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = MergeAccountsConfirmation;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -9023,6 +9044,11 @@ using TheBall.CORE;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
+					{
+						var item = (IInformationObject) MergeAccountsConfirmation;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
 
 				}
 
@@ -9042,6 +9068,8 @@ using TheBall.CORE;
 						if(InformationInputConfirmation != _unmodified_InformationInputConfirmation)
 							return true;
 						if(InformationOutputConfirmation != _unmodified_InformationOutputConfirmation)
+							return true;
+						if(MergeAccountsConfirmation != _unmodified_MergeAccountsConfirmation)
 							return true;
 						if(RedirectUrlAfterValidation != _unmodified_RedirectUrlAfterValidation)
 							return true;
@@ -9074,6 +9102,15 @@ using TheBall.CORE;
 						}
 						{
 							IInformationObject item = (IInformationObject) InformationOutputConfirmation;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) MergeAccountsConfirmation;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -9120,6 +9157,14 @@ using TheBall.CORE;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(MergeAccountsConfirmation != null) {
+						if(MergeAccountsConfirmation.ID == replacingObject.ID)
+							MergeAccountsConfirmation = (TBMergeAccountConfirmation) replacingObject;
+						else {
+							IInformationObject iObject = MergeAccountsConfirmation;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -9132,6 +9177,7 @@ using TheBall.CORE;
 					DeviceJoinConfirmation = sourceObject.DeviceJoinConfirmation;
 					InformationInputConfirmation = sourceObject.InformationInputConfirmation;
 					InformationOutputConfirmation = sourceObject.InformationOutputConfirmation;
+					MergeAccountsConfirmation = sourceObject.MergeAccountsConfirmation;
 					RedirectUrlAfterValidation = sourceObject.RedirectUrlAfterValidation;
 				}
 				
@@ -9159,6 +9205,10 @@ using TheBall.CORE;
 					_unmodified_InformationOutputConfirmation = InformationOutputConfirmation;
 					if(InformationOutputConfirmation != null)
 						((IInformationObject) InformationOutputConfirmation).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_MergeAccountsConfirmation = MergeAccountsConfirmation;
+					if(MergeAccountsConfirmation != null)
+						((IInformationObject) MergeAccountsConfirmation).SetInstanceTreeValuesAsUnmodified();
 
 				
 				}
@@ -9206,8 +9256,394 @@ using TheBall.CORE;
 			public TBInformationOutputConfirmation InformationOutputConfirmation { get; set; }
 			private TBInformationOutputConfirmation _unmodified_InformationOutputConfirmation;
 			[DataMember]
+			public TBMergeAccountConfirmation MergeAccountsConfirmation { get; set; }
+			private TBMergeAccountConfirmation _unmodified_MergeAccountsConfirmation;
+			[DataMember]
 			public string RedirectUrlAfterValidation { get; set; }
 			private string _unmodified_RedirectUrlAfterValidation;
+			
+			}
+			[DataContract]
+			[Serializable]
+			public partial class TBMergeAccountConfirmation : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public TBMergeAccountConfirmation()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "TBMergeAccountConfirmation";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(TBMergeAccountConfirmation), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "TBMergeAccountConfirmation", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static TBMergeAccountConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveTBMergeAccountConfirmation(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: TBMergeAccountConfirmation");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TBMergeAccountConfirmation), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static TBMergeAccountConfirmation RetrieveTBMergeAccountConfirmation(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (TBMergeAccountConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBMergeAccountConfirmation), null, owner);
+                    return result;
+                }
+
+				public static TBMergeAccountConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = TBMergeAccountConfirmation.RetrieveTBMergeAccountConfirmation("Content/AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName, containerOwner);
+					var result = TBMergeAccountConfirmation.RetrieveTBMergeAccountConfirmation("AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((TBMergeAccountConfirmation) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBMergeAccountConfirmation));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TBMergeAccountConfirmation DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TBMergeAccountConfirmation));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TBMergeAccountConfirmation) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "TBMergeAccountConfirmation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "TBMergeAccountConfirmation", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref TBMergeAccountConfirmation customDemoObject);
+
+
+
+				public static TBMergeAccountConfirmation CreateDefault()
+				{
+					var result = new TBMergeAccountConfirmation();
+					return result;
+				}
+				/*
+				public static TBMergeAccountConfirmation CreateDemoDefault()
+				{
+					TBMergeAccountConfirmation customDemo = null;
+					TBMergeAccountConfirmation.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new TBMergeAccountConfirmation();
+					result.AccountToBeMergedID = @"TBMergeAccountConfirmation.AccountToBeMergedID";
+
+					result.AccountToMergeToID = @"TBMergeAccountConfirmation.AccountToMergeToID";
+
+				
+					return result;
+				}
+				*/
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(AccountToBeMergedID != _unmodified_AccountToBeMergedID)
+							return true;
+						if(AccountToMergeToID != _unmodified_AccountToMergeToID)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(TBMergeAccountConfirmation sourceObject)
+				{
+					AccountToBeMergedID = sourceObject.AccountToBeMergedID;
+					AccountToMergeToID = sourceObject.AccountToMergeToID;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_AccountToBeMergedID = AccountToBeMergedID;
+					_unmodified_AccountToMergeToID = AccountToMergeToID;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "AccountToBeMergedID":
+							AccountToBeMergedID = value;
+							break;
+						case "AccountToMergeToID":
+							AccountToMergeToID = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string AccountToBeMergedID { get; set; }
+			private string _unmodified_AccountToBeMergedID;
+			[DataMember]
+			public string AccountToMergeToID { get; set; }
+			private string _unmodified_AccountToMergeToID;
 			
 			}
 			[DataContract]

@@ -89,6 +89,53 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ConfirmAccountMergeFromEmail (EmailConfirmation)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Confirms account merge from email confirmation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailConfirmation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBEmailValidation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email validation object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MergeAccountConfirmation ( EmailConfirmation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Merge account confirmation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformAccountMerge ( MergeAccountConfirmation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform account merge with source and target IDs</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="CreateAndSendEmailValidationForDeviceJoinConfirmation (OwningAccount, OwningGroup, DeviceMembership)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -2012,6 +2059,78 @@
               <Paragraph>
                 <Text>
                   <TextContent>Fetch input to storage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Initiate account merger from email re-registration.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address that the merge is based on</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CurrentAccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Current account ID that is submitting the email</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountToMergeToID ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Original account to be merged to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Initiate merge account if current account ID and account to merge to ID are different</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( MergeAccountEmailConfirmation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendConfirmationEmail ( MergeAccountEmailConfirmation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Send confirmation email</TextContent>
                 </Text>
               </Paragraph>
             </Header>
