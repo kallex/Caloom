@@ -693,14 +693,15 @@ namespace WebInterface
             string LocalWebCatConFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
             //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
-            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\"; 
+            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
+            string LocalOIPAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\account\";
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
             string LocalFoundationOneAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
-                fileName = prefixStrippedContent.Replace("webui/", LocalSchoolsAccountFolder);
+                fileName = prefixStrippedContent.Replace("webui/", LocalOIPAccountFolder);
             else if (prefixStrippedContent.Contains("foundation-one/"))
                 fileName = prefixStrippedContent.Replace("foundation-one/", LocalFoundationOneAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))

@@ -946,6 +946,12 @@
     <StatusItem name="InitiateAccountMergeFromEmail_CurrentAccountID" displayName="VariableType: CurrentAccountID" description="Current account ID that is submitting the email">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_RedirectUrlAfterValidation" displayName="VariableType: RedirectUrlAfterValidation" description="Redirect url after email validation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_ValidateExistingEmail" displayName="MethodExecuteType: ValidateExistingEmail" description="Validate that the email to add is already registered">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="InitiateAccountMergeFromEmail_AccountToMergeToID" displayName="TargetDefinitionType: AccountToMergeToID" description="Original account to be merged to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -958,10 +964,16 @@
     <StatusItem name="InitiateAccountMergeFromEmail_SendConfirmationEmail" displayName="MethodExecuteType: SendConfirmationEmail" description="Send confirmation email">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ConfirmAccountMergeFromEmail_CurrentAccountID" displayName="VariableType: CurrentAccountID" description="Current account ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ConfirmAccountMergeFromEmail_EmailConfirmation" displayName="VariableType: EmailConfirmation" description="Email validation object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ConfirmAccountMergeFromEmail_MergeAccountConfirmation" displayName="TargetDefinitionType: MergeAccountConfirmation" description="Merge account confirmation">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ConfirmAccountMergeFromEmail_ValidateCurrentAccountAsMergingActor" displayName="MethodExecuteType: ValidateCurrentAccountAsMergingActor" description="Validate that current account ID is indeed the account to be merged owner">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ConfirmAccountMergeFromEmail_PerformAccountMerge" displayName="MethodExecuteType: PerformAccountMerge" description="Perform account merge with source and target IDs">
@@ -1374,14 +1386,18 @@
     <Group name="InitiateAccountMergeFromEmail">
       <ItemRef itemName="InitiateAccountMergeFromEmail_EmailAddress" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_CurrentAccountID" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_RedirectUrlAfterValidation" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_ValidateExistingEmail" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_AccountToMergeToID" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_MergeAccountEmailConfirmation" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_StoreObject" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_SendConfirmationEmail" />
     </Group>
     <Group name="ConfirmAccountMergeFromEmail">
+      <ItemRef itemName="ConfirmAccountMergeFromEmail_CurrentAccountID" />
       <ItemRef itemName="ConfirmAccountMergeFromEmail_EmailConfirmation" />
       <ItemRef itemName="ConfirmAccountMergeFromEmail_MergeAccountConfirmation" />
+      <ItemRef itemName="ConfirmAccountMergeFromEmail_ValidateCurrentAccountAsMergingActor" />
       <ItemRef itemName="ConfirmAccountMergeFromEmail_PerformAccountMerge" />
     </Group>
   </Groups>

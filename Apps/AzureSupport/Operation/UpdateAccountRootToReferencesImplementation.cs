@@ -15,14 +15,14 @@ namespace AaltoGlobalImpact.OIP
         {
             var loginRootIDs =
                 accountRoot.Account.Logins.CollectionContent.Select(
-                    login => TBLoginInfo.GetLoginIDFromLoginURL(login.OpenIDUrl)).ToArray();
+                    login => TBLoginInfo.GetLoginIDFromLoginURL(login.OpenIDUrl)).Distinct().ToArray();
             var loginRoots = loginRootIDs.Select(loginID => TBRLoginRoot.RetrieveFromDefaultLocation(loginID)).ToArray();
             return loginRoots;
         }
 
         public static TBREmailRoot[] GetTarget_AccountEmails(TBRAccountRoot accountRoot)
         {
-            var emailIDs = accountRoot.Account.Emails.CollectionContent.Select(email => TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress));
+            var emailIDs = accountRoot.Account.Emails.CollectionContent.Select(email => TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress)).Distinct().ToArray();
             var emailRoots =
                 emailIDs.Select(emailAddress => TBREmailRoot.RetrieveFromDefaultLocation(emailAddress)).ToArray();
             return emailRoots;

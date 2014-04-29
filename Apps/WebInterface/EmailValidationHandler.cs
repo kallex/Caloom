@@ -82,10 +82,25 @@ namespace WebInterface
             {
                 HandleOutputJoinConfirmation(context, account, emailValidation);
             }
+            else if (emailValidation.MergeAccountsConfirmation != null)
+            {
+                HandleAccountMergeConfirmation(context, account, emailValidation);
+            }
             else
             {
                 HandleAccountEmailValidation(context, account, emailValidation);
             }
+        }
+
+        private void HandleAccountMergeConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            ConfirmAccountMergeFromEmail.Execute(new ConfirmAccountMergeFromEmailParameters
+                {
+                    CurrentAccountID = account.ID,
+                    EmailConfirmation = emailValidation
+                });
+            string redirectUrl = emailValidation.RedirectUrlAfterValidation ?? "/auth/account/";
+            context.Response.Redirect(redirectUrl, true);
         }
 
         private void HandleOutputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)

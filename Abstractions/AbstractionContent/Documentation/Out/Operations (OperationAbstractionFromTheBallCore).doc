@@ -306,7 +306,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for validating the email
 		</div>
-		</p><h1>ConfirmAccountMergeFromEmail (EmailConfirmation)</h1>
+		</p><h1>ConfirmAccountMergeFromEmail (CurrentAccountID, EmailConfirmation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Confirms account merge from email confirmation
@@ -314,6 +314,23 @@ div.WordSection1
 		</p><h2>Parameters</h2>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CurrentAccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Current account ID
+		</div>
+				</td>
+				</tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" >
@@ -335,6 +352,10 @@ div.WordSection1
 		</p><h2>Target Definition: MergeAccountConfirmation ( EmailConfirmation )</h2>
 		<p>		<div class="MsoNormal" >
 		Merge account confirmation
+		</div>
+		</p><h2>Method Call: ValidateCurrentAccountAsMergingActor ( MergeAccountConfirmation, CurrentAccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that current account ID is indeed the account to be merged owner
 		</div>
 		</p><h2>Method Call: PerformAccountMerge ( MergeAccountConfirmation )</h2>
 		<p>		<div class="MsoNormal" >
@@ -2143,7 +2164,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>
-		</p><h1>InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID)</h1>
+		</p><h1>InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID, RedirectUrlAfterValidation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Initiate account merger from email re-registration.
@@ -2185,12 +2206,33 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RedirectUrlAfterValidation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Redirect url after email validation
+		</div>
+				</td>
+				</tr>
 		</table>
+		</p><h2>Method Call: ValidateExistingEmail ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that the email to add is already registered
+		</div>
 		</p><h2>Target Definition: AccountToMergeToID ( EmailAddress )</h2>
 		<p>		<div class="MsoNormal" >
 		Original account to be merged to
 		</div>
-		</p><h2>Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress )</h2>
+		</p><h2>Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress, RedirectUrlAfterValidation )</h2>
 		<p>		<div class="MsoNormal" >
 		Initiate merge account if current account ID and account to merge to ID are different
 		</div>

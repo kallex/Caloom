@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security;
 using System.Web;
 using TheBall;
 using TheBall.CORE;
@@ -44,11 +45,7 @@ namespace AaltoGlobalImpact.OIP
             VirtualOwner owner = VirtualOwner.FigureOwner(this);
             if (emailRoot != null)
             {
-                InitiateAccountMergeFromEmail.Execute(new InitiateAccountMergeFromEmailParameters
-                    {
-                        CurrentAccountID = accountID,
-                        EmailAddress = this.EmailAddress
-                    });
+                throw new SecurityException("Email address already registered");
             }
             else
             {

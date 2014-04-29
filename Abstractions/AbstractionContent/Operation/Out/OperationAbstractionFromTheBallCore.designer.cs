@@ -1001,6 +1001,7 @@ using System.IO;
 		{
 				public string EmailAddress ;
 				public string CurrentAccountID ;
+				public string RedirectUrlAfterValidation ;
 				}
 		
 		public class InitiateAccountMergeFromEmail 
@@ -1011,15 +1012,16 @@ using System.IO;
 				public static void Execute(InitiateAccountMergeFromEmailParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string AccountToMergeToID = InitiateAccountMergeFromEmailImplementation.GetTarget_AccountToMergeToID(parameters.EmailAddress);	
-				AaltoGlobalImpact.OIP.TBEmailValidation MergeAccountEmailConfirmation = InitiateAccountMergeFromEmailImplementation.GetTarget_MergeAccountEmailConfirmation(parameters.CurrentAccountID, parameters.EmailAddress, AccountToMergeToID);	
+					InitiateAccountMergeFromEmailImplementation.ExecuteMethod_ValidateExistingEmail(parameters.EmailAddress);		
+				string AccountToMergeToID = InitiateAccountMergeFromEmailImplementation.GetTarget_AccountToMergeToID(parameters.EmailAddress);	
+				AaltoGlobalImpact.OIP.TBEmailValidation MergeAccountEmailConfirmation = InitiateAccountMergeFromEmailImplementation.GetTarget_MergeAccountEmailConfirmation(parameters.CurrentAccountID, parameters.EmailAddress, parameters.RedirectUrlAfterValidation, AccountToMergeToID);	
 				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_StoreObject(MergeAccountEmailConfirmation);		
 				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_SendConfirmationEmail(MergeAccountEmailConfirmation);		
 				}
 				}
-
-		    public class ConfirmAccountMergeFromEmailParameters 
+				public class ConfirmAccountMergeFromEmailParameters 
 		{
+				public string CurrentAccountID ;
 				public AaltoGlobalImpact.OIP.TBEmailValidation EmailConfirmation ;
 				}
 		
@@ -1032,7 +1034,8 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					AaltoGlobalImpact.OIP.TBMergeAccountConfirmation MergeAccountConfirmation = ConfirmAccountMergeFromEmailImplementation.GetTarget_MergeAccountConfirmation(parameters.EmailConfirmation);	
+				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_ValidateCurrentAccountAsMergingActor(parameters.CurrentAccountID, MergeAccountConfirmation);		
 				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_PerformAccountMerge(MergeAccountConfirmation);		
 				}
 				}
-		} 
+		 } 

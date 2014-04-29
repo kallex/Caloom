@@ -89,7 +89,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="ConfirmAccountMergeFromEmail (EmailConfirmation)" level="1">
+          <Header text="ConfirmAccountMergeFromEmail (CurrentAccountID, EmailConfirmation)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -106,6 +106,17 @@
                     <Column name="Description" />
                   </Columns>
                   <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CurrentAccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Current account ID</TextContent>
+                      </ColumnData>
+                    </Row>
                     <Row>
                       <ColumnData>
                         <TextContent>EmailConfirmation</TextContent>
@@ -125,6 +136,13 @@
               <Paragraph>
                 <Text>
                   <TextContent>Merge account confirmation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateCurrentAccountAsMergingActor ( MergeAccountConfirmation, CurrentAccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that current account ID is indeed the account to be merged owner</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -2063,7 +2081,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID)" level="1">
+          <Header text="InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID, RedirectUrlAfterValidation)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -2102,8 +2120,26 @@
                         <TextContent>Current account ID that is submitting the email</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RedirectUrlAfterValidation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Redirect url after email validation</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateExistingEmail ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that the email to add is already registered</TextContent>
+                </Text>
               </Paragraph>
             </Header>
             <Header text="Target Definition: AccountToMergeToID ( EmailAddress )" level="2">
@@ -2113,7 +2149,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress )" level="2">
+            <Header text="Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress, RedirectUrlAfterValidation )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Initiate merge account if current account ID and account to merge to ID are different</TextContent>

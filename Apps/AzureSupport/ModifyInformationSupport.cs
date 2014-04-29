@@ -418,6 +418,21 @@ namespace TheBall
                         CreateGroupWithTemplates.Execute(parameters);
                         break;
                     }
+                case "InitiateAccountMergeFromEmail":
+                    {
+                        var owningAccount = containerOwner as TBAccount;
+                        if(owningAccount == null)
+                            throw new NotSupportedException("Email address based account merge is only supported for accounts");
+                        InitiateAccountMergeFromEmailParameters parameters = new InitiateAccountMergeFromEmailParameters
+                            {
+                                CurrentAccountID = owningAccount.ID,
+                                RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
+                                EmailAddress = form["EmailAddress"],
+                            };
+                        InitiateAccountMergeFromEmail.Execute(parameters);
+                        break;
+                    }
+
                 case "UnregisterEmailAddress":
                     {
                         var owningAccount = containerOwner as TBAccount;

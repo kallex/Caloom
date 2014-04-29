@@ -1753,15 +1753,20 @@
         <Parameters>
           <Parameter name="EmailAddress" dataType="string" designDesc="Email address that the merge is based on" state="implemented"/>
           <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID that is submitting the email" state="implemented" />
+          <Parameter name="RedirectUrlAfterValidation" dataType="string" designDesc="Redirect url after email validation" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
+            <MethodExecute name="ValidateExistingEmail" designDesc="Validate that the email to add is already registered" state="implemented">
+              <Parameter name="EmailAddress"/>
+            </MethodExecute>
             <TargetDefinition name="AccountToMergeToID" dataType="string" designDesc="Original account to be merged to" state="implemented">
               <Parameter name="EmailAddress"/>
             </TargetDefinition>
             <TargetDefinition dataType="AaltoGlobalImpact.OIP.TBEmailValidation" name="MergeAccountEmailConfirmation" designDesc="Initiate merge account if current account ID and account to merge to ID are different" state="implemented">
               <Parameter name="CurrentAccountID"/>
               <Parameter name="EmailAddress"/>
+              <Parameter name="RedirectUrlAfterValidation"/>
               <Target name="AccountToMergeToID"/>
             </TargetDefinition>
             <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
@@ -1778,6 +1783,7 @@
           <Description>Confirms account merge from email confirmation</Description>
         </OperationSpec>
         <Parameters>
+          <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID" state="implemented"/>
           <Parameter name="EmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object" state="implemented"/>
         </Parameters>
         <Execution>
@@ -1785,6 +1791,10 @@
             <TargetDefinition name="MergeAccountConfirmation" dataType="AaltoGlobalImpact.OIP.TBMergeAccountConfirmation" designDesc="Merge account confirmation" state="implemented">
               <Parameter name="EmailConfirmation"/>
             </TargetDefinition>
+            <MethodExecute name="ValidateCurrentAccountAsMergingActor" designDesc="Validate that current account ID is indeed the account to be merged owner" state="implemented">
+              <Parameter name="CurrentAccountID"/>
+              <Target name="MergeAccountConfirmation"/>
+            </MethodExecute>
             <MethodExecute name="PerformAccountMerge" designDesc="Perform account merge with source and target IDs" state="implemented">
               <Target name="MergeAccountConfirmation"/>
             </MethodExecute>

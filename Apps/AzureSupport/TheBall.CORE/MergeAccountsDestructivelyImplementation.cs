@@ -81,7 +81,8 @@ namespace TheBall.CORE
             foreach (var loginID in loginIDs)
             {
                 var loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
-                loginRoot.DeleteInformationObject();
+                // Don't delete account login roots - as they're going to be merged later on
+                //loginRoot.DeleteInformationObject();
             }
         }
 

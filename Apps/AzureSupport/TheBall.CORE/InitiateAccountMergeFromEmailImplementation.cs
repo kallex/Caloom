@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
@@ -12,18 +13,21 @@ namespace TheBall.CORE
             return emailRoot.Account.ID;
         }
 
-        public static TBEmailValidation GetTarget_MergeAccountEmailConfirmation(string currentAccountId, string emailAddress, string accountToMergeToId)
+        public static TBEmailValidation GetTarget_MergeAccountEmailConfirmation(string currentAccountId, string emailAddress, string redirectUrlAfterValidation, string accountToMergeToId)
         {
             if (currentAccountId == accountToMergeToId)
                 return null;
-            TBEmailValidation emailValidation = new TBEmailValidation();
-            emailValidation.AccountID = currentAccountId;
-            emailValidation.Email = emailAddress;
-            emailValidation.ValidUntil = DateTime.UtcNow.AddMinutes(5);
-            emailValidation.MergeAccountsConfirmation = new TBMergeAccountConfirmation
+            TBEmailValidation emailValidation = new TBEmailValidation
                 {
-                    AccountToBeMergedID = currentAccountId,
-                    AccountToMergeToID = accountToMergeToId
+                    AccountID = currentAccountId,
+                    Email = emailAddress,
+                    ValidUntil = DateTime.UtcNow.AddMinutes(5),
+                    MergeAccountsConfirmation = new TBMergeAccountConfirmation
+                        {
+                            AccountToBeMergedID = currentAccountId,
+                            AccountToMergeToID = accountToMergeToId
+                        },
+                    RedirectUrlAfterValidation = redirectUrlAfterValidation
                 };
             return emailValidation;
         }
@@ -36,7 +40,17 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_SendConfirmationEmail(TBEmailValidation mergeAccountEmailConfirmation)
         {
-            EmailSupport.SendMergeAccountsConfirmationEmail(mergeAccountEmailConfirmation);
+            if(mergeAccountEmailConfirmation != null)
+                EmailSupport.SendMergeAccountsConfirmationEmail(mergeAccountEmailConfirmation);
         }
+
+        public static void ExecuteMethod_ValidateExistingEmail(string emailAddress)
+        {
+            string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
+            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            if(emailRoot == null)
+                throw new InvalidDataException("Email address for merge does not exist in the system");
+        }
+
     }
 }
