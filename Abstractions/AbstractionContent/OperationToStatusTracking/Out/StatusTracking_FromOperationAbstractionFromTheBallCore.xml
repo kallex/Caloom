@@ -898,6 +898,9 @@
     <StatusItem name="MergeAccountsDestructively_LoginAccessToBeMerged" displayName="TargetDefinitionType: LoginAccessToBeMerged" description="Login information from access to be merged">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="MergeAccountsDestructively_ValidateAccountToBeMerged" displayName="MethodExecuteType: ValidateAccountToBeMerged" description="Validate account to be merged not to contain groups or emails (for the time being)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="MergeAccountsDestructively_RemoveAccountToBeMergedFromAllGroups" displayName="MethodExecuteType: RemoveAccountToBeMergedFromAllGroups" description="Remove account to be merged from all of its groups">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1369,6 +1372,7 @@
       <ItemRef itemName="MergeAccountsDestructively_GroupInitiatorAccessToBeTransfered" />
       <ItemRef itemName="MergeAccountsDestructively_EmailAddressesToBeMerged" />
       <ItemRef itemName="MergeAccountsDestructively_LoginAccessToBeMerged" />
+      <ItemRef itemName="MergeAccountsDestructively_ValidateAccountToBeMerged" />
       <ItemRef itemName="MergeAccountsDestructively_RemoveAccountToBeMergedFromAllGroups" />
       <ItemRef itemName="MergeAccountsDestructively_RemoveEmailAddressesFromAccountToBeMerged" />
       <ItemRef itemName="MergeAccountsDestructively_RemoveLoginsFromAccountToBeMerged" />

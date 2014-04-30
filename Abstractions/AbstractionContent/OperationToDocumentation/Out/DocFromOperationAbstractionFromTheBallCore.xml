@@ -2369,6 +2369,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: ValidateAccountToBeMerged ( GroupAccessToBeMerged, GroupInitiatorAccessToBeTransfered, EmailAddressesToBeMerged )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate account to be merged not to contain groups or emails (for the time being)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: RemoveAccountToBeMergedFromAllGroups ( AccountToBeMerged, GroupAccessToBeMerged )" level="2">
               <Paragraph>
                 <Text>

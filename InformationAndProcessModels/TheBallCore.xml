@@ -1688,6 +1688,11 @@
             <TargetDefinition name="LoginAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBLoginInfo[]" designDesc="Login information from access to be merged" state="implemented">
               <Target name="AccountToBeMerged"/>
             </TargetDefinition>
+            <MethodExecute name="ValidateAccountToBeMerged" designDesc="Validate account to be merged not to contain groups or emails (for the time being)" state="implemented">
+              <Target name="GroupAccessToBeMerged"/>
+              <Target name="GroupInitiatorAccessToBeTransfered"/>
+              <Target name="EmailAddressesToBeMerged"/>
+            </MethodExecute>
             <MethodExecute name="RemoveAccountToBeMergedFromAllGroups" designDesc="Remove account to be merged from all of its groups" state="implemented">
               <Target name="AccountToBeMerged"/>
               <Target name="GroupAccessToBeMerged"/>

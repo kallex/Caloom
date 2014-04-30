@@ -165,5 +165,11 @@ namespace TheBall.CORE
                     AccountID = primaryAccountToStayId
                 });
         }
+
+        public static void ExecuteMethod_ValidateAccountToBeMerged(TBAccountCollaborationGroup[] groupAccessToBeMerged, TBAccountCollaborationGroup[] groupInitiatorAccessToBeTransfered, TBEmail[] emailAddressesToBeMerged)
+        {
+            if(groupAccessToBeMerged.Length > 0 || groupInitiatorAccessToBeTransfered.Length > 0 || emailAddressesToBeMerged.Length > 0)
+                throw new NotSupportedException("Account merge not supported for account that is member of any groups or contains email addresses of its own");
+        }
     }
 }

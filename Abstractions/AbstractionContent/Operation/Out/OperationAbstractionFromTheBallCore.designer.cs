@@ -967,6 +967,7 @@ using System.IO;
 				AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[] GroupInitiatorAccessToBeTransfered = MergeAccountsDestructivelyImplementation.GetTarget_GroupInitiatorAccessToBeTransfered(AccountToBeMerged);	
 				AaltoGlobalImpact.OIP.TBEmail[] EmailAddressesToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_EmailAddressesToBeMerged(AccountToBeMerged);	
 				AaltoGlobalImpact.OIP.TBLoginInfo[] LoginAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_LoginAccessToBeMerged(AccountToBeMerged);	
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_ValidateAccountToBeMerged(GroupAccessToBeMerged, GroupInitiatorAccessToBeTransfered, EmailAddressesToBeMerged);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveAccountToBeMergedFromAllGroups(AccountToBeMerged, GroupAccessToBeMerged);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveEmailAddressesFromAccountToBeMerged(AccountToBeMerged);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveLoginsFromAccountToBeMerged(AccountToBeMerged);		

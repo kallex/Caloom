@@ -2405,6 +2405,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Login information from access to be merged
 		</div>
+		</p><h2>Method Call: ValidateAccountToBeMerged ( GroupAccessToBeMerged, GroupInitiatorAccessToBeTransfered, EmailAddressesToBeMerged )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate account to be merged not to contain groups or emails (for the time being)
+		</div>
 		</p><h2>Method Call: RemoveAccountToBeMergedFromAllGroups ( AccountToBeMerged, GroupAccessToBeMerged )</h2>
 		<p>		<div class="MsoNormal" >
 		Remove account to be merged from all of its groups
