@@ -925,6 +925,9 @@
     <StatusItem name="MergeAccountsDestructively_TransferGroupInitiatorRights" displayName="MethodExecuteType: TransferGroupInitiatorRights" description="Transfer group initiator rights">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="MergeAccountsDestructively_UpdateAccountGroupLogins" displayName="MethodExecuteType: UpdateAccountGroupLogins" description="Refresh account group relations">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="TransferGroupInitiator_GroupID" displayName="VariableType: GroupID" description="Group ID whose initiatorship is to be transfered">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1375,6 +1378,7 @@
       <ItemRef itemName="MergeAccountsDestructively_CallRefreshAccountRootToReferences" />
       <ItemRef itemName="MergeAccountsDestructively_AddPrimaryAccountToAllGroupsWhereItsMissing" />
       <ItemRef itemName="MergeAccountsDestructively_TransferGroupInitiatorRights" />
+      <ItemRef itemName="MergeAccountsDestructively_UpdateAccountGroupLogins" />
     </Group>
     <Group name="TransferGroupInitiator">
       <ItemRef itemName="TransferGroupInitiator_GroupID" />

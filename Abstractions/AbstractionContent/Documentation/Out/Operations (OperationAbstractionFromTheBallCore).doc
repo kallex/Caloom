@@ -2441,6 +2441,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Transfer group initiator rights
 		</div>
+		</p><h2>Method Call: UpdateAccountGroupLogins ( PrimaryAccountToStayID )</h2>
+		<p>		<div class="MsoNormal" >
+		Refresh account group relations
+		</div>
 		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

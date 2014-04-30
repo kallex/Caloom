@@ -976,6 +976,7 @@ using System.IO;
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_CallRefreshAccountRootToReferences(parameters.PrimaryAccountToStayID);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddPrimaryAccountToAllGroupsWhereItsMissing(PrimaryAccountToStay, GroupAccessToBeMerged);		
 				MergeAccountsDestructivelyImplementation.ExecuteMethod_TransferGroupInitiatorRights(parameters.PrimaryAccountToStayID, parameters.AccountToBeMergedAndDestroyedID, GroupInitiatorAccessToBeTransfered);		
+				MergeAccountsDestructivelyImplementation.ExecuteMethod_UpdateAccountGroupLogins(parameters.PrimaryAccountToStayID);		
 				}
 				}
 				public class TransferGroupInitiatorParameters 

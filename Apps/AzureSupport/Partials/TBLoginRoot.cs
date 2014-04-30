@@ -6,7 +6,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class TBRLoginRoot
     {
-        public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest)
+        public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest, string currentDomainName)
         {
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             var loginRoot = RetrieveFromDefaultLocation(loginRootID);
@@ -16,6 +16,7 @@ namespace AaltoGlobalImpact.OIP
                 loginRoot = TBRLoginRoot.CreateDefault();
                 loginRoot.ID = loginRootID;
                 loginRoot.UpdateRelativeLocationFromID();
+                loginRoot.DomainName = currentDomainName;
                 StorageSupport.StoreInformation(loginRoot);
 
                 // Creating login info for account and storing the account

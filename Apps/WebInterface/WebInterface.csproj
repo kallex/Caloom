@@ -166,9 +166,13 @@
     <Content Include="InstanceSettings_TheBallTest.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="InstanceSettings_TheBallDemo.config" />
+    <Content Include="InstanceSettings_TheBallSchools.config" />
+    <Content Include="InstanceSettings_TheBallBusiness.config" />
     <None Include="Properties\PublishProfiles\betaoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
+    <None Include="Properties\PublishProfiles\demo.theball.me.pubxml" />
     <None Include="Properties\PublishProfiles\demooip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\schools.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\test.caloom.com.pubxml" />

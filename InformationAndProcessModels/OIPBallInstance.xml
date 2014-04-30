@@ -67,6 +67,7 @@
       <!-- Storage Roots -->
       <InformationObject name="TBRLoginRoot" designDesc="Login root for LoginID">
         <InformationItems>
+          <InformationItem name="DomainName" logicalDataType="Text_Short"/>
           <InformationItem name="Account" logicalDataType="InformationObject" informationObjectName="TBAccount" />
         </InformationItems>
       </InformationObject>

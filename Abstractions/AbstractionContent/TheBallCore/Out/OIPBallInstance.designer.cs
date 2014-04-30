@@ -2304,6 +2304,8 @@ using TheBall.CORE;
 					if(customDemo != null)
 						return customDemo;
 					var result = new TBRLoginRoot();
+					result.DomainName = @"TBRLoginRoot.DomainName";
+
 					result.Account = TBAccount.CreateDemoDefault();
 				
 					return result;
@@ -2389,6 +2391,8 @@ using TheBall.CORE;
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
+						if(DomainName != _unmodified_DomainName)
+							return true;
 						if(Account != _unmodified_Account)
 							return true;
 						{
@@ -2420,6 +2424,7 @@ using TheBall.CORE;
 
 				private void CopyContentFrom(TBRLoginRoot sourceObject)
 				{
+					DomainName = sourceObject.DomainName;
 					Account = sourceObject.Account;
 				}
 				
@@ -2427,6 +2432,7 @@ using TheBall.CORE;
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_DomainName = DomainName;
 				
 					_unmodified_Account = Account;
 					if(Account != null)
@@ -2440,10 +2446,16 @@ using TheBall.CORE;
 				{
 					switch (propertyName)
 					{
+						case "DomainName":
+							DomainName = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string DomainName { get; set; }
+			private string _unmodified_DomainName;
 			[DataMember]
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;

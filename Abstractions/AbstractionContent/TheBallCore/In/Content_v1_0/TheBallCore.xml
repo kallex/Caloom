@@ -1721,6 +1721,9 @@
               <Parameter name="AccountToBeMergedAndDestroyedID"/>
               <Target name="GroupInitiatorAccessToBeTransfered"/>
             </MethodExecute>
+            <MethodExecute name="UpdateAccountGroupLogins" designDesc="Refresh account group relations" state="implemented">
+              <Parameter name="PrimaryAccountToStayID"/>
+            </MethodExecute>
           </SequentialExecution>        
         </Execution>
       </Operation>

@@ -158,5 +158,12 @@ namespace TheBall.CORE
             }
         }
 
+        public static void ExecuteMethod_UpdateAccountGroupLogins(string primaryAccountToStayId)
+        {
+            UpdateLoginGroupPermissions.Execute(new UpdateLoginGroupPermissionsParameters
+                {
+                    AccountID = primaryAccountToStayId
+                });
+        }
     }
 }

@@ -90,8 +90,9 @@ namespace WebInterface
 
         private void HandlePersonalRequest(HttpContext context)
         {
+            var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true);
+            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
             bool doDelete = false;
             if (doDelete)
             {
