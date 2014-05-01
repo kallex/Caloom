@@ -30,34 +30,19 @@ namespace ContentSyncTool
             {
                 //Debugger.Launch();
                 UserSettings.GetCurrentSettings();
-                switch (verb)
+                ICommandExecution executionSupport = verbSubOptions as ICommandExecution;
+                if (executionSupport != null)
                 {
-                    case "createConnection":
-                        CommandImplementation.createConnection((CreateConnectionSubOptions) verbSubOptions);
-                        break;
-                    case "listConnections":
-                        CommandImplementation.listConnections((EmptySubOptions) verbSubOptions);
-                        break;
-                    case "deleteConnection":
-                        CommandImplementation.deleteConnection((DeleteConnectionSubOptions) verbSubOptions);
-                        break;
-                    case "selfTest":
-                        CommandImplementation.selfTest((EmptySubOptions) verbSubOptions);
-                        break;
-                    case "setConnectionRootLocations":
-                        CommandImplementation.setConnectionRootLocations((ConnectionRootLocationSubOptions) verbSubOptions);
-                        break;
-                    case "setConnectionSyncFolders":
-                        CommandImplementation.setConnectionSyncFolders((ConnectionSyncFoldersSubOptions) verbSubOptions);
-                        break;
-                    case "upsync":
-                        CommandImplementation.upsync((ConnectionUpSyncSubOptions) verbSubOptions);
-                        break;
-                    case "downsync":
-                        CommandImplementation.downsync((ConnectionDownSyncSubOptions) verbSubOptions);
-                        break;
-                    default:
-                        throw new ArgumentException("Not implemented verb: " + verb);
+                    executionSupport.ExecuteCommand(verb);
+                }
+                else // Custom verb implementation
+                {
+                    switch (verb)
+                    {
+                        default:
+                            throw new ArgumentException("Not implemented verb: " + verb);
+                    }
+                    
                 }
             }
             catch (Exception ex)

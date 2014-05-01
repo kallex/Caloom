@@ -85,10 +85,10 @@ namespace ContentSyncTool
         internal static void setConnectionRootLocations(ConnectionRootLocationSubOptions verbSubOptions)
         {
             var connection = GetConnection(verbSubOptions);
-            if (String.IsNullOrEmpty(verbSubOptions.DataRoot) == false)
-                connection.LocalDataRootLocation = verbSubOptions.DataRoot;
-            if (String.IsNullOrEmpty(verbSubOptions.TemplateRoot) == false)
-                connection.LocalTemplateRootLocation = verbSubOptions.TemplateRoot;
+            if (String.IsNullOrEmpty(verbSubOptions.DownSyncRoot) == false)
+                connection.LocalDataRootLocation = verbSubOptions.DownSyncRoot;
+            if (String.IsNullOrEmpty(verbSubOptions.UpSyncRoot) == false)
+                connection.LocalTemplateRootLocation = verbSubOptions.UpSyncRoot;
         }
 
         public static void setConnectionSyncFolders(ConnectionSyncFoldersSubOptions verbSubOptions)
