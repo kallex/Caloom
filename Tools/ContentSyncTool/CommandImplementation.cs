@@ -8,11 +8,21 @@ namespace ContentSyncTool
 {
     internal class CommandImplementation
     {
-
-
         internal static UserSettings.Connection GetConnection(NamedConnectionSubOptions verbSubOptions)
         {
-            return UserSettings.CurrentSettings.Connections.Single(conn => conn.Name == verbSubOptions.ConnectionName);
+            var connection = UserSettings.CurrentSettings.Connections.Single(conn => conn.Name == verbSubOptions.ConnectionName);
+            if(connection == null)
+                throw new ArgumentException("Connection not found: " + verbSubOptions.ConnectionName);
+            return connection;
+        }
+
+        internal static UserSettings.FolderSyncItem GetFolderSyncItem(ConnectionSyncFolderSubOptions verbSubOptions)
+        {
+            var connection = GetConnection(verbSubOptions);
+            var syncItem = connection.FolderSyncItems.SingleOrDefault(item => item.SyncItemName == verbSubOptions.SyncName);
+            if(syncItem == null)
+                throw new ArgumentException("Sync item not found: " + verbSubOptions.SyncName);
+            return syncItem;
         }
 
         internal static void selfTest(EmptySubOptions verbSubOptions)
@@ -46,15 +56,28 @@ namespace ContentSyncTool
         internal static void listConnections(EmptySubOptions verbSubOptions)
         {
             Console.WriteLine("Connections:" + Environment.NewLine);
-            UserSettings.CurrentSettings.Connections.ForEach(connection => Console.WriteLine("Name: {1}{0}Host:{2}{0}GroupID:{3}{0}Data/Down Root: {4}{0}Template/Up Root: {5}{0}Down Sync Folders: {6}{0}Up Sync Folders: {7}{0}- -- -- -- -- -{0}",
-                                                                                             Environment.NewLine,
-                                                                                             connection.Name, 
-                                                                                             connection.HostName, 
-                                                                                             connection.GroupID,
-                                                                                             connection.LocalDataRootLocation, 
-                                                                                             connection.LocalTemplateRootLocation,
-                                                                                             String.Join(", ", connection.DownSyncFolders ?? new string[0]), 
-                                                                                             String.Join(", ", connection.UpSyncFolders ?? new string[0])));
+            UserSettings.CurrentSettings.Connections.ForEach(connection =>
+                {
+                    Console.WriteLine("Name: {1}{0}Host:{2}{0}GroupID:{3}",
+                                      Environment.NewLine,
+                                      connection.Name,
+                                      connection.HostName,
+                                      connection.GroupID);
+                    connection.FolderSyncItems.ForEach(syncItem =>
+                        {
+                            string directionArrow = syncItem.SyncDirection == "UP" ? "=>" : "<=";
+                            Console.WriteLine("{1} - {2}: {3}{0}{4} {5} {6}",
+                                Environment.NewLine,
+                                syncItem.SyncDirection,
+                                syncItem.SyncType,
+                                syncItem.SyncItemName,
+                                syncItem.LocalFullPath, 
+                                directionArrow,
+                                syncItem.RemoteFolder
+                                );
+                        });
+                    Console.WriteLine("- -- -- -- -- -");
+                });
         }
 
         internal static void createConnection(CreateConnectionSubOptions verbSubOptions)
@@ -82,57 +105,25 @@ namespace ContentSyncTool
             UserSettings.CurrentSettings.Connections.Add(connection);
         }
 
-        internal static void setConnectionRootLocations(ConnectionRootLocationSubOptions verbSubOptions)
+        public static void upsync(UserSettings.Connection connection, UserSettings.FolderSyncItem upSyncItem)
         {
-            var connection = GetConnection(verbSubOptions);
-            if (String.IsNullOrEmpty(verbSubOptions.DownSyncRoot) == false)
-                connection.LocalDataRootLocation = verbSubOptions.DownSyncRoot;
-            if (String.IsNullOrEmpty(verbSubOptions.UpSyncRoot) == false)
-                connection.LocalTemplateRootLocation = verbSubOptions.UpSyncRoot;
-        }
-
-        public static void setConnectionSyncFolders(ConnectionSyncFoldersSubOptions verbSubOptions)
-        {
-            var connection = GetConnection(verbSubOptions);
-            connection.DownSyncFolders = (verbSubOptions.DownSyncFolders ?? "").Split(',').OrderBy(name => name).ToArray();
-            connection.UpSyncFolders = (verbSubOptions.UpSyncFolders ?? "").Split(',').OrderBy(name => name).ToArray();
-        }
-
-        public static void upsync(ConnectionUpSyncSubOptions verbSubOptions)
-        {
-            var connection = GetConnection(verbSubOptions);
-            if (String.IsNullOrEmpty(connection.LocalTemplateRootLocation))
-                throw new InvalidDataException("Connection LocalTemplateRootLocation must be set before upsync command");
-            if (connection.UpSyncFolders == null || connection.UpSyncFolders.Length == 0)
-                throw new InvalidDataException("Connection upsync folders must be set before upsync command");
-            var rootFolder = connection.LocalTemplateRootLocation;
-            var localSyncFolders = connection.UpSyncFolders
-                                              .Select(folder =>
-                                                      new
-                                                          {
-                                                              Folder = folder,
-                                                              ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
-                                                          }
-                ).ToArray();
-            var combinedSourceList = localSyncFolders.SelectMany(sFolder =>
-                {
-                    foreach (var contentMD5 in sFolder.ContentMD5s)
-                    {
-                        contentMD5.ContentLocation = sFolder.Folder + "/" + contentMD5.ContentLocation;
-                    }
-                    return sFolder.ContentMD5s;
-                }).ToArray();
-
-            ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, combinedSourceList);
+            var rootFolder = upSyncItem.LocalFullPath;
+            var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
+            foreach (var sourceItem in sourceList)
+            {
+                sourceItem.ContentLocation = upSyncItem.RemoteFolder + sourceItem.ContentLocation;
+            }
+            ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, sourceList);
 
             var itemsToCopy = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray();
             var itemsDeleted = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPDONE" && iData.ItemTextData == "DELETED")).ToArray();
             var device = connection.Device;
+            int stripRemoteFolderIndex = upSyncItem.RemoteFolder.Length;
             SyncSupport.SynchronizeSourceListToTargetFolder(
                 itemsToCopy, new ContentItemLocationWithMD5[0],
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
-                        string fullLocalName = Path.Combine(rootFolder, source.ContentLocation);
+                        string fullLocalName = Path.Combine(rootFolder, source.ContentLocation.Substring(stripRemoteFolderIndex));
                         DeviceSupport.PushContentToDevice(device, fullLocalName, source.ContentLocation);
                         Console.WriteLine("Uploaded: " + source.ContentLocation);
                     },
@@ -140,39 +131,26 @@ namespace ContentSyncTool
                 {
 
                 }, 10);
+             
 
         }
 
-        public static void downsync(ConnectionDownSyncSubOptions verbSubOptions)
+        public static void downsync(UserSettings.Connection connection, UserSettings.FolderSyncItem downSyncItem)
         {
-            var connection = GetConnection(verbSubOptions);
-            if(String.IsNullOrEmpty(connection.LocalDataRootLocation))
-                throw new InvalidDataException("Connection LocalDataRootLocation must be set before downsync command");
-            if (connection.DownSyncFolders == null || connection.DownSyncFolders.Length == 0)
-                throw new InvalidDataException("Connection downsync folders must be set before downsync command");
-            var rootFolder = connection.LocalDataRootLocation;
-            var myDataSyncFolders = connection.DownSyncFolders
-                                              .Select(folder => new
-                                                  {
-                                                      Folder = folder,
-                                                      ContentMD5s = FileSystemSupport.GetContentRelativeFromRoot(Path.Combine(rootFolder, folder))
-                                                  }
-                ).ToArray();
-            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, connection.DownSyncFolders);
-            var combinedTargetList = myDataSyncFolders.SelectMany(sFolder =>
-                {
-                    foreach (var contentMD5 in sFolder.ContentMD5s)
-                    {
-                        contentMD5.ContentLocation = sFolder.Folder + "/" + contentMD5.ContentLocation;
-                    }
-                    return sFolder.ContentMD5s;
-                }).ToArray();
+            var rootFolder = downSyncItem.LocalFullPath;
+            var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
+            foreach (var myDataItem in myDataContents)
+            {
+                myDataItem.ContentLocation = downSyncItem.RemoteFolder + myDataItem.ContentLocation;
+            }
+            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteFolder });
             var device = connection.Device;
+            int stripRemoteFolderIndex = downSyncItem.RemoteFolder.Length;
             SyncSupport.SynchronizeSourceListToTargetFolder(
-                remoteContentSourceList, combinedTargetList,
+                remoteContentSourceList, myDataContents,
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
-                        string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
+                        string targetFullName = Path.Combine(rootFolder, target.ContentLocation.Substring(stripRemoteFolderIndex));
                         string targetDirectoryName = Path.GetDirectoryName(targetFullName);
                         try
                         {
@@ -190,9 +168,10 @@ namespace ContentSyncTool
                         Console.WriteLine("Copied: " + source.ContentLocation);
                     }, delegate(ContentItemLocationWithMD5 target)
                         {
-                            string targetFullName = Path.Combine(rootFolder, target.ContentLocation);
+                            string targetContentLocation = target.ContentLocation.Substring(stripRemoteFolderIndex);
+                            string targetFullName = Path.Combine(rootFolder, targetContentLocation);
                             File.Delete(targetFullName);
-                            Console.WriteLine("Deleted: " + target.ContentLocation);
+                            Console.WriteLine("Deleted: " + targetContentLocation);
                         }, 10);
         }
 
@@ -216,6 +195,42 @@ namespace ContentSyncTool
                 };
             dod = connection.Device.ExecuteDeviceOperation(dod);
             return dod.OperationSpecificContentData;
+        }
+
+        public static void syncFolder(SyncFolderSubOptions syncFolderSubOptions)
+        {
+            var connection = GetConnection(syncFolderSubOptions);
+            var syncItem = GetFolderSyncItem(syncFolderSubOptions);
+            if(syncItem.SyncDirection == "UP")
+                upsync(connection, syncItem);
+            else if(syncItem.SyncDirection == "DOWN")
+                downsync(connection, syncItem);
+            else 
+                throw new NotSupportedException("Sync direction not supported: " + syncItem.SyncDirection);
+        }
+
+        public static void addSyncFolder(AddSyncFolderSubOptions addSyncFolderSubOptions)
+        {
+            var connection = GetConnection(addSyncFolderSubOptions);
+            if(connection.FolderSyncItems.Any(item => item.SyncItemName == addSyncFolderSubOptions.SyncName))
+                throw new ArgumentException("Sync folder already exists: " + addSyncFolderSubOptions.SyncName);
+            var syncFolderItem = new UserSettings.FolderSyncItem
+                {
+                    SyncItemName = addSyncFolderSubOptions.SyncName,
+                    SyncDirection = addSyncFolderSubOptions.SyncDirection,
+                    SyncType = addSyncFolderSubOptions.SyncType,
+                    LocalFullPath = addSyncFolderSubOptions.LocalFullPath,
+                    RemoteFolder = addSyncFolderSubOptions.RemoteFolder
+                };
+            connection.FolderSyncItems.Add(syncFolderItem);
+        }
+
+        public static void removeSyncFolder(RemoveSyncFolderSubOptions removeSyncFolderSubOptions)
+        {
+            var connection = GetConnection(removeSyncFolderSubOptions);
+            int removed = connection.FolderSyncItems.RemoveAll(item => item.SyncItemName == removeSyncFolderSubOptions.SyncName);
+            if(removed == 0)
+                throw new ArgumentException("Sync item to remove not found: " + removeSyncFolderSubOptions.SyncName);
         }
     }
 

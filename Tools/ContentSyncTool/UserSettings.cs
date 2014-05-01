@@ -15,11 +15,8 @@ namespace ContentSyncTool
             public string HostName;
             public string GroupID;
             public string EstablishedTrustID;
-            public string LocalTemplateRootLocation;
-            public string LocalDataRootLocation;
             public Device Device = new Device();
-            public string[] DownSyncFolders;
-            public string[] UpSyncFolders;
+            public List<FolderSyncItem> FolderSyncItems = new List<FolderSyncItem>();
         }
 
         [Serializable]
@@ -28,6 +25,16 @@ namespace ContentSyncTool
             public string ConnectionURL;
             public byte[] AESKey;
             public string EstablishedTrustID;
+        }
+
+        [Serializable]
+        public class FolderSyncItem
+        {
+            public string LocalFullPath;
+            public string RemoteFolder;
+            public string SyncItemName;
+            public string SyncDirection;
+            public string SyncType;
         }
 
         public List<Connection> Connections = new List<Connection>();

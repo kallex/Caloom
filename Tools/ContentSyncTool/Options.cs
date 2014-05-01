@@ -19,10 +19,7 @@ namespace ContentSyncTool
             DeleteConnectionVerb = new DeleteConnectionSubOptions();
             ListConnectionsVerb = new EmptySubOptions();
             SelfTestVerb = new EmptySubOptions();
-            SetConnectionRootLocationsVerb = new ConnectionRootLocationSubOptions();
-            SetConnectionSyncFoldersVerb = new ConnectionSyncFoldersSubOptions();
-            UpSyncVerb = new ConnectionUpSyncSubOptions();
-            DownSyncVerb = new ConnectionDownSyncSubOptions();
+            SyncVerb = new SyncFolderSubOptions();
         }
 
         [VerbOption("createConnection", HelpText = "Create connection")]
@@ -37,49 +34,76 @@ namespace ContentSyncTool
         [VerbOption("selfTest", HelpText = "Self test tool and executing environment")]
         public EmptySubOptions SelfTestVerb { get; set; }
 
-        [VerbOption("setConnectionRootLocations", HelpText = "Set connection sync root locations")]
-        public ConnectionRootLocationSubOptions SetConnectionRootLocationsVerb { get; set; }
+        [VerbOption("sync", HelpText = "Sync connection folder")]
+        public SyncFolderSubOptions SyncVerb { get; set; }
 
-        [VerbOption("setConnectionSyncFolders", HelpText = "Set connection sync folders")]
-        public ConnectionSyncFoldersSubOptions SetConnectionSyncFoldersVerb { get; set; }
+        [VerbOption("addSyncFolder", HelpText = "Add sync folder")]
+        public AddSyncFolderSubOptions AddSyncFolder { get; set; }
 
-        [VerbOption("upsync", HelpText = "Upload sync connection with predefined folders")]
-        public ConnectionUpSyncSubOptions UpSyncVerb { get; set; }
-
-        [VerbOption("downsync", HelpText = "Download sync connection with predefined folders")]
-        public ConnectionDownSyncSubOptions DownSyncVerb { get; set; }
+        [VerbOption("removeSyncFolder", HelpText = "Remove sync folder")]
+        public RemoveSyncFolderSubOptions RemoveSyncFolder { get; set; }
     }
 
-    class ConnectionDownSyncSubOptions : NamedConnectionSubOptions
+    class SyncFolderSubOptions : ConnectionSyncFolderSubOptions
     {
         public override void ExecuteCommand(string verb)
         {
-            CommandImplementation.downsync(this);
+            CommandImplementation.syncFolder(this);
         }
     }
 
-    class ConnectionUpSyncSubOptions : NamedConnectionSubOptions
+    class RemoveSyncFolderSubOptions : ConnectionSyncFolderSubOptions
     {
         public override void ExecuteCommand(string verb)
         {
-            CommandImplementation.upsync(this);
+            CommandImplementation.removeSyncFolder(this);
         }
     }
 
-    class ConnectionSyncFoldersSubOptions : NamedConnectionSubOptions
+    class AddSyncFolderSubOptions : ConnectionSyncFolderSubOptions
     {
-        [Option('d', "downSyncFolders", HelpText = "Comma separated remote folders to sync to predefined down root", Required = false)]
-        public string DownSyncFolders { get; set; }
+        [Option('t', "syncType", HelpText = "Sync type: DEV, wwwsite", Required = true)]
+        public string SyncType { get; set; }
 
-        [Option('u', "upSyncFolders", HelpText = "Comma separated local folders to sync from predefined upsync root", Required = false)]
-        public string UpSyncFolders { get; set; }
+        [Option('l', "localFullPath", HelpText = "Local full path to folder", Required = true)]
+        public string LocalFullPath { get; set; }
+
+        [Option('r', "remoteFolder", HelpText = "Remote folder name", Required = true)]
+        public string RemoteFolder { get; set; }
+
+        [Option('d', "syncDirection", HelpText = "Sync direction UP or DOWN", Required = true)]
+        public string SyncDirection { get; set; }
+
+
 
         public override void ExecuteCommand(string verb)
         {
-            CommandImplementation.setConnectionSyncFolders(this);
+            Validate();
+            CommandImplementation.addSyncFolder(this);
+        }
+
+        public void Validate()
+        {
+            if(RemoteFolder == "/")
+                throw new ArgumentException("Root remote folder (/) not supported");
+            if (RemoteFolder.EndsWith("/") == false)
+                RemoteFolder += "/";
+            if(SyncDirection != "UP" && SyncDirection != "DOWN")
+                throw new ArgumentException("syncDirection must be either UP or DOWN");
+            if(SyncType != "DEV" && SyncType != "wwwsite")
+                throw new ArgumentException("syncType must be either DEV or wwwsite");
+            if(SyncType == "wwwsite" && RemoteFolder != "wwwsite")
+                throw new ArgumentException("remoteFolder must also be wwwsite when syncType is wwwsite");
         }
     }
 
+    abstract class ConnectionSyncFolderSubOptions : NamedConnectionSubOptions
+    {
+        [Option('s', "syncName", HelpText = "syncName", Required = true)]
+        public string SyncName { get; set; }
+    }
+
+    /*
     class ConnectionRootLocationSubOptions : NamedConnectionSubOptions
     {
         [Option('u', "upSyncRoot", HelpText = "Up sync root location", Required = false)]
@@ -107,6 +131,7 @@ namespace ContentSyncTool
             CommandImplementation.setConnectionRootLocations(this);
         }
     }
+     * */
 
     class DeleteConnectionSubOptions : NamedConnectionSubOptions
     {
@@ -148,19 +173,8 @@ namespace ContentSyncTool
 
     abstract class NamedConnectionSubOptions : ICommandExecution
     {
-        [Option('n', "connectionName", HelpText = "Connection name used to identify/shortcut connection", Required = true)]
+        [Option('c', "connectionName", HelpText = "Connection name used to identify/shortcut connection", Required = true)]
         public string ConnectionName { get; set; }
-
-        // Common auto-calculated values
-        protected virtual void validateSelf()
-        {
-            
-        }
-        public void Validate()
-        {
-            if(string.IsNullOrEmpty(ConnectionName))
-                throw new ArgumentException("Connection name is required");
-        }
 
         public abstract void ExecuteCommand(string verb);
     }
