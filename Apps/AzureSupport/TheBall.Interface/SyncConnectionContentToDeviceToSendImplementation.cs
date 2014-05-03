@@ -50,7 +50,7 @@ namespace TheBall.Interface
 
         public static void ExecuteMethod_CopyContentsToSyncRoot(ContentItemLocationWithMD5[] contentListingResult, string syncTargetRootFolder)
         {
-            SyncSupport.SynchronizeSourceListToTargetFolder(contentListingResult, syncTargetRootFolder);
+            SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.SourceIsRelativeRoot, contentListingResult, syncTargetRootFolder);
         }
     }
 }

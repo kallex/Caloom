@@ -8,7 +8,7 @@ namespace TheBall
     public static class SyncSupport
     {
 
-        public static void SynchronizeSourceListToTargetFolder(ContentItemLocationWithMD5[] sourceContentList, string syncTargetRootFolder, 
+        public static void SynchronizeSourceListToTargetFolder(string syncSourceRootFolder, ContentItemLocationWithMD5[] sourceContentList, string syncTargetRootFolder, 
             CopySourceToTargetMethod copySourceToTarget = null, DeleteObsoleteTargetMethod deleteObsoleteTarget = null)
         {
             if (copySourceToTarget == null)
@@ -99,5 +99,7 @@ namespace TheBall
             CloudBlockBlob sourceblob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currSourceBlobLocation);
             targetBlob.CopyFromBlob(sourceblob);
         }
+
+        public const string SourceIsRelativeRoot = "";
     }
 }

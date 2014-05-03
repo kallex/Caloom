@@ -119,20 +119,29 @@ namespace ContentSyncTool
             var itemsDeleted = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPDONE" && iData.ItemTextData == "DELETED")).ToArray();
             var device = connection.Device;
             int stripRemoteFolderIndex = upSyncItem.RemoteFolder.Length;
+            string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
+            string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteFolder;
             SyncSupport.SynchronizeSourceListToTargetFolder(
                 itemsToCopy, new ContentItemLocationWithMD5[0],
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
                         string fullLocalName = Path.Combine(rootFolder, source.ContentLocation.Substring(stripRemoteFolderIndex));
-                        DeviceSupport.PushContentToDevice(device, fullLocalName, source.ContentLocation);
+                        string destinationContentName = destinationPrefix + source.ContentLocation;
+                        DeviceSupport.PushContentToDevice(device, fullLocalName, destinationContentName);
                         Console.WriteLine("Uploaded: " + source.ContentLocation);
                     },
                 target =>
                 {
 
                 }, 10);
-             
-
+            var dod = device.ExecuteDeviceOperation(new DeviceOperationData
+                {
+                    OperationParameters = new[] {destinationCopyRoot},
+                    OperationRequestString = "COPYSYNCEDCONTENTTOOWNER"
+                });
+            if(dod.OperationResult == false)
+                throw new OperationCanceledException("Error on remote call operation");
+            Console.WriteLine("Finished copying data to owner location: " + destinationCopyRoot);
         }
 
         public static void downsync(UserSettings.Connection connection, UserSettings.FolderSyncItem downSyncItem)

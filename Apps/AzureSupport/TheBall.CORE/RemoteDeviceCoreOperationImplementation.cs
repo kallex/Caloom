@@ -32,10 +32,27 @@ namespace TheBall.CORE
                 case "GETCONTENTMD5LIST":
                     getContentMD5List(deviceOperationData);
                     break;
+                case "COPYSYNCEDCONTENTTOOWNER":
+                    copySyncedContentToOwner(deviceOperationData);
+                    break;
                 default:
                     throw new NotImplementedException("Not implemented RemoteDevice operation for request string: " + deviceOperationData.OperationRequestString);
             }
             deviceOperationData.OperationResult = true;
+        }
+
+        private static void copySyncedContentToOwner(DeviceOperationData deviceOperationData)
+        {
+            throw new NotImplementedException("Implementation TODO and to test...");
+            string folderPrefix = deviceOperationData.OperationParameters[0];
+            if (folderPrefix.StartsWith("DEV_") == false && folderPrefix != "website")
+                throw new InvalidDataException("Invalid data for remote folder name");
+            var currentDevice = InformationContext.CurrentExecutingForDevice;
+            string deviceInputRoot = getDeviceInputRoot(currentDevice.ID);
+            string syncSourceRootFolder = null;
+            ContentItemLocationWithMD5[] syncContentList = null;
+            string syncTargetRootFolder = null;
+            SyncSupport.SynchronizeSourceListToTargetFolder(syncSourceRootFolder, syncContentList, syncTargetRootFolder);
         }
 
         private static void getContentMD5List(DeviceOperationData deviceOperationData)
@@ -77,10 +94,16 @@ namespace TheBall.CORE
                     SyncSupport.DeleteObsoleteTarget(location);
                 };
 
-            string syncTargetRootFolder = String.Format("TheBall.CORE/DeviceMembership/{0}_Input/", currentDevice.ID);
-            SyncSupport.SynchronizeSourceListToTargetFolder(deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
+            string syncTargetRootFolder = getDeviceInputRoot(currentDevice.ID);
+            SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.SourceIsRelativeRoot, deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
                                                             copySourceToTarget, deleteObsoleteTarget);
             deviceOperationData.OperationSpecificContentData = itemsToCopy.Union(itemsDeleted).ToArray();
+        }
+
+
+        static string getDeviceInputRoot(string deviceID)
+        {
+            return String.Format("TheBall.CORE/DeviceMembership/{0}_Input/", deviceID);
         }
         /*
                     ItemsToCopy = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray(),
