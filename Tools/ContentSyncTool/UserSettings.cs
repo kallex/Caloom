@@ -19,24 +19,6 @@ namespace ContentSyncTool
             public List<FolderSyncItem> FolderSyncItems = new List<FolderSyncItem>();
         }
 
-        [Serializable]
-        public class Device
-        {
-            public string ConnectionURL;
-            public byte[] AESKey;
-            public string EstablishedTrustID;
-        }
-
-        [Serializable]
-        public class FolderSyncItem
-        {
-            public string LocalFullPath;
-            public string RemoteFolder;
-            public string SyncItemName;
-            public string SyncDirection;
-            public string SyncType;
-        }
-
         public List<Connection> Connections = new List<Connection>();
 
         public static UserSettings CurrentSettings { get; private set; }
@@ -90,5 +72,23 @@ namespace ContentSyncTool
             File.WriteAllBytes(CurrSettingsFilePath, currentData);
         }
 
+    }
+
+    [Serializable]
+    public class FolderSyncItem
+    {
+        public string LocalFullPath;
+        public string RemoteFolder;
+        public string SyncItemName;
+        public string SyncDirection;
+        public string SyncType;
+    }
+
+    [Serializable]
+    public class Device
+    {
+        public string ConnectionURL;
+        public byte[] AESKey;
+        public string EstablishedTrustID;
     }
 }

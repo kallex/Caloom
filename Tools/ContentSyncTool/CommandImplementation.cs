@@ -16,7 +16,7 @@ namespace ContentSyncTool
             return connection;
         }
 
-        internal static UserSettings.FolderSyncItem GetFolderSyncItem(ConnectionSyncFolderSubOptions verbSubOptions)
+        internal static FolderSyncItem GetFolderSyncItem(ConnectionSyncFolderSubOptions verbSubOptions)
         {
             var connection = GetConnection(verbSubOptions);
             var syncItem = connection.FolderSyncItems.SingleOrDefault(item => item.SyncItemName == verbSubOptions.SyncName);
@@ -95,7 +95,7 @@ namespace ContentSyncTool
                     Name = verbSubOptions.ConnectionName,
                     HostName = verbSubOptions.HostName,
                     GroupID = verbSubOptions.GroupID,
-                    Device = new UserSettings.Device
+                    Device = new Device
                         {
                             AESKey = result.AESKey,
                             ConnectionURL = connectionUrl,
@@ -105,7 +105,7 @@ namespace ContentSyncTool
             UserSettings.CurrentSettings.Connections.Add(connection);
         }
 
-        public static void upsync(UserSettings.Connection connection, UserSettings.FolderSyncItem upSyncItem)
+        public static void upsync(UserSettings.Connection connection, FolderSyncItem upSyncItem)
         {
             var rootFolder = upSyncItem.LocalFullPath;
             var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
@@ -144,7 +144,7 @@ namespace ContentSyncTool
             Console.WriteLine("Finished copying data to owner location: " + destinationCopyRoot);
         }
 
-        public static void downsync(UserSettings.Connection connection, UserSettings.FolderSyncItem downSyncItem)
+        public static void downsync(UserSettings.Connection connection, FolderSyncItem downSyncItem)
         {
             var rootFolder = downSyncItem.LocalFullPath;
             var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
@@ -223,7 +223,7 @@ namespace ContentSyncTool
             var connection = GetConnection(addSyncFolderSubOptions);
             if(connection.FolderSyncItems.Any(item => item.SyncItemName == addSyncFolderSubOptions.SyncName))
                 throw new ArgumentException("Sync folder already exists: " + addSyncFolderSubOptions.SyncName);
-            var syncFolderItem = new UserSettings.FolderSyncItem
+            var syncFolderItem = new FolderSyncItem
                 {
                     SyncItemName = addSyncFolderSubOptions.SyncName,
                     SyncDirection = addSyncFolderSubOptions.SyncDirection,

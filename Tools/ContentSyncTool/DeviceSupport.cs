@@ -31,7 +31,7 @@ namespace ContentSyncTool
 
     public static class DeviceSupport
     {
-        public static DeviceOperationData ExecuteDeviceOperation(this UserSettings.Device device, DeviceOperationData operationParameters)
+        public static DeviceOperationData ExecuteDeviceOperation(this Device device, DeviceOperationData operationParameters)
         {
             var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device, "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters);
             if(!dod.OperationResult)
@@ -42,11 +42,11 @@ namespace ContentSyncTool
         
         public const string OperationPrefixStr = "OP-";
 
-        public static TReturnType ExecuteRemoteOperation<TReturnType>(UserSettings.Device device, string operationName, object operationParameters)
+        public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
         {
             return (TReturnType)executeRemoteOperation<TReturnType>(device, operationName, operationParameters);
         }        
-        public static void ExecuteRemoteOperationVoid(UserSettings.Device device, string operationName, object operationParameters)
+        public static void ExecuteRemoteOperationVoid(Device device, string operationName, object operationParameters)
         {
             executeRemoteOperation<object>(device, operationName, operationParameters);
         }
@@ -57,7 +57,7 @@ namespace ContentSyncTool
         public const int AES_KEYSIZE = 256;
         public const int AES_BLOCKSIZE = 128;
 
-        private static object executeRemoteOperation<TReturnType>(UserSettings.Device device, string operationName, object operationParameters)
+        private static object executeRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
             request.Method = "POST";
@@ -114,7 +114,7 @@ namespace ContentSyncTool
             }
         }
 
-        public static void PushContentToDevice(UserSettings.Device device, string localContentFileName, string destinationContentName)
+        public static void PushContentToDevice(Device device, string localContentFileName, string destinationContentName)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + destinationContentName);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -140,7 +140,7 @@ namespace ContentSyncTool
                 throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
         }
 
-        public static void FetchContentFromDevice(UserSettings.Device device, string remoteContentFileName, string localContentFileName)
+        public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + remoteContentFileName);
             string establishedTrustID = device.EstablishedTrustID;
