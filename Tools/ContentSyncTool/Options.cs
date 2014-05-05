@@ -17,8 +17,8 @@ namespace ContentSyncTool
         {
             CreateConnectionVerb = new CreateConnectionSubOptions();
             DeleteConnectionVerb = new DeleteConnectionSubOptions();
-            ListConnectionsVerb = new EmptySubOptions();
-            SelfTestVerb = new EmptySubOptions();
+            ListConnectionsVerb = new ListConnectionsSubOptions();
+            SelfTestVerb = new SelfTestSubOptions();
             SyncVerb = new SyncFolderSubOptions();
         }
 
@@ -29,10 +29,10 @@ namespace ContentSyncTool
         public DeleteConnectionSubOptions DeleteConnectionVerb { get; set; }
 
         [VerbOption("listConnections", HelpText = "List current connections")]
-        public EmptySubOptions ListConnectionsVerb { get; set; }
+        public ListConnectionsSubOptions ListConnectionsVerb { get; set; }
 
         [VerbOption("selfTest", HelpText = "Self test tool and executing environment")]
-        public EmptySubOptions SelfTestVerb { get; set; }
+        public SelfTestSubOptions SelfTestVerb { get; set; }
 
         [VerbOption("sync", HelpText = "Sync connection folder")]
         public SyncFolderSubOptions SyncVerb { get; set; }
@@ -149,7 +149,15 @@ namespace ContentSyncTool
         void ExecuteCommand(string verb);
     }
 
-    class EmptySubOptions : ICommandExecution
+    class SelfTestSubOptions : ICommandExecution
+    {
+        public void ExecuteCommand(string verb)
+        {
+            CommandImplementation.selfTest(this);
+        }
+    }
+
+    class ListConnectionsSubOptions : ICommandExecution
     {
         public void ExecuteCommand(string verb)
         {

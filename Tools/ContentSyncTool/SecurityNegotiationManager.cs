@@ -32,7 +32,7 @@ namespace SecuritySupport
 #else
         private Semaphore WaitingSemaphore = new Semaphore(0, 1);
 #endif
-        private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 0, 10);
+        private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 1, 0);
         private string EstablishedTrustID;
 
         public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret, string deviceDescription)

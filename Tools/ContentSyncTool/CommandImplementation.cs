@@ -25,10 +25,10 @@ namespace ContentSyncTool
             return syncItem;
         }
 
-        internal static void selfTest(EmptySubOptions verbSubOptions)
+        internal static void selfTest(SelfTestSubOptions verbSubOptions)
         {
             Console.WriteLine("Performing HTTPS connection test...");
-            var request = WebRequest.Create("https://test.caloom.com");
+            var request = WebRequest.Create("https://test.theball.me");
             var resp = request.GetResponse();
             Console.WriteLine("HTTPS connection test OK");
         }
@@ -53,7 +53,7 @@ namespace ContentSyncTool
             UserSettings.CurrentSettings.Connections.Remove(connection);
         }
 
-        internal static void listConnections(EmptySubOptions verbSubOptions)
+        internal static void listConnections(ListConnectionsSubOptions verbSubOptions)
         {
             Console.WriteLine("Connections:" + Environment.NewLine);
             UserSettings.CurrentSettings.Connections.ForEach(connection =>
