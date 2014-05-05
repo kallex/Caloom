@@ -114,22 +114,40 @@ namespace WebsiteThumbnail
                 WebBrowser m_WebBrowser = new WebBrowser();
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
+                m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
+                m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.Navigate(m_Url);
                 m_WebBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(WebBrowser_DocumentCompleted);
                 while (m_WebBrowser.ReadyState != WebBrowserReadyState.Complete)
+                {
                     Application.DoEvents();
+                    Thread.Sleep(1000);
+                }
+                DateTime assumeCompleteTime = DateTime.Now.AddSeconds(20);
+                while (DateTime.Now < assumeCompleteTime)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(1000);
+                }
+                //Thread.Sleep(20000);
+                GenerateThumbnailFromCompletedPage(m_WebBrowser);
                 m_WebBrowser.Dispose();
             }
 
             private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
             {
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
+                //GenerateThumbnailFromCompletedPage(m_WebBrowser);
+            }
+
+            private void GenerateThumbnailFromCompletedPage(WebBrowser m_WebBrowser)
+            {
                 m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
                 m_WebBrowser.BringToFront();
                 m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
-                m_Bitmap = (Bitmap)m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);                
+                m_Bitmap = (Bitmap) m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
             }
         }
     }
