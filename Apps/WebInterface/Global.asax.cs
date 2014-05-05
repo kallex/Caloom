@@ -44,7 +44,8 @@ namespace WebInterface
                              Request.Url.DnsSafeHost.StartsWith("7lk.") ||
                              Request.Url.DnsSafeHost.StartsWith("globalimpact.") ||
                              Request.Url.DnsSafeHost.StartsWith("apps.") ||
-                             Request.Url.DnsSafeHost.StartsWith("newglobal.");
+                             Request.Url.DnsSafeHost.StartsWith("newglobal.") ||
+                             Request.Url.DnsSafeHost.StartsWith("ptt-");
                 if (isWebSocket == false && isIndexAspx == false && isWww == false)
                 {
                     string redirectUrl = Request.Url.ToString().Replace("http:", "https:");

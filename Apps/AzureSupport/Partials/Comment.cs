@@ -24,6 +24,7 @@ namespace AaltoGlobalImpact.OIP
             string currentAccountID = "";
             string currentAccountEmail = "";
             string currentAccountName = "";
+            var utcNow = DateTime.UtcNow;
             if (InformationContext.CurrentAccount != null)
             {
                 currentAccountID = InformationContext.CurrentAccount.AccountID;
@@ -32,12 +33,12 @@ namespace AaltoGlobalImpact.OIP
             }
             if (ETag == null)
             {
-                Created = DateTime.UtcNow;
+                Created = utcNow;
                 OriginalAuthorAccountID = currentAccountID;
                 OriginalAuthorEmail = currentAccountEmail;
                 OriginalAuthorName = currentAccountName;
             }
-            LastModified = DateTime.UtcNow;
+            LastModified = utcNow;
             LastAuthorAccountID = currentAccountID;
             LastAuthorEmail = currentAccountEmail;
             LastAuthorName = currentAccountName;
