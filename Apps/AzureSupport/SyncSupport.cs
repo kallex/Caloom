@@ -18,7 +18,7 @@ namespace TheBall
                 deleteObsoleteTarget = DeleteObsoleteTarget;
 
             if (String.IsNullOrEmpty(syncSourceRootFolder) || syncSourceRootFolder == "/")
-                syncSourceRootFolder = SourceIsRelativeRoot;
+                syncSourceRootFolder = RelativeRootFolderValue;
             else if(syncSourceRootFolder.EndsWith("/") == false)
             {
                 syncSourceRootFolder += "/";
@@ -40,7 +40,7 @@ namespace TheBall
                 string originalLocation = sourceContent.ContentLocation;
                 string nonOwnerLocation = StorageSupport.RemoveOwnerPrefixIfExists(originalLocation);
                 string fixedContentLocation;
-                if (originalLocation != nonOwnerLocation && syncSourceRootFolder != SourceIsRelativeRoot)
+                if (originalLocation != nonOwnerLocation && syncSourceRootFolder != RelativeRootFolderValue)
                 {
                     if(nonOwnerLocation.StartsWith(syncSourceRootFolder) == false)
                         throw new InvalidDataException("Sync source must start with given root location");
@@ -119,6 +119,6 @@ namespace TheBall
             targetBlob.CopyFromBlob(sourceblob);
         }
 
-        public const string SourceIsRelativeRoot = "";
+        public const string RelativeRootFolderValue = "";
     }
 }

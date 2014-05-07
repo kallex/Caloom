@@ -40,7 +40,8 @@ namespace TheBall.CORE
             DeviceOperationData deviceOperationData = new DeviceOperationData
                 {
                     OperationRequestString = "SYNCCOPYCONTENT",
-                    OperationSpecificContentData = thisSideContentMd5List
+                    OperationSpecificContentData = thisSideContentMd5List,
+                    OperationParameters = new string[] { SyncSupport.RelativeRootFolderValue}
                 };
             deviceOperationData = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
                                                                                             "TheBall.CORE.RemoteDeviceCoreOperation", deviceOperationData);

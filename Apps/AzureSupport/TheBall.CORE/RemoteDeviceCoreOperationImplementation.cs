@@ -92,6 +92,7 @@ namespace TheBall.CORE
 
         private static void performSyncQueryForCopyContent(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
         {
+            string targetNamedFolder = deviceOperationData.OperationParameters[0];
             List<ContentItemLocationWithMD5> itemsToCopy = new List<ContentItemLocationWithMD5>();
             List<ContentItemLocationWithMD5> itemsDeleted = new List<ContentItemLocationWithMD5>();
             SyncSupport.CopySourceToTargetMethod copySourceToTarget = (location, blobLocation) => itemsToCopy.Add(new ContentItemLocationWithMD5
@@ -109,10 +110,10 @@ namespace TheBall.CORE
                     SyncSupport.DeleteObsoleteTarget(location);
                 };
 
-            string syncTargetRootFolder = getDeviceInputRoot(currentDevice.ID) + deviceOperationData.OperationParameters[0];
+            string syncTargetRootFolder = getDeviceInputRoot(currentDevice.ID) + targetNamedFolder;
             if (syncTargetRootFolder.EndsWith("/") == false)
                 syncTargetRootFolder += "/";
-            SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.SourceIsRelativeRoot, deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
+            SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.RelativeRootFolderValue, deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
                                                             copySourceToTarget, deleteObsoleteTarget);
             deviceOperationData.OperationSpecificContentData = itemsToCopy.Union(itemsDeleted).ToArray();
         }
