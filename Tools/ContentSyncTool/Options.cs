@@ -20,6 +20,9 @@ namespace ContentSyncTool
             ListConnectionsVerb = new ListConnectionsSubOptions();
             SelfTestVerb = new SelfTestSubOptions();
             SyncVerb = new SyncFolderSubOptions();
+            AddSyncFolder = new AddSyncFolderSubOptions();
+            RemoveSyncFolder = new RemoveSyncFolderSubOptions();
+            Version = new VersionInfoSubOptions();
         }
 
         [VerbOption("createConnection", HelpText = "Create connection")]
@@ -42,6 +45,9 @@ namespace ContentSyncTool
 
         [VerbOption("removeSyncFolder", HelpText = "Remove sync folder")]
         public RemoveSyncFolderSubOptions RemoveSyncFolder { get; set; }
+
+        [VerbOption("version", HelpText = "Get version info")]
+        public VersionInfoSubOptions Version { get; set; }
     }
 
     class SyncFolderSubOptions : ConnectionSyncFolderSubOptions
@@ -117,6 +123,14 @@ namespace ContentSyncTool
         public void ExecuteCommand(string verb)
         {
             CommandImplementation.listConnections(this);
+        }
+    }
+
+    class VersionInfoSubOptions : ICommandExecution
+    {
+        public void ExecuteCommand(string verb)
+        {
+            CommandImplementation.versionInfo(this);
         }
     }
 

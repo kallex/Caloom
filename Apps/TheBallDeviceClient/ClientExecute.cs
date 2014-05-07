@@ -226,6 +226,11 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
+        public static string GetVersionString()
+        {
+            return "v0.9.0";
+        }
+
         public static void SyncFolder(string connectionName, string syncItemName)
         {
             var connection = GetConnection(connectionName);
