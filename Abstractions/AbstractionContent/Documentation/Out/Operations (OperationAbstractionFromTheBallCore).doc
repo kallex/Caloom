@@ -595,7 +595,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create and send email confirmation for approving information output
 		</div>
-		</p><h1>CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)</h1>
+		</p><h1>CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -673,23 +673,6 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		SharedSecret
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Shared secret with the back-end to establish connection
-		</div>
-				</td>
-				</tr>
 		</table>
 		</p><h2>Target Definition: NegotiationURL ( TargetBallHostName, TargetGroupID )</h2>
 		<p>		<div class="MsoNormal" >
@@ -699,7 +682,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Established connection URL
 		</div>
-		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, ConnectionURL, Owner, AuthenticationDeviceDescription, SharedSecret )</h2>
+		</p><h2>Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, ConnectionURL, Owner, AuthenticationDeviceDescription )</h2>
 		<p>		<div class="MsoNormal" >
 		Created device membership client
 		</div>
@@ -2674,7 +2657,23 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Created device membership
 		</div>
-		</p><h2>Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice )</h2>
+		</p><h2>Target Definition: RemoteBallSecretRequestUrl ( AuthenticatedAsActiveDevice )</h2>
+		<p>		<div class="MsoNormal" >
+		Remote Ball secret request url
+		</div>
+		</p><h2>Target Definition: SharedSecretFullPayload ( RemoteBallSecretRequestUrl )</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain shared secret payload through SSL call from remote
+		</div>
+		</p><h2>Target Definition: SharedSecretData ( SharedSecretFullPayload )</h2>
+		<p>		<div class="MsoNormal" >
+		Extracted shared secret data from full payload
+		</div>
+		</p><h2>Target Definition: SharedSecretPayload ( SharedSecretFullPayload )</h2>
+		<p>		<div class="MsoNormal" >
+		Extracted shared secret payload from full payload
+		</div>
+		</p><h2>Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice, SharedSecretData, SharedSecretPayload )</h2>
 		<p>		<div class="MsoNormal" >
 		Negotiate with target party. Set validation flag as true if succesfully negotiated.
 		</div>

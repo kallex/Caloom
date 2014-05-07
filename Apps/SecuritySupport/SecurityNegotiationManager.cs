@@ -29,26 +29,32 @@ namespace SecuritySupport
         private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 0, 10);
         private string EstablishedTrustID;
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret, string deviceDescription)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, byte[] sharedSecret, string deviceDescription)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, true);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, true, null);
         }
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, string sharedSecret, string deviceDescription)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, byte[] sharedSecret, string deviceDescription,
+            byte[] sharedSecretPayload)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, false);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, false, sharedSecretPayload);
         }
 
-        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret, string deviceDescription,
-                                                                     bool playAsAlice)
+        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, byte[] sharedSecret, string deviceDescription,
+                                                                     bool playAsAlice, byte[] sharedSecretPayload)
         {
+            if (sharedSecretPayload != null && playAsAlice)
+                throw new NotSupportedException("Shared secret payload is supported only on Bob - delivered at pinging remote Alice");
             var securityNegotiationManager = InitSecurityNegotiationManager(connectionUrl, sharedSecret, deviceDescription, playAsAlice);
+            securityNegotiationManager.SharedSecretPayload = sharedSecretPayload;
             // Perform negotiation
             securityNegotiationManager.PerformNegotiation();
             var aesKey = securityNegotiationManager.ProtocolMember.NegotiationResults[0];
             string deviceID = securityNegotiationManager.EstablishedTrustID;
             return new SecurityNegotiationResult {AESKey = aesKey, EstablishedTrustID = deviceID};
         }
+
+        protected byte[] SharedSecretPayload { get; set; }
 
 
         private void PerformNegotiation()
@@ -71,7 +77,7 @@ namespace SecuritySupport
             string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
             //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
             string sharedSecret = "testsecretXYZ33";
-            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, sharedSecret, "test device desc", false);
+            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, Encoding.UTF8.GetBytes(sharedSecret), "test device desc", false);
             securityNegotiationManager.PerformNegotiation();
 #if native45
 
@@ -116,7 +122,7 @@ namespace SecuritySupport
 #endif
         }
 
-        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, string sharedSecret, string deviceDescription, bool playAsAlice)
+        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, byte[] sharedSecret, string deviceDescription, bool playAsAlice)
         {
             SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
             securityNegotiationManager.Socket = new WebSocket(deviceConnectionUrl);
@@ -180,7 +186,7 @@ namespace SecuritySupport
 
         private void PingAlice()
         {
-            Socket.Send(new byte[0]);
+            Socket.Send(SharedSecretPayload);
         }
 
         void ProceedProtocol()

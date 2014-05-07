@@ -28,27 +28,26 @@ namespace TheBall.Support.DeviceClient
         private TimeSpan MAX_NEGOTIATION_TIME = new TimeSpan(0, 0, 1, 0);
         private string EstablishedTrustID;
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, string sharedSecret, string deviceDescription)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsAlice(string connectionUrl, byte[] sharedSecret, string deviceDescription)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, true);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, true, null);
         }
 
-        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, string sharedSecret, string deviceDescription)
+        public static SecurityNegotiationResult PerformEKEInitiatorAsBob(string connectionUrl, byte[] sharedSecret, string deviceDescription,
+            byte[] sharedSecretPayload)
         {
-            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, false);
+            return performEkeInitiator(connectionUrl, sharedSecret, deviceDescription, false, sharedSecretPayload);
         }
 
-        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, string sharedSecret, string deviceDescription,
-                                                                     bool playAsAlice)
+        private static SecurityNegotiationResult performEkeInitiator(string connectionUrl, byte[] sharedSecret, string deviceDescription, bool playAsAlice, byte[] sharedSecretPayload)
         {
-            Console.WriteLine("performEkeInitiator1");
+            if(sharedSecretPayload != null && playAsAlice)
+                throw new NotSupportedException("Shared secret payload is supported only on Bob - delivered at pinging remote Alice");
             var securityNegotiationManager = InitSecurityNegotiationManager(connectionUrl, sharedSecret, deviceDescription, playAsAlice);
-            Console.WriteLine("performEkeInitiator2");
+            securityNegotiationManager.SharedSecretPayload = sharedSecretPayload;
             // Perform negotiation
             securityNegotiationManager.PerformNegotiation();
-            Console.WriteLine("performEkeInitiator3");
             var aesKey = securityNegotiationManager.ProtocolMember.NegotiationResults[0];
-            Console.WriteLine("performEkeInitiator4");
             string deviceID = securityNegotiationManager.EstablishedTrustID;
             return new SecurityNegotiationResult {AESKey = aesKey, EstablishedTrustID = deviceID};
         }
@@ -68,69 +67,11 @@ namespace TheBall.Support.DeviceClient
                 throw new TimeoutException("Trust negotiation timed out");
         }
 
-        public static void EchoClient()
+        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, byte[] sharedSecret, string deviceDescription, bool playAsAlice)
         {
-            Console.WriteLine("Starting EKE WSS connection");
-            //string hostWithProtocolAndPort = "ws://localhost:50430";
-            string hostWithProtocolAndPort = "wss://theball.protonit.net";
-            //string idParam = "accountemail=kalle.launiala@gmail.com";
-            string idParam = "groupID=4ddf4bef-0f60-41b6-925d-02721e89d637";
-            string deviceConnectionUrl = hostWithProtocolAndPort + "/websocket/NegotiateDeviceConnection?" + idParam;
-            //socket = new WebSocket("wss://theball.protonit.net/websocket/mytest.k");
-            string sharedSecret = "testsecretXYZ33";
-            var securityNegotiationManager = InitSecurityNegotiationManager(deviceConnectionUrl, sharedSecret, "test device desc", false);
-            securityNegotiationManager.PerformNegotiation();
-#if native45
-
-    //WebSocket socket = new ClientWebSocket();
-    //WebSocket.CreateClientWebSocket()
-            ClientWebSocket socket = new ClientWebSocket();
-            Uri uri = new Uri("ws://localhost:50430/websocket/mytest.k");
-            var cts = new CancellationTokenSource();
-            await socket.ConnectAsync(uri, cts.Token);
-
-            Console.WriteLine(socket.State);
-
-            Task.Factory.StartNew(
-                async () =>
-                {
-                    var rcvBytes = new byte[128];
-                    var rcvBuffer = new ArraySegment<byte>(rcvBytes);
-                    while (true)
-                    {
-                        WebSocketReceiveResult rcvResult = await socket.ReceiveAsync(rcvBuffer, cts.Token);
-                        byte[] msgBytes = rcvBuffer.Skip(rcvBuffer.Offset).Take(rcvResult.Count).ToArray();
-                        string rcvMsg = Encoding.UTF8.GetString(msgBytes);
-                        Console.WriteLine("Received: {0}", rcvMsg);
-                    }
-                }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-
-            while (true)
-            {
-                var message = Console.ReadLine();
-                if (message == "Bye")
-                {
-                    cts.Cancel();
-                    return;
-                }
-                byte[] sendBytes = Encoding.UTF8.GetBytes(message);
-                var sendBuffer = new ArraySegment<byte>(sendBytes);
-                await
-                    socket.SendAsync(sendBuffer, WebSocketMessageType.Text, endOfMessage: true,
-                                     cancellationToken: cts.Token);
-            }
-
-#endif
-        }
-
-        private static SecurityNegotiationManager InitSecurityNegotiationManager(string deviceConnectionUrl, string sharedSecret, string deviceDescription, bool playAsAlice)
-        {
-            Console.WriteLine("InitSecurityNegotiationManager");
             SecurityNegotiationManager securityNegotiationManager = new SecurityNegotiationManager();
-            Console.WriteLine("InitSecurityNegotiationManager2");
             securityNegotiationManager.Socket = new WebSocket(deviceConnectionUrl);
             //securityNegotiationManager.Socket.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-            Console.WriteLine("InitSecurityNegotiationManager3");
             securityNegotiationManager.Socket.OnOpen += securityNegotiationManager.socket_OnOpen;
             securityNegotiationManager.Socket.OnClose += securityNegotiationManager.socket_OnClose;
             securityNegotiationManager.Socket.OnError += securityNegotiationManager.socket_OnError;
@@ -190,8 +131,10 @@ namespace TheBall.Support.DeviceClient
 
         private void PingAlice()
         {
-            Socket.Send(new byte[0]);
+            Socket.Send(SharedSecretPayload);
         }
+
+        protected byte[] SharedSecretPayload { get; set; }
 
         void ProceedProtocol()
         {
@@ -202,7 +145,7 @@ namespace TheBall.Support.DeviceClient
             if (ProtocolMember.IsDoneWithProtocol)
             {
                 Socket.Send(DeviceDescription); 
-                Debug.WriteLine((PlayAsAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
+                Console.WriteLine((PlayAsAlice ? "Alice" : "Bob") + " done with EKE in " + watch.ElapsedMilliseconds.ToString() + " ms!");
             }
         }
 

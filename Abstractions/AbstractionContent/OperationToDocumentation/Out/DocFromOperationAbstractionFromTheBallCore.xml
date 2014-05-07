@@ -409,7 +409,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID, SharedSecret)" level="1">
+          <Header text="CreateAuthenticatedAsActiveDevice (Owner, AuthenticationDeviceDescription, TargetBallHostName, TargetGroupID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -472,17 +472,6 @@
                         <TextContent>Target group ID to which the device membership is established</TextContent>
                       </ColumnData>
                     </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>SharedSecret</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Shared secret with the back-end to establish connection</TextContent>
-                      </ColumnData>
-                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
@@ -501,7 +490,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, ConnectionURL, Owner, AuthenticationDeviceDescription, SharedSecret )" level="2">
+            <Header text="Target Definition: AuthenticatedAsActiveDevice ( NegotiationURL, ConnectionURL, Owner, AuthenticationDeviceDescription )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Created device membership client</TextContent>
@@ -2675,7 +2664,35 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice )" level="2">
+            <Header text="Target Definition: RemoteBallSecretRequestUrl ( AuthenticatedAsActiveDevice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remote Ball secret request url</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SharedSecretFullPayload ( RemoteBallSecretRequestUrl )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Obtain shared secret payload through SSL call from remote</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SharedSecretData ( SharedSecretFullPayload )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Extracted shared secret data from full payload</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SharedSecretPayload ( SharedSecretFullPayload )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Extracted shared secret payload from full payload</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: NegotiateWithTarget ( AuthenticatedAsActiveDevice, SharedSecretData, SharedSecretPayload )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Negotiate with target party. Set validation flag as true if succesfully negotiated.</TextContent>

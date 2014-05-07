@@ -95,12 +95,10 @@ namespace TheBall
             {
                 using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 {
-                    using (BinaryReader srDecrypt = new BinaryReader(csDecrypt))
+                    using (MemoryStream memoryStream = new MemoryStream())
                     {
-
-                        // Read the decrypted bytes from the decrypting stream 
-                        // and place them in a string.
-                        plainText = srDecrypt.ReadBytes(int.MaxValue);
+                        csDecrypt.CopyTo(memoryStream);
+                        plainText = memoryStream.ToArray();
                     }
                 }
             }

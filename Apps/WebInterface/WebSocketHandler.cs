@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 //using System.Net.WebSockets;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,7 +52,8 @@ namespace WebInterface
             if (context.IsWebSocketRequest)
                 context.AcceptWebSocketRequest(HandleWebSocket);
             else
-                context.Response.StatusCode = 400;
+                HandleNonWebsocketRequest(context);
+
 
             /*
             WebSupport.InitializeContextStorage(context.Request);
@@ -64,6 +67,31 @@ namespace WebInterface
             {
                 InformationContext.ProcessAndClearCurrent();
             }*/
+        }
+
+        private void HandleNonWebsocketRequest(HttpContext context)
+        {
+            var request = context.Request;
+            var response = context.Response;
+            if (request.Path == "/websocket/RequestSharedSecret" && request.HttpMethod == "POST")
+            {
+                DateTime validUntil = DateTime.UtcNow.AddSeconds(30);
+                var rndGen = RandomNumberGenerator.Create();
+                var sharedSecret = new byte[32];
+                var nonse = new byte[32];
+                var ticksValue = validUntil.Ticks;
+                var ticksBytes = BitConverter.GetBytes(ticksValue);
+                rndGen.GetBytes(sharedSecret);
+                rndGen.GetNonZeroBytes(nonse);
+                var combinedToEncrypt = nonse.Concat(sharedSecret).Concat(ticksBytes).ToArray();
+                var plaintext = sharedSecret;
+                var encrypted = EncryptionSupport.EncryptData(combinedToEncrypt);
+                response.BinaryWrite(plaintext);
+                response.BinaryWrite(encrypted);
+                response.StatusCode = 200;
+            }
+            else
+                context.Response.StatusCode = 400;
         }
 
         private async Task HandleWebSocket(WebSocketContext wsContext)
@@ -176,7 +204,14 @@ namespace WebInterface
                     {
                         // Yes, the shared secret is fixed due to demo. We're fixing it to be separately requested or given by user... :-)
                         TheBallEKE protocolInstance = new TheBallEKE();
-                        protocolInstance.InitiateCurrentSymmetricFromSecret("testsecretXYZ33");
+                        var decryptedSharedSecretPayload = EncryptionSupport.DecryptData(binaryMessage);
+                        var nonse = decryptedSharedSecretPayload.Take(32).ToArray();
+                        var secret = decryptedSharedSecretPayload.Skip(32).Take(32).ToArray();
+                        long ticks = BitConverter.ToInt64(decryptedSharedSecretPayload, 64);
+                        DateTime validUntilUtc = new DateTime(ticks, DateTimeKind.Utc);
+                        if(DateTime.UtcNow > validUntilUtc)
+                            throw new SecurityException("Shared secret payload is expired");
+                        protocolInstance.InitiateCurrentSymmetricFromSecret(secret);
                         if(playBob)
                             protocolParty = new TheBallEKE.EKEBob(protocolInstance, true);
                         else

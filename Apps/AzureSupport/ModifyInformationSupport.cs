@@ -367,7 +367,7 @@ namespace TheBall
                             {
                                 Owner = containerOwner,
                                 AuthenticationDeviceDescription = form["AuthenticationDeviceDescription"],
-                                SharedSecret = form["SharedSecret"],
+                                // SharedSecret = form["SharedSecret"],
                                 TargetBallHostName = form["TargetBallHostName"],
                                 TargetGroupID = form["TargetGroupID"]
                             };

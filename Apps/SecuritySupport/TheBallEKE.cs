@@ -603,11 +603,16 @@ namespace SecuritySupport
             #endregion
         }
 
+        public void InitiateCurrentSymmetricFromSecret(string sharedSecretText)
+        {
+            var sharedSecretData = Encoding.UTF8.GetBytes(sharedSecretText);
+            InitiateCurrentSymmetricFromSecret(sharedSecretData);
+        }
 
-        public void InitiateCurrentSymmetricFromSecret(string textvalue)
+        public void InitiateCurrentSymmetricFromSecret(byte[] sharedSecret)
         {
             SharedSecretEnc = new SymmetricSupport();
-            SharedSecretEnc.InitializeFromSharedSecret(textvalue);
+            SharedSecretEnc.InitializeFromSharedSecret(sharedSecret);
         }
 
 

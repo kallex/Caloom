@@ -25,7 +25,6 @@ namespace TheBall.Interface
                 TargetBallHostName = targetBallHostName,
                 TargetGroupID = targetGroupId,
                 Owner = Owner,
-                SharedSecret = "testsecretXYZ33"
             };
             var operResult = CreateAuthenticatedAsActiveDevice.Execute(parameters);
             connection.DeviceID = operResult.CreatedAuthenticatedAsActiveDevice.ID;

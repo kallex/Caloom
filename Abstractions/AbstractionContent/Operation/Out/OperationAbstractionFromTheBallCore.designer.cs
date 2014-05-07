@@ -260,7 +260,6 @@ using System.IO;
 				public string AuthenticationDeviceDescription ;
 				public string TargetBallHostName ;
 				public string TargetGroupID ;
-				public string SharedSecret ;
 				}
 		
 		public class CreateAuthenticatedAsActiveDevice 
@@ -273,7 +272,7 @@ using System.IO;
 						PrepareParameters(parameters);
 					string NegotiationURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_NegotiationURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
 				string ConnectionURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_ConnectionURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
-				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, parameters.SharedSecret, NegotiationURL, ConnectionURL);	
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, NegotiationURL, ConnectionURL);	
 				CreateAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
 				CreateAuthenticatedAsActiveDeviceReturnValue returnValue = CreateAuthenticatedAsActiveDeviceImplementation.Get_ReturnValue(AuthenticatedAsActiveDevice);
 		return returnValue;
@@ -298,7 +297,11 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
-				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_NegotiateWithTarget(AuthenticatedAsActiveDevice);		
+				string RemoteBallSecretRequestUrl = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_RemoteBallSecretRequestUrl(AuthenticatedAsActiveDevice);	
+				byte[] SharedSecretFullPayload = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretFullPayload(RemoteBallSecretRequestUrl);	
+				byte[] SharedSecretData = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretData(SharedSecretFullPayload);	
+				byte[] SharedSecretPayload = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretPayload(SharedSecretFullPayload);	
+				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_NegotiateWithTarget(AuthenticatedAsActiveDevice, SharedSecretData, SharedSecretPayload);		
 				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
 				}
 				}

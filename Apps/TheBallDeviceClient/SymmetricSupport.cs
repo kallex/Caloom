@@ -125,11 +125,16 @@ namespace TheBall.Support.DeviceClient
 
         public void InitializeFromSharedSecret(string textvalue)
         {
+            byte[] sharedData = Encoding.UTF8.GetBytes(textvalue);
+            InitializeFromSharedSecret(sharedData);
+        }
+
+        public void InitializeFromSharedSecret(byte[] sharedData)
+        {
             SHA256 sha256 = new SHA256Managed();
-            byte[] dataToHash = Encoding.UTF8.GetBytes(textvalue);
             //byte[] key = dataToHash.Take(16).ToArray();
             //byte[] iv = dataToHash.Skip(16).ToArray();
-            byte[] hash = sha256.ComputeHash(dataToHash);
+            byte[] hash = sha256.ComputeHash(sharedData);
             InitializeFromKeyAndIV(hash);
         }
 

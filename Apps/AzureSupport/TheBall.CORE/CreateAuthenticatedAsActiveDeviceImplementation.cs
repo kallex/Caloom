@@ -16,12 +16,12 @@ namespace TheBall.CORE
                                  targetGroupId, protocol);
         }
 
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticationDeviceDescription, string sharedSecret, string negotiationUrl, string connectionUrl)
+        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticationDeviceDescription, string negotiationUrl, string connectionUrl)
         {
             AuthenticatedAsActiveDevice activeDevice = new AuthenticatedAsActiveDevice();
             activeDevice.SetLocationAsOwnerContent(owner, activeDevice.ID);
             activeDevice.AuthenticationDescription = authenticationDeviceDescription;
-            activeDevice.SharedSecret = sharedSecret;
+            //activeDevice.SharedSecret = sharedSecret;
             activeDevice.NegotiationURL = negotiationUrl;
             activeDevice.ConnectionURL = connectionUrl;
             return activeDevice;

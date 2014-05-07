@@ -232,9 +232,6 @@
     <StatusItem name="CreateAuthenticatedAsActiveDevice_TargetGroupID" displayName="VariableType: TargetGroupID" description="Target group ID to which the device membership is established">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateAuthenticatedAsActiveDevice_SharedSecret" displayName="VariableType: SharedSecret" description="Shared secret with the back-end to establish connection">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
     <StatusItem name="CreateAuthenticatedAsActiveDevice_NegotiationURL" displayName="TargetDefinitionType: NegotiationURL" description="Trust negotiation URL">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -257,6 +254,18 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_AuthenticatedAsActiveDevice" displayName="TargetDefinitionType: AuthenticatedAsActiveDevice" description="Created device membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_RemoteBallSecretRequestUrl" displayName="TargetDefinitionType: RemoteBallSecretRequestUrl" description="Remote Ball secret request url">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretFullPayload" displayName="TargetDefinitionType: SharedSecretFullPayload" description="Obtain shared secret payload through SSL call from remote">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretData" displayName="TargetDefinitionType: SharedSecretData" description="Extracted shared secret data from full payload">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretPayload" displayName="TargetDefinitionType: SharedSecretPayload" description="Extracted shared secret payload from full payload">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="PerformNegotiationAndValidateAuthenticationAsActiveDevice_NegotiateWithTarget" displayName="MethodExecuteType: NegotiateWithTarget" description="Negotiate with target party. Set validation flag as true if succesfully negotiated.">
@@ -1088,7 +1097,6 @@
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_AuthenticationDeviceDescription" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_TargetBallHostName" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_TargetGroupID" />
-      <ItemRef itemName="CreateAuthenticatedAsActiveDevice_SharedSecret" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_NegotiationURL" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_ConnectionURL" />
       <ItemRef itemName="CreateAuthenticatedAsActiveDevice_AuthenticatedAsActiveDevice" />
@@ -1099,6 +1107,10 @@
       <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_Owner" />
       <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_AuthenticatedAsActiveDeviceID" />
       <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_AuthenticatedAsActiveDevice" />
+      <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_RemoteBallSecretRequestUrl" />
+      <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretFullPayload" />
+      <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretData" />
+      <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_SharedSecretPayload" />
       <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_NegotiateWithTarget" />
       <ItemRef itemName="PerformNegotiationAndValidateAuthenticationAsActiveDevice_StoreObject" />
     </Group>

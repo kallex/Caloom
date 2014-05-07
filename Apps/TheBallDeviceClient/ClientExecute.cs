@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace TheBall.Support.DeviceClient
@@ -183,11 +185,13 @@ namespace TheBall.Support.DeviceClient
 
         public static void CreateConnection(string hostName, string groupID, string connectionName)
         {
-            string sharedSecret = "testsecretXYZ33";
+            byte[] sharedSecretFullPayload = GetSharedSecretPayload(hostName);
+            var sharedSecret = sharedSecretFullPayload.Take(32).ToArray();
+            var sharedSecretPayload = sharedSecretFullPayload.Skip(32).ToArray();
             string protocol = hostName.StartsWith("localdev") ? "ws" : "wss";
             string connectionProtocol = hostName.StartsWith("localdev") ? "http" : "https";
             var result = SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + hostName + "/websocket/NegotiateDeviceConnection?groupID=" + groupID,
-                                                                             sharedSecret, "Connection from Tool with name: " + connectionName);
+                                                                             sharedSecret, "Connection from Tool with name: " + connectionName, sharedSecretPayload);
             string connectionUrl = String.Format("{2}://{0}/auth/grp/{1}/DEV", hostName, groupID, connectionProtocol);
             var connection = new Connection
                 {
@@ -202,6 +206,24 @@ namespace TheBall.Support.DeviceClient
                         }
                 };
             UserSettings.CurrentSettings.Connections.Add(connection);
+        }
+
+        public static byte[] GetSharedSecretPayload(string hostName)
+        {
+            string connectionProtocol = hostName.StartsWith("localdev") ? "http" : "https";
+            string sharedSecretRequestUrl = string.Format("{0}://{1}/websocket/RequestSharedSecret", connectionProtocol, hostName);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(sharedSecretRequestUrl);
+            request.Method = "POST";
+            request.ContentLength = 0;
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+            if(response.StatusCode != HttpStatusCode.OK)
+                throw new WebException("Invalid response from remote secret request");
+            using (MemoryStream memStream = new MemoryStream())
+            {
+                var responseStream = response.GetResponseStream();
+                responseStream.CopyTo(memStream);
+                return memStream.ToArray();
+            }
         }
 
         public static void SyncFolder(string connectionName, string syncItemName)

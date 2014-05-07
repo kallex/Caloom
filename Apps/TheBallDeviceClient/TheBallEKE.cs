@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
+using System.Text;
+
 //using System.Linq;
 
 #if ASYNC
@@ -616,10 +618,17 @@ namespace TheBall.Support.DeviceClient
 #endif
         }
 
-        public void InitiateCurrentSymmetricFromSecret(string textvalue)
+        public void InitiateCurrentSymmetricFromSecret(string sharedSecret)
+        {
+            var sharedData = Encoding.UTF8.GetBytes(sharedSecret);
+            InitiateCurrentSymmetricFromSecret(sharedData);
+        }
+
+
+        public void InitiateCurrentSymmetricFromSecret(byte[] sharedSecret)
         {
             SharedSecretEnc = new SymmetricSupport();
-            SharedSecretEnc.InitializeFromSharedSecret(textvalue);
+            SharedSecretEnc.InitializeFromSharedSecret(sharedSecret);
         }
 
 
