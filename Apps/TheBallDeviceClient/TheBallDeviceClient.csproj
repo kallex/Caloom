@@ -7,7 +7,7 @@
     <ProjectGuid>{19F4DEB2-249D-450E-B5C7-BB2D977CF00A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheBallDeviceClient</RootNamespace>
+    <RootNamespace>TheBall.Support.DeviceClient</RootNamespace>
     <AssemblyName>TheBallDeviceClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -31,15 +31,42 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JsonFx">
+      <HintPath>..\..\packages\JsonFx.2.0.1209.2802\lib\net35\JsonFx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp">
+      <HintPath>..\..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection.cs" />
+    <Compile Include="ClientExecute.cs" />
+    <Compile Include="ContentItemLocationWithMD5.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="DeviceOperationData.cs" />
+    <Compile Include="DeviceSupport.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FileSystemSupport.cs" />
+    <Compile Include="FolderSyncItem.cs" />
+    <Compile Include="INegotiationProtocolMember.cs" />
+    <Compile Include="ItemData.cs" />
+    <Compile Include="JSONSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtectionSupport.cs" />
+    <Compile Include="SecurityNegotiationManager.cs" />
+    <Compile Include="SecurityNegotiationResult.cs" />
+    <Compile Include="SymmetricSupport.cs" />
+    <Compile Include="SyncSupport.cs" />
+    <Compile Include="TheBallEKE.cs" />
+    <Compile Include="TypeSupport.cs" />
+    <Compile Include="UserSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

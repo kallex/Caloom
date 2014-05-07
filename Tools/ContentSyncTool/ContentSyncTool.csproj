@@ -7,7 +7,7 @@
     <ProjectGuid>{F108F4F5-4A21-41B5-AD32-471B0565B160}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ContentSyncTool</RootNamespace>
+    <RootNamespace>TheBall.Support.ContentSyncTool</RootNamespace>
     <AssemblyName>ContentSyncTool</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,23 +37,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net35\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="JsonFx">
-      <HintPath>..\..\packages\JsonFx.2.0.1209.2802\lib\net35\JsonFx.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="websocket-sharp, Version=1.0.2.42943, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore_interface.designer.cs">
@@ -63,24 +49,19 @@
       <Link>TheBall.Interface\TheBallInterface_interface.designer.cs</Link>
     </Compile>
     <Compile Include="CommandImplementation.cs" />
-    <Compile Include="DeviceSupport.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FileSystemSupport.cs" />
-    <Compile Include="INegotiationProtocolMember.cs" />
-    <Compile Include="JSONSupport.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtectionSupport.cs" />
-    <Compile Include="SecurityNegotiationManager.cs" />
-    <Compile Include="SymmetricSupport.cs" />
-    <Compile Include="SyncSupport.cs" />
-    <Compile Include="TheBallEKE.cs" />
-    <Compile Include="UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Apps\TheBallDeviceClient\TheBallDeviceClient.csproj">
+      <Project>{19F4DEB2-249D-450E-B5C7-BB2D977CF00A}</Project>
+      <Name>TheBallDeviceClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

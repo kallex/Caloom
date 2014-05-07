@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
-namespace ContentSyncTool
+namespace TheBall.Support.DeviceClient
 {
     public static class FileSystemSupport
     {

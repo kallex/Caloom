@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+
 #if ASYNC
 using System.Threading.Tasks;
 #endif
 
-namespace SecuritySupport
+namespace TheBall.Support.DeviceClient
 {
     public interface INegotiationProtocolMember
     {

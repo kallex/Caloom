@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace SecuritySupport
+namespace TheBall.Support.DeviceClient
 {
     public static class ProtectionSupport
     {

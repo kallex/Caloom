@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+
 //using System.Linq;
 
-namespace ContentSyncTool
+namespace TheBall.Support.DeviceClient
 {
     public class SymmetricSupport
     {

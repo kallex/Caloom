@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
 using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
-using System.Text;
-using ContentSyncTool;
+//using System.Linq;
 
 #if ASYNC
 using System.Threading.Tasks;
 #endif
 
-namespace SecuritySupport
+namespace TheBall.Support.DeviceClient
 {
     /// <summary>
     /// Practical EKE (Encrypted Key Exchange), uses variation of DH-EKE (or this comment is outdated).
@@ -53,7 +51,6 @@ namespace SecuritySupport
                 bob.PerformNextAction();
                 ekeInProgress = alice.IsDoneWithProtocol == false || bob.IsDoneWithProtocol == false;
             }
-            bool ekeSuccess = true;
         }
 
         public delegate void NegotiationAction();
@@ -360,7 +357,6 @@ namespace SecuritySupport
 
             public EKEBob(TheBallEKE ekeContext, bool isAsync = false)
             {
-                EKEAlice al;
                 EKEContext = ekeContext;
                 BobsActions = new NegotiationAction[]
                     {

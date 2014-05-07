@@ -2,33 +2,9 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
-using AzureSupport;
 
-namespace ContentSyncTool
+namespace TheBall.Support.DeviceClient
 {
-    public partial class DeviceOperationData
-    {
-        public string OperationRequestString { get; set; }
-        public string[] OperationParameters { get; set; }
-        public string[] OperationReturnValues { get; set; }
-        public bool OperationResult { get; set; }
-        public ContentItemLocationWithMD5[] OperationSpecificContentData { get; set; }
-    }
-
-    public partial class ContentItemLocationWithMD5
-    {
-        public string ContentLocation { get; set; }
-        public string ContentMD5 { get; set; }
-        public ItemData[] ItemDatas { get; set; }
-    }
-
-    public partial class ItemData
-    {
-        public string DataName { get; set; }
-        public string ItemTextData { get; set; }
-    }
-
-
     public static class DeviceSupport
     {
         public static DeviceOperationData ExecuteDeviceOperation(this Device device, DeviceOperationData operationParameters)

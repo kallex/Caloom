@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-//using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
-#if ASYNC
-using System.Threading.Tasks;
-#endif
 using WebSocketSharp;
 using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
-namespace SecuritySupport
-{
-    public class SecurityNegotiationResult
-    {
-        public byte[] AESKey;
-        public string EstablishedTrustID;
-    }
+//using System.Net.WebSockets;
+#if ASYNC
+using System.Threading.Tasks;
+#endif
 
+namespace TheBall.Support.DeviceClient
+{
     public class SecurityNegotiationManager
     {
         //public static async Task EchoClient()
@@ -159,6 +152,10 @@ namespace SecuritySupport
             return securityNegotiationManager;
         }
 
+        private void socket_OnError(object sender, ErrorEventArgs e)
+        {
+        }
+
         void socket_OnMessage(object sender, MessageEventArgs e)
         {
             Debug.WriteLine("Received message: " + (e.RawData != null? e.RawData.Length.ToString() : e.Data));
@@ -175,11 +172,6 @@ namespace SecuritySupport
                 watch.Stop();
                 WaitingSemaphore.Release();
             }
-        }
-
-        void socket_OnError(object sender, ErrorEventArgs e)
-        {
-            Debug.WriteLine("ERROR: " + e.Message);
         }
 
         void socket_OnClose(object sender, CloseEventArgs e)

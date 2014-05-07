@@ -1,21 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using JsonFx.Json;
 
-namespace AzureSupport
+namespace TheBall.Support.DeviceClient
 {
-    public static class TypeSupport
-    {
-        public static Type GetTypeByName(string fullName)
-        {
-            // TODO: Reflect proper loading based on fulltype, right now fetching from this
-            Assembly currAsm = Assembly.GetExecutingAssembly();
-            Type type = currAsm.GetType(fullName);
-            return type;
-        }
-    }
-
     public static class JSONSupport
     {
         public static void SerializeToJSONStream(object obj, Stream outputStream)

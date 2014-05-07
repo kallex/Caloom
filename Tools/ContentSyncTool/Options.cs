@@ -78,22 +78,7 @@ namespace ContentSyncTool
 
         public override void ExecuteCommand(string verb)
         {
-            Validate();
             CommandImplementation.addSyncFolder(this);
-        }
-
-        public void Validate()
-        {
-            if(RemoteFolder == "/")
-                throw new ArgumentException("Root remote folder (/) not supported");
-            if (RemoteFolder.EndsWith("/") == false)
-                RemoteFolder += "/";
-            if(SyncDirection != "UP" && SyncDirection != "DOWN")
-                throw new ArgumentException("syncDirection must be either UP or DOWN");
-            if(SyncType != "DEV" && SyncType != "wwwsite")
-                throw new ArgumentException("syncType must be either DEV or wwwsite");
-            if(SyncType == "wwwsite" && RemoteFolder != "wwwsite")
-                throw new ArgumentException("remoteFolder must also be wwwsite when syncType is wwwsite");
         }
     }
 

@@ -2,23 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using SecuritySupport;
 
-namespace ContentSyncTool
+namespace TheBall.Support.DeviceClient
 {
     public class UserSettings
     {
-        [Serializable]
-        public class Connection
-        {
-            public string Name;
-            public string HostName;
-            public string GroupID;
-            public string EstablishedTrustID;
-            public Device Device = new Device();
-            public List<FolderSyncItem> FolderSyncItems = new List<FolderSyncItem>();
-        }
-
         public List<Connection> Connections = new List<Connection>();
 
         public static UserSettings CurrentSettings { get; private set; }
@@ -72,23 +60,5 @@ namespace ContentSyncTool
             File.WriteAllBytes(CurrSettingsFilePath, currentData);
         }
 
-    }
-
-    [Serializable]
-    public class FolderSyncItem
-    {
-        public string LocalFullPath;
-        public string RemoteFolder;
-        public string SyncItemName;
-        public string SyncDirection;
-        public string SyncType;
-    }
-
-    [Serializable]
-    public class Device
-    {
-        public string ConnectionURL;
-        public byte[] AESKey;
-        public string EstablishedTrustID;
     }
 }

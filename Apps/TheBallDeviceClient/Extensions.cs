@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 
-namespace ContentSyncTool
+namespace TheBall.Support.DeviceClient
 {
     public static class Extensions
     {
@@ -14,6 +16,5 @@ namespace ContentSyncTool
                 output.Write(buffer, 0, bytesRead);
             }
         }
-
     }
 }
