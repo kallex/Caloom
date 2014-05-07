@@ -92,7 +92,8 @@ namespace TheBall.CORE
 
         private static void performSyncQueryForCopyContent(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
         {
-            string targetNamedFolder = deviceOperationData.OperationParameters[0];
+            string targetNamedFolder = deviceOperationData.OperationParameters != null && deviceOperationData.OperationParameters.Length > 0 ?
+                deviceOperationData.OperationParameters[0] : SyncSupport.RelativeRootFolderValue;
             List<ContentItemLocationWithMD5> itemsToCopy = new List<ContentItemLocationWithMD5>();
             List<ContentItemLocationWithMD5> itemsDeleted = new List<ContentItemLocationWithMD5>();
             SyncSupport.CopySourceToTargetMethod copySourceToTarget = (location, blobLocation) => itemsToCopy.Add(new ContentItemLocationWithMD5
