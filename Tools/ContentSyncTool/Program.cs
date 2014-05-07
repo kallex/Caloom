@@ -34,7 +34,13 @@ namespace ContentSyncTool
                 ICommandExecution executionSupport = verbSubOptions as ICommandExecution;
                 if (executionSupport != null)
                 {
-                    executionSupport.ExecuteCommand(verb);
+                    ClientExecute.ExecuteWithSettings(executionAction: () =>
+                    {
+                        executionSupport.ExecuteCommand(verb);
+                    }, exceptionHandling: (Exception ex) =>
+                    {
+                        Console.WriteLine("Error: " + ex.ToString());
+                    });
                 }
                 else // Custom verb implementation
                 {
@@ -49,10 +55,6 @@ namespace ContentSyncTool
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.ToString());
-            }
-            finally
-            {
-                UserSettings.SaveCurrentSettings();
             }
         }
 
