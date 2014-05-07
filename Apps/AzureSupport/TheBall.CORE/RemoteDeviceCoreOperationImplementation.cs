@@ -70,17 +70,25 @@ namespace TheBall.CORE
         private static void getContentMD5List(DeviceOperationData deviceOperationData)
         {
             var folders = deviceOperationData.OperationParameters;
-            bool hasInvalidFolderNames = folders.Any(folder => !isValidFolderName(folder));
+            bool hasInvalidFolderNames = folders.Any(folder => SystemSupport.ReservedDomainNames.Any(folder.StartsWith));
             if(hasInvalidFolderNames)
                 throw new InvalidDataException("Invalid parameter for remote folder name");
             var owner = InformationContext.CurrentOwner;
-            var md5List = folders.SelectMany(folder => owner.GetOwnerBlobListing(folder, true)
-                                                            .Cast<CloudBlockBlob>()
-                                                            .Select(blob => new ContentItemLocationWithMD5
-                                                                {
-                                                                    ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
-                                                                    ContentMD5 = blob.Properties.ContentMD5
-                                                                })).ToArray();
+            var md5List = folders.SelectMany(folder =>
+                {
+                    if(String.IsNullOrEmpty(folder))
+                        throw new InvalidDataException("Empty folder not supported as prefix");
+                    if (folder.EndsWith("/") == false)
+                        folder += folder + "/";
+                    var result = owner.GetOwnerBlobListing(folder, true)
+                                      .Cast<CloudBlockBlob>()
+                                      .Select(blob => new ContentItemLocationWithMD5
+                                          {
+                                              ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
+                                              ContentMD5 = blob.Properties.ContentMD5
+                                          });
+                    return result;
+                }).ToArray();
             deviceOperationData.OperationSpecificContentData = md5List;
             deviceOperationData.OperationResult = true;
         }
