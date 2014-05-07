@@ -13,7 +13,7 @@ namespace ContentSyncTool
         private static Options options = new Options();
         private static void Main(string[] args)
         {
-            //Debugger.Launch();
+            // Debugger.Launch();
             bool success = CommandLine.Parser.Default.ParseArguments(args, options, OnVerbCommand);
             if (!success)
             {
@@ -28,7 +28,7 @@ namespace ContentSyncTool
                 return;
             try
             {
-                //Debugger.Launch();
+                // Debugger.Launch();
                 UserSettings.GetCurrentSettings();
                 ICommandExecution executionSupport = verbSubOptions as ICommandExecution;
                 if (executionSupport != null)

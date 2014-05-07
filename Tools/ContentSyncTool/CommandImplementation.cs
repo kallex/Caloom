@@ -109,24 +109,19 @@ namespace ContentSyncTool
         {
             var rootFolder = upSyncItem.LocalFullPath;
             var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
-            foreach (var sourceItem in sourceList)
-            {
-                sourceItem.ContentLocation = upSyncItem.RemoteFolder + sourceItem.ContentLocation;
-            }
-            ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, sourceList);
+            string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
+            string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteFolder;
+            ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, sourceList, destinationCopyRoot);
 
             var itemsToCopy = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray();
             var itemsDeleted = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPDONE" && iData.ItemTextData == "DELETED")).ToArray();
             var device = connection.Device;
-            int stripRemoteFolderIndex = upSyncItem.RemoteFolder.Length;
-            string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
-            string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteFolder;
             SyncSupport.SynchronizeSourceListToTargetFolder(
                 itemsToCopy, new ContentItemLocationWithMD5[0],
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
-                        string fullLocalName = Path.Combine(rootFolder, source.ContentLocation.Substring(stripRemoteFolderIndex));
-                        string destinationContentName = destinationPrefix + source.ContentLocation;
+                        string fullLocalName = Path.Combine(rootFolder, source.ContentLocation);
+                        string destinationContentName = destinationCopyRoot + source.ContentLocation;
                         DeviceSupport.PushContentToDevice(device, fullLocalName, destinationContentName);
                         Console.WriteLine("Uploaded: " + source.ContentLocation);
                     },
@@ -195,12 +190,13 @@ namespace ContentSyncTool
             return dod.OperationSpecificContentData;
         }
 
-        private static ContentItemLocationWithMD5[] getConnectionToCopyMD5s(UserSettings.Connection connection, ContentItemLocationWithMD5[] localContentToSyncTargetFrom)
+        private static ContentItemLocationWithMD5[] getConnectionToCopyMD5s(UserSettings.Connection connection, ContentItemLocationWithMD5[] localContentToSyncTargetFrom, string destinationCopyRoot)
         {
             DeviceOperationData dod = new DeviceOperationData
                 {
                     OperationRequestString = "SYNCCOPYCONTENT",
-                    OperationSpecificContentData = localContentToSyncTargetFrom
+                    OperationSpecificContentData = localContentToSyncTargetFrom,
+                    OperationParameters = new string[] { destinationCopyRoot}
                 };
             dod = connection.Device.ExecuteDeviceOperation(dod);
             return dod.OperationSpecificContentData;

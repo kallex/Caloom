@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
@@ -16,11 +17,18 @@ namespace TheBall
             if (deleteObsoleteTarget == null)
                 deleteObsoleteTarget = DeleteObsoleteTarget;
 
+            if (String.IsNullOrEmpty(syncSourceRootFolder) || syncSourceRootFolder == "/")
+                syncSourceRootFolder = SourceIsRelativeRoot;
+            else if(syncSourceRootFolder.EndsWith("/") == false)
+            {
+                syncSourceRootFolder += "/";
+            }
+
             var blobListing = InformationContext.CurrentOwner.GetOwnerBlobListing(syncTargetRootFolder, true);
-            string fullRootPath = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncTargetRootFolder);
-            int fullRootPathLength = fullRootPath.Length;
+            string fullTargetRootPath = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncTargetRootFolder);
+            int fullTargetRootPathLength = fullTargetRootPath.Length;
             ContentItemLocationWithMD5[] targetContents = (from CloudBlockBlob blob in blobListing
-                                                           let relativeName = blob.Name.Substring(fullRootPathLength)
+                                                           let relativeName = blob.Name.Substring(fullTargetRootPathLength)
                                                            select new ContentItemLocationWithMD5
                                                            {
                                                                ContentLocation = relativeName,
@@ -29,7 +37,18 @@ namespace TheBall
             var sourceContents = sourceContentList.OrderBy(item => item.ContentLocation).ToArray();
             foreach (var sourceContent in sourceContents)
             {
-                sourceContent.ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(sourceContent.ContentLocation);
+                string originalLocation = sourceContent.ContentLocation;
+                string nonOwnerLocation = StorageSupport.RemoveOwnerPrefixIfExists(originalLocation);
+                string fixedContentLocation;
+                if (originalLocation != nonOwnerLocation && syncSourceRootFolder != SourceIsRelativeRoot)
+                {
+                    if(nonOwnerLocation.StartsWith(syncSourceRootFolder) == false)
+                        throw new InvalidDataException("Sync source must start with given root location");
+                    fixedContentLocation = nonOwnerLocation.Substring(syncSourceRootFolder.Length);
+                }
+                else
+                    fixedContentLocation = nonOwnerLocation;
+                sourceContent.ContentLocation = fixedContentLocation;
             }
             int currSourceIX = 0;
             int currTargetIX = 0;
@@ -47,31 +66,31 @@ namespace TheBall
                         currTargetIX++;
                         if (currSource.ContentMD5 == currTarget.ContentMD5)
                             continue;
-                        currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, currSource.ContentLocation);
-                        currTargetBlobLocation = fullRootPath + currTarget.ContentLocation;
+                        currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncSourceRootFolder + currSource.ContentLocation);
+                        currTargetBlobLocation = fullTargetRootPath + currTarget.ContentLocation;
                     }
                     else if (String.Compare(currSource.ContentLocation, currTarget.ContentLocation) < 0)
                     {
                         currSourceIX++;
-                        currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, currSource.ContentLocation);
-                        currTargetBlobLocation = fullRootPath + currSource.ContentLocation;
+                        currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncSourceRootFolder + currSource.ContentLocation);
+                        currTargetBlobLocation = fullTargetRootPath + currSource.ContentLocation;
                     }
                     else // source == null, target != null
                     {
                         currTargetIX++;
-                        currTargetBlobLocation = fullRootPath + currTarget.ContentLocation;
+                        currTargetBlobLocation = fullTargetRootPath + currTarget.ContentLocation;
                     }
                 }
                 else if (currSource != null)
                 {
                     currSourceIX++;
-                    currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, currSource.ContentLocation);
-                    currTargetBlobLocation = fullRootPath + currSource.ContentLocation;
+                    currSourceBlobLocation = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncSourceRootFolder + currSource.ContentLocation);
+                    currTargetBlobLocation = fullTargetRootPath + currSource.ContentLocation;
                 }
                 else if (currTarget != null)
                 {
                     currTargetIX++;
-                    currTargetBlobLocation = fullRootPath + currTarget.ContentLocation;
+                    currTargetBlobLocation = fullTargetRootPath + currTarget.ContentLocation;
                 }
 
                 // at this stage we have either both set (that's copy) or just target set (that's delete)
