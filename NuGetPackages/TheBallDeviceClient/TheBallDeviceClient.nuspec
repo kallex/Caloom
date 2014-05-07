@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TheBallDeviceClient</id>
+    <version>0.9.0-beta3</version>
+    <authors>Kalle Launiala</authors>
+    <owners>Kalle Launiala</owners>
+    <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases/tag/v0.9.0</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ball Device Client - Beta 0.9.0</description>
+    <releaseNotes>Developer preview - beta</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>TheBall Azure Device</tags>
+    <dependencies>
+      <dependency id="WebSocketSharp" version="1.0.0" />
+      <dependency id="JsonFx" version="2.0.0" />
+      <dependency id="CommandLineParser" version="1.9.71" />
+    </dependencies>
+  </metadata>
+</package>
