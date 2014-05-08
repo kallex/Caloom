@@ -215,7 +215,10 @@ namespace TheBall.Support.DeviceClient
             string sharedSecretRequestUrl = string.Format("{0}://{1}/websocket/RequestSharedSecret", connectionProtocol, hostName);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(sharedSecretRequestUrl);
             request.Method = "POST";
-            request.ContentLength = 0;
+            // Hack on writing 0 length below, because Mono on Mac didn't send server proper "Content-Length=0"
+            // when the content length was only set
+            using(BinaryWriter writer = new BinaryWriter(request.GetRequestStream()))
+                writer.Write(new byte[0]);
             HttpWebResponse response = (HttpWebResponse) request.GetResponse();
             if(response.StatusCode != HttpStatusCode.OK)
                 throw new WebException("Invalid response from remote secret request");
