@@ -21,7 +21,7 @@ namespace TheBall.Support.DeviceClient
                 throw new ArgumentException("syncDirection must be either UP or DOWN");
             if (SyncType != "DEV" && SyncType != "wwwsite")
                 throw new ArgumentException("syncType must be either DEV or wwwsite");
-            if (SyncType == "wwwsite" && RemoteFolder != "wwwsite")
+            if (SyncType == "wwwsite" && RemoteFolder != "wwwsite/")
                 throw new ArgumentException("remoteFolder must also be wwwsite when syncType is wwwsite");
         }
     }

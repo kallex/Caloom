@@ -653,7 +653,7 @@ namespace WebInterface
             }
             if (urlReferrer == null)
             {
-                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("foundation-one"))
+                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("DEV_") || contentPath.StartsWith("webview/") || contentPath.StartsWith("wwwsite/"))
                     return;
                 throw new SecurityException("Url referer required for non-default template requests, that target other than customui_ folder");
             }

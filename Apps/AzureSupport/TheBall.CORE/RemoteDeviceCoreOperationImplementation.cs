@@ -64,7 +64,7 @@ namespace TheBall.CORE
 
         static bool isValidFolderName(string folderName)
         {
-            return folderName.StartsWith("DEV_") || folderName == "wwwsite";
+            return folderName.StartsWith("DEV_") || folderName == "wwwsite/";
         }
 
         private static void getContentMD5List(DeviceOperationData deviceOperationData)
