@@ -69,10 +69,6 @@ namespace ContentSyncTool
             ClientExecute.CreateConnection(createConnectionSubOptions.HostName, createConnectionSubOptions.GroupID, createConnectionSubOptions.ConnectionName);
         }
 
-        public static void versionInfo(VersionInfoSubOptions versionInfoSubOptions)
-        {
-            Console.WriteLine(ClientExecute.GetVersionString());
-        }
     }
 
 }

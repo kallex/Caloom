@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 namespace TheBall.Support.DeviceClient
@@ -224,11 +225,6 @@ namespace TheBall.Support.DeviceClient
                 responseStream.CopyTo(memStream);
                 return memStream.ToArray();
             }
-        }
-
-        public static string GetVersionString()
-        {
-            return "v0.9.0";
         }
 
         public static void SyncFolder(string connectionName, string syncItemName)
