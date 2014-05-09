@@ -79,7 +79,7 @@ namespace TheBall.CORE
                     if(String.IsNullOrEmpty(folder))
                         throw new InvalidDataException("Empty folder not supported as prefix");
                     if (folder.EndsWith("/") == false)
-                        folder += folder + "/";
+                        folder += "/";
                     var result = owner.GetOwnerBlobListing(folder, true)
                                       .Cast<CloudBlockBlob>()
                                       .Select(blob => new ContentItemLocationWithMD5
