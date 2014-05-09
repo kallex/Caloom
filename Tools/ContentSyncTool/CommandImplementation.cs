@@ -39,6 +39,11 @@ namespace ContentSyncTool
                                 syncItem.RemoteFolder
                                 );
                         });
+                    if (connection.StageDefinition != null)
+                    {
+                        Console.WriteLine("Staging: {0} - {1}", connection.StageDefinition.LocalStagingRootFolder, 
+                            String.Join(", ", connection.StageDefinition.DataFolders.ToArray()));
+                    }
                     Console.WriteLine("- -- -- -- -- -");
                 });
         }
@@ -69,6 +74,26 @@ namespace ContentSyncTool
             ClientExecute.CreateConnection(createConnectionSubOptions.HostName, createConnectionSubOptions.GroupID, createConnectionSubOptions.ConnectionName);
         }
 
+        public static void setStaging(SetStagingSubOptions setStagingSubOptions)
+        {
+            if (setStagingSubOptions.DetachStagingFolder)
+            {
+                ClientExecute.DetachStaging(setStagingSubOptions.ConnectionName);
+            }
+            else
+            {
+                ClientExecute.SetStaging(setStagingSubOptions.ConnectionName,
+                                         setStagingSubOptions.StagingFolderFullPath,
+                                         setStagingSubOptions.DataFolders);
+            }
+        }
+
+        public static void stageOperation(StageOperationSubOptions stageOperationSubOptions)
+        {
+            ClientExecute.StageOperation(stageOperationSubOptions.ConnectionName,
+                                         stageOperationSubOptions.GetData, stageOperationSubOptions.PutDEV,
+                                         stageOperationSubOptions.PutLIVE);
+        }
     }
 
 }

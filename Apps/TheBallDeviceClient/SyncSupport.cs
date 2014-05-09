@@ -119,10 +119,11 @@ namespace TheBall.Support.DeviceClient
                 for (var offset = 0; offset <= count / MaxHandles; offset++)
                 {
                     // break up the list into 64-item chunks because of a limitiation in WaitHandle
-                    var chunk = list.Skip(offset * MaxHandles).Take(MaxHandles);
-
+                    var chunk = list.Skip(offset * MaxHandles).Take(MaxHandles).ToArray();
+                    if (chunk.Length == 0)
+                        continue;
                     // Initialize the reset events to keep track of completed threads
-                    var resetEvents = new ManualResetEvent[chunk.Count()];
+                    var resetEvents = new ManualResetEvent[chunk.Length];
 
                     // spawn a thread for each item in the chunk
                     int i = 0;

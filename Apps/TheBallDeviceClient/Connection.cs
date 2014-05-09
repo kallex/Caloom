@@ -12,5 +12,6 @@ namespace TheBall.Support.DeviceClient
         public string EstablishedTrustID;
         public Device Device = new Device();
         public List<FolderSyncItem> FolderSyncItems = new List<FolderSyncItem>();
+        public StageDefinition StageDefinition;
     }
 }

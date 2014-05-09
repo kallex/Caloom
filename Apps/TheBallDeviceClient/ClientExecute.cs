@@ -261,5 +261,80 @@ namespace TheBall.Support.DeviceClient
                 UserSettings.SaveCurrentSettings();
             }
         }
+
+        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive)
+        {
+            var connection = GetConnection(connectionName);
+            var stageDef = connection.StageDefinition;
+            if(stageDef == null)
+                throw new InvalidDataException("Staging definition not found for connection: " + connectionName);
+            string stagingRootFolder = stageDef.LocalStagingRootFolder;
+            if(String.IsNullOrEmpty(stagingRootFolder))
+                throw new InvalidDataException("Staging root folder definition is missing");
+            if (getData)
+            {
+                if(stageDef.DataFolders.Count == 0)
+                    throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
+                var folderSyncItems = stageDef.DataFolders.Select(dataFolder =>
+                    {
+                        string fullName = Path.Combine(stagingRootFolder, dataFolder);
+                        if (!Directory.Exists(fullName))
+                        {
+                            Directory.CreateDirectory(fullName);
+                        }
+                        return FolderSyncItem.CreateFromStagingRemoteDataFolder(stagingRootFolder, dataFolder);
+                    }).Where(fsi => fsi != null).ToArray();
+                foreach (var folderSyncItem in folderSyncItems)
+                {
+                    DownSync(connection, folderSyncItem);
+                }
+            }
+            List<FolderSyncItem> upsyncItems = new List<FolderSyncItem>();
+            if (putDev)
+            {
+                addUpsyncItems(stagingRootFolder, upsyncItems, "DEV_*");
+            }
+            if (putLive)
+            {
+                addUpsyncItems(stagingRootFolder, upsyncItems, "LIVE_*");   
+            }
+            foreach (var upSyncItem in upsyncItems)
+            {
+                UpSync(connection, upSyncItem);
+            }
+        }
+
+        private static void addUpsyncItems(string stagingRootFolder, List<FolderSyncItem> upsyncItems, string folderSearchPattern)
+        {
+            DirectoryInfo rootDirectory = new DirectoryInfo(stagingRootFolder);
+            var subDirectories = rootDirectory.GetDirectories(folderSearchPattern);
+            foreach (var subDir in subDirectories)
+            {
+                var fsi = FolderSyncItem.CreateFromStagingFolderDirectory(stagingRootFolder, subDir.Name);
+                if (fsi != null)
+                    upsyncItems.Add(fsi);
+            }
+        }
+
+        public static void SetStaging(string connectionName, string stagingFolderFullPath, string dataFolders)
+        {
+            var connection = GetConnection(connectionName);
+            var stageDef = connection.StageDefinition;
+            if (stageDef == null)
+            {
+                stageDef = new StageDefinition();
+                connection.StageDefinition = stageDef;
+            }
+            if(stagingFolderFullPath != null)
+                stageDef.LocalStagingRootFolder = stagingFolderFullPath;
+            if (dataFolders != null)
+                stageDef.DataFolders = dataFolders.Split(',').ToList();
+        }
+
+        public static void DetachStaging(string connectionName)
+        {
+            var connection = GetConnection(connectionName);
+            connection.StageDefinition = null;
+        }
     }
 }

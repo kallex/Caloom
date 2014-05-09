@@ -22,6 +22,8 @@ namespace ContentSyncTool
             SyncVerb = new SyncFolderSubOptions();
             AddSyncFolder = new AddSyncFolderSubOptions();
             RemoveSyncFolder = new RemoveSyncFolderSubOptions();
+            SetStaging = new SetStagingSubOptions();
+            StageOperation = new StageOperationSubOptions();
         }
 
         [VerbOption("createConnection", HelpText = "Create connection")]
@@ -45,6 +47,46 @@ namespace ContentSyncTool
         [VerbOption("removeSyncFolder", HelpText = "Remove sync folder")]
         public RemoveSyncFolderSubOptions RemoveSyncFolder { get; set; }
 
+        [VerbOption("setStaging", HelpText = "Define connection staging area and parameters")]
+        public SetStagingSubOptions SetStaging { get; set; }
+
+        [VerbOption("stgop", HelpText = "Perform staging operation")]
+        public StageOperationSubOptions StageOperation { get; set; }
+
+    }
+
+    internal class StageOperationSubOptions : NamedConnectionSubOptions
+    {
+        [Option("getdata", HelpText = "Download data based on set filters", Required = false)]
+        public bool GetData { get; set; }
+
+        [Option("putdev", HelpText = "Upload DEV_ folder(s) ", Required = false)]
+        public bool PutDEV { get; set; }
+
+        [Option("putLIVE", HelpText = "Upload LIVE_ folder(s) ", Required = false)]
+        public bool PutLIVE { get; set; }
+
+        public override void ExecuteCommand(string verb)
+        {
+            CommandImplementation.stageOperation(this);
+        }
+    }
+
+    internal class SetStagingSubOptions : NamedConnectionSubOptions
+    {
+        [Option('a', "attachStagingFolder", HelpText = "Local full path to folder", Required = false)]
+        public string StagingFolderFullPath { get; set; }
+
+        [Option('d', "dataFolders", HelpText = "Comma separated list of data folders to sync in", Required = false)]
+        public string DataFolders { get; set; }
+
+        [Option("detachStagingFolder", HelpText = "Detach staging folder (clear its configuration from connection)", Required = false)]
+        public bool DetachStagingFolder { get; set; }
+
+        public override void ExecuteCommand(string verb)
+        {
+            CommandImplementation.setStaging(this);
+        }
     }
 
     class SyncFolderSubOptions : ConnectionSyncFolderSubOptions
