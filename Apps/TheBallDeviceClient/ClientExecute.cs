@@ -41,6 +41,8 @@ namespace TheBall.Support.DeviceClient
             var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
             string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
             string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteFolder;
+            if (destinationCopyRoot.EndsWith("/") == false)
+                destinationCopyRoot += "/";
             ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, sourceList, destinationCopyRoot);
 
             var itemsToCopy = remoteContentBasedActionList.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray();
