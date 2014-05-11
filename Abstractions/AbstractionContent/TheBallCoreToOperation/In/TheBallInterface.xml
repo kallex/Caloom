@@ -123,6 +123,37 @@
           <InformationItem name="ExecutionStatus" logicalDataType="Text_Short"/>          
         </InformationItems>
       </InformationObject>
+      <InformationObject name="GenericObjectCollection" designDesc="Collection for generic collectionable wrappers">
+        <CollectionFor collectionType="Master" contentInformationObjectName="GenericCollectionableObject"/>
+      </InformationObject>
+      <InformationObject name="GenericCollectionableObject" designDesc="Generic object that is put to mastercollection for Generic Objects" provideCreateMethod="false"
+                         serializationType="JSON">
+        <InformationItems>
+          <InformationItem name="ValueObject" logicalDataType="InformationObject" informationObjectName="GenericObject"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="GenericObject" designDesc="Generic object" provideCreateMethod="false" serializationType="JSON">
+        <InformationItems>
+          <InformationItem name="Values" logicalDataType="InformationObject" informationObjectName="GenericValue" isCollection="true"/>
+          <InformationItem name="IncludeInCollection" logicalDataType="TrueOrFalse_Boolean"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="GenericValue" designDesc="Generic value item" provideCreateMethod="false" serializationType="JSON">
+        <InformationItems>
+          <InformationItem name="ValueName" logicalDataType="Text_Short" />
+          <InformationItem name="String" logicalDataType="Text_Short" />
+          <InformationItem name="StringArray" logicalDataType="Text_Short" isCollection="true" />
+          <InformationItem name="Number" logicalDataType="Number_ApproxDecimal"/>
+          <InformationItem name="NumberArray" logicalDataType="Number_ApproxDecimal" isCollection="true" />
+          <InformationItem name="Boolean" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="BooleanArray" logicalDataType="TrueOrFalse_Boolean" isCollection="true" />
+          <InformationItem name="DateTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="DateTimeArray" logicalDataType="Time_DateTime" isCollection="true" />
+          <InformationItem name="Object" logicalDataType="InformationObject" informationObjectName="GenericObject"/>
+          <InformationItem name="ObjectArray" logicalDataType="InformationObject" informationObjectName="GenericObject" isCollection="true" />
+          <InformationItem name="IndexingInfo" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
     </InformationModel>
     <Operations>
       <Operation name="ExecuteRemoteCalledConnectionOperation">
