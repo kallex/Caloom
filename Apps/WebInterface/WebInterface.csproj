@@ -151,12 +151,6 @@
     <Content Include="InstanceSettings.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="InstanceSettings_CaloomSchools.config" />
-    <Content Include="InstanceSettings_CaloomBusiness.config" />
-    <Content Include="InstanceSettings_CaloomDemo.config" />
-    <Content Include="InstanceSettings_CaloomTest.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="InstanceSettings_OIPTest.config">
       <SubType>Designer</SubType>
     </Content>
@@ -169,6 +163,9 @@
     <Content Include="InstanceSettings_TheBallDemo.config" />
     <Content Include="InstanceSettings_TheBallSchools.config" />
     <Content Include="InstanceSettings_TheBallBusiness.config" />
+    <Content Include="InstanceSettings_TheBallDevDev.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\betaoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
