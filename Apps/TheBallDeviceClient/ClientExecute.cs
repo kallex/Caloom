@@ -141,8 +141,9 @@ namespace TheBall.Support.DeviceClient
             return dod.OperationSpecificContentData;
         }
 
-        public static void AddSyncFolder(string connectionName, string syncName, string syncType, string syncDirection, string localFullPath, string remoteFolder)
+        public static FolderSyncItem AddSyncFolder(string connectionName, string syncName, string syncType, string syncDirection, string localFullPath, string remoteFolder)
         {
+            localFullPath = Path.GetFullPath(localFullPath);
             var connection = GetConnection(connectionName);
             if(connection.FolderSyncItems.Any(item => item.SyncItemName == syncName))
                 throw new ArgumentException("Sync folder already exists: " + syncName);
@@ -156,6 +157,7 @@ namespace TheBall.Support.DeviceClient
                 };
             syncFolderItem.Validate();
             connection.FolderSyncItems.Add(syncFolderItem);
+            return syncFolderItem;
         }
 
         public static void RemoveSyncFolder(string connectionName, string syncItemName)
@@ -318,9 +320,11 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void SetStaging(string connectionName, string stagingFolderFullPath, string dataFolders)
+        public static StageDefinition SetStaging(string connectionName, string stagingFolderFullPath, string dataFolders)
         {
+
             var connection = GetConnection(connectionName);
+            stagingFolderFullPath = Path.GetFullPath(stagingFolderFullPath);
             var stageDef = connection.StageDefinition;
             if (stageDef == null)
             {
@@ -331,6 +335,7 @@ namespace TheBall.Support.DeviceClient
                 stageDef.LocalStagingRootFolder = stagingFolderFullPath;
             if (dataFolders != null)
                 stageDef.DataFolders = dataFolders.Split(',').ToList();
+            return stageDef;
         }
 
         public static void DetachStaging(string connectionName)

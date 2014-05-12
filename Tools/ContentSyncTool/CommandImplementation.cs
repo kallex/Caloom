@@ -26,26 +26,31 @@ namespace ContentSyncTool
                                       connection.Name,
                                       connection.HostName,
                                       connection.GroupID);
-                    connection.FolderSyncItems.ForEach(syncItem =>
-                        {
-                            string directionArrow = syncItem.SyncDirection == "UP" ? "=>" : "<=";
-                            Console.WriteLine("{1} - {2}: {3}{0}{4} {5} {6}",
-                                Environment.NewLine,
-                                syncItem.SyncDirection,
-                                syncItem.SyncType,
-                                syncItem.SyncItemName,
-                                syncItem.LocalFullPath, 
-                                directionArrow,
-                                syncItem.RemoteFolder
-                                );
-                        });
+                    connection.FolderSyncItems.ForEach(printSyncFolder);
                     if (connection.StageDefinition != null)
-                    {
-                        Console.WriteLine("Staging: {0} - {1}", connection.StageDefinition.LocalStagingRootFolder, 
-                            String.Join(", ", connection.StageDefinition.DataFolders.ToArray()));
-                    }
+                        printStageDefinition(connection.StageDefinition);
                     Console.WriteLine("- -- -- -- -- -");
                 });
+        }
+
+        private static void printStageDefinition(StageDefinition stageDef)
+        {
+            Console.WriteLine("Staging: {0} - {1}", stageDef.LocalStagingRootFolder,
+                String.Join(", ", stageDef.DataFolders.ToArray()));
+        }
+
+        private static void printSyncFolder(FolderSyncItem syncItem)
+        {
+            string directionArrow = syncItem.SyncDirection == "UP" ? "=>" : "<=";
+            Console.WriteLine("{1} - {2}: {3}{0}{4} {5} {6}",
+                Environment.NewLine,
+                syncItem.SyncDirection,
+                syncItem.SyncType,
+                syncItem.SyncItemName,
+                syncItem.LocalFullPath,
+                directionArrow,
+                syncItem.RemoteFolder
+                );
         }
 
         public static void removeSyncFolder(RemoveSyncFolderSubOptions removeSyncFolderSubOptions)
@@ -55,8 +60,9 @@ namespace ContentSyncTool
 
         public static void addSyncFolder(AddSyncFolderSubOptions options)
         {
-            ClientExecute.AddSyncFolder(options.ConnectionName, options.SyncName, options.SyncType, options.SyncDirection,
+            var addedFolder = ClientExecute.AddSyncFolder(options.ConnectionName, options.SyncName, options.SyncType, options.SyncDirection,
                           options.LocalFullPath, options.RemoteFolder);
+            printSyncFolder(addedFolder);
         }
 
         public static void syncFolder(SyncFolderSubOptions syncFolderSubOptions)
@@ -82,9 +88,10 @@ namespace ContentSyncTool
             }
             else
             {
-                ClientExecute.SetStaging(setStagingSubOptions.ConnectionName,
+                var stageDef = ClientExecute.SetStaging(setStagingSubOptions.ConnectionName,
                                          setStagingSubOptions.StagingFolderFullPath,
                                          setStagingSubOptions.DataFolders);
+                printStageDefinition(stageDef);
             }
         }
 
