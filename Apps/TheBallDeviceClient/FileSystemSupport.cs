@@ -37,7 +37,7 @@ namespace TheBall.Support.DeviceClient
             return contentItems.ToArray();
         }
 
-        private static MD5 md5 = new MD5Cng();
+        private static MD5 md5 = MD5.Create();
 
         private static string getMD5(FileInfo fileInfo)
         {

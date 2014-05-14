@@ -34,7 +34,7 @@ namespace ContentSyncTool
                 ICommandExecution executionSupport = verbSubOptions as ICommandExecution;
                 if (executionSupport != null)
                 {
-                    ClientExecute.ExecuteWithSettings(executionAction: () =>
+                    ClientExecute.ExecuteWithSettings(executionAction: userSettings =>
                     {
                         executionSupport.ExecuteCommand(verb);
                     }, exceptionHandling: (Exception ex) =>

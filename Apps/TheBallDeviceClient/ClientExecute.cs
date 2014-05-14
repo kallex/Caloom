@@ -246,12 +246,12 @@ namespace TheBall.Support.DeviceClient
                 throw new NotSupportedException("Sync direction not supported: " + syncItem.SyncDirection);
         }
 
-        public static void ExecuteWithSettings(Action executionAction, Action<Exception> exceptionHandling)
+        public static void ExecuteWithSettings(Action<UserSettings> executionAction, Action<Exception> exceptionHandling)
         {
-            UserSettings.GetCurrentSettings();
+            var currentSettings = UserSettings.GetCurrentSettings();
             try
             {
-                executionAction();
+                executionAction(currentSettings);
             }
             catch (Exception ex)
             {
