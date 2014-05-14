@@ -39,18 +39,35 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="JsonFx">
-      <HintPath>..\..\packages\JsonFx.2.0.1209.2802\lib\net35\JsonFx.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml" />
-    <Reference Include="websocket-sharp">
-      <HintPath>..\..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)'=='MonoDroidDebug' ">
+      <ItemGroup>
+        <Reference Include="JsonFx">
+          <HintPath>..\..\packages\JsonFx.2.0.1209.2802\lib\net35\JsonFx.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml" />
+        <Reference Include="websocket-sharp">
+          <HintPath>..\..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="JsonFx">
+          <HintPath>..\..\packages\JsonFx.2.0.1209.2802\lib\net35\JsonFx.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Security" />
+        <Reference Include="System.Xml" />
+        <Reference Include="websocket-sharp">
+          <HintPath>..\..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Compile Include="Connection.cs" />
     <Compile Include="ClientExecute.cs" />
