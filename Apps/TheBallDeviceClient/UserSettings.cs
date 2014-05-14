@@ -28,7 +28,9 @@ namespace TheBall.Support.DeviceClient
                 if (File.Exists(CurrSettingsFilePath))
                 {
                     byte[] currentData = File.ReadAllBytes(CurrSettingsFilePath);
+#if !MONODROID
                     currentData = ProtectionSupport.Unprotect(currentData);
+#endif
                     XmlSerializer serializer = new XmlSerializer(typeof(UserSettings));
                     using (MemoryStream memoryStream = new MemoryStream(currentData))
                     {
@@ -56,7 +58,9 @@ namespace TheBall.Support.DeviceClient
                 serializer.Serialize(memoryStream, CurrentSettings);
                 currentData = memoryStream.ToArray();
             }
+#if !MONODROID
             currentData = ProtectionSupport.Protect(currentData);
+#endif
             File.WriteAllBytes(CurrSettingsFilePath, currentData);
         }
 
