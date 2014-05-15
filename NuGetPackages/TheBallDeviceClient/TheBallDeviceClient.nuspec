@@ -1,23 +1,35 @@
-<?xml version="1.0"?>
-<package >
-  <metadata>
-    <id>TheBallDeviceClient</id>
-    <version>0.9.4-beta</version>
-    <authors>Kalle Launiala</authors>
-    <owners>Kalle Launiala</owners>
-    <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The Ball Device Client - Beta 0.9.4</description>
-    <releaseNotes>Developer preview - beta</releaseNotes>
-    <copyright>Copyright 2014</copyright>
-    <tags>TheBall Azure Device</tags>
-    <dependencies>
-      <dependency id="WebSocketSharp" version="1.0.0" />
-<!--
-      <dependency id="JsonFx" version="2.0.0" />
-      <dependency id="CommandLineParser" version="1.9.71" />
--->
-    </dependencies>
-  </metadata>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>TheBallDeviceClient</id>
+        <version>0.9.4-beta</version>
+        <title>The Ball Platform Client</title>
+        <authors>Kalle Launiala</authors>
+        <owners>Kalle Launiala</owners>
+        <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>The Ball Device Client - Beta 0.9.4</description>
+        <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
+        <releaseNotes>Developer preview - beta
+NOTES:
+- Uses JsonFx as bundled in due to MonoFramework/Android requirements, which don't find the package from NuGet
+- websocket-sharp is used normally from NuGet</releaseNotes>
+        <copyright>Copyright 2014</copyright>
+        <tags>TheBall Azure Device</tags>
+        <dependencies>
+            <dependency id="WebSocketSharp" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="lib\MonoAndroid2.2\JsonFx.dll" target="lib\MonoAndroid2.2\JsonFx.dll" />
+        <file src="lib\MonoAndroid2.2\TheBallDeviceClient.dll" target="lib\MonoAndroid2.2\TheBallDeviceClient.dll" />
+        <file src="lib\net20\JsonFx.dll" target="lib\net20\JsonFx.dll" />
+        <file src="lib\net20\TheBallDeviceClient.dll" target="lib\net20\TheBallDeviceClient.dll" />
+        <file src="tools\CommandLine.dll" target="tools\CommandLine.dll" />
+        <file src="tools\ContentSyncTool.exe" target="tools\ContentSyncTool.exe" />
+        <file src="tools\JsonFx.dll" target="tools\JsonFx.dll" />
+        <file src="tools\TheBallDeviceClient.dll" target="tools\TheBallDeviceClient.dll" />
+        <file src="tools\websocket-sharp.dll" target="tools\websocket-sharp.dll" />
+    </files>
 </package>
