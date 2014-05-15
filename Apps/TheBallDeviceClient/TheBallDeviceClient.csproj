@@ -39,6 +39,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\signable\keys\NuGetSigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)'=='MonoDroidDebug' ">
       <ItemGroup>
@@ -93,6 +99,9 @@
     <Compile Include="UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\signable\keys\NuGetSigningKey.snk">
+      <Link>NuGetSigningKey.snk</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
