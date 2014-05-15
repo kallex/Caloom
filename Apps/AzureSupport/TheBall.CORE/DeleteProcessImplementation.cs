@@ -16,7 +16,7 @@ namespace TheBall.CORE
         {
             if (process == null)
             {
-                if (ownerProcessContainer != null)
+                if (ownerProcessContainer != null && ownerProcessContainer.ProcessIDs != null)
                 {
                     ownerProcessContainer.ProcessIDs.Remove(processID);
                     ownerProcessContainer.StoreInformation();

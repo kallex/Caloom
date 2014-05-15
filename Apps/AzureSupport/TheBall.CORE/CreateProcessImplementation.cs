@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TheBall.CORE
 {
     public class CreateProcessImplementation
@@ -27,6 +29,8 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_AddProcessObjectToContainerAndStoreBoth(ProcessContainer ownerProcessContainer, Process process)
         {
+            if(ownerProcessContainer.ProcessIDs == null)
+                ownerProcessContainer.ProcessIDs = new List<string>();
             ownerProcessContainer.ProcessIDs.Add(process.ID);
             ownerProcessContainer.StoreInformation();
             process.StoreInformation();
