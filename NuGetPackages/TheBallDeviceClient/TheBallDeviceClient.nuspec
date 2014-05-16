@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.4-beta</version>
+        <version>0.9.4-beta2</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
@@ -24,8 +24,8 @@ NOTES:
     <files>
         <file src="lib\MonoAndroid2.2\JsonFx.dll" target="lib\MonoAndroid2.2\JsonFx.dll" />
         <file src="lib\MonoAndroid2.2\TheBallDeviceClient.dll" target="lib\MonoAndroid2.2\TheBallDeviceClient.dll" />
-        <file src="lib\net20\JsonFx.dll" target="lib\net20\JsonFx.dll" />
-        <file src="lib\net20\TheBallDeviceClient.dll" target="lib\net20\TheBallDeviceClient.dll" />
+        <file src="lib\net35\JsonFx.dll" target="lib\net35\JsonFx.dll" />
+        <file src="lib\net35\TheBallDeviceClient.dll" target="lib\net35\TheBallDeviceClient.dll" />
         <file src="tools\CommandLine.dll" target="tools\CommandLine.dll" />
         <file src="tools\ContentSyncTool.exe" target="tools\ContentSyncTool.exe" />
         <file src="tools\JsonFx.dll" target="tools\JsonFx.dll" />
