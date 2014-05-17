@@ -102,15 +102,19 @@ namespace TheBall.Support.DeviceClient
             // TODO: why is this happening?
             list = list.ToArray();
             var count = list.Count();
+            bool isSTAThread = Thread.CurrentThread.GetApartmentState() == ApartmentState.STA;
 
             if (count == 0)
             {
                 return;
             }
-            else if (count == 1)
+            else if (count == 1 || isSTAThread)
             {
-                // if there's only one element, just execute it
-                action(list.First());
+                // if there's only one element, or we're in SingleThreadApartment thread just execute the list
+                foreach (var item in list)
+                {
+                    action(item);
+                }
             }
             else
             {

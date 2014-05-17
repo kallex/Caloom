@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.4-beta2</version>
+        <version>0.9.5-beta1</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
         <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>The Ball Device Client - Beta 0.9.4</description>
+        <description>The Ball Device Client - Beta 0.9.5</description>
         <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
         <releaseNotes>Developer preview - beta
 NOTES:
@@ -18,7 +18,7 @@ NOTES:
         <copyright>Copyright 2014</copyright>
         <tags>TheBall Azure Device</tags>
         <dependencies>
-            <dependency id="WebSocketSharp" version="1.0.0" />
+            <dependency id="WebSocketSharp" version="[1.0.3-rc3]" />
         </dependencies>
     </metadata>
     <files>
