@@ -40,6 +40,26 @@ namespace WebInterface
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
             string blobPath = GetBlobPath(request);
+            if (blobPath.EndsWith("/"))
+            {
+                string redirectBlobPath = blobPath + "RedirectFromFolder.red";
+                CloudBlob redirectBlob = publicClient.GetBlockBlobReference(redirectBlobPath);
+                string redirectToUrl = null;
+                try
+                {
+                    redirectToUrl = redirectBlob.DownloadText();
+                }
+                catch
+                {
+
+                }
+                if (redirectToUrl != null)
+                {
+                    response.Redirect(redirectToUrl, true);
+                    return;
+                }
+            }
+
             CloudBlockBlob blob = publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
             try

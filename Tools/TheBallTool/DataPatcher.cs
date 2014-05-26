@@ -624,9 +624,12 @@ namespace TheBallTool
             }
         }
 
-        private static void testProcessWithAGISiteMigration(bool requestRemoteExecution)
+        private static void testProcessWithWeconomySiteMigration(bool requestRemoteExecution)
         {
-            VirtualOwner owner = new VirtualOwner("grp", "d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
+            throw new NotSupportedException("Not supported to rerun on content that's been altered after! - if this is known to happen, rerun conversion will replace/fix it in wrong kind of way");
+            //VirtualOwner owner = new VirtualOwner("grp", "d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
+            //VirtualOwner owner = new VirtualOwner("grp", "a6277825-83d0-46e5-b38f-e2fa1592629a");
+            VirtualOwner owner = null;
             string processContainerName = "default";
             ProcessContainer container = ProcessContainer.RetrieveFromOwnerContent(owner, processContainerName);
             if (container == null)
@@ -644,7 +647,8 @@ namespace TheBallTool
                 migrationProcess.ProcessDescription = "Patch created AGI content migration process";
                 migrationProcess.ExecutingOperation = new SemanticInformationItem(
                     "AaltoGlobalImpact.OIP.MigrateActivitiesAndBlogsToTextContents", null);
-                migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/9798daca-afc4-4046-a99b-d0d88bb364e0"));
+                //migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/9798daca-afc4-4046-a99b-d0d88bb364e0"));
+                migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/a0ea605a-1a3e-4424-9807-77b5423d615c"));
                 migrationProcess.StoreInformation(owner);
             }
             try
@@ -790,7 +794,8 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
-            testProcessWithAGISiteMigration(true);
+            //testProcessWithAGISiteMigration(true);
+            testProcessWithWeconomySiteMigration(true);
             //resendIndexingRequests("d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
             //InitCategoryParentIDFromParentCategory();
 
