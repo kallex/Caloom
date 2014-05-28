@@ -170,12 +170,12 @@
         </OperationSpec>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="QueryObject" dataType="UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
+            <TargetDefinition name="QueryObject" dataType="INT.UserQuery" designDesc="Retrieve query object from JSON content" state="implemented" />
             <OperationExecute name="PerformQuery" targetOperationName="PrepareAndExecuteQuery" designDesc="Perform query request" state="implemented">
               <Target name="QueryObject"/>
               <ReturnValue name="QueryTrackableRequest" dataType="QueryRequest" designDesc="Trackable active query object" state="implemented"/>
             </OperationExecute>
-            <TargetDefinition name="ResponseContentObject" dataType="QueryToken" designDesc="Query response token" state="implemented">
+            <TargetDefinition name="ResponseContentObject" dataType="INT.QueryToken" designDesc="Query response token" state="implemented">
               <Target name="PerformQueryOutput"/>
             </TargetDefinition>
             <MethodExecute name="WriteContentToHttpResponse" designDesc="Write query token to http response" state="implemented">

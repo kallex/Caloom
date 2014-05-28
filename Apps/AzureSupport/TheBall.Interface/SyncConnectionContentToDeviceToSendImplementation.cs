@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.CORE.INT;
 
 namespace TheBall.Interface
 {

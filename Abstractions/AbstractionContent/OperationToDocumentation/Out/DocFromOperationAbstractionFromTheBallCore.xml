@@ -3792,7 +3792,7 @@
                         <TextContent>ItemsToCopy</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                        <TextContent>INT.ContentItemLocationWithMD5[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Items to copy to target</TextContent>
@@ -3803,7 +3803,7 @@
                         <TextContent>ItemsDeleted</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                        <TextContent>INT.ContentItemLocationWithMD5[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Items deleted on target</TextContent>
@@ -3834,7 +3834,7 @@
                         <TextContent>CopiedItems</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                        <TextContent>INT.ContentItemLocationWithMD5[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Copied items</TextContent>
@@ -3845,7 +3845,7 @@
                         <TextContent>DeletedItems</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>ContentItemLocationWithMD5[]</TextContent>
+                        <TextContent>INT.ContentItemLocationWithMD5[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Deleted items</TextContent>

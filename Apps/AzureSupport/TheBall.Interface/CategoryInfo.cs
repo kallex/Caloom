@@ -1,4 +1,4 @@
-namespace TheBall.Interface
+namespace TheBall.Interface.INT
 {
     public partial class CategoryInfo
     {

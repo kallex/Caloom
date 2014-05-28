@@ -1254,7 +1254,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="DeviceOperationData" dataType="DeviceOperationData" designDesc="Device operation data from input stream" state="implemented">
+          <TargetDefinition name="DeviceOperationData" dataType="INT.DeviceOperationData" designDesc="Device operation data from input stream" state="implemented">
             <Parameter name="InputStream" />
           </TargetDefinition>
           <TargetDefinition name="CurrentDevice" dataType="DeviceMembership" designDesc="Current executing device (obtained through InformationContext.CurrentDevice" state="implemented" />
@@ -1284,14 +1284,14 @@
           <TargetDefinition name="ContentRootLocation" dataType="string" designDesc="Content root location" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </TargetDefinition>
-          <TargetDefinition name="ThisSideContentMD5List" dataType="ContentItemLocationWithMD5[]" designDesc="This side content MD5 list" state="implemented">
+          <TargetDefinition name="ThisSideContentMD5List" dataType="INT.ContentItemLocationWithMD5[]" designDesc="This side content MD5 list" state="implemented">
             <Target name="ContentRootLocation" />
           </TargetDefinition>
           <MethodExecute name="CallPrepareTargetAndListItemsToCopy" designDesc="Call cleanup and retrieve list to copy from target device" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
             <Target name="ThisSideContentMD5List" />
-            <ReturnValue name="ItemsToCopy" dataType="ContentItemLocationWithMD5[]" designDesc="Items to copy to target" state="implemented" />
-            <ReturnValue name="ItemsDeleted" dataType="ContentItemLocationWithMD5[]" designDesc="Items deleted on target" state="implemented" />
+            <ReturnValue name="ItemsToCopy" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Items to copy to target" state="implemented" />
+            <ReturnValue name="ItemsDeleted" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Items deleted on target" state="implemented" />
           </MethodExecute>
           <MethodExecute name="CopyItemsToCopyToTargetDevice" designDesc="Copy items to copy to target device" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
@@ -1300,8 +1300,8 @@
         </SequentialExecution>
       </Execution>
       <OperationReturnValues>
-        <ReturnValue name="CopiedItems" dataType="ContentItemLocationWithMD5[]" designDesc="Copied items" state="implemented" />
-        <ReturnValue name="DeletedItems" dataType="ContentItemLocationWithMD5[]" designDesc="Deleted items" state="implemented" />
+        <ReturnValue name="CopiedItems" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Copied items" state="implemented" />
+        <ReturnValue name="DeletedItems" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Deleted items" state="implemented" />
         <Target name="CallPrepareTargetAndListItemsToCopyOutput" />
       </OperationReturnValues>
     </Operation>

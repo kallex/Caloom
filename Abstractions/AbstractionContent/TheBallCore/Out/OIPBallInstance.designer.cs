@@ -29,7 +29,8 @@ using TheBall.CORE;
 
 
 
-			[DataContract]
+namespace INT { 
+					[DataContract]
 			public partial class ParentToChildren
 			{
 				[DataMember]
@@ -38,7 +39,7 @@ using TheBall.CORE;
 				public ParentToChildren[] children { get; set; }
 			}
 
-		public static class DomainInformationSupport
+ } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
             {

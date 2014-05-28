@@ -29,7 +29,8 @@ using TheBall.CORE;
 
 
 
-			[DataContract]
+namespace INT { 
+					[DataContract]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]
@@ -89,7 +90,7 @@ using TheBall.CORE;
 				public string LinkingType { get; set; }
 			}
 
-		public static class DomainInformationSupport
+ } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
             {
@@ -4384,6 +4385,9 @@ using TheBall.CORE;
 						case "IncludeInCollection":
 							IncludeInCollection = bool.Parse(value);
 							break;
+						case "OptionalCollectionName":
+							OptionalCollectionName = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -4393,6 +4397,9 @@ using TheBall.CORE;
 			[DataMember]
 			public bool IncludeInCollection { get; set; }
 			private bool _unmodified_IncludeInCollection;
+			[DataMember]
+			public string OptionalCollectionName { get; set; }
+			private string _unmodified_OptionalCollectionName;
 			
 			}
 			[DataContract]

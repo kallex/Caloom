@@ -101,14 +101,14 @@ using System.IO;
 				public static void Execute()
 		{
 						
-					UserQuery QueryObject = PerformUserQueryImplementation.GetTarget_QueryObject();	
+					INT.UserQuery QueryObject = PerformUserQueryImplementation.GetTarget_QueryObject();	
 				QueryRequest PerformQueryOutput;
 		{ // Local block to allow local naming
 			PrepareAndExecuteQueryParameters operationParameters = PerformUserQueryImplementation.PerformQuery_GetParameters(QueryObject);
 			var operationReturnValue = PrepareAndExecuteQuery.Execute(operationParameters);
 			PerformQueryOutput = PerformUserQueryImplementation.PerformQuery_GetOutput(operationReturnValue, QueryObject);						
 		} // Local block closing
-				QueryToken ResponseContentObject = PerformUserQueryImplementation.GetTarget_ResponseContentObject(PerformQueryOutput);	
+				INT.QueryToken ResponseContentObject = PerformUserQueryImplementation.GetTarget_ResponseContentObject(PerformQueryOutput);	
 				PerformUserQueryImplementation.ExecuteMethod_WriteContentToHttpResponse(ResponseContentObject);		
 				}
 				}

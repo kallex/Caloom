@@ -213,7 +213,7 @@
                         <TextContent>ConnectionCommunicationData</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>ConnectionCommunicationData</TextContent>
+                        <TextContent>INT.ConnectionCommunicationData</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Connection communication data</TextContent>

@@ -618,7 +618,7 @@ using System.IO;
 				public static void Execute()
 		{
 						
-					ParentToChildren[] Hierarchy = SetCategoryHierarchyAndOrderInNodeSummaryImplementation.GetTarget_Hierarchy();	
+					INT.ParentToChildren[] Hierarchy = SetCategoryHierarchyAndOrderInNodeSummaryImplementation.GetTarget_Hierarchy();	
 				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_SetParentCategories(Hierarchy);		
 				NodeSummaryContainer NodeSummaryContainer = SetCategoryHierarchyAndOrderInNodeSummaryImplementation.GetTarget_NodeSummaryContainer();	
 				SetCategoryHierarchyAndOrderInNodeSummaryImplementation.ExecuteMethod_SetCategoryOrder(Hierarchy, NodeSummaryContainer);		

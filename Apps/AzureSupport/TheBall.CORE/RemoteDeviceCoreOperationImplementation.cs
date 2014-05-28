@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using AzureSupport;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall.CORE.INT;
 
 namespace TheBall.CORE
 {

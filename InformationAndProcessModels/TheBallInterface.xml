@@ -39,6 +39,18 @@
             <InterfaceItem name="LinkingType" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
+        <!--
+        <InterfaceObject name="GenericObject" designDesc="Generic UI object">
+          <InterfaceItems>
+            <InterfaceItem name="Values" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="GenericValue" designDesc="Generic object value">
+          <InterfaceItems>
+            <InterfaceItem name="ValueName" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      -->
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
@@ -136,6 +148,7 @@
         <InformationItems>
           <InformationItem name="Values" logicalDataType="InformationObject" informationObjectName="GenericValue" isCollection="true"/>
           <InformationItem name="IncludeInCollection" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="OptionalCollectionName" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="GenericValue" designDesc="Generic value item" provideCreateMethod="false" serializationType="JSON">
@@ -168,7 +181,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection communicating data obtained from DeviceContext" state="implemented">
+            <TargetDefinition name="ConnectionCommunicationData" dataType="INT.ConnectionCommunicationData" designDesc="Connection communicating data obtained from DeviceContext" state="implemented">
               <Parameter name="InputStream"/>
             </TargetDefinition>
             <MethodExecute name="PerformOperation" designDesc="Perform operation based on communication data request" state="implemented">
@@ -213,7 +226,7 @@
         </OperationSpec>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="CategoryLinkingParameters" dataType="CategoryLinkParameters" designDesc="Deserialized operation parameters" state="implemented" />
+            <TargetDefinition name="CategoryLinkingParameters" dataType="INT.CategoryLinkParameters" designDesc="Deserialized operation parameters" state="implemented" />
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection to set the linking info to" state="implemented">
               <Target name="CategoryLinkingParameters"/>
             </TargetDefinition>
@@ -247,7 +260,7 @@
             <TargetDefinition name="PackageContentListingProcess" dataType="TheBall.CORE.Process" designDesc="Process for listing  package contents" state="implemented">
               <Target name="PackageContentListingProcessID"/>
             </TargetDefinition>
-            <TargetDefinition name="ContentListingResult" dataType="TheBall.CORE.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
+            <TargetDefinition name="ContentListingResult" dataType="TheBall.CORE.INT.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
               <Target name="PackageContentListingProcess"/>
             </TargetDefinition>
             <TargetDefinition name="SyncTargetRootFolder" dataType="string" designDesc="Target root folder for sync-copy" state="implemented">
@@ -468,7 +481,7 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object for finalization" state="implemented">
               <Parameter name="ConnectionID"/>
             </TargetDefinition>
-            <TargetDefinition name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection finalizing data model (UI/JSON serializable)"  state="implemented">
+            <TargetDefinition name="ConnectionCommunicationData" dataType="INT.ConnectionCommunicationData" designDesc="Connection finalizing data model (UI/JSON serializable)"  state="implemented">
               <Target name="Connection"/>
             </TargetDefinition>
             <MethodExecute name="CallDeviceServiceForFinalizing" designDesc="Call device based service for finalizing" state="implemented">
@@ -534,7 +547,7 @@
           </Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="ConnectionCommunicationData" dataType="ConnectionCommunicationData" designDesc="Connection communication data" state="implemented"/>
+          <Parameter name="ConnectionCommunicationData" dataType="INT.ConnectionCommunicationData" designDesc="Connection communication data" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>

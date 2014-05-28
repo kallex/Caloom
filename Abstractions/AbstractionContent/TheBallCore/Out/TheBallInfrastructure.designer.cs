@@ -29,7 +29,8 @@ using TheBall.CORE;
 
 
 
-		public static class DomainInformationSupport
+namespace INT { 
+		 } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
             {

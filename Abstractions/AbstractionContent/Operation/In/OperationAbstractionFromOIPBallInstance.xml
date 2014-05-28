@@ -747,7 +747,7 @@
       </OperationSpec>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Hierarchy" dataType="ParentToChildren[]" designDesc="Hierarchy structure deserialized from JSON" state="implemented" />
+          <TargetDefinition name="Hierarchy" dataType="INT.ParentToChildren[]" designDesc="Hierarchy structure deserialized from JSON" state="implemented" />
           <MethodExecute name="SetParentCategories" designDesc="Set parent categories, retry execution for http-async failures" state="implemented">
             <Target name="Hierarchy" />
           </MethodExecute>

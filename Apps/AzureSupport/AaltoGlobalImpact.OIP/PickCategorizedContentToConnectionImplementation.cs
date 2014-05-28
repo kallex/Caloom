@@ -4,7 +4,7 @@ using System.Linq;
 using TheBall;
 using TheBall.CORE;
 using TheBall.Interface;
-using INT = TheBall.Interface;
+using INT = TheBall.Interface.INT;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -29,12 +29,12 @@ namespace AaltoGlobalImpact.OIP
                 InformationContext.CurrentOwner, "MasterCollection");
             var sourceCategoryDict = categoryCollection.CollectionContent.ToDictionary(cat => cat.ID);
             var sourceCategoryList = categoryCollection.CollectionContent;
-            var childrenInclusiveSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == INT.Category.LINKINGTYPE_INCLUDECHILDREN).Select(catLink => catLink.SourceCategoryID).ToArray();
+            var childrenInclusiveSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == TheBall.Interface.Category.LINKINGTYPE_INCLUDECHILDREN).Select(catLink => catLink.SourceCategoryID).ToArray();
             var childrenInclusiveIDs = transferCategories
                 .Where(tCat => childrenInclusiveSourceIDs.Contains(tCat.ID))
                 .Select(tCat => tCat.NativeCategoryID).OrderBy(str => str)
                 .ToList();
-            var exactMatchSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == INT.Category.LINKINGTYPE_ONE).Select(catLink => catLink.SourceCategoryID).ToArray();
+            var exactMatchSourceIDs = connection.CategoryLinks.Where(catLink => catLink.LinkingType == TheBall.Interface.Category.LINKINGTYPE_ONE).Select(catLink => catLink.SourceCategoryID).ToArray();
             var exactMatchIDs = transferCategories
                 .Where(tCat => exactMatchSourceIDs.Contains(tCat.ID))
                 .Select(tCat => tCat.NativeCategoryID).OrderBy(str => str)

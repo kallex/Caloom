@@ -912,7 +912,7 @@ using System.IO;
 				public static void Execute(RemoteDeviceCoreOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					DeviceOperationData DeviceOperationData = RemoteDeviceCoreOperationImplementation.GetTarget_DeviceOperationData(parameters.InputStream);	
+					INT.DeviceOperationData DeviceOperationData = RemoteDeviceCoreOperationImplementation.GetTarget_DeviceOperationData(parameters.InputStream);	
 				DeviceMembership CurrentDevice = RemoteDeviceCoreOperationImplementation.GetTarget_CurrentDevice();	
 				RemoteDeviceCoreOperationImplementation.ExecuteMethod_PerformOperation(CurrentDevice, DeviceOperationData);		
 				RemoteDeviceCoreOperationImplementation.ExecuteMethod_SerializeDeviceOperationDataToOutput(parameters.OutputStream, DeviceOperationData);		
@@ -930,15 +930,15 @@ using System.IO;
 					}
 				public class CallPrepareTargetAndListItemsToCopyReturnValue 
 		{
-				public ContentItemLocationWithMD5[] ItemsToCopy ;
-				public ContentItemLocationWithMD5[] ItemsDeleted ;
+				public INT.ContentItemLocationWithMD5[] ItemsToCopy ;
+				public INT.ContentItemLocationWithMD5[] ItemsDeleted ;
 				}
 				public static SyncCopyContentToDeviceTargetReturnValue Execute(SyncCopyContentToDeviceTargetParameters parameters)
 		{
 						PrepareParameters(parameters);
 					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = SyncCopyContentToDeviceTargetImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.AuthenticatedAsActiveDeviceID);	
 				string ContentRootLocation = SyncCopyContentToDeviceTargetImplementation.GetTarget_ContentRootLocation(AuthenticatedAsActiveDevice);	
-				ContentItemLocationWithMD5[] ThisSideContentMD5List = SyncCopyContentToDeviceTargetImplementation.GetTarget_ThisSideContentMD5List(ContentRootLocation);	
+				INT.ContentItemLocationWithMD5[] ThisSideContentMD5List = SyncCopyContentToDeviceTargetImplementation.GetTarget_ThisSideContentMD5List(ContentRootLocation);	
 				CallPrepareTargetAndListItemsToCopyReturnValue CallPrepareTargetAndListItemsToCopyOutput = SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CallPrepareTargetAndListItemsToCopy(AuthenticatedAsActiveDevice, ThisSideContentMD5List);		
 				SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CopyItemsToCopyToTargetDevice(AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput);		
 				SyncCopyContentToDeviceTargetReturnValue returnValue = SyncCopyContentToDeviceTargetImplementation.Get_ReturnValue(CallPrepareTargetAndListItemsToCopyOutput);
@@ -947,8 +947,8 @@ using System.IO;
 				}
 				public class SyncCopyContentToDeviceTargetReturnValue 
 		{
-				public ContentItemLocationWithMD5[] CopiedItems ;
-				public ContentItemLocationWithMD5[] DeletedItems ;
+				public INT.ContentItemLocationWithMD5[] CopiedItems ;
+				public INT.ContentItemLocationWithMD5[] DeletedItems ;
 				}
 				public class MergeAccountsDestructivelyParameters 
 		{

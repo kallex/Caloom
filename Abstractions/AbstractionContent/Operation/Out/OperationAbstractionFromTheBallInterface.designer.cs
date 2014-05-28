@@ -21,7 +21,7 @@ using System.IO;
 				public static void Execute(ExecuteRemoteCalledConnectionOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ConnectionCommunicationData ConnectionCommunicationData = ExecuteRemoteCalledConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
+					INT.ConnectionCommunicationData ConnectionCommunicationData = ExecuteRemoteCalledConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
 				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_PerformOperation(ConnectionCommunicationData);		
 				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
 				}
@@ -56,7 +56,7 @@ using System.IO;
 				public static void Execute()
 		{
 						
-					CategoryLinkParameters CategoryLinkingParameters = SetCategoryLinkingForConnectionImplementation.GetTarget_CategoryLinkingParameters();	
+					INT.CategoryLinkParameters CategoryLinkingParameters = SetCategoryLinkingForConnectionImplementation.GetTarget_CategoryLinkingParameters();	
 				Connection Connection = SetCategoryLinkingForConnectionImplementation.GetTarget_Connection(CategoryLinkingParameters);	
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_SetConnectionLinkingData(Connection, CategoryLinkingParameters);		
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
@@ -78,7 +78,7 @@ using System.IO;
 					string PackageContentListingProcessID = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessID(parameters.Connection);	
 				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_ExecuteContentListingProcess(PackageContentListingProcessID);		
 				TheBall.CORE.Process PackageContentListingProcess = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcess(PackageContentListingProcessID);	
-				TheBall.CORE.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
+				TheBall.CORE.INT.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
 				string SyncTargetRootFolder = SyncConnectionContentToDeviceToSendImplementation.GetTarget_SyncTargetRootFolder(parameters.Connection);	
 				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_CopyContentsToSyncRoot(ContentListingResult, SyncTargetRootFolder);		
 				}
@@ -220,7 +220,7 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				ConnectionCommunicationData ConnectionCommunicationData = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_ConnectionCommunicationData(Connection);	
+				INT.ConnectionCommunicationData ConnectionCommunicationData = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_ConnectionCommunicationData(Connection);	
 				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_CallDeviceServiceForFinalizing(Connection, ConnectionCommunicationData);		
 				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_UpdateConnectionWithCommunicationData(Connection, ConnectionCommunicationData);		
 				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_StoreObject(Connection);		
@@ -261,7 +261,7 @@ using System.IO;
 				}
 				public class CreateReceivingConnectionStructuresParameters 
 		{
-				public ConnectionCommunicationData ConnectionCommunicationData ;
+				public INT.ConnectionCommunicationData ConnectionCommunicationData ;
 				}
 		
 		public class CreateReceivingConnectionStructures 
