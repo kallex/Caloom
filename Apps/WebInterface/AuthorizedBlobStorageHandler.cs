@@ -372,8 +372,8 @@ namespace WebInterface
                 form.Get("ExecuteOperation") != null || form.Get("ExecuteAdminOperation") != null;
             if(isClientTemplateRequest)
             {
-                HandleOwnerClientTemplatePOST(containerOwner, request);
-                return true;
+                bool redirectAfter = HandleOwnerClientTemplatePOST(containerOwner, request);
+                return redirectAfter;
             }
 
             throw new NotSupportedException("Old legacy update no longer supported");
@@ -476,11 +476,22 @@ namespace WebInterface
                 throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
         }
 
-        private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
+        private bool HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;
-            ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
-
+            var operationResult = ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
+            if (operationResult != null)
+            {
+                IInformationObject iObj = operationResult as IInformationObject;
+                if (iObj != null)
+                {
+                    var response = HttpContext.Current.Response;
+                    response.Write(String.Format("{{ \"ObjectID\": \"{0}\" }}", iObj.ID));
+                    response.ContentType = "application/json";
+                }
+                return false;
+            }
+            return false;
         }
 
         private void HandlerOwnerAjaxDataPOST(IContainerOwner containerOwner, NameValueCollection form)
@@ -530,7 +541,8 @@ namespace WebInterface
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
                 (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
-                contentPath.Contains("categoriesandcontent/")))
+                contentPath.Contains("categoriesandcontent/") ||
+                contentPath.Contains("controlpanel_comments_v1/")))
             {
                 HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
@@ -653,7 +665,8 @@ namespace WebInterface
             }
             if (urlReferrer == null)
             {
-                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("DEV_") || contentPath.StartsWith("webview/") || contentPath.StartsWith("wwwsite/"))
+                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("DEV_") || contentPath.StartsWith("webview/") || contentPath.StartsWith("wwwsite/") || 
+                    contentPath.EndsWith(".html"))
                     return;
                 throw new SecurityException("Url referer required for non-default template requests, that target other than customui_ folder");
             }
@@ -698,6 +711,7 @@ namespace WebInterface
             string LocalOIPAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\account\";
             string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
             string LocalFoundationOneAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
+            string LocalControlPanelFolder = @"C:\Users\kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
@@ -709,6 +723,8 @@ namespace WebInterface
                 fileName = prefixStrippedContent.Replace("categoriesandcontent/", LocalWebCatConFolder);
             else if (prefixStrippedContent.Contains("wwwsite/"))
                 fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
+            else if (prefixStrippedContent.Contains("controlpanel_comments_v1/"))
+                fileName = prefixStrippedContent.Replace("controlpanel_comments_v1/", LocalControlPanelFolder);
             else
                 fileName = prefixStrippedContent.Replace("webview/", LocalWwwSiteFolder);
             if (File.Exists(fileName))

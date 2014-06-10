@@ -498,8 +498,8 @@ namespace TheBall
                                 HttpFormData = filterForm(form, filterFields),
                                 HttpFileData = fileContent,
                             };
-                        CreateSpecifiedInformationObjectWithValues.Execute(parameters);
-                        break;
+                        var result = CreateSpecifiedInformationObjectWithValues.Execute(parameters);
+                        return result.CreatedObjectResult;
                     }
                 case "DeleteSpecifiedInformationObject":
                     {
