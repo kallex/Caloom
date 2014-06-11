@@ -34,7 +34,7 @@ namespace AaltoGlobalImpact.OIP
                 {
                     string currID = parentItem.id;
                     Category cat = Category.RetrieveFromOwnerContent(owner, currID);
-                    if (cat.ParentCategoryID != parentID)
+                    if (cat != null && cat.ParentCategoryID != parentID)
                     {
                         cat.ParentCategoryID = parentID;
                         cat.StoreInformation();

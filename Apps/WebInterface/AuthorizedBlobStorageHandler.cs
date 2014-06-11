@@ -482,6 +482,8 @@ namespace WebInterface
             var operationResult = ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
             if (operationResult != null)
             {
+                if (operationResult is bool)
+                    return (bool) operationResult;
                 IInformationObject iObj = operationResult as IInformationObject;
                 if (iObj != null)
                 {

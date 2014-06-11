@@ -18,29 +18,35 @@ namespace TheBall
     {
         public static object ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
         {
+            bool reloadPageAfter = form["NORELOAD"] == null;
+
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
-                return null;
+                return reloadPageAfter;
 
             string operationName = form["ExecuteOperation"];
             if (operationName != null)
             {
                 var operationResult = executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
-                return operationResult;
+                if(operationResult != null)
+                    return operationResult;
+                return reloadPageAfter;
             }
 
             string adminOperationName = form["ExecuteAdminOperation"];
             if (adminOperationName != null)
             {
                 var adminResult = executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
-                return adminResult;
+                if(adminResult != null)
+                    return adminResult;
+                return reloadPageAfter;
             }
 
             string contentSourceInfo = form["ContentSourceInfo"];
             var rootSourceAction = form["RootSourceAction"];
             if (rootSourceAction != null && rootSourceAction != "Save")
-                return null;
-            var filterFields = new string[] { "ContentSourceInfo", "RootSourceAction" };
+                return reloadPageAfter;
+            var filterFields = new string[] { "ContentSourceInfo", "RootSourceAction", "NORELOAD" };
             string[] contentSourceInfos = contentSourceInfo.Split(',');
             var filteredForm = filterForm(form, filterFields);
             foreach (string sourceInfo in contentSourceInfos)
@@ -66,12 +72,12 @@ namespace TheBall
                         HttpFileData = fileContent
                     });
             }
-            return null;
+            return reloadPageAfter;
         }
 
         private static object executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
-            var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID" };
+            var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD" };
             string adminGroupID = InstanceConfiguration.AdminGroupID;
             if(containerOwner.LocationPrefix != adminGroupID)
                 throw new SecurityException("Only Admin Group can execute these operations");
@@ -116,7 +122,7 @@ namespace TheBall
 
         private static object executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
-            var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID"};
+            var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD"};
             switch (operationName)
             {
                 case "PublishToConnection":
