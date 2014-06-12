@@ -488,7 +488,10 @@ namespace WebInterface
                 if (iObj != null)
                 {
                     var response = HttpContext.Current.Response;
-                    response.Write(String.Format("{{ \"ObjectID\": \"{0}\" }}", iObj.ID));
+                    response.Write(String.Format("{{ \"ID\": \"{0}\", \"RelativeLocation\": \"{1}\", \"OwnerRelativeLocation\": \"{2}\", \"MasterETag\": \"{3}\" }}", iObj.ID, 
+                        iObj.RelativeLocation + ".json",
+                        StorageSupport.RemoveOwnerPrefixIfExists(iObj.RelativeLocation) + ".json", 
+                        iObj.ETag.Replace("\"", "\\\"")));
                     response.ContentType = "application/json";
                 }
                 return false;
