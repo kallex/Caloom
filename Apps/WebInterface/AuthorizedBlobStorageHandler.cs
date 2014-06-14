@@ -480,6 +480,9 @@ namespace WebInterface
         {
             var form = request.Form;
             var operationResult = ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
+            bool reloadPageAfter = form["NORELOAD"] == null;
+            if (reloadPageAfter)
+                return true;
             if (operationResult != null)
             {
                 if (operationResult is bool)
