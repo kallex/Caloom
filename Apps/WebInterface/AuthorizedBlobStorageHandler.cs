@@ -479,8 +479,22 @@ namespace WebInterface
         private bool HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;
-            var operationResult = ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
             bool reloadPageAfter = form["NORELOAD"] == null;
+            object operationResult = null;
+            try
+            {
+                operationResult = ModifyInformationSupport.ExecuteOwnerWebPOST(containerOwner, form, request.Files);
+            }
+            catch (Exception ex)
+            {
+                if (reloadPageAfter)
+                    throw;
+                var response = HttpContext.Current.Response;
+                response.Write(String.Format("{{ \"ErrorType\": \"{0}\", \"ErrorText\": {1} }}", ex.GetType().Name, WebSupport.EncodeJsString(ex.Message)));
+                response.ContentType = "application/json";
+                response.StatusCode = 500;
+                return false;
+            }
             if (reloadPageAfter)
                 return true;
             if (operationResult != null)
