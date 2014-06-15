@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
@@ -490,9 +491,11 @@ namespace WebInterface
                 if (reloadPageAfter)
                     throw;
                 var response = HttpContext.Current.Response;
+                response.ContentEncoding = Encoding.UTF8;
                 response.Write(String.Format("{{ \"ErrorType\": \"{0}\", \"ErrorText\": {1} }}", ex.GetType().Name, WebSupport.EncodeJsString(ex.Message)));
                 response.ContentType = "application/json";
                 response.StatusCode = 500;
+                response.TrySkipIisCustomErrors = true;
                 return false;
             }
             if (reloadPageAfter)
