@@ -672,7 +672,7 @@ namespace WebInterface
             var urlReferrer = request.UrlReferrer;
             string[] groupTemplates = InstanceConfiguration.DefaultGroupTemplateList;
             string[] accountTemplates = InstanceConfiguration.DefaultAccountTemplateList;
-            var refererPath = urlReferrer != null ? urlReferrer.AbsolutePath : "";
+            var refererPath = urlReferrer != null && urlReferrer.Host == request.Url.Host ? urlReferrer.AbsolutePath : "";
             bool refererIsAccount = refererPath.StartsWith("/auth/account/");
             bool refererIsGroup = refererPath.StartsWith("/auth/grp/");
 
@@ -682,7 +682,7 @@ namespace WebInterface
                 if (defaultMatch && (refererIsAccount == false && refererIsGroup == false))
                     return;
             }
-            else
+            else 
             {
                 bool defaultMatch = accountTemplates.Any(contentPath.StartsWith);
                 if (defaultMatch && (refererIsAccount == false && refererIsGroup == false))
@@ -699,6 +699,12 @@ namespace WebInterface
                 return;
             if (refererPath.StartsWith("/about/"))
                 return;
+            if (refererIsAccount == false && refererIsGroup == false) // referer is neither account nor group from this platform
+            {
+                if (contentPath.EndsWith("/") || contentPath.EndsWith(".html"))
+                    return;
+                throw new SecurityException("Url referring outside the platform is not allowed except for .html files");
+            }
             string refererOwnerPath = refererIsAccount
                                           ? GetAccountContentPath(refererPath)
                                           : GetGroupContentPath(refererPath);
