@@ -55,7 +55,7 @@ namespace TheBall
         public static string GetBlobInformationType(this CloudBlob blob)
         {
             //FetchMetadataIfMissing(blob);
-            if (Path.HasExtension(blob.Name))
+            if (Path.HasExtension(blob.Name) && !blob.Name.EndsWith(".pending"))
                 return InformationType_GenericContentValue;
             return InformationType_InformationObjectValue;
             //return blob.Attributes.Metadata[InformationTypeKey];

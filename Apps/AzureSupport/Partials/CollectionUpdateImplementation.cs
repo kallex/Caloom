@@ -816,7 +816,7 @@ namespace AaltoGlobalImpact.OIP
             node.TechnicalSource = NodeSourceTypeBinaryFile;
             node.Title = binaryFile.Title;
             node.Excerpt = binaryFile.Description;
-            node.ActualContentUrl = binaryFile.Data.ContentUrl;
+            node.ActualContentUrl = binaryFile.Data != null ? binaryFile.Data.ContentUrl : null;
             if (binaryFile.Categories != null)
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(binaryFile.Categories, getTitleOrNameFromCategory));

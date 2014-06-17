@@ -795,13 +795,13 @@ namespace TheBallTool
                 throw new NotSupportedException("Skip this with debugger");
 
             //testProcessWithAGISiteMigration(true);
-            testProcessWithWeconomySiteMigration(true);
+            //testProcessWithWeconomySiteMigration(true);
             //resendIndexingRequests("d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
             //InitCategoryParentIDFromParentCategory();
 
             //ReconnectAccountsMastersAndCollections();
 
-            //PatchSubscriptionsToSubmitted();
+            PatchSubscriptionsToSubmitted();
             //PatchCollectionsToNodeSummaries();
             //PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
             //FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
