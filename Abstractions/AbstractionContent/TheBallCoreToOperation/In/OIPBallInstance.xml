@@ -758,6 +758,21 @@
         </InformationItems>
       </InformationObject>
 
+      <InformationObject name="AttachedToObjectCollection" designDesc="Collection of AttachedToObjects">
+        <CollectionFor contentInformationObjectName="AttachedToObject" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="AttachedToObject" designDesc="Comment object">
+        <InformationItems>
+          <InformationItem name="SourceObjectID" logicalDataType="Text_Short" />
+          <InformationItem name="SourceObjectName" logicalDataType="Text_Short"/>
+          <InformationItem name="SourceObjectDomain" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetObjectID" logicalDataType="Text_Short" />
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetObjectDomain" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+      
+        
       <InformationObject name="CommentCollection" designDesc="Collection of comments">
         <CollectionFor contentInformationObjectName="Comment" collectionType="Master"/>
       </InformationObject>

@@ -57,6 +57,8 @@ namespace TheBall
             //FetchMetadataIfMissing(blob);
             if (Path.HasExtension(blob.Name) && !blob.Name.EndsWith(".pending"))
                 return InformationType_GenericContentValue;
+            if (blob.Name.Contains("/AaltoGlobalImpact.OIP/MediaContent/"))
+                return InformationType_GenericContentValue;
             return InformationType_InformationObjectValue;
             //return blob.Attributes.Metadata[InformationTypeKey];
         }

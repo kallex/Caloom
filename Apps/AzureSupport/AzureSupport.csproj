@@ -141,6 +141,8 @@
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="MediaFileData.cs" />
     <Compile Include="OperationSupport.cs" />
+    <Compile Include="Partials\AttachedToObject.cs" />
+    <Compile Include="Partials\AttachedToObjectCollection.cs" />
     <Compile Include="Partials\Comment.cs" />
     <Compile Include="Partials\CommentCollection.cs" />
     <Compile Include="Partials\LinkToContent.cs" />

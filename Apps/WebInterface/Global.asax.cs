@@ -45,7 +45,8 @@ namespace WebInterface
                              Request.Url.DnsSafeHost.StartsWith("globalimpact.") ||
                              Request.Url.DnsSafeHost.StartsWith("apps.") ||
                              Request.Url.DnsSafeHost.StartsWith("newglobal.") ||
-                             Request.Url.DnsSafeHost.StartsWith("ptt-");
+                             Request.Url.DnsSafeHost.StartsWith("ptt-") ||
+                             Request.Url.DnsSafeHost.StartsWith("izenzei.probroz.info");
                 if (isWebSocket == false && isIndexAspx == false && isWww == false)
                 {
                     string redirectUrl = Request.Url.ToString().Replace("http:", "https:");
