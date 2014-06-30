@@ -40,6 +40,14 @@ namespace WebInterface
         {
             CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
             string blobPath = GetBlobPath(request);
+            if (blobPath.Contains("/MediaContent/"))
+            {
+                int lastIndexOfSlash = blobPath.LastIndexOf('/');
+                var strippedPath = blobPath.Substring(0, lastIndexOfSlash);
+                int lastIndexOfMediaContent = strippedPath.LastIndexOf("/MediaContent/");
+                if (lastIndexOfMediaContent > 0) // Still found MediaContent after stripping the last slash
+                    blobPath = strippedPath;
+            }
             if (blobPath.EndsWith("/"))
             {
                 string redirectBlobPath = blobPath + "RedirectFromFolder.red";
@@ -186,7 +194,9 @@ namespace WebInterface
                     }
                 }
             }
-            response.ContentType = StorageSupport.GetMimeType(blob.Name);
+            var fileName = blob.Name.Contains("/MediaContent/") ?
+                request.Path : blob.Name;
+            response.ContentType = StorageSupport.GetMimeType(fileName);
             //response.Cache.SetETag(blob.Properties.ETag);
             response.Headers.Add("ETag", blob.Properties.ETag);
             response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
