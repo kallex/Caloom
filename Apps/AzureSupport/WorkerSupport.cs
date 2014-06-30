@@ -571,8 +571,15 @@ namespace TheBall
                            RenderWebSupport.CopyAsIsSyncHandler);
              */
             // Copy required data to go with website stuff
-            string[] foldersToCopy = new string[] { "AaltoGlobalImpact.OIP/NodeSummaryContainer", "AaltoGlobalImpact.OIP/TextContent",
-            "AaltoGlobalImpact.OIP/AddressAndLocationCollection", "AaltoGlobalImpact.OIP/MediaContent", "AaltoGlobalImpact.OIP/GroupContainer"};
+            string[] foldersToCopy = new string[] { 
+                "AaltoGlobalImpact.OIP/NodeSummaryContainer", 
+                "AaltoGlobalImpact.OIP/TextContent",
+                "AaltoGlobalImpact.OIP/AddressAndLocationCollection", 
+                "AaltoGlobalImpact.OIP/MediaContent", 
+                "AaltoGlobalImpact.OIP/GroupContainer",
+                "AaltoGlobalImpact.OIP/AttachedToObjectCollection",
+                "AaltoGlobalImpact.OIP/BinaryFileCollection",
+            };
             foreach (string renderRequiredFolder in foldersToCopy)
             {
                 string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
