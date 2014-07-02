@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetOpenAuth.AspNet.Clients;
 using DotNetOpenAuth.Messaging;
+using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OpenId;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
@@ -17,6 +25,11 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Params["ssokey"] != null)
+            {
+                handleWilmaLogin();
+                return;
+            }
             if(Request.Params["SignOut"] != null)
             {
                 AuthenticationSupport.ClearAuthenticationCookie(Response);
@@ -91,6 +104,81 @@ namespace WebInterface
                             break;
                     }
                 }
+            }
+        }
+
+        private void handleOAuth2()
+        {
+        }
+
+        private void handleWilmaLogin()
+        {
+            string ssokey = Request.Params["ssokey"];
+            string query = Request.Params["query"];
+            string logout = Request.Params["logout"];
+            string nonce = Request.Params["nonce"];
+            string h = Request.Params["h"];
+            if(nonce.Length < 16 || nonce.Length > 40)
+                throw new SecurityException("Invalid login parameters");
+            string hashSourceStr = string.Format("ssokey={0}&query={1}&logout={2}&nonce={3}",
+                ssokey, query, logout, nonce
+                /*
+                HttpUtility.UrlEncode(ssokey),
+                HttpUtility.UrlEncode(query),
+                HttpUtility.UrlEncode(logout),
+                HttpUtility.UrlEncode(nonce)*/
+                );
+            var hashSourceBin = Encoding.UTF8.GetBytes(hashSourceStr);
+            throw new NotImplementedException("Wilma login functional, pre-shared secret needs to be config/non-source code implemented");
+            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes("INSERTYOURSHAREDSECRETHERE"));
+            var hashValue = hmacsha1.ComputeHash(hashSourceBin);
+            string hashValueStr = Convert.ToBase64String(hashValue);
+            if(hashValueStr != h)
+                throw new SecurityException("Invalid hash value");
+
+            // Login verification done, then call to Wilma for user results
+            RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
+            var cryptoData = new byte[16];
+            rngCrypto.GetBytes(cryptoData);
+            string myLogout = "";
+            string myNonce = Convert.ToBase64String(cryptoData);
+            string myHSource = string.Format("ssokey={0}&logout={1}&nonce={2}",
+                ssokey, myLogout, myNonce);
+            var myHHash = hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(myHSource));
+            string myH = Convert.ToBase64String(myHHash);
+            string wilmaRequestUrl = String.Format("{0}?ssokey={1}&logout={2}&nonce={3}&h={4}",
+                query,
+                ssokey,
+                HttpUtility.UrlEncode(myLogout),
+                HttpUtility.UrlEncode(myNonce), 
+                HttpUtility.UrlEncode(myH));
+            HttpWebRequest wilmaRequest = WebRequest.CreateHttp(wilmaRequestUrl);
+            Debug.WriteLine(myNonce);
+            Debug.WriteLine(myNonce.Length);
+            var response = wilmaRequest.GetResponse();
+            var stream = response.GetResponseStream();
+            string content = null;
+            var isoEnc = Encoding.GetEncoding("ISO-8859-1");
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8)) {
+            /*
+            using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("ISO-8859-1")))
+            {
+            var dataBuffer = new byte[100*1024];
+            using(BinaryReader bReader = new BinaryReader(stream)) {
+                var byteCount = bReader.Read(dataBuffer, 0, dataBuffer.Length);
+                var convertedContent = Encoding.Convert(Encoding.ASCII, isoEnc,
+                    dataBuffer, 0, byteCount);
+                content = isoEnc.GetString(convertedContent);
+             */
+                content = reader.ReadToEnd();
+                content = content.Replace("ä", "??").Replace("ö", "??");
+                int hPosition = content.LastIndexOf("\r\nh=") + 2;
+                var contentWithoutH = content.Substring(0, hPosition);
+                //var verifyH = hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(contentWithoutH));
+                var verifyH = hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(contentWithoutH));
+                var verifyH2 = hmacsha1.ComputeHash(isoEnc.GetBytes(contentWithoutH));
+                string verifyHTxt = Convert.ToBase64String(verifyH);
+                string verifyH2Txt = Convert.ToBase64String(verifyH2);
             }
         }
 
