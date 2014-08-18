@@ -55,10 +55,19 @@
     <Reference Include="Lucene.Net.Contrib.Spatial">
       <HintPath>..\..\packages\Lucene.Net.Contrib.Spatial.3.0.3\lib\net40\Lucene.Net.Contrib.Spatial.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.CloudDrive, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.CloudDrive">
+      <HintPath>..\Ext\AzureDLLs\Microsoft.WindowsAzure.CloudDrive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration">
+      <HintPath>..\Ext\AzureDLLs\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ext\AzureDLLs\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient">
+      <HintPath>..\Ext\AzureDLLs\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
     <Reference Include="Spatial4n.Core">
       <HintPath>..\..\packages\Spatial4n.Core.0.3\lib\net40\Spatial4n.Core.dll</HintPath>
     </Reference>

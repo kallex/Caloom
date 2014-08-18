@@ -1,4 +1,4 @@
-devenv CaloomADM.sln /Rebuild
+devenv TheBallADM.sln /Rebuild
 Abstractions\absbuilder\AbstractionBuilder\bin\debug\AbstractionBuilder.exe
-devenv Caloom.sln /Rebuild
+devenv TheBallPlatform.sln /Rebuild
 devenv Apps\TheBallAzureConfiguration.sln /Rebuild
