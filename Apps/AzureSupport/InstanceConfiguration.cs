@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -54,11 +55,13 @@ namespace TheBall
             #endregion
             #region Data storage
 
-            const string ConnStrFileName = @"C:\users\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";
+            const string ConnStrFileName = @"D:\UserData\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";
             if (File.Exists(ConnStrFileName))
                 AzureStorageConnectionString = File.ReadAllText(ConnStrFileName);
             else
                 AzureStorageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
+            if(AzureStorageConnectionString == null)
+                throw new InvalidDataException("DataConnectionString not set properly or not available in configuration");
             var connStrSplits = AzureStorageConnectionString.Split(new[] {";AccountKey="}, StringSplitOptions.None);
             AzureStorageKey = connStrSplits[1];
             connStrSplits = connStrSplits[0].Split(new[] {";AccountName="}, StringSplitOptions.None);
@@ -92,7 +95,7 @@ namespace TheBall
 
             try
             {
-                const string SecretFileName = @"C:\users\kalle\work\ConnectionStringStorage\amazonses.txt";
+                const string SecretFileName = @"D:\UserData\kalle\work\ConnectionStringStorage\amazonses.txt";
                 string configString;
                 if (File.Exists(SecretFileName))
                     configString = File.ReadAllText(SecretFileName);

@@ -8,7 +8,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using System.Web.Helpers;
+//using System.Web.Helpers;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
@@ -345,7 +345,7 @@ namespace WebInterface
 
             validateThatOwnerPostComesFromSameReferrer(context);
             HttpRequest request = context.Request;
-            var form = request.Unvalidated().Form;
+            var form = request.Unvalidated.Form;
 
             bool isAjaxDataRequest = request.ContentType.StartsWith("application/json"); // form.Get("AjaxObjectInfo") != null;
             if (isAjaxDataRequest)
@@ -734,15 +734,15 @@ namespace WebInterface
             string contentType = StorageSupport.GetMimeType(Path.GetExtension(contentPath));
             response.ContentType = contentType;
             string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            string LocalWebRootFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
-            string LocalWebCatConFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
-            //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
-            //string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
-            string LocalWwwSiteFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
-            string LocalOIPAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\account\";
-            string LocalSchoolsAccountFolder = @"C:\Users\kalle\WebstormProjects\CaloomSchools\UI\account\";
-            string LocalFoundationOneAccountFolder = @"C:\Users\kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
-            string LocalControlPanelFolder = @"C:\Users\kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
+            string LocalWebRootFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
+            string LocalWebCatConFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
+            //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
+            //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
+            string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
+            string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
+            string LocalSchoolsAccountFolder = @"d:\UserData\Kalle\WebstormProjects\CaloomSchools\UI\account\";
+            string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
+            string LocalControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
