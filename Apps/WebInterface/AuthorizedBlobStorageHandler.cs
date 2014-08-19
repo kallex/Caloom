@@ -565,6 +565,7 @@ namespace WebInterface
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
+                (contentPath.Contains("cpanel/") && containerOwner is TBAccount) ||
                 (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/") ||
                 contentPath.Contains("controlpanel_comments_v1/")))
@@ -740,6 +741,7 @@ namespace WebInterface
             //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
             string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
+            string LocalCPanelAccountFolder = @"D:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_account_v1\";
             string LocalSchoolsAccountFolder = @"d:\UserData\Kalle\WebstormProjects\CaloomSchools\UI\account\";
             string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string LocalControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
@@ -748,6 +750,8 @@ namespace WebInterface
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalOIPAccountFolder);
+            else if (prefixStrippedContent.Contains("cpanel/"))
+                fileName = prefixStrippedContent.Replace("cpanel/", LocalCPanelAccountFolder);
             else if (prefixStrippedContent.Contains("foundation-one/"))
                 fileName = prefixStrippedContent.Replace("foundation-one/", LocalFoundationOneAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))
