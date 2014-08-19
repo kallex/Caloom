@@ -19913,6 +19913,10 @@ AccountIndex.Summary
 					result.LastName = @"AccountProfile.LastName";
 
 					result.Address = StreetAddress.CreateDemoDefault();
+					result.SimplifiedAccountEmail = @"AccountProfile.SimplifiedAccountEmail";
+
+					result.SimplifiedAccountGroupID = @"AccountProfile.SimplifiedAccountGroupID";
+
 				
 					return result;
 				}
@@ -20026,6 +20030,12 @@ AccountIndex.Summary
 							return true;
 						if(Address != _unmodified_Address)
 							return true;
+						if(IsSimplifiedAccount != _unmodified_IsSimplifiedAccount)
+							return true;
+						if(SimplifiedAccountEmail != _unmodified_SimplifiedAccountEmail)
+							return true;
+						if(SimplifiedAccountGroupID != _unmodified_SimplifiedAccountGroupID)
+							return true;
 						{
 							IInformationObject item = (IInformationObject) Address;
 							if(item != null) 
@@ -20067,6 +20077,9 @@ AccountIndex.Summary
 					FirstName = sourceObject.FirstName;
 					LastName = sourceObject.LastName;
 					Address = sourceObject.Address;
+					IsSimplifiedAccount = sourceObject.IsSimplifiedAccount;
+					SimplifiedAccountEmail = sourceObject.SimplifiedAccountEmail;
+					SimplifiedAccountGroupID = sourceObject.SimplifiedAccountGroupID;
 				}
 				
 
@@ -20075,6 +20088,9 @@ AccountIndex.Summary
 				{
 					_unmodified_FirstName = FirstName;
 					_unmodified_LastName = LastName;
+					_unmodified_IsSimplifiedAccount = IsSimplifiedAccount;
+					_unmodified_SimplifiedAccountEmail = SimplifiedAccountEmail;
+					_unmodified_SimplifiedAccountGroupID = SimplifiedAccountGroupID;
 				
 					_unmodified_ProfileImage = ProfileImage;
 					if(ProfileImage != null)
@@ -20098,6 +20114,15 @@ AccountIndex.Summary
 						case "LastName":
 							LastName = value;
 							break;
+						case "IsSimplifiedAccount":
+							IsSimplifiedAccount = bool.Parse(value);
+							break;
+						case "SimplifiedAccountEmail":
+							SimplifiedAccountEmail = value;
+							break;
+						case "SimplifiedAccountGroupID":
+							SimplifiedAccountGroupID = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -20114,6 +20139,15 @@ AccountIndex.Summary
 			[DataMember]
 			public StreetAddress Address { get; set; }
 			private StreetAddress _unmodified_Address;
+			[DataMember]
+			public bool IsSimplifiedAccount { get; set; }
+			private bool _unmodified_IsSimplifiedAccount;
+			[DataMember]
+			public string SimplifiedAccountEmail { get; set; }
+			private string _unmodified_SimplifiedAccountEmail;
+			[DataMember]
+			public string SimplifiedAccountGroupID { get; set; }
+			private string _unmodified_SimplifiedAccountGroupID;
 			
 			}
 			[DataContract]

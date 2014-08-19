@@ -665,7 +665,41 @@ using System.IO;
 				UpdateConnectionThisSideCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-				public class MigrateActivitiesAndBlogsToTextContentsParameters 
+				public class SetGroupAsDefaultForAccountParameters 
+		{
+				public string GroupID ;
+				}
+		
+		public class SetGroupAsDefaultForAccount 
+		{
+				private static void PrepareParameters(SetGroupAsDefaultForAccountParameters parameters)
+		{
+					}
+				public static void Execute(SetGroupAsDefaultForAccountParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AccountContainer AccountContainer = SetGroupAsDefaultForAccountImplementation.GetTarget_AccountContainer();	
+				string RedirectFromFolderBlobName = SetGroupAsDefaultForAccountImplementation.GetTarget_RedirectFromFolderBlobName();	
+				SetGroupAsDefaultForAccountImplementation.ExecuteMethod_SetDefaultGroupValue(parameters.GroupID, AccountContainer);		
+				SetGroupAsDefaultForAccountImplementation.ExecuteMethod_StoreObject(AccountContainer);		
+				SetGroupAsDefaultForAccountImplementation.ExecuteMethod_SetAccountRedirectFileToGroup(parameters.GroupID, RedirectFromFolderBlobName);		
+				}
+				}
+
+		    public class ClearDefaultGroupFromAccount 
+		{
+				public static void Execute()
+		{
+						
+					AccountContainer AccountContainer = ClearDefaultGroupFromAccountImplementation.GetTarget_AccountContainer();	
+				string RedirectFromFolderBlobName = ClearDefaultGroupFromAccountImplementation.GetTarget_RedirectFromFolderBlobName();	
+				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_ClearDefaultGroupValue(AccountContainer);		
+				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_StoreObject(AccountContainer);		
+				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_RemoveAccountRedirectFile(RedirectFromFolderBlobName);		
+				}
+				}
+
+		    public class MigrateActivitiesAndBlogsToTextContentsParameters 
 		{
 				public TheBall.CORE.Process Process ;
 				}

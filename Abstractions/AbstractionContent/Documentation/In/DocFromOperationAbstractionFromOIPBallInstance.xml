@@ -278,6 +278,50 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ClearDefaultGroupFromAccount" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Make group as default group for account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account container to store the default group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RedirectFromFolderBlobName" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner RedirectFromFolder.red blob name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ClearDefaultGroupValue ( AccountContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Clear default group value from container</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( AccountContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveAccountRedirectFile ( RedirectFromFolderBlobName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove account RedirectFromFolder.red from pointing to group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ConfirmInviteToJoinGroup (MemberEmailAddress, GroupID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1444,6 +1488,74 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store modified objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetGroupAsDefaultForAccount (GroupID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Make group as default group for account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to make as default. If Null</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountContainer" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account container to store the default group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RedirectFromFolderBlobName" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner RedirectFromFolder.red blob name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetDefaultGroupValue ( AccountContainer, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set default group value to container</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( AccountContainer )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetAccountRedirectFileToGroup ( RedirectFromFolderBlobName, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set account RedirectFromFolder.red to point to given group</TextContent>
                 </Text>
               </Paragraph>
             </Header>

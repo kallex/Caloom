@@ -818,6 +818,51 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="SetGroupAsDefaultForAccount">
+      <OperationSpec>
+        <Description>Make group as default group for account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to make as default. If Null" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountContainer" dataType="AccountContainer" designDesc="Account container to store the default group" state="implemented" />
+          <TargetDefinition name="RedirectFromFolderBlobName" dataType="string" designDesc="Owner RedirectFromFolder.red blob name" state="implemented" />
+          <MethodExecute name="SetDefaultGroupValue" designDesc="Set default group value to container" state="implemented">
+            <Parameter name="GroupID" />
+            <Target name="AccountContainer" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
+            <Target name="AccountContainer" />
+          </MethodExecute>
+          <MethodExecute name="SetAccountRedirectFileToGroup" designDesc="Set account RedirectFromFolder.red to point to given group" state="implemented">
+            <Parameter name="GroupID" />
+            <Target name="RedirectFromFolderBlobName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="ClearDefaultGroupFromAccount">
+      <OperationSpec>
+        <Description>Make group as default group for account</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountContainer" dataType="AccountContainer" designDesc="Account container to store the default group" state="implemented" />
+          <TargetDefinition name="RedirectFromFolderBlobName" dataType="string" designDesc="Owner RedirectFromFolder.red blob name" state="implemented" />
+          <MethodExecute name="ClearDefaultGroupValue" designDesc="Clear default group value from container" state="implemented">
+            <Target name="AccountContainer" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
+            <Target name="AccountContainer" />
+          </MethodExecute>
+          <MethodExecute name="RemoveAccountRedirectFile" designDesc="Remove account RedirectFromFolder.red from pointing to group" state="implemented">
+            <Target name="RedirectFromFolderBlobName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="MigrateActivitiesAndBlogsToTextContents">
       <OperationSpec>
         <Description>Migrate activities and blogs to text contents</Description>

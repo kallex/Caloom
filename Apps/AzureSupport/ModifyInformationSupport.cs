@@ -125,6 +125,21 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD"};
             switch (operationName)
             {
+                case "SetGroupAsDefaultForAccount":
+                {
+                    SetGroupAsDefaultForAccountParameters parameters = new SetGroupAsDefaultForAccountParameters
+                    {
+                        GroupID = form["GroupID"]
+                    };
+                    SetGroupAsDefaultForAccount.Execute(parameters);
+                    break;
+                }
+                case "ClearDefaultGroupFromAccount":
+                {
+                    ClearDefaultGroupFromAccount.Execute();
+                    break;
+                }
+
                 case "PublishToConnection":
                     {
                         var parameters = new PublishCollaborationContentOverConnectionParameters

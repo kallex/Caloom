@@ -54,6 +54,18 @@
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
+      <InformationObject name="WizardContainer" designDesc="Wizard task container" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="ActiveTasks" logicalDataType="InformationObject" informationObjectName="WizardTask" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="WizardTask" designDesc="Wizard task to perform/complete">
+        <InformationItems>
+          <InformationItem name="TaskName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="InputType" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="ConnectionCollection" designDesc="Collection for connections">
         <CollectionFor contentInformationObjectName="Connection" collectionType="Master"/>
       </InformationObject>

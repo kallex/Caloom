@@ -456,6 +456,31 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:red;font-weight:bold;text-decoration:underline" >
 		Clear various image media formats
 		</div>
+		</p><h1>ClearDefaultGroupFromAccount</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Make group as default group for account
+		</div>
+		</p><h2>Target Definition: AccountContainer</h2>
+		<p>		<div class="MsoNormal" >
+		Account container to store the default group
+		</div>
+		</p><h2>Target Definition: RedirectFromFolderBlobName</h2>
+		<p>		<div class="MsoNormal" >
+		Owner RedirectFromFolder.red blob name
+		</div>
+		</p><h2>Method Call: ClearDefaultGroupValue ( AccountContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Clear default group value from container
+		</div>
+		</p><h2>Method Call: StoreObject ( AccountContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h2>Method Call: RemoveAccountRedirectFile ( RedirectFromFolderBlobName )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove account RedirectFromFolder.red from pointing to group
+		</div>
 		</p><h1>ConfirmInviteToJoinGroup (MemberEmailAddress, GroupID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1402,6 +1427,52 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( NodeSummaryContainer )</h2>
 		<p>		<div class="MsoNormal" >
 		Store modified objects
+		</div>
+		</p><h1>SetGroupAsDefaultForAccount (GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Make group as default group for account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to make as default. If Null
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AccountContainer</h2>
+		<p>		<div class="MsoNormal" >
+		Account container to store the default group
+		</div>
+		</p><h2>Target Definition: RedirectFromFolderBlobName</h2>
+		<p>		<div class="MsoNormal" >
+		Owner RedirectFromFolder.red blob name
+		</div>
+		</p><h2>Method Call: SetDefaultGroupValue ( AccountContainer, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Set default group value to container
+		</div>
+		</p><h2>Method Call: StoreObject ( AccountContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h2>Method Call: SetAccountRedirectFileToGroup ( RedirectFromFolderBlobName, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account RedirectFromFolder.red to point to given group
 		</div>
 		</p><h1>UnlinkEmailAddress (AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID)</h1>
 		<h2>Specifications</h2>
