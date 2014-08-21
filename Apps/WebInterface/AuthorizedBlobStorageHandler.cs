@@ -596,6 +596,14 @@ namespace WebInterface
                 context.Response.Redirect(redirectToUrl, true);
                 return;
             }
+            if (contentPath.Contains("/MediaContent/"))
+            {
+                int lastIndexOfSlash = contentPath.LastIndexOf('/');
+                var strippedPath = contentPath.Substring(0, lastIndexOfSlash);
+                int lastIndexOfMediaContent = strippedPath.LastIndexOf("/MediaContent/");
+                if (lastIndexOfMediaContent > 0) // Still found MediaContent after stripping the last slash
+                    contentPath = strippedPath;
+            }
             CloudBlob blob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath);
             var response = context.Response;
             // Read blob content to response.
@@ -658,7 +666,9 @@ namespace WebInterface
                     }
                 }
             }
-            response.ContentType = StorageSupport.GetMimeType(blob.Name);
+            var fileName = blob.Name.Contains("/MediaContent/") ?
+                request.Path : blob.Name;
+            response.ContentType = StorageSupport.GetMimeType(fileName);
             //response.Cache.SetETag(blob.Properties.ETag);
             response.Headers.Add("ETag", blob.Properties.ETag);
             response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
