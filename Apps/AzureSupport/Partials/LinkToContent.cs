@@ -4,7 +4,7 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class LinkToContent : IBeforeStoreHandler
+    partial class LinkToContent : IBeforeStoreHandler, IAdditionalFormatProvider
     {
         public void PerformBeforeStoreUpdate()
         {
@@ -28,6 +28,16 @@ namespace AaltoGlobalImpact.OIP
                     };
                 this.SetMediaContent(InformationContext.CurrentOwner, ImageData.ID, mediaContent);
             }
+        }
+
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
+        {
+            return this.GetFormattedContentToStore(masterBlobETag);
+        }
+
+        string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
+        {
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
     }
 }
