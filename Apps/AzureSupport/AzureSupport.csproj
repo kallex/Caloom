@@ -156,6 +156,8 @@
     <Compile Include="Partials\AttachedToObjectCollection.cs" />
     <Compile Include="Partials\Comment.cs" />
     <Compile Include="Partials\CommentCollection.cs" />
+    <Compile Include="Partials\DynamicContent.cs" />
+    <Compile Include="Partials\DynamicContentCollection.cs" />
     <Compile Include="Partials\EmbeddedContent.cs" />
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="SyncSupport.cs" />

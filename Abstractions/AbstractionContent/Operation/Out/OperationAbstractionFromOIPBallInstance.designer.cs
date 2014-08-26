@@ -685,8 +685,8 @@ using System.IO;
 				SetGroupAsDefaultForAccountImplementation.ExecuteMethod_SetAccountRedirectFileToGroup(parameters.GroupID, RedirectFromFolderBlobName);		
 				}
 				}
-
-		    public class ClearDefaultGroupFromAccount 
+		
+		public class ClearDefaultGroupFromAccount 
 		{
 				public static void Execute()
 		{
@@ -698,8 +698,7 @@ using System.IO;
 				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_RemoveAccountRedirectFile(RedirectFromFolderBlobName);		
 				}
 				}
-
-		    public class MigrateActivitiesAndBlogsToTextContentsParameters 
+				public class MigrateActivitiesAndBlogsToTextContentsParameters 
 		{
 				public TheBall.CORE.Process Process ;
 				}

@@ -761,6 +761,20 @@
         </InformationItems>
       </InformationObject>
 
+      <InformationObject name="DynamicContentCollection" designDesc="Collection of dynamic content">
+        <CollectionFor contentInformationObjectName="DynamicContent" collectionType="Master"/>
+      </InformationObject>
+      <InformationObject name="DynamicContent" designDesc="Dynamic content object">
+        <InformationItems>
+          <InformationItem name="HostName" logicalDataType="Text_Short"/>
+          <InformationItem name="ContentName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="ElementQuery" logicalDataType="Text_Short"/>
+          <InformationItem name="Content" logicalDataType="Text_Long"/>
+          <InformationItem name="IsEnabled" logicalDataType="TrueOrFalse_Boolean"/>
+        </InformationItems>
+      </InformationObject>
+        
       <InformationObject name="AttachedToObjectCollection" designDesc="Collection of AttachedToObjects">
         <CollectionFor contentInformationObjectName="AttachedToObject" collectionType="Master"/>
       </InformationObject>
