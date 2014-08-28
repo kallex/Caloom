@@ -27,6 +27,7 @@ namespace WebInterface
         {
             if (Request.Params["ssokey"] != null)
             {
+                AuthenticationSupport.ClearAuthenticationCookie(Response);
                 handleWilmaLogin();
                 return;
             }
@@ -129,8 +130,8 @@ namespace WebInterface
                 HttpUtility.UrlEncode(nonce)*/
                 );
             var hashSourceBin = Encoding.UTF8.GetBytes(hashSourceStr);
-            throw new NotImplementedException("Wilma login functional, pre-shared secret needs to be config/non-source code implemented");
-            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes("INSERTYOURSHAREDSECRETHERE"));
+            //throw new NotImplementedException("Wilma login functional, pre-shared secret needs to be config/non-source code implemented");
+            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes("INSERTYOURSHAREDSECRETHERE")); // TODO: Dynamic config load from Ball-instance specific container
             var hashValue = hmacsha1.ComputeHash(hashSourceBin);
             string hashValueStr = Convert.ToBase64String(hashValue);
             if(hashValueStr != h)
@@ -172,14 +173,47 @@ namespace WebInterface
              */
                 content = reader.ReadToEnd();
                 content = content.Replace("ä", "??").Replace("ö", "??");
-                int hPosition = content.LastIndexOf("\r\nh=") + 2;
+                int prehPosition = content.LastIndexOf("\r\nh=");
+                if(prehPosition < 0)
+                    throw new SecurityException("Invalid h position");
+                int hPosition = prehPosition + 2;
                 var contentWithoutH = content.Substring(0, hPosition);
                 //var verifyH = hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(contentWithoutH));
                 var verifyH = hmacsha1.ComputeHash(Encoding.UTF8.GetBytes(contentWithoutH));
                 var verifyH2 = hmacsha1.ComputeHash(isoEnc.GetBytes(contentWithoutH));
                 string verifyHTxt = Convert.ToBase64String(verifyH);
                 string verifyH2Txt = Convert.ToBase64String(verifyH2);
+                string hValueFromContent = content.Substring(hPosition + 2);
+                if(hValueFromContent != verifyHTxt)
+                    throw new SecurityException("Invalid hash value");
+                string wilmaLoginName = getWilmaContentValue(content, "login");
+                string secureProtocolPrefix = "https://";
+                if(query.StartsWith(secureProtocolPrefix) == false)
+                    throw new SecurityException("Invalid URL for UserID");
+                //string queryWithoutPrefix = query.Substring(secureProtocolPrefix.Length);
+                string wilmaUserID = query + "/" + wilmaLoginName;
+                AuthenticationSupport.SetAuthenticationCookie(Response, wilmaUserID);
+                string redirectUrl = Request.Params["ReturnUrl"];
+                if (redirectUrl == null)
+                    redirectUrl = FormsAuthentication.DefaultUrl;
+                Response.Redirect(redirectUrl, true);
             }
+        }
+
+        private string getWilmaContentValue(string content, string propertyName)
+        {
+            string linefeedStr = "\r\n";
+            string searchString = linefeedStr + propertyName + "=";
+            int searchMatchIX = content.LastIndexOf(searchString);
+            if(searchMatchIX < 0)
+                throw new ArgumentException("Propertyname not found in content: " + propertyName);
+            int propValueStartIX = searchMatchIX + searchString.Length;
+            int nextLineFeedIX = content.IndexOf(linefeedStr, propValueStartIX);
+            if(nextLineFeedIX < 0)
+                throw new InvalidDataException("Content not ending to (h +) linefeed: " + content);
+            int valueLength = nextLineFeedIX - propValueStartIX;
+            return content.Substring(propValueStartIX, valueLength);
+
         }
 
         protected void openidValidator_ServerValidate(object source, ServerValidateEventArgs args)

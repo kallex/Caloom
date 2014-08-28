@@ -771,6 +771,7 @@
           <InformationItem name="Description" logicalDataType="Text_Long"/>
           <InformationItem name="ElementQuery" logicalDataType="Text_Short"/>
           <InformationItem name="Content" logicalDataType="Text_Long"/>
+          <InformationItem name="RawContent" logicalDataType="Text_Long"/>
           <InformationItem name="IsEnabled" logicalDataType="TrueOrFalse_Boolean"/>
         </InformationItems>
       </InformationObject>
