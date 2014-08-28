@@ -48329,6 +48329,13 @@ DynamicContent.Content
 DynamicContent.Content
 ";
 
+					result.RawContent = @"DynamicContent.RawContent
+DynamicContent.RawContent
+DynamicContent.RawContent
+DynamicContent.RawContent
+DynamicContent.RawContent
+";
+
 				
 					return result;
 				}
@@ -48397,6 +48404,8 @@ DynamicContent.Content
 							return true;
 						if(Content != _unmodified_Content)
 							return true;
+						if(RawContent != _unmodified_RawContent)
+							return true;
 						if(IsEnabled != _unmodified_IsEnabled)
 							return true;
 				
@@ -48416,6 +48425,7 @@ DynamicContent.Content
 					Description = sourceObject.Description;
 					ElementQuery = sourceObject.ElementQuery;
 					Content = sourceObject.Content;
+					RawContent = sourceObject.RawContent;
 					IsEnabled = sourceObject.IsEnabled;
 				}
 				
@@ -48428,6 +48438,7 @@ DynamicContent.Content
 					_unmodified_Description = Description;
 					_unmodified_ElementQuery = ElementQuery;
 					_unmodified_Content = Content;
+					_unmodified_RawContent = RawContent;
 					_unmodified_IsEnabled = IsEnabled;
 				
 				
@@ -48453,6 +48464,9 @@ DynamicContent.Content
 						case "Content":
 							Content = value;
 							break;
+						case "RawContent":
+							RawContent = value;
+							break;
 						case "IsEnabled":
 							IsEnabled = bool.Parse(value);
 							break;
@@ -48475,6 +48489,9 @@ DynamicContent.Content
 			[DataMember]
 			public string Content { get; set; }
 			private string _unmodified_Content;
+			[DataMember]
+			public string RawContent { get; set; }
+			private string _unmodified_RawContent;
 			[DataMember]
 			public bool IsEnabled { get; set; }
 			private bool _unmodified_IsEnabled;
