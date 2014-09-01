@@ -48408,6 +48408,8 @@ DynamicContent.RawContent
 							return true;
 						if(IsEnabled != _unmodified_IsEnabled)
 							return true;
+						if(ApplyActively != _unmodified_ApplyActively)
+							return true;
 				
 						return false;
 					}
@@ -48427,6 +48429,7 @@ DynamicContent.RawContent
 					Content = sourceObject.Content;
 					RawContent = sourceObject.RawContent;
 					IsEnabled = sourceObject.IsEnabled;
+					ApplyActively = sourceObject.ApplyActively;
 				}
 				
 
@@ -48440,6 +48443,7 @@ DynamicContent.RawContent
 					_unmodified_Content = Content;
 					_unmodified_RawContent = RawContent;
 					_unmodified_IsEnabled = IsEnabled;
+					_unmodified_ApplyActively = ApplyActively;
 				
 				
 				}
@@ -48470,6 +48474,9 @@ DynamicContent.RawContent
 						case "IsEnabled":
 							IsEnabled = bool.Parse(value);
 							break;
+						case "ApplyActively":
+							ApplyActively = bool.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -48495,6 +48502,9 @@ DynamicContent.RawContent
 			[DataMember]
 			public bool IsEnabled { get; set; }
 			private bool _unmodified_IsEnabled;
+			[DataMember]
+			public bool ApplyActively { get; set; }
+			private bool _unmodified_ApplyActively;
 			
 			}
 			[DataContract]

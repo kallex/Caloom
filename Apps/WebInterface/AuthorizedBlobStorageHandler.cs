@@ -565,7 +565,7 @@ namespace WebInterface
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
-                (contentPath.Contains("cpanel/") && containerOwner is TBAccount) ||
+                contentPath.StartsWith("cpanel/") ||
                 (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/") ||
                 contentPath.Contains("controlpanel_comments_v1/")))
@@ -741,6 +741,7 @@ namespace WebInterface
 
         private void HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            bool isAccount = containerOwner is TBAccount;
             var response = context.Response;
             string contentType = StorageSupport.GetMimeType(Path.GetExtension(contentPath));
             response.ContentType = contentType;
@@ -751,17 +752,22 @@ namespace WebInterface
             //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
             string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
-            string LocalCPanelAccountFolder = @"D:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_account_v1\";
-            string LocalSchoolsAccountFolder = @"d:\UserData\Kalle\WebstormProjects\CaloomSchools\UI\account\";
             string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
-            string LocalControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
+            string LocalGroupControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanel\";
+            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount\";
+            string LocalOIPControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))
                 fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
             else if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalOIPAccountFolder);
             else if (prefixStrippedContent.Contains("cpanel/"))
-                fileName = prefixStrippedContent.Replace("cpanel/", LocalCPanelAccountFolder);
+            {
+                if(isAccount)
+                    fileName = prefixStrippedContent.Replace("cpanel/", LocalAccountControlPanelFolder);
+                else
+                    fileName = prefixStrippedContent.Replace("cpanel/", LocalGroupControlPanelFolder);
+            }
             else if (prefixStrippedContent.Contains("foundation-one/"))
                 fileName = prefixStrippedContent.Replace("foundation-one/", LocalFoundationOneAccountFolder);
             else if (prefixStrippedContent.Contains("categoriesandcontent/"))
@@ -769,7 +775,7 @@ namespace WebInterface
             else if (prefixStrippedContent.Contains("wwwsite/"))
                 fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
             else if (prefixStrippedContent.Contains("controlpanel_comments_v1/"))
-                fileName = prefixStrippedContent.Replace("controlpanel_comments_v1/", LocalControlPanelFolder);
+                fileName = prefixStrippedContent.Replace("controlpanel_comments_v1/", LocalOIPControlPanelFolder);
             else
                 fileName = prefixStrippedContent.Replace("webview/", LocalWwwSiteFolder);
             if (File.Exists(fileName))
