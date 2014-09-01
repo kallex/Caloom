@@ -1,6 +1,8 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System;
+
+namespace AaltoGlobalImpact.OIP
 {
-    partial class EmbeddedContent : IAdditionalFormatProvider
+    partial class EmbeddedContent : IAdditionalFormatProvider, IBeforeStoreHandler
     {
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
@@ -10,6 +12,12 @@
         string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
         {
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
+        }
+
+        public void PerformBeforeStoreUpdate()
+        {
+            if (Published == default(DateTime))
+                Published = Published.ToUniversalTime();
         }
     }
 }

@@ -742,6 +742,8 @@
           <InformationItem name="URL" logicalDataType="Text_Short"/>
           <InformationItem name="Title" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long" />
+          <InformationItem name="Published" logicalDataType="Time_DateTime" />
+          <InformationItem name="Author" logicalDataType="Text_Short" />
           <InformationItem name="ImageData" logicalDataType="InformationObject" informationObjectName="MediaContent"/>
           <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
           <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>
@@ -755,6 +757,8 @@
         <InformationItems>
           <InformationItem name="IFrameTagContents" logicalDataType="Text_Short"/>
           <InformationItem name="Title" logicalDataType="Text_Short"/>
+          <InformationItem name="Published" logicalDataType="Time_DateTime" />
+          <InformationItem name="Author" logicalDataType="Text_Short" />
           <InformationItem name="Description" logicalDataType="Text_Long" />
           <InformationItem name="Locations" logicalDataType="InformationObject" informationObjectName="AddressAndLocationCollection"/>
           <InformationItem name="Categories" logicalDataType="InformationObject" informationObjectName="CategoryCollection"/>

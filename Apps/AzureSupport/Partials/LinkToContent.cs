@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using TheBall;
 
@@ -28,6 +29,8 @@ namespace AaltoGlobalImpact.OIP
                     };
                 this.SetMediaContent(InformationContext.CurrentOwner, ImageData.ID, mediaContent);
             }
+            if (Published == default(DateTime))
+                Published = Published.ToUniversalTime();
         }
 
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)

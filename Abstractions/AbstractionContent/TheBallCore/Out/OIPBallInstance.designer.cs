@@ -46207,6 +46207,8 @@ LinkToContent.Description
 LinkToContent.Description
 ";
 
+					result.Author = @"LinkToContent.Author";
+
 					result.ImageData = MediaContent.CreateDemoDefault();
 					result.Locations = AddressAndLocationCollection.CreateDemoDefault();
 					result.Categories = CategoryCollection.CreateDemoDefault();
@@ -46354,6 +46356,10 @@ LinkToContent.Description
 							return true;
 						if(Description != _unmodified_Description)
 							return true;
+						if(Published != _unmodified_Published)
+							return true;
+						if(Author != _unmodified_Author)
+							return true;
 						if(ImageData != _unmodified_ImageData)
 							return true;
 						if(Locations != _unmodified_Locations)
@@ -46426,6 +46432,8 @@ LinkToContent.Description
 					URL = sourceObject.URL;
 					Title = sourceObject.Title;
 					Description = sourceObject.Description;
+					Published = sourceObject.Published;
+					Author = sourceObject.Author;
 					ImageData = sourceObject.ImageData;
 					Locations = sourceObject.Locations;
 					Categories = sourceObject.Categories;
@@ -46438,6 +46446,8 @@ LinkToContent.Description
 					_unmodified_URL = URL;
 					_unmodified_Title = Title;
 					_unmodified_Description = Description;
+					_unmodified_Published = Published;
+					_unmodified_Author = Author;
 				
 					_unmodified_ImageData = ImageData;
 					if(ImageData != null)
@@ -46468,6 +46478,12 @@ LinkToContent.Description
 						case "Description":
 							Description = value;
 							break;
+						case "Published":
+							Published = DateTime.Parse(value);
+							break;
+						case "Author":
+							Author = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -46481,6 +46497,12 @@ LinkToContent.Description
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;
+			[DataMember]
+			public DateTime Published { get; set; }
+			private DateTime _unmodified_Published;
+			[DataMember]
+			public string Author { get; set; }
+			private string _unmodified_Author;
 			[DataMember]
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
@@ -47279,6 +47301,8 @@ LinkToContent.Description
 
 					result.Title = @"EmbeddedContent.Title";
 
+					result.Author = @"EmbeddedContent.Author";
+
 					result.Description = @"EmbeddedContent.Description
 EmbeddedContent.Description
 EmbeddedContent.Description
@@ -47404,6 +47428,10 @@ EmbeddedContent.Description
 							return true;
 						if(Title != _unmodified_Title)
 							return true;
+						if(Published != _unmodified_Published)
+							return true;
+						if(Author != _unmodified_Author)
+							return true;
 						if(Description != _unmodified_Description)
 							return true;
 						if(Locations != _unmodified_Locations)
@@ -47458,6 +47486,8 @@ EmbeddedContent.Description
 				{
 					IFrameTagContents = sourceObject.IFrameTagContents;
 					Title = sourceObject.Title;
+					Published = sourceObject.Published;
+					Author = sourceObject.Author;
 					Description = sourceObject.Description;
 					Locations = sourceObject.Locations;
 					Categories = sourceObject.Categories;
@@ -47469,6 +47499,8 @@ EmbeddedContent.Description
 				{
 					_unmodified_IFrameTagContents = IFrameTagContents;
 					_unmodified_Title = Title;
+					_unmodified_Published = Published;
+					_unmodified_Author = Author;
 					_unmodified_Description = Description;
 				
 					_unmodified_Locations = Locations;
@@ -47493,6 +47525,12 @@ EmbeddedContent.Description
 						case "Title":
 							Title = value;
 							break;
+						case "Published":
+							Published = DateTime.Parse(value);
+							break;
+						case "Author":
+							Author = value;
+							break;
 						case "Description":
 							Description = value;
 							break;
@@ -47506,6 +47544,12 @@ EmbeddedContent.Description
 			[DataMember]
 			public string Title { get; set; }
 			private string _unmodified_Title;
+			[DataMember]
+			public DateTime Published { get; set; }
+			private DateTime _unmodified_Published;
+			[DataMember]
+			public string Author { get; set; }
+			private string _unmodified_Author;
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;
