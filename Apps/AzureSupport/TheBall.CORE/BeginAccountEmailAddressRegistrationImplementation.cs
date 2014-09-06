@@ -8,6 +8,8 @@ namespace TheBall.CORE
     {
         public static void ExecuteMethod_ValidateUnexistingEmail(string emailAddress)
         {
+            if(String.IsNullOrWhiteSpace(emailAddress))
+                throw new InvalidDataException("Email address is required");
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
             TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
             if (emailRoot != null)

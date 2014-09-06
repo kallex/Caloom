@@ -970,6 +970,9 @@
     <StatusItem name="InitiateAccountMergeFromEmail_AccountToMergeToID" displayName="TargetDefinitionType: AccountToMergeToID" description="Original account to be merged to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="InitiateAccountMergeFromEmail_ValidateAccountNotTheSame" displayName="MethodExecuteType: ValidateAccountNotTheSame" description="Validate that the account initiating the merge is not the same as the target">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="InitiateAccountMergeFromEmail_MergeAccountEmailConfirmation" displayName="TargetDefinitionType: MergeAccountEmailConfirmation" description="Initiate merge account if current account ID and account to merge to ID are different">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1409,6 +1412,7 @@
       <ItemRef itemName="InitiateAccountMergeFromEmail_RedirectUrlAfterValidation" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_ValidateExistingEmail" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_AccountToMergeToID" />
+      <ItemRef itemName="InitiateAccountMergeFromEmail_ValidateAccountNotTheSame" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_MergeAccountEmailConfirmation" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_StoreObject" />
       <ItemRef itemName="InitiateAccountMergeFromEmail_SendConfirmationEmail" />

@@ -1783,6 +1783,10 @@
             <TargetDefinition name="AccountToMergeToID" dataType="string" designDesc="Original account to be merged to" state="implemented">
               <Parameter name="EmailAddress"/>
             </TargetDefinition>
+            <MethodExecute name="ValidateAccountNotTheSame" designDesc="Validate that the account initiating the merge is not the same as the target" state="implemented">
+              <Parameter name="CurrentAccountID"/>
+              <Target name="AccountToMergeToID"/>
+            </MethodExecute>
             <TargetDefinition dataType="AaltoGlobalImpact.OIP.TBEmailValidation" name="MergeAccountEmailConfirmation" designDesc="Initiate merge account if current account ID and account to merge to ID are different" state="implemented">
               <Parameter name="CurrentAccountID"/>
               <Parameter name="EmailAddress"/>

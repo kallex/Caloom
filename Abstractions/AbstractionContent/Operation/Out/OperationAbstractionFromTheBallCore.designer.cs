@@ -1019,6 +1019,7 @@ using System.IO;
 						PrepareParameters(parameters);
 					InitiateAccountMergeFromEmailImplementation.ExecuteMethod_ValidateExistingEmail(parameters.EmailAddress);		
 				string AccountToMergeToID = InitiateAccountMergeFromEmailImplementation.GetTarget_AccountToMergeToID(parameters.EmailAddress);	
+				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_ValidateAccountNotTheSame(parameters.CurrentAccountID, AccountToMergeToID);		
 				AaltoGlobalImpact.OIP.TBEmailValidation MergeAccountEmailConfirmation = InitiateAccountMergeFromEmailImplementation.GetTarget_MergeAccountEmailConfirmation(parameters.CurrentAccountID, parameters.EmailAddress, parameters.RedirectUrlAfterValidation, AccountToMergeToID);	
 				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_StoreObject(MergeAccountEmailConfirmation);		
 				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_SendConfirmationEmail(MergeAccountEmailConfirmation);		

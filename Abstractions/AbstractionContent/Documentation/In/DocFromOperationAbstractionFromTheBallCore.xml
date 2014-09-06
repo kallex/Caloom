@@ -2138,6 +2138,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: ValidateAccountNotTheSame ( AccountToMergeToID, CurrentAccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that the account initiating the merge is not the same as the target</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress, RedirectUrlAfterValidation )" level="2">
               <Paragraph>
                 <Text>

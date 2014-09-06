@@ -52,5 +52,10 @@ namespace TheBall.CORE
                 throw new InvalidDataException("Email address for merge does not exist in the system");
         }
 
+        public static void ExecuteMethod_ValidateAccountNotTheSame(string currentAccountId, string accountToMergeToId)
+        {
+            if(currentAccountId == accountToMergeToId)
+                throw new InvalidDataException("Account owning the email address to be merged is already the same account");
+        }
     }
 }

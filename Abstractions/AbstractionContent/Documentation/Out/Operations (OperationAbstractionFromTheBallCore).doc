@@ -2215,6 +2215,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Original account to be merged to
 		</div>
+		</p><h2>Method Call: ValidateAccountNotTheSame ( AccountToMergeToID, CurrentAccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that the account initiating the merge is not the same as the target
+		</div>
 		</p><h2>Target Definition: MergeAccountEmailConfirmation ( AccountToMergeToID, CurrentAccountID, EmailAddress, RedirectUrlAfterValidation )</h2>
 		<p>		<div class="MsoNormal" >
 		Initiate merge account if current account ID and account to merge to ID are different
