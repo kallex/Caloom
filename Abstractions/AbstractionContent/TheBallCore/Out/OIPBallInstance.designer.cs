@@ -104,6 +104,18 @@ namespace INT {
 					collection.SubscribeToContentSource();
                 }
                 {
+                    var masterCollection = DynamicContentGroupCollection.GetMasterCollectionInstance(owner);
+                    if(masterCollection == null)
+                    {
+                        masterCollection = DynamicContentGroupCollection.CreateDefault();
+                        masterCollection.RelativeLocation =
+                            DynamicContentGroupCollection.GetMasterCollectionLocation(owner);
+                        StorageSupport.StoreInformation(masterCollection, owner);
+                    }
+					IInformationCollection collection = masterCollection;
+					collection.SubscribeToContentSource();
+                }
+                {
                     var masterCollection = DynamicContentCollection.GetMasterCollectionInstance(owner);
                     if(masterCollection == null)
                     {
@@ -247,6 +259,13 @@ namespace INT {
                     IInformationCollection masterCollection = EmbeddedContentCollection.GetMasterCollectionInstance(owner);
                     if (masterCollection == null)
                         throw new InvalidDataException("Master collection EmbeddedContentCollection missing for owner");
+                    masterCollection.RefreshContent();
+                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                }
+                {
+                    IInformationCollection masterCollection = DynamicContentGroupCollection.GetMasterCollectionInstance(owner);
+                    if (masterCollection == null)
+                        throw new InvalidDataException("Master collection DynamicContentGroupCollection missing for owner");
                     masterCollection.RefreshContent();
                     StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
                 }
@@ -47563,6 +47582,921 @@ EmbeddedContent.Description
 			}
 			[DataContract]
 			[Serializable]
+			public partial class DynamicContentGroupCollection : IInformationObject , IInformationCollection
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public DynamicContentGroupCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "DynamicContentGroupCollection";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(DynamicContentGroupCollection), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroupCollection", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static DynamicContentGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveDynamicContentGroupCollection(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContentGroupCollection");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DynamicContentGroupCollection), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static DynamicContentGroupCollection RetrieveDynamicContentGroupCollection(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (DynamicContentGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContentGroupCollection), null, owner);
+                    return result;
+                }
+
+				public static DynamicContentGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = DynamicContentGroupCollection.RetrieveDynamicContentGroupCollection("Content/AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName, containerOwner);
+					var result = DynamicContentGroupCollection.RetrieveDynamicContentGroupCollection("AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((DynamicContentGroupCollection) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DynamicContentGroupCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static DynamicContentGroupCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DynamicContentGroupCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (DynamicContentGroupCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DynamicContentGroupCollection", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref DynamicContentGroupCollection customDemoObject);
+
+
+				
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.UpdateCollections(masterInstance);
+					}
+				}
+
+
+
+				bool IInformationCollection.IsMasterCollection {
+					get {
+						return true;
+					}
+				}
+
+				string IInformationCollection.GetMasterLocation()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionLocation(owner);
+					
+				}
+
+				IInformationCollection IInformationCollection.GetMasterInstance()
+				{
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					return GetMasterCollectionInstance(owner);
+					
+				}
+
+
+				public string GetItemDirectory()
+				{
+					string dummyItemLocation = DynamicContentGroup.GetRelativeLocationFromID("dummy");
+					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
+					return ownerDirectoryLocation;
+				}
+
+				public void RefreshContent()
+				{
+					// DirectoryToMaster
+					string itemDirectory = GetItemDirectory();
+					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+																								 typeof(DynamicContentGroup));
+                    Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
+					CollectionContent.Clear();
+					CollectionContent.AddRange(informationObjects.Select(obj => (DynamicContentGroup) obj));
+            
+				}
+
+				public static DynamicContentGroupCollection GetMasterCollectionInstance(IContainerOwner owner)
+				{
+					return DynamicContentGroupCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+				}
+
+				public void SubscribeToContentSource()
+				{
+					// DirectoryToCollection
+					string itemDirectory = GetItemDirectory();
+					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(DynamicContentGroupCollection).FullName);
+				}
+
+				public static string GetMasterCollectionLocation(IContainerOwner owner)
+				{
+					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + "MasterCollection");
+				}
+
+
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+				
+		
+				public static DynamicContentGroupCollection CreateDefault()
+				{
+					var result = new DynamicContentGroupCollection();
+					return result;
+				}
+
+				/*
+				public static DynamicContentGroupCollection CreateDemoDefault()
+				{
+					DynamicContentGroupCollection customDemo = null;
+					DynamicContentGroupCollection.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new DynamicContentGroupCollection();
+					result.CollectionContent.Add(DynamicContentGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(DynamicContentGroup.CreateDemoDefault());
+					//result.CollectionContent.Add(DynamicContentGroup.CreateDemoDefault());
+					return result;
+				}
+				*/
+
+		
+				[DataMember] public List<DynamicContentGroup> CollectionContent = new List<DynamicContentGroup>();
+				private DynamicContentGroup[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public DynamicContentGroup[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				public void ParsePropertyValue(string propertyName, string propertyValue)
+				{
+					switch(propertyName)
+					{
+						case "SelectedIDCommaSeparated":
+							SelectedIDCommaSeparated = propertyValue;
+							break;
+						case "IsCollectionFiltered":
+							IsCollectionFiltered = bool.Parse(propertyValue);
+							break;
+						default:
+							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
+					}
+				}
+
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					for(int i = 0; i < CollectionContent.Count; i++) // >
+					{
+						if(CollectionContent[i].ID == replacingObject.ID)
+							CollectionContent[i] = (DynamicContentGroup )replacingObject;
+						else { // Cannot have circular reference, so can be in else branch
+							IInformationObject iObject = CollectionContent[i];
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
+				}
+
+				
+				bool IInformationObject.IsInstanceTreeModified {
+					get {
+						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
+						if(collectionModified)
+							return true;
+						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
+						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
+							return true;
+						// For non-master content
+						foreach(IInformationObject item in CollectionContent)
+						{
+							bool itemTreeModified = item.IsInstanceTreeModified;
+							if(itemTreeModified)
+								return true;
+						}
+							
+						return false;
+					}
+				}
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_CollectionContent = CollectionContent.ToArray();
+					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
+					if(OrderFilterIDList == null)
+						_unmodified_OrderFilterIDList = null;
+					else
+						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.SetInstanceTreeValuesAsUnmodified();
+				}
+
+				private void CopyContentFrom(DynamicContentGroupCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+				private object FindFromObjectTree(string objectId)
+				{
+					foreach(var item in CollectionContent)
+					{
+						object result = item.FindObjectByID(objectId);
+						if(result != null)
+							return result;
+					}
+					return null;
+				}
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					foreach(IInformationObject iObject in CollectionContent)
+						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+				}
+
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						bool doAdd = true;
+						if(filterOnFalse != null)
+							doAdd = filterOnFalse(iObject);
+						if(doAdd) {
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+					foreach(IInformationObject item in CollectionContent)
+					{
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+				}
+
+
+			
+			}
+			[DataContract]
+			[Serializable]
+			public partial class DynamicContentGroup : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.XML;
+					}
+				}
+
+				public DynamicContentGroup()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
+				    this.Name = "DynamicContentGroup";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContentGroup/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(DynamicContentGroup), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroup", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static DynamicContentGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveDynamicContentGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContentGroup");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DynamicContentGroup), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static DynamicContentGroup RetrieveDynamicContentGroup(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (DynamicContentGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContentGroup), null, owner);
+                    return result;
+                }
+
+				public static DynamicContentGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = DynamicContentGroup.RetrieveDynamicContentGroup("Content/AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName, containerOwner);
+					var result = DynamicContentGroup.RetrieveDynamicContentGroup("AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((DynamicContentGroup) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DynamicContentGroup));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static DynamicContentGroup DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(DynamicContentGroup));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (DynamicContentGroup) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DynamicContentGroup", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref DynamicContentGroup customDemoObject);
+
+
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(HostName != _unmodified_HostName)
+							return true;
+						if(GroupHeader != _unmodified_GroupHeader)
+							return true;
+						if(SortValue != _unmodified_SortValue)
+							return true;
+						if(PageLocation != _unmodified_PageLocation)
+							return true;
+						if(ContentItemNames != _unmodified_ContentItemNames)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(DynamicContentGroup sourceObject)
+				{
+					HostName = sourceObject.HostName;
+					GroupHeader = sourceObject.GroupHeader;
+					SortValue = sourceObject.SortValue;
+					PageLocation = sourceObject.PageLocation;
+					ContentItemNames = sourceObject.ContentItemNames;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_HostName = HostName;
+					_unmodified_GroupHeader = GroupHeader;
+					_unmodified_SortValue = SortValue;
+					_unmodified_PageLocation = PageLocation;
+					_unmodified_ContentItemNames = ContentItemNames;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "HostName":
+							HostName = value;
+							break;
+						case "GroupHeader":
+							GroupHeader = value;
+							break;
+						case "SortValue":
+							SortValue = value;
+							break;
+						case "PageLocation":
+							PageLocation = value;
+							break;
+						case "ContentItemNames":
+							ContentItemNames = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember]
+			public string HostName { get; set; }
+			private string _unmodified_HostName;
+			[DataMember]
+			public string GroupHeader { get; set; }
+			private string _unmodified_GroupHeader;
+			[DataMember]
+			public string SortValue { get; set; }
+			private string _unmodified_SortValue;
+			[DataMember]
+			public string PageLocation { get; set; }
+			private string _unmodified_PageLocation;
+			[DataMember]
+			public string ContentItemNames { get; set; }
+			private string _unmodified_ContentItemNames;
+			
+			}
+			[DataContract]
+			[Serializable]
 			public partial class DynamicContentCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -48357,6 +49291,8 @@ EmbeddedContent.Description
 
 					result.ContentName = @"DynamicContent.ContentName";
 
+					result.Title = @"DynamicContent.Title";
+
 					result.Description = @"DynamicContent.Description
 DynamicContent.Description
 DynamicContent.Description
@@ -48379,6 +49315,10 @@ DynamicContent.RawContent
 DynamicContent.RawContent
 DynamicContent.RawContent
 ";
+
+					result.EditType = @"DynamicContent.EditType";
+
+					result.PageLocation = @"DynamicContent.PageLocation";
 
 				
 					return result;
@@ -48442,6 +49382,8 @@ DynamicContent.RawContent
 							return true;
 						if(ContentName != _unmodified_ContentName)
 							return true;
+						if(Title != _unmodified_Title)
+							return true;
 						if(Description != _unmodified_Description)
 							return true;
 						if(ElementQuery != _unmodified_ElementQuery)
@@ -48453,6 +49395,10 @@ DynamicContent.RawContent
 						if(IsEnabled != _unmodified_IsEnabled)
 							return true;
 						if(ApplyActively != _unmodified_ApplyActively)
+							return true;
+						if(EditType != _unmodified_EditType)
+							return true;
+						if(PageLocation != _unmodified_PageLocation)
 							return true;
 				
 						return false;
@@ -48468,12 +49414,15 @@ DynamicContent.RawContent
 				{
 					HostName = sourceObject.HostName;
 					ContentName = sourceObject.ContentName;
+					Title = sourceObject.Title;
 					Description = sourceObject.Description;
 					ElementQuery = sourceObject.ElementQuery;
 					Content = sourceObject.Content;
 					RawContent = sourceObject.RawContent;
 					IsEnabled = sourceObject.IsEnabled;
 					ApplyActively = sourceObject.ApplyActively;
+					EditType = sourceObject.EditType;
+					PageLocation = sourceObject.PageLocation;
 				}
 				
 
@@ -48482,12 +49431,15 @@ DynamicContent.RawContent
 				{
 					_unmodified_HostName = HostName;
 					_unmodified_ContentName = ContentName;
+					_unmodified_Title = Title;
 					_unmodified_Description = Description;
 					_unmodified_ElementQuery = ElementQuery;
 					_unmodified_Content = Content;
 					_unmodified_RawContent = RawContent;
 					_unmodified_IsEnabled = IsEnabled;
 					_unmodified_ApplyActively = ApplyActively;
+					_unmodified_EditType = EditType;
+					_unmodified_PageLocation = PageLocation;
 				
 				
 				}
@@ -48502,6 +49454,9 @@ DynamicContent.RawContent
 							break;
 						case "ContentName":
 							ContentName = value;
+							break;
+						case "Title":
+							Title = value;
 							break;
 						case "Description":
 							Description = value;
@@ -48521,6 +49476,12 @@ DynamicContent.RawContent
 						case "ApplyActively":
 							ApplyActively = bool.Parse(value);
 							break;
+						case "EditType":
+							EditType = value;
+							break;
+						case "PageLocation":
+							PageLocation = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -48531,6 +49492,9 @@ DynamicContent.RawContent
 			[DataMember]
 			public string ContentName { get; set; }
 			private string _unmodified_ContentName;
+			[DataMember]
+			public string Title { get; set; }
+			private string _unmodified_Title;
 			[DataMember]
 			public string Description { get; set; }
 			private string _unmodified_Description;
@@ -48549,6 +49513,12 @@ DynamicContent.RawContent
 			[DataMember]
 			public bool ApplyActively { get; set; }
 			private bool _unmodified_ApplyActively;
+			[DataMember]
+			public string EditType { get; set; }
+			private string _unmodified_EditType;
+			[DataMember]
+			public string PageLocation { get; set; }
+			private string _unmodified_PageLocation;
 			
 			}
 			[DataContract]

@@ -765,19 +765,37 @@
         </InformationItems>
       </InformationObject>
 
+      <InformationObject name="DynamicContentGroupCollection" designDesc="Dynamic content group collection">
+        <CollectionFor collectionType="Master" contentInformationObjectName="DynamicContentGroup"/>
+      </InformationObject>
+
+      <InformationObject name="DynamicContentGroup" designDesc="Dynamic content grouping" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="HostName" logicalDataType="Text_Short"/>
+          <InformationItem name="GroupHeader" logicalDataType="Text_Short"/>
+          <InformationItem name="SortValue" logicalDataType="Text_Short"/>
+          <InformationItem name="PageLocation" logicalDataType="Text_Short"/>
+          <InformationItem name="ContentItemNames" logicalDataType="Text_Short" />
+        </InformationItems>
+      </InformationObject>
+        
       <InformationObject name="DynamicContentCollection" designDesc="Collection of dynamic content">
         <CollectionFor contentInformationObjectName="DynamicContent" collectionType="Master"/>
       </InformationObject>
+      
       <InformationObject name="DynamicContent" designDesc="Dynamic content object">
         <InformationItems>
           <InformationItem name="HostName" logicalDataType="Text_Short"/>
           <InformationItem name="ContentName" logicalDataType="Text_Short"/>
+          <InformationItem name="Title" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Long"/>
           <InformationItem name="ElementQuery" logicalDataType="Text_Short"/>
           <InformationItem name="Content" logicalDataType="Text_Long"/>
           <InformationItem name="RawContent" logicalDataType="Text_Long"/>
           <InformationItem name="IsEnabled" logicalDataType="TrueOrFalse_Boolean"/>
           <InformationItem name="ApplyActively" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="EditType" logicalDataType="Text_Short"/>
+          <InformationItem name="PageLocation" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
         
