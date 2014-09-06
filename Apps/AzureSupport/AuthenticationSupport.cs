@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Security;
 using System.Security.Principal;
 using System.Web;
 using AzureSupport;
@@ -8,13 +10,18 @@ namespace TheBall
     public static class AuthenticationSupport
     {
         private const string AuthCookieName = "TheBall_AUTH";
-        private const int TimeoutSeconds = 3600;
+        private const string AuthStrSeparator = ">TheBall<";
+        private const int TimeoutSeconds = 1800;
+        //private const int TimeoutSeconds = 10;
         public static void SetAuthenticationCookie(HttpResponse response, string validUserName)
         {
-            string authString = EncryptionSupport.EncryptStringToBase64(validUserName);
+            string cookieValue = DateTime.UtcNow.Ticks + AuthStrSeparator + validUserName;
+            string authString = EncryptionSupport.EncryptStringToBase64(cookieValue);
             if(response.Cookies[AuthCookieName] != null)
                 response.Cookies.Remove(AuthCookieName);
             HttpCookie cookie = new HttpCookie(AuthCookieName, authString);
+            // Session limit from browser
+            //cookie.Expires = DateTime.UtcNow.AddSeconds(TimeoutSeconds); 
             cookie.HttpOnly = false;
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
@@ -27,11 +34,19 @@ namespace TheBall
             {
                 try
                 {
-                    string userName = EncryptionSupport.DecryptStringFromBase64(encCookie.Value);
+                    string cookieValue = EncryptionSupport.DecryptStringFromBase64(encCookie.Value);
+                    var valueSplit = cookieValue.Split(new[] {AuthStrSeparator}, StringSplitOptions.None);
+                    long ticks = long.Parse(valueSplit[0]);
+                    DateTime cookieTime = new DateTime(ticks);
+                    DateTime utcNow = DateTime.UtcNow;
+                    if(cookieTime.AddSeconds(TimeoutSeconds) < utcNow)
+                        throw new SecurityException("Cookie expired");
+                    string userName = valueSplit[1];
                     context.User = new GenericPrincipal(new GenericIdentity(userName, "theball"), new string[0]);
                     // Reset cookie time to be again timeout from this request
-                    encCookie.Expires = DateTime.Now.AddSeconds(TimeoutSeconds);
-                    context.Response.Cookies.Set(encCookie);
+                    //encCookie.Expires = DateTime.Now.AddSeconds(TimeoutSeconds);
+                    //context.Response.Cookies.Set(encCookie);
+                    SetAuthenticationCookie(context.Response, userName);
                 } catch
                 {
                     ClearAuthenticationCookie(context.Response);
