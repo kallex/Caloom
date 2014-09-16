@@ -833,6 +833,22 @@
           <InformationItem name="LastAuthorAccountID" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
+
+      <InformationObject name="SelectionCollection" designDesc="Collection of selection objects">
+        <CollectionFor contentInformationObjectName="Selection" collectionType="Master"/>
+      </InformationObject>
+        
+      <InformationObject name="Selection" designDesc="Selection object">
+        <InformationItems>
+          <InformationItem name="TargetObjectID" logicalDataType="Text_Short" />
+          <InformationItem name="TargetObjectName" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetObjectDomain" logicalDataType="Text_Short"/>
+          <InformationItem name="SelectionCategory" logicalDataType="Text_Short" />
+          <InformationItem name="TextValue" logicalDataType="Text_Short"/>
+          <InformationItem name="BooleanValue" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="DoubleValue" logicalDataType="Number_ApproxDecimal"/>
+        </InformationItems>
+      </InformationObject>
       
       <InformationObject name="TextContentCollection" designDesc="Collection of text contents">
         <CollectionFor contentInformationObjectName="TextContent" collectionType="Master" />
